@@ -1,5 +1,5 @@
 # Add all the application routes to the app.routes file
-->         /income-tax-software-choices-frontend              app.Routes
-->         /                          health.Routes
+->         /making-tax-digital-income-tax-software        app.Routes
+->         /                                              health.Routes
 
-GET        /admin/metrics             com.kenshoo.play.metrics.MetricsController.metrics
+GET        /admin/metrics                                 com.kenshoo.play.metrics.MetricsController.metrics
