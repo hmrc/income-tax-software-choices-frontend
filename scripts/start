@@ -1,0 +1,17 @@
+#!/bin/bash
+
+cd $(dirname $0)/..
+
+function die() {
+  echo "$1"
+  exit 1
+}
+
+which sm &>/dev/null || die "Can't find Service Manager"
+
+sm --start ITSA_SOFTWARE_CHOICES_ALL "$@"
+
+sleep 5
+sm --stop INCOME_TAX_SOFTWARE_CHOICES_FRONTEND
+sleep 5
+sbt "start 9591 -Dapplication.router=testOnlyDoNotUseInAppConf.Routes" 
