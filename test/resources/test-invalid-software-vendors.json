@@ -1,0 +1,9 @@
+[
+  {
+    "invalid-name": "test software vendor one",
+    "invalid-url": "/test-url",
+    "invalid-filters": [
+      "free-version"
+    ]
+  }
+]
