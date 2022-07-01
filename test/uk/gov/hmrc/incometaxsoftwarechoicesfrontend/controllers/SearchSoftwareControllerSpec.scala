@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,20 +12,23 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
-@import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcLayout
-@import views.html.helper.CSPNonce
+package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
-@this(
-        appConfig: AppConfig,
-        hmrcLayout: HmrcLayout
-)
-@(pageTitle: Option[String] = None)(contentBlock: Html)(implicit request: Request[_], messages: Messages)
+import play.api.http.Status
+import play.api.mvc.Codec
+import play.api.test.Helpers._
 
-@hmrcLayout(
-    pageTitle = pageTitle,
-    nonce = CSPNonce.get,
-    isWelshTranslationAvailable = appConfig.welshLanguageSupportEnabled
-)(contentBlock)
+class SearchSoftwareControllerSpec extends ControllerBaseSpec {
+  private val controller = app.injector.instanceOf[SearchSoftwareController]
+
+  "Show" should {
+    "return OK status with the search software page" in {
+      val result = controller.show(fakeRequest)
+      status(result) shouldBe Status.OK
+      contentType(result) shouldBe Some(HTML)
+      charset(result) shouldBe Some(Codec.utf_8.charset)
+    }
+  }
+}
