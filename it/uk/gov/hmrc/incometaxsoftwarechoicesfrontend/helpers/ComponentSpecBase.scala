@@ -14,22 +14,27 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.incometaxsoftwarechoicesfrontend
+package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers
 
+import org.scalatest.GivenWhenThen
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.Application
+import play.api.i18n.{Messages, MessagesApi}
 import play.api.inject.guice.GuiceApplicationBuilder
-import play.api.libs.ws.WSClient
+import play.api.libs.ws.{WSClient, WSResponse}
+import play.api.test.FakeRequest
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.baseURI
 
-class HealthEndpointIntegrationSpec
-  extends AnyWordSpec
-    with Matchers
-    with ScalaFutures
-    with IntegrationPatience
-    with GuiceOneServerPerSuite {
+trait ComponentSpecBase extends AnyWordSpec
+  with GivenWhenThen
+  with Matchers
+  with CustomMatchers
+  with ScalaFutures
+  with IntegrationPatience
+  with GuiceOneServerPerSuite {
 
   private val wsClient = app.injector.instanceOf[WSClient]
   private val baseUrl = s"http://localhost:$port"
@@ -39,15 +44,26 @@ class HealthEndpointIntegrationSpec
       .configure("metrics.enabled" -> false)
       .build()
 
-  "service health endpoint" should {
-    "respond with 200 status" in {
-      val response =
-        wsClient
-          .url(s"$baseUrl/ping/ping")
-          .get()
-          .futureValue
+  implicit val messages: Messages = app.injector.instanceOf[MessagesApi].preferred(FakeRequest())
 
-      response.status shouldBe 200
+  object SoftwareChoicesFrontend {
+    def startPage(): WSResponse = get("/")
+
+    def healthcheck(): WSResponse =
+      wsClient
+        .url(s"$baseUrl/ping/ping")
+        .get()
+        .futureValue
+
+    private def get(uri: String): WSResponse = {
+      buildClient(uri)
+        .get()
+        .futureValue
+    }
+
+    private def buildClient(path: String) = {
+      wsClient
+        .url(s"$baseUrl$baseURI$path")
     }
   }
 }

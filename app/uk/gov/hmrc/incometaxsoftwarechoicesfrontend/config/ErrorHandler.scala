@@ -19,7 +19,7 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config
 import play.api.i18n.MessagesApi
 import play.api.mvc.Request
 import play.twirl.api.Html
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.ErrorTemplate
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.ErrorTemplate
 import uk.gov.hmrc.play.bootstrap.frontend.http.FrontendErrorHandler
 
 import javax.inject.{Inject, Singleton}

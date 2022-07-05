@@ -17,18 +17,18 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.HelloWorldPage
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SearchSoftwarePage
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.Future
 
 @Singleton
-class HelloWorldController @Inject()(mcc: MessagesControllerComponents,
-                                     helloWorldPage: HelloWorldPage) extends FrontendController(mcc) {
+class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
+                                         searchSoftwarePage: SearchSoftwarePage) extends FrontendController(mcc) {
 
-  val helloWorld: Action[AnyContent] = Action.async { implicit request =>
-    Future.successful(Ok(helloWorldPage()))
+  val show: Action[AnyContent] = Action.async { implicit request =>
+    Future.successful(Ok(searchSoftwarePage(lastUpdate = "01/07/2022")))
   }
 
 }

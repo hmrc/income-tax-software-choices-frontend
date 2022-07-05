@@ -1,2 +1,13 @@
-service.name = income-tax-software-choices-frontend
-service.text = This is your new service
+base.service-name           = Find software for Making Tax Digital for Income Tax
+base.title                  = {0} - Find software for Making Tax Digital for Income Tax - GOV.UK
+base.title.error            = Error: {0} - Find software for Making Tax Digital for Income Tax - GOV.UK
+
+breadcrumbs.guidance = Guidance
+breadcrumbs.filter = Filter
+
+search-software.title       = Choose the right software for your needs
+search-software.last-update = This page was last updated
+search-software.heading     = Choose the right software for your needs
+search-software.paragraph1  = All software on this page has been through HMRC’s recognition process. But we do not endorse or recommend any one product or software provider.
+search-software.paragraph2  = Some software has features suitable if you have accessibility needs, like visual impairment or limited movement.
+search-software.inset-text  = If you need help to choose software, contact the software provider before making a decision. We are not able to help you choose software.
