@@ -1,16 +1,19 @@
-[
-  {
-    "name": "test software vendor one",
-    "url": "/test-url-one",
-    "filters": [
-      "free-version"
-    ]
-  },
-  {
-    "name": "test software vendor two",
-    "url": "/test-url-two",
-    "filters": [
-      "free-trail"
-    ]
-  }
-]
+{
+  "lastUpdated": "06/07/2022",
+  "vendors": [
+    {
+      "name": "test software vendor one",
+      "url": "/test-url-one",
+      "filters": [
+        "free-version"
+      ]
+    },
+    {
+      "name": "test software vendor two",
+      "url": "/test-url-two",
+      "filters": [
+        "free-trail"
+      ]
+    }
+  ]
+}

@@ -19,7 +19,8 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services
 import play.api.libs.json._
 import play.api.{Environment, Logging}
 import uk.gov.hmrc.http.InternalServerException
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareVendorModel
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareVendors, VendorFilter}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.SoftwareChoicesService.softwareVendorsFileName
 
 import javax.inject.{Inject, Singleton}
@@ -34,15 +35,46 @@ class SoftwareChoicesService @Inject()(environment: Environment) extends Logging
       throw new InternalServerException("[SoftwareChoicesService][jsonFile] - file not found")
   }
 
-  val softwareVendors: Seq[SoftwareVendorModel] = Json.fromJson[Seq[SoftwareVendorModel]](softwareVendorsJson) match {
+  val softwareVendors: SoftwareVendors = Json.fromJson[SoftwareVendors](softwareVendorsJson) match {
     case JsSuccess(value, _) =>
       value
     case JsError(errors) =>
       throw new InternalServerException(s"[SoftwareChoicesService][softwareVendors] - Json parse failures - ${errors.mkString(",")}")
   }
 
+  val filters: Seq[VendorFilter] = softwareVendors.vendors.head.filters
+
 }
 
 object SoftwareChoicesService {
+
   val softwareVendorsFileName: String = "software-vendors.json"
+
+  val businessTypeFilters: Set[VendorFilter] = Set(
+    Individual,
+    Agent
+  )
+
+  val compatibleWithFilters: Set[VendorFilter] = Set(
+    MicrosoftWindows,
+    MacOS
+  )
+
+  val mobileAppFilters: Set[VendorFilter] = Set(
+    Android,
+    AppleIOS
+  )
+
+  val softwareTypeFilters: Set[VendorFilter] = Set(
+    BrowserBased,
+    ApplicationBased
+  )
+
+  val accessibilityFilters: Set[VendorFilter] = Set(
+    Visual,
+    Hearing,
+    Motor,
+    Cognitive
+  )
+
 }

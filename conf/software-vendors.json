@@ -1,53 +1,56 @@
-[
-  {
-    "name": "test software vendor name one",
-    "url": "/making-tax-digital-income-tax-software?software=test-software-one",
-    "filters": [
-      "free-version",
-      "free-trail",
-      "individual",
-      "agent",
-      "microsoft-windows",
-      "mac-os",
-      "android",
-      "apple-ios",
-      "browser-based",
-      "application-based",
-      "visual",
-      "hearing",
-      "motor",
-      "cognitive"
-    ]
-  },
-  {
-    "name": "test software vendor name two",
-    "url": "/making-tax-digital-income-tax-software?software=test-software-two",
-    "filters": []
-  },
-  {
-    "name": "test software vendor name three",
-    "url": "/making-tax-digital-income-tax-software?software=test-software-three",
-    "filters": [
-      "free-version",
-      "individual",
-      "microsoft-windows",
-      "android",
-      "browser-based",
-      "visual",
-      "motor"
-    ]
-  },
-  {
-    "name": "test software vendor name four",
-    "url": "/making-tax-digital-income-tax-software?software=test-software-four",
-    "filters": [
-      "free-trail",
-      "agent",
-      "mac-os",
-      "apple-ios",
-      "application-based",
-      "hearing",
-      "cognitive"
-    ]
-  }
-]
+{
+  "lastUpdated": "05/07/2022",
+  "vendors": [
+    {
+      "name": "test software vendor name one",
+      "url": "/making-tax-digital-income-tax-software?software=test-software-one",
+      "filters": [
+        "free-version",
+        "free-trail",
+        "individual",
+        "agent",
+        "microsoft-windows",
+        "mac-os",
+        "android",
+        "apple-ios",
+        "browser-based",
+        "application-based",
+        "visual",
+        "hearing",
+        "motor",
+        "cognitive"
+      ]
+    },
+    {
+      "name": "test software vendor name two",
+      "url": "/making-tax-digital-income-tax-software?software=test-software-two",
+      "filters": []
+    },
+    {
+      "name": "test software vendor name three",
+      "url": "/making-tax-digital-income-tax-software?software=test-software-three",
+      "filters": [
+        "free-version",
+        "individual",
+        "microsoft-windows",
+        "android",
+        "browser-based",
+        "visual",
+        "motor"
+      ]
+    },
+    {
+      "name": "test software vendor name four",
+      "url": "/making-tax-digital-income-tax-software?software=test-software-four",
+      "filters": [
+        "free-trail",
+        "agent",
+        "mac-os",
+        "apple-ios",
+        "application-based",
+        "hearing",
+        "cognitive"
+      ]
+    }
+  ]
+}

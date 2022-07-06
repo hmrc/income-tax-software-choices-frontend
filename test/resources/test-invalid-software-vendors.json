@@ -1,9 +1,12 @@
-[
-  {
-    "invalid-name": "test software vendor one",
-    "invalid-url": "/test-url",
-    "invalid-filters": [
-      "free-version"
-    ]
-  }
-]
+{
+  "invalid-lastUpdated": "06/07/2022",
+  "invalid-vendors": [
+    {
+      "invalid-name": "test software vendor one",
+      "invalid-url": "/test-url",
+      "invalid-filters": [
+        "free-version"
+      ]
+    }
+  ]
+}

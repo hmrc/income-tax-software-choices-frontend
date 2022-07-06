@@ -11,3 +11,33 @@ search-software.heading     = Choose the right software for your needs
 search-software.paragraph1  = All software on this page has been through HMRC’s recognition process. But we do not endorse or recommend any one product or software provider.
 search-software.paragraph2  = Some software has features suitable if you have accessibility needs, like visual impairment or limited movement.
 search-software.inset-text  = If you need help to choose software, contact the software provider before making a decision. We are not able to help you choose software.
+
+search-software.vendor-count = Currently there are {0} software providers
+
+search-software.vendor-detail.pricing = Pricing:
+search-software.vendor-detail.pricing.free-trail = Free trail
+search-software.vendor-detail.pricing.no-free-trail = No free trail
+search-software.vendor-detail.pricing.free-version = Free version
+search-software.vendor-detail.pricing.no-free-version = No free version
+
+search-software.vendor-detail.business-type = Business type:
+search-software.vendor-detail.business-type.individual = Individual
+search-software.vendor-detail.business-type.agent = Agent
+
+search-software.vendor-detail.compatible-with = Compatible with:
+search-software.vendor-detail.compatible-with.microsoft-windows = Microsoft Windows
+search-software.vendor-detail.compatible-with.mac-os = Mac OS
+
+search-software.vendor-detail.mobile-app = Mobile app:
+search-software.vendor-detail.mobile-app.android = Android
+search-software.vendor-detail.mobile-app.apple-ios = Apple iOS
+
+search-software.vendor-detail.software-type = Software type:
+search-software.vendor-detail.software-type.browser-based = Browser based
+search-software.vendor-detail.software-type.application-based = Application based
+
+search-software.vendor-detail.accessibility = Accessibility:
+search-software.vendor-detail.accessibility.visual = Visual
+search-software.vendor-detail.accessibility.hearing = Hearing
+search-software.vendor-detail.accessibility.motor = Motor
+search-software.vendor-detail.accessibility.cognitive = Cognitive

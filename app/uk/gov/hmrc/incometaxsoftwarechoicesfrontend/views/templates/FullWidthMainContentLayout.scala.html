@@ -1,4 +1,4 @@
-/*
+@*
  * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,25 +12,14 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *@
 
-package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
+@this()
 
-import play.api.http.Status
-import play.api.mvc.Codec
-import play.api.test.Helpers._
+@(mainContent: Html)
 
-class SearchSoftwareControllerSpec extends ControllerBaseSpec {
-
-  private val controller = app.injector.instanceOf[SearchSoftwareController]
-
-  "Show" should {
-    "return OK status with the search software page" in {
-      val result = controller.show(fakeRequest)
-      status(result) shouldBe Status.OK
-      contentType(result) shouldBe Some(HTML)
-      charset(result) shouldBe Some(Codec.utf_8.charset)
-    }
-  }
-
-}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-full">
+    @mainContent
+  </div>
+</div>

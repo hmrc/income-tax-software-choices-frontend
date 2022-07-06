@@ -14,18 +14,25 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.govukfrontend.views.html.components.GovukBreadcrumbs
+@import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcNewTabLinkHelper
 @import uk.gov.hmrc.govukfrontend.views.viewmodels.breadcrumbs.{Breadcrumbs, BreadcrumbsItem}
+@import uk.gov.hmrc.hmrcfrontend.views.viewmodels.newtablinkhelper.NewTabLinkHelper
+@import uk.gov.hmrc.govukfrontend.views.html.components._
 @import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.SoftwareChoicesService
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTemplate
 
 @this(
   mainTemplate: MainTemplate,
-  breadcrumbs: GovukBreadcrumbs
+  breadcrumbs: GovukBreadcrumbs,
+  hmrcNewTabLinkHelper: HmrcNewTabLinkHelper,
+  govukSummaryList : GovukSummaryList
 )(implicit appConfig: AppConfig)
 
-@(lastUpdate: String)(implicit request: Request[_], messages: Messages)
+@(softwareVendors: SoftwareVendors)(implicit request: Request[_], messages: Messages)
 
 @pageBreadcrumbs = {
   @breadcrumbs(Breadcrumbs(
@@ -42,17 +49,155 @@
   ))
 }
 
-@mainTemplate(title = messages("search-software.title"), breadcrumbs = Some(pageBreadcrumbs)) {
-  <p class="govuk-body-s">
-    @messages("search-software.last-update"): <span class="govuk-!-font-weight-bold">@lastUpdate</span>
-  </p>
+@customSummaryListRow(key: String, filtersAvailable: Seq[VendorFilter]) = @{
 
-  <h1 class="govuk-heading-xl">@messages("search-software.heading")</h1>
+  val value: String = filtersAvailable
+    .map(filter => messages(s"search-software.vendor-detail.$key.${filter.key}"))
+    .mkString("/")
 
-  <p class="govuk-body">@messages("search-software.paragraph1")</p>
-  <p class="govuk-body">@messages("search-software.paragraph2")</p>
+  if(value.nonEmpty) {
+    Some(SummaryListRow(
+      key = Key(
+        content = Text(messages(s"search-software.vendor-detail.$key")),
+        classes = "govuk-body-s govuk-summary-list--key-override"
+      ),
+      value = Value(
+        content = Text(value),
+        classes = "govuk-body-s govuk-summary-list--value-override"
+      )
+    ))
+  } else {
+    None
+  }
+}
 
-  <div class="govuk-inset-text">
-    @messages("search-software.inset-text")
+@softwareVendorPricing(filters: Seq[VendorFilter]) = @{
+
+  val key: String = {messages("search-software.vendor-detail.pricing")}
+  val value = Seq(
+    if(filters.contains(FreeTrail)) messages("search-software.vendor-detail.pricing.free-trail") else messages("search-software.vendor-detail.pricing.no-free-trail"),
+    if(filters.contains(FreeVersion)) messages("search-software.vendor-detail.pricing.free-version") else messages("search-software.vendor-detail.pricing.no-free-version")
+  ).mkString("/")
+
+  Some(SummaryListRow(
+    key = Key(
+      content = Text(key),
+      classes = "govuk-body-s govuk-summary-list--key-override"
+    ),
+    value = Value(
+      content = Text(value),
+      classes = "govuk-body-s govuk-summary-list--value-override"
+    )
+  ))
+
+}
+
+@softwareVendorBusinessType(filters: Seq[VendorFilter]) = @{
+
+  customSummaryListRow(
+    key = "business-type",
+    filtersAvailable = filters.filter(SoftwareChoicesService.businessTypeFilters)
+  )
+
+}
+
+@softwareVendorCompatibleWith(filters: Seq[VendorFilter]) = @{
+
+  customSummaryListRow(
+    key = "compatible-with",
+    filtersAvailable = filters.filter(SoftwareChoicesService.compatibleWithFilters)
+  )
+
+}
+
+@softwareVendorMobileApp(filters: Seq[VendorFilter]) = @{
+
+  customSummaryListRow(
+    key = "mobile-app",
+    filtersAvailable = filters.filter(SoftwareChoicesService.mobileAppFilters)
+  )
+
+}
+
+@softwareVendorSoftwareType(filters: Seq[VendorFilter]) = @{
+
+  customSummaryListRow(
+    key = "software-type",
+    filtersAvailable = filters.filter(SoftwareChoicesService.softwareTypeFilters)
+  )
+
+}
+
+@softwareVendorAccessibility(filters: Seq[VendorFilter]) = @{
+
+  customSummaryListRow(
+    key = "accessibility",
+    filtersAvailable = filters.filter(SoftwareChoicesService.accessibilityFilters)
+  )
+
+}
+
+@softwareVendorDetail(filters: Seq[VendorFilter]) = @{
+  Seq(
+    softwareVendorPricing(filters),
+    softwareVendorBusinessType(filters),
+    softwareVendorCompatibleWith(filters),
+    softwareVendorMobileApp(filters),
+    softwareVendorSoftwareType(filters),
+    softwareVendorAccessibility(filters)
+  ).flatten
+}
+
+@softwareVendorListing(vendor: SoftwareVendorModel, index: Int) = {
+  <div id="software-vendor-@index">
+    <h3 class="govuk-heading-m software-vendor-list-heading-override">
+      @hmrcNewTabLinkHelper(NewTabLinkHelper(
+        text = vendor.name,
+        href = Some(vendor.url)
+      ))
+    </h3>
+    @govukSummaryList(SummaryList(
+      rows = softwareVendorDetail(vendor.filters),
+      classes = "govuk-summary-list--no-border"
+    ))
   </div>
+}
+
+@mainTemplate(title = messages("search-software.title"), breadcrumbs = Some(pageBreadcrumbs)) {
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <p class="govuk-body-s">
+        @messages("search-software.last-update"): <span class="govuk-!-font-weight-bold">@softwareVendors.lastUpdated</span>
+      </p>
+
+      <h1 class="govuk-heading-xl">@messages("search-software.heading")</h1>
+
+      <p class="govuk-body">@messages("search-software.paragraph1")</p>
+      <p class="govuk-body">@messages("search-software.paragraph2")</p>
+
+      <div class="govuk-inset-text">
+        @messages("search-software.inset-text")
+      </div>
+    </div>
+  </div>
+
+  <div id="software-section" class="govuk-grid-row">
+
+    <div class="govuk-grid-column-one-third">
+      <h2 class="govuk-heading-l">filter section</h2>
+    </div>
+
+    <div class="govuk-grid-column-two-thirds">
+      <p class="govuk-body govuk-!-font-weight-bold">
+        @messages("search-software.vendor-count", softwareVendors.vendors.length)
+      </p>
+      @softwareVendors.vendors.zipWithIndex.map { case (vendor, index) =>
+        @softwareVendorListing(vendor, index)
+      }
+    </div>
+
+  </div>
+
+
 }

@@ -37,6 +37,7 @@ trait ViewSpec extends AnyWordSpecLike with Matchers with GuiceOneAppPerSuite {
   implicit val request: Request[_] = FakeRequest()
 
   implicit class CustomSelectors(element: Element) {
+
     lazy val getTechnicalHelpLink: String = element.getElementsByClass("hmrc-report-technical-issue").attr("href")
     lazy val getTechnicalHelpLinkText: String = element.getElementsByClass("hmrc-report-technical-issue").text
 
@@ -47,6 +48,10 @@ trait ViewSpec extends AnyWordSpecLike with Matchers with GuiceOneAppPerSuite {
       }
     }
 
+    def selectSeq(selector: String): Seq[Element] = {
+      element.select(selector).asScala
+    }
+
     def selectOptionally(selector: String): Option[Element] = {
       element.select(selector).asScala.headOption
     }
@@ -54,5 +59,8 @@ trait ViewSpec extends AnyWordSpecLike with Matchers with GuiceOneAppPerSuite {
     def selectNth(selector: String, nth: Int): Element = {
       selectHead(s"$selector:nth-of-type($nth)")
     }
+
+    def mainContent: Element = element.selectHead("main")
+
   }
 }

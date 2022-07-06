@@ -14,23 +14,14 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
+package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models
 
-import play.api.http.Status
-import play.api.mvc.Codec
-import play.api.test.Helpers._
+import play.api.libs.json.{Json, Reads}
 
-class SearchSoftwareControllerSpec extends ControllerBaseSpec {
+case class SoftwareVendors(lastUpdated: String, vendors: Seq[SoftwareVendorModel])
 
-  private val controller = app.injector.instanceOf[SearchSoftwareController]
-
-  "Show" should {
-    "return OK status with the search software page" in {
-      val result = controller.show(fakeRequest)
-      status(result) shouldBe Status.OK
-      contentType(result) shouldBe Some(HTML)
-      charset(result) shouldBe Some(Codec.utf_8.charset)
-    }
-  }
-
+object SoftwareVendors {
+  implicit val reads: Reads[SoftwareVendors] = Json.reads[SoftwareVendors]
 }
+
+
