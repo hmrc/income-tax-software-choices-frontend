@@ -18,69 +18,69 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models
 
 import play.api.libs.json.{Reads, __}
 
-sealed trait Filter {
+sealed trait VendorFilter {
   val key: String
 }
 
-object Filter {
+object VendorFilter {
 
-  case object FreeVersion extends Filter {
+  case object FreeVersion extends VendorFilter {
     override val key: String = "free-version"
   }
 
-  case object FreeTrail extends Filter {
+  case object FreeTrail extends VendorFilter {
     override val key: String = "free-trail"
   }
 
-  case object Individual extends Filter {
+  case object Individual extends VendorFilter {
     override val key: String = "individual"
   }
 
-  case object Agent extends Filter {
+  case object Agent extends VendorFilter {
     override val key: String = "agent"
   }
 
-  case object MicrosoftWindows extends Filter {
+  case object MicrosoftWindows extends VendorFilter {
     override val key: String = "microsoft-windows"
   }
 
-  case object MacOS extends Filter {
+  case object MacOS extends VendorFilter {
     override val key: String = "mac-os"
   }
 
-  case object Android extends Filter {
+  case object Android extends VendorFilter {
     override val key: String = "android"
   }
 
-  case object AppleIOS extends Filter {
+  case object AppleIOS extends VendorFilter {
     override val key: String = "apple-ios"
   }
 
-  case object BrowserBased extends Filter {
+  case object BrowserBased extends VendorFilter {
     override val key: String = "browser-based"
   }
 
-  case object ApplicationBased extends Filter {
+  case object ApplicationBased extends VendorFilter {
     override val key: String = "application-based"
   }
 
-  case object Visual extends Filter {
+  case object Visual extends VendorFilter {
     override val key: String = "visual"
   }
 
-  case object Hearing extends Filter {
+  case object Hearing extends VendorFilter {
     override val key: String = "hearing"
   }
 
-  case object Motor extends Filter {
+  case object Motor extends VendorFilter {
     override val key: String = "motor"
   }
 
-  case object Cognitive extends Filter {
+  case object Cognitive extends VendorFilter {
     override val key: String = "cognitive"
   }
 
-  val filterKeyToFilter: Map[String, Filter] = Map(
+  val filterKeyToFilter: Map[String, VendorFilter] = Map(
     FreeVersion.key -> FreeVersion,
     FreeTrail.key -> FreeTrail,
     Individual.key -> Individual,
@@ -97,6 +97,6 @@ object Filter {
     Cognitive.key -> Cognitive
   )
 
-  implicit val reads: Reads[Filter] = __.read[String] map filterKeyToFilter
+  implicit val reads: Reads[VendorFilter] = __.read[String] map filterKeyToFilter
 
 }

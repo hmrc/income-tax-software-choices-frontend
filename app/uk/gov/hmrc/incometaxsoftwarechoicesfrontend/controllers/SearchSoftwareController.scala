@@ -17,6 +17,8 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareVendors
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.SoftwareChoicesService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SearchSoftwarePage
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
@@ -25,10 +27,12 @@ import scala.concurrent.Future
 
 @Singleton
 class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
-                                         searchSoftwarePage: SearchSoftwarePage) extends FrontendController(mcc) {
+                                         searchSoftwarePage: SearchSoftwarePage,
+                                         softwareChoicesService: SoftwareChoicesService) extends FrontendController(mcc) {
 
   val show: Action[AnyContent] = Action.async { implicit request =>
-    Future.successful(Ok(searchSoftwarePage(lastUpdate = "01/07/2022")))
+    val vendors: SoftwareVendors = softwareChoicesService.softwareVendors
+    Future.successful(Ok(searchSoftwarePage(vendors)))
   }
 
 }

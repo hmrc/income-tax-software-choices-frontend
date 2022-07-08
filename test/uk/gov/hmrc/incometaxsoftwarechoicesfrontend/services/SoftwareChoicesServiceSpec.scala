@@ -22,8 +22,8 @@ import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.play.PlaySpec
 import play.api.Environment
 import uk.gov.hmrc.http.InternalServerException
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.Filter.{FreeTrail, FreeVersion}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareVendorModel
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{FreeTrail, FreeVersion}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareVendorModel, SoftwareVendors}
 
 import java.io.FileInputStream
 
@@ -34,9 +34,12 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
     lazy val service: SoftwareChoicesService = new SoftwareChoicesService(mockEnvironment)
   }
 
-  val expectedSoftwareVendors: Seq[SoftwareVendorModel] = Seq(
-    SoftwareVendorModel("test software vendor one", "/test-url-one", Seq(FreeVersion)),
-    SoftwareVendorModel("test software vendor two", "/test-url-two", Seq(FreeTrail))
+  val expectedSoftwareVendors: SoftwareVendors = SoftwareVendors(
+    lastUpdated = "06/07/2022",
+    vendors = Seq(
+      SoftwareVendorModel("test software vendor one", "/test-url-one", Seq(FreeVersion)),
+      SoftwareVendorModel("test software vendor two", "/test-url-two", Seq(FreeTrail))
+    )
   )
 
   "softwareVendors" when {

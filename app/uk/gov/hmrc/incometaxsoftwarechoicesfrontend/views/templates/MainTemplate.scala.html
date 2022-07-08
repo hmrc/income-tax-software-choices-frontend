@@ -17,20 +17,32 @@
 @import uk.gov.hmrc.hmrcfrontend.views.html.helpers.{HmrcLayout, HmrcReportTechnicalIssueHelper}
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 @import views.html.helper.CSPNonce
+@import uk.gov.hmrc.govukfrontend.views.html.components._
+@import uk.gov.hmrc.hmrcfrontend.views.config._
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.FullWidthMainContentLayout
 
 @this(
         appConfig: AppConfig,
         hmrcLayout: HmrcLayout,
-        hmrcReportTechnicalIssueHelper: HmrcReportTechnicalIssueHelper
+        hmrcReportTechnicalIssueHelper: HmrcReportTechnicalIssueHelper,
+        fullWidthMainContentLayout: FullWidthMainContentLayout,
+        standardAlphaBanner: StandardAlphaBanner
 )
 @(title: String, breadcrumbs: Option[Html] = None)(contentBlock: Html)(implicit request: Request[_], messages: Messages)
+
+@additionalHeadBlock = {
+  <link href='@controllers.routes.Assets.versioned("stylesheets/application.css")' media="all" rel="stylesheet" type="text/css"/>
+}
 
 @hmrcLayout(
     pageTitle = Some(messages("base.title", title)),
     serviceName = Some(messages("base.service-name")),
+    additionalHeadBlock = Some(additionalHeadBlock),
     beforeContentBlock = breadcrumbs,
     nonce = CSPNonce.get,
-    isWelshTranslationAvailable = appConfig.welshLanguageSupportEnabled
+    isWelshTranslationAvailable = appConfig.welshLanguageSupportEnabled,
+    mainContentLayout = Some(fullWidthMainContentLayout(_)),
+    phaseBanner = Some(standardAlphaBanner("/"))
 ){
   @contentBlock
   @hmrcReportTechnicalIssueHelper()

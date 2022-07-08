@@ -25,20 +25,20 @@ class SoftwareVendorModelSpec extends PlaySpec {
     "name" -> "software vendor name",
     "url" -> "/test-url",
     "filters" -> Json.arr(
-      Filter.FreeVersion.key,
-      Filter.FreeTrail.key,
-      Filter.Individual.key,
-      Filter.Agent.key,
-      Filter.MicrosoftWindows.key,
-      Filter.MacOS.key,
-      Filter.Android.key,
-      Filter.AppleIOS.key,
-      Filter.BrowserBased.key,
-      Filter.ApplicationBased.key,
-      Filter.Visual.key,
-      Filter.Hearing.key,
-      Filter.Motor.key,
-      Filter.Cognitive.key
+      VendorFilter.FreeVersion.key,
+      VendorFilter.FreeTrail.key,
+      VendorFilter.Individual.key,
+      VendorFilter.Agent.key,
+      VendorFilter.MicrosoftWindows.key,
+      VendorFilter.MacOS.key,
+      VendorFilter.Android.key,
+      VendorFilter.AppleIOS.key,
+      VendorFilter.BrowserBased.key,
+      VendorFilter.ApplicationBased.key,
+      VendorFilter.Visual.key,
+      VendorFilter.Hearing.key,
+      VendorFilter.Motor.key,
+      VendorFilter.Cognitive.key
     )
   )
 
@@ -46,20 +46,20 @@ class SoftwareVendorModelSpec extends PlaySpec {
     name = "software vendor name",
     url = "/test-url",
     filters = Seq(
-      Filter.FreeVersion,
-      Filter.FreeTrail,
-      Filter.Individual,
-      Filter.Agent,
-      Filter.MicrosoftWindows,
-      Filter.MacOS,
-      Filter.Android,
-      Filter.AppleIOS,
-      Filter.BrowserBased,
-      Filter.ApplicationBased,
-      Filter.Visual,
-      Filter.Hearing,
-      Filter.Motor,
-      Filter.Cognitive
+      VendorFilter.FreeVersion,
+      VendorFilter.FreeTrail,
+      VendorFilter.Individual,
+      VendorFilter.Agent,
+      VendorFilter.MicrosoftWindows,
+      VendorFilter.MacOS,
+      VendorFilter.Android,
+      VendorFilter.AppleIOS,
+      VendorFilter.BrowserBased,
+      VendorFilter.ApplicationBased,
+      VendorFilter.Visual,
+      VendorFilter.Hearing,
+      VendorFilter.Motor,
+      VendorFilter.Cognitive
     )
   )
 
@@ -71,7 +71,7 @@ class SoftwareVendorModelSpec extends PlaySpec {
       "the json has no filter options" in {
         Json.fromJson[SoftwareVendorModel](
           fullJson - "filters" ++ Json.obj("filters" -> Json.arr())
-        ) mustBe JsSuccess(fullModel.copy(filters = Seq.empty[Filter]))
+        ) mustBe JsSuccess(fullModel.copy(filters = Seq.empty[VendorFilter]))
       }
     }
     "fail to read json" when {
