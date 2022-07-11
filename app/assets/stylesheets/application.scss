@@ -24,3 +24,20 @@
 .software-vendor-list-heading-override {
    @include govuk-responsive-padding(4, "top");
 }
+
+.filters-section {
+    background-color: govuk-colour("light-grey");
+    padding: $govuk-gutter-half;
+}
+
+.filters-section > * {
+    border-bottom: 1px solid govuk-colour("mid-grey");
+}
+
+.filters-section > *:first-child {
+    border-bottom: 0;
+}
+
+.filters-section > *:last-child {
+    border-bottom: 0;
+}
