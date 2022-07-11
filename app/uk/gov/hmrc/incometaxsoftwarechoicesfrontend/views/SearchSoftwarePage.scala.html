@@ -185,7 +185,21 @@
   <div id="software-section" class="govuk-grid-row">
 
     <div class="govuk-grid-column-one-third">
-      <h2 class="govuk-heading-l">filter section</h2>
+      <div class="filters-section">
+        <h2 class="govuk-heading-l">@messages("search-software.filters.heading")</h2>
+        @*
+        * Each of the following should be replaced with a govuk checkboxes helper
+        * styles are applied to each child of .filters-section
+        * so if checkbox helper doesn't wrap it's contents, it will need to also be wrapped in a div.
+        *@
+        <h3 class="govuk-heading-s">@messages("search-software.filters.pricing")</h3>
+        <h3 class="govuk-heading-s">@messages("search-software.filters.business-type")</h3>
+        <h3 class="govuk-heading-s">@messages("search-software.filters.compatible-with")</h3>
+        <h3 class="govuk-heading-s">@messages("search-software.filters.mobile-app")</h3>
+        <h3 class="govuk-heading-s">@messages("search-software.filters.software-type")</h3>
+        <h3 class="govuk-heading-s">@messages("search-software.filters.software-compatibility")</h3>
+        <h3 class="govuk-heading-s">@messages("search-software.filters.accessibility-needs")</h3>
+      </div>
     </div>
 
     <div class="govuk-grid-column-two-thirds">

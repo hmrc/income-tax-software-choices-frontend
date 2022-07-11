@@ -104,10 +104,38 @@ class SearchSoftwareViewSpec extends ViewSpec {
     }
 
     "have a filter section" which {
-      def filterSection: Element = document.mainContent.selectHead("#software-section").selectHead(".govuk-grid-column-one-third")
+      def filterSection: Element = document.mainContent.selectHead("#software-section").selectHead(".filters-section")
 
       "has a heading" in {
-        filterSection.selectHead("h2").text shouldBe SearchSoftwarePage.filterHeading //todo: update when the filter section is added properly
+        filterSection.selectHead("h2").text shouldBe SearchSoftwarePage.Filters.filterHeading
+      }
+
+      "has a pricing section" in {
+        filterSection.selectNth("h3", 1).text shouldBe SearchSoftwarePage.Filters.pricing
+      }
+
+      "has a business type section" in {
+        filterSection.selectNth("h3", 2).text shouldBe SearchSoftwarePage.Filters.businessType
+      }
+
+      "has a compatible with section" in {
+        filterSection.selectNth("h3", 3).text shouldBe SearchSoftwarePage.Filters.compatibleWith
+      }
+
+      "has a mobile app section" in {
+        filterSection.selectNth("h3", 4).text shouldBe SearchSoftwarePage.Filters.mobileApp
+      }
+
+      "has a software type section" in {
+        filterSection.selectNth("h3", 5).text shouldBe SearchSoftwarePage.Filters.softwareType
+      }
+
+      "has a software compatibility section" in {
+        filterSection.selectNth("h3", 6).text shouldBe SearchSoftwarePage.Filters.softwareCompatibility
+      }
+
+      "has an accessibility needs section" in {
+        filterSection.selectNth("h3", 7).text shouldBe SearchSoftwarePage.Filters.accessibilityNeeds
       }
     }
 
@@ -199,7 +227,18 @@ class SearchSoftwareViewSpec extends ViewSpec {
       "But we do not endorse or recommend any one product or software provider."
     val paragraph2 = "Some software has features suitable if you have accessibility needs, like visual impairment or limited movement."
     val insetText = "If you need help to choose software, contact the software provider before making a decision. We are not able to help you choose software."
-    val filterHeading = "filter section"
+
+    object Filters {
+      val filterHeading = "Filters"
+      val pricing = "Pricing"
+      val businessType = "Business type"
+      val compatibleWith = "Compatible with"
+      val mobileApp = "Mobile app"
+      val softwareType = "Software type"
+      val softwareCompatibility = "Software compatibility"
+      val accessibilityNeeds = "Accessibility needs"
+    }
+
     val numberOfProviders = "Currently there are 2 software providers"
     val pricing = "Pricing:"
     val freeTrail = "Free trail"
