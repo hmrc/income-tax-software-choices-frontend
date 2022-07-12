@@ -24,8 +24,8 @@ search-software.filters.accessibility-needs = Accessibility needs
 search-software.vendor-count = Currently there are {0} software providers
 
 search-software.vendor-detail.pricing = Pricing:
-search-software.vendor-detail.pricing.free-trail = Free trail
-search-software.vendor-detail.pricing.no-free-trail = No free trail
+search-software.vendor-detail.pricing.free-trial = Free trial
+search-software.vendor-detail.pricing.no-free-trial = No free trial
 search-software.vendor-detail.pricing.free-version = Free version
 search-software.vendor-detail.pricing.no-free-version = No free version
 

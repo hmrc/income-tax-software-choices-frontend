@@ -33,7 +33,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
         url = "/test-vendor-one-url",
         filters = Seq(
           VendorFilter.FreeVersion,
-          VendorFilter.FreeTrail,
+          VendorFilter.FreeTrial,
           VendorFilter.Individual,
           VendorFilter.Agent,
           VendorFilter.MicrosoftWindows,
@@ -167,7 +167,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
 
             val firstRow: Element = summaryList.selectNth("div", 1)
             firstRow.selectHead("dt").text shouldBe SearchSoftwarePage.pricing
-            firstRow.selectHead("dd").text shouldBe s"${SearchSoftwarePage.freeTrail}/${SearchSoftwarePage.freeVersion}"
+            firstRow.selectHead("dd").text shouldBe s"${SearchSoftwarePage.freeTrial}/${SearchSoftwarePage.freeVersion}"
 
             val secondRow: Element = summaryList.selectNth("div", 2)
             secondRow.selectHead("dt").text shouldBe SearchSoftwarePage.businessType
@@ -207,7 +207,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
 
             val firstRow: Element = summaryList.selectNth("div", 1)
             firstRow.selectHead("dt").text shouldBe SearchSoftwarePage.pricing
-            firstRow.selectHead("dd").text shouldBe s"${SearchSoftwarePage.noFreeTrail}/${SearchSoftwarePage.noFreeVersion}"
+            firstRow.selectHead("dd").text shouldBe s"${SearchSoftwarePage.noFreeTrial}/${SearchSoftwarePage.noFreeVersion}"
 
             val secondRow: Option[Element] = summaryList.selectOptionally("div:nth-of-type(2)")
             secondRow shouldBe None
@@ -241,9 +241,9 @@ class SearchSoftwareViewSpec extends ViewSpec {
 
     val numberOfProviders = "Currently there are 2 software providers"
     val pricing = "Pricing:"
-    val freeTrail = "Free trail"
+    val freeTrial = "Free trial"
     val freeVersion = "Free version"
-    val noFreeTrail = "No free trail"
+    val noFreeTrial = "No free trial"
     val noFreeVersion = "No free version"
     val businessType = "Business type:"
     val individual = "Individual"

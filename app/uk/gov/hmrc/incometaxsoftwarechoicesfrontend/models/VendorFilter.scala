@@ -28,8 +28,8 @@ object VendorFilter {
     override val key: String = "free-version"
   }
 
-  case object FreeTrail extends VendorFilter {
-    override val key: String = "free-trail"
+  case object FreeTrial extends VendorFilter {
+    override val key: String = "free-trial"
   }
 
   case object Individual extends VendorFilter {
@@ -82,7 +82,7 @@ object VendorFilter {
 
   val filterKeyToFilter: Map[String, VendorFilter] = Map(
     FreeVersion.key -> FreeVersion,
-    FreeTrail.key -> FreeTrail,
+    FreeTrial.key -> FreeTrial,
     Individual.key -> Individual,
     Agent.key -> Agent,
     MicrosoftWindows.key -> MicrosoftWindows,

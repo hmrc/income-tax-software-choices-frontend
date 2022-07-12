@@ -6,7 +6,7 @@
       "url": "/making-tax-digital-income-tax-software?software=test-software-one",
       "filters": [
         "free-version",
-        "free-trail",
+        "free-trial",
         "individual",
         "agent",
         "microsoft-windows",
@@ -43,7 +43,7 @@
       "name": "test software vendor name four",
       "url": "/making-tax-digital-income-tax-software?software=test-software-four",
       "filters": [
-        "free-trail",
+        "free-trial",
         "agent",
         "mac-os",
         "apple-ios",
