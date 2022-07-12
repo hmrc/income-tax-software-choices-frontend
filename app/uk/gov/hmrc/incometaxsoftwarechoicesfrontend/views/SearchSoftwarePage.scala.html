@@ -75,7 +75,7 @@
 
   val key: String = {messages("search-software.vendor-detail.pricing")}
   val value = Seq(
-    if(filters.contains(FreeTrail)) messages("search-software.vendor-detail.pricing.free-trail") else messages("search-software.vendor-detail.pricing.no-free-trail"),
+    if(filters.contains(FreeTrial)) messages("search-software.vendor-detail.pricing.free-trial") else messages("search-software.vendor-detail.pricing.no-free-trial"),
     if(filters.contains(FreeVersion)) messages("search-software.vendor-detail.pricing.free-version") else messages("search-software.vendor-detail.pricing.no-free-version")
   ).mkString("/")
 

@@ -26,7 +26,7 @@ class SoftwareVendorModelSpec extends PlaySpec {
     "url" -> "/test-url",
     "filters" -> Json.arr(
       VendorFilter.FreeVersion.key,
-      VendorFilter.FreeTrail.key,
+      VendorFilter.FreeTrial.key,
       VendorFilter.Individual.key,
       VendorFilter.Agent.key,
       VendorFilter.MicrosoftWindows.key,
@@ -47,7 +47,7 @@ class SoftwareVendorModelSpec extends PlaySpec {
     url = "/test-url",
     filters = Seq(
       VendorFilter.FreeVersion,
-      VendorFilter.FreeTrail,
+      VendorFilter.FreeTrial,
       VendorFilter.Individual,
       VendorFilter.Agent,
       VendorFilter.MicrosoftWindows,
