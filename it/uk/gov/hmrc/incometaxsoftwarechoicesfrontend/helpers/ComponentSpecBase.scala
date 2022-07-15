@@ -26,7 +26,9 @@ import play.api.i18n.{Messages, MessagesApi}
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.ws.{WSClient, WSResponse}
 import play.api.test.FakeRequest
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.baseURI
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FiltersFormModel
 
 trait ComponentSpecBase extends AnyWordSpec
   with GivenWhenThen
@@ -49,6 +51,10 @@ trait ComponentSpecBase extends AnyWordSpec
   object SoftwareChoicesFrontend {
     def startPage(): WSResponse = get("/")
 
+    def submitSearch(search: FiltersFormModel): WSResponse = post("/")(
+      FiltersForm.form.fill(search).data.map { case (k, v) => (k, Seq(v)) }
+    )
+
     def healthcheck(): WSResponse =
       wsClient
         .url(s"$baseUrl/ping/ping")
@@ -60,6 +66,12 @@ trait ComponentSpecBase extends AnyWordSpec
         .get()
         .futureValue
     }
+
+    def post(uri: String)(body: Map[String, Seq[String]]): WSResponse =
+      buildClient(uri)
+        .withHttpHeaders("Csrf-Token" -> "nocheck")
+        .post(body)
+        .futureValue
 
     private def buildClient(path: String) = {
       wsClient
