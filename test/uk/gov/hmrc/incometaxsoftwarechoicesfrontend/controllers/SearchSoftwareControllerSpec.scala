@@ -16,21 +16,67 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
+import org.mockito.ArgumentMatchersSugar.eqTo
+import org.mockito.MockitoSugar.{mock, when}
+import play.api.Environment
 import play.api.http.Status
-import play.api.mvc.Codec
+import play.api.mvc.{Codec, MessagesControllerComponents}
+import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.SoftwareChoicesService
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SearchSoftwarePage
+
+import java.io.FileInputStream
 
 class SearchSoftwareControllerSpec extends ControllerBaseSpec {
 
-  private val controller = app.injector.instanceOf[SearchSoftwareController]
+  private val mcc = app.injector.instanceOf[MessagesControllerComponents]
+  private val searchSoftwarePage = app.injector.instanceOf[SearchSoftwarePage]
 
   "Show" should {
-    "return OK status with the search software page" in {
+    "return OK status with the search software page" in withController { controller =>
       val result = controller.show(fakeRequest)
+
       status(result) shouldBe Status.OK
       contentType(result) shouldBe Some(HTML)
       charset(result) shouldBe Some(Codec.utf_8.charset)
     }
+  }
+
+  "search" should {
+    "return OK status with the search software page" in withController { controller =>
+      val result = controller.search(FakeRequest("POST", "/").withFormUrlEncodedBody((FiltersForm.searchTerm, "Vendor")))
+
+      status(result) shouldBe Status.OK
+      contentType(result) shouldBe Some(HTML)
+      charset(result) shouldBe Some(Codec.utf_8.charset)
+    }
+
+    "return BAD_REQUEST" in withController { controller =>
+      val result = controller.search(FakeRequest("POST", "/").withFormUrlEncodedBody((FiltersForm.searchTerm, "test" * 65)))
+
+      status(result) shouldBe Status.BAD_REQUEST
+      contentType(result) shouldBe Some(HTML)
+      charset(result) shouldBe Some(Codec.utf_8.charset)
+    }
+  }
+
+  private def withController(testCode: SearchSoftwareController => Any): Unit = {
+    val mockEnvironment: Environment = mock[Environment]
+
+    when(mockEnvironment.resourceAsStream(eqTo(SoftwareChoicesService.softwareVendorsFileName)))
+      .thenReturn(Some(new FileInputStream("test/resources/test-valid-software-vendors.json")))
+
+    lazy val softwareChoicesService: SoftwareChoicesService = new SoftwareChoicesService(mockEnvironment)
+
+    val controller = new SearchSoftwareController(
+      mcc,
+      searchSoftwarePage,
+      softwareChoicesService
+    )
+
+    testCode(controller)
   }
 
 }

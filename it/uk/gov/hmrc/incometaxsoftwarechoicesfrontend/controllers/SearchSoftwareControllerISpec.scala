@@ -18,6 +18,7 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import play.api.http.Status.OK
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.ComponentSpecBase
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FiltersFormModel
 
 class SearchSoftwareControllerISpec extends ComponentSpecBase {
 
@@ -25,6 +26,19 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase {
     "respond with 200 status" in {
       When("GET / is called")
       val response = SoftwareChoicesFrontend.startPage()
+
+      Then("Should return OK with the software search page")
+      response should have(
+        httpStatus(OK),
+        pageTitle(s"""${messages("search-software.title")} - Find software for Making Tax Digital for Income Tax - GOV.UK""")
+      )
+    }
+  }
+
+  "POST /making-tax-digital-income-tax-software" should {
+    "respond with 200 status" in {
+      When("GET / is called")
+      val response = SoftwareChoicesFrontend.submitSearch(FiltersFormModel(Some("")))
 
       Then("Should return OK with the software search page")
       response should have(

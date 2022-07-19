@@ -18,13 +18,17 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views
 
 import org.jsoup.Jsoup
 import org.jsoup.nodes.{Document, Element}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareVendorModel, SoftwareVendors, VendorFilter}
+import play.api.data.FormError
+import play.api.mvc.Call
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FiltersFormModel, SoftwareVendorModel, SoftwareVendors, VendorFilter}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SearchSoftwarePage
 
 class SearchSoftwareViewSpec extends ViewSpec {
 
   private val searchSoftwarePage = app.injector.instanceOf[SearchSoftwarePage]
   private val lastUpdateTest = "01/07/2022"
+  private val testFormError: FormError = FormError(FiltersForm.searchTerm, "test error message")
   private val softwareVendors: SoftwareVendors = SoftwareVendors(
     lastUpdated = lastUpdateTest,
     vendors = Seq(
@@ -59,16 +63,16 @@ class SearchSoftwareViewSpec extends ViewSpec {
   "Search software page" should {
     "have a breadcrumb menu" which {
       "contains to guidance page" in {
-        document.selectNth(".govuk-breadcrumbs__list-item", 1).text shouldBe "Guidance"
+        document().selectNth(".govuk-breadcrumbs__list-item", 1).text shouldBe "Guidance"
       }
 
       "contains the current page" in {
-        document.selectNth(".govuk-breadcrumbs__list-item", 2).text shouldBe "Filter"
+        document().selectNth(".govuk-breadcrumbs__list-item", 2).text shouldBe "Filter"
       }
     }
 
     "have an alpha banner" in {
-      val banner: Element = document.selectHead(".govuk-phase-banner")
+      val banner: Element = document().selectHead(".govuk-phase-banner")
       banner.selectHead(".govuk-phase-banner__content__tag").text shouldBe "alpha"
 
       val bannerContent: Element = banner.selectHead(".govuk-phase-banner__text")
@@ -80,31 +84,31 @@ class SearchSoftwareViewSpec extends ViewSpec {
     }
 
     "have a title" in {
-      document.title shouldBe s"""${SearchSoftwarePage.title} - Find software for Making Tax Digital for Income Tax - GOV.UK"""
+      document().title shouldBe s"""${SearchSoftwarePage.title} - Find software for Making Tax Digital for Income Tax - GOV.UK"""
     }
 
     "have the last updated date" in {
-      document.mainContent.selectNth("p", 1).text shouldBe SearchSoftwarePage.lastUpdate
+      document().mainContent.selectNth("p", 1).text shouldBe SearchSoftwarePage.lastUpdate
     }
 
     "have a heading" in {
-      document.mainContent.selectHead("h1").text shouldBe SearchSoftwarePage.heading
+      document().mainContent.selectHead("h1").text shouldBe SearchSoftwarePage.heading
     }
 
     "have paragraph1" in {
-      document.mainContent.selectNth("p", 2).text shouldBe SearchSoftwarePage.paragraph1
+      document().mainContent.selectNth("p", 2).text shouldBe SearchSoftwarePage.paragraph1
     }
 
     "have paragraph2" in {
-      document.mainContent.selectNth("p", 3).text shouldBe SearchSoftwarePage.paragraph2
+      document().mainContent.selectNth("p", 3).text shouldBe SearchSoftwarePage.paragraph2
     }
 
     "have inset text" in {
-      document.mainContent.selectHead(".govuk-inset-text").text shouldBe SearchSoftwarePage.insetText
+      document().mainContent.selectHead(".govuk-inset-text").text shouldBe SearchSoftwarePage.insetText
     }
 
     "have a filter section" which {
-      def filterSection: Element = document.mainContent.selectHead("#software-section").selectHead(".filters-section")
+      def filterSection: Element = document().mainContent.selectHead("#software-section").selectHead(".filters-section")
 
       "has a heading" in {
         filterSection.selectHead("h2").text shouldBe SearchSoftwarePage.Filters.filterHeading
@@ -140,13 +144,32 @@ class SearchSoftwareViewSpec extends ViewSpec {
     }
 
     "have a software vendor section" which {
-      def softwareVendorsSection: Element = document
+      def softwareVendorsSection: Element = document()
         .mainContent
         .selectHead("#software-section")
         .selectHead(".govuk-grid-column-two-thirds")
 
       "has a count of the number of software vendors on the page" in {
         softwareVendorsSection.selectHead("p").text shouldBe SearchSoftwarePage.numberOfProviders
+      }
+
+      "has a search form" which {
+        "contains a heading" in {
+          document().mainContent.selectHead("form h1").text shouldBe SearchSoftwarePage.searchFormHeading
+        }
+
+        "contains a text input" in {
+          document().mainContent.selectHead("#searchTerm").attr("name") shouldBe "searchTerm"
+          document().mainContent.selectHead("#searchTerm").attr("value") shouldBe "search test"
+        }
+
+        "contains a submit" in {
+          document().mainContent.selectHead("button").text shouldBe SearchSoftwarePage.searchFormHeading
+        }
+
+        "contains an error" in {
+          document(hasError = true).mainContent.selectHead(".govuk-error-message").text() shouldBe "test error message"
+        }
       }
 
       "have a list of software vendors" which {
@@ -227,6 +250,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
       "But we do not endorse or recommend any one product or software provider."
     val paragraph2 = "Some software has features suitable if you have accessibility needs, like visual impairment or limited movement."
     val insetText = "If you need help to choose software, contact the software provider before making a decision. We are not able to help you choose software."
+    val searchFormHeading = "Search by software name"
 
     object Filters {
       val filterHeading = "Filters"
@@ -264,8 +288,17 @@ class SearchSoftwareViewSpec extends ViewSpec {
     val cognitive = "Cognitive"
   }
 
-  private def page = searchSoftwarePage(softwareVendors)
+  private def page(hasError: Boolean) =
+    searchSoftwarePage(
+      softwareVendors,
+      if (hasError) {
+        FiltersForm.form.withError(testFormError)
+      } else {
+        FiltersForm.form.fill(FiltersFormModel(Some("search test")))
+      },
+      Call("POST", "/test-url")
+    )
 
-  private def document: Document = Jsoup.parse(page.body)
+  private def document(hasError: Boolean = false): Document = Jsoup.parse(page(hasError).body)
 
 }

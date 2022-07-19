@@ -42,6 +42,13 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
     )
   )
 
+  val expectedFilteredSoftwareVendors: SoftwareVendors = SoftwareVendors(
+    lastUpdated = "06/07/2022",
+    vendors = Seq(
+      SoftwareVendorModel("test software vendor two", "/test-url-two", Seq(FreeTrial))
+    )
+  )
+
   "softwareVendors" when {
     "the software vendor config file exists" must {
       "correctly retrieve and parse file" in new Setup {
@@ -49,6 +56,20 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
           .thenReturn(Some(new FileInputStream("test/resources/test-valid-software-vendors.json")))
 
         service.softwareVendors mustBe expectedSoftwareVendors
+      }
+
+      "correctly filter vendors by name" in new Setup {
+        when(mockEnvironment.resourceAsStream(eqTo(SoftwareChoicesService.softwareVendorsFileName)))
+          .thenReturn(Some(new FileInputStream("test/resources/test-valid-software-vendors.json")))
+
+        service.filterVendors(Some("two")) mustBe expectedFilteredSoftwareVendors
+      }
+
+      "not filter when no search term has been provided" in new Setup {
+        when(mockEnvironment.resourceAsStream(eqTo(SoftwareChoicesService.softwareVendorsFileName)))
+          .thenReturn(Some(new FileInputStream("test/resources/test-valid-software-vendors.json")))
+
+        service.filterVendors(None) mustBe expectedSoftwareVendors
       }
     }
     "the software vendor config file does not exist" in new Setup {

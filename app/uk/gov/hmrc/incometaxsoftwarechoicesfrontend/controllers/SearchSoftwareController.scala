@@ -16,23 +16,41 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareVendors
+import play.api.data.Form
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
+import play.twirl.api.Html
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FiltersFormModel, SoftwareVendors}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.SoftwareChoicesService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SearchSoftwarePage
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.Future
 
 @Singleton
 class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
                                          searchSoftwarePage: SearchSoftwarePage,
-                                         softwareChoicesService: SoftwareChoicesService) extends FrontendController(mcc) {
+                                         softwareChoicesService: SoftwareChoicesService) extends BaseFrontendController(mcc) {
 
-  val show: Action[AnyContent] = Action.async { implicit request =>
+  val show: Action[AnyContent] = Action { implicit request =>
     val vendors: SoftwareVendors = softwareChoicesService.softwareVendors
-    Future.successful(Ok(searchSoftwarePage(vendors)))
+    Ok(view(vendors))
   }
+
+  val search: Action[AnyContent] = Action { implicit request =>
+    FiltersForm.form.bindFromRequest().fold(
+      error => {
+        val vendors: SoftwareVendors = softwareChoicesService.softwareVendors
+        BadRequest(view(vendors, error))
+      },
+      search => {
+        val vendors = softwareChoicesService.filterVendors(search.searchTerm)
+        Ok(view(vendors, FiltersForm.form.fill(search)))
+      }
+    )
+  }
+
+  private def view(vendors: SoftwareVendors, form: Form[FiltersFormModel] = FiltersForm.form)
+                  (implicit request: Request[_]): Html =
+    searchSoftwarePage(vendors, form, routes.SearchSoftwareController.search)
 
 }

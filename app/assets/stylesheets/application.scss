@@ -41,3 +41,25 @@
 .filters-section > *:last-child {
     border-bottom: 0;
 }
+
+.search-button {
+  position: relative;
+
+  button.govuk-button{
+    position: absolute;
+    padding: 0;
+
+    .search-icon {
+      display: inline-block;
+      height: 31px;
+      width: 48px;
+      background-image: url(../images/search-button.png);
+      background-repeat: no-repeat;
+      background-position: -12.5% 45%;
+    }
+
+    &:focus .search-icon {
+      background-image: url("../images/search-button-dark.png");
+    }
+  }
+}

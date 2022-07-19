@@ -14,14 +14,15 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcNewTabLinkHelper
-@import uk.gov.hmrc.govukfrontend.views.viewmodels.breadcrumbs.{Breadcrumbs, BreadcrumbsItem}
-@import uk.gov.hmrc.hmrcfrontend.views.viewmodels.newtablinkhelper.NewTabLinkHelper
 @import uk.gov.hmrc.govukfrontend.views.html.components._
+@import uk.gov.hmrc.govukfrontend.views.viewmodels.breadcrumbs.{Breadcrumbs, BreadcrumbsItem}
 @import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
+@import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcNewTabLinkHelper
+@import uk.gov.hmrc.hmrcfrontend.views.viewmodels.newtablinkhelper.NewTabLinkHelper
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.SoftwareChoicesService
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTemplate
 
@@ -29,10 +30,11 @@
   mainTemplate: MainTemplate,
   breadcrumbs: GovukBreadcrumbs,
   hmrcNewTabLinkHelper: HmrcNewTabLinkHelper,
-  govukSummaryList : GovukSummaryList
+  govukSummaryList : GovukSummaryList,
+  form: FormWithCSRF
 )(implicit appConfig: AppConfig)
 
-@(softwareVendors: SoftwareVendors)(implicit request: Request[_], messages: Messages)
+@(softwareVendors: SoftwareVendors, searchForm: Form[FiltersFormModel], postAction: Call)(implicit request: Request[_], messages: Messages)
 
 @pageBreadcrumbs = {
   @breadcrumbs(Breadcrumbs(
@@ -203,9 +205,23 @@
     </div>
 
     <div class="govuk-grid-column-two-thirds">
+      @form(action = postAction) {
+        <h1 class="govuk-heading-l">@messages("search-software.search-form.heading")</h1>
+
+        <div class="govuk-form-group search-button @{if(searchForm(FiltersForm.searchTerm).hasErrors){"govuk-form-group--error"}}">
+          @searchForm(FiltersForm.searchTerm).errors.map { error => <span class="govuk-error-message">@messages(error.message, error.args: _*)</span> }
+          <input class="govuk-input" id="searchTerm" name="searchTerm" type="text" value="@searchForm(FiltersForm.searchTerm).value">
+          <button class="govuk-button"  data-module="govuk-button">
+            <span class="search-icon" aria-hidden="true"></span>
+            <span class="govuk-visually-hidden">@messages("search-software.search-form.button")</span>
+          </button>
+        </div>
+      }
+
       <p class="govuk-body govuk-!-font-weight-bold">
         @messages("search-software.vendor-count", softwareVendors.vendors.length)
       </p>
+
       @softwareVendors.vendors.zipWithIndex.map { case (vendor, index) =>
         @softwareVendorListing(vendor, index)
       }
