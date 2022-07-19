@@ -22,13 +22,14 @@ import play.twirl.api.Html
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FiltersFormModel, SoftwareVendors}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.SoftwareChoicesService
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SearchSoftwarePage
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.{SearchSoftwarePage, SoftwareVendorsTemplate}
 
 import javax.inject.{Inject, Singleton}
 
 @Singleton
 class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
                                          searchSoftwarePage: SearchSoftwarePage,
+                                         softwareVendorsTemplate: SoftwareVendorsTemplate,
                                          softwareChoicesService: SoftwareChoicesService) extends BaseFrontendController(mcc) {
 
   val show: Action[AnyContent] = Action { implicit request =>
@@ -45,6 +46,19 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
       search => {
         val vendors = softwareChoicesService.filterVendors(search.searchTerm)
         Ok(view(vendors, FiltersForm.form.fill(search)))
+      }
+    )
+  }
+
+  val ajaxSearch: Action[AnyContent] = Action { implicit request =>
+    FiltersForm.form.bindFromRequest().fold(
+      error => {
+        val vendors: SoftwareVendors = softwareChoicesService.softwareVendors
+        BadRequest(view(vendors, error))
+      },
+      search => {
+        val vendors = softwareChoicesService.filterVendors(search.searchTerm)
+        Ok(softwareVendorsTemplate(vendors))
       }
     )
   }
