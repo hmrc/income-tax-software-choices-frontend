@@ -150,12 +150,12 @@ class SearchSoftwareViewSpec extends ViewSpec {
         .selectHead(".govuk-grid-column-two-thirds")
 
       "has a count of the number of software vendors on the page" in {
-        softwareVendorsSection.selectHead("p").text shouldBe SearchSoftwarePage.numberOfProviders
+        softwareVendorsSection.selectHead("h3").text shouldBe SearchSoftwarePage.numberOfVendors
       }
 
       "has a search form" which {
         "contains a heading" in {
-          document().mainContent.selectHead("form h1").text shouldBe SearchSoftwarePage.searchFormHeading
+          document().mainContent.selectHead("form h2 label").text shouldBe SearchSoftwarePage.searchFormHeading
         }
 
         "contains a text input" in {
@@ -263,7 +263,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
       val accessibilityNeeds = "Accessibility needs"
     }
 
-    val numberOfProviders = "Currently there are 2 software providers"
+    val numberOfVendors = "Currently there are 2 software providers"
     val pricing = "Pricing:"
     val freeTrial = "Free trial"
     val freeVersion = "Free version"

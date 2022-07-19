@@ -14,6 +14,10 @@
  * limitations under the License.
  *@
 
+@import uk.gov.hmrc.govukfrontend.views.Aliases.Text
+@import uk.gov.hmrc.govukfrontend.views.html.components.GovukErrorSummary
+@import uk.gov.hmrc.govukfrontend.views.html.components.implicits._
+@import uk.gov.hmrc.govukfrontend.views.viewmodels.errorsummary.ErrorSummary
 @import uk.gov.hmrc.hmrcfrontend.views.config._
 @import uk.gov.hmrc.hmrcfrontend.views.html.helpers.{HmrcLayout, HmrcReportTechnicalIssueHelper}
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
@@ -23,26 +27,43 @@
 @this(
         appConfig: AppConfig,
         hmrcLayout: HmrcLayout,
+        govukErrorSummary: GovukErrorSummary,
         hmrcReportTechnicalIssueHelper: HmrcReportTechnicalIssueHelper,
         fullWidthMainContentLayout: FullWidthMainContentLayout,
         standardAlphaBanner: StandardAlphaBanner
 )
-@(title: String, breadcrumbs: Option[Html] = None)(contentBlock: Html)(implicit request: Request[_], messages: Messages)
+@(title: String, breadcrumbs: Option[Html] = None, optForm: Option[Form[_]] = None, scripts: Option[Html] = None)(contentBlock: Html)(implicit request: Request[_], messages: Messages)
+
+@prefixedTitle = @{
+  optForm match {
+    case Some(validationForm) if validationForm.hasErrors => Some(messages("base.title.error", title))
+    case _ => Some(messages("base.title", title))
+  }
+}
 
 @additionalHeadBlock = {
   <link href='@controllers.routes.Assets.versioned("stylesheets/application.css")' media="all" rel="stylesheet" type="text/css"/>
 }
 
 @hmrcLayout(
-    pageTitle = Some(messages("base.title", title)),
+    pageTitle = prefixedTitle,
     serviceName = Some(messages("base.service-name")),
     additionalHeadBlock = Some(additionalHeadBlock),
     beforeContentBlock = breadcrumbs,
     nonce = CSPNonce.get,
     isWelshTranslationAvailable = appConfig.welshLanguageSupportEnabled,
     mainContentLayout = Some(fullWidthMainContentLayout(_)),
-    phaseBanner = Some(standardAlphaBanner("/"))
+    phaseBanner = Some(standardAlphaBanner("/")),
+    additionalScriptsBlock = scripts
 ){
+  @optForm.map { form =>
+    @if(form.hasErrors) {
+      @govukErrorSummary(ErrorSummary(
+        errorList = form.errors.asTextErrorLinks,
+        title = Text(messages("base.error-heading"))
+      ))
+    }
+  }
   @contentBlock
   @hmrcReportTechnicalIssueHelper()
 }

@@ -17,24 +17,25 @@
 @import uk.gov.hmrc.govukfrontend.views.html.components._
 @import uk.gov.hmrc.govukfrontend.views.viewmodels.breadcrumbs.{Breadcrumbs, BreadcrumbsItem}
 @import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
-@import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcNewTabLinkHelper
-@import uk.gov.hmrc.hmrcfrontend.views.viewmodels.newtablinkhelper.NewTabLinkHelper
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.SoftwareChoicesService
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SoftwareVendorsTemplate
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTemplate
+@import views.html.helper.CSPNonce
 
 @this(
   mainTemplate: MainTemplate,
+  softwareVendorsTemplate: SoftwareVendorsTemplate,
   breadcrumbs: GovukBreadcrumbs,
-  hmrcNewTabLinkHelper: HmrcNewTabLinkHelper,
-  govukSummaryList : GovukSummaryList,
   form: FormWithCSRF
 )(implicit appConfig: AppConfig)
-
 @(softwareVendors: SoftwareVendors, searchForm: Form[FiltersFormModel], postAction: Call)(implicit request: Request[_], messages: Messages)
+
+@js = {
+  <script @{CSPNonce.attr} src="@routes.Assets.versioned("lib/jquery/jquery.min.js")" type="text/javascript"></script>
+  <script @{CSPNonce.attr} src='@routes.Assets.versioned("javascript/softwareSearch.js")' type="text/javascript"></script>
+}
 
 @pageBreadcrumbs = {
   @breadcrumbs(Breadcrumbs(
@@ -51,121 +52,7 @@
   ))
 }
 
-@customSummaryListRow(key: String, filtersAvailable: Seq[VendorFilter]) = @{
-
-  val value: String = filtersAvailable
-    .map(filter => messages(s"search-software.vendor-detail.$key.${filter.key}"))
-    .mkString("/")
-
-  if(value.nonEmpty) {
-    Some(SummaryListRow(
-      key = Key(
-        content = Text(messages(s"search-software.vendor-detail.$key")),
-        classes = "govuk-body-s govuk-summary-list--key-override"
-      ),
-      value = Value(
-        content = Text(value),
-        classes = "govuk-body-s govuk-summary-list--value-override"
-      )
-    ))
-  } else {
-    None
-  }
-}
-
-@softwareVendorPricing(filters: Seq[VendorFilter]) = @{
-
-  val key: String = {messages("search-software.vendor-detail.pricing")}
-  val value = Seq(
-    if(filters.contains(FreeTrial)) messages("search-software.vendor-detail.pricing.free-trial") else messages("search-software.vendor-detail.pricing.no-free-trial"),
-    if(filters.contains(FreeVersion)) messages("search-software.vendor-detail.pricing.free-version") else messages("search-software.vendor-detail.pricing.no-free-version")
-  ).mkString("/")
-
-  Some(SummaryListRow(
-    key = Key(
-      content = Text(key),
-      classes = "govuk-body-s govuk-summary-list--key-override"
-    ),
-    value = Value(
-      content = Text(value),
-      classes = "govuk-body-s govuk-summary-list--value-override"
-    )
-  ))
-
-}
-
-@softwareVendorBusinessType(filters: Seq[VendorFilter]) = @{
-
-  customSummaryListRow(
-    key = "business-type",
-    filtersAvailable = filters.filter(SoftwareChoicesService.businessTypeFilters)
-  )
-
-}
-
-@softwareVendorCompatibleWith(filters: Seq[VendorFilter]) = @{
-
-  customSummaryListRow(
-    key = "compatible-with",
-    filtersAvailable = filters.filter(SoftwareChoicesService.compatibleWithFilters)
-  )
-
-}
-
-@softwareVendorMobileApp(filters: Seq[VendorFilter]) = @{
-
-  customSummaryListRow(
-    key = "mobile-app",
-    filtersAvailable = filters.filter(SoftwareChoicesService.mobileAppFilters)
-  )
-
-}
-
-@softwareVendorSoftwareType(filters: Seq[VendorFilter]) = @{
-
-  customSummaryListRow(
-    key = "software-type",
-    filtersAvailable = filters.filter(SoftwareChoicesService.softwareTypeFilters)
-  )
-
-}
-
-@softwareVendorAccessibility(filters: Seq[VendorFilter]) = @{
-
-  customSummaryListRow(
-    key = "accessibility",
-    filtersAvailable = filters.filter(SoftwareChoicesService.accessibilityFilters)
-  )
-
-}
-
-@softwareVendorDetail(filters: Seq[VendorFilter]) = @{
-  Seq(
-    softwareVendorPricing(filters),
-    softwareVendorBusinessType(filters),
-    softwareVendorCompatibleWith(filters),
-    softwareVendorMobileApp(filters),
-    softwareVendorSoftwareType(filters),
-    softwareVendorAccessibility(filters)
-  ).flatten
-}
-
-@softwareVendorListing(vendor: SoftwareVendorModel, index: Int) = {
-  <div id="software-vendor-@index">
-    <h3 class="govuk-heading-m software-vendor-list-heading-override">
-      @hmrcNewTabLinkHelper(NewTabLinkHelper(
-        text = vendor.name,
-        href = Some(vendor.url)
-      ))
-    </h3>
-    @govukSummaryList(SummaryList(
-      rows = softwareVendorDetail(vendor.filters),
-      classes = "govuk-summary-list--no-border"
-    ))
-  </div>
-}
-
-@mainTemplate(title = messages("search-software.title"), breadcrumbs = Some(pageBreadcrumbs)) {
+@mainTemplate(title = messages("search-software.title"), breadcrumbs = Some(pageBreadcrumbs), optForm = Some(searchForm), scripts = Some(js)) {
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
@@ -184,50 +71,50 @@
     </div>
   </div>
 
-  <div id="software-section" class="govuk-grid-row">
-
-    <div class="govuk-grid-column-one-third">
-      <div class="filters-section">
-        <h2 class="govuk-heading-l">@messages("search-software.filters.heading")</h2>
-        @*
-        * Each of the following should be replaced with a govuk checkboxes helper
-        * styles are applied to each child of .filters-section
-        * so if checkbox helper doesn't wrap it's contents, it will need to also be wrapped in a div.
-        *@
-        <h3 class="govuk-heading-s">@messages("search-software.filters.pricing")</h3>
-        <h3 class="govuk-heading-s">@messages("search-software.filters.business-type")</h3>
-        <h3 class="govuk-heading-s">@messages("search-software.filters.compatible-with")</h3>
-        <h3 class="govuk-heading-s">@messages("search-software.filters.mobile-app")</h3>
-        <h3 class="govuk-heading-s">@messages("search-software.filters.software-type")</h3>
-        <h3 class="govuk-heading-s">@messages("search-software.filters.software-compatibility")</h3>
-        <h3 class="govuk-heading-s">@messages("search-software.filters.accessibility-needs")</h3>
+  <div id="software-section" class="govuk-grid-row govuk-!-margin-bottom-8">
+    @form(action = postAction) {
+      <div class="govuk-grid-column-one-third govuk-!-margin-bottom-8">
+        <div class="filters-section">
+          <h2 class="govuk-heading-l">@messages("search-software.filters.heading")</h2>
+          @*
+          * Each of the following should be replaced with a govuk checkboxes helper
+          * styles are applied to each child of .filters-section
+          * so if checkbox helper doesn't wrap it's contents, it will need to also be wrapped in a div.
+          *@
+          <h3 class="govuk-heading-s">@messages("search-software.filters.pricing")</h3>
+          <h3 class="govuk-heading-s">@messages("search-software.filters.business-type")</h3>
+          <h3 class="govuk-heading-s">@messages("search-software.filters.compatible-with")</h3>
+          <h3 class="govuk-heading-s">@messages("search-software.filters.mobile-app")</h3>
+          <h3 class="govuk-heading-s">@messages("search-software.filters.software-type")</h3>
+          <h3 class="govuk-heading-s">@messages("search-software.filters.software-compatibility")</h3>
+          <h3 class="govuk-heading-s">@messages("search-software.filters.accessibility-needs")</h3>
+        </div>
       </div>
-    </div>
 
-    <div class="govuk-grid-column-two-thirds">
-      @form(action = postAction) {
-        <h1 class="govuk-heading-l">@messages("search-software.search-form.heading")</h1>
+      <div class="govuk-grid-column-two-thirds">
+        <h2 class="govuk-heading-l">
+          <label for="searchTerm">
+            @messages("search-software.search-form.heading")
+          </label>
+        </h2>
 
-        <div class="govuk-form-group search-button @{if(searchForm(FiltersForm.searchTerm).hasErrors){"govuk-form-group--error"}}">
+        <div class="govuk-form-group search-input-group @{if(searchForm(FiltersForm.searchTerm).hasErrors){"govuk-form-group--error"}}">
           @searchForm(FiltersForm.searchTerm).errors.map { error => <span class="govuk-error-message">@messages(error.message, error.args: _*)</span> }
           <input class="govuk-input" id="searchTerm" name="searchTerm" type="text" value="@searchForm(FiltersForm.searchTerm).value">
-          <button class="govuk-button"  data-module="govuk-button">
+          <button class="govuk-button" id="searchButton" data-module="govuk-button">
             <span class="search-icon" aria-hidden="true"></span>
             <span class="govuk-visually-hidden">@messages("search-software.search-form.button")</span>
           </button>
         </div>
-      }
 
-      <p class="govuk-body govuk-!-font-weight-bold">
-        @messages("search-software.vendor-count", softwareVendors.vendors.length)
-      </p>
-
-      @softwareVendors.vendors.zipWithIndex.map { case (vendor, index) =>
-        @softwareVendorListing(vendor, index)
-      }
-    </div>
-
+        <div id="software-vendors">
+          <div class="loading-status" aria-hidden="true"></div>
+          <div id="software-vendor-list">
+            @softwareVendorsTemplate(softwareVendors)
+          </div>
+        </div>
+      </div>
+    }
   </div>
-
 
 }

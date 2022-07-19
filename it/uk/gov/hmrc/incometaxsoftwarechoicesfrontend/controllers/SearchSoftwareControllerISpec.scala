@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
-import play.api.http.Status.OK
+import play.api.http.Status.{BAD_REQUEST, OK}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.ComponentSpecBase
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FiltersFormModel
 
@@ -44,6 +44,41 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase {
       response should have(
         httpStatus(OK),
         pageTitle(s"""${messages("search-software.title")} - Find software for Making Tax Digital for Income Tax - GOV.UK""")
+      )
+    }
+
+    "respond with 400 status" in {
+      When("GET / is called")
+      val response = SoftwareChoicesFrontend.submitSearch(FiltersFormModel(Some("test" * 65)))
+
+      Then("Should return BAD_REQUEST")
+      response should have(
+        httpStatus(BAD_REQUEST),
+        pageTitle(s"""Error: ${messages("search-software.title")} - Find software for Making Tax Digital for Income Tax - GOV.UK""")
+      )
+    }
+  }
+
+  "POST /making-tax-digital-income-tax-software/ajax/" should {
+    "respond with 200 status" in {
+      When("GET /ajax/ is called")
+      val response = SoftwareChoicesFrontend.submitAjaxSearch(FiltersFormModel(Some("")))
+
+      Then("Should return OK with the software search page")
+      response should have(
+        httpStatus(OK),
+        pageTitle("")
+      )
+    }
+
+    "respond with 400 status" in {
+      When("GET /ajax/ is called")
+      val response = SoftwareChoicesFrontend.submitAjaxSearch(FiltersFormModel(Some("test" * 65)))
+
+      Then("Should return BAD_REQUEST")
+      response should have(
+        httpStatus(BAD_REQUEST),
+        pageTitle(s"""Error: ${messages("search-software.title")} - Find software for Making Tax Digital for Income Tax - GOV.UK""")
       )
     }
   }

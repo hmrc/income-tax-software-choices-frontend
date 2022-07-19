@@ -55,6 +55,10 @@ trait ComponentSpecBase extends AnyWordSpec
       FiltersForm.form.fill(search).data.map { case (k, v) => (k, Seq(v)) }
     )
 
+    def submitAjaxSearch(search: FiltersFormModel): WSResponse = post("/ajax")(
+      FiltersForm.form.fill(search).data.map { case (k, v) => (k, Seq(v)) }
+    )
+
     def healthcheck(): WSResponse =
       wsClient
         .url(s"$baseUrl/ping/ping")
