@@ -25,6 +25,8 @@ sealed trait VendorFilter {
 
 object VendorFilter {
 
+  implicit def magicToString(vendorFilter: VendorFilter): String = vendorFilter.toString
+
   case object FreeVersion extends VendorFilter {
     override val key: String = "free-version"
   }

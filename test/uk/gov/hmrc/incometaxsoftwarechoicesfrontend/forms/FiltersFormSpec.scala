@@ -19,7 +19,9 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms
 import org.scalatest.matchers.should.Matchers._
 import org.scalatestplus.play.PlaySpec
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FiltersFormModel
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FiltersFormModel, VendorFilter}
+
+import java.util.NoSuchElementException
 
 class FiltersFormSpec extends PlaySpec with GuiceOneServerPerSuite {
   "FiltersForm" should {
@@ -49,6 +51,26 @@ class FiltersFormSpec extends PlaySpec with GuiceOneServerPerSuite {
       "the search term is too long" in {
         val invalidInput = Map(FiltersForm.searchTerm -> "text" * 65)
         FiltersForm.form.bind(invalidInput).value shouldBe None
+      }
+    }
+    "validate a filter" when {
+      "the filter name is known" in {
+        val validInput = Map("filters[0]" -> VendorFilter.Individual.key)
+        FiltersForm.form.bind(validInput).value shouldBe Some(FiltersFormModel(None, List(VendorFilter.Individual)))
+      }
+      "several filters, all of which are  known" in {
+        val validInput = Map(
+          "filters[0]" -> VendorFilter.Individual.key,
+          "filters[1]" -> VendorFilter.Agent.key,
+          "filters[2]" -> VendorFilter.FreeTrial.key,
+          "filters[3]" -> VendorFilter.FreeVersion.key
+        )
+        FiltersForm.form.bind(validInput).value shouldBe Some(FiltersFormModel(None, List(VendorFilter.Individual, VendorFilter.Agent, VendorFilter.FreeTrial, VendorFilter.FreeVersion)))
+      }
+      "the filter name is unknown" in {
+        val invalidInput = Map("filters[0]" -> "rubbish")
+        val e = intercept[java.lang.Exception](FiltersForm.form.bind(invalidInput).value)
+        e shouldBe a[NoSuchElementException]
       }
     }
   }

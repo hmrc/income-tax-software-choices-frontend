@@ -48,7 +48,7 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec {
   "search" should {
     "return OK status with the search software page" in withController { controller =>
       val result = controller.search(FakeRequest("POST", "/")
-        .withFormUrlEncodedBody(FiltersForm.searchTerm -> "Vendor", s"${FiltersForm.filters}[]" -> "free-version"))
+        .withFormUrlEncodedBody(FiltersForm.searchTerm -> "Vendor", s"${FiltersForm.filters}[0]" -> "free-version"))
 
       status(result) shouldBe Status.OK
       contentType(result) shouldBe Some(HTML)
@@ -65,12 +65,53 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec {
   }
 
   "ajaxSearch" should {
-    "return OK status with the search software page" in withController { controller =>
+    "return OK status with with the correct count returned for an empty filter" in withController { controller =>
       val result = controller.ajaxSearch(FakeRequest("POST", "/")
-        .withFormUrlEncodedBody(FiltersForm.searchTerm -> "Vendor", s"${FiltersForm.filters}[]" -> "free-version"))
+        .withFormUrlEncodedBody())
 
       status(result) shouldBe Status.OK
       contentType(result) shouldBe Some(HTML)
+      contentAsString(result) should include("Currently there are 3 software providers")
+      charset(result) shouldBe Some(Codec.utf_8.charset)
+    }
+
+    "return OK status with the correct count returned for a vendor name search" in withController { controller =>
+      val result = controller.ajaxSearch(FakeRequest("POST", "/")
+        .withFormUrlEncodedBody(FiltersForm.searchTerm -> "test software vendor three"))
+
+      status(result) shouldBe Status.OK
+      contentType(result) shouldBe Some(HTML)
+      contentAsString(result) should include("Currently there are 1 software providers")
+      charset(result) shouldBe Some(Codec.utf_8.charset)
+    }
+
+    "return OK status with the correct count returned for a vendor name search (case insensitive)" in withController { controller =>
+      val result = controller.ajaxSearch(FakeRequest("POST", "/")
+        .withFormUrlEncodedBody(FiltersForm.searchTerm -> "TEST SOFTWARE VENDOR THREE"))
+
+      status(result) shouldBe Status.OK
+      contentType(result) shouldBe Some(HTML)
+      contentAsString(result) should include("Currently there are 1 software providers")
+      charset(result) shouldBe Some(Codec.utf_8.charset)
+    }
+
+    "return OK status with the correct count returned for one filter" in withController { controller =>
+      val result = controller.ajaxSearch(FakeRequest("POST", "/")
+        .withFormUrlEncodedBody(FiltersForm.searchTerm -> "Vendor", s"${FiltersForm.filters}[0]" -> "free-version"))
+
+      status(result) shouldBe Status.OK
+      contentType(result) shouldBe Some(HTML)
+      contentAsString(result) should include("Currently there are 2 software providers")
+      charset(result) shouldBe Some(Codec.utf_8.charset)
+    }
+
+    "return OK status with the correct count returned for two filters" in withController { controller =>
+      val result = controller.ajaxSearch(FakeRequest("POST", "/")
+        .withFormUrlEncodedBody(FiltersForm.searchTerm -> "Vendor", s"${FiltersForm.filters}[0]" -> "free-version", s"${FiltersForm.filters}[1]" -> "free-trial"))
+
+      status(result) shouldBe Status.OK
+      contentType(result) shouldBe Some(HTML)
+      contentAsString(result) should include("Currently there are 1 software providers")
       charset(result) shouldBe Some(Codec.utf_8.charset)
     }
 
