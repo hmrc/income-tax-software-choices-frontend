@@ -14,11 +14,13 @@
  * limitations under the License.
  *@
 
+@import uk.gov.hmrc.govukfrontend.views.Implicits.RichCheckboxes
 @import uk.gov.hmrc.govukfrontend.views.html.components._
 @import uk.gov.hmrc.govukfrontend.views.viewmodels.breadcrumbs.{Breadcrumbs, BreadcrumbsItem}
 @import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SoftwareVendorsTemplate
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTemplate
@@ -28,7 +30,9 @@
   mainTemplate: MainTemplate,
   softwareVendorsTemplate: SoftwareVendorsTemplate,
   breadcrumbs: GovukBreadcrumbs,
-  form: FormWithCSRF
+  form: FormWithCSRF,
+  govukCheckboxes: GovukCheckboxes,
+  govukButton: GovukButton
 )(implicit appConfig: AppConfig)
 @(softwareVendors: SoftwareVendors, searchForm: Form[FiltersFormModel], postAction: Call)(implicit request: Request[_], messages: Messages)
 
@@ -50,6 +54,22 @@
       )
     )
   ))
+}
+
+@checkboxGroup(fieldsetLegend: String, checkboxes: Seq[CheckboxItem]) = {
+  @govukCheckboxes(
+    Checkboxes(
+      classes = "govuk-checkboxes--small",
+      fieldset = Some(Fieldset(
+        legend = Some(Legend(
+          content = Text(fieldsetLegend),
+          isPageHeading = false,
+          classes = "govuk-fieldset__legend--s"
+        ))
+      )),
+      items = checkboxes
+    ).withFormField(searchForm(FiltersForm.filters))
+  )
 }
 
 @mainTemplate(title = messages("search-software.title"), breadcrumbs = Some(pageBreadcrumbs), optForm = Some(searchForm), scripts = Some(js)) {
@@ -75,19 +95,43 @@
     @form(action = postAction) {
       <div class="govuk-grid-column-one-third govuk-!-margin-bottom-8">
         <div class="filters-section">
-          <h2 class="govuk-heading-l">@messages("search-software.filters.heading")</h2>
+          <h2 class="govuk-heading-m">@messages("search-software.filters.heading")</h2>
           @*
           * Each of the following should be replaced with a govuk checkboxes helper
           * styles are applied to each child of .filters-section
           * so if checkbox helper doesn't wrap it's contents, it will need to also be wrapped in a div.
           *@
-          <h3 class="govuk-heading-s">@messages("search-software.filters.pricing")</h3>
+          @checkboxGroup(
+            fieldsetLegend = messages("search-software.filters.pricing"),
+            checkboxes = Seq(
+              CheckboxItem(
+                id = Some(s"$FreeTrial-filter"),
+                content = Text(messages("search-software.vendor-detail.pricing.free-trial")),
+                value = FreeTrial.key
+              ),
+              CheckboxItem(
+                id = Some(s"$FreeVersion-filter"),
+                content = Text(messages("search-software.vendor-detail.pricing.free-version")),
+                value = FreeVersion.key
+              )
+            )
+          )
+
           <h3 class="govuk-heading-s">@messages("search-software.filters.business-type")</h3>
           <h3 class="govuk-heading-s">@messages("search-software.filters.compatible-with")</h3>
           <h3 class="govuk-heading-s">@messages("search-software.filters.mobile-app")</h3>
           <h3 class="govuk-heading-s">@messages("search-software.filters.software-type")</h3>
           <h3 class="govuk-heading-s">@messages("search-software.filters.software-compatibility")</h3>
           <h3 class="govuk-heading-s">@messages("search-software.filters.accessibility-needs")</h3>
+
+          <div class="govuk-button-group govuk-!-padding-top-4">
+            @govukButton(Button(
+              classes = "apply-filters-button",
+              content = Text(messages("search-software.filters.apply-filters")),
+            ))
+
+            <a class="govuk-link clear-filters-button" href=@{postAction.url}>@messages("search-software.filters.clear-filters")</a>
+          </div>
         </div>
       </div>
 

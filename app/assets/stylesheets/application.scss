@@ -31,15 +31,11 @@
 }
 
 .filters-section > * {
-    border-bottom: 1px solid govuk-colour("mid-grey");
+    border-top: 1px solid govuk-colour("mid-grey");
 }
 
-.filters-section > *:first-child {
-    border-bottom: 0;
-}
-
-.filters-section > *:last-child {
-    border-bottom: 0;
+.filters-section > *:first-child, .filters-section > *:nth-child(2) {
+    border-top: 0;
 }
 
 .search-input-group {
@@ -97,4 +93,8 @@ body:not(.js-enabled) {
   &.loading .loading-status {
     display: inline-block;
   }
+}
+
+.govuk-fieldset > .govuk-form-group {
+  margin: 0;
 }

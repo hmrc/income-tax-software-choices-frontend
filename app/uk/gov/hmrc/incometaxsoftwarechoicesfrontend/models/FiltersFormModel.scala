@@ -16,10 +16,7 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models
 
-import play.api.libs.json.{Json, OFormat}
-
-case class FiltersFormModel(searchTerm: Option[String] = None)
-
-object FiltersFormModel {
-  implicit val format: OFormat[FiltersFormModel] = Json.format[FiltersFormModel]
-}
+case class FiltersFormModel(
+                             searchTerm: Option[String] = None,
+                             filters: Seq[VendorFilter] = Seq.empty
+                           )

@@ -44,11 +44,12 @@ class SoftwareChoicesService @Inject()(environment: Environment) extends Logging
 
   val filters: Seq[VendorFilter] = softwareVendors.vendors.head.filters
 
-  def filterVendors(maybeSearchTerm: Option[String]): SoftwareVendors = softwareVendors.copy(
+  def filterVendors(maybeSearchTerm: Option[String], filters: Seq[VendorFilter]): SoftwareVendors = softwareVendors.copy(
     vendors = softwareVendors.vendors.filter(vendor => {
-      maybeSearchTerm.forall(
-        searchTerm => vendor.name.toLowerCase.contains(searchTerm.toLowerCase())
-      )
+      filters.forall(vendor.filters.contains(_)) &&
+        maybeSearchTerm.forall(
+          searchTerm => vendor.name.toLowerCase.contains(searchTerm.toLowerCase())
+        )
     })
   )
 }
