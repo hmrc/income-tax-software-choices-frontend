@@ -42,12 +42,18 @@
     border-bottom: 0;
 }
 
-.search-button {
+.search-input-group {
   position: relative;
+
+  #searchTerm {
+    width: calc(100% - 58px);
+  }
 
   button.govuk-button{
     position: absolute;
     padding: 0;
+    display: none;
+    width: auto;
 
     .search-icon {
       display: inline-block;
@@ -61,5 +67,34 @@
     &:focus .search-icon {
       background-image: url("../images/search-button-dark.png");
     }
+  }
+}
+
+body:not(.js-enabled) {
+  #searchButton {
+    display: inline-block;
+  }
+}
+
+.govuk-form-group--error {
+  #searchButton:active {
+    top: 42px;
+  }
+}
+
+#software-vendors {
+  .loading-status {
+    background-image: url(../images/loading.gif);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: 50%;
+    height: 1.47368em;
+    width: 1.36842em;
+    vertical-align: middle;
+    display: none;
+  }
+
+  &.loading .loading-status {
+    display: inline-block;
   }
 }

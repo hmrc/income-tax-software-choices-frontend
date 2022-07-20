@@ -25,7 +25,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.SoftwareChoicesService
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SearchSoftwarePage
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.{SearchSoftwarePage, SoftwareVendorsTemplate}
 
 import java.io.FileInputStream
 
@@ -33,6 +33,7 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec {
 
   private val mcc = app.injector.instanceOf[MessagesControllerComponents]
   private val searchSoftwarePage = app.injector.instanceOf[SearchSoftwarePage]
+  private val searchVendorsTemplate = app.injector.instanceOf[SoftwareVendorsTemplate]
 
   "Show" should {
     "return OK status with the search software page" in withController { controller =>
@@ -62,6 +63,24 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec {
     }
   }
 
+  "ajaxSearch" should {
+    "return OK status with the search software page" in withController { controller =>
+      val result = controller.ajaxSearch(FakeRequest("POST", "/").withFormUrlEncodedBody((FiltersForm.searchTerm, "Vendor")))
+
+      status(result) shouldBe Status.OK
+      contentType(result) shouldBe Some(HTML)
+      charset(result) shouldBe Some(Codec.utf_8.charset)
+    }
+
+    "return BAD_REQUEST" in withController { controller =>
+      val result = controller.ajaxSearch(FakeRequest("POST", "/").withFormUrlEncodedBody((FiltersForm.searchTerm, "test" * 65)))
+
+      status(result) shouldBe Status.BAD_REQUEST
+      contentType(result) shouldBe Some(HTML)
+      charset(result) shouldBe Some(Codec.utf_8.charset)
+    }
+  }
+
   private def withController(testCode: SearchSoftwareController => Any): Unit = {
     val mockEnvironment: Environment = mock[Environment]
 
@@ -73,6 +92,7 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec {
     val controller = new SearchSoftwareController(
       mcc,
       searchSoftwarePage,
+      searchVendorsTemplate,
       softwareChoicesService
     )
 
