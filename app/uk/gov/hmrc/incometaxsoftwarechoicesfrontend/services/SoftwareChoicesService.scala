@@ -20,7 +20,7 @@ import play.api.libs.json._
 import play.api.{Environment, Logging}
 import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareVendors, VendorFilter}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FiltersFormModel, SoftwareVendors, VendorFilter}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.SoftwareChoicesService.softwareVendorsFileName
 
 import javax.inject.{Inject, Singleton}
@@ -44,13 +44,28 @@ class SoftwareChoicesService @Inject()(environment: Environment) extends Logging
 
   val filters: Seq[VendorFilter] = softwareVendors.vendors.head.filters
 
-  def filterVendors(maybeSearchTerm: Option[String]): SoftwareVendors = softwareVendors.copy(
-    vendors = softwareVendors.vendors.filter(vendor => {
-      maybeSearchTerm.fold(true)(
-        searchTerm => vendor.name.toLowerCase.contains(searchTerm.toLowerCase())
-      )
-    })
-  )
+  def filter(filtersFormModel: FiltersFormModel): SoftwareVendors = filterAll(filtersFormModel)(softwareVendors)
+
+  def filterAll(filtersFormModel: FiltersFormModel): SoftwareVendors => SoftwareVendors =
+    filterVendors(filtersFormModel.searchTerm) _ andThen
+      filterIndividual(filtersFormModel.individual) andThen
+      filterAgent(filtersFormModel.agent)
+
+  private[services] def filterVendors(maybeSearchTerm: Option[String])(vendors: SoftwareVendors): SoftwareVendors = maybeSearchTerm match {
+    case Some(searchTerm) if searchTerm.nonEmpty =>
+      vendors.copy(vendors = vendors.vendors.filter(_.name.toLowerCase.contains(searchTerm.toLowerCase())))
+    case None => vendors
+  }
+
+  private def filterIndividual(maybeIndividual: Option[String])(vendors: SoftwareVendors): SoftwareVendors = maybeIndividual match {
+    case None => vendors
+    case _ => vendors.copy(vendors = vendors.vendors.filter(_.filters.contains(Individual)))
+  }
+
+  private def filterAgent(maybeAgent: Option[String])(vendors: SoftwareVendors): SoftwareVendors = maybeAgent match {
+    case None => vendors
+    case _ => vendors.copy(vendors = vendors.vendors.filter(_.filters.contains(Agent)))
+  }
 }
 
 object SoftwareChoicesService {

@@ -62,14 +62,14 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
         when(mockEnvironment.resourceAsStream(eqTo(SoftwareChoicesService.softwareVendorsFileName)))
           .thenReturn(Some(new FileInputStream("test/resources/test-valid-software-vendors.json")))
 
-        service.filterVendors(Some("two")) mustBe expectedFilteredSoftwareVendors
+        service.filterVendors(Some("two"))(service.softwareVendors) mustBe expectedFilteredSoftwareVendors
       }
 
       "not filter when no search term has been provided" in new Setup {
         when(mockEnvironment.resourceAsStream(eqTo(SoftwareChoicesService.softwareVendorsFileName)))
           .thenReturn(Some(new FileInputStream("test/resources/test-valid-software-vendors.json")))
 
-        service.filterVendors(None) mustBe expectedSoftwareVendors
+        service.filterVendors(None)(service.softwareVendors) mustBe expectedSoftwareVendors
       }
     }
     "the software vendor config file does not exist" in new Setup {

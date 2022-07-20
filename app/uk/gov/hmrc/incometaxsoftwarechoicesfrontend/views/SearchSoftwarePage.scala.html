@@ -19,6 +19,8 @@
 @import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FilterFields
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SoftwareVendorsTemplate
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTemplate
@@ -83,6 +85,24 @@
           *@
           <h3 class="govuk-heading-s">@messages("search-software.filters.pricing")</h3>
           <h3 class="govuk-heading-s">@messages("search-software.filters.business-type")</h3>
+          <div>
+            <h3 class="govuk-heading-s">@messages("search-software.filters.business-type")</h3>
+            <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+              <div class="govuk-checkboxes__item">
+                <input class="govuk-checkboxes__input" id="individual" name="individual" type="checkbox" value="individual">
+                <label class="govuk-label govuk-checkboxes__label" for="individual">
+                  Individual
+                </label>
+              </div>
+              <div class="govuk-checkboxes__item">
+                <input class="govuk-checkboxes__input" id="agent" name="agent" type="checkbox" value="agent">
+                <label class="govuk-label govuk-checkboxes__label" for="individual">
+                  Agent
+                </label>
+              </div>
+            </div>
+          </div>
+
           <h3 class="govuk-heading-s">@messages("search-software.filters.compatible-with")</h3>
           <h3 class="govuk-heading-s">@messages("search-software.filters.mobile-app")</h3>
           <h3 class="govuk-heading-s">@messages("search-software.filters.software-type")</h3>
@@ -98,9 +118,9 @@
           </label>
         </h2>
 
-        <div class="govuk-form-group search-input-group @{if(searchForm(FiltersForm.searchTerm).hasErrors){"govuk-form-group--error"}}">
-          @searchForm(FiltersForm.searchTerm).errors.map { error => <span class="govuk-error-message">@messages(error.message, error.args: _*)</span> }
-          <input class="govuk-input" id="searchTerm" name="searchTerm" type="text" value="@searchForm(FiltersForm.searchTerm).value">
+        <div class="govuk-form-group search-input-group @{if(searchForm(FilterFields.searchTerm.toString).hasErrors){"govuk-form-group--error"}}">
+          @searchForm(FilterFields.searchTerm.toString).errors.map { error => <span class="govuk-error-message">@messages(error.message, error.args: _*)</span> }
+          <input class="govuk-input" id="searchTerm" name="searchTerm" type="text" value="@searchForm(FilterFields.searchTerm.toString).value">
           <button class="govuk-button" id="searchButton" data-module="govuk-button">
             <span class="search-icon" aria-hidden="true"></span>
             <span class="govuk-visually-hidden">@messages("search-software.search-form.button")</span>

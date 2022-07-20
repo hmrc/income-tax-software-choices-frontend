@@ -14,4 +14,4 @@ sm --start ITSA_SOFTWARE_CHOICES_ALL "$@"
 sleep 5
 sm --stop INCOME_TAX_SOFTWARE_CHOICES_FRONTEND
 sleep 5
-sbt "start 9591 -Dapplication.router=testOnlyDoNotUseInAppConf.Routes" 
+sbt "run 9591 -Dapplication.router=testOnlyDoNotUseInAppConf.Routes" 

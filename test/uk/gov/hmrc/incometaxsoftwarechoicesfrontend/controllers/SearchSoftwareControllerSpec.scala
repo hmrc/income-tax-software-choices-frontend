@@ -23,7 +23,7 @@ import play.api.http.Status
 import play.api.mvc.{Codec, MessagesControllerComponents}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FilterFields
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.SoftwareChoicesService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.{SearchSoftwarePage, SoftwareVendorsTemplate}
 
@@ -47,7 +47,7 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec {
 
   "search" should {
     "return OK status with the search software page" in withController { controller =>
-      val result = controller.search(FakeRequest("POST", "/").withFormUrlEncodedBody((FiltersForm.searchTerm, "Vendor")))
+      val result = controller.search(FakeRequest("POST", "/").withFormUrlEncodedBody((FilterFields.searchTerm.toString, "Vendor")))
 
       status(result) shouldBe Status.OK
       contentType(result) shouldBe Some(HTML)
@@ -55,7 +55,7 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec {
     }
 
     "return BAD_REQUEST" in withController { controller =>
-      val result = controller.search(FakeRequest("POST", "/").withFormUrlEncodedBody((FiltersForm.searchTerm, "test" * 65)))
+      val result = controller.search(FakeRequest("POST", "/").withFormUrlEncodedBody((FilterFields.searchTerm.toString, "test" * 65)))
 
       status(result) shouldBe Status.BAD_REQUEST
       contentType(result) shouldBe Some(HTML)
@@ -65,7 +65,7 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec {
 
   "ajaxSearch" should {
     "return OK status with the search software page" in withController { controller =>
-      val result = controller.ajaxSearch(FakeRequest("POST", "/").withFormUrlEncodedBody((FiltersForm.searchTerm, "Vendor")))
+      val result = controller.ajaxSearch(FakeRequest("POST", "/").withFormUrlEncodedBody((FilterFields.searchTerm.toString, "Vendor")))
 
       status(result) shouldBe Status.OK
       contentType(result) shouldBe Some(HTML)
@@ -73,7 +73,7 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec {
     }
 
     "return BAD_REQUEST" in withController { controller =>
-      val result = controller.ajaxSearch(FakeRequest("POST", "/").withFormUrlEncodedBody((FiltersForm.searchTerm, "test" * 65)))
+      val result = controller.ajaxSearch(FakeRequest("POST", "/").withFormUrlEncodedBody((FilterFields.searchTerm.toString, "test" * 65)))
 
       status(result) shouldBe Status.BAD_REQUEST
       contentType(result) shouldBe Some(HTML)

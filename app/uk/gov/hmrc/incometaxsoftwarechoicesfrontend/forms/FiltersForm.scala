@@ -22,8 +22,15 @@ import play.api.data.{Form, Mapping}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.utils.StringConstraints
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FiltersFormModel
 
+object FilterFields extends Enumeration {
+  type field = Value
+
+  val searchTerm, individual, agent = Value
+}
+
+
 object FiltersForm {
-  val searchTerm = "searchTerm"
+
   private val searchTermMaxLength = 256
   private val trimmedOptionalText: Mapping[Option[String]] =
     optional(text)
@@ -36,7 +43,9 @@ object FiltersForm {
 
   val form: Form[FiltersFormModel] = Form(
     mapping(
-      searchTerm -> trimmedOptionalText.verifying(nameMaxLength)
+      FilterFields.searchTerm.toString -> trimmedOptionalText.verifying(nameMaxLength),
+      FilterFields.individual.toString -> trimmedOptionalText.verifying(nameMaxLength),
+      FilterFields.agent.toString -> trimmedOptionalText.verifying(nameMaxLength)
     )(FiltersFormModel.apply)(FiltersFormModel.unapply)
   )
 }

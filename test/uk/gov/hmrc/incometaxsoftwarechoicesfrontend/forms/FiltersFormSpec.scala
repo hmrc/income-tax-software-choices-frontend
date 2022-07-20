@@ -25,17 +25,17 @@ class FiltersFormSpec extends PlaySpec with GuiceOneServerPerSuite {
   "FiltersForm" should {
     "validate a search term" when {
       "the search term is not empty" in {
-        val validInput = Map(FiltersForm.searchTerm -> "Software search")
+        val validInput = Map(FilterFields.searchTerm.toString -> "Software search")
         FiltersForm.form.bind(validInput).value shouldBe Some(FiltersFormModel(Some("Software search")))
       }
 
       "the search term is not empty and contains spaces to be trimmed" in {
-        val validInput = Map(FiltersForm.searchTerm -> " Software search  ")
+        val validInput = Map(FilterFields.searchTerm.toString -> " Software search  ")
         FiltersForm.form.bind(validInput).value shouldBe Some(FiltersFormModel(Some("Software search")))
       }
 
       "the search term contains only a space" in {
-        val validInput = Map(FiltersForm.searchTerm -> " ")
+        val validInput = Map(FilterFields.searchTerm.toString -> " ")
         FiltersForm.form.bind(validInput).value shouldBe Some(FiltersFormModel(None))
       }
 
@@ -47,7 +47,7 @@ class FiltersFormSpec extends PlaySpec with GuiceOneServerPerSuite {
 
     "invalidate a search term" when {
       "the search term is too long" in {
-        val invalidInput = Map(FiltersForm.searchTerm -> "text" * 65)
+        val invalidInput = Map(FilterFields.searchTerm.toString -> "text" * 65)
         FiltersForm.form.bind(invalidInput).value shouldBe None
       }
     }

@@ -2,6 +2,8 @@
 
 $(document).ready(function() {
   $('#searchTerm').on("input", searchEventHandler(500));
+  $('#individual').on("input", searchEventHandler(500));
+  $('#agent').on("input", searchEventHandler(500));
 });
 
 function searchEventHandler(timeout) {

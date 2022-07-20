@@ -20,7 +20,7 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.{Document, Element}
 import play.api.data.FormError
 import play.api.mvc.Call
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.{FilterFields, FiltersForm}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FiltersFormModel, SoftwareVendorModel, SoftwareVendors, VendorFilter}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SearchSoftwarePage
 
@@ -28,7 +28,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
 
   private val searchSoftwarePage = app.injector.instanceOf[SearchSoftwarePage]
   private val lastUpdateTest = "01/07/2022"
-  private val testFormError: FormError = FormError(FiltersForm.searchTerm, "test error message")
+  private val testFormError: FormError = FormError(FilterFields.searchTerm.toString, "test error message")
   private val softwareVendors: SoftwareVendors = SoftwareVendors(
     lastUpdated = lastUpdateTest,
     vendors = Seq(
