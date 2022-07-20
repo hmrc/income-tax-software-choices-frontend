@@ -19,6 +19,7 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 import play.api.http.Status.{BAD_REQUEST, OK}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.ComponentSpecBase
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FiltersFormModel
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.FreeTrial
 
 class SearchSoftwareControllerISpec extends ComponentSpecBase {
 
@@ -38,7 +39,7 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase {
   "POST /making-tax-digital-income-tax-software" should {
     "respond with 200 status" in {
       When("GET / is called")
-      val response = SoftwareChoicesFrontend.submitSearch(FiltersFormModel(Some("")))
+      val response = SoftwareChoicesFrontend.submitSearch(FiltersFormModel(Some(""), Seq(FreeTrial)))
 
       Then("Should return OK with the software search page")
       response should have(
@@ -62,7 +63,7 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase {
   "POST /making-tax-digital-income-tax-software/ajax/" should {
     "respond with 200 status" in {
       When("GET /ajax/ is called")
-      val response = SoftwareChoicesFrontend.submitAjaxSearch(FiltersFormModel(Some("")))
+      val response = SoftwareChoicesFrontend.submitAjaxSearch(FiltersFormModel(Some(""), Seq(FreeTrial)))
 
       Then("Should return OK with the software search page")
       response should have(

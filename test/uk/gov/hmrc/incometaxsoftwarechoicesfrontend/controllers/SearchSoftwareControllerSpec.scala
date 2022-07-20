@@ -47,7 +47,8 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec {
 
   "search" should {
     "return OK status with the search software page" in withController { controller =>
-      val result = controller.search(FakeRequest("POST", "/").withFormUrlEncodedBody((FiltersForm.searchTerm, "Vendor")))
+      val result = controller.search(FakeRequest("POST", "/")
+        .withFormUrlEncodedBody(FiltersForm.searchTerm -> "Vendor", s"${FiltersForm.filters}[]" -> "free-version"))
 
       status(result) shouldBe Status.OK
       contentType(result) shouldBe Some(HTML)
@@ -65,7 +66,8 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec {
 
   "ajaxSearch" should {
     "return OK status with the search software page" in withController { controller =>
-      val result = controller.ajaxSearch(FakeRequest("POST", "/").withFormUrlEncodedBody((FiltersForm.searchTerm, "Vendor")))
+      val result = controller.ajaxSearch(FakeRequest("POST", "/")
+        .withFormUrlEncodedBody(FiltersForm.searchTerm -> "Vendor", s"${FiltersForm.filters}[]" -> "free-version"))
 
       status(result) shouldBe Status.OK
       contentType(result) shouldBe Some(HTML)

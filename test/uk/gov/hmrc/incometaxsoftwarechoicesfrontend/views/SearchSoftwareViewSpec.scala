@@ -21,6 +21,7 @@ import org.jsoup.nodes.{Document, Element}
 import play.api.data.FormError
 import play.api.mvc.Call
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{FreeTrial, FreeVersion}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FiltersFormModel, SoftwareVendorModel, SoftwareVendors, VendorFilter}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SearchSoftwarePage
 
@@ -114,32 +115,66 @@ class SearchSoftwareViewSpec extends ViewSpec {
         filterSection.selectHead("h2").text shouldBe SearchSoftwarePage.Filters.filterHeading
       }
 
-      "has a pricing section" in {
-        filterSection.selectNth("h3", 1).text shouldBe SearchSoftwarePage.Filters.pricing
+      "has a pricing section" that {
+        val checkboxGroup = filterSection.selectNth(".govuk-fieldset", 1)
+
+        "contains a label" in {
+          checkboxGroup.selectHead("legend").text shouldBe SearchSoftwarePage.Filters.pricing
+        }
+
+        "contains a Free trial checkbox" in {
+          val checkbox =
+            filterSection
+              .selectNth(".govuk-checkboxes__item", 1)
+              .selectHead(".govuk-checkboxes__input")
+
+          checkbox.attr("value") shouldBe FreeTrial.key
+          checkbox.attr("name") shouldBe s"${FiltersForm.filters}[]"
+        }
+
+        "contains a Free version checkbox" in {
+          val checkbox =
+            filterSection
+              .selectNth(".govuk-checkboxes__item", 2)
+              .selectHead(".govuk-checkboxes__input")
+
+          checkbox.attr("value") shouldBe FreeVersion.key
+          checkbox.attr("name") shouldBe s"${FiltersForm.filters}[]"
+        }
       }
 
       "has a business type section" in {
-        filterSection.selectNth("h3", 2).text shouldBe SearchSoftwarePage.Filters.businessType
+        filterSection.selectNth("h3", 1).text shouldBe SearchSoftwarePage.Filters.businessType
       }
 
       "has a compatible with section" in {
-        filterSection.selectNth("h3", 3).text shouldBe SearchSoftwarePage.Filters.compatibleWith
+        filterSection.selectNth("h3", 2).text shouldBe SearchSoftwarePage.Filters.compatibleWith
       }
 
       "has a mobile app section" in {
-        filterSection.selectNth("h3", 4).text shouldBe SearchSoftwarePage.Filters.mobileApp
+        filterSection.selectNth("h3", 3).text shouldBe SearchSoftwarePage.Filters.mobileApp
       }
 
       "has a software type section" in {
-        filterSection.selectNth("h3", 5).text shouldBe SearchSoftwarePage.Filters.softwareType
+        filterSection.selectNth("h3", 4).text shouldBe SearchSoftwarePage.Filters.softwareType
       }
 
       "has a software compatibility section" in {
-        filterSection.selectNth("h3", 6).text shouldBe SearchSoftwarePage.Filters.softwareCompatibility
+        filterSection.selectNth("h3", 5).text shouldBe SearchSoftwarePage.Filters.softwareCompatibility
       }
 
       "has an accessibility needs section" in {
-        filterSection.selectNth("h3", 7).text shouldBe SearchSoftwarePage.Filters.accessibilityNeeds
+        filterSection.selectNth("h3", 6).text shouldBe SearchSoftwarePage.Filters.accessibilityNeeds
+      }
+
+      "has a apply button section" that {
+        "contains an apply filters button" in {
+          filterSection.selectHead(".apply-filters-button").text shouldBe SearchSoftwarePage.Filters.applyFilters
+        }
+
+        "contains an clear filters button" in {
+          filterSection.selectHead(".clear-filters-button").text shouldBe SearchSoftwarePage.Filters.clearFilters
+        }
       }
     }
 
@@ -164,7 +199,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
         }
 
         "contains a submit" in {
-          document().mainContent.selectHead("button").text shouldBe SearchSoftwarePage.searchFormHeading
+          document().mainContent.selectHead("#searchButton").text shouldBe SearchSoftwarePage.searchFormHeading
         }
 
         "contains an error" in {
@@ -261,6 +296,8 @@ class SearchSoftwareViewSpec extends ViewSpec {
       val softwareType = "Software type"
       val softwareCompatibility = "Software compatibility"
       val accessibilityNeeds = "Accessibility needs"
+      val applyFilters = "Apply filters"
+      val clearFilters = "Clear filters"
     }
 
     val numberOfVendors = "Currently there are 2 software providers"

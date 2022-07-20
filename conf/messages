@@ -25,6 +25,9 @@ search-software.filters.software-type = Software type
 search-software.filters.software-compatibility = Software compatibility
 search-software.filters.accessibility-needs = Accessibility needs
 
+search-software.filters.apply-filters = Apply filters
+search-software.filters.clear-filters = Clear filters
+
 search-software.vendor-count = Currently there are {0} software providers
 
 search-software.vendor-detail.pricing = Pricing:

@@ -16,15 +16,19 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms
 
-import play.api.data.Forms.{mapping, optional, text}
+import play.api.data.Forms.{list, mapping, optional, text}
 import play.api.data.validation.Constraint
 import play.api.data.{Form, Mapping}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.utils.StringConstraints
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FiltersFormModel
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.filterKeyToFilter
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FiltersFormModel, VendorFilter}
 
 object FiltersForm {
   val searchTerm = "searchTerm"
+  val filters = "filters"
+
   private val searchTermMaxLength = 256
+
   private val trimmedOptionalText: Mapping[Option[String]] =
     optional(text)
       .transform(_.flatMap { value =>
@@ -32,11 +36,20 @@ object FiltersForm {
         if (trimmed.isEmpty) None else Some(trimmed)
       }, identity)
 
+  def toVendorFilter(list: List[String]): Seq[VendorFilter] = {
+    list.map(filterKeyToFilter(_))
+  }
+
+  def fromVendorFilter(filterList: Seq[VendorFilter]): List[String] = {
+    filterList.map(_.key).toList
+  }
+
   private val nameMaxLength: Constraint[Option[String]] = StringConstraints.maxLength(searchTermMaxLength, "search-software.search-form.error")
 
   val form: Form[FiltersFormModel] = Form(
     mapping(
-      searchTerm -> trimmedOptionalText.verifying(nameMaxLength)
+      searchTerm -> trimmedOptionalText.verifying(nameMaxLength),
+      filters -> list(text).transform[Seq[VendorFilter]](toVendorFilter, fromVendorFilter)
     )(FiltersFormModel.apply)(FiltersFormModel.unapply)
   )
 }

@@ -20,6 +20,7 @@ import play.api.libs.json.{Reads, __}
 
 sealed trait VendorFilter {
   val key: String
+  override def toString: String = key
 }
 
 object VendorFilter {

@@ -18,7 +18,6 @@
 @import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 @import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcNewTabLinkHelper
 @import uk.gov.hmrc.hmrcfrontend.views.viewmodels.newtablinkhelper.NewTabLinkHelper
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.SoftwareChoicesService
@@ -27,7 +26,7 @@
 @this(
   hmrcNewTabLinkHelper: HmrcNewTabLinkHelper,
   govukSummaryList : GovukSummaryList
-)(implicit appConfig: AppConfig)
+)
 
 @(softwareVendors: SoftwareVendors)(implicit messages: Messages)
 

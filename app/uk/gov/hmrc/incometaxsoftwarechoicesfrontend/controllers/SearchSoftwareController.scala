@@ -44,7 +44,7 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
         BadRequest(view(vendors, error))
       },
       search => {
-        val vendors = softwareChoicesService.filterVendors(search.searchTerm)
+        val vendors = softwareChoicesService.filterVendors(search.searchTerm, search.filters)
         Ok(view(vendors, FiltersForm.form.fill(search)))
       }
     )
@@ -57,7 +57,7 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
         BadRequest(view(vendors, error))
       },
       search => {
-        val vendors = softwareChoicesService.filterVendors(search.searchTerm)
+        val vendors = softwareChoicesService.filterVendors(search.searchTerm, search.filters)
         Ok(softwareVendorsTemplate(vendors))
       }
     )

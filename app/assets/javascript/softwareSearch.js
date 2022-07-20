@@ -2,6 +2,17 @@
 
 $(document).ready(function() {
   $('#searchTerm').on("input", searchEventHandler(500));
+
+  $('.apply-filters-button').on("click", (event) => {
+    event.preventDefault();
+    submitSearch();
+  });
+
+  $('.clear-filters-button').on("click", (event) => {
+    event.preventDefault();
+    $('.filters-section .govuk-checkboxes__input').prop("checked", false);
+    submitSearch();
+  });
 });
 
 function searchEventHandler(timeout) {
