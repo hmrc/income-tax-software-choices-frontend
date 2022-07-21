@@ -21,7 +21,7 @@ import org.jsoup.nodes.{Document, Element}
 import play.api.data.FormError
 import play.api.mvc.Call
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{Agent, FreeTrial, FreeVersion, Individual}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{Agent, FreeTrial, FreeVersion, Individual, MacOS, MicrosoftWindows}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FiltersFormModel, SoftwareVendorModel, SoftwareVendors, VendorFilter}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SearchSoftwarePage
 
@@ -163,24 +163,40 @@ class SearchSoftwareViewSpec extends ViewSpec {
         }
       }
 
-      "has a compatible with section" in {
-        getHeaderText(1) shouldBe SearchSoftwarePage.Filters.compatibleWith
+      "has a compatible with section" that {
+        val checkboxGroup = getCheckboxGroup(3)
+
+        "contains a label" in {
+          checkboxGroup.selectHead("legend").text shouldBe SearchSoftwarePage.Filters.compatibleWith
+        }
+
+        "contains an Individual checkbox" in {
+          val checkbox = getCheckbox(checkboxGroup, 1)
+          checkbox.attr("value") shouldBe MicrosoftWindows.key
+          checkbox.attr("name") shouldBe s"${FiltersForm.filters}[]"
+        }
+
+        "contains an Agent checkbox" in {
+          val checkbox = getCheckbox(checkboxGroup, 2)
+          checkbox.attr("value") shouldBe MacOS.key
+          checkbox.attr("name") shouldBe s"${FiltersForm.filters}[]"
+        }
       }
 
       "has a mobile app section" in {
-        getHeaderText(2) shouldBe SearchSoftwarePage.Filters.mobileApp
+        getHeaderText(1) shouldBe SearchSoftwarePage.Filters.mobileApp
       }
 
       "has a software type section" in {
-        getHeaderText(3) shouldBe SearchSoftwarePage.Filters.softwareType
+        getHeaderText(2) shouldBe SearchSoftwarePage.Filters.softwareType
       }
 
       "has a software compatibility section" in {
-        getHeaderText(4) shouldBe SearchSoftwarePage.Filters.softwareCompatibility
+        getHeaderText(3) shouldBe SearchSoftwarePage.Filters.softwareCompatibility
       }
 
       "has an accessibility needs section" in {
-        getHeaderText(5) shouldBe SearchSoftwarePage.Filters.accessibilityNeeds
+        getHeaderText(4) shouldBe SearchSoftwarePage.Filters.accessibilityNeeds
       }
 
       "has a apply button section" that {

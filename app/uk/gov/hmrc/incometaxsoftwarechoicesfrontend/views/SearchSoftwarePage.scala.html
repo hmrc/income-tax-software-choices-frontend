@@ -133,7 +133,22 @@
             )
           )
 
-          <h3 class="govuk-heading-s">@messages("search-software.filters.compatible-with")</h3>
+          @checkboxGroup(
+            fieldsetLegend = messages("search-software.filters.compatible-with"),
+            checkboxes = Seq(
+              CheckboxItem(
+                id = Some(s"$MicrosoftWindows-filter"),
+                content = Text(messages("search-software.vendor-detail.compatible-with.microsoft-windows")),
+                value = MicrosoftWindows
+              ),
+              CheckboxItem(
+                id = Some(s"$MacOS-filter"),
+                content = Text(messages("search-software.vendor-detail.compatible-with.mac-os")),
+                value = MacOS
+              ),
+            )
+          )
+
           <h3 class="govuk-heading-s">@messages("search-software.filters.mobile-app")</h3>
           <h3 class="govuk-heading-s">@messages("search-software.filters.software-type")</h3>
           <h3 class="govuk-heading-s">@messages("search-software.filters.software-compatibility")</h3>
