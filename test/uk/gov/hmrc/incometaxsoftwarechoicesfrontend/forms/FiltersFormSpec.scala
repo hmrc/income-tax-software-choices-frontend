@@ -21,8 +21,6 @@ import org.scalatestplus.play.PlaySpec
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FiltersFormModel, VendorFilter}
 
-import java.util.NoSuchElementException
-
 class FiltersFormSpec extends PlaySpec with GuiceOneServerPerSuite {
   "FiltersForm" should {
     "validate a search term" when {
@@ -58,19 +56,32 @@ class FiltersFormSpec extends PlaySpec with GuiceOneServerPerSuite {
         val validInput = Map("filters[0]" -> VendorFilter.Individual.key)
         FiltersForm.form.bind(validInput).value shouldBe Some(FiltersFormModel(None, List(VendorFilter.Individual)))
       }
-      "several filters, all of which are  known" in {
+      "several filters, all of which are known" in {
         val validInput = Map(
           "filters[0]" -> VendorFilter.Individual.key,
           "filters[1]" -> VendorFilter.Agent.key,
           "filters[2]" -> VendorFilter.FreeTrial.key,
-          "filters[3]" -> VendorFilter.FreeVersion.key
+          "filters[3]" -> VendorFilter.FreeVersion.key,
+          "filters[4]" -> VendorFilter.MicrosoftWindows.key,
+          "filters[5]" -> VendorFilter.MacOS.key,
+          "filters[6]" -> VendorFilter.Vat.key,
         )
-        FiltersForm.form.bind(validInput).value shouldBe Some(FiltersFormModel(None, List(VendorFilter.Individual, VendorFilter.Agent, VendorFilter.FreeTrial, VendorFilter.FreeVersion)))
+        FiltersForm.form.bind(validInput).value shouldBe Some(FiltersFormModel(
+          None,
+          List(
+            VendorFilter.Individual,
+            VendorFilter.Agent,
+            VendorFilter.FreeTrial,
+            VendorFilter.FreeVersion,
+            VendorFilter.MicrosoftWindows,
+            VendorFilter.MacOS,
+            VendorFilter.Vat
+          )
+        ))
       }
       "the filter name is unknown" in {
         val invalidInput = Map("filters[0]" -> "rubbish")
-        val e = intercept[java.lang.Exception](FiltersForm.form.bind(invalidInput).value)
-        e shouldBe a[NoSuchElementException]
+        FiltersForm.form.bind(invalidInput).value shouldBe Some(FiltersFormModel(None, List()))
       }
     }
   }

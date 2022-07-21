@@ -52,6 +52,9 @@ search-software.vendor-detail.software-type = Software type:
 search-software.vendor-detail.software-type.browser-based = Browser based
 search-software.vendor-detail.software-type.application-based = Application based
 
+search-software.vendor-detail.software-compatibility.vat = VAT
+search-software.vendor-detail.software-compatibility.income-tax = Income Tax
+
 search-software.vendor-detail.accessibility = Accessibility:
 search-software.vendor-detail.accessibility.visual = Visual
 search-software.vendor-detail.accessibility.hearing = Hearing

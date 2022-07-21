@@ -151,7 +151,24 @@
 
           <h3 class="govuk-heading-s">@messages("search-software.filters.mobile-app")</h3>
           <h3 class="govuk-heading-s">@messages("search-software.filters.software-type")</h3>
-          <h3 class="govuk-heading-s">@messages("search-software.filters.software-compatibility")</h3>
+
+          @checkboxGroup(
+            fieldsetLegend = messages("search-software.filters.software-compatibility"),
+            checkboxes = Seq(
+              CheckboxItem(
+                id = Some(s"$Vat-filter"),
+                content = Text(messages("search-software.vendor-detail.software-compatibility.vat")),
+                value = Vat
+              ),
+              CheckboxItem(
+                id = Some(s"$IncomeTax-filter"),
+                content = Text(messages("search-software.vendor-detail.software-compatibility.income-tax")),
+                disabled = true,
+                checked = true
+              ),
+            )
+          )
+
 
           @checkboxGroup(
             fieldsetLegend = messages("search-software.filters.accessibility"),

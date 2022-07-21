@@ -67,6 +67,14 @@ object VendorFilter {
     override val key: String = "application-based"
   }
 
+  case object Vat extends VendorFilter {
+    override val key: String = "vat"
+  }
+
+  case object IncomeTax extends VendorFilter {
+    override val key: String = "income-tax"
+  }
+
   case object Visual extends VendorFilter {
     override val key: String = "visual"
   }
@@ -94,6 +102,7 @@ object VendorFilter {
     AppleIOS.key -> AppleIOS,
     BrowserBased.key -> BrowserBased,
     ApplicationBased.key -> ApplicationBased,
+    Vat.key -> Vat,
     Visual.key -> Visual,
     Hearing.key -> Hearing,
     Motor.key -> Motor,

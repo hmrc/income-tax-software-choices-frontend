@@ -37,7 +37,7 @@ object FiltersForm {
       }, identity)
 
   def toVendorFilter(list: List[String]): Seq[VendorFilter] = {
-    list.map(filterKeyToFilter(_))
+    list.flatMap(filterKey => filterKeyToFilter.get(filterKey))
   }
 
   def fromVendorFilter(filterList: Seq[VendorFilter]): List[String] = {
