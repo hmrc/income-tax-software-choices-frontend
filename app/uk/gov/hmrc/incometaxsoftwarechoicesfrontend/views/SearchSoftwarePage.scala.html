@@ -64,7 +64,7 @@
         legend = Some(Legend(
           content = Text(fieldsetLegend),
           isPageHeading = false,
-          classes = "govuk-fieldset__legend--s"
+          classes = "govuk-fieldset__legend--s govuk-!-padding-top-1"
         ))
       )),
       items = checkboxes
@@ -107,17 +107,32 @@
               CheckboxItem(
                 id = Some(s"$FreeTrial-filter"),
                 content = Text(messages("search-software.vendor-detail.pricing.free-trial")),
-                value = FreeTrial.key
+                value = FreeTrial
               ),
               CheckboxItem(
                 id = Some(s"$FreeVersion-filter"),
                 content = Text(messages("search-software.vendor-detail.pricing.free-version")),
-                value = FreeVersion.key
+                value = FreeVersion
               )
             )
           )
 
-          <h3 class="govuk-heading-s">@messages("search-software.filters.business-type")</h3>
+          @checkboxGroup(
+            fieldsetLegend = messages("search-software.filters.business-type"),
+            checkboxes = Seq(
+              CheckboxItem(
+                id = Some(s"$Individual-filter"),
+                content = Text(messages("search-software.vendor-detail.business-type.individual")),
+                value = Individual
+              ),
+              CheckboxItem(
+                id = Some(s"$Agent-filter"),
+                content = Text(messages("search-software.vendor-detail.business-type.agent")),
+                value = Agent
+              ),
+            )
+          )
+
           <h3 class="govuk-heading-s">@messages("search-software.filters.compatible-with")</h3>
           <h3 class="govuk-heading-s">@messages("search-software.filters.mobile-app")</h3>
           <h3 class="govuk-heading-s">@messages("search-software.filters.software-type")</h3>

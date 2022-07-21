@@ -21,7 +21,7 @@ import org.jsoup.nodes.{Document, Element}
 import play.api.data.FormError
 import play.api.mvc.Call
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{FreeTrial, FreeVersion}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{Agent, FreeTrial, FreeVersion, Individual}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FiltersFormModel, SoftwareVendorModel, SoftwareVendors, VendorFilter}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SearchSoftwarePage
 
@@ -111,60 +111,76 @@ class SearchSoftwareViewSpec extends ViewSpec {
     "have a filter section" which {
       def filterSection: Element = document().mainContent.selectHead("#software-section").selectHead(".filters-section")
 
+      def getHeaderText(n: Int): String = filterSection.selectNth("h3", n).text
+
+      def getCheckboxGroup(n: Int): Element = filterSection.selectNth(".govuk-form-group", n).selectNth(".govuk-fieldset", 1)
+
+      def getCheckbox(checkboxGroup: Element, n: Int): Element = checkboxGroup
+        .selectNth(".govuk-checkboxes__item", n)
+        .selectHead(".govuk-checkboxes__input")
+
       "has a heading" in {
         filterSection.selectHead("h2").text shouldBe SearchSoftwarePage.Filters.filterHeading
       }
 
       "has a pricing section" that {
-        val checkboxGroup = filterSection.selectNth(".govuk-fieldset", 1)
+        val checkboxGroup = getCheckboxGroup(1)
 
         "contains a label" in {
           checkboxGroup.selectHead("legend").text shouldBe SearchSoftwarePage.Filters.pricing
         }
 
         "contains a Free trial checkbox" in {
-          val checkbox =
-            filterSection
-              .selectNth(".govuk-checkboxes__item", 1)
-              .selectHead(".govuk-checkboxes__input")
-
+          val checkbox = getCheckbox(checkboxGroup, 1)
           checkbox.attr("value") shouldBe FreeTrial.key
           checkbox.attr("name") shouldBe s"${FiltersForm.filters}[]"
         }
 
         "contains a Free version checkbox" in {
-          val checkbox =
-            filterSection
-              .selectNth(".govuk-checkboxes__item", 2)
-              .selectHead(".govuk-checkboxes__input")
-
+          val checkbox = getCheckbox(checkboxGroup, 2)
           checkbox.attr("value") shouldBe FreeVersion.key
           checkbox.attr("name") shouldBe s"${FiltersForm.filters}[]"
         }
       }
 
-      "has a business type section" in {
-        filterSection.selectNth("h3", 1).text shouldBe SearchSoftwarePage.Filters.businessType
+      "has a business type section" that {
+        val checkboxGroup = getCheckboxGroup(2)
+
+        "contains a label" in {
+          checkboxGroup.selectHead("legend").text shouldBe SearchSoftwarePage.Filters.businessType
+        }
+
+        "contains an Individual checkbox" in {
+          val checkbox = getCheckbox(checkboxGroup, 1)
+          checkbox.attr("value") shouldBe Individual.key
+          checkbox.attr("name") shouldBe s"${FiltersForm.filters}[]"
+        }
+
+        "contains an Agent checkbox" in {
+          val checkbox = getCheckbox(checkboxGroup, 2)
+          checkbox.attr("value") shouldBe Agent.key
+          checkbox.attr("name") shouldBe s"${FiltersForm.filters}[]"
+        }
       }
 
       "has a compatible with section" in {
-        filterSection.selectNth("h3", 2).text shouldBe SearchSoftwarePage.Filters.compatibleWith
+        getHeaderText(1) shouldBe SearchSoftwarePage.Filters.compatibleWith
       }
 
       "has a mobile app section" in {
-        filterSection.selectNth("h3", 3).text shouldBe SearchSoftwarePage.Filters.mobileApp
+        getHeaderText(2) shouldBe SearchSoftwarePage.Filters.mobileApp
       }
 
       "has a software type section" in {
-        filterSection.selectNth("h3", 4).text shouldBe SearchSoftwarePage.Filters.softwareType
+        getHeaderText(3) shouldBe SearchSoftwarePage.Filters.softwareType
       }
 
       "has a software compatibility section" in {
-        filterSection.selectNth("h3", 5).text shouldBe SearchSoftwarePage.Filters.softwareCompatibility
+        getHeaderText(4) shouldBe SearchSoftwarePage.Filters.softwareCompatibility
       }
 
       "has an accessibility needs section" in {
-        filterSection.selectNth("h3", 6).text shouldBe SearchSoftwarePage.Filters.accessibilityNeeds
+        getHeaderText(5) shouldBe SearchSoftwarePage.Filters.accessibilityNeeds
       }
 
       "has a apply button section" that {
