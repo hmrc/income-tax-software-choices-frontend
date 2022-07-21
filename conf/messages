@@ -23,7 +23,7 @@ search-software.filters.compatible-with = Compatible with
 search-software.filters.mobile-app = Mobile app
 search-software.filters.software-type = Software type
 search-software.filters.software-compatibility = Software compatibility
-search-software.filters.accessibility-needs = Accessibility needs
+search-software.filters.accessibility = Accessibility needs
 
 search-software.filters.apply-filters = Apply filters
 search-software.filters.clear-filters = Clear filters
