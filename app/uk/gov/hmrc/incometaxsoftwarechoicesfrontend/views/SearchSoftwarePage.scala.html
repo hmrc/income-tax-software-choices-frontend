@@ -149,7 +149,21 @@
             )
           )
 
-          <h3 class="govuk-heading-s">@messages("search-software.filters.mobile-app")</h3>
+          @checkboxGroup(
+            fieldsetLegend = messages("search-software.filters.mobile-app"),
+            checkboxes = Seq(
+              CheckboxItem(
+                id = Some(s"$Android-filter"),
+                content = Text(messages("search-software.vendor-detail.mobile-app.android")),
+                value = Android
+              ),
+              CheckboxItem(
+                id = Some(s"$AppleIOS-filter"),
+                content = Text(messages("search-software.vendor-detail.mobile-app.apple-ios")),
+                value = AppleIOS
+              ),
+            )
+          )
 
           @checkboxGroup(
             fieldsetLegend = messages("search-software.filters.software-compatibility"),
@@ -209,8 +223,6 @@
               ),
             )
           )
-          <h3 class="govuk-heading-s">@messages("search-software.filters.software-compatibility")</h3>
-          <h3 class="govuk-heading-s">@messages("search-software.filters.accessibility-needs")</h3>
 
           <div class="govuk-button-group govuk-!-padding-top-4">
             @govukButton(Button(

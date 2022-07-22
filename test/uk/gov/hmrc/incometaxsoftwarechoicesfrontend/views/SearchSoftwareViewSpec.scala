@@ -18,6 +18,7 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views
 
 import org.jsoup.Jsoup
 import org.jsoup.nodes.{Document, Element}
+import org.scalatest.Assertion
 import play.api.data.FormError
 import play.api.mvc.Call
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
@@ -111,8 +112,6 @@ class SearchSoftwareViewSpec extends ViewSpec {
     "have a filter section" which {
       def filterSection: Element = document().mainContent.selectHead("#software-section").selectHead(".filters-section")
 
-      def getHeaderText(n: Int): String = filterSection.selectNth("h3", n).text
-
       def getCheckboxGroup(n: Int): Element = filterSection.selectNth(".govuk-form-group", n).selectNth(".govuk-fieldset", 1)
 
       def getCheckboxItem(checkboxGroup: Element, n: Int): Element = checkboxGroup
@@ -123,6 +122,15 @@ class SearchSoftwareViewSpec extends ViewSpec {
 
       def getCheckboxLabel(checkboxItem: Element): Element = checkboxItem
         .selectHead(".govuk-checkboxes__label")
+
+      def validateCheckboxInGroup(checkboxGroup: Element, n: Int, value: String, label: String, name: String = s"${FiltersForm.filters}[]"): Assertion = {
+        val checkboxItem = getCheckboxItem(checkboxGroup, n)
+        getCheckboxLabel(checkboxItem).text shouldBe label
+
+        val checkbox = getCheckboxInput(checkboxItem)
+        checkbox.attr("value") shouldBe value
+        checkbox.attr("name") shouldBe name
+      }
 
       "has a heading" in {
         filterSection.selectHead("h2").text shouldBe SearchSoftwarePage.Filters.filterHeading
@@ -136,23 +144,11 @@ class SearchSoftwareViewSpec extends ViewSpec {
         }
 
         "contains a Free trial checkbox" in {
-          val checkboxItem = getCheckboxItem(checkboxGroup, 1)
-
-          val checkbox = getCheckboxInput(checkboxItem)
-          checkbox.attr("value") shouldBe FreeTrial.key
-          checkbox.attr("name") shouldBe s"${FiltersForm.filters}[]"
-
-          getCheckboxLabel(checkboxItem).text shouldBe SearchSoftwarePage.freeTrial
+          validateCheckboxInGroup(checkboxGroup, 1, FreeTrial.key, SearchSoftwarePage.freeTrial)
         }
 
         "contains a Free version checkbox" in {
-          val checkboxItem = getCheckboxItem(checkboxGroup, 2)
-
-          val checkbox = getCheckboxInput(checkboxItem)
-          checkbox.attr("value") shouldBe FreeVersion.key
-          checkbox.attr("name") shouldBe s"${FiltersForm.filters}[]"
-
-          getCheckboxLabel(checkboxItem).text shouldBe SearchSoftwarePage.freeVersion
+          validateCheckboxInGroup(checkboxGroup, 2, FreeVersion.key, SearchSoftwarePage.freeVersion)
         }
       }
 
@@ -164,23 +160,11 @@ class SearchSoftwareViewSpec extends ViewSpec {
         }
 
         "contains an Individual checkbox" in {
-          val checkboxItem = getCheckboxItem(checkboxGroup, 1)
-
-          val checkbox = getCheckboxInput(checkboxItem)
-          checkbox.attr("value") shouldBe Individual.key
-          checkbox.attr("name") shouldBe s"${FiltersForm.filters}[]"
-
-          getCheckboxLabel(checkboxItem).text shouldBe SearchSoftwarePage.individual
+          validateCheckboxInGroup(checkboxGroup, 1, Individual.key, SearchSoftwarePage.individual)
         }
 
         "contains an Agent checkbox" in {
-          val checkboxItem = getCheckboxItem(checkboxGroup, 2)
-
-          val checkbox = getCheckboxInput(checkboxItem)
-          checkbox.attr("value") shouldBe Agent.key
-          checkbox.attr("name") shouldBe s"${FiltersForm.filters}[]"
-
-          getCheckboxLabel(checkboxItem).text shouldBe SearchSoftwarePage.agent
+          validateCheckboxInGroup(checkboxGroup, 2, Agent.key, SearchSoftwarePage.agent)
         }
       }
 
@@ -191,46 +175,40 @@ class SearchSoftwareViewSpec extends ViewSpec {
           checkboxGroup.selectHead("legend").text shouldBe SearchSoftwarePage.Filters.compatibleWith
         }
 
-        "contains an Individual checkbox" in {
-          val checkboxItem = getCheckboxItem(checkboxGroup, 1)
-
-          val checkbox = getCheckboxInput(checkboxItem)
-          checkbox.attr("value") shouldBe MicrosoftWindows.key
-          checkbox.attr("name") shouldBe s"${FiltersForm.filters}[]"
-
-          getCheckboxLabel(checkboxItem).text shouldBe SearchSoftwarePage.microsoftWindows
+        "contains an Microsoft Windows checkbox" in {
+          validateCheckboxInGroup(checkboxGroup, 1, MicrosoftWindows.key, SearchSoftwarePage.microsoftWindows)
         }
 
-        "contains an Agent checkbox" in {
-          val checkboxItem = getCheckboxItem(checkboxGroup, 2)
-
-          val checkbox = getCheckboxInput(checkboxItem)
-          checkbox.attr("value") shouldBe MacOS.key
-          checkbox.attr("name") shouldBe s"${FiltersForm.filters}[]"
-
-          getCheckboxLabel(checkboxItem).text shouldBe SearchSoftwarePage.macOS
+        "contains an Mac OS checkbox" in {
+          validateCheckboxInGroup(checkboxGroup, 2, MacOS.key, SearchSoftwarePage.macOS)
         }
       }
 
-      "has a mobile app section" in {
-        getHeaderText(1) shouldBe SearchSoftwarePage.Filters.mobileApp
+      "has a mobile app section" that {
+        val checkboxGroup = getCheckboxGroup(4)
+
+        "contains a fieldset legend" in {
+          checkboxGroup.selectHead("legend").text shouldBe SearchSoftwarePage.Filters.mobileApp
+        }
+
+        "contains an Android checkbox" in {
+          validateCheckboxInGroup(checkboxGroup, 1, Android.key, SearchSoftwarePage.android)
+        }
+
+        "contains an Apple iOS checkbox" in {
+          validateCheckboxInGroup(checkboxGroup, 2, AppleIOS.key, SearchSoftwarePage.appleIOS)
+        }
       }
 
       "has a software compatibility section" that {
-        val checkboxGroup = getCheckboxGroup(4)
+        val checkboxGroup = getCheckboxGroup(5)
 
         "contains a fieldset legend" in {
           checkboxGroup.selectHead("legend").text shouldBe SearchSoftwarePage.Filters.softwareCompatibility
         }
 
         "contains an VAT checkbox" in {
-          val checkboxItem = getCheckboxItem(checkboxGroup, 1)
-
-          val checkbox = getCheckboxInput(checkboxItem)
-          checkbox.attr("value") shouldBe Vat.key
-          checkbox.attr("name") shouldBe s"${FiltersForm.filters}[]"
-
-          getCheckboxLabel(checkboxItem).text shouldBe SearchSoftwarePage.vat
+          validateCheckboxInGroup(checkboxGroup, 1, Vat.key, SearchSoftwarePage.vat)
         }
 
         "contains an Income Tax checkbox" in {
@@ -246,73 +224,42 @@ class SearchSoftwareViewSpec extends ViewSpec {
       }
 
       "has a software type section" that {
-        val checkboxGroup = getCheckboxGroup(5)
+        val checkboxGroup = getCheckboxGroup(6)
 
-        println(checkboxGroup)
         "contains a label" in {
           checkboxGroup.selectHead("legend").text shouldBe SearchSoftwarePage.Filters.softwareType
         }
 
         "contains an BrowserBased checkbox" in {
-          val checkboxItem = getCheckboxItem(checkboxGroup, 1)
-          val checkbox = getCheckboxInput(checkboxItem)
-          checkbox.attr("value") shouldBe BrowserBased.key
-          checkbox.attr("name") shouldBe s"${FiltersForm.filters}[]"
+          validateCheckboxInGroup(checkboxGroup, 1, BrowserBased.key, SearchSoftwarePage.browserBased)
         }
 
         "contains an ApplicationBased checkbox" in {
-          val checkboxItem = getCheckboxItem(checkboxGroup, 2)
-          val checkbox = getCheckboxInput(checkboxItem)
-          checkbox.attr("value") shouldBe ApplicationBased.key
-          checkbox.attr("name") shouldBe s"${FiltersForm.filters}[]"
+          validateCheckboxInGroup(checkboxGroup, 2, ApplicationBased.key, SearchSoftwarePage.applicationBased)
         }
       }
 
       "has an accessibility needs section" that {
-        val checkboxGroup = getCheckboxGroup(6)
+        val checkboxGroup = getCheckboxGroup(7)
 
         "contains a label" in {
           checkboxGroup.selectHead("legend").text shouldBe SearchSoftwarePage.Filters.accessibilityNeeds
         }
 
         "contains an Visual checkbox" in {
-          val checkboxItem = getCheckboxItem(checkboxGroup, 1)
-
-          val checkbox = getCheckboxInput(checkboxItem)
-          checkbox.attr("value") shouldBe Visual.key
-          checkbox.attr("name") shouldBe s"${FiltersForm.filters}[]"
-
-          getCheckboxLabel(checkboxItem).text shouldBe SearchSoftwarePage.visual
+          validateCheckboxInGroup(checkboxGroup, 1, Visual.key, SearchSoftwarePage.visual)
         }
 
         "contains an Hearing checkbox" in {
-          val checkboxItem = getCheckboxItem(checkboxGroup, 2)
-
-          val checkbox = getCheckboxInput(checkboxItem)
-          checkbox.attr("value") shouldBe Hearing.key
-          checkbox.attr("name") shouldBe s"${FiltersForm.filters}[]"
-
-          getCheckboxLabel(checkboxItem).text shouldBe SearchSoftwarePage.hearing
+          validateCheckboxInGroup(checkboxGroup, 2, Hearing.key, SearchSoftwarePage.hearing)
         }
 
         "contains an Motor checkbox" in {
-          val checkboxItem = getCheckboxItem(checkboxGroup, 3)
-
-          val checkbox = getCheckboxInput(checkboxItem)
-          checkbox.attr("value") shouldBe Motor.key
-          checkbox.attr("name") shouldBe s"${FiltersForm.filters}[]"
-
-          getCheckboxLabel(checkboxItem).text shouldBe SearchSoftwarePage.motor
+          validateCheckboxInGroup(checkboxGroup, 3, Motor.key, SearchSoftwarePage.motor)
         }
 
         "contains an Cognitive checkbox" in {
-          val checkboxItem = getCheckboxItem(checkboxGroup, 4)
-
-          val checkbox = getCheckboxInput(checkboxItem)
-          checkbox.attr("value") shouldBe Cognitive.key
-          checkbox.attr("name") shouldBe s"${FiltersForm.filters}[]"
-
-          getCheckboxLabel(checkboxItem).text shouldBe SearchSoftwarePage.cognitive
+          validateCheckboxInGroup(checkboxGroup, 4, Cognitive.key, SearchSoftwarePage.cognitive)
         }
 
       }
