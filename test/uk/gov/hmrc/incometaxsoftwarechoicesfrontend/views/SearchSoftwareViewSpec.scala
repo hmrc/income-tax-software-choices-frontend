@@ -216,10 +216,6 @@ class SearchSoftwareViewSpec extends ViewSpec {
         getHeaderText(1) shouldBe SearchSoftwarePage.Filters.mobileApp
       }
 
-      "has a software type section" in {
-        getHeaderText(2) shouldBe SearchSoftwarePage.Filters.softwareType
-      }
-
       "has a software compatibility section" that {
         val checkboxGroup = getCheckboxGroup(4)
 
@@ -249,8 +245,31 @@ class SearchSoftwareViewSpec extends ViewSpec {
         }
       }
 
-      "has an accessibility needs section" that {
+      "has a software type section" that {
         val checkboxGroup = getCheckboxGroup(5)
+
+        println(checkboxGroup)
+        "contains a label" in {
+          checkboxGroup.selectHead("legend").text shouldBe SearchSoftwarePage.Filters.softwareType
+        }
+
+        "contains an BrowserBased checkbox" in {
+          val checkboxItem = getCheckboxItem(checkboxGroup, 1)
+          val checkbox = getCheckboxInput(checkboxItem)
+          checkbox.attr("value") shouldBe BrowserBased.key
+          checkbox.attr("name") shouldBe s"${FiltersForm.filters}[]"
+        }
+
+        "contains an ApplicationBased checkbox" in {
+          val checkboxItem = getCheckboxItem(checkboxGroup, 2)
+          val checkbox = getCheckboxInput(checkboxItem)
+          checkbox.attr("value") shouldBe ApplicationBased.key
+          checkbox.attr("name") shouldBe s"${FiltersForm.filters}[]"
+        }
+      }
+
+      "has an accessibility needs section" that {
+        val checkboxGroup = getCheckboxGroup(6)
 
         "contains a label" in {
           checkboxGroup.selectHead("legend").text shouldBe SearchSoftwarePage.Filters.accessibilityNeeds
@@ -295,6 +314,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
 
           getCheckboxLabel(checkboxItem).text shouldBe SearchSoftwarePage.cognitive
         }
+
       }
 
       "has a apply button section" that {
