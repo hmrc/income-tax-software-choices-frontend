@@ -152,7 +152,32 @@
           <h3 class="govuk-heading-s">@messages("search-software.filters.mobile-app")</h3>
           <h3 class="govuk-heading-s">@messages("search-software.filters.software-type")</h3>
           <h3 class="govuk-heading-s">@messages("search-software.filters.software-compatibility")</h3>
-          <h3 class="govuk-heading-s">@messages("search-software.filters.accessibility-needs")</h3>
+
+          @checkboxGroup(
+            fieldsetLegend = messages("search-software.filters.accessibility"),
+            checkboxes = Seq(
+              CheckboxItem(
+                id = Some(s"$Visual-filter"),
+                content = Text(messages("search-software.vendor-detail.accessibility.visual")),
+                value = Visual
+              ),
+              CheckboxItem(
+                id = Some(s"$Hearing-filter"),
+                content = Text(messages("search-software.vendor-detail.accessibility.hearing")),
+                value = Hearing
+              ),
+              CheckboxItem(
+                id = Some(s"$Motor-filter"),
+                content = Text(messages("search-software.vendor-detail.accessibility.motor")),
+                value = Motor
+              ),
+              CheckboxItem(
+                id = Some(s"$Cognitive-filter"),
+                content = Text(messages("search-software.vendor-detail.accessibility.cognitive")),
+                value = Cognitive
+              ),
+            )
+          )
 
           <div class="govuk-button-group govuk-!-padding-top-4">
             @govukButton(Button(

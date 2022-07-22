@@ -21,7 +21,7 @@ import org.jsoup.nodes.{Document, Element}
 import play.api.data.FormError
 import play.api.mvc.Call
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{Agent, FreeTrial, FreeVersion, Individual, MacOS, MicrosoftWindows}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FiltersFormModel, SoftwareVendorModel, SoftwareVendors, VendorFilter}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SearchSoftwarePage
 
@@ -195,8 +195,37 @@ class SearchSoftwareViewSpec extends ViewSpec {
         getHeaderText(3) shouldBe SearchSoftwarePage.Filters.softwareCompatibility
       }
 
-      "has an accessibility needs section" in {
-        getHeaderText(4) shouldBe SearchSoftwarePage.Filters.accessibilityNeeds
+      "has an accessibility needs section" that {
+        val checkboxGroup = getCheckboxGroup(4)
+
+        "contains a label" in {
+          checkboxGroup.selectHead("legend").text shouldBe SearchSoftwarePage.Filters.accessibilityNeeds
+        }
+
+        "contains an Visual checkbox" in {
+          val checkbox = getCheckbox(checkboxGroup, 1)
+          checkbox.attr("value") shouldBe Visual.key
+          checkbox.attr("name") shouldBe s"${FiltersForm.filters}[]"
+        }
+
+        "contains an Hearing checkbox" in {
+          val checkbox = getCheckbox(checkboxGroup, 2)
+          checkbox.attr("value") shouldBe Hearing.key
+          checkbox.attr("name") shouldBe s"${FiltersForm.filters}[]"
+        }
+
+        "contains an Motor checkbox" in {
+          val checkbox = getCheckbox(checkboxGroup, 3)
+          checkbox.attr("value") shouldBe Motor.key
+          checkbox.attr("name") shouldBe s"${FiltersForm.filters}[]"
+        }
+
+        "contains an Cognitive checkbox" in {
+          val checkbox = getCheckbox(checkboxGroup, 4)
+          checkbox.attr("value") shouldBe Cognitive.key
+          checkbox.attr("name") shouldBe s"${FiltersForm.filters}[]"
+        }
+
       }
 
       "has a apply button section" that {
