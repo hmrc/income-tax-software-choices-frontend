@@ -130,6 +130,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
         val checkbox = getCheckboxInput(checkboxItem)
         checkbox.attr("value") shouldBe value
         checkbox.attr("name") shouldBe name
+        checkbox.hasAttr("disabled") shouldBe false
       }
 
       "has a heading" in {
@@ -152,8 +153,28 @@ class SearchSoftwareViewSpec extends ViewSpec {
         }
       }
 
-      "has a business type section" that {
+      "has an income type section" that {
         val checkboxGroup = getCheckboxGroup(2)
+
+        "contains a fieldset legend" in {
+          checkboxGroup.selectHead("legend").text shouldBe SearchSoftwarePage.Filters.incomeType
+        }
+
+        "contains a sole trader checkbox" in {
+          validateCheckboxInGroup(checkboxGroup, 1, SoleTrader.key, SearchSoftwarePage.soleTrader)
+        }
+
+        "contains a UK property checkbox" in {
+          validateCheckboxInGroup(checkboxGroup, 2, UkProperty.key, SearchSoftwarePage.ukProperty)
+        }
+
+        "contains an overseas property checkbox" in {
+          validateCheckboxInGroup(checkboxGroup, 3, OverseasProperty.key, SearchSoftwarePage.overseasProperty)
+        }
+      }
+
+      "has a business type section" that {
+        val checkboxGroup = getCheckboxGroup(3)
 
         "contains a fieldset legend" in {
           checkboxGroup.selectHead("legend").text shouldBe SearchSoftwarePage.Filters.businessType
@@ -169,7 +190,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
       }
 
       "has a compatible with section" that {
-        val checkboxGroup = getCheckboxGroup(3)
+        val checkboxGroup = getCheckboxGroup(4)
 
         "contains a fieldset legend" in {
           checkboxGroup.selectHead("legend").text shouldBe SearchSoftwarePage.Filters.compatibleWith
@@ -185,7 +206,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
       }
 
       "has a mobile app section" that {
-        val checkboxGroup = getCheckboxGroup(4)
+        val checkboxGroup = getCheckboxGroup(5)
 
         "contains a fieldset legend" in {
           checkboxGroup.selectHead("legend").text shouldBe SearchSoftwarePage.Filters.mobileApp
@@ -201,7 +222,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
       }
 
       "has a software compatibility section" that {
-        val checkboxGroup = getCheckboxGroup(5)
+        val checkboxGroup = getCheckboxGroup(6)
 
         "contains a fieldset legend" in {
           checkboxGroup.selectHead("legend").text shouldBe SearchSoftwarePage.Filters.softwareCompatibility
@@ -224,7 +245,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
       }
 
       "has a software type section" that {
-        val checkboxGroup = getCheckboxGroup(6)
+        val checkboxGroup = getCheckboxGroup(7)
 
         "contains a label" in {
           checkboxGroup.selectHead("legend").text shouldBe SearchSoftwarePage.Filters.softwareType
@@ -240,7 +261,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
       }
 
       "has an accessibility needs section" that {
-        val checkboxGroup = getCheckboxGroup(7)
+        val checkboxGroup = getCheckboxGroup(8)
 
         "contains a label" in {
           checkboxGroup.selectHead("legend").text shouldBe SearchSoftwarePage.Filters.accessibilityNeeds
@@ -387,6 +408,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
     object Filters {
       val filterHeading = "Filters"
       val pricing = "Pricing"
+      val incomeType = "Income type"
       val businessType = "Business type"
       val compatibleWith = "Compatible with"
       val mobileApp = "Mobile app"
@@ -403,6 +425,9 @@ class SearchSoftwareViewSpec extends ViewSpec {
     val freeVersion = "Free version"
     val noFreeTrial = "No free trial"
     val noFreeVersion = "No free version"
+    val soleTrader = "Sole trader"
+    val ukProperty = "UK property"
+    val overseasProperty = "Overseas property"
     val businessType = "Business type:"
     val individual = "Individual"
     val agent = "Agent"

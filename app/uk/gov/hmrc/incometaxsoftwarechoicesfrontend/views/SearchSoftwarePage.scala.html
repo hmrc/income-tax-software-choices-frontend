@@ -96,11 +96,7 @@
       <div class="govuk-grid-column-one-third govuk-!-margin-bottom-8">
         <div class="filters-section">
           <h2 class="govuk-heading-m">@messages("search-software.filters.heading")</h2>
-          @*
-          * Each of the following should be replaced with a govuk checkboxes helper
-          * styles are applied to each child of .filters-section
-          * so if checkbox helper doesn't wrap it's contents, it will need to also be wrapped in a div.
-          *@
+
           @checkboxGroup(
             fieldsetLegend = messages("search-software.filters.pricing"),
             checkboxes = Seq(
@@ -114,6 +110,27 @@
                 content = Text(messages("search-software.vendor-detail.pricing.free-version")),
                 value = FreeVersion
               )
+            )
+          )
+
+          @checkboxGroup(
+            fieldsetLegend = messages("search-software.filters.income-type"),
+            checkboxes = Seq(
+              CheckboxItem(
+                id = Some(s"$SoleTrader-filter"),
+                content = Text(messages("search-software.vendor-detail.pricing.sole-trader")),
+                value = SoleTrader
+              ),
+              CheckboxItem(
+                id = Some(s"$UkProperty-filter"),
+                content = Text(messages("search-software.vendor-detail.pricing.uk-property")),
+                value = UkProperty
+              ),
+              CheckboxItem(
+                id = Some(s"$OverseasProperty-filter"),
+                content = Text(messages("search-software.vendor-detail.pricing.overseas-property")),
+                value = OverseasProperty
+              ),
             )
           )
 

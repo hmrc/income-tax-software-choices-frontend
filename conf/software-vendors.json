@@ -19,7 +19,10 @@
         "visual",
         "hearing",
         "motor",
-        "cognitive"
+        "cognitive",
+        "sole-trader",
+        "uk-property",
+        "overseas-property"
       ]
     },
     {
@@ -37,7 +40,10 @@
         "android",
         "browser-based",
         "visual",
-        "motor"
+        "motor",
+        "vat",
+        "uk-property",
+        "overseas-property"
       ]
     },
     {
@@ -50,7 +56,8 @@
         "apple-ios",
         "application-based",
         "hearing",
-        "cognitive"
+        "cognitive",
+        "sole-trader"
       ]
     }
   ]
