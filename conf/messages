@@ -18,6 +18,7 @@ search-software.search-form.error   = Enter less than {0} characters
 
 search-software.filters.heading = Filters
 search-software.filters.pricing = Pricing
+search-software.filters.income-type = Income type
 search-software.filters.business-type = Business type
 search-software.filters.compatible-with = Compatible with
 search-software.filters.mobile-app = Mobile app
@@ -35,6 +36,10 @@ search-software.vendor-detail.pricing.free-trial = Free trial
 search-software.vendor-detail.pricing.no-free-trial = No free trial
 search-software.vendor-detail.pricing.free-version = Free version
 search-software.vendor-detail.pricing.no-free-version = No free version
+
+search-software.vendor-detail.pricing.sole-trader = Sole trader
+search-software.vendor-detail.pricing.uk-property = UK property
+search-software.vendor-detail.pricing.overseas-property = Overseas property
 
 search-software.vendor-detail.business-type = Business type:
 search-software.vendor-detail.business-type.individual = Individual

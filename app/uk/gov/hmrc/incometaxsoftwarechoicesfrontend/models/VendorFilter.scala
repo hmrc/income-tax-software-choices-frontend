@@ -35,6 +35,18 @@ object VendorFilter {
     override val key: String = "free-trial"
   }
 
+  case object SoleTrader extends VendorFilter {
+    override val key: String = "sole-trader"
+  }
+
+  case object UkProperty extends VendorFilter {
+    override val key: String = "uk-property"
+  }
+
+  case object OverseasProperty extends VendorFilter {
+    override val key: String = "overseas-property"
+  }
+
   case object Individual extends VendorFilter {
     override val key: String = "individual"
   }
@@ -94,6 +106,9 @@ object VendorFilter {
   val filterKeyToFilter: Map[String, VendorFilter] = Map(
     FreeVersion.key -> FreeVersion,
     FreeTrial.key -> FreeTrial,
+    SoleTrader.key -> SoleTrader,
+    UkProperty.key -> UkProperty,
+    OverseasProperty.key -> OverseasProperty,
     Individual.key -> Individual,
     Agent.key -> Agent,
     MicrosoftWindows.key -> MicrosoftWindows,
