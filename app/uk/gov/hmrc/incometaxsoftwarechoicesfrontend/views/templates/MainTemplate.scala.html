@@ -27,6 +27,7 @@
 @this(
         appConfig: AppConfig,
         hmrcLayout: HmrcLayout,
+        standardBetaBanner: StandardBetaBanner,
         govukErrorSummary: GovukErrorSummary,
         hmrcReportTechnicalIssueHelper: HmrcReportTechnicalIssueHelper,
         fullWidthMainContentLayout: FullWidthMainContentLayout,
@@ -53,7 +54,7 @@
     nonce = CSPNonce.get,
     isWelshTranslationAvailable = appConfig.welshLanguageSupportEnabled,
     mainContentLayout = Some(fullWidthMainContentLayout(_)),
-    phaseBanner = Some(standardAlphaBanner("/")),
+    phaseBanner = Some(standardBetaBanner(url = appConfig.betaFeedbackUnauthenticatedUrl)),
     additionalScriptsBlock = scripts
 ){
   @optForm.map { form =>

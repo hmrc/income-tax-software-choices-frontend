@@ -73,18 +73,6 @@ class SearchSoftwareViewSpec extends ViewSpec {
       }
     }
 
-    "have an alpha banner" in {
-      val banner: Element = document().selectHead(".govuk-phase-banner")
-      banner.selectHead(".govuk-phase-banner__content__tag").text shouldBe "alpha"
-
-      val bannerContent: Element = banner.selectHead(".govuk-phase-banner__text")
-      bannerContent.text shouldBe "This is a new service – your feedback will help us to improve it."
-
-      val feedbackLink: Element = bannerContent.selectHead("a")
-      feedbackLink.text shouldBe "feedback"
-      feedbackLink.attr("href") shouldBe "/"
-    }
-
     "have a title" in {
       document().title shouldBe s"""${SearchSoftwarePage.title} - Find software for Making Tax Digital for Income Tax - GOV.UK"""
     }
