@@ -17,7 +17,7 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views
 
 import org.jsoup.Jsoup
-import org.jsoup.nodes.Document
+import org.jsoup.nodes.{Document, Element}
 import play.twirl.api.Html
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTemplate
 
@@ -26,6 +26,18 @@ class MainTemplateViewSpec extends ViewSpec {
     "have the report technical issues link" in {
       document.getTechnicalHelpLink shouldBe "http://localhost:9250/contact/report-technical-problem?newTab=true&service=ITSC&referrerUrl=%2F"
       document.getTechnicalHelpLinkText shouldBe "Is this page not working properly? (opens in new tab)"
+    }
+
+    "have a beta banner" in {
+      val banner: Element = document.selectHead(".govuk-phase-banner")
+      banner.selectHead(".govuk-phase-banner__content__tag").text shouldBe "beta"
+
+      val bannerContent: Element = banner.selectHead(".govuk-phase-banner__text")
+      bannerContent.text shouldBe "This is a new service – your feedback will help us to improve it."
+
+      val feedbackLink: Element = bannerContent.selectHead("a")
+      feedbackLink.text shouldBe "feedback"
+      feedbackLink.attr("href") shouldBe "http://localhost:9250/contact/beta-feedback-unauthenticated?service=ITSC"
     }
   }
 

@@ -27,4 +27,9 @@ class AppConfig @Inject()(config: Configuration) {
 
   val guidance: String = config.get[String]("guidance.url")
 
+  val contactHost: String = config.get[String]("contact-frontend.host")
+  val contactFormServiceIdentifier: String = config.get[String]("contact-frontend.serviceId")
+  val betaFeedbackUnauthenticatedUrl: String =
+    s"$contactHost/contact/beta-feedback-unauthenticated?service=$contactFormServiceIdentifier"
+
 }
