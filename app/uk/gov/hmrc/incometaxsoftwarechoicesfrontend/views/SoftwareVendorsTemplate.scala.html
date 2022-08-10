@@ -144,9 +144,19 @@
   </div>
 }
 
-<h3 class="govuk-body govuk-!-font-weight-bold" id="vendor-count">
-@messages("search-software.vendor-count", softwareVendors.vendors.length)
-</h3>
+@if(softwareVendors.vendors.isEmpty) {
+  <div class="empty-list">
+    <p class="govuk-body">@messages("search-software.empty-vendor-list")</p>
+    <ul class="govuk-list govuk-list--bullet">
+      <li>@messages("search-software.empty-vendor-list.bullet1")</li>
+      <li>@messages("search-software.empty-vendor-list.bullet2")</li>
+    </ul>
+  </div>
+} else {
+  <h3 class="govuk-body govuk-!-font-weight-bold" id="vendor-count">
+  @messages("search-software.vendor-count", softwareVendors.vendors.length)
+  </h3>
+}
 
 @softwareVendors.vendors.zipWithIndex.map { case (vendor, index) =>
   @softwareVendorListing(vendor, index)
