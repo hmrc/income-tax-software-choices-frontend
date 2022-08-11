@@ -18,6 +18,8 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models
 
 import play.api.libs.json.{Reads, __}
 
+import scala.language.implicitConversions
+
 sealed trait VendorFilter {
   val key: String
   override def toString: String = key
@@ -79,6 +81,14 @@ object VendorFilter {
     override val key: String = "application-based"
   }
 
+  case object RecordKeeping extends VendorFilter {
+    override val key: String = "record-keeping"
+  }
+
+  case object Bridging extends VendorFilter {
+    override val key: String = "bridging"
+  }
+
   case object Vat extends VendorFilter {
     override val key: String = "vat"
   }
@@ -117,6 +127,8 @@ object VendorFilter {
     AppleIOS.key -> AppleIOS,
     BrowserBased.key -> BrowserBased,
     ApplicationBased.key -> ApplicationBased,
+    RecordKeeping.key -> RecordKeeping,
+    Bridging.key -> Bridging,
     Vat.key -> Vat,
     Visual.key -> Visual,
     Hearing.key -> Hearing,

@@ -23,6 +23,7 @@ search-software.filters.business-type = Business type
 search-software.filters.compatible-with = Compatible with
 search-software.filters.mobile-app = Mobile app
 search-software.filters.software-type = Software type
+search-software.filters.software-for = Software for
 search-software.filters.software-compatibility = Software compatibility
 search-software.filters.accessibility = Accessibility needs
 
@@ -60,6 +61,9 @@ search-software.vendor-detail.mobile-app.apple-ios = Apple iOS
 search-software.vendor-detail.software-type = Software type:
 search-software.vendor-detail.software-type.browser-based = Browser based
 search-software.vendor-detail.software-type.application-based = Application based
+
+search-software.vendor-detail.software-for.record-keeping = Record keeping
+search-software.vendor-detail.software-for.bridging = Bridging
 
 search-software.vendor-detail.software-compatibility.vat = VAT
 search-software.vendor-detail.software-compatibility.income-tax = Income Tax
