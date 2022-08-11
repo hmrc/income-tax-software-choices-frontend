@@ -31,7 +31,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
   private val searchSoftwarePage = app.injector.instanceOf[SearchSoftwarePage]
   private val lastUpdateTest = "01/07/2022"
   private val testFormError: FormError = FormError(FiltersForm.searchTerm, "test error message")
-  private val softwareVendors: SoftwareVendors = SoftwareVendors(
+  private val testSoftwareVendors: SoftwareVendors = SoftwareVendors(
     lastUpdated = lastUpdateTest,
     vendors = Seq(
       SoftwareVendorModel(
@@ -322,8 +322,8 @@ class SearchSoftwareViewSpec extends ViewSpec {
             val headingLink: Element = firstVendor.selectHead("h3").selectHead("a")
             headingLink.attr("target") shouldBe "_blank"
             headingLink.attr("rel") shouldBe "noopener noreferrer"
-            headingLink.attr("href") shouldBe softwareVendors.vendors.head.url
-            headingLink.text shouldBe s"${softwareVendors.vendors.head.name} (opens in a new tab)"
+            headingLink.attr("href") shouldBe testSoftwareVendors.vendors.head.url
+            headingLink.text shouldBe s"${testSoftwareVendors.vendors.head.name} (opens in a new tab)"
           }
 
           "has a list of detail for the software vendor with full detail" in {
@@ -355,6 +355,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
               s"${SearchSoftwarePage.visual}/${SearchSoftwarePage.hearing}/${SearchSoftwarePage.motor}/${SearchSoftwarePage.cognitive}"
           }
         }
+
         "have a software vendor with minimal detail" which {
           def secondVendor: Element = softwareVendorsSection.selectHead("#software-vendor-1")
 
@@ -362,8 +363,8 @@ class SearchSoftwareViewSpec extends ViewSpec {
             val headingLink: Element = secondVendor.selectHead("h3").selectHead("a")
             headingLink.attr("target") shouldBe "_blank"
             headingLink.attr("rel") shouldBe "noopener noreferrer"
-            headingLink.attr("href") shouldBe softwareVendors.vendors(1).url
-            headingLink.text shouldBe s"${softwareVendors.vendors(1).name} (opens in a new tab)"
+            headingLink.attr("href") shouldBe testSoftwareVendors.vendors(1).url
+            headingLink.text shouldBe s"${testSoftwareVendors.vendors(1).name} (opens in a new tab)"
           }
 
           "has a list of detail for the software vendor with minimal detail" in {
@@ -375,6 +376,21 @@ class SearchSoftwareViewSpec extends ViewSpec {
 
             val secondRow: Option[Element] = summaryList.selectOptionally("div:nth-of-type(2)")
             secondRow shouldBe None
+          }
+        }
+
+        "displays a message when the list is empty" which {
+          val emptyListMessage = document(
+            softwareVendors = SoftwareVendors(lastUpdated = lastUpdateTest, vendors = Seq.empty[SoftwareVendorModel])
+          ).mainContent.selectHead(".empty-list")
+
+          "contains a paragraph" in {
+            emptyListMessage.selectHead("p").text shouldBe SearchSoftwarePage.emptyVendorListMessage
+          }
+
+          "contains two bullet points" in {
+            emptyListMessage.selectNth("ul li", 1).text shouldBe SearchSoftwarePage.emptyVendorListMessageBullet1
+            emptyListMessage.selectNth("ul li", 2).text shouldBe SearchSoftwarePage.emptyVendorListMessageBullet2
           }
         }
       }
@@ -408,6 +424,9 @@ class SearchSoftwareViewSpec extends ViewSpec {
     }
 
     val numberOfVendors = "Currently there are 2 software providers"
+    val emptyVendorListMessage = "Your search has returned no results. To increase the number of results, we suggest you:"
+    val emptyVendorListMessageBullet1 = "reduce the number of filters you apply"
+    val emptyVendorListMessageBullet2 = "make sure the name you have entered into the search bar is correct"
     val pricing = "Pricing:"
     val freeTrial = "Free trial"
     val freeVersion = "Free version"
@@ -437,7 +456,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
     val cognitive = "Cognitive"
   }
 
-  private def page(hasError: Boolean) =
+  private def page(softwareVendors: SoftwareVendors, hasError: Boolean) =
     searchSoftwarePage(
       softwareVendors,
       if (hasError) {
@@ -448,6 +467,6 @@ class SearchSoftwareViewSpec extends ViewSpec {
       Call("POST", "/test-url")
     )
 
-  private def document(hasError: Boolean = false): Document = Jsoup.parse(page(hasError).body)
+  private def document(softwareVendors: SoftwareVendors = testSoftwareVendors, hasError: Boolean = false): Document = Jsoup.parse(page(softwareVendors, hasError).body)
 
 }
