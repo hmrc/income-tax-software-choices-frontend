@@ -51,7 +51,9 @@ class SearchSoftwareViewSpec extends ViewSpec {
           VendorFilter.Visual,
           VendorFilter.Hearing,
           VendorFilter.Motor,
-          VendorFilter.Cognitive
+          VendorFilter.Cognitive,
+          VendorFilter.RecordKeeping,
+          VendorFilter.Bridging
         )
       ),
       SoftwareVendorModel(
@@ -161,24 +163,8 @@ class SearchSoftwareViewSpec extends ViewSpec {
         }
       }
 
-      "has a business type section" that {
-        val checkboxGroup = getCheckboxGroup(3)
-
-        "contains a fieldset legend" in {
-          checkboxGroup.selectHead("legend").text shouldBe SearchSoftwarePage.Filters.businessType
-        }
-
-        "contains an Individual checkbox" in {
-          validateCheckboxInGroup(checkboxGroup, 1, Individual.key, SearchSoftwarePage.individual)
-        }
-
-        "contains an Agent checkbox" in {
-          validateCheckboxInGroup(checkboxGroup, 2, Agent.key, SearchSoftwarePage.agent)
-        }
-      }
-
       "has a compatible with section" that {
-        val checkboxGroup = getCheckboxGroup(4)
+        val checkboxGroup = getCheckboxGroup(3)
 
         "contains a fieldset legend" in {
           checkboxGroup.selectHead("legend").text shouldBe SearchSoftwarePage.Filters.compatibleWith
@@ -194,7 +180,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
       }
 
       "has a mobile app section" that {
-        val checkboxGroup = getCheckboxGroup(5)
+        val checkboxGroup = getCheckboxGroup(4)
 
         "contains a fieldset legend" in {
           checkboxGroup.selectHead("legend").text shouldBe SearchSoftwarePage.Filters.mobileApp
@@ -209,8 +195,56 @@ class SearchSoftwareViewSpec extends ViewSpec {
         }
       }
 
-      "has a software compatibility section" that {
+      "has a software type section" that {
+        val checkboxGroup = getCheckboxGroup(5)
+
+        "contains a label" in {
+          checkboxGroup.selectHead("legend").text shouldBe SearchSoftwarePage.Filters.softwareType
+        }
+
+        "contains an BrowserBased checkbox" in {
+          validateCheckboxInGroup(checkboxGroup, 1, BrowserBased.key, SearchSoftwarePage.browserBased)
+        }
+
+        "contains an ApplicationBased checkbox" in {
+          validateCheckboxInGroup(checkboxGroup, 2, ApplicationBased.key, SearchSoftwarePage.applicationBased)
+        }
+      }
+
+      "has a software for section" that {
         val checkboxGroup = getCheckboxGroup(6)
+
+        "contains a fieldset legend" in {
+          checkboxGroup.selectHead("legend").text shouldBe SearchSoftwarePage.Filters.softwareFor
+        }
+
+        "contains a RecordKeeping checkbox" in {
+          validateCheckboxInGroup(checkboxGroup, 1, RecordKeeping.key, SearchSoftwarePage.recordKeeping)
+        }
+
+        "contains a Bridging checkbox" in {
+          validateCheckboxInGroup(checkboxGroup, 2, Bridging.key, SearchSoftwarePage.bridging)
+        }
+      }
+
+      "has a business type section" that {
+        val checkboxGroup = getCheckboxGroup(7)
+
+        "contains a fieldset legend" in {
+          checkboxGroup.selectHead("legend").text shouldBe SearchSoftwarePage.Filters.businessType
+        }
+
+        "contains an Individual checkbox" in {
+          validateCheckboxInGroup(checkboxGroup, 1, Individual.key, SearchSoftwarePage.individual)
+        }
+
+        "contains an Agent checkbox" in {
+          validateCheckboxInGroup(checkboxGroup, 2, Agent.key, SearchSoftwarePage.agent)
+        }
+      }
+
+      "has a software compatibility section" that {
+        val checkboxGroup = getCheckboxGroup(8)
 
         "contains a fieldset legend" in {
           checkboxGroup.selectHead("legend").text shouldBe SearchSoftwarePage.Filters.softwareCompatibility
@@ -232,24 +266,8 @@ class SearchSoftwareViewSpec extends ViewSpec {
         }
       }
 
-      "has a software type section" that {
-        val checkboxGroup = getCheckboxGroup(7)
-
-        "contains a label" in {
-          checkboxGroup.selectHead("legend").text shouldBe SearchSoftwarePage.Filters.softwareType
-        }
-
-        "contains an BrowserBased checkbox" in {
-          validateCheckboxInGroup(checkboxGroup, 1, BrowserBased.key, SearchSoftwarePage.browserBased)
-        }
-
-        "contains an ApplicationBased checkbox" in {
-          validateCheckboxInGroup(checkboxGroup, 2, ApplicationBased.key, SearchSoftwarePage.applicationBased)
-        }
-      }
-
       "has an accessibility needs section" that {
-        val checkboxGroup = getCheckboxGroup(8)
+        val checkboxGroup = getCheckboxGroup(9)
 
         "contains a label" in {
           checkboxGroup.selectHead("legend").text shouldBe SearchSoftwarePage.Filters.accessibilityNeeds
@@ -417,6 +435,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
       val compatibleWith = "Compatible with"
       val mobileApp = "Mobile app"
       val softwareType = "Software type"
+      val softwareFor = "Software for"
       val softwareCompatibility = "Software compatibility"
       val accessibilityNeeds = "Accessibility needs"
       val applyFilters = "Apply filters"
@@ -441,6 +460,8 @@ class SearchSoftwareViewSpec extends ViewSpec {
     val compatibleWith = "Compatible with:"
     val microsoftWindows = "Microsoft Windows"
     val macOS = "Mac OS"
+    val recordKeeping = "Record keeping"
+    val bridging = "Bridging"
     val mobileApp = "Mobile app:"
     val android = "Android"
     val appleIOS = "Apple iOS"
@@ -467,6 +488,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
       Call("POST", "/test-url")
     )
 
-  private def document(softwareVendors: SoftwareVendors = testSoftwareVendors, hasError: Boolean = false): Document = Jsoup.parse(page(softwareVendors, hasError).body)
+  private def document(softwareVendors: SoftwareVendors = testSoftwareVendors, hasError: Boolean = false): Document =
+    Jsoup.parse(page(softwareVendors, hasError).body)
 
 }

@@ -22,7 +22,9 @@
         "cognitive",
         "sole-trader",
         "uk-property",
-        "overseas-property"
+        "overseas-property",
+        "record-keeping",
+        "bridging"
       ]
     },
     {
@@ -43,7 +45,8 @@
         "motor",
         "vat",
         "uk-property",
-        "overseas-property"
+        "overseas-property",
+        "record-keeping"
       ]
     },
     {
@@ -57,7 +60,8 @@
         "application-based",
         "hearing",
         "cognitive",
-        "sole-trader"
+        "sole-trader",
+        "bridging"
       ]
     }
   ]
