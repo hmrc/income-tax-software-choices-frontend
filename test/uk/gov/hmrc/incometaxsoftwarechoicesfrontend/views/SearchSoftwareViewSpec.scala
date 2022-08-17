@@ -67,7 +67,9 @@ class SearchSoftwareViewSpec extends ViewSpec {
   "Search software page" should {
     "have a breadcrumb menu" which {
       "contains to guidance page" in {
-        document().selectNth(".govuk-breadcrumbs__list-item", 1).text shouldBe "Guidance"
+        val link = document().selectNth(".govuk-breadcrumbs__list-item", 1).selectHead("a")
+        link.text shouldBe "Guidance"
+        link.attr("href") shouldBe appConfig.guidance
       }
 
       "contains the current page" in {
