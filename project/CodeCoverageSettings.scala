@@ -6,7 +6,7 @@ object CodeCoverageSettings {
   private val excludedPackages: Seq[String] = Seq(
     "<empty>",
     "Reverse.*",
-    "testOnly.*"
+    ".*testonly.*"
   )
 
   private val excludedFiles: Seq[String] = Seq(

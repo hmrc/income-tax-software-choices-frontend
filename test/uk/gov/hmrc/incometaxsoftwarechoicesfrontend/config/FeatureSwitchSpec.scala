@@ -16,20 +16,23 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config
 
-import play.api.Configuration
+import org.scalatestplus.play.PlaySpec
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.BetaFeatures
 
-import javax.inject.{Inject, Singleton}
+class FeatureSwitchSpec extends PlaySpec {
 
-@Singleton
-class AppConfig @Inject()(val config: Configuration) {
-
-  val welshLanguageSupportEnabled: Boolean = config.getOptional[Boolean]("features.welsh-language-support").getOrElse(false)
-
-  val guidance: String = config.get[String]("guidance.url")
-
-  val contactHost: String = config.get[String]("contact-frontend.host")
-  val contactFormServiceIdentifier: String = config.get[String]("contact-frontend.serviceId")
-  val betaFeedbackUnauthenticatedUrl: String =
-    s"$contactHost/contact/beta-feedback-unauthenticated?service=$contactFormServiceIdentifier"
+  "FeatureSwitch.get" should {
+    "return some feature switch" when {
+      "the feature switch exists" in {
+        FeatureSwitch.get("enable-beta-features") mustBe Some(BetaFeatures)
+      }
+    }
+    "return none" when {
+      "the feature switch does not exists" in {
+        FeatureSwitch.get("does-not-exist") mustBe None
+      }
+    }
+  }
 
 }
