@@ -1,6 +1,7 @@
 # microservice specific routes
 
 ->         /hmrc-frontend        hmrcfrontend.Routes
+GET        /product-details      uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.ProductDetailsController.show(software: Option[String] ?= None)
 GET        /                     uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SearchSoftwareController.show
 POST       /                     uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SearchSoftwareController.search
 POST       /ajax                 uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SearchSoftwareController.ajaxSearch
