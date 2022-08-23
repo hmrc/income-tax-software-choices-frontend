@@ -16,9 +16,12 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config
 
+import play.api.Logging
 import play.api.i18n.MessagesApi
-import play.api.mvc.Request
+import play.api.mvc.Results.NotFound
+import play.api.mvc.{Request, RequestHeader, Result}
 import play.twirl.api.Html
+import uk.gov.hmrc.http.NotFoundException
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.ErrorTemplate
 import uk.gov.hmrc.play.bootstrap.frontend.http.FrontendErrorHandler
 
@@ -26,8 +29,19 @@ import javax.inject.{Inject, Singleton}
 
 @Singleton
 class ErrorHandler @Inject()(errorTemplate: ErrorTemplate, val messagesApi: MessagesApi)
-  extends FrontendErrorHandler {
+  extends FrontendErrorHandler with Logging {
 
   override def standardErrorTemplate(pageTitle: String, heading: String, message: String)(implicit request: Request[_]): Html =
     errorTemplate(pageTitle, heading, message)
+
+  override def resolveError(rh: RequestHeader, ex: Throwable): Result = {
+    ex match {
+      case _: NotFoundException =>
+        NotFound(notFoundTemplate(Request(rh, "")))
+      case _ =>
+        logger.error(s"[ErrorHandler][resolveError] Internal Server Error, (${rh.method})(${rh.uri})", ex)
+        super.resolveError(rh, ex)
+    }
+  }
+
 }

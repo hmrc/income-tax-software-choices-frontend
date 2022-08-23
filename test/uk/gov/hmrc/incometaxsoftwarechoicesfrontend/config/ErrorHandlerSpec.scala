@@ -20,6 +20,8 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.Application
+import play.api.http.HeaderNames.CACHE_CONTROL
+import play.api.http.Status.INTERNAL_SERVER_ERROR
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.FakeRequest
 
@@ -43,6 +45,14 @@ class ErrorHandlerSpec extends AnyWordSpec
     "render HTML" in {
       val html = handler.standardErrorTemplate("title", "heading", "message")(fakeRequest)
       html.contentType shouldBe "text/html"
+    }
+  }
+
+  "resolveError" should {
+    "handle unknown exceptions as 500s, with no-cache set" in {
+      val header = handler.resolveError(fakeRequest, new Exception("dummy")).header
+      header.headers should contain ((CACHE_CONTROL -> "no-cache"))
+      header.status should be (INTERNAL_SERVER_ERROR)
     }
   }
 
