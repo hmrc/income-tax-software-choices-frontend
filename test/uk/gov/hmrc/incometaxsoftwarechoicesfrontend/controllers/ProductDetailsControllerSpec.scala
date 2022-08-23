@@ -16,32 +16,50 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
+import org.scalatest.BeforeAndAfterEach
 import play.api.http.Status
 import play.api.mvc.MessagesControllerComponents
 import play.api.test.Helpers._
+import uk.gov.hmrc.http.NotFoundException
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.BetaFeatures
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.ProductDetailsPage
 
-class ProductDetailsControllerSpec extends ControllerBaseSpec {
+class ProductDetailsControllerSpec extends ControllerBaseSpec with FeatureSwitching with BeforeAndAfterEach {
 
   private val mcc = app.injector.instanceOf[MessagesControllerComponents]
+  val appConfig = app.injector.instanceOf[AppConfig]
   private val productDetailsPage = app.injector.instanceOf[ProductDetailsPage]
 
-  "Show" should {
-    "return OK status with the product details page" in withController { controller =>
-      val result = controller.show(None)(fakeRequest)
+  protected override def beforeEach(): Unit = {
+    disable(BetaFeatures)
+  }
 
-      status(result) shouldBe Status.OK
+  "Show" when {
+    "beta features are enabled" should {
+      "return OK status with the product details page" in withController { controller =>
+        enable(BetaFeatures)
+        val result = controller.show(None)(fakeRequest)
+
+        status(result) shouldBe Status.OK
+      }
+    }
+    "beta features are not enabled" should {
+      "throw not found exception" in withController { controller =>
+        intercept[NotFoundException](await(controller.show(None)(fakeRequest))).message should be ("[ProductDetailsController][show] - Beta features is not enabled")
+      }
     }
   }
 
   private def withController(testCode: ProductDetailsController => Any): Unit = {
     val controller = new ProductDetailsController(
       mcc,
+      appConfig,
       productDetailsPage
     )
 
     testCode(controller)
   }
-
 
 }

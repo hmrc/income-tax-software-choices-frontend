@@ -17,16 +17,27 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import uk.gov.hmrc.http.NotFoundException
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.BetaFeatures
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.ProductDetailsPage
 
 import javax.inject.{Inject, Singleton}
 
 @Singleton
 class ProductDetailsController @Inject()(mcc: MessagesControllerComponents,
-                                         productDetailsPage: ProductDetailsPage) extends BaseFrontendController(mcc) {
+                                         val appConfig: AppConfig,
+                                         productDetailsPage: ProductDetailsPage) extends BaseFrontendController(mcc) with FeatureSwitching {
 
   def show(software: Option[String]): Action[AnyContent] = Action { implicit request =>
-    Ok(productDetailsPage(software))
+    if (isEnabled(BetaFeatures)) {
+      Ok(productDetailsPage(software))
+    } else {
+      throw new NotFoundException("[ProductDetailsController][show] - Beta features is not enabled")
+    }
   }
+
+
 
 }

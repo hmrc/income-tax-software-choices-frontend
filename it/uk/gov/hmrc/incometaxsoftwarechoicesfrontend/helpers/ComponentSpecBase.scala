@@ -26,6 +26,8 @@ import play.api.i18n.{Messages, MessagesApi}
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.ws.{WSClient, WSResponse}
 import play.api.test.FakeRequest
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.baseURI
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FiltersFormModel
@@ -36,7 +38,10 @@ trait ComponentSpecBase extends AnyWordSpec
   with CustomMatchers
   with ScalaFutures
   with IntegrationPatience
-  with GuiceOneServerPerSuite {
+  with GuiceOneServerPerSuite
+  with FeatureSwitching {
+
+  implicit lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
 
   private val wsClient = app.injector.instanceOf[WSClient]
   private val baseUrl = s"http://localhost:$port"
@@ -50,6 +55,8 @@ trait ComponentSpecBase extends AnyWordSpec
 
   object SoftwareChoicesFrontend {
     def startPage(): WSResponse = get("/")
+
+    def productDetails(): WSResponse = get("/product-details")
 
     def submitSearch(search: FiltersFormModel): WSResponse = post("/")(
       FiltersForm.form.fill(search).data.map { case (k, v) => (k, Seq(v)) }
