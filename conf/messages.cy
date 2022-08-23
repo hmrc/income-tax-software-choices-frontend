@@ -3,8 +3,11 @@ base.title                  = {0} - Find software for Making Tax Digital for Inc
 base.title.error            = Gwall: {0} - Find software for Making Tax Digital for Income Tax - GOV.UK
 base.error-heading          = Mae problem wedi codi
 
-breadcrumbs.guidance        = Guidance
-breadcrumbs.filter          = Filter
+breadcrumbs.guidance                = ?
+breadcrumbs.filter                  = ?
+breadcrumbs.details                 = ?
+
+product-details.title               = ?
 
 search-software.title               = ?
 search-software.last-update         = ?
