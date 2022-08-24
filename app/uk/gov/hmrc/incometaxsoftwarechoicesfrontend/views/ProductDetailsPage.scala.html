@@ -33,7 +33,7 @@
   form: FormWithCSRF,
   govukButton: GovukButton
 )(implicit appConfig: AppConfig)
-@(software: Option[String])(implicit request: Request[_], messages: Messages)
+@(softwareVendor: SoftwareVendorModel)(implicit request: Request[_], messages: Messages)
 
 @pageBreadcrumbs = {
   @breadcrumbs(Breadcrumbs(
@@ -56,7 +56,6 @@
 
 @mainTemplate(title = messages("search-software.title"), breadcrumbs = Some(pageBreadcrumbs)) {
 
-  <p> Product details for software "@{software}" </p>
-  <p> Not implemented - See <a href="https://jira.tools.tax.service.gov.uk/browse/ITSASU-1508">Jira</a> </p>
+  <p> Product details for software vendor "@{softwareVendor}" </p>
 
 }

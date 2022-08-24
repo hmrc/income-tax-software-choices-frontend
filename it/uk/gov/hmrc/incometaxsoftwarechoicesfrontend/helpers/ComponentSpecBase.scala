@@ -56,7 +56,7 @@ trait ComponentSpecBase extends AnyWordSpec
   object SoftwareChoicesFrontend {
     def startPage(): WSResponse = get("/")
 
-    def productDetails(): WSResponse = get("/product-details")
+    def productDetails(name:String): WSResponse = get(s"/product-details?software=$name")
 
     def submitSearch(search: FiltersFormModel): WSResponse = post("/")(
       FiltersForm.form.fill(search).data.map { case (k, v) => (k, Seq(v)) }

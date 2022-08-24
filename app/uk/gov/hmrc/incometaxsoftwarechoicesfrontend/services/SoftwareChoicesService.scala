@@ -20,7 +20,7 @@ import play.api.libs.json._
 import play.api.{Environment, Logging}
 import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareVendors, VendorFilter}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareVendorModel, SoftwareVendors, VendorFilter}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.SoftwareChoicesService.softwareVendorsFileName
 
 import javax.inject.{Inject, Singleton}
@@ -41,6 +41,8 @@ class SoftwareChoicesService @Inject()(environment: Environment) extends Logging
     case JsError(errors) =>
       throw new InternalServerException(s"[SoftwareChoicesService][softwareVendors] - Json parse failures - ${errors.mkString(",")}")
   }
+
+  def getSoftwareVendor(software: String): Option[SoftwareVendorModel] = softwareVendors.vendors.collectFirst({ case vendor if (vendor.name == software) => vendor})
 
   val filters: Seq[VendorFilter] = softwareVendors.vendors.head.filters
 
