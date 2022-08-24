@@ -24,30 +24,46 @@ import uk.gov.hmrc.http.NotFoundException
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.BetaFeatures
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.SoftwareChoicesService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.ProductDetailsPage
 
 class ProductDetailsControllerSpec extends ControllerBaseSpec with FeatureSwitching with BeforeAndAfterEach {
 
   private val mcc = app.injector.instanceOf[MessagesControllerComponents]
-  val appConfig = app.injector.instanceOf[AppConfig]
+  val appConfig:AppConfig = app.injector.instanceOf[AppConfig]
   private val productDetailsPage = app.injector.instanceOf[ProductDetailsPage]
+  private val softwareChoicesService = app.injector.instanceOf[SoftwareChoicesService]
 
   protected override def beforeEach(): Unit = {
     disable(BetaFeatures)
   }
 
   "Show" when {
-    "beta features are enabled" should {
-      "return OK status with the product details page" in withController { controller =>
-        enable(BetaFeatures)
-        val result = controller.show(None)(fakeRequest)
+    "beta features are enabled" when {
+      "a valid param has been passed" should {
+        "return OK status with the product details page" in withController { controller =>
+          enable(BetaFeatures)
+          val result = controller.show(Some("test software vendor name one"))(fakeRequest)
 
-        status(result) shouldBe Status.OK
+          status(result) shouldBe Status.OK
+        }
+      }
+      "an invalid param has been passed" should {
+        "return OK status with the product details page" in withController { controller =>
+          enable(BetaFeatures)
+          intercept[NotFoundException](await(controller.show(Some("dummy"))(fakeRequest))).message should be (ProductDetailsController.NotFound)
+        }
+      }
+      "no param has been passed" should {
+        "return OK status with the product details page" in withController { controller =>
+          enable(BetaFeatures)
+          intercept[NotFoundException](await(controller.show(None)(fakeRequest))).message should be (ProductDetailsController.NotProvided)
+        }
       }
     }
     "beta features are not enabled" should {
       "throw not found exception" in withController { controller =>
-        intercept[NotFoundException](await(controller.show(None)(fakeRequest))).message should be ("[ProductDetailsController][show] - Beta features is not enabled")
+        intercept[NotFoundException](await(controller.show(None)(fakeRequest))).message should be (ProductDetailsController.NotEnabled)
       }
     }
   }
@@ -56,6 +72,7 @@ class ProductDetailsControllerSpec extends ControllerBaseSpec with FeatureSwitch
     val controller = new ProductDetailsController(
       mcc,
       appConfig,
+      softwareChoicesService,
       productDetailsPage
     )
 

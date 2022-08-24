@@ -21,6 +21,7 @@ import uk.gov.hmrc.http.NotFoundException
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.BetaFeatures
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.SoftwareChoicesService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.ProductDetailsPage
 
 import javax.inject.{Inject, Singleton}
@@ -28,16 +29,28 @@ import javax.inject.{Inject, Singleton}
 @Singleton
 class ProductDetailsController @Inject()(mcc: MessagesControllerComponents,
                                          val appConfig: AppConfig,
+                                         softwareChoicesService: SoftwareChoicesService,
                                          productDetailsPage: ProductDetailsPage) extends BaseFrontendController(mcc) with FeatureSwitching {
 
   def show(software: Option[String]): Action[AnyContent] = Action { implicit request =>
     if (isEnabled(BetaFeatures)) {
-      Ok(productDetailsPage(software))
+      software match {
+        case None =>
+          throw new NotFoundException(ProductDetailsController.NotProvided)
+        case Some(softwareName) => softwareChoicesService.getSoftwareVendor(softwareName) match {
+          case None => throw new NotFoundException(ProductDetailsController.NotFound)
+          case Some(softwareVendor) => Ok(productDetailsPage(softwareVendor))
+        }
+      }
     } else {
-      throw new NotFoundException("[ProductDetailsController][show] - Beta features is not enabled")
+      throw new NotFoundException(ProductDetailsController.NotEnabled)
     }
   }
 
+}
 
-
+object ProductDetailsController {
+  val NotProvided = "[ProductDetailsController][show] - Software vendor not provided"
+  val NotFound = "[ProductDetailsController][show] - Software vendor not found"
+  val NotEnabled = "[ProductDetailsController][show] - Beta features is not enabled"
 }

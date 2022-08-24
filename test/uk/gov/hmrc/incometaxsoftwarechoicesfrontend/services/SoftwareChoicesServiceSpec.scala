@@ -117,4 +117,28 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
     }
   }
 
+  "get software vendor" when {
+    "fetching a software vendor which exists" should {
+      "return that vendor" in new Setup {
+        when(mockEnvironment.resourceAsStream(eqTo(SoftwareChoicesService.softwareVendorsFileName)))
+          .thenReturn(Some(new FileInputStream("test/resources/test-valid-software-vendors.json")))
+
+        private val name = "test software vendor one"
+        private val maybeVendorModel: Option[SoftwareVendorModel] = service.getSoftwareVendor(name)
+        maybeVendorModel.isDefined mustBe true
+        maybeVendorModel.get.name mustBe name
+      }
+    }
+    "fetching a software vendor which does not exist" should {
+      "return None" in new Setup {
+        when(mockEnvironment.resourceAsStream(eqTo(SoftwareChoicesService.softwareVendorsFileName)))
+          .thenReturn(Some(new FileInputStream("test/resources/test-valid-software-vendors.json")))
+
+        private val name = "test software vendor one hundred"
+        private val maybeVendorModel: Option[SoftwareVendorModel] = service.getSoftwareVendor(name)
+        maybeVendorModel.isDefined mustBe false
+      }
+    }
+  }
+
 }

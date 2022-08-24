@@ -32,9 +32,9 @@ class ProductDetailsControllerISpec extends ComponentSpecBase with BeforeAndAfte
     "feature switch is off" should {
       "respond with 200 status" in {
         When(s"GET ${address} is called")
-        val response = SoftwareChoicesFrontend.productDetails()
+        val response = SoftwareChoicesFrontend.productDetails("test software vendor name one")
 
-        Then("Should return OK with the software search page")
+        Then("Should return Not Found")
         response should have(
           httpStatus(NOT_FOUND)
         )
@@ -42,14 +42,24 @@ class ProductDetailsControllerISpec extends ComponentSpecBase with BeforeAndAfte
     }
 
     "feature switch is on" should {
-      "respond with 200 status" in {
+      "respond with 200 status for a real software name" in {
         When(s"GET ${address} is called")
         enable(BetaFeatures)
-        val response = SoftwareChoicesFrontend.productDetails()
+        val response = SoftwareChoicesFrontend.productDetails("test software vendor name one")
 
         Then("Should return OK with the software search page")
         response should have(
           httpStatus(OK)
+        )
+      }
+      "respond with 404 status for a fake software name" in {
+        When(s"GET ${address} is called")
+        enable(BetaFeatures)
+        val response = SoftwareChoicesFrontend.productDetails("fake")
+
+        Then("Should return Not Found")
+        response should have(
+          httpStatus(NOT_FOUND)
         )
       }
     }
