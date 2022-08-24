@@ -37,6 +37,9 @@ class SearchSoftwareViewSpec extends ViewSpec {
       SoftwareVendorModel(
         name = "test software vendor one",
         url = "/test-vendor-one-url",
+        email = "test@software-vendor-name-one.com",
+        phone = "11111 111 111",
+        website = "software-vendor-name-one.com",
         filters = Seq(
           VendorFilter.FreeVersion,
           VendorFilter.FreeTrial,
@@ -59,6 +62,9 @@ class SearchSoftwareViewSpec extends ViewSpec {
       SoftwareVendorModel(
         name = "test software vendor two",
         url = "/test-vendor-two-url",
+        email = "test@software-vendor-name-two.com",
+        phone = "22222 222 222",
+        website = "software-vendor-name-two.com",
         filters = Seq.empty[VendorFilter]
       )
     )

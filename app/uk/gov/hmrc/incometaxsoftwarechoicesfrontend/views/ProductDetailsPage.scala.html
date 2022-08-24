@@ -14,24 +14,22 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.govukfrontend.views.Implicits.RichCheckboxes
 @import uk.gov.hmrc.govukfrontend.views.html.components._
 @import uk.gov.hmrc.govukfrontend.views.viewmodels.breadcrumbs.{Breadcrumbs, BreadcrumbsItem}
 @import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
+@import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcNewTabLinkHelper
+@import uk.gov.hmrc.hmrcfrontend.views.viewmodels.newtablinkhelper.NewTabLinkHelper
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SoftwareVendorsTemplate
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTemplate
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes.SearchSoftwareController
-@import views.html.helper.CSPNonce
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTemplate
 
 @this(
   mainTemplate: MainTemplate,
   breadcrumbs: GovukBreadcrumbs,
   form: FormWithCSRF,
-  govukButton: GovukButton
+  govukButton: GovukButton,
+  hmrcNewTabLinkHelper: HmrcNewTabLinkHelper
 )(implicit appConfig: AppConfig)
 @(softwareVendor: SoftwareVendorModel)(implicit request: Request[_], messages: Messages)
 
@@ -54,8 +52,43 @@
   ))
 }
 
-@mainTemplate(title = messages("search-software.title"), breadcrumbs = Some(pageBreadcrumbs)) {
+@mainTemplate(title = messages("product-details.title"), breadcrumbs = Some(pageBreadcrumbs)) {
 
-  <p> Product details for software vendor "@{softwareVendor}" </p>
+  <h2 class="govuk-heading-l">@messages("product-details.contact-details.heading")</h2>
+
+  <dl class="govuk-summary-list contact-details">
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">
+        @messages("product-details.contact-details.email"):
+      </dt>
+      <dd class="govuk-summary-list__value">
+        <p class="govuk-body">
+          <a class="govuk-link" href=@{s"mailto:${softwareVendor.email}"}>@{softwareVendor.email}</a>
+        </p>
+      </dd>
+    </div>
+
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">
+        @messages("product-details.contact-details.phone"):
+      </dt>
+      <dd class="govuk-summary-list__value">
+        <p class="govuk-body">
+          <a class="govuk-link" href=@{s"tel:${softwareVendor.phone}"}>@{softwareVendor.phone}</a>
+        </p>
+      </dd>
+    </div>
+
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">
+        @messages("product-details.contact-details.website"):
+      </dt>
+      <dd class="govuk-summary-list__value">
+        <p class="govuk-body">
+          @hmrcNewTabLinkHelper(NewTabLinkHelper(softwareVendor.website, Some(softwareVendor.website)))
+        </p>
+      </dd>
+    </div>
+  </dl>
 
 }

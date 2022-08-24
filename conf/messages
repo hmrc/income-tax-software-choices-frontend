@@ -76,3 +76,9 @@ search-software.vendor-detail.accessibility.visual = Visual
 search-software.vendor-detail.accessibility.hearing = Hearing
 search-software.vendor-detail.accessibility.motor = Motor
 search-software.vendor-detail.accessibility.cognitive = Cognitive
+
+product-details.title                      = Product details
+product-details.contact-details.heading    = Find out more or get help and support
+product-details.contact-details.email      = Email
+product-details.contact-details.phone      = Call
+product-details.contact-details.website    = Visit website

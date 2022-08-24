@@ -28,6 +28,9 @@ class SoftwareVendorsSpec extends PlaySpec {
       Json.obj(
         "name" -> "software vendor name",
         "url" -> "/test-url",
+        "email" -> "test@software-vendor-name.com",
+        "phone" -> "00000 000 000",
+        "website" -> "software-vendor-name.com",
         "filters" -> Json.arr()
       )
     )
@@ -39,6 +42,9 @@ class SoftwareVendorsSpec extends PlaySpec {
       SoftwareVendorModel(
         name = "software vendor name",
         url = "/test-url",
+        email = "test@software-vendor-name.com",
+        phone = "00000 000 000",
+        website = "software-vendor-name.com",
         filters = Seq.empty[VendorFilter]
       )
     )
