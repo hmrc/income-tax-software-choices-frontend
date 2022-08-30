@@ -39,7 +39,7 @@ See Route files for more information.
 
 * Login via: Not needed.
 * Entry page: [http://localhost:9591/making-tax-digital-income-tax-software/](http://localhost:9591/making-tax-digital-income-tax-software/)
-* Feature switches: None at present
+* Feature switches: [http://localhost:9591/making-tax-digital-income-tax-software/test-only/feature-switch](http://localhost:9591/making-tax-digital-income-tax-software/test-only/feature-switch)
 
 ### Staging
 
@@ -47,7 +47,7 @@ See Route files for more information.
 
 * Login via: N/A
 * Entry page : [https://www.staging.tax.service.gov.uk/making-tax-digital-income-tax-software/](https://www.staging.tax.service.gov.uk/making-tax-digital-income-tax-software/)
-* Feature switches: N/A
+* Feature switches: [https://www.staging.tax.service.gov.uk/making-tax-digital-income-tax-software/test-only/feature-switch](https://www.staging.tax.service.gov.uk/making-tax-digital-income-tax-software/test-only/feature-switch)
 
 ### Notes on behaviour
 
