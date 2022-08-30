@@ -18,7 +18,7 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models
 
 import play.api.libs.json.{Json, Reads}
 
-case class SoftwareVendorModel(name: String, url: String, filters: Seq[VendorFilter])
+case class SoftwareVendorModel(name: String, url: String, email: String, phone: String, website: String, filters: Seq[VendorFilter])
 
 object SoftwareVendorModel {
   implicit val reads: Reads[SoftwareVendorModel] = Json.reads[SoftwareVendorModel]

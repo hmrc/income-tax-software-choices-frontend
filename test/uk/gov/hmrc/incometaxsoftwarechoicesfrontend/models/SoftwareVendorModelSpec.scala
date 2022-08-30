@@ -24,6 +24,9 @@ class SoftwareVendorModelSpec extends PlaySpec {
   val fullJson: JsObject = Json.obj(
     "name" -> "software vendor name",
     "url" -> "/test-url",
+    "email" -> "test@software-vendor-name.com",
+    "phone" -> "00000 000 000",
+    "website" -> "software-vendor-name.com",
     "filters" -> Json.arr(
       VendorFilter.FreeVersion.key,
       VendorFilter.FreeTrial.key,
@@ -45,6 +48,9 @@ class SoftwareVendorModelSpec extends PlaySpec {
   val fullModel: SoftwareVendorModel = SoftwareVendorModel(
     name = "software vendor name",
     url = "/test-url",
+    email = "test@software-vendor-name.com",
+    phone = "00000 000 000",
+    website = "software-vendor-name.com",
     filters = Seq(
       VendorFilter.FreeVersion,
       VendorFilter.FreeTrial,

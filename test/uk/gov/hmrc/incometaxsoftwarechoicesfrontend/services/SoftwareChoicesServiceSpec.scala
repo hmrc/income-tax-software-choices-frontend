@@ -34,34 +34,61 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
     lazy val service: SoftwareChoicesService = new SoftwareChoicesService(mockEnvironment)
   }
 
+  private val testVendorOne = SoftwareVendorModel(
+    "test software vendor one",
+    "/test-url-one",
+    "test@software-vendor-name-one.com",
+    "11111 111 111",
+    "software-vendor-name-one.com",
+    Seq(FreeVersion)
+  )
+
+  private val testVendorTwo = SoftwareVendorModel(
+    "test software vendor two",
+    "/test-url-two",
+    "test@software-vendor-name-two.com",
+    "22222 222 222",
+    "software-vendor-name-two.com",
+    Seq(FreeTrial)
+  )
+
+  private val testVendorThree = SoftwareVendorModel(
+    "test software vendor three",
+    "/test-url-three",
+    "test@software-vendor-name-three.com",
+    "33333 333 333",
+    "software-vendor-name-three.com",
+    Seq(FreeTrial, FreeVersion)
+  )
+
   val expectedSoftwareVendors: SoftwareVendors = SoftwareVendors(
     lastUpdated = "06/07/2022",
     vendors = Seq(
-      SoftwareVendorModel("test software vendor one", "/test-url-one", Seq(FreeVersion)),
-      SoftwareVendorModel("test software vendor two", "/test-url-two", Seq(FreeTrial)),
-      SoftwareVendorModel("test software vendor three", "/test-url-three", Seq(FreeTrial, FreeVersion)),
+      testVendorOne,
+      testVendorTwo,
+      testVendorThree,
     )
   )
 
   val expectedFilteredByVendorNameSoftwareVendors: SoftwareVendors = SoftwareVendors(
     lastUpdated = "06/07/2022",
     vendors = Seq(
-      SoftwareVendorModel("test software vendor two", "/test-url-two", Seq(FreeTrial))
+      testVendorTwo
     )
   )
 
   val expectedFilteredByVendorFilterSoftwareVendors: SoftwareVendors = SoftwareVendors(
     lastUpdated = "06/07/2022",
     vendors = Seq(
-      SoftwareVendorModel("test software vendor two", "/test-url-two", Seq(FreeTrial)),
-      SoftwareVendorModel("test software vendor three", "/test-url-three", Seq(FreeTrial, FreeVersion))
+      testVendorTwo,
+      testVendorThree
     )
   )
 
   val expectedFilteredSoftwareVendors: SoftwareVendors = SoftwareVendors(
     lastUpdated = "06/07/2022",
     vendors = Seq(
-      SoftwareVendorModel("test software vendor three", "/test-url-three", Seq(FreeTrial, FreeVersion))
+      testVendorThree
     )
   )
 
