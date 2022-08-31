@@ -98,3 +98,53 @@ body:not(.js-enabled) {
 .govuk-fieldset > .govuk-form-group {
   margin: 0;
 }
+
+.software-vendors-num {
+    width: 100%;
+    display: block;
+    border-bottom-style: solid;
+    border-bottom-width: thin;
+    border-bottom-color: #b1b4b6;
+    margin-bottom: 15px;
+}
+
+.software-packages-full {
+    width: auto;
+    height: auto;
+    display: block;
+    margin-top: 20px;
+}
+
+.full-software-package {
+    height: 65px;
+    width: 100%;
+    border-bottom-style: solid;
+    border-bottom-width: thin;
+    border-bottom-color: #b1b4b6;
+    display: block;
+}
+
+.software-packages-ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.software-packages-ul li {
+    margin-top: -1px;
+    /* Prevent double borders */
+    padding: 12px;
+    text-decoration: none;
+    font-size: 18px;
+    color: black;
+    display: block;
+}
+
+.software-package {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    height: auto;
+    width: 800px;
+    float: left;
+    display: block;
+}

@@ -10,6 +10,7 @@ breadcrumbs.details                 = Details
 product-details.title               = Product Details
 
 search-software.title               = Choose the right software for your needs
+search-software.count               = software providers
 search-software.last-update         = This page was last updated
 search-software.heading             = Choose the right software for your needs
 search-software.paragraph1          = All software on this page has been through HMRC’s recognition process. But we do not endorse or recommend any one product or software provider.

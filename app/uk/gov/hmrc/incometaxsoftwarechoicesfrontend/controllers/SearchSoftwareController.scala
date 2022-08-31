@@ -19,18 +19,23 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 import play.api.data.Form
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import play.twirl.api.Html
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.BetaFeatures
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FiltersFormModel, SoftwareVendors}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.SoftwareChoicesService
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.{SearchSoftwarePage, SoftwareVendorsTemplate}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.{SearchSoftwarePage, SoftwareVendorsTemplate, SoftwareVendorsTemplateAlpha}
 
 import javax.inject.{Inject, Singleton}
 
 @Singleton
 class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
+                                         val appConfig: AppConfig,
                                          searchSoftwarePage: SearchSoftwarePage,
+                                         softwareVendorsTemplateAlpha: SoftwareVendorsTemplateAlpha,
                                          softwareVendorsTemplate: SoftwareVendorsTemplate,
-                                         softwareChoicesService: SoftwareChoicesService) extends BaseFrontendController(mcc) {
+                                         softwareChoicesService: SoftwareChoicesService) extends BaseFrontendController(mcc) with FeatureSwitching {
 
   val show: Action[AnyContent] = Action { implicit request =>
     val vendors: SoftwareVendors = softwareChoicesService.softwareVendors
@@ -58,13 +63,17 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
       },
       search => {
         val vendors = softwareChoicesService.filterVendors(search.searchTerm, search.filters)
-        Ok(softwareVendorsTemplate(vendors))
+        if (isEnabled(BetaFeatures)) {
+          Ok(softwareVendorsTemplate(vendors))
+        } else {
+          Ok(softwareVendorsTemplateAlpha(vendors))
+        }
       }
     )
   }
 
   private def view(vendors: SoftwareVendors, form: Form[FiltersFormModel] = FiltersForm.form)
                   (implicit request: Request[_]): Html =
-    searchSoftwarePage(vendors, form, routes.SearchSoftwareController.search)
+    searchSoftwarePage(vendors, form, routes.SearchSoftwareController.search, isEnabled(BetaFeatures))
 
 }

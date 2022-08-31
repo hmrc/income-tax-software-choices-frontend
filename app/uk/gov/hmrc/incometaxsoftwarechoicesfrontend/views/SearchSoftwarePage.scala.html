@@ -23,18 +23,20 @@
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SoftwareVendorsTemplate
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SoftwareVendorsTemplateAlpha
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTemplate
 @import views.html.helper.CSPNonce
 
 @this(
   mainTemplate: MainTemplate,
   softwareVendorsTemplate: SoftwareVendorsTemplate,
+  softwareVendorsTemplateAlpha: SoftwareVendorsTemplateAlpha,
   breadcrumbs: GovukBreadcrumbs,
   form: FormWithCSRF,
   govukCheckboxes: GovukCheckboxes,
   govukButton: GovukButton
 )(implicit appConfig: AppConfig)
-@(softwareVendors: SoftwareVendors, searchForm: Form[FiltersFormModel], postAction: Call)(implicit request: Request[_], messages: Messages)
+@(softwareVendors: SoftwareVendors, searchForm: Form[FiltersFormModel], postAction: Call, betaFeatures: Boolean)(implicit request: Request[_], messages: Messages)
 
 @js = {
   <script @{CSPNonce.attr} src="@routes.Assets.versioned("lib/jquery/jquery.min.js")"></script>
@@ -287,7 +289,11 @@
         <div id="software-vendors">
           <div class="loading-status" aria-hidden="true"></div>
           <div id="software-vendor-list">
-            @softwareVendorsTemplate(softwareVendors)
+            @if(betaFeatures) {
+              @softwareVendorsTemplate(softwareVendors)
+            } else {
+              @softwareVendorsTemplateAlpha(softwareVendors)
+            }
           </div>
         </div>
       </div>

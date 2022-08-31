@@ -18,22 +18,30 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import org.mockito.ArgumentMatchersSugar.eqTo
 import org.mockito.MockitoSugar.{mock, when}
+import org.scalatest.BeforeAndAfterEach
 import play.api.Environment
 import play.api.http.Status
 import play.api.mvc.{Codec, MessagesControllerComponents}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.BetaFeatures
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.SoftwareChoicesService
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.{SearchSoftwarePage, SoftwareVendorsTemplate}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.{SearchSoftwarePage, SoftwareVendorsTemplate, SoftwareVendorsTemplateAlpha}
 
 import java.io.FileInputStream
 
-class SearchSoftwareControllerSpec extends ControllerBaseSpec {
+class SearchSoftwareControllerSpec extends ControllerBaseSpec with BeforeAndAfterEach with FeatureSwitching {
 
   private val mcc = app.injector.instanceOf[MessagesControllerComponents]
+  val appConfig = app.injector.instanceOf[AppConfig]
   private val searchSoftwarePage = app.injector.instanceOf[SearchSoftwarePage]
+  private val searchVendorsTemplateAlpha = app.injector.instanceOf[SoftwareVendorsTemplateAlpha]
   private val searchVendorsTemplate = app.injector.instanceOf[SoftwareVendorsTemplate]
+
+  protected override def beforeEach() = disable(BetaFeatures)
 
   "Show" should {
     "return OK status with the search software page" in withController { controller =>
@@ -64,65 +72,107 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec {
     }
   }
 
-  "ajaxSearch" should {
-    "return OK status with with the correct count returned for an empty filter" in withController { controller =>
-      val result = controller.ajaxSearch(FakeRequest("POST", "/")
-        .withFormUrlEncodedBody())
+  "ajaxSearch" when {
+    "beta features are off" should {
+      "return OK status with with the correct count returned for an empty filter" in withController { controller =>
+        val message = getCountMessage(3)
+        val tuple = Seq.empty[(String, String)]
 
-      status(result) shouldBe Status.OK
-      contentType(result) shouldBe Some(HTML)
-      contentAsString(result) should include("Currently there are 3 software providers")
-      charset(result) shouldBe Some(Codec.utf_8.charset)
+        testSearch(controller, message, tuple)
+      }
+
+      "return OK status with the correct count returned for a vendor name search" in withController { controller =>
+        val message = getCountMessage(1)
+        val tuple = Seq(FiltersForm.searchTerm -> "test software vendor three")
+
+        testSearch(controller, message, tuple)
+      }
+
+      "return OK status with the correct count returned for a vendor name search (case insensitive)" in withController { controller =>
+        val message = getCountMessage(1)
+        val tuple = Seq(FiltersForm.searchTerm -> "TEST SOFTWARE VENDOR THREE")
+
+        testSearch(controller, message, tuple)
+      }
+
+      "return OK status with the correct count returned for one filter" in withController { controller =>
+        val message = getCountMessage(2)
+        val tuple = Seq(FiltersForm.searchTerm -> "Vendor", s"${FiltersForm.filters}[0]" -> "free-version")
+
+        testSearch(controller, message, tuple)
+      }
+
+      "return OK status with the correct count returned for two filters" in withController { controller =>
+        val message = getCountMessage(1)
+        val tuple = Seq(FiltersForm.searchTerm -> "Vendor", s"${FiltersForm.filters}[0]" -> "free-version", s"${FiltersForm.filters}[1]" -> "free-trial")
+
+        testSearch(controller, message, tuple)
+      }
     }
+    "beta features are on" should {
+      "return OK status with with the correct count returned for an empty filter" in withController { controller =>
+        enable(BetaFeatures)
+        val message = getCountMessage(3, true)
+        val tuple = Seq.empty[(String, String)]
 
-    "return OK status with the correct count returned for a vendor name search" in withController { controller =>
-      val result = controller.ajaxSearch(FakeRequest("POST", "/")
-        .withFormUrlEncodedBody(FiltersForm.searchTerm -> "test software vendor three"))
+        testSearch(controller, message, tuple)
+      }
 
-      status(result) shouldBe Status.OK
-      contentType(result) shouldBe Some(HTML)
-      contentAsString(result) should include("Currently there are 1 software providers")
-      charset(result) shouldBe Some(Codec.utf_8.charset)
+      "return OK status with the correct count returned for a vendor name search" in withController { controller =>
+        enable(BetaFeatures)
+        val message = getCountMessage(1, true)
+        val tuple = Seq(FiltersForm.searchTerm -> "test software vendor three")
+
+        testSearch(controller, message, tuple)
+      }
+
+      "return OK status with the correct count returned for a vendor name search (case insensitive)" in withController { controller =>
+        enable(BetaFeatures)
+        val message = getCountMessage(1, true)
+        val tuple = Seq(FiltersForm.searchTerm -> "TEST SOFTWARE VENDOR THREE")
+
+        testSearch(controller, message, tuple)
+      }
+
+      "return OK status with the correct count returned for one filter" in withController { controller =>
+        enable(BetaFeatures)
+        val message = getCountMessage(2, true)
+        val tuple = Seq(FiltersForm.searchTerm -> "Vendor", s"${FiltersForm.filters}[0]" -> "free-version")
+
+        testSearch(controller, message, tuple)
+      }
+
+      "return OK status with the correct count returned for two filters" in withController { controller =>
+        enable(BetaFeatures)
+        val message = getCountMessage(1, true)
+        val tuple = Seq(FiltersForm.searchTerm -> "Vendor", s"${FiltersForm.filters}[0]" -> "free-version", s"${FiltersForm.filters}[1]" -> "free-trial")
+
+        testSearch(controller, message, tuple)
+      }
     }
+    "ajaxSearch" when {
+      "return BAD_REQUEST" in withController { controller =>
+        val result = controller.ajaxSearch(FakeRequest("POST", "/").withFormUrlEncodedBody((FiltersForm.searchTerm, "test" * 65)))
 
-    "return OK status with the correct count returned for a vendor name search (case insensitive)" in withController { controller =>
-      val result = controller.ajaxSearch(FakeRequest("POST", "/")
-        .withFormUrlEncodedBody(FiltersForm.searchTerm -> "TEST SOFTWARE VENDOR THREE"))
-
-      status(result) shouldBe Status.OK
-      contentType(result) shouldBe Some(HTML)
-      contentAsString(result) should include("Currently there are 1 software providers")
-      charset(result) shouldBe Some(Codec.utf_8.charset)
-    }
-
-    "return OK status with the correct count returned for one filter" in withController { controller =>
-      val result = controller.ajaxSearch(FakeRequest("POST", "/")
-        .withFormUrlEncodedBody(FiltersForm.searchTerm -> "Vendor", s"${FiltersForm.filters}[0]" -> "free-version"))
-
-      status(result) shouldBe Status.OK
-      contentType(result) shouldBe Some(HTML)
-      contentAsString(result) should include("Currently there are 2 software providers")
-      charset(result) shouldBe Some(Codec.utf_8.charset)
-    }
-
-    "return OK status with the correct count returned for two filters" in withController { controller =>
-      val result = controller.ajaxSearch(FakeRequest("POST", "/")
-        .withFormUrlEncodedBody(FiltersForm.searchTerm -> "Vendor", s"${FiltersForm.filters}[0]" -> "free-version", s"${FiltersForm.filters}[1]" -> "free-trial"))
-
-      status(result) shouldBe Status.OK
-      contentType(result) shouldBe Some(HTML)
-      contentAsString(result) should include("Currently there are 1 software providers")
-      charset(result) shouldBe Some(Codec.utf_8.charset)
-    }
-
-    "return BAD_REQUEST" in withController { controller =>
-      val result = controller.ajaxSearch(FakeRequest("POST", "/").withFormUrlEncodedBody((FiltersForm.searchTerm, "test" * 65)))
-
-      status(result) shouldBe Status.BAD_REQUEST
-      contentType(result) shouldBe Some(HTML)
-      charset(result) shouldBe Some(Codec.utf_8.charset)
+        status(result) shouldBe Status.BAD_REQUEST
+        contentType(result) shouldBe Some(HTML)
+        charset(result) shouldBe Some(Codec.utf_8.charset)
+      }
     }
   }
+
+  private def testSearch(controller: SearchSoftwareController, message: String, tuple: Seq[(String, String)]) = {
+    val result = controller.ajaxSearch(FakeRequest("POST", "/").withFormUrlEncodedBody(tuple: _*))
+    status(result) shouldBe Status.OK
+    contentType(result) shouldBe Some(HTML)
+    contentAsString(result) should include(message)
+    charset(result) shouldBe Some(Codec.utf_8.charset)
+  }
+
+  private def getCountMessage(value: Int, beta: Boolean = false) = if (beta)
+    s"<b>$value</b> software providers"
+  else
+    s"Currently there are $value software providers"
 
   private def withController(testCode: SearchSoftwareController => Any): Unit = {
     val mockEnvironment: Environment = mock[Environment]
@@ -134,7 +184,9 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec {
 
     val controller = new SearchSoftwareController(
       mcc,
+      appConfig,
       searchSoftwarePage,
+      searchVendorsTemplateAlpha,
       searchVendorsTemplate,
       softwareChoicesService
     )

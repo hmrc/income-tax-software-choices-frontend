@@ -30,118 +30,14 @@
 
 @(softwareVendors: SoftwareVendors)(implicit messages: Messages)
 
-@customSummaryListRow(key: String, filtersAvailable: Seq[VendorFilter]) = @{
-
-  val value: String = filtersAvailable
-          .map(filter => messages(s"search-software.vendor-detail.$key.${filter.key}"))
-          .mkString("/")
-
-  if(value.nonEmpty) {
-    Some(SummaryListRow(
-      key = Key(
-        content = Text(messages(s"search-software.vendor-detail.$key")),
-        classes = "govuk-body-s govuk-summary-list--key-override"
-      ),
-      value = Value(
-        content = Text(value),
-        classes = "govuk-body-s govuk-summary-list--value-override"
-      )
-    ))
-  } else {
-    None
-  }
-}
-
-@softwareVendorPricing(filters: Seq[VendorFilter]) = @{
-
-  val key: String = {messages("search-software.vendor-detail.pricing")}
-  val value = Seq(
-    if(filters.contains(FreeTrial)) messages("search-software.vendor-detail.pricing.free-trial") else messages("search-software.vendor-detail.pricing.no-free-trial"),
-    if(filters.contains(FreeVersion)) messages("search-software.vendor-detail.pricing.free-version") else messages("search-software.vendor-detail.pricing.no-free-version")
-  ).mkString("/")
-
-  Some(SummaryListRow(
-    key = Key(
-      content = Text(key),
-      classes = "govuk-body-s govuk-summary-list--key-override"
-    ),
-    value = Value(
-      content = Text(value),
-      classes = "govuk-body-s govuk-summary-list--value-override"
-    )
-  ))
-
-}
-
-@softwareVendorBusinessType(filters: Seq[VendorFilter]) = @{
-
-  customSummaryListRow(
-    key = "business-type",
-    filtersAvailable = filters.filter(SoftwareChoicesService.businessTypeFilters)
-  )
-
-}
-
-@softwareVendorCompatibleWith(filters: Seq[VendorFilter]) = @{
-
-  customSummaryListRow(
-    key = "compatible-with",
-    filtersAvailable = filters.filter(SoftwareChoicesService.compatibleWithFilters)
-  )
-
-}
-
-@softwareVendorMobileApp(filters: Seq[VendorFilter]) = @{
-
-  customSummaryListRow(
-    key = "mobile-app",
-    filtersAvailable = filters.filter(SoftwareChoicesService.mobileAppFilters)
-  )
-
-}
-
-@softwareVendorSoftwareType(filters: Seq[VendorFilter]) = @{
-
-  customSummaryListRow(
-    key = "software-type",
-    filtersAvailable = filters.filter(SoftwareChoicesService.softwareTypeFilters)
-  )
-
-}
-
-@softwareVendorAccessibility(filters: Seq[VendorFilter]) = @{
-
-  customSummaryListRow(
-    key = "accessibility",
-    filtersAvailable = filters.filter(SoftwareChoicesService.accessibilityFilters)
-  )
-
-}
-
-@softwareVendorDetail(filters: Seq[VendorFilter]) = @{
-  Seq(
-    softwareVendorPricing(filters),
-    softwareVendorBusinessType(filters),
-    softwareVendorCompatibleWith(filters),
-    softwareVendorMobileApp(filters),
-    softwareVendorSoftwareType(filters),
-    softwareVendorAccessibility(filters)
-  ).flatten
-}
-
 @softwareVendorListing(vendor: SoftwareVendorModel, index: Int) = {
-  <div id="software-vendor-@index">
-    <h3 class="govuk-heading-m software-vendor-list-heading-override">
-    @hmrcNewTabLinkHelper(NewTabLinkHelper(
-      text = vendor.name,
-      href = Some(vendor.url)
-    ))
-    </h3>
-    @govukSummaryList(SummaryList(
-      rows = softwareVendorDetail(vendor.filters),
-      classes = "govuk-summary-list--no-border"
-    ))
-  </div>
+  <li>
+    <div class="full-software-package">
+      <div class="software-package">
+        <h3 class="govuk-heading-m" id="@{"software-vendor-" + index}"><a class="govuk-link govuk-link--no-visited-state" href="@{"product-details?software=" + vendor.name}">@{vendor.name}</a> </h3>
+      </div>
+    </div>
+  </li>
 }
 
 @if(softwareVendors.vendors.isEmpty) {
@@ -153,11 +49,15 @@
     </ul>
   </div>
 } else {
-  <h3 class="govuk-body govuk-!-font-weight-bold" id="vendor-count">
-  @messages("search-software.vendor-count", softwareVendors.vendors.length)
-  </h3>
-}
+  <div class="software-vendors-num">
+    <p class="govuk-body">
+      <b>@{softwareVendors.vendors.size}</b> @messages("search-software.count")
+    </p>
+  </div>
+  <div class="software-packages-full">
+    <ul class="software-packages-ul">
 
-@softwareVendors.vendors.zipWithIndex.map { case (vendor, index) =>
-  @softwareVendorListing(vendor, index)
+      @softwareVendors.vendors.zipWithIndex.map { case (vendor, index) => @softwareVendorListing(vendor, index) }
+    </ul>
+  </div>
 }
