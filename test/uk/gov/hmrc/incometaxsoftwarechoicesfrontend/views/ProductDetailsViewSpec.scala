@@ -37,7 +37,7 @@ class ProductDetailsViewSpec extends ViewSpec {
     val productDetailsHeading: String = "Product details"
 
     val pricing: String = "Pricing"
-    val freeTrail: String = "Free trail"
+    val freeTrail: String = "Free trial"
     val freeVersion: String = "Free version"
 
     val incomeType: String = "Income type"
