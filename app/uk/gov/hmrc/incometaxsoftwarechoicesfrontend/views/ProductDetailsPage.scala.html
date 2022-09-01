@@ -111,6 +111,13 @@
   )
 }
 
+@softwareForRow = @{
+  productDetailsRow(
+    key = "software-for",
+    filtersInRow = Seq(RecordKeeping, Bridging)
+  )
+}
+
 @businessTypeRow = @{
   productDetailsRow(
     key = "business-type",
@@ -174,6 +181,7 @@
       compatibleWithRow,
       mobileAppRow,
       softwareTypeRow,
+      softwareForRow,
       businessTypeRow,
       softwareCompatibilityRow,
       accessibilityRow
