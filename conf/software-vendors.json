@@ -7,6 +7,7 @@
       "email": "test@software-vendor-name-one.com",
       "phone": "11111 111 111",
       "website": "software-vendor-name-one.com",
+      "accessibilityStatementLink": "http://www.example.com",
       "filters": [
         "free-version",
         "free-trial",

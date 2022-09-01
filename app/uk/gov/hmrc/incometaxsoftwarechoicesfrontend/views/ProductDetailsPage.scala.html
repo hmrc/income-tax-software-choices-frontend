@@ -140,6 +140,19 @@
   )
 }
 
+@accessibilityStatement(linkText: String) = {
+  <h2 class="govuk-heading-l">@{messages("product-details.accessibility-statement.heading")}</h2>
+  @govukSummaryList(SummaryList(
+    rows = Seq(
+      SummaryListRow(
+        key = Key(content = Text(messages("product-details.accessibility-statement.key"))),
+        value = Value(content = HtmlContent(link({linkText}, {linkText})))
+      )
+    )
+  ))
+}
+
+
 @link(href: String, text: String) = {
   <a class="govuk-link" href="@href">@text</a>
 }
@@ -180,5 +193,6 @@
     ).flatten
   ))
 
+  @{softwareVendor.accessibilityStatementLink.map(linkText => accessibilityStatement(linkText))}
 
 }
