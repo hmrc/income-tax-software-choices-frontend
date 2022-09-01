@@ -28,6 +28,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 import scala.collection.JavaConverters._
 
 trait ViewSpec extends AnyWordSpecLike with Matchers with GuiceOneAppPerSuite {
+
   implicit val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
 
   implicit lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]

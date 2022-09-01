@@ -21,15 +21,15 @@
 @import uk.gov.hmrc.hmrcfrontend.views.viewmodels.newtablinkhelper.NewTabLinkHelper
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes.SearchSoftwareController
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTemplate
 
 @this(
   mainTemplate: MainTemplate,
   breadcrumbs: GovukBreadcrumbs,
-  form: FormWithCSRF,
-  govukButton: GovukButton,
-  hmrcNewTabLinkHelper: HmrcNewTabLinkHelper
+  hmrcNewTabLinkHelper: HmrcNewTabLinkHelper,
+  govukSummaryList : GovukSummaryList
 )(implicit appConfig: AppConfig)
 @(softwareVendor: SoftwareVendorModel)(implicit request: Request[_], messages: Messages)
 
@@ -52,43 +52,133 @@
   ))
 }
 
+@productDetailsRow(key: String, filtersInRow: Seq[VendorFilter]) = @{
+
+  val rowContentMessages = softwareVendor.filters.filter(filtersInRow.contains).map { filter =>
+    messages(s"product-details.details.${filter.key}")
+  }.map { value =>
+    <p class="govuk-body">{value}</p>
+  }.mkString
+
+  if(rowContentMessages.isEmpty) {
+    None
+  } else {
+    Some(SummaryListRow(
+      key = Key(
+        content = Text(messages(s"product-details.details.$key"))
+      ),
+      value = Value(
+        content = HtmlContent(
+          rowContentMessages
+        )
+      )
+    ))
+  }
+}
+
+@pricingRow = @{
+  productDetailsRow(
+    key = "pricing",
+    filtersInRow = Seq(FreeTrial, FreeVersion)
+  )
+}
+
+@incomeTypeRow = @{
+  productDetailsRow(
+    key = "income-type",
+    filtersInRow = Seq(SoleTrader, UkProperty, OverseasProperty)
+  )
+}
+
+@compatibleWithRow = @{
+  productDetailsRow(
+    key = "compatible-with",
+    filtersInRow = Seq(MicrosoftWindows, MacOS)
+  )
+}
+
+@mobileAppRow = @{
+  productDetailsRow(
+    key = "mobile-app",
+    filtersInRow = Seq(Android, AppleIOS)
+  )
+}
+
+@softwareTypeRow = @{
+  productDetailsRow(
+    key = "software-type",
+    filtersInRow = Seq(BrowserBased, ApplicationBased)
+  )
+}
+
+@businessTypeRow = @{
+  productDetailsRow(
+    key = "business-type",
+    filtersInRow = Seq(Individual, Agent)
+  )
+}
+
+@softwareCompatibilityRow = @{
+
+  val incomeTaxContent = s"<p class='govuk-body'>${messages("product-details.details.income-tax")}</p>"
+  val vatContent = softwareVendor.filters.find(_ == Vat).map(filter => <p class='govuk-body'>{messages(s"product-details.details.${filter.key}")}</p>).getOrElse("")
+
+  Some(SummaryListRow(
+    key = Key(
+      content = Text(messages("product-details.details.software-compatibility"))
+    ),
+    value = Value(
+      content = HtmlContent(incomeTaxContent + vatContent)
+    )
+  ))
+}
+
+@accessibilityRow = @{
+  productDetailsRow(
+    key = "accessibility",
+    filtersInRow = Seq(Visual, Hearing, Motor, Cognitive)
+  )
+}
+
+@link(href: String, text: String) = {
+  <a class="govuk-link" href="@href">@text</a>
+}
+
 @mainTemplate(title = messages("product-details.title"), breadcrumbs = Some(pageBreadcrumbs)) {
 
   <h2 class="govuk-heading-l">@messages("product-details.contact-details.heading")</h2>
 
-  <dl class="govuk-summary-list contact-details">
-    <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key">
-        @messages("product-details.contact-details.email"):
-      </dt>
-      <dd class="govuk-summary-list__value">
-        <p class="govuk-body">
-          <a class="govuk-link" href=@{s"mailto:${softwareVendor.email}"}>@{softwareVendor.email}</a>
-        </p>
-      </dd>
-    </div>
+  @govukSummaryList(SummaryList(
+    rows = Seq(
+      SummaryListRow(
+        key = Key(content = Text(s"${messages("product-details.contact-details.email")}:")),
+        value = Value(content = HtmlContent(link(href = s"mailto:${softwareVendor.email}", text = softwareVendor.email)))
+      ),
+      SummaryListRow(
+        key = Key(content = Text(s"${messages("product-details.contact-details.phone")}:")),
+        value = Value(content = Text(softwareVendor.phone))
+      ),
+      SummaryListRow(
+        key = Key(content = Text(s"${messages("product-details.contact-details.website")}:")),
+        value = Value(content = HtmlContent(link(href = softwareVendor.website, text = softwareVendor.website)))
+      )
+    )
+  ))
 
-    <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key">
-        @messages("product-details.contact-details.phone"):
-      </dt>
-      <dd class="govuk-summary-list__value">
-        <p class="govuk-body">
-          <a class="govuk-link" href=@{s"tel:${softwareVendor.phone}"}>@{softwareVendor.phone}</a>
-        </p>
-      </dd>
-    </div>
+  <h2 class="govuk-heading-l">@messages("product-details.details.heading")</h2>
 
-    <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key">
-        @messages("product-details.contact-details.website"):
-      </dt>
-      <dd class="govuk-summary-list__value">
-        <p class="govuk-body">
-          @hmrcNewTabLinkHelper(NewTabLinkHelper(softwareVendor.website, Some(softwareVendor.website)))
-        </p>
-      </dd>
-    </div>
-  </dl>
+  @govukSummaryList(SummaryList(
+    rows = Seq(
+      pricingRow,
+      incomeTypeRow,
+      compatibleWithRow,
+      mobileAppRow,
+      softwareTypeRow,
+      businessTypeRow,
+      softwareCompatibilityRow,
+      accessibilityRow
+    ).flatten
+  ))
+
 
 }
