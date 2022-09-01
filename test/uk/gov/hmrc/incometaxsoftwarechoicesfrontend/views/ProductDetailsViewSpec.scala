@@ -253,7 +253,7 @@ class ProductDetailsViewSpec extends ViewSpec {
           .selectNth("dl", 3)
         row.selectHead("dt").text shouldBe ProductDetailsPage.accessibilityStatement
         row.selectHead("dd").text shouldBe linkText
-        row.selectHead("dd").selectHead("a").getElementsByAttribute("href").text() shouldBe linkText
+        row.selectHead("dd").selectHead("a").attr("href") shouldBe linkText
       }
     }
   }
