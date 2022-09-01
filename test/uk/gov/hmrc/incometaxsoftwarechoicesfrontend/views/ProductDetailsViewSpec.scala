@@ -57,6 +57,10 @@ class ProductDetailsViewSpec extends ViewSpec {
     val browserBased: String = "Browser based"
     val applicationBased: String = "Application based"
 
+    val softwareFor: String = "Software for"
+    val recordKeeping: String = "Record keeping"
+    val bridging: String = "Bridging"
+
     val businessType: String = "Business type"
     val individual: String = "Individual"
     val agent: String = "Agent"
@@ -202,8 +206,16 @@ class ProductDetailsViewSpec extends ViewSpec {
         detail.selectNth("p", 1).text shouldBe ProductDetailsPage.browserBased
         detail.selectNth("p", 2).text shouldBe ProductDetailsPage.applicationBased
       }
-      "display the business type row" in {
+      "display the software for row" in {
         val row: Element = document().selectNth("dl", 2).selectNth("div", 6)
+        row.selectHead("dt").text shouldBe ProductDetailsPage.softwareFor
+
+        val detail: Element = row.selectHead("dd")
+        detail.selectNth("p", 1).text shouldBe ProductDetailsPage.recordKeeping
+        detail.selectNth("p", 2).text shouldBe ProductDetailsPage.bridging
+      }
+      "display the business type row" in {
+        val row: Element = document().selectNth("dl", 2).selectNth("div", 7)
         row.selectHead("dt").text shouldBe ProductDetailsPage.businessType
 
         val detail: Element = row.selectHead("dd")
@@ -211,7 +223,7 @@ class ProductDetailsViewSpec extends ViewSpec {
         detail.selectNth("p", 2).text shouldBe ProductDetailsPage.agent
       }
       "display the software compatibility row" in {
-        val row: Element = document().selectNth("dl", 2).selectNth("div", 7)
+        val row: Element = document().selectNth("dl", 2).selectNth("div", 8)
         row.selectHead("dt").text shouldBe ProductDetailsPage.softwareCompatibility
 
         val detail: Element = row.selectHead("dd")
@@ -219,7 +231,7 @@ class ProductDetailsViewSpec extends ViewSpec {
         detail.selectNth("p", 2).text shouldBe ProductDetailsPage.vat
       }
       "display the accessibility row" in {
-        val row: Element = document().selectNth("dl", 2).selectNth("div", 8)
+        val row: Element = document().selectNth("dl", 2).selectNth("div", 9)
         row.selectHead("dt").text shouldBe ProductDetailsPage.accessibility
 
         val detail: Element = row.selectHead("dd")
