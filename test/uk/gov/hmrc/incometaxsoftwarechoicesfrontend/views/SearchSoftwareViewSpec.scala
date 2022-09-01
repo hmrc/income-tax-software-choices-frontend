@@ -25,6 +25,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FiltersFormModel, SoftwareVendorModel, SoftwareVendors, VendorFilter}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SearchSoftwarePage
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes.ProductDetailsController
 
 class SearchSoftwareViewSpec extends ViewSpec {
 
@@ -90,7 +91,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
             "has a heading link for the software vendor" in {
               val headingLink: Element = firstVendor.selectHead("h3").selectHead("a")
               val firstVendorInModel = testSoftwareVendors.vendors(0)
-              headingLink.attr("href") shouldBe SearchSoftwarePage.vendorLink + firstVendorInModel.name
+              headingLink.attr("href") shouldBe ProductDetailsController.show(Some(firstVendorInModel.name)).url
               headingLink.text shouldBe s"${firstVendorInModel.name}"
             }
           }
@@ -101,7 +102,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
             "has a heading link for the software vendor" in {
               val headingLink: Element = secondVendor.selectHead("h3").selectHead("a")
               val secondVendorInModel = testSoftwareVendors.vendors(1)
-              headingLink.attr("href") shouldBe SearchSoftwarePage.vendorLink + secondVendorInModel.name
+              headingLink.attr("href") shouldBe ProductDetailsController.show(Some(secondVendorInModel.name)).url
               headingLink.text shouldBe s"${secondVendorInModel.name}"
             }
 
@@ -495,7 +496,6 @@ class SearchSoftwareViewSpec extends ViewSpec {
     val numberOfVendorsAlpha = "Currently there are 2 software providers"
 
     val numberOfVendors = "2 software providers"
-    val vendorLink = "product-details?software="
 
     val emptyVendorListMessage = "Your search has returned no results. To increase the number of results, we suggest you:"
     val emptyVendorListMessageBullet1 = "reduce the number of filters you apply"
