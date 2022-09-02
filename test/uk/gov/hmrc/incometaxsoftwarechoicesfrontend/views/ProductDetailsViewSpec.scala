@@ -74,6 +74,8 @@ class ProductDetailsViewSpec extends ViewSpec {
     val hearing: String = "Hearing"
     val motor: String = "Motor"
     val cognitive: String = "Cognitive"
+
+    val accessibilityStatement: String = "Accessibility Statement"
   }
 
   val softwareVendorModelFull: SoftwareVendorModel = SoftwareVendorModel(
@@ -254,6 +256,16 @@ class ProductDetailsViewSpec extends ViewSpec {
         document(softwareVendorModelFull.copy(filters = Seq.empty[VendorFilter]))
           .selectNth("dl", 2)
           .selectOptionally("div:nth-of-type(2)") shouldBe None
+      }
+    }
+    "the software vendor has an accessibility statement" should {
+      "display the link to the statement" in {
+        val linkText = "accessibility statement"
+        val row: Element = document(softwareVendorModelFull.copy(accessibilityStatementLink = Some(linkText)))
+          .selectNth("dl", 3)
+        row.selectHead("dt").text shouldBe ProductDetailsPage.accessibilityStatement
+        row.selectHead("dd").text shouldBe linkText
+        row.selectHead("dd").selectHead("a").attr("href") shouldBe linkText
       }
     }
   }

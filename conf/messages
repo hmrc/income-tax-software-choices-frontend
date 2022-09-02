@@ -114,3 +114,6 @@ product-details.details.visual = Visual
 product-details.details.hearing = Hearing
 product-details.details.motor = Motor
 product-details.details.cognitive = Cognitive
+
+product-details.accessibility-statement.heading = Accessibility
+product-details.accessibility-statement.key = Accessibility Statement
