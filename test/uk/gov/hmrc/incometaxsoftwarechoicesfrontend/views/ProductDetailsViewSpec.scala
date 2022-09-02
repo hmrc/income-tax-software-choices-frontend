@@ -19,7 +19,9 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views
 import org.jsoup.Jsoup
 import org.jsoup.nodes.{Document, Element}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareVendorModel, VendorFilter}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.IncomeAndDeduction._
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{IncomeAndDeduction, SoftwareVendorModel, VendorFilter}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.ProductDetailsPage
 
 class ProductDetailsViewSpec extends ViewSpec {
@@ -75,6 +77,71 @@ class ProductDetailsViewSpec extends ViewSpec {
     val motor: String = "Motor"
     val cognitive: String = "Cognitive"
 
+    val incomesAndDeductionsHeading: String = "Self Assessment income and deduction types this software covers"
+    val blindPersonsAllowance: String = "Blind Person’s Allowance"
+    val capitalGainsTax: String = "Capital Gains Tax"
+    val complexPartnerships: String = "Complex partnerships"
+    val constructionIndustryScheme: String = "Construction Industry Scheme (CIS)"
+    val employment: String = "Employment"
+    val foreignIncome: String = "Foreign income"
+    val giftAid: String = "Gift Aid"
+    val highIncomeChildBenefit: String = "High Income Child Benefit"
+    val investments: String = "Investments"
+    val lloydsUnderwriters: String = "Lloyds underwriters"
+    val marriageAllowance: String = "Marriage Allowance"
+    val marriedAllowance: String = "Married Allowance"
+    val membersOfParliament: String = "Members of Parliament"
+    val ministersOfReligion: String = "Ministers of religion"
+    val partnerIncome: String = "Partner income"
+    val paye: String = "PAYE"
+    val pensionContributions: String = "Pension contributions"
+    val pensions: String = "Pensions"
+    val propertyBusiness: String = "Property business"
+    val residenceAndRemittance: String = "Residence and Remittance"
+    val saAdditionalIncome: String = "SA additional income"
+    val selfEmployment: String = "Self employment"
+    val simplePartnerships: String = "Simple partnerships"
+    val statePension: String = "State Pension"
+    val studentLoans: String = "Student loans"
+    val ukDividends: String = "UK dividends"
+    val ukInterest: String = "UK interest"
+
+    val allIncomeAndDeductions: Seq[String] = Seq(
+      blindPersonsAllowance,
+      capitalGainsTax,
+      complexPartnerships,
+      constructionIndustryScheme,
+      employment,
+      foreignIncome,
+      giftAid,
+      highIncomeChildBenefit,
+      investments,
+      lloydsUnderwriters,
+      marriageAllowance,
+      marriedAllowance,
+      membersOfParliament,
+      ministersOfReligion,
+      partnerIncome,
+      paye,
+      pensionContributions,
+      pensions,
+      propertyBusiness,
+      residenceAndRemittance,
+      saAdditionalIncome,
+      selfEmployment,
+      simplePartnerships,
+      statePension,
+      studentLoans,
+      ukDividends,
+      ukInterest
+    )
+
+    def numberCovered(name: String, covered: Int): String = {
+      val total = IncomeAndDeduction.incomeAndDeductionKeyToIncomeAndDeduction.toSeq.length
+      s"$name covers $covered out of $total:"
+    }
+
+    val accessibilityHeading: String = "Accessibility"
     val accessibilityStatement: String = "Accessibility Statement"
   }
 
@@ -85,27 +152,57 @@ class ProductDetailsViewSpec extends ViewSpec {
     phone = "00000 000 000",
     website = "software-vendor-name-three.com",
     filters = Seq(
-      VendorFilter.FreeTrial,
-      VendorFilter.FreeVersion,
-      VendorFilter.SoleTrader,
-      VendorFilter.UkProperty,
-      VendorFilter.OverseasProperty,
-      VendorFilter.Individual,
-      VendorFilter.Agent,
-      VendorFilter.MicrosoftWindows,
-      VendorFilter.MacOS,
-      VendorFilter.Android,
-      VendorFilter.AppleIOS,
-      VendorFilter.BrowserBased,
-      VendorFilter.ApplicationBased,
-      VendorFilter.Visual,
-      VendorFilter.Hearing,
-      VendorFilter.Motor,
-      VendorFilter.Cognitive,
-      VendorFilter.RecordKeeping,
-      VendorFilter.Bridging,
-      VendorFilter.Vat
-    )
+      FreeTrial,
+      FreeVersion,
+      SoleTrader,
+      UkProperty,
+      OverseasProperty,
+      Individual,
+      Agent,
+      MicrosoftWindows,
+      MacOS,
+      Android,
+      AppleIOS,
+      BrowserBased,
+      ApplicationBased,
+      Visual,
+      Hearing,
+      Motor,
+      Cognitive,
+      RecordKeeping,
+      Bridging,
+      Vat
+    ),
+    incomeAndDeductions = Seq(
+      BlindPersonsAllowance,
+      CapitalGainsTax,
+      ComplexPartnerships,
+      ConstructionIndustryScheme,
+      Employment,
+      ForeignIncome,
+      GiftAid,
+      HighIncomeChildBenefit,
+      Investments,
+      LloydsUnderwriters,
+      MarriageAllowance,
+      MarriedAllowance,
+      MemberOfParliament,
+      MinisterOfReligion,
+      PartnerIncome,
+      PAYE,
+      PensionContributions,
+      Pensions,
+      PropertyBusiness,
+      ResidenceAndRemittance,
+      SAAdditionalIncome,
+      SelfEmployment,
+      SimplePartnerships,
+      StatePension,
+      StudentLoans,
+      UKDividends,
+      UKInterest
+    ),
+    accessibilityStatementLink = Some("software-vendor-accessibility.com")
   )
 
   "ProductDetailsPage" must {
@@ -161,6 +258,24 @@ class ProductDetailsViewSpec extends ViewSpec {
 
     "have a product details heading" in {
       document().selectNth("h2", 2).text shouldBe ProductDetailsPage.productDetailsHeading
+    }
+
+    "have a income and deductions heading" in {
+      document().selectNth("h2", 3).text shouldBe ProductDetailsPage.incomesAndDeductionsHeading
+    }
+
+    "have an income and deductions summary" when {
+      "the vendor has a full set of incomes and deductions supported" in {
+        document().selectHead("h2:nth-of-type(3) + p").text shouldBe ProductDetailsPage.numberCovered(
+          softwareVendorModelFull.name,
+          softwareVendorModelFull.incomeAndDeductions.length
+        )
+      }
+      "the vendor has minimal incomes and deductions supported" in {
+        document(softwareVendorModelFull.copy(incomeAndDeductions = Seq.empty))
+          .selectHead("h2:nth-of-type(3) + p")
+          .text shouldBe ProductDetailsPage.numberCovered(softwareVendorModelFull.name, 0)
+      }
     }
 
   }
@@ -258,14 +373,44 @@ class ProductDetailsViewSpec extends ViewSpec {
           .selectOptionally("div:nth-of-type(2)") shouldBe None
       }
     }
+    "the software vendor has a complete set of supported incomes and deductions" should {
+      "display the incomes and deductions section with all values" in {
+        document()
+          .mainContent
+          .selectHead("ol")
+          .selectSeq("li")
+          .map(_.text) shouldBe ProductDetailsPage.allIncomeAndDeductions
+      }
+    }
+    "the software vendor has a minimal set of supported incomes and deductions" should {
+      "display the section without values" in {
+        document(softwareVendorModelFull.copy(incomeAndDeductions = Seq.empty))
+          .mainContent
+          .selectHead("ol")
+          .selectSeq("li")
+          .length shouldBe 0
+      }
+    }
     "the software vendor has an accessibility statement" should {
+      "display the heading for accessibility section" in {
+        document().selectNth("h2", 4).text shouldBe ProductDetailsPage.accessibilityHeading
+      }
       "display the link to the statement" in {
-        val linkText = "accessibility statement"
-        val row: Element = document(softwareVendorModelFull.copy(accessibilityStatementLink = Some(linkText)))
+        val row: Element = document()
           .selectNth("dl", 3)
         row.selectHead("dt").text shouldBe ProductDetailsPage.accessibilityStatement
-        row.selectHead("dd").text shouldBe linkText
-        row.selectHead("dd").selectHead("a").attr("href") shouldBe linkText
+        row.selectHead("dd").text shouldBe "software-vendor-accessibility.com"
+        row.selectHead("dd").selectHead("a").attr("href") shouldBe "software-vendor-accessibility.com"
+      }
+    }
+    "the software vendor does not have an accessibility statement" should {
+      "not display the heading for the accessibility section" in {
+        document(softwareVendorModelFull.copy(accessibilityStatementLink = None))
+          .selectOptionally("h2:nth-of-type(4)") shouldBe None
+      }
+      "not display the link to the statement" in {
+        document(softwareVendorModelFull.copy(accessibilityStatementLink = None))
+          .selectOptionally("dl:nth-of-type(3)") shouldBe None
       }
     }
   }

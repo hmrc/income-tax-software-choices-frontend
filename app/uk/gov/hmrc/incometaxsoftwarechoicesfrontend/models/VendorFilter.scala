@@ -113,28 +113,28 @@ object VendorFilter {
     override val key: String = "cognitive"
   }
 
-  val filterKeyToFilter: Map[String, VendorFilter] = Map(
-    FreeVersion.key -> FreeVersion,
-    FreeTrial.key -> FreeTrial,
-    SoleTrader.key -> SoleTrader,
-    UkProperty.key -> UkProperty,
-    OverseasProperty.key -> OverseasProperty,
-    Individual.key -> Individual,
-    Agent.key -> Agent,
-    MicrosoftWindows.key -> MicrosoftWindows,
-    MacOS.key -> MacOS,
-    Android.key -> Android,
-    AppleIOS.key -> AppleIOS,
-    BrowserBased.key -> BrowserBased,
-    ApplicationBased.key -> ApplicationBased,
-    RecordKeeping.key -> RecordKeeping,
-    Bridging.key -> Bridging,
-    Vat.key -> Vat,
-    Visual.key -> Visual,
-    Hearing.key -> Hearing,
-    Motor.key -> Motor,
-    Cognitive.key -> Cognitive
-  )
+  val filterKeyToFilter: Map[String, VendorFilter] = Seq(
+    FreeVersion,
+    FreeTrial,
+    SoleTrader,
+    UkProperty,
+    OverseasProperty,
+    Individual,
+    Agent,
+    MicrosoftWindows,
+    MacOS,
+    Android,
+    AppleIOS,
+    BrowserBased,
+    ApplicationBased,
+    RecordKeeping,
+    Bridging,
+    Vat,
+    Visual,
+    Hearing,
+    Motor,
+    Cognitive
+  ).map(value => value.key -> value).toMap
 
   implicit val reads: Reads[VendorFilter] = __.read[String] map filterKeyToFilter
 
