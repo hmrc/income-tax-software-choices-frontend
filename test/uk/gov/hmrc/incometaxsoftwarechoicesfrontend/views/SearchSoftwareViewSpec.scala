@@ -23,7 +23,7 @@ import play.api.data.FormError
 import play.api.mvc.Call
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FiltersFormModel, SoftwareVendorModel, SoftwareVendors, VendorFilter}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SearchSoftwarePage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes.ProductDetailsController
 
@@ -58,7 +58,8 @@ class SearchSoftwareViewSpec extends ViewSpec {
           VendorFilter.Cognitive,
           VendorFilter.RecordKeeping,
           VendorFilter.Bridging
-        )
+        ),
+        incomeAndDeductions = Seq.empty[IncomeAndDeduction]
       ),
       SoftwareVendorModel(
         name = "test software vendor two",
@@ -66,7 +67,8 @@ class SearchSoftwareViewSpec extends ViewSpec {
         email = "test@software-vendor-name-two.com",
         phone = "22222 222 222",
         website = "software-vendor-name-two.com",
-        filters = Seq.empty[VendorFilter]
+        filters = Seq.empty[VendorFilter],
+        incomeAndDeductions = Seq.empty[IncomeAndDeduction]
       )
     )
   )
@@ -90,7 +92,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
 
             "has a heading link for the software vendor" in {
               val headingLink: Element = firstVendor.selectHead("h3").selectHead("a")
-              val firstVendorInModel = testSoftwareVendors.vendors(0)
+              val firstVendorInModel = testSoftwareVendors.vendors.head
               headingLink.attr("href") shouldBe ProductDetailsController.show(Some(firstVendorInModel.name)).url
               headingLink.text shouldBe s"${firstVendorInModel.name}"
             }

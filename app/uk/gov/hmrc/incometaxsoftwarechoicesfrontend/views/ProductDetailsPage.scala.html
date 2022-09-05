@@ -33,6 +33,18 @@
 )(implicit appConfig: AppConfig)
 @(softwareVendor: SoftwareVendorModel)(implicit request: Request[_], messages: Messages)
 
+@mainTemplate(title = messages("product-details.title"), breadcrumbs = Some(pageBreadcrumbs)) {
+
+  @contactDetails
+
+  @productDetails
+
+  @incomeAndDeductionTypes
+
+  @softwareVendor.accessibilityStatementLink.map(linkText => accessibilityStatement(linkText))
+
+}
+
 @pageBreadcrumbs = {
   @breadcrumbs(Breadcrumbs(
     items = Seq(
@@ -47,6 +59,76 @@
       BreadcrumbsItem(
         content = Text(messages("breadcrumbs.details")),
         href = None
+      )
+    )
+  ))
+}
+
+@contactDetails = {
+  <h2 class="govuk-heading-l">@messages("product-details.contact-details.heading")</h2>
+
+  @govukSummaryList(SummaryList(
+    rows = Seq(
+      SummaryListRow(
+        key = Key(content = Text(s"${messages("product-details.contact-details.email")}:")),
+        value = Value(content = HtmlContent(link(href = s"mailto:${softwareVendor.email}", text = softwareVendor.email)))
+      ),
+      SummaryListRow(
+        key = Key(content = Text(s"${messages("product-details.contact-details.phone")}:")),
+        value = Value(content = Text(softwareVendor.phone))
+      ),
+      SummaryListRow(
+        key = Key(content = Text(s"${messages("product-details.contact-details.website")}:")),
+        value = Value(content = HtmlContent(link(href = softwareVendor.website, text = softwareVendor.website)))
+      )
+    )
+  ))
+}
+
+@productDetails = {
+  <h2 class="govuk-heading-l">@messages("product-details.details.heading")</h2>
+
+  @govukSummaryList(SummaryList(
+    rows = Seq(
+      pricingRow,
+      incomeTypeRow,
+      compatibleWithRow,
+      mobileAppRow,
+      softwareTypeRow,
+      softwareForRow,
+      businessTypeRow,
+      softwareCompatibilityRow,
+      accessibilityRow
+    ).flatten
+  ))
+}
+
+@incomeAndDeductionTypes = {
+  <h2 class="govuk-heading-l">@messages("product-details.income-and-deduction-types.heading")</h2>
+
+  <p class="govuk-body">
+    @messages(
+      "product-details.income-and-deduction-types.number-covered",
+      softwareVendor.name,
+      softwareVendor.incomeAndDeductions.length,
+      IncomeAndDeduction.incomeAndDeductionKeyToIncomeAndDeduction.toSeq.length
+    )
+  </p>
+
+  <ol class="govuk-list govuk-list--number">
+    @softwareVendor.incomeAndDeductions.map { incomeAndDeduction =>
+      <li>@messages(s"product-details.income-and-deduction-types.${incomeAndDeduction.key}")</li>
+    }
+  </ol>
+}
+
+@accessibilityStatement(linkText: String) = {
+  <h2 class="govuk-heading-l">@{messages("product-details.accessibility-statement.heading")}</h2>
+  @govukSummaryList(SummaryList(
+    rows = Seq(
+      SummaryListRow(
+        key = Key(content = Text(messages("product-details.accessibility-statement.key"))),
+        value = Value(content = HtmlContent(link(linkText, linkText)))
       )
     )
   ))
@@ -147,60 +229,6 @@
   )
 }
 
-@accessibilityStatement(linkText: String) = {
-  <h2 class="govuk-heading-l">@{messages("product-details.accessibility-statement.heading")}</h2>
-  @govukSummaryList(SummaryList(
-    rows = Seq(
-      SummaryListRow(
-        key = Key(content = Text(messages("product-details.accessibility-statement.key"))),
-        value = Value(content = HtmlContent(link({linkText}, {linkText})))
-      )
-    )
-  ))
-}
-
-
 @link(href: String, text: String) = {
   <a class="govuk-link" href="@href">@text</a>
-}
-
-@mainTemplate(title = messages("product-details.title"), breadcrumbs = Some(pageBreadcrumbs)) {
-
-  <h2 class="govuk-heading-l">@messages("product-details.contact-details.heading")</h2>
-
-  @govukSummaryList(SummaryList(
-    rows = Seq(
-      SummaryListRow(
-        key = Key(content = Text(s"${messages("product-details.contact-details.email")}:")),
-        value = Value(content = HtmlContent(link(href = s"mailto:${softwareVendor.email}", text = softwareVendor.email)))
-      ),
-      SummaryListRow(
-        key = Key(content = Text(s"${messages("product-details.contact-details.phone")}:")),
-        value = Value(content = Text(softwareVendor.phone))
-      ),
-      SummaryListRow(
-        key = Key(content = Text(s"${messages("product-details.contact-details.website")}:")),
-        value = Value(content = HtmlContent(link(href = softwareVendor.website, text = softwareVendor.website)))
-      )
-    )
-  ))
-
-  <h2 class="govuk-heading-l">@messages("product-details.details.heading")</h2>
-
-  @govukSummaryList(SummaryList(
-    rows = Seq(
-      pricingRow,
-      incomeTypeRow,
-      compatibleWithRow,
-      mobileAppRow,
-      softwareTypeRow,
-      softwareForRow,
-      businessTypeRow,
-      softwareCompatibilityRow,
-      accessibilityRow
-    ).flatten
-  ))
-
-  @{softwareVendor.accessibilityStatementLink.map(linkText => accessibilityStatement(linkText))}
-
 }

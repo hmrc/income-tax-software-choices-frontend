@@ -42,7 +42,37 @@ class SoftwareVendorModelSpec extends PlaySpec {
       VendorFilter.Hearing.key,
       VendorFilter.Motor.key,
       VendorFilter.Cognitive.key
-    )
+    ),
+    "incomeAndDeductions" -> Json.arr(
+      IncomeAndDeduction.BlindPersonsAllowance.key,
+      IncomeAndDeduction.CapitalGainsTax.key,
+      IncomeAndDeduction.ComplexPartnerships.key,
+      IncomeAndDeduction.ConstructionIndustryScheme.key,
+      IncomeAndDeduction.Employment.key,
+      IncomeAndDeduction.ForeignIncome.key,
+      IncomeAndDeduction.GiftAid.key,
+      IncomeAndDeduction.HighIncomeChildBenefit.key,
+      IncomeAndDeduction.Investments.key,
+      IncomeAndDeduction.LloydsUnderwriters.key,
+      IncomeAndDeduction.MarriageAllowance.key,
+      IncomeAndDeduction.MarriedAllowance.key,
+      IncomeAndDeduction.MemberOfParliament.key,
+      IncomeAndDeduction.MinisterOfReligion.key,
+      IncomeAndDeduction.PartnerIncome.key,
+      IncomeAndDeduction.PAYE.key,
+      IncomeAndDeduction.PensionContributions.key,
+      IncomeAndDeduction.Pensions.key,
+      IncomeAndDeduction.PropertyBusiness.key,
+      IncomeAndDeduction.ResidenceAndRemittance.key,
+      IncomeAndDeduction.SAAdditionalIncome.key,
+      IncomeAndDeduction.SelfEmployment.key,
+      IncomeAndDeduction.SimplePartnerships.key,
+      IncomeAndDeduction.StatePension.key,
+      IncomeAndDeduction.StudentLoans.key,
+      IncomeAndDeduction.UKDividends.key,
+      IncomeAndDeduction.UKInterest.key
+    ),
+    "accessibilityStatementLink" -> "software-vendor-accessibility.com"
   )
 
   val fullModel: SoftwareVendorModel = SoftwareVendorModel(
@@ -66,7 +96,37 @@ class SoftwareVendorModelSpec extends PlaySpec {
       VendorFilter.Hearing,
       VendorFilter.Motor,
       VendorFilter.Cognitive
-    )
+    ),
+    incomeAndDeductions = Seq(
+      IncomeAndDeduction.BlindPersonsAllowance,
+      IncomeAndDeduction.CapitalGainsTax,
+      IncomeAndDeduction.ComplexPartnerships,
+      IncomeAndDeduction.ConstructionIndustryScheme,
+      IncomeAndDeduction.Employment,
+      IncomeAndDeduction.ForeignIncome,
+      IncomeAndDeduction.GiftAid,
+      IncomeAndDeduction.HighIncomeChildBenefit,
+      IncomeAndDeduction.Investments,
+      IncomeAndDeduction.LloydsUnderwriters,
+      IncomeAndDeduction.MarriageAllowance,
+      IncomeAndDeduction.MarriedAllowance,
+      IncomeAndDeduction.MemberOfParliament,
+      IncomeAndDeduction.MinisterOfReligion,
+      IncomeAndDeduction.PartnerIncome,
+      IncomeAndDeduction.PAYE,
+      IncomeAndDeduction.PensionContributions,
+      IncomeAndDeduction.Pensions,
+      IncomeAndDeduction.PropertyBusiness,
+      IncomeAndDeduction.ResidenceAndRemittance,
+      IncomeAndDeduction.SAAdditionalIncome,
+      IncomeAndDeduction.SelfEmployment,
+      IncomeAndDeduction.SimplePartnerships,
+      IncomeAndDeduction.StatePension,
+      IncomeAndDeduction.StudentLoans,
+      IncomeAndDeduction.UKDividends,
+      IncomeAndDeduction.UKInterest
+    ),
+    accessibilityStatementLink = Some("software-vendor-accessibility.com")
   )
 
   "SoftwareVendorModel" must {
@@ -78,6 +138,16 @@ class SoftwareVendorModelSpec extends PlaySpec {
         Json.fromJson[SoftwareVendorModel](
           fullJson - "filters" ++ Json.obj("filters" -> Json.arr())
         ) mustBe JsSuccess(fullModel.copy(filters = Seq.empty[VendorFilter]))
+      }
+      "the json has no income and deduction coverage" in {
+        Json.fromJson[SoftwareVendorModel](
+          fullJson - "incomeAndDeductions" ++ Json.obj("incomeAndDeductions" -> Json.arr())
+        ) mustBe JsSuccess(fullModel.copy(incomeAndDeductions = Seq.empty[IncomeAndDeduction]))
+      }
+      "there is no accessibility statement link" in {
+        Json.fromJson[SoftwareVendorModel](
+          fullJson - "accessibilityStatementLink"
+        ) mustBe JsSuccess(fullModel.copy(accessibilityStatementLink = None))
       }
     }
     "fail to read json" when {
@@ -92,6 +162,10 @@ class SoftwareVendorModelSpec extends PlaySpec {
       "filters is missing" in {
         val json: JsObject = fullJson - "filters"
         Json.fromJson[SoftwareVendorModel](json) mustBe JsError(JsPath \ "filters", "error.path.missing")
+      }
+      "incomeAndDeductions is missing" in {
+        val json: JsObject = fullJson - "incomeAndDeductions"
+        Json.fromJson[SoftwareVendorModel](json) mustBe JsError(JsPath \ "incomeAndDeductions", "error.path.missing")
       }
     }
   }

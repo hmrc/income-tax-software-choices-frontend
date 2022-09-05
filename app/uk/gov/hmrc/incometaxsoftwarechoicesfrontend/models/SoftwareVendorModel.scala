@@ -25,6 +25,7 @@ case class SoftwareVendorModel(
                                 phone: String,
                                 website: String,
                                 filters: Seq[VendorFilter],
+                                incomeAndDeductions: Seq[IncomeAndDeduction],
                                 accessibilityStatementLink: Option[String] = None)
 
 object SoftwareVendorModel {

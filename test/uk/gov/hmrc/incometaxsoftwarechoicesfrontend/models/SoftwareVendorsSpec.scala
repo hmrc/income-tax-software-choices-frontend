@@ -31,7 +31,8 @@ class SoftwareVendorsSpec extends PlaySpec {
         "email" -> "test@software-vendor-name.com",
         "phone" -> "00000 000 000",
         "website" -> "software-vendor-name.com",
-        "filters" -> Json.arr()
+        "filters" -> Json.arr(),
+        "incomeAndDeductions" -> Json.arr()
       )
     )
   )
@@ -45,7 +46,8 @@ class SoftwareVendorsSpec extends PlaySpec {
         email = "test@software-vendor-name.com",
         phone = "00000 000 000",
         website = "software-vendor-name.com",
-        filters = Seq.empty[VendorFilter]
+        filters = Seq.empty[VendorFilter],
+        incomeAndDeductions = Seq.empty[IncomeAndDeduction]
       )
     )
   )

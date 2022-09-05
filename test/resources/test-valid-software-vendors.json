@@ -9,7 +9,11 @@
       "website": "software-vendor-name-one.com",
       "filters": [
         "free-version"
-      ]
+      ],
+      "incomeAndDeductions": [
+        "blind-persons-allowance"
+      ],
+      "accessibilityStatementLink": "software-vendor-accessibility.com"
     },
     {
       "name": "test software vendor two",
@@ -19,6 +23,9 @@
       "website": "software-vendor-name-two.com",
       "filters": [
         "free-trial"
+      ],
+      "incomeAndDeductions": [
+        "capital-gains-tax"
       ]
     },
     {
@@ -30,6 +37,10 @@
       "filters": [
         "free-trial",
         "free-version"
+      ],
+      "incomeAndDeductions": [
+        "blind-persons-allowance",
+        "capital-gains-tax"
       ]
     }
   ]
