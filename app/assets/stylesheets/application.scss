@@ -38,6 +38,10 @@
     border-top: 0;
 }
 
+.apply-filters-group {
+    border-top: 0px;
+}
+
 .search-input-group {
   position: relative;
 
@@ -147,4 +151,12 @@ body:not(.js-enabled) {
     width: 800px;
     float: left;
     display: block;
+}
+
+legend.govuk-hidden {
+    display: none;
+}
+
+.govuk-accordion__section > .govuk-accordion__section-content {
+    @include govuk-responsive-padding(0);
 }

@@ -21,6 +21,7 @@ import org.jsoup.nodes.{Document, Element}
 import org.scalatest.Assertion
 import play.api.data.FormError
 import play.api.mvc.Call
+import uk.gov.hmrc.govukfrontend.views.Aliases.Accordion
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
@@ -154,7 +155,13 @@ class SearchSoftwareViewSpec extends ViewSpec {
       "have a filter section" which {
         def filterSection: Element = document().mainContent.selectHead("#software-section").selectHead(".filters-section")
 
-        def getCheckboxGroup(n: Int): Element = filterSection.selectNth(".govuk-form-group", n).selectNth(".govuk-fieldset", 1)
+        def getAccordionSectionHeaderAndCheckboxGroup(n: Int): (Element, Element) = {
+          val accordionSection = filterSection.selectHead(".govuk-accordion").selectNth(".govuk-accordion__section", n)
+          (
+            accordionSection.selectHead(".govuk-accordion__section-header"),
+            accordionSection.selectHead(".govuk-fieldset")
+          )
+        }
 
         def getCheckboxItem(checkboxGroup: Element, n: Int): Element = checkboxGroup
           .selectNth(".govuk-checkboxes__item", n)
@@ -180,10 +187,10 @@ class SearchSoftwareViewSpec extends ViewSpec {
         }
 
         "has a pricing section" that {
-          val checkboxGroup = getCheckboxGroup(1)
+          val (accordionSectionHeader, checkboxGroup)  = getAccordionSectionHeaderAndCheckboxGroup(1)
 
-          "contains a fieldset legend" in {
-            checkboxGroup.selectHead("legend").text shouldBe SearchSoftwarePage.Filters.pricing
+          "contains a section header" in {
+            accordionSectionHeader.text shouldBe SearchSoftwarePage.Filters.pricing
           }
 
           "contains a Free trial checkbox" in {
@@ -196,10 +203,10 @@ class SearchSoftwareViewSpec extends ViewSpec {
         }
 
         "has an income type section" that {
-          val checkboxGroup = getCheckboxGroup(2)
+          val (accordionSectionHeader, checkboxGroup)  = getAccordionSectionHeaderAndCheckboxGroup(2)
 
-          "contains a fieldset legend" in {
-            checkboxGroup.selectHead("legend").text shouldBe SearchSoftwarePage.Filters.incomeType
+          "contains a section header" in {
+            accordionSectionHeader.text shouldBe SearchSoftwarePage.Filters.incomeType
           }
 
           "contains a sole trader checkbox" in {
@@ -216,10 +223,10 @@ class SearchSoftwareViewSpec extends ViewSpec {
         }
 
         "has a compatible with section" that {
-          val checkboxGroup = getCheckboxGroup(3)
+          val (accordionSectionHeader, checkboxGroup)  = getAccordionSectionHeaderAndCheckboxGroup(3)
 
-          "contains a fieldset legend" in {
-            checkboxGroup.selectHead("legend").text shouldBe SearchSoftwarePage.Filters.compatibleWith
+          "contains a section header" in {
+            accordionSectionHeader.text shouldBe SearchSoftwarePage.Filters.compatibleWith
           }
 
           "contains an Microsoft Windows checkbox" in {
@@ -232,10 +239,10 @@ class SearchSoftwareViewSpec extends ViewSpec {
         }
 
         "has a mobile app section" that {
-          val checkboxGroup = getCheckboxGroup(4)
+          val (accordionSectionHeader, checkboxGroup)  = getAccordionSectionHeaderAndCheckboxGroup(4)
 
-          "contains a fieldset legend" in {
-            checkboxGroup.selectHead("legend").text shouldBe SearchSoftwarePage.Filters.mobileApp
+          "contains a section header" in {
+            accordionSectionHeader.text shouldBe SearchSoftwarePage.Filters.mobileApp
           }
 
           "contains an Android checkbox" in {
@@ -248,10 +255,10 @@ class SearchSoftwareViewSpec extends ViewSpec {
         }
 
         "has a software type section" that {
-          val checkboxGroup = getCheckboxGroup(5)
+          val (accordionSectionHeader, checkboxGroup)  = getAccordionSectionHeaderAndCheckboxGroup(5)
 
-          "contains a label" in {
-            checkboxGroup.selectHead("legend").text shouldBe SearchSoftwarePage.Filters.softwareType
+          "contains a section header" in {
+            accordionSectionHeader.text shouldBe SearchSoftwarePage.Filters.softwareType
           }
 
           "contains an BrowserBased checkbox" in {
@@ -264,10 +271,10 @@ class SearchSoftwareViewSpec extends ViewSpec {
         }
 
         "has a software for section" that {
-          val checkboxGroup = getCheckboxGroup(6)
+          val (accordionSectionHeader, checkboxGroup)  = getAccordionSectionHeaderAndCheckboxGroup(6)
 
-          "contains a fieldset legend" in {
-            checkboxGroup.selectHead("legend").text shouldBe SearchSoftwarePage.Filters.softwareFor
+          "contains a section header" in {
+            accordionSectionHeader.text shouldBe SearchSoftwarePage.Filters.softwareFor
           }
 
           "contains a RecordKeeping checkbox" in {
@@ -280,10 +287,10 @@ class SearchSoftwareViewSpec extends ViewSpec {
         }
 
         "has a business type section" that {
-          val checkboxGroup = getCheckboxGroup(7)
+          val (accordionSectionHeader, checkboxGroup)  = getAccordionSectionHeaderAndCheckboxGroup(7)
 
-          "contains a fieldset legend" in {
-            checkboxGroup.selectHead("legend").text shouldBe SearchSoftwarePage.Filters.businessType
+          "contains a section header" in {
+            accordionSectionHeader.text shouldBe SearchSoftwarePage.Filters.businessType
           }
 
           "contains an Individual checkbox" in {
@@ -296,10 +303,10 @@ class SearchSoftwareViewSpec extends ViewSpec {
         }
 
         "has a software compatibility section" that {
-          val checkboxGroup = getCheckboxGroup(8)
+          val (accordionSectionHeader, checkboxGroup)  = getAccordionSectionHeaderAndCheckboxGroup(8)
 
-          "contains a fieldset legend" in {
-            checkboxGroup.selectHead("legend").text shouldBe SearchSoftwarePage.Filters.softwareCompatibility
+          "contains a section header" in {
+            accordionSectionHeader.text shouldBe SearchSoftwarePage.Filters.softwareCompatibility
           }
 
           "contains an VAT checkbox" in {
@@ -319,10 +326,10 @@ class SearchSoftwareViewSpec extends ViewSpec {
         }
 
         "has an accessibility needs section" that {
-          val checkboxGroup = getCheckboxGroup(9)
+          val (accordionSectionHeader, checkboxGroup)  = getAccordionSectionHeaderAndCheckboxGroup(9)
 
-          "contains a label" in {
-            checkboxGroup.selectHead("legend").text shouldBe SearchSoftwarePage.Filters.accessibilityNeeds
+          "contains a section header" in {
+            accordionSectionHeader.text shouldBe SearchSoftwarePage.Filters.accessibilityNeeds
           }
 
           "contains an Visual checkbox" in {
