@@ -46,9 +46,9 @@ search-software.vendor-detail.pricing.no-free-trial = No free trial
 search-software.vendor-detail.pricing.free-version = Free version
 search-software.vendor-detail.pricing.no-free-version = No free version
 
-search-software.vendor-detail.pricing.sole-trader = Sole trader
-search-software.vendor-detail.pricing.uk-property = UK property
-search-software.vendor-detail.pricing.overseas-property = Overseas property
+search-software.vendor-detail.income-type.sole-trader = Sole trader
+search-software.vendor-detail.income-type.uk-property = UK property
+search-software.vendor-detail.income-type.overseas-property = Overseas property
 
 search-software.vendor-detail.business-type = Business type:
 search-software.vendor-detail.business-type.individual = Individual
