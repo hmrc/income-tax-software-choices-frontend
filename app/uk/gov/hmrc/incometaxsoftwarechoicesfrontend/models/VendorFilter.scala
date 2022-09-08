@@ -97,6 +97,10 @@ object VendorFilter {
     override val key: String = "income-tax"
   }
 
+  case object Welsh extends VendorFilter {
+    override val key: String = "welsh"
+  }
+
   case object Visual extends VendorFilter {
     override val key: String = "visual"
   }
@@ -130,6 +134,7 @@ object VendorFilter {
     RecordKeeping,
     Bridging,
     Vat,
+    Welsh,
     Visual,
     Hearing,
     Motor,

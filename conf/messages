@@ -29,6 +29,7 @@ search-software.filters.mobile-app = Mobile app
 search-software.filters.software-type = Software type
 search-software.filters.software-for = Software for
 search-software.filters.software-compatibility = Software compatibility
+search-software.filters.language = Language
 search-software.filters.accessibility = Accessibility needs
 
 search-software.filters.apply-filters = Apply filters
@@ -72,6 +73,8 @@ search-software.vendor-detail.software-for.bridging = Bridging
 search-software.vendor-detail.software-compatibility.vat = VAT
 search-software.vendor-detail.software-compatibility.income-tax = Income Tax
 
+search-software.vendor-detail.language.welsh = Welsh
+
 search-software.vendor-detail.accessibility = Accessibility:
 search-software.vendor-detail.accessibility.visual = Visual
 search-software.vendor-detail.accessibility.hearing = Hearing
@@ -83,6 +86,7 @@ product-details.contact-details.heading    = Find out more or get help and suppo
 product-details.contact-details.email      = Email
 product-details.contact-details.phone      = Call
 product-details.contact-details.website    = Visit website
+
 product-details.details.heading = Product details
 product-details.details.pricing = Pricing
 product-details.details.income-type = Income type
@@ -92,7 +96,9 @@ product-details.details.software-type = Software type
 product-details.details.software-for = Software for
 product-details.details.business-type = Business type
 product-details.details.software-compatibility = Software compatibility
+product-details.details.language = Language
 product-details.details.accessibility = Accessibility
+
 product-details.details.free-version = Free version
 product-details.details.free-trial = Free trial
 product-details.details.sole-trader = Sole trader
@@ -114,6 +120,7 @@ product-details.details.visual = Visual
 product-details.details.hearing = Hearing
 product-details.details.motor = Motor
 product-details.details.cognitive = Cognitive
+product-details.details.welsh = Welsh
 
 product-details.income-and-deduction-types.heading = Self Assessment income and deduction types this software covers
 product-details.income-and-deduction-types.number-covered = {0} covers {1} out of {2}:

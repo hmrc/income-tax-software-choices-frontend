@@ -325,8 +325,21 @@ class SearchSoftwareViewSpec extends ViewSpec {
           }
         }
 
-        "has an accessibility needs section" that {
+        "has a language section" that {
           val (accordionSectionHeader, checkboxGroup)  = getAccordionSectionHeaderAndCheckboxGroup(9)
+
+          "contains a section header" in {
+            accordionSectionHeader.text shouldBe SearchSoftwarePage.Filters.language
+          }
+
+          "contains a Welsh checkbox" in {
+            validateCheckboxInGroup(checkboxGroup, 1, Welsh.key, SearchSoftwarePage.welsh)
+          }
+
+        }
+
+        "has an accessibility needs section" that {
+          val (accordionSectionHeader, checkboxGroup)  = getAccordionSectionHeaderAndCheckboxGroup(10)
 
           "contains a section header" in {
             accordionSectionHeader.text shouldBe SearchSoftwarePage.Filters.accessibilityNeeds
@@ -497,6 +510,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
       val softwareType = "Software type"
       val softwareFor = "Software for"
       val softwareCompatibility = "Software compatibility"
+      val language = "Language"
       val accessibilityNeeds = "Accessibility needs"
       val applyFilters = "Apply filters"
       val clearFilters = "Clear filters"
@@ -534,6 +548,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
     val vat = "VAT"
     val incomeTax = "Income Tax"
     val accessibility = "Accessibility:"
+    val welsh = "Welsh"
     val visual = "Visual"
     val hearing = "Hearing"
     val motor = "Motor"
