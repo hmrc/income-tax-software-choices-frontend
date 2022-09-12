@@ -21,7 +21,6 @@ import org.jsoup.nodes.{Document, Element}
 import org.scalatest.Assertion
 import play.api.data.FormError
 import play.api.mvc.Call
-import uk.gov.hmrc.govukfrontend.views.Aliases.Accordion
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
@@ -45,6 +44,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
         filters = Seq(
           VendorFilter.FreeVersion,
           VendorFilter.FreeTrial,
+          VendorFilter.PaidFor,
           VendorFilter.Individual,
           VendorFilter.Agent,
           VendorFilter.MicrosoftWindows,
@@ -74,8 +74,8 @@ class SearchSoftwareViewSpec extends ViewSpec {
     )
   )
 
-  "Search software page" should {
-    "when beta is turned on" which {
+  "Search software page" when {
+    "beta is turned on" should {
       "have a software vendor section" which {
         def softwareVendorsSection: Element = document(beta = true)
           .mainContent
@@ -115,9 +115,9 @@ class SearchSoftwareViewSpec extends ViewSpec {
 
       }
     }
-    "when beta is turned off" when {
+    "beta is turned off" should {
       "have a breadcrumb menu" which {
-        "contains to guidance page" in {
+        "contains a link to the guidance page" in {
           val link = document().selectNth(".govuk-breadcrumbs__list-item", 1).selectHead("a")
           link.text shouldBe "Guidance"
           link.attr("href") shouldBe appConfig.guidance
@@ -203,6 +203,10 @@ class SearchSoftwareViewSpec extends ViewSpec {
 
           "contains a Free version checkbox" in {
             validateCheckboxInGroup(checkboxGroup, 2, FreeVersion.key, SearchSoftwarePage.freeVersion)
+          }
+
+          "contains a Paid for checkbox" in {
+            validateCheckboxInGroup(checkboxGroup, 3, PaidFor.key, SearchSoftwarePage.paidFor)
           }
         }
 
@@ -562,6 +566,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
     val pricing = "Pricing:"
     val freeTrial = "Free trial"
     val freeVersion = "Free version"
+    val paidFor = "Paid for"
     val noFreeTrial = "No free trial"
     val noFreeVersion = "No free version"
     val soleTrader = "Sole trader"

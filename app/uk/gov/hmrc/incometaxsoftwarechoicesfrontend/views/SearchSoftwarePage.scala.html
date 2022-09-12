@@ -118,6 +118,11 @@
                       id = Some(s"$FreeVersion-filter"),
                       content = Text(messages("search-software.vendor-detail.pricing.free-version")),
                       value = FreeVersion
+                    ),
+                    CheckboxItem(
+                      id = Some(s"$PaidFor-filter"),
+                      content = Text(messages("search-software.vendor-detail.pricing.paid-for")),
+                      value = PaidFor
                     )
                   )
                 ))

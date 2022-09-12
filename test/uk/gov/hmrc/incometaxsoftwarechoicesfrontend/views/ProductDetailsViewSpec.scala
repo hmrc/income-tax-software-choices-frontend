@@ -39,8 +39,9 @@ class ProductDetailsViewSpec extends ViewSpec {
     val productDetailsHeading: String = "Product details"
 
     val pricing: String = "Pricing"
-    val freeTrail: String = "Free trial"
+    val freeTrial: String = "Free trial"
     val freeVersion: String = "Free version"
+    val paidFor: String = "Paid for"
 
     val incomeType: String = "Income type"
     val soleTrader: String = "Sole trader"
@@ -157,6 +158,7 @@ class ProductDetailsViewSpec extends ViewSpec {
     filters = Seq(
       FreeTrial,
       FreeVersion,
+      PaidFor,
       SoleTrader,
       UkProperty,
       OverseasProperty,
@@ -291,8 +293,9 @@ class ProductDetailsViewSpec extends ViewSpec {
         row.selectHead("dt").text shouldBe ProductDetailsPage.pricing
 
         val detail: Element = row.selectHead("dd")
-        detail.selectNth("p", 1).text shouldBe ProductDetailsPage.freeTrail
+        detail.selectNth("p", 1).text shouldBe ProductDetailsPage.freeTrial
         detail.selectNth("p", 2).text shouldBe ProductDetailsPage.freeVersion
+        detail.selectNth("p", 3).text shouldBe ProductDetailsPage.paidFor
       }
       "display the income type row" in {
         val row: Element = document().selectNth("dl", 2).selectNth("div", 2)
