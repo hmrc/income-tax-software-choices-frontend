@@ -71,6 +71,9 @@ class ProductDetailsViewSpec extends ViewSpec {
     val incomeTax: String = "Income tax"
     val vat: String = "VAT"
 
+    val language: String = "Language"
+    val welsh: String = "Welsh"
+
     val accessibility: String = "Accessibility"
     val visual: String = "Visual"
     val hearing: String = "Hearing"
@@ -165,6 +168,7 @@ class ProductDetailsViewSpec extends ViewSpec {
       AppleIOS,
       BrowserBased,
       ApplicationBased,
+      Welsh,
       Visual,
       Hearing,
       Motor,
@@ -347,8 +351,15 @@ class ProductDetailsViewSpec extends ViewSpec {
         detail.selectNth("p", 1).text shouldBe ProductDetailsPage.incomeTax
         detail.selectNth("p", 2).text shouldBe ProductDetailsPage.vat
       }
-      "display the accessibility row" in {
+      "display the language row" in {
         val row: Element = document().selectNth("dl", 2).selectNth("div", 9)
+        row.selectHead("dt").text shouldBe ProductDetailsPage.language
+
+        val detail: Element = row.selectHead("dd")
+        detail.selectNth("p", 1).text shouldBe ProductDetailsPage.welsh
+      }
+      "display the accessibility row" in {
+        val row: Element = document().selectNth("dl", 2).selectNth("div", 10)
         row.selectHead("dt").text shouldBe ProductDetailsPage.accessibility
 
         val detail: Element = row.selectHead("dd")

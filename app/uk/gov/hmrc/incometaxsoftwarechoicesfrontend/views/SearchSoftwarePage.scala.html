@@ -263,6 +263,20 @@
               ),
 
               Section(
+                headingContent = Text(messages("search-software.filters.language")),
+                content = HtmlContent(checkboxGroup(
+                  fieldsetLegend = "",
+                  checkboxes = Seq(
+                    CheckboxItem(
+                      id = Some(s"$Welsh-filter"),
+                      content = Text(messages("search-software.vendor-detail.language.welsh")),
+                      value = Welsh
+                    ),
+                  )
+                ))
+              ),
+
+              Section(
                 headingContent = Text(messages("search-software.filters.accessibility")),
                 content = HtmlContent(checkboxGroup(
                   fieldsetLegend = messages("search-software.filters.accessibility"),

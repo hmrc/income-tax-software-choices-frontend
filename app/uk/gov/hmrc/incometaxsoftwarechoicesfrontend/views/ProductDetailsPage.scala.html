@@ -98,6 +98,7 @@
       softwareForRow,
       businessTypeRow,
       softwareCompatibilityRow,
+      languageRow,
       accessibilityRow
     ).flatten
   ))
@@ -226,6 +227,13 @@
   productDetailsRow(
     key = "accessibility",
     filtersInRow = Seq(Visual, Hearing, Motor, Cognitive)
+  )
+}
+
+@languageRow = @{
+  productDetailsRow(
+    key = "language",
+    filtersInRow = Seq(Welsh)
   )
 }
 
