@@ -193,6 +193,10 @@ class SearchSoftwareViewSpec extends ViewSpec {
             accordionSectionHeader.text shouldBe SearchSoftwarePage.Filters.pricing
           }
 
+          "contains a fieldset legend" in {
+            checkboxGroup.getElementsByTag("legend").text() shouldBe SearchSoftwarePage.Filters.pricing
+          }
+
           "contains a Free trial checkbox" in {
             validateCheckboxInGroup(checkboxGroup, 1, FreeTrial.key, SearchSoftwarePage.freeTrial)
           }
@@ -207,6 +211,10 @@ class SearchSoftwareViewSpec extends ViewSpec {
 
           "contains a section header" in {
             accordionSectionHeader.text shouldBe SearchSoftwarePage.Filters.incomeType
+          }
+
+          "contains a fieldset legend" in {
+            checkboxGroup.getElementsByTag("legend").text() shouldBe SearchSoftwarePage.Filters.incomeType
           }
 
           "contains a sole trader checkbox" in {
@@ -229,6 +237,10 @@ class SearchSoftwareViewSpec extends ViewSpec {
             accordionSectionHeader.text shouldBe SearchSoftwarePage.Filters.compatibleWith
           }
 
+          "contains a fieldset legend" in {
+            checkboxGroup.getElementsByTag("legend").text() shouldBe SearchSoftwarePage.Filters.compatibleWith
+          }
+
           "contains an Microsoft Windows checkbox" in {
             validateCheckboxInGroup(checkboxGroup, 1, MicrosoftWindows.key, SearchSoftwarePage.microsoftWindows)
           }
@@ -243,6 +255,10 @@ class SearchSoftwareViewSpec extends ViewSpec {
 
           "contains a section header" in {
             accordionSectionHeader.text shouldBe SearchSoftwarePage.Filters.mobileApp
+          }
+
+          "contains a fieldset legend" in {
+            checkboxGroup.getElementsByTag("legend").text() shouldBe SearchSoftwarePage.Filters.mobileApp
           }
 
           "contains an Android checkbox" in {
@@ -261,6 +277,10 @@ class SearchSoftwareViewSpec extends ViewSpec {
             accordionSectionHeader.text shouldBe SearchSoftwarePage.Filters.softwareType
           }
 
+          "contains a fieldset legend" in {
+            checkboxGroup.getElementsByTag("legend").text() shouldBe SearchSoftwarePage.Filters.softwareType
+          }
+
           "contains an BrowserBased checkbox" in {
             validateCheckboxInGroup(checkboxGroup, 1, BrowserBased.key, SearchSoftwarePage.browserBased)
           }
@@ -275,6 +295,10 @@ class SearchSoftwareViewSpec extends ViewSpec {
 
           "contains a section header" in {
             accordionSectionHeader.text shouldBe SearchSoftwarePage.Filters.softwareFor
+          }
+
+          "contains a fieldset legend" in {
+            checkboxGroup.getElementsByTag("legend").text() shouldBe SearchSoftwarePage.Filters.softwareFor
           }
 
           "contains a RecordKeeping checkbox" in {
@@ -293,6 +317,10 @@ class SearchSoftwareViewSpec extends ViewSpec {
             accordionSectionHeader.text shouldBe SearchSoftwarePage.Filters.businessType
           }
 
+          "contains a fieldset legend" in {
+            checkboxGroup.getElementsByTag("legend").text() shouldBe SearchSoftwarePage.Filters.businessType
+          }
+
           "contains an Individual checkbox" in {
             validateCheckboxInGroup(checkboxGroup, 1, Individual.key, SearchSoftwarePage.individual)
           }
@@ -307,6 +335,10 @@ class SearchSoftwareViewSpec extends ViewSpec {
 
           "contains a section header" in {
             accordionSectionHeader.text shouldBe SearchSoftwarePage.Filters.softwareCompatibility
+          }
+
+          "contains a fieldset legend" in {
+            checkboxGroup.getElementsByTag("legend").text() shouldBe SearchSoftwarePage.Filters.softwareCompatibility
           }
 
           "contains an VAT checkbox" in {
@@ -343,6 +375,10 @@ class SearchSoftwareViewSpec extends ViewSpec {
 
           "contains a section header" in {
             accordionSectionHeader.text shouldBe SearchSoftwarePage.Filters.accessibilityNeeds
+          }
+
+          "contains a fieldset legend" in {
+            checkboxGroup.getElementsByTag("legend").text() shouldBe SearchSoftwarePage.Filters.accessibilityNeeds
           }
 
           "contains an Visual checkbox" in {
