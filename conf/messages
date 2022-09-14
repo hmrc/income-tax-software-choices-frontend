@@ -46,6 +46,7 @@ search-software.vendor-detail.pricing.free-trial = Free trial
 search-software.vendor-detail.pricing.no-free-trial = No free trial
 search-software.vendor-detail.pricing.free-version = Free version
 search-software.vendor-detail.pricing.no-free-version = No free version
+search-software.vendor-detail.pricing.paid-for = Paid for
 
 search-software.vendor-detail.income-type.sole-trader = Sole trader
 search-software.vendor-detail.income-type.uk-property = UK property
@@ -101,6 +102,7 @@ product-details.details.accessibility = Accessibility
 
 product-details.details.free-version = Free version
 product-details.details.free-trial = Free trial
+product-details.details.paid-for = Paid for
 product-details.details.sole-trader = Sole trader
 product-details.details.uk-property = UK property
 product-details.details.overseas-property = Overseas property

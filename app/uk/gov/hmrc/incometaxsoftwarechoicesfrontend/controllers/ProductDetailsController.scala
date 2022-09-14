@@ -19,7 +19,7 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.http.NotFoundException
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.BetaFeatures
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.{BetaFeatures, IncomeAndDeduction}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.SoftwareChoicesService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.ProductDetailsPage
@@ -39,7 +39,7 @@ class ProductDetailsController @Inject()(mcc: MessagesControllerComponents,
           throw new NotFoundException(ProductDetailsController.NotProvided)
         case Some(softwareName) => softwareChoicesService.getSoftwareVendor(softwareName) match {
           case None => throw new NotFoundException(ProductDetailsController.NotFound)
-          case Some(softwareVendor) => Ok(productDetailsPage(softwareVendor))
+          case Some(softwareVendor) => Ok(productDetailsPage(softwareVendor, isEnabled(IncomeAndDeduction)))
         }
       }
     } else {

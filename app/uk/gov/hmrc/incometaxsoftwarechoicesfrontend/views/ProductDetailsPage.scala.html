@@ -31,7 +31,7 @@
   hmrcNewTabLinkHelper: HmrcNewTabLinkHelper,
   govukSummaryList : GovukSummaryList
 )(implicit appConfig: AppConfig)
-@(softwareVendor: SoftwareVendorModel)(implicit request: Request[_], messages: Messages)
+@(softwareVendor: SoftwareVendorModel, displayIncomeAndDeductionTypes: Boolean)(implicit request: Request[_], messages: Messages)
 
 @mainTemplate(title = messages("product-details.title"), breadcrumbs = Some(pageBreadcrumbs)) {
 
@@ -39,7 +39,9 @@
 
   @productDetails
 
-  @incomeAndDeductionTypes
+  @if(displayIncomeAndDeductionTypes) {
+    @incomeAndDeductionTypes
+  }
 
   @softwareVendor.accessibilityStatementLink.map(linkText => accessibilityStatement(linkText))
 
@@ -162,7 +164,7 @@
 @pricingRow = @{
   productDetailsRow(
     key = "pricing",
-    filtersInRow = Seq(FreeTrial, FreeVersion)
+    filtersInRow = Seq(FreeTrial, FreeVersion, PaidFor)
   )
 }
 

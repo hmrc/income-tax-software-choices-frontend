@@ -37,6 +37,10 @@ object VendorFilter {
     override val key: String = "free-trial"
   }
 
+  case object PaidFor extends VendorFilter {
+    override val key: String = "paid-for"
+  }
+
   case object SoleTrader extends VendorFilter {
     override val key: String = "sole-trader"
   }
@@ -120,6 +124,7 @@ object VendorFilter {
   val filterKeyToFilter: Map[String, VendorFilter] = Seq(
     FreeVersion,
     FreeTrial,
+    PaidFor,
     SoleTrader,
     UkProperty,
     OverseasProperty,
