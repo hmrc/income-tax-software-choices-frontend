@@ -1,38 +1,47 @@
-base.service-name           = Find software for Making Tax Digital for Income Tax
-base.title                  = {0} - Find software for Making Tax Digital for Income Tax - GOV.UK
-base.title.error            = Error: {0} - Find software for Making Tax Digital for Income Tax - GOV.UK
+base.service-name           = Find software that’s compatible with Making Tax Digital for Income Tax
+base.title                  = {0} - Find software that’s compatible with Making Tax Digital for Income Tax - GOV.UK
+base.title.error            = Error: {0} - Find software that’s compatible with Making Tax Digital for Income Tax - GOV.UK
 base.error-heading          = There is a problem
+
+# Breadcrumbs
 
 breadcrumbs.guidance                = Guidance
 breadcrumbs.filter                  = Filter
 
-product-details.title               = Product Details
+# Accordion menu
 
-search-software.title               = Choose the right software for your needs
+accordion.show-all-sections = Show all
+accordion.hide-all-sections = Hide all
+accordion.show-section      = Show
+accordion.hide-section      = Hide
+
+# Search software page
+
+search-software.title               = Choose your software
 search-software.count               = software providers
 search-software.last-update         = This page was last updated
-search-software.heading             = Choose the right software for your needs
+search-software.heading             = Choose your software
 search-software.paragraph1          = All software on this page has been through HMRC’s recognition process. But we do not endorse or recommend any one product or software provider.
-search-software.paragraph2          = Some software has features suitable if you have accessibility needs, like visual impairment or limited movement.
 search-software.inset-text          = If you need help to choose software, contact the software provider before making a decision. We are not able to help you choose software.
-search-software.search-form.heading = Search by software name
-search-software.search-form.button  = Search by software name
-search-software.search-form.error   = Enter less than {0} characters
 
 search-software.filters.heading = Filters
 search-software.filters.pricing = Pricing
 search-software.filters.income-type = Income type
-search-software.filters.business-type = Business type
 search-software.filters.compatible-with = Compatible with
 search-software.filters.mobile-app = Mobile app
 search-software.filters.software-type = Software type
 search-software.filters.software-for = Software for
+search-software.filters.business-type = Business type
 search-software.filters.software-compatibility = Software compatibility
 search-software.filters.language = Language
 search-software.filters.accessibility = Accessibility needs
 
 search-software.filters.apply-filters = Apply filters
 search-software.filters.clear-filters = Clear filters
+
+search-software.search-form.heading = Search by software name
+search-software.search-form.button  = Search by software name
+search-software.search-form.error   = Enter less than {0} characters
 
 search-software.vendor-count = Currently there are {0} software providers
 
@@ -51,10 +60,6 @@ search-software.vendor-detail.income-type.sole-trader = Sole trader
 search-software.vendor-detail.income-type.uk-property = UK property
 search-software.vendor-detail.income-type.overseas-property = Overseas property
 
-search-software.vendor-detail.business-type = Business type:
-search-software.vendor-detail.business-type.individual = Individual
-search-software.vendor-detail.business-type.agent = Agent
-
 search-software.vendor-detail.compatible-with = Compatible with:
 search-software.vendor-detail.compatible-with.microsoft-windows = Microsoft Windows
 search-software.vendor-detail.compatible-with.mac-os = Mac OS
@@ -69,6 +74,10 @@ search-software.vendor-detail.software-type.application-based = Application base
 
 search-software.vendor-detail.software-for.record-keeping = Record keeping
 search-software.vendor-detail.software-for.bridging = Bridging
+
+search-software.vendor-detail.business-type = Business type:
+search-software.vendor-detail.business-type.individual = Individual
+search-software.vendor-detail.business-type.agent = Agent
 
 search-software.vendor-detail.software-compatibility.vat = VAT
 search-software.vendor-detail.software-compatibility.income-tax = Income Tax

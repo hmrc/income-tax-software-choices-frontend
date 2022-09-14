@@ -19,7 +19,7 @@
 @import uk.gov.hmrc.govukfrontend.views.html.components.implicits._
 @import uk.gov.hmrc.govukfrontend.views.viewmodels.errorsummary.ErrorSummary
 @import uk.gov.hmrc.hmrcfrontend.views.config._
-@import uk.gov.hmrc.hmrcfrontend.views.html.helpers.{HmrcLayout, HmrcReportTechnicalIssueHelper}
+@import uk.gov.hmrc.hmrcfrontend.views.html.helpers.{HmrcLanguageSelectHelper, HmrcLayout, HmrcReportTechnicalIssueHelper}
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.FullWidthMainContentLayout
 @import views.html.helper.CSPNonce
@@ -30,6 +30,7 @@
         standardBetaBanner: StandardBetaBanner,
         govukErrorSummary: GovukErrorSummary,
         hmrcReportTechnicalIssueHelper: HmrcReportTechnicalIssueHelper,
+        hmrcLanguageSelectHelper: HmrcLanguageSelectHelper,
         fullWidthMainContentLayout: FullWidthMainContentLayout,
         standardAlphaBanner: StandardAlphaBanner
 )
@@ -46,11 +47,16 @@
   <link href='@controllers.routes.Assets.versioned("stylesheets/application.css")' media="all" rel="stylesheet" type="text/css"/>
 }
 
+@beforeContentBlock = {
+  @breadcrumbs.map(breadcrumbsHtml => breadcrumbsHtml)
+  @hmrcLanguageSelectHelper()
+}
+
 @hmrcLayout(
     pageTitle = prefixedTitle,
     serviceName = Some(messages("base.service-name")),
     additionalHeadBlock = Some(additionalHeadBlock),
-    beforeContentBlock = breadcrumbs,
+    beforeContentBlock = Some(beforeContentBlock),
     nonce = CSPNonce.get,
     isWelshTranslationAvailable = appConfig.welshLanguageSupportEnabled,
     mainContentLayout = Some(fullWidthMainContentLayout(_)),

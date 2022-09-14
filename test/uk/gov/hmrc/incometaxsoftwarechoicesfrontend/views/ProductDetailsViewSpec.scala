@@ -213,7 +213,7 @@ class ProductDetailsViewSpec extends ViewSpec {
           }
 
           "have a title" in {
-            document.title shouldBe s"""${ProductDetailsPage.title} - Find software for Making Tax Digital for Income Tax - GOV.UK"""
+            document.title shouldBe s"""${ProductDetailsPage.title} - Find software that’s compatible with Making Tax Digital for Income Tax - GOV.UK"""
           }
 
           "display the vendor name heading" in {
