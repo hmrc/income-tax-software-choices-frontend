@@ -208,12 +208,16 @@ class ProductDetailsViewSpec extends ViewSpec {
             }
 
             "contains the current page" in {
-              document.selectNth(".govuk-breadcrumbs__list-item", 3).text shouldBe "Details"
+              document.selectNth(".govuk-breadcrumbs__list-item", 3).text shouldBe softwareVendorModelFull.name
             }
           }
 
           "have a title" in {
             document.title shouldBe s"""${ProductDetailsPage.title} - Find software for Making Tax Digital for Income Tax - GOV.UK"""
+          }
+
+          "display the vendor name heading" in {
+            document.selectNth("h1", 1).text() shouldBe softwareVendorModelFull.name
           }
 
           "display the vendor contact details heading" in {

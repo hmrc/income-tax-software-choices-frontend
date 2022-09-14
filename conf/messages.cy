@@ -5,7 +5,6 @@ base.error-heading          = Mae problem wedi codi
 
 breadcrumbs.guidance                = ?
 breadcrumbs.filter                  = ?
-breadcrumbs.details                 = ?
 
 product-details.title               = ?
 

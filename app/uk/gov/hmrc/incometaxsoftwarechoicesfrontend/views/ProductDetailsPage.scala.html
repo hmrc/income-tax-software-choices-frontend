@@ -35,6 +35,8 @@
 
 @mainTemplate(title = messages("product-details.title"), breadcrumbs = Some(pageBreadcrumbs)) {
 
+  @vendorNameHeading
+
   @contactDetails
 
   @productDetails
@@ -59,11 +61,15 @@
         href = Some(SearchSoftwareController.show.url)
       ),
       BreadcrumbsItem(
-        content = Text(messages("breadcrumbs.details")),
+        content = Text(softwareVendor.name),
         href = None
       )
     )
   ))
+}
+
+@vendorNameHeading = {
+  <h1 class="govuk-heading-xl">@{softwareVendor.name}</h1>
 }
 
 @contactDetails = {
