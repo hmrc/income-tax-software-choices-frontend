@@ -40,26 +40,21 @@ trait ViewSpec extends AnyWordSpecLike with Matchers with GuiceOneAppPerSuite {
   implicit class CustomSelectors(element: Element) {
 
     lazy val getTechnicalHelpLink: String = element.getElementsByClass("hmrc-report-technical-issue").attr("href")
+
     lazy val getTechnicalHelpLinkText: String = element.getElementsByClass("hmrc-report-technical-issue").text
 
-    def selectHead(selector: String): Element = {
-      element.select(selector).asScala.headOption match {
-        case Some(element) => element
-        case None => fail(s"No elements returned for selector: $selector")
-      }
+    def selectHead(selector: String): Element = element.select(selector).asScala.headOption match {
+      case Some(element) => element
+      case None => fail(s"No elements returned for selector: $selector")
     }
 
-    def selectSeq(selector: String): Seq[Element] = {
-      element.select(selector).asScala
-    }
+    def selectSeq(selector: String): Seq[Element] = element.select(selector).asScala
 
-    def selectOptionally(selector: String): Option[Element] = {
-      element.select(selector).asScala.headOption
-    }
+    def selectOptionally(selector: String): Option[Element] = element.select(selector).asScala.headOption
 
-    def selectNth(selector: String, nth: Int): Element = {
-      selectHead(s"$selector:nth-of-type($nth)")
-    }
+    def selectNth(selector: String, nth: Int): Element = selectHead(s"$selector:nth-of-type($nth)")
+
+    def selectNthOptionally(selector: String, nth: Int): Option[Element] = selectOptionally(s"$selector:nth-of-type($nth)")
 
     def mainContent: Element = element.selectHead("main")
 

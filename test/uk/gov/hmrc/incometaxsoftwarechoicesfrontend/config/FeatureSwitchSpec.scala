@@ -18,20 +18,25 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config
 
 import org.scalatestplus.play.PlaySpec
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.BetaFeatures
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.{BetaFeatures, IncomeAndDeduction}
 
 class FeatureSwitchSpec extends PlaySpec {
 
-  "FeatureSwitch.get" should {
-    "return some feature switch" when {
-      "the feature switch exists" in {
+  "FeatureSwitch.get" when {
+    "the beta features feature switch exists" should {
+      "return the feature switch" in {
         FeatureSwitch.get("enable-beta-features") mustBe Some(BetaFeatures)
       }
     }
-    "return none" when {
-      "the feature switch does not exists" in {
-        FeatureSwitch.get("does-not-exist") mustBe None
+    "the income and deduction feature switch exists" should {
+      "return the feature switch" in {
+        FeatureSwitch.get("enable-income-and-deduction") mustBe Some(IncomeAndDeduction)
       }
+    }
+  }
+  "the requested feature switch does not exists" should {
+    "return none" in {
+      FeatureSwitch.get("does-not-exist") mustBe None
     }
   }
 
