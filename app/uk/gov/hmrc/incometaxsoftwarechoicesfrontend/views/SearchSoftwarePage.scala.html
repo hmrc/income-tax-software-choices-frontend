@@ -14,23 +14,22 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.govukfrontend.views.Implicits.RichCheckboxes
 @import uk.gov.hmrc.govukfrontend.views.html.components._
 @import uk.gov.hmrc.govukfrontend.views.viewmodels.breadcrumbs.{Breadcrumbs, BreadcrumbsItem}
 @import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SoftwareVendorsTemplate
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SoftwareVendorsTemplateAlpha
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTemplate
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.{SoftwareFiltersTemplate, SoftwareFiltersTemplateAlpha, SoftwareVendorsTemplate, SoftwareVendorsTemplateAlpha}
 @import views.html.helper.CSPNonce
 
 @this(
   mainTemplate: MainTemplate,
   softwareVendorsTemplate: SoftwareVendorsTemplate,
   softwareVendorsTemplateAlpha: SoftwareVendorsTemplateAlpha,
+  softwareFiltersTemplate: SoftwareFiltersTemplate,
+  softwareFiltersTemplateAlpha: SoftwareFiltersTemplateAlpha,
   breadcrumbs: GovukBreadcrumbs,
   form: FormWithCSRF,
   govukCheckboxes: GovukCheckboxes,
@@ -59,22 +58,6 @@
   ))
 }
 
-@checkboxGroup(fieldsetLegend: String, checkboxes: Seq[CheckboxItem]) = {
-  @govukCheckboxes(
-    Checkboxes(
-      classes = "govuk-checkboxes--small",
-      fieldset = Some(Fieldset(
-        legend = Some(Legend(
-          content = Text(fieldsetLegend),
-          isPageHeading = false,
-          classes = "govuk-fieldset__legend--s govuk-!-padding-top-1 govuk-hidden"
-        ))
-      )),
-      items = checkboxes
-    ).withFormField(searchForm(FiltersForm.filters))
-  )
-}
-
 @mainTemplate(title = messages("search-software.title"), breadcrumbs = Some(pageBreadcrumbs), optForm = Some(searchForm), scripts = Some(js)) {
 
   <div class="govuk-grid-row">
@@ -99,217 +82,11 @@
         <div class="filters-section">
           <h2 class="govuk-heading-m">@messages("search-software.filters.heading")</h2>
 
-          @govukAccordion(Accordion(
-            id = "accordion-default",
-            items = Seq(
-
-              Section(
-                headingContent = Text(messages("search-software.filters.pricing")),
-                content = HtmlContent(checkboxGroup(
-                  fieldsetLegend = messages("search-software.filters.pricing"),
-                  Seq(
-                    CheckboxItem(
-                      id = Some(s"$FreeTrial-filter"),
-                      content = Text(messages("search-software.vendor-detail.pricing.free-trial")),
-                      value = FreeTrial
-                    ),
-                    CheckboxItem(
-                      id = Some(s"$FreeVersion-filter"),
-                      content = Text(messages("search-software.vendor-detail.pricing.free-version")),
-                      value = FreeVersion
-                    ),
-                    CheckboxItem(
-                      id = Some(s"$PaidFor-filter"),
-                      content = Text(messages("search-software.vendor-detail.pricing.paid-for")),
-                      value = PaidFor
-                    )
-                  )
-                ))
-              ),
-
-              Section(
-                headingContent = Text(messages("search-software.filters.income-type")),
-                content = HtmlContent(checkboxGroup(
-                  fieldsetLegend = messages("search-software.filters.income-type"),
-                  checkboxes = Seq(
-                    CheckboxItem(
-                      id = Some(s"$SoleTrader-filter"),
-                      content = Text(messages("search-software.vendor-detail.income-type.sole-trader")),
-                      value = SoleTrader
-                    ),
-                    CheckboxItem(
-                      id = Some(s"$UkProperty-filter"),
-                      content = Text(messages("search-software.vendor-detail.income-type.uk-property")),
-                      value = UkProperty
-                    ),
-                    CheckboxItem(
-                      id = Some(s"$OverseasProperty-filter"),
-                      content = Text(messages("search-software.vendor-detail.income-type.overseas-property")),
-                      value = OverseasProperty
-                    ),
-                  )
-                ))
-              ),
-
-              Section(
-                headingContent = Text(messages("search-software.filters.compatible-with")),
-                content = HtmlContent(checkboxGroup(
-                  fieldsetLegend = messages("search-software.filters.compatible-with"),
-                  checkboxes = Seq(
-                    CheckboxItem(
-                      id = Some(s"$MicrosoftWindows-filter"),
-                      content = Text(messages("search-software.vendor-detail.compatible-with.microsoft-windows")),
-                      value = MicrosoftWindows
-                    ),
-                    CheckboxItem(
-                      id = Some(s"$MacOS-filter"),
-                      content = Text(messages("search-software.vendor-detail.compatible-with.mac-os")),
-                      value = MacOS
-                    ),
-                  )
-                ))
-              ),
-
-              Section(
-                headingContent = Text(messages("search-software.filters.mobile-app")),
-                content = HtmlContent(checkboxGroup(
-                  fieldsetLegend = messages("search-software.filters.mobile-app"),
-                  checkboxes = Seq(
-                    CheckboxItem(
-                      id = Some(s"$Android-filter"),
-                      content = Text(messages("search-software.vendor-detail.mobile-app.android")),
-                      value = Android
-                    ),
-                    CheckboxItem(
-                      id = Some(s"$AppleIOS-filter"),
-                      content = Text(messages("search-software.vendor-detail.mobile-app.apple-ios")),
-                      value = AppleIOS
-                    ),
-                  )
-                ))
-              ),
-
-              Section(
-                headingContent = Text(messages("search-software.filters.software-type")),
-                content = HtmlContent(checkboxGroup(
-                  fieldsetLegend = messages("search-software.filters.software-type"),
-                  checkboxes = Seq(
-                    CheckboxItem(
-                      id = Some(s"$BrowserBased-filter"),
-                      content = Text(messages("search-software.vendor-detail.software-type.browser-based")),
-                      value = BrowserBased
-                    ),
-                    CheckboxItem(
-                      id = Some(s"$ApplicationBased-filter"),
-                      content = Text(messages("search-software.vendor-detail.software-type.application-based")),
-                      value = ApplicationBased
-                    ),
-                  )
-                ))
-              ),
-
-              Section(
-                headingContent = Text(messages("search-software.filters.software-for")),
-                content = HtmlContent(checkboxGroup(
-                  fieldsetLegend = messages("search-software.filters.software-for"),
-                  checkboxes = Seq(
-                    CheckboxItem(
-                      id = Some(s"$RecordKeeping-filter"),
-                      content = Text(messages("search-software.vendor-detail.software-for.record-keeping")),
-                      value = RecordKeeping
-                    ),
-                    CheckboxItem(
-                      id = Some(s"$Bridging-filter"),
-                      content = Text(messages("search-software.vendor-detail.software-for.bridging")),
-                      value = Bridging
-                    )
-                  )
-                ))
-              ),
-
-              Section(
-                headingContent = Text(messages("search-software.filters.business-type")),
-                content = HtmlContent(checkboxGroup(
-                  fieldsetLegend = messages("search-software.filters.business-type"),
-                  checkboxes = Seq(
-                    CheckboxItem(
-                      id = Some(s"$Individual-filter"),
-                      content = Text(messages("search-software.vendor-detail.business-type.individual")),
-                      value = Individual
-                    ),
-                    CheckboxItem(
-                      id = Some(s"$Agent-filter"),
-                      content = Text(messages("search-software.vendor-detail.business-type.agent")),
-                      value = Agent
-                    ),
-                  )
-                ))
-              ),
-
-              Section(
-                headingContent = Text(messages("search-software.filters.software-compatibility")),
-                content = HtmlContent(checkboxGroup(
-                  fieldsetLegend = messages("search-software.filters.software-compatibility"),
-                  checkboxes = Seq(
-                    CheckboxItem(
-                      id = Some(s"$Vat-filter"),
-                      content = Text(messages("search-software.vendor-detail.software-compatibility.vat")),
-                      value = Vat
-                    ),
-                    CheckboxItem(
-                      id = Some(s"$IncomeTax-filter"),
-                      content = Text(messages("search-software.vendor-detail.software-compatibility.income-tax")),
-                      disabled = true,
-                      checked = true
-                    ),
-                  )
-                ))
-              ),
-
-              Section(
-                headingContent = Text(messages("search-software.filters.language")),
-                content = HtmlContent(checkboxGroup(
-                  fieldsetLegend = "",
-                  checkboxes = Seq(
-                    CheckboxItem(
-                      id = Some(s"$Welsh-filter"),
-                      content = Text(messages("search-software.vendor-detail.language.welsh")),
-                      value = Welsh
-                    ),
-                  )
-                ))
-              ),
-
-              Section(
-                headingContent = Text(messages("search-software.filters.accessibility")),
-                content = HtmlContent(checkboxGroup(
-                  fieldsetLegend = messages("search-software.filters.accessibility"),
-                  checkboxes = Seq(
-                    CheckboxItem(
-                      id = Some(s"$Visual-filter"),
-                      content = Text(messages("search-software.vendor-detail.accessibility.visual")),
-                      value = Visual
-                    ),
-                    CheckboxItem(
-                      id = Some(s"$Hearing-filter"),
-                      content = Text(messages("search-software.vendor-detail.accessibility.hearing")),
-                      value = Hearing
-                    ),
-                    CheckboxItem(
-                      id = Some(s"$Motor-filter"),
-                      content = Text(messages("search-software.vendor-detail.accessibility.motor")),
-                      value = Motor
-                    ),
-                    CheckboxItem(
-                      id = Some(s"$Cognitive-filter"),
-                      content = Text(messages("search-software.vendor-detail.accessibility.cognitive")),
-                      value = Cognitive
-                    ),
-                  )
-                ))
-              )
-            )
-          ))
+          @if(betaFeatures) {
+            @softwareFiltersTemplate(searchForm(FiltersForm.filters))
+          } else {
+            @softwareFiltersTemplateAlpha(searchForm(FiltersForm.filters))
+          }
 
           <div class="govuk-button-group govuk-!-padding-top-0 apply-filters-group">
             @govukButton(Button(
