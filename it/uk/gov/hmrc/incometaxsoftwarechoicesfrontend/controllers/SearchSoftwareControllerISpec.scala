@@ -31,7 +31,7 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase {
       Then("Should return OK with the software search page")
       response should have(
         httpStatus(OK),
-        pageTitle(s"""${messages("search-software.title")} - Find software for Making Tax Digital for Income Tax - GOV.UK""")
+        pageTitle(s"""${messages("search-software.title")} - Find software that’s compatible with Making Tax Digital for Income Tax - GOV.UK""")
       )
     }
   }
@@ -44,7 +44,7 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase {
       Then("Should return OK with the software search page")
       response should have(
         httpStatus(OK),
-        pageTitle(s"""${messages("search-software.title")} - Find software for Making Tax Digital for Income Tax - GOV.UK""")
+        pageTitle(s"""${messages("search-software.title")} - Find software that’s compatible with Making Tax Digital for Income Tax - GOV.UK""")
       )
     }
 
@@ -55,7 +55,7 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase {
       Then("Should return BAD_REQUEST")
       response should have(
         httpStatus(BAD_REQUEST),
-        pageTitle(s"""Error: ${messages("search-software.title")} - Find software for Making Tax Digital for Income Tax - GOV.UK""")
+        pageTitle(s"""Error: ${messages("search-software.title")} - Find software that’s compatible with Making Tax Digital for Income Tax - GOV.UK""")
       )
     }
   }
@@ -79,7 +79,7 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase {
       Then("Should return BAD_REQUEST")
       response should have(
         httpStatus(BAD_REQUEST),
-        pageTitle(s"""Error: ${messages("search-software.title")} - Find software for Making Tax Digital for Income Tax - GOV.UK""")
+        pageTitle(s"""Error: ${messages("search-software.title")} - Find software that’s compatible with Making Tax Digital for Income Tax - GOV.UK""")
       )
     }
   }

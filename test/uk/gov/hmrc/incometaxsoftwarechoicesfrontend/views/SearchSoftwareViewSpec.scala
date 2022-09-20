@@ -129,7 +129,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
       }
 
       "have a title" in {
-        document().title shouldBe s"""${SearchSoftwarePage.title} - Find software for Making Tax Digital for Income Tax - GOV.UK"""
+        document().title shouldBe s"""${SearchSoftwarePage.title} - Find software that’s compatible with Making Tax Digital for Income Tax - GOV.UK"""
       }
 
       "have the last updated date" in {
@@ -142,10 +142,6 @@ class SearchSoftwareViewSpec extends ViewSpec {
 
       "have paragraph1" in {
         document().mainContent.selectNth("p", 2).text shouldBe SearchSoftwarePage.paragraph1
-      }
-
-      "have paragraph2" in {
-        document().mainContent.selectNth("p", 3).text shouldBe SearchSoftwarePage.paragraph2
       }
 
       "have inset text" in {
@@ -531,12 +527,11 @@ class SearchSoftwareViewSpec extends ViewSpec {
   }
 
   private object SearchSoftwarePage {
-    val title = "Choose the right software for your needs"
+    val title = "Choose your software"
     val lastUpdate = "This page was last updated: 01/07/2022"
-    val heading = "Choose the right software for your needs"
+    val heading = "Choose your software"
     val paragraph1: String = "All software on this page has been through HMRC’s recognition process. " +
       "But we do not endorse or recommend any one product or software provider."
-    val paragraph2 = "Some software has features suitable if you have accessibility needs, like visual impairment or limited movement."
     val insetText = "If you need help to choose software, contact the software provider before making a decision. We are not able to help you choose software."
     val searchFormHeading = "Search by software name"
 
