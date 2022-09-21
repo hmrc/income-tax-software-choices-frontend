@@ -18,6 +18,7 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models
 
 import org.scalatestplus.play.PlaySpec
 import play.api.libs.json._
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.TestModels.fullSoftwareVendorsModel
 
 class SoftwareVendorsSpec extends PlaySpec {
 
@@ -32,22 +33,8 @@ class SoftwareVendorsSpec extends PlaySpec {
         "phone" -> "00000 000 000",
         "website" -> "software-vendor-name.com",
         "filters" -> Json.arr(),
-        "incomeAndDeductions" -> Json.arr()
-      )
-    )
-  )
-
-  val fullModel: SoftwareVendors = SoftwareVendors(
-    lastUpdated = "06/07/2022",
-    vendors = Seq(
-      SoftwareVendorModel(
-        name = "software vendor name",
-        url = "/test-url",
-        email = "test@software-vendor-name.com",
-        phone = "00000 000 000",
-        website = "software-vendor-name.com",
-        filters = Seq.empty[VendorFilter],
-        incomeAndDeductions = Seq.empty[IncomeAndDeduction]
+        "incomeAndDeductions" -> Json.arr(),
+        "accessibilityStatementLink" -> "software-vendor-accessibility.com"
       )
     )
   )
@@ -55,12 +42,12 @@ class SoftwareVendorsSpec extends PlaySpec {
   "SoftwareVendors" must {
     "read from json correctly" when {
       "the json is complete" in {
-        Json.fromJson[SoftwareVendors](fullJson) mustBe JsSuccess(fullModel)
+        Json.fromJson[SoftwareVendors](fullJson) mustBe JsSuccess(fullSoftwareVendorsModel)
       }
       "the json has no vendors" in {
         Json.fromJson[SoftwareVendors](
           fullJson - "vendors" ++ Json.obj("vendors" -> Json.arr())
-        ) mustBe JsSuccess(fullModel.copy(vendors = Seq.empty[SoftwareVendorModel]))
+        ) mustBe JsSuccess(fullSoftwareVendorsModel.copy(vendors = Seq.empty[SoftwareVendorModel]))
       }
     }
     "fail to read json" when {

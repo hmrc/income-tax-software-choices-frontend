@@ -76,20 +76,16 @@
   <h2 class="govuk-heading-l">@messages("product-details.contact-details.heading")</h2>
 
   @govukSummaryList(SummaryList(
-    rows = Seq(
-      SummaryListRow(
-        key = Key(content = Text(s"${messages("product-details.contact-details.email")}:")),
-        value = Value(content = HtmlContent(link(href = s"mailto:${softwareVendor.email}", text = softwareVendor.email)))
-      ),
-      SummaryListRow(
-        key = Key(content = Text(s"${messages("product-details.contact-details.phone")}:")),
-        value = Value(content = Text(softwareVendor.phone))
-      ),
-      SummaryListRow(
-        key = Key(content = Text(s"${messages("product-details.contact-details.website")}:")),
-        value = Value(content = HtmlContent(link(href = softwareVendor.website, text = softwareVendor.website)))
-      )
-    )
+    rows = Seq() ++ softwareVendor.email.map(email => SummaryListRow(
+      key = Key(content = Text(s"${messages("product-details.contact-details.email")}:")),
+      value = Value(content = HtmlContent(link(href = s"mailto:${email}", text = email)))
+    )) ++ softwareVendor.phone.map(phone => SummaryListRow(
+      key = Key(content = Text(s"${messages("product-details.contact-details.phone")}:")),
+      value = Value(content = Text(phone))
+    )) ++ Seq(SummaryListRow(
+      key = Key(content = Text(s"${messages("product-details.contact-details.website")}:")),
+      value = Value(content = HtmlContent(link(href = softwareVendor.website, text = softwareVendor.website)))
+    ))
   ))
 }
 

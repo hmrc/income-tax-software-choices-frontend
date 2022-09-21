@@ -21,11 +21,11 @@ import org.jsoup.nodes.{Document, Element}
 import org.scalatest.Assertion
 import play.api.data.FormError
 import play.api.mvc.Call
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes.ProductDetailsController
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SearchSoftwarePage
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes.ProductDetailsController
 
 class SearchSoftwareViewSpec extends ViewSpec {
 
@@ -38,8 +38,8 @@ class SearchSoftwareViewSpec extends ViewSpec {
       SoftwareVendorModel(
         name = "test software vendor one",
         url = "/test-vendor-one-url",
-        email = "test@software-vendor-name-one.com",
-        phone = "11111 111 111",
+        email = Some("test@software-vendor-name-one.com"),
+        phone = Some("11111 111 111"),
         website = "software-vendor-name-one.com",
         filters = Seq(
           VendorFilter.FreeVersion,
@@ -65,8 +65,8 @@ class SearchSoftwareViewSpec extends ViewSpec {
       SoftwareVendorModel(
         name = "test software vendor two",
         url = "/test-vendor-two-url",
-        email = "test@software-vendor-name-two.com",
-        phone = "22222 222 222",
+        email = Some("test@software-vendor-name-two.com"),
+        phone = Some("22222 222 222"),
         website = "software-vendor-name-two.com",
         filters = Seq.empty[VendorFilter],
         incomeAndDeductions = Seq.empty[IncomeAndDeduction]

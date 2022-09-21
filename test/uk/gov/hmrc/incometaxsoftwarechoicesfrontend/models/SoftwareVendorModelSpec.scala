@@ -18,6 +18,7 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models
 
 import org.scalatestplus.play.PlaySpec
 import play.api.libs.json._
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.TestModels.fullSoftwareVendorModel
 
 class SoftwareVendorModelSpec extends PlaySpec {
 
@@ -75,79 +76,30 @@ class SoftwareVendorModelSpec extends PlaySpec {
     "accessibilityStatementLink" -> "software-vendor-accessibility.com"
   )
 
-  val fullModel: SoftwareVendorModel = SoftwareVendorModel(
-    name = "software vendor name",
-    url = "/test-url",
-    email = "test@software-vendor-name.com",
-    phone = "00000 000 000",
-    website = "software-vendor-name.com",
-    filters = Seq(
-      VendorFilter.FreeVersion,
-      VendorFilter.FreeTrial,
-      VendorFilter.Individual,
-      VendorFilter.Agent,
-      VendorFilter.MicrosoftWindows,
-      VendorFilter.MacOS,
-      VendorFilter.Android,
-      VendorFilter.AppleIOS,
-      VendorFilter.BrowserBased,
-      VendorFilter.ApplicationBased,
-      VendorFilter.Visual,
-      VendorFilter.Hearing,
-      VendorFilter.Motor,
-      VendorFilter.Cognitive
-    ),
-    incomeAndDeductions = Seq(
-      IncomeAndDeduction.BlindPersonsAllowance,
-      IncomeAndDeduction.CapitalGainsTax,
-      IncomeAndDeduction.ComplexPartnerships,
-      IncomeAndDeduction.ConstructionIndustryScheme,
-      IncomeAndDeduction.Employment,
-      IncomeAndDeduction.ForeignIncome,
-      IncomeAndDeduction.GiftAid,
-      IncomeAndDeduction.HighIncomeChildBenefit,
-      IncomeAndDeduction.Investments,
-      IncomeAndDeduction.LloydsUnderwriters,
-      IncomeAndDeduction.MarriageAllowance,
-      IncomeAndDeduction.MarriedAllowance,
-      IncomeAndDeduction.MemberOfParliament,
-      IncomeAndDeduction.MinisterOfReligion,
-      IncomeAndDeduction.PartnerIncome,
-      IncomeAndDeduction.PAYE,
-      IncomeAndDeduction.PensionContributions,
-      IncomeAndDeduction.Pensions,
-      IncomeAndDeduction.PropertyBusiness,
-      IncomeAndDeduction.ResidenceAndRemittance,
-      IncomeAndDeduction.SAAdditionalIncome,
-      IncomeAndDeduction.SelfEmployment,
-      IncomeAndDeduction.SimplePartnerships,
-      IncomeAndDeduction.StatePension,
-      IncomeAndDeduction.StudentLoans,
-      IncomeAndDeduction.UKDividends,
-      IncomeAndDeduction.UKInterest
-    ),
-    accessibilityStatementLink = Some("software-vendor-accessibility.com")
-  )
-
   "SoftwareVendorModel" must {
     "read from json correctly" when {
       "the json is complete" in {
-        Json.fromJson[SoftwareVendorModel](fullJson) mustBe JsSuccess(fullModel)
+        Json.fromJson[SoftwareVendorModel](fullJson) mustBe JsSuccess(fullSoftwareVendorModel)
+      }
+      "the json has no contact details" in {
+        Json.fromJson[SoftwareVendorModel](
+          fullJson - "email" - "phone"
+        ) mustBe JsSuccess(fullSoftwareVendorModel.copy(email = None, phone = None))
       }
       "the json has no filter options" in {
         Json.fromJson[SoftwareVendorModel](
           fullJson - "filters" ++ Json.obj("filters" -> Json.arr())
-        ) mustBe JsSuccess(fullModel.copy(filters = Seq.empty[VendorFilter]))
+        ) mustBe JsSuccess(fullSoftwareVendorModel.copy(filters = Seq.empty[VendorFilter]))
       }
       "the json has no income and deduction coverage" in {
         Json.fromJson[SoftwareVendorModel](
           fullJson - "incomeAndDeductions" ++ Json.obj("incomeAndDeductions" -> Json.arr())
-        ) mustBe JsSuccess(fullModel.copy(incomeAndDeductions = Seq.empty[IncomeAndDeduction]))
+        ) mustBe JsSuccess(fullSoftwareVendorModel.copy(incomeAndDeductions = Seq.empty[IncomeAndDeduction]))
       }
       "there is no accessibility statement link" in {
         Json.fromJson[SoftwareVendorModel](
           fullJson - "accessibilityStatementLink"
-        ) mustBe JsSuccess(fullModel.copy(accessibilityStatementLink = None))
+        ) mustBe JsSuccess(fullSoftwareVendorModel.copy(accessibilityStatementLink = None))
       }
     }
     "fail to read json" when {

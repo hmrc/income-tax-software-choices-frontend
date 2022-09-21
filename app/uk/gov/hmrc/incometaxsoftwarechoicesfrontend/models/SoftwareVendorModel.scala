@@ -21,8 +21,8 @@ import play.api.libs.json.{Json, Reads}
 case class SoftwareVendorModel(
                                 name: String,
                                 url: String,
-                                email: String,
-                                phone: String,
+                                email: Option[String],
+                                phone: Option[String],
                                 website: String,
                                 filters: Seq[VendorFilter],
                                 incomeAndDeductions: Seq[IncomeAndDeduction],
