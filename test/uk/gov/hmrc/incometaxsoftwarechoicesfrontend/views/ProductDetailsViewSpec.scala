@@ -77,11 +77,13 @@ class ProductDetailsViewSpec extends ViewSpec {
       val language: String = "Language"
       val welsh: String = "Welsh"
 
-      val accessibility: String = "Accessibility"
+      val accessibilityFeatures: String = "Accessibility features"
       val visual: String = "Visual"
       val hearing: String = "Hearing"
       val motor: String = "Motor"
       val cognitive: String = "Cognitive"
+
+      val accessibility: String = "Accessibility"
     }
 
     val incomesAndDeductionsHeading: String = "Self Assessment income and deduction types this software covers"
@@ -300,7 +302,7 @@ class ProductDetailsViewSpec extends ViewSpec {
             }
 
             "display the accessibility row" in {
-              checkList(detailsSection, accessibilityRow, Filters.accessibility, Filters.visual, Filters.hearing, Filters.motor, Filters.cognitive)
+              checkList(detailsSection, accessibilityRow, Filters.accessibilityFeatures, Filters.visual, Filters.hearing, Filters.motor, Filters.cognitive)
             }
 
             val accessibilityStatementSection = document.selectNth("dl", 3)
