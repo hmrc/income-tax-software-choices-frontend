@@ -289,12 +289,12 @@ class SearchSoftwareViewSpec extends ViewSpec {
 
                         if (betaFeatureSwitch) {
                           "contains a section header" in {
-                            accordionSectionHeader.get.text shouldBe SearchSoftwarePageContent.Filters.accessibilityNeeds
+                            accordionSectionHeader.get.text shouldBe SearchSoftwarePageContent.Filters.accessibilityFeatures
                           }
                         }
 
                         "contains a fieldset legend" in {
-                          checkboxGroup.getElementsByTag("legend").text() shouldBe SearchSoftwarePageContent.Filters.accessibilityNeeds
+                          checkboxGroup.getElementsByTag("legend").text() shouldBe SearchSoftwarePageContent.Filters.accessibilityFeatures
                         }
 
                         "contains an Visual checkbox" in {
@@ -576,7 +576,7 @@ private object SearchSoftwarePageContent {
     val softwareFor = "Software for"
     val softwareCompatibility = "Software compatibility"
     val language = "Language"
-    val accessibilityNeeds = "Accessibility needs"
+    val accessibilityFeatures = "Accessibility features"
     val applyFilters = "Apply filters"
     val clearFilters = "Clear filters"
   }
