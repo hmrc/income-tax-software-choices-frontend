@@ -22,8 +22,8 @@ import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.play.PlaySpec
 import play.api.Environment
 import uk.gov.hmrc.http.InternalServerException
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.IncomeAndDeduction.{BlindPersonsAllowance, CapitalGainsTax}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{FreeTrial, FreeVersion}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.TestModels.{testVendorOne, testVendorThree, testVendorTwo}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.FreeTrial
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareVendorModel, SoftwareVendors}
 
 import java.io.FileInputStream
@@ -34,37 +34,6 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
     val mockEnvironment: Environment = mock[Environment]
     lazy val service: SoftwareChoicesService = new SoftwareChoicesService(mockEnvironment)
   }
-
-  private val testVendorOne = SoftwareVendorModel(
-    "test software vendor one",
-    "/test-url-one",
-    "test@software-vendor-name-one.com",
-    "11111 111 111",
-    "software-vendor-name-one.com",
-    Seq(FreeVersion),
-    Seq(BlindPersonsAllowance),
-    accessibilityStatementLink = Some("software-vendor-accessibility.com")
-  )
-
-  private val testVendorTwo = SoftwareVendorModel(
-    "test software vendor two",
-    "/test-url-two",
-    "test@software-vendor-name-two.com",
-    "22222 222 222",
-    "software-vendor-name-two.com",
-    Seq(FreeTrial),
-    Seq(CapitalGainsTax)
-  )
-
-  private val testVendorThree = SoftwareVendorModel(
-    "test software vendor three",
-    "/test-url-three",
-    "test@software-vendor-name-three.com",
-    "33333 333 333",
-    "software-vendor-name-three.com",
-    Seq(FreeTrial, FreeVersion),
-    Seq(BlindPersonsAllowance, CapitalGainsTax)
-  )
 
   val expectedSoftwareVendors: SoftwareVendors = SoftwareVendors(
     lastUpdated = "06/07/2022",

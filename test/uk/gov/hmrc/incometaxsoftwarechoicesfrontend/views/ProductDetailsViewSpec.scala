@@ -155,8 +155,8 @@ class ProductDetailsViewSpec extends ViewSpec {
   val softwareVendorModelBase: SoftwareVendorModel = SoftwareVendorModel(
     name = "abc",
     url = "/url",
-    email = "test@software-vendor-name-three.com",
-    phone = "00000 000 000",
+    email = Some("test@software-vendor-name-three.com"),
+    phone = Some("00000 000 000"),
     website = "software-vendor-name-three.com",
     filters = Seq.empty,
     incomeAndDeductions = Seq.empty,
@@ -230,14 +230,14 @@ class ProductDetailsViewSpec extends ViewSpec {
             row.selectHead("dt").text shouldBe s"${ProductDetailsPage.contactDetailsEmail}:"
 
             val link = row.selectHead("dd").selectHead("a")
-            link.text shouldBe softwareVendorModelBase.email
-            link.attr("href") shouldBe s"mailto:${softwareVendorModelBase.email}"
+            link.text shouldBe "test@software-vendor-name-three.com"
+            link.attr("href") shouldBe s"mailto:test@software-vendor-name-three.com"
           }
 
           "display the vendor phone number" in {
             val row: Element = vendorInformationSection.selectNth(".govuk-summary-list__row", 2)
             row.selectHead("dt").text shouldBe s"${ProductDetailsPage.contactDetailsPhone}:"
-            row.selectHead("dd").text shouldBe softwareVendorModelBase.phone
+            row.selectHead("dd").text shouldBe "00000 000 000"
           }
 
           "display the vendor website" in {
@@ -307,6 +307,7 @@ class ProductDetailsViewSpec extends ViewSpec {
           }
         }
       )
+
       "the software vendor does not have an accessibility statement" when {
         Seq(true, false).foreach(incomeFs =>
           s"the income and deductions feature switch is $incomeFs" must {
@@ -379,6 +380,24 @@ class ProductDetailsViewSpec extends ViewSpec {
             document.selectNth("h2", 3).text() shouldBe Filters.accessibility
           }
         }
+      }
+    }
+
+    "the vendor is missing contact details" should {
+      val vendorInformationSection = createAndParseDocument(
+        softwareVendorModelBase.copy(phone = None, email = None),
+        displayIncomeAndDeductionTypes = false
+      ).selectNth("dl", 1)
+
+      "only display the vendor website" in {
+        val row = vendorInformationSection
+          .selectHead(".govuk-summary-list__row")
+
+        row.selectHead("dt").text shouldBe s"${ProductDetailsPage.contactDetailsWebsite}:"
+
+        val link = row.selectHead("dd").selectHead("a")
+        link.text shouldBe softwareVendorModelBase.website
+        link.attr("href") shouldBe softwareVendorModelBase.website
       }
     }
 
