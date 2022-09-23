@@ -162,6 +162,29 @@
         "property-business",
         "self-employment"
       ]
+    },
+    {
+      "name": "VitalTax",
+      "url": "https://vitaltax.uk",
+      "email": "info@vitaltax.uk",
+      "website": "vitaltax.uk",
+      "filters": [
+        "free-version",
+        "individual",
+        "agent",
+        "microsoft-windows",
+        "mac-os",
+        "android",
+        "apple-ios",
+        "browser-based",
+        "sole-trader",
+        "uk-property",
+        "bridging"
+      ],
+      "incomeAndDeductions": [
+        "property-business",
+        "self-employment"
+      ]
     }
   ]
 }
