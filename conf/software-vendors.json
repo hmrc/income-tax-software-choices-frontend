@@ -156,7 +156,29 @@
         "record-keeping",
         "apple-ios",
         "android",
-        "free-version"
+        "free-version",
+        "uk-property",
+        "sole-trader"
+      ],
+      "incomeAndDeductions": [
+        "property-business",
+        "self-employment"
+      ]
+    },
+    {
+      "name": "APARI: Self-Employed, Landlords & Accountants",
+      "url": "https://www.apari-digital.com/making-tax-digital?utm_source=gov.uk&utm_medium=web_referral&utm_campaign=hmrc_mtd_software/",
+      "email": "register@apari-digital.com",
+      "website": "https://www.apari-digital.com/making-tax-digital?utm_source=gov.uk&utm_medium=web_referral&utm_campaign=hmrc_mtd_software/",
+      "filters": [
+        "agent",
+        "individual",
+        "microsoft-windows",
+        "mac-os",
+        "browser-based",
+        "record-keeping",
+        "uk-property",
+        "sole-trader"
       ],
       "incomeAndDeductions": [
         "property-business",
