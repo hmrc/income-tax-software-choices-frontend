@@ -139,6 +139,29 @@
         "state-pension",
         "uk-dividends"
       ]
+    },
+    {
+      "name": "FreeAgent",
+      "url": "https://www.freeagent.com/guides/making-tax-digital/",
+      "email": "support@freeagent.com",
+      "website": "https://www.freeagent.com/guides/making-tax-digital/",
+      "accessibilityStatementLink": "https://www.freeagent.com/website/accessibility/",
+      "filters": [
+        "agent",
+        "individual",
+        "vat",
+        "microsoft-windows",
+        "mac-os",
+        "browser-based",
+        "record-keeping",
+        "apple-ios",
+        "android",
+        "free-version"
+      ],
+      "incomeAndDeductions": [
+        "property-business",
+        "self-employment"
+      ]
     }
   ]
 }
