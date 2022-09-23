@@ -259,14 +259,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
                         }
 
                         "contains an Income Tax checkbox" in {
-                          val checkboxItem = getCheckboxItem(checkboxGroup, 2)
-                          val checkbox = getCheckboxInput(checkboxItem)
-
-                          checkbox.attr("name") shouldBe s"${FiltersForm.filters}[]"
-                          checkbox.hasAttr("checked") shouldBe true
-                          checkbox.hasAttr("disabled") shouldBe true
-
-                          getCheckboxLabel(checkboxItem).text shouldBe SearchSoftwarePageContent.incomeTax
+                          validateCheckboxInGroup(checkboxGroup, 2, "", SearchSoftwarePageContent.incomeTax, disabled = true, checked = true)
                         }
                       }
 
@@ -282,6 +275,11 @@ class SearchSoftwareViewSpec extends ViewSpec {
                         "contains a Welsh checkbox" in {
                           validateCheckboxInGroup(checkboxGroup, 1, Welsh.key, SearchSoftwarePageContent.welsh)
                         }
+
+                        "contains an English checkbox" in {
+                          validateCheckboxInGroup(checkboxGroup, 2, "", SearchSoftwarePageContent.english, disabled = true, checked = true)
+                        }
+
                       }
 
                       "has an accessibility features section" that {
@@ -513,14 +511,22 @@ object SearchSoftwareViewSpec extends ViewSpec {
   def getCheckboxLabel(checkboxItem: Element): Element = checkboxItem
     .selectHead(".govuk-checkboxes__label")
 
-  def validateCheckboxInGroup(checkboxGroup: Element, n: Int, value: String, label: String, name: String = s"${FiltersForm.filters}[]"): Assertion = {
+  def validateCheckboxInGroup(
+                               checkboxGroup: Element,
+                               n: Int,
+                               value: String,
+                               label: String,
+                               name: String = s"${FiltersForm.filters}[]",
+                               disabled: Boolean = false,
+                               checked: Boolean = false): Assertion = {
     val checkboxItem = getCheckboxItem(checkboxGroup, n)
     getCheckboxLabel(checkboxItem).text shouldBe label
 
     val checkbox = getCheckboxInput(checkboxItem)
     checkbox.attr("value") shouldBe value
     checkbox.attr("name") shouldBe name
-    checkbox.hasAttr("disabled") shouldBe false
+    checkbox.hasAttr("disabled") shouldBe disabled
+    checkbox.hasAttr("checked") shouldBe checked
   }
 
   def softwareVendorsSection(document: Document): Element = {
@@ -615,6 +621,7 @@ private object SearchSoftwarePageContent {
   val incomeTax = "Income Tax"
   val accessibility = "Accessibility:"
   val welsh = "Welsh"
+  val english = "English"
   val visual = "Visual"
   val hearing = "Hearing"
   val motor = "Motor"

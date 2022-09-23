@@ -83,6 +83,7 @@ search-software.vendor-detail.software-compatibility.vat = VAT
 search-software.vendor-detail.software-compatibility.income-tax = Income Tax
 
 search-software.vendor-detail.language.welsh = Welsh
+search-software.vendor-detail.language.english = English
 
 search-software.vendor-detail.accessibility = Accessibility:
 search-software.vendor-detail.accessibility.visual = Visual

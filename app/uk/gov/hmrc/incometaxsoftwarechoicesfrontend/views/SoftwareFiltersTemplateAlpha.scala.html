@@ -181,6 +181,12 @@
       content = Text(messages("search-software.vendor-detail.language.welsh")),
       value = Welsh
     ),
+    CheckboxItem(
+      id = Some(s"$English-filter"),
+      content = Text(messages("search-software.vendor-detail.language.english")),
+      disabled = true,
+      checked = true
+    ),
   )
 )
 
