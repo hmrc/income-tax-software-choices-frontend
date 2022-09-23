@@ -20,7 +20,7 @@ import play.api.data.Form
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import play.twirl.api.Html
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.BetaFeatures
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.{BetaFeatures, ExtraPricingOptions}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FiltersFormModel, SoftwareVendors}
@@ -36,6 +36,7 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
                                          softwareVendorsTemplateAlpha: SoftwareVendorsTemplateAlpha,
                                          softwareVendorsTemplate: SoftwareVendorsTemplate,
                                          softwareChoicesService: SoftwareChoicesService) extends BaseFrontendController(mcc) with FeatureSwitching {
+
 
   val show: Action[AnyContent] = Action { implicit request =>
     val vendors: SoftwareVendors = softwareChoicesService.softwareVendors
@@ -66,7 +67,7 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
         if (isEnabled(BetaFeatures)) {
           Ok(softwareVendorsTemplate(vendors))
         } else {
-          Ok(softwareVendorsTemplateAlpha(vendors))
+          Ok(softwareVendorsTemplateAlpha(vendors, isEnabled(ExtraPricingOptions)))
         }
       }
     )
@@ -74,6 +75,6 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
 
   private def view(vendors: SoftwareVendors, form: Form[FiltersFormModel] = FiltersForm.form)
                   (implicit request: Request[_]): Html =
-    searchSoftwarePage(vendors, form, routes.SearchSoftwareController.search, isEnabled(BetaFeatures))
+    searchSoftwarePage(vendors, form, routes.SearchSoftwareController.search, isEnabled(BetaFeatures), isEnabled(ExtraPricingOptions))
 
 }

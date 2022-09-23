@@ -24,7 +24,7 @@
   checkboxGroup: CheckboxGroupHelper
 )
 
-@(checkboxField: Field)(implicit messages: Messages)
+@(checkboxField: Field, displayExtraPricingOptions: Boolean)(implicit messages: Messages)
 
 @govukAccordion(Accordion(
   id = "accordion-default",
@@ -37,22 +37,22 @@
         fieldsetLegend = messages("search-software.filters.pricing"),
         fieldsetClass = "govuk-hidden",
         checkboxes = Seq(
-          CheckboxItem(
+          Some(CheckboxItem(
             id = Some(s"$FreeTrial-filter"),
             content = Text(messages("search-software.vendor-detail.pricing.free-trial")),
             value = FreeTrial
-          ),
-          CheckboxItem(
+          )).filter(_ => displayExtraPricingOptions),
+          Some(CheckboxItem(
             id = Some(s"$FreeVersion-filter"),
             content = Text(messages("search-software.vendor-detail.pricing.free-version")),
             value = FreeVersion
-          ),
-          CheckboxItem(
+          )),
+          Some(CheckboxItem(
             id = Some(s"$PaidFor-filter"),
             content = Text(messages("search-software.vendor-detail.pricing.paid-for")),
             value = PaidFor
-          )
-        )
+          )).filter(_ => displayExtraPricingOptions)
+        ).flatten
       ))
     ),
 
