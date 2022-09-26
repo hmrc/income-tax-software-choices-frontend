@@ -34,7 +34,7 @@ search-software.filters.software-for           = Meddalwedd ar gyfer
 search-software.filters.business-type          = Math o fusnes
 search-software.filters.software-compatibility = Cydweddoldeb y meddalwedd
 search-software.filters.language               = Iaith
-search-software.filters.accessibility          = Anghenion Hygyrchedd
+search-software.filters.accessibility          = Nodweddion hygyrchedd
 
 search-software.filters.apply-filters = Gweithredu hidlyddion
 search-software.filters.clear-filters = Clirio hidlyddion

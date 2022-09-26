@@ -34,7 +34,7 @@ search-software.filters.software-for = Software for
 search-software.filters.business-type = Business type
 search-software.filters.software-compatibility = Software compatibility
 search-software.filters.language = Language
-search-software.filters.accessibility = Accessibility needs
+search-software.filters.accessibility = Accessibility features
 
 search-software.filters.apply-filters = Apply filters
 search-software.filters.clear-filters = Clear filters
