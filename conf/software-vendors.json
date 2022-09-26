@@ -207,6 +207,26 @@
         "property-business",
         "self-employment"
       ]
+    },
+    {
+      "name": "# 1 2 3 Sheets Ltd",
+      "url": "https://123sheets.com/",
+      "website": "https://123sheets.com/",
+      "filters": [
+        "paid-for",
+        "sole-trader",
+        "agent",
+        "individual",
+        "microsoft-windows",
+        "mac-os",
+        "browser-based",
+        "record-keeping",
+        "bridging",
+        "vat"
+      ],
+      "incomeAndDeductions": [
+        "self-employment"
+      ]
     }
   ]
 }
