@@ -227,6 +227,31 @@
       "incomeAndDeductions": [
         "self-employment"
       ]
+    },
+    {
+      "name": "Cirrostratus Exedra Cloud Service",
+      "url": "https://www.vat.direct",
+      "email": "john@hemming.email",
+      "website": "https://www.vat.direct",
+      "filters": [
+        "individual",
+        "agent",
+        "vat",
+        "microsoft-windows",
+        "mac-os",
+        "browser-based",
+        "record-keeping",
+        "bridging",
+        "apple-ios",
+        "android",
+        "free-version",
+        "sole-trader",
+        "uk-property"
+      ],
+      "incomeAndDeductions": [
+        "property-business",
+        "self-employment"
+      ]
     }
   ]
 }
