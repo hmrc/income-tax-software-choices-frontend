@@ -22,6 +22,7 @@ import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.play.PlaySpec
 import play.api.Environment
 import uk.gov.hmrc.http.InternalServerException
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.TestModels.{testVendorOne, testVendorThree, testVendorTwo}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.FreeTrial
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareVendorModel, SoftwareVendors}
@@ -30,9 +31,15 @@ import java.io.FileInputStream
 
 class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
 
+  val testFileName: String = "test-software-vendors.json"
+
   class Setup {
+    val mockConfig: AppConfig = mock[AppConfig]
     val mockEnvironment: Environment = mock[Environment]
-    lazy val service: SoftwareChoicesService = new SoftwareChoicesService(mockEnvironment)
+
+    lazy val service: SoftwareChoicesService = new SoftwareChoicesService(mockConfig, mockEnvironment)
+
+    when(mockConfig.softwareChoicesVendorFileName) thenReturn testFileName
   }
 
   val expectedSoftwareVendors: SoftwareVendors = SoftwareVendors(
@@ -69,48 +76,48 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
   "softwareVendors" when {
     "the software vendor config file exists" must {
       "correctly retrieve and parse file" in new Setup {
-        when(mockEnvironment.resourceAsStream(eqTo(SoftwareChoicesService.softwareVendorsFileName)))
+        when(mockEnvironment.resourceAsStream(eqTo(testFileName)))
           .thenReturn(Some(new FileInputStream("test/resources/test-valid-software-vendors.json")))
 
         service.softwareVendors mustBe expectedSoftwareVendors
       }
 
       "correctly filter vendors by vendor name" in new Setup {
-        when(mockEnvironment.resourceAsStream(eqTo(SoftwareChoicesService.softwareVendorsFileName)))
+        when(mockEnvironment.resourceAsStream(eqTo(testFileName)))
           .thenReturn(Some(new FileInputStream("test/resources/test-valid-software-vendors.json")))
 
         service.filterVendors(Some("two"), Seq()) mustBe expectedFilteredByVendorNameSoftwareVendors
       }
 
       "correctly filter vendors by vendor filter" in new Setup {
-        when(mockEnvironment.resourceAsStream(eqTo(SoftwareChoicesService.softwareVendorsFileName)))
+        when(mockEnvironment.resourceAsStream(eqTo(testFileName)))
           .thenReturn(Some(new FileInputStream("test/resources/test-valid-software-vendors.json")))
 
         service.filterVendors(None, Seq(FreeTrial)) mustBe expectedFilteredByVendorFilterSoftwareVendors
       }
 
       "correctly filter vendors by vendor name and vendor filter" in new Setup {
-        when(mockEnvironment.resourceAsStream(eqTo(SoftwareChoicesService.softwareVendorsFileName)))
+        when(mockEnvironment.resourceAsStream(eqTo(testFileName)))
           .thenReturn(Some(new FileInputStream("test/resources/test-valid-software-vendors.json")))
 
         service.filterVendors(Some("three"), Seq(FreeTrial)) mustBe expectedFilteredSoftwareVendors
       }
 
       "not filter when no search term has been provided" in new Setup {
-        when(mockEnvironment.resourceAsStream(eqTo(SoftwareChoicesService.softwareVendorsFileName)))
+        when(mockEnvironment.resourceAsStream(eqTo(testFileName)))
           .thenReturn(Some(new FileInputStream("test/resources/test-valid-software-vendors.json")))
 
         service.filterVendors(None, Seq()) mustBe expectedSoftwareVendors
       }
     }
     "the software vendor config file does not exist" in new Setup {
-      when(mockEnvironment.resourceAsStream(eqTo(SoftwareChoicesService.softwareVendorsFileName)))
+      when(mockEnvironment.resourceAsStream(eqTo(testFileName)))
         .thenReturn(None)
 
-      intercept[InternalServerException](service.softwareVendors).message mustBe "[SoftwareChoicesService][jsonFile] - file not found"
+      intercept[InternalServerException](service.softwareVendors).message mustBe s"[SoftwareChoicesService][jsonFile] - $testFileName not found"
     }
     "the software vendor config file contains invalid json" in new Setup {
-      when(mockEnvironment.resourceAsStream(eqTo(SoftwareChoicesService.softwareVendorsFileName)))
+      when(mockEnvironment.resourceAsStream(eqTo(testFileName)))
         .thenReturn(Some(new FileInputStream("test/resources/test-invalid-software-vendors.json")))
 
       intercept[InternalServerException](service.softwareVendors).message
@@ -121,7 +128,7 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
   "get software vendor" when {
     "fetching a software vendor which exists" should {
       "return that vendor" in new Setup {
-        when(mockEnvironment.resourceAsStream(eqTo(SoftwareChoicesService.softwareVendorsFileName)))
+        when(mockEnvironment.resourceAsStream(eqTo(testFileName)))
           .thenReturn(Some(new FileInputStream("test/resources/test-valid-software-vendors.json")))
 
         private val name = "test software vendor one"
@@ -132,7 +139,7 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
     }
     "fetching a software vendor which does not exist" should {
       "return None" in new Setup {
-        when(mockEnvironment.resourceAsStream(eqTo(SoftwareChoicesService.softwareVendorsFileName)))
+        when(mockEnvironment.resourceAsStream(eqTo(testFileName)))
           .thenReturn(Some(new FileInputStream("test/resources/test-valid-software-vendors.json")))
 
         private val name = "test software vendor one hundred"
