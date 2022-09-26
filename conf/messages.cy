@@ -83,6 +83,7 @@ search-software.vendor-detail.software-compatibility.vat        = TAW
 search-software.vendor-detail.software-compatibility.income-tax = Treth Incwm
 
 search-software.vendor-detail.language.welsh = Cymraeg
+search-software.vendor-detail.language.english = Saesneg
 
 search-software.vendor-detail.accessibility           = Anghenion Hygyrchedd:
 search-software.vendor-detail.accessibility.visual    = Gweledol

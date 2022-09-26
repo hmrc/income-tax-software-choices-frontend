@@ -105,6 +105,10 @@ object VendorFilter {
     override val key: String = "welsh"
   }
 
+  case object English extends VendorFilter {
+    override val key: String = "english"
+  }
+
   case object Visual extends VendorFilter {
     override val key: String = "visual"
   }
