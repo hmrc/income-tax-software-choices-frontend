@@ -40,7 +40,6 @@ class SearchSoftwareViewSpec extends ViewSpec {
                 Seq(true, false).foreach { hasError =>
                   s"there ${if (hasError) "is" else "is not"} an error" should {
                     val document = getDocument(hasResults, hasError = hasError, beta = betaFeatureSwitch, pricing = pricingSwitch)
-                    val softwareVendorsSection = SearchSoftwareViewSpec.softwareVendorsSection(document)
 
                     "have a breadcrumb menu containing a link to the guidance page" in {
                       val link = document.selectNth(".govuk-breadcrumbs__list-item", 1).selectHead("a")
