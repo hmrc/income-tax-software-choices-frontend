@@ -25,6 +25,8 @@ class AppConfig @Inject()(val config: Configuration) {
 
   val welshLanguageSupportEnabled: Boolean = config.getOptional[Boolean]("features.welsh-language-support").getOrElse(false)
 
+  val softwareChoicesVendorFileName: String = config.get[String]("vendor-list.file-name")
+
   val guidance: String = config.get[String]("guidance.url")
 
   val contactHost: String = config.get[String]("contact-frontend.host")

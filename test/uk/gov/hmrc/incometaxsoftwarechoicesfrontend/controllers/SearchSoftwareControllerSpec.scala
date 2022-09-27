@@ -36,7 +36,7 @@ import java.io.FileInputStream
 class SearchSoftwareControllerSpec extends ControllerBaseSpec with BeforeAndAfterEach with FeatureSwitching {
 
   private val mcc = app.injector.instanceOf[MessagesControllerComponents]
-  val appConfig = app.injector.instanceOf[AppConfig]
+  val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
   private val searchSoftwarePage = app.injector.instanceOf[SearchSoftwarePage]
   private val searchVendorsTemplateAlpha = app.injector.instanceOf[SoftwareVendorsTemplateAlpha]
   private val searchVendorsTemplate = app.injector.instanceOf[SoftwareVendorsTemplate]
@@ -177,10 +177,10 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec with BeforeAndAfte
   private def withController(testCode: SearchSoftwareController => Any): Unit = {
     val mockEnvironment: Environment = mock[Environment]
 
-    when(mockEnvironment.resourceAsStream(eqTo(SoftwareChoicesService.softwareVendorsFileName)))
+    when(mockEnvironment.resourceAsStream(eqTo(appConfig.softwareChoicesVendorFileName)))
       .thenReturn(Some(new FileInputStream("test/resources/test-valid-software-vendors.json")))
 
-    lazy val softwareChoicesService: SoftwareChoicesService = new SoftwareChoicesService(mockEnvironment)
+    lazy val softwareChoicesService: SoftwareChoicesService = new SoftwareChoicesService(appConfig, mockEnvironment)
 
     val controller = new SearchSoftwareController(
       mcc,

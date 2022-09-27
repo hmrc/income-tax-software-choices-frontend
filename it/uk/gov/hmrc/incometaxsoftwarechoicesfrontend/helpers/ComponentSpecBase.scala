@@ -46,9 +46,13 @@ trait ComponentSpecBase extends AnyWordSpec
   private val wsClient = app.injector.instanceOf[WSClient]
   private val baseUrl = s"http://localhost:$port"
 
+  def config: Map[String, Any] = Map(
+    "metrics.enabled" -> false
+  )
+
   override def fakeApplication(): Application =
     GuiceApplicationBuilder()
-      .configure("metrics.enabled" -> false)
+      .configure(config)
       .build()
 
   implicit val messages: Messages = app.injector.instanceOf[MessagesApi].preferred(FakeRequest())
@@ -56,7 +60,7 @@ trait ComponentSpecBase extends AnyWordSpec
   object SoftwareChoicesFrontend {
     def startPage(): WSResponse = get("/")
 
-    def productDetails(name:String): WSResponse = get(s"/product-details?software=$name")
+    def productDetails(name: String): WSResponse = get(s"/product-details?software=$name")
 
     def submitSearch(search: FiltersFormModel): WSResponse = post("/")(
       FiltersForm.form.fill(search).data.map { case (k, v) => (k, Seq(v)) }

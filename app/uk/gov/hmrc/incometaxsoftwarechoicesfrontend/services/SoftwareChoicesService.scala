@@ -19,20 +19,20 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services
 import play.api.libs.json._
 import play.api.{Environment, Logging}
 import uk.gov.hmrc.http.InternalServerException
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareVendorModel, SoftwareVendors, VendorFilter}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.SoftwareChoicesService.softwareVendorsFileName
 
 import javax.inject.{Inject, Singleton}
 
 @Singleton
-class SoftwareChoicesService @Inject()(environment: Environment) extends Logging {
+class SoftwareChoicesService @Inject()(appConfig: AppConfig, environment: Environment) extends Logging {
 
-  private val softwareVendorsJson: JsValue = environment.resourceAsStream(softwareVendorsFileName) match {
+  private val softwareVendorsJson: JsValue = environment.resourceAsStream(appConfig.softwareChoicesVendorFileName) match {
     case Some(resource) =>
       Json.parse(resource)
     case None =>
-      throw new InternalServerException("[SoftwareChoicesService][jsonFile] - file not found")
+      throw new InternalServerException(s"[SoftwareChoicesService][jsonFile] - ${appConfig.softwareChoicesVendorFileName} not found")
   }
 
   val softwareVendors: SoftwareVendors = Json.fromJson[SoftwareVendors](softwareVendorsJson) match {
@@ -42,23 +42,27 @@ class SoftwareChoicesService @Inject()(environment: Environment) extends Logging
       throw new InternalServerException(s"[SoftwareChoicesService][softwareVendors] - Json parse failures - ${errors.mkString(",")}")
   }
 
-  def getSoftwareVendor(software: String): Option[SoftwareVendorModel] = softwareVendors.vendors.collectFirst({ case vendor if (vendor.name == software) => vendor})
+  def getSoftwareVendor(software: String): Option[SoftwareVendorModel] = {
+    softwareVendors
+      .vendors
+      .collectFirst {
+        case vendor if vendor.name == software => vendor
+      }
+  }
 
-  val filters: Seq[VendorFilter] = softwareVendors.vendors.head.filters
-
-  def filterVendors(maybeSearchTerm: Option[String], filters: Seq[VendorFilter]): SoftwareVendors = softwareVendors.copy(
-    vendors = softwareVendors.vendors.filter(vendor => {
-      filters.forall(vendor.filters.contains(_)) &&
-        maybeSearchTerm.forall(
-          searchTerm => vendor.name.toLowerCase.contains(searchTerm.toLowerCase())
-        )
-    })
-  )
+  def filterVendors(maybeSearchTerm: Option[String], filters: Seq[VendorFilter]): SoftwareVendors = {
+    softwareVendors.copy(
+      vendors = softwareVendors.vendors.filter { vendor =>
+        filters.forall(vendor.filters.contains(_)) &&
+          maybeSearchTerm.forall(
+            searchTerm => vendor.name.toLowerCase.contains(searchTerm.toLowerCase())
+          )
+      }
+    )
+  }
 }
 
 object SoftwareChoicesService {
-
-  val softwareVendorsFileName: String = "software-vendors.json"
 
   val businessTypeFilters: Set[VendorFilter] = Set(
     Individual,
