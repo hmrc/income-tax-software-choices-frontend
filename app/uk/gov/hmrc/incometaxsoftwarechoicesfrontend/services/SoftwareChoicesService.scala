@@ -50,19 +50,21 @@ class SoftwareChoicesService @Inject()(appConfig: AppConfig, environment: Enviro
       }
   }
 
-  def filterVendors(maybeSearchTerm: Option[String], filters: Seq[VendorFilter]): SoftwareVendors = {
-    softwareVendors.copy(
-      vendors = softwareVendors.vendors.filter { vendor =>
-        filters.forall(vendor.filters.contains(_)) &&
-          maybeSearchTerm.forall(
-            searchTerm => vendor.name.toLowerCase.contains(searchTerm.toLowerCase())
-          )
-      }
-    )
-  }
+  def filterVendors(maybeSearchTerm: Option[String], filters: Seq[VendorFilter]): SoftwareVendors = softwareVendors.copy(
+    vendors = (SoftwareChoicesService.matchSearchTerm(maybeSearchTerm) _ andThen SoftwareChoicesService.matchFilter(filters)) (softwareVendors.vendors)
+  )
+
 }
 
 object SoftwareChoicesService {
+
+  private[services] def matchSearchTerm(maybeSearchTerm: Option[String])(vendors: Seq[SoftwareVendorModel]) = {
+    val searchTermWords = maybeSearchTerm.map(_.toLowerCase().split("\\s+").toSeq).getOrElse(Seq.empty)
+    vendors.filter(vendor => searchTermWords.forall(vendor.name.toLowerCase().contains(_)))
+  }
+
+  private[services] def matchFilter(filters: Seq[VendorFilter])(vendors: Seq[SoftwareVendorModel]) =
+    vendors.filter(vendor => filters.forall(vendor.filters.contains(_)))
 
   val businessTypeFilters: Set[VendorFilter] = Set(
     Individual,
