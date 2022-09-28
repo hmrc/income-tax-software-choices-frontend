@@ -90,6 +90,26 @@
       ]
     },
     {
+      "name": "Xero MTD for Income Tax Self Assessment",
+      "url": "https://www.xero.com/uk/programme/making-tax-digital/income-tax-self-assessment/",
+      "website": "https://www.xero.com/uk/programme/making-tax-digital/income-tax-self-assessment/",
+      "filters": [
+        "paid-for",
+        "sole-trader",
+        "uk-property",
+        "agent",
+        "individual",
+        "microsoft-windows",
+        "mac-os",
+        "browser-based",
+        "record-keeping"
+      ],
+      "incomeAndDeductions": [
+        "property-business",
+        "self-employment"
+      ]
+    },
+    {
       "name": "Cirrostratus Exedra Cloud Service",
       "url": "https://www.vat.direct",
       "email": "john@hemming.email",
