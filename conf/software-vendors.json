@@ -134,6 +134,29 @@
         "property-business",
         "self-employment"
       ]
+    },
+    {
+      "name": "Sage",
+      "url": "https://www.sage.com/en-gb/making-tax-digital/accountants/",
+      "phone": "O8000928091",
+      "website": "https://www.sage.com/en-gb/making-tax-digital/accountants/",
+      "accessibilityStatementLink": "https://www.sage.com/en-gb/legal/accessibility/",
+      "filters": [
+        "paid-for",
+        "individual",
+        "agent",
+        "microsoft-windows",
+        "mac-os",
+        "android",
+        "apple-ios",
+        "browser-based",
+        "vat",
+        "sole-trader",
+        "record-keeping"
+      ],
+      "incomeAndDeductions": [
+        "self-employment"
+      ]
     }
   ]
 }
