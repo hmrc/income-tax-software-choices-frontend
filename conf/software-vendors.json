@@ -34,6 +34,7 @@
       "filters": [
         "agent",
         "individual",
+        "free-version",
         "microsoft-windows",
         "mac-os",
         "browser-based",
