@@ -96,6 +96,13 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
         service.filterVendors(None, Seq(FreeTrial)) mustBe expectedFilteredByVendorFilterSoftwareVendors
       }
 
+      "correctly filter vendors by vendor name in disordered sections with whitespace" in new Setup {
+        val vendors = Seq("one two three", "two three four", "five four three two one")
+            .map(s => SoftwareVendorModel(s, url="", email=None, phone=None, website="", filters=Seq.empty, incomeAndDeductions=Seq.empty))
+        private val searchTerms = s"one  \t   three    two"
+        SoftwareChoicesService.matchSearchTerm(Some(searchTerms))(vendors).length mustBe 2
+      }
+
       "correctly filter vendors by vendor name and vendor filter" in new Setup {
         when(mockEnvironment.resourceAsStream(eqTo(testFileName)))
           .thenReturn(Some(new FileInputStream("test/resources/test-valid-software-vendors.json")))
