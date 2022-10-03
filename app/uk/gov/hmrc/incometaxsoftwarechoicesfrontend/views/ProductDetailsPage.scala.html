@@ -35,6 +35,8 @@
 
 @mainTemplate(title = messages("product-details.title"), breadcrumbs = Some(pageBreadcrumbs)) {
 
+  @beforeYouChoose
+
   @vendorNameHeading
 
   @contactDetails
@@ -66,6 +68,17 @@
       )
     )
   ))
+}
+
+@beforeYouChoose = {
+  <div class="govuk-body govuk-!-padding-1 govuk-!-padding-left-3 before-you-choose">
+    <h2 class="govuk-heading-s">
+      @{messages(s"product-details.details.before-you-choose-header")}
+    </h2>
+    <p>
+      @{messages(s"product-details.details.before-you-choose")}
+    </p>
+  </div>
 }
 
 @vendorNameHeading = {
