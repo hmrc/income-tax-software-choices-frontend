@@ -25,10 +25,11 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes.ProductDe
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.SearchSoftwareViewSpec._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SearchSoftwarePage
 
 class SearchSoftwareViewSpec extends ViewSpec {
+
+  import SearchSoftwareViewSpec._
 
   "Search software page" when {
     Seq(true, false).foreach { betaFeatureSwitch =>
@@ -68,7 +69,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
                     }
 
                     "have a filter section" which {
-                      val filterSection = SearchSoftwareViewSpec.filterSection(document)
+                      val filterSection = getFilterSection(document)
 
                       "has a heading" in {
                         filterSection.selectHead("h2").text shouldBe SearchSoftwarePageContent.Filters.filterHeading
@@ -357,7 +358,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
                         emptyListMessage.selectNth("ul li", 2).text shouldBe SearchSoftwarePageContent.emptyVendorListMessageBullet2
                       }
                     } else if (betaFeatureSwitch) "have a beta software vendor section" which {
-                      val softwareVendorsSection = SearchSoftwareViewSpec.softwareVendorsSection(document)
+                      val softwareVendorsSection = getSoftwareVendorsSection(document)
 
                       "has a count of the number of software vendors on the page" in {
                         softwareVendorsSection.selectHead(".software-vendors-num").text shouldBe SearchSoftwarePageContent.numberOfVendors
@@ -388,7 +389,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
                         }
                       }
                     } else "have a alpha software vendor section" which {
-                      val softwareVendorsSection = SearchSoftwareViewSpec.softwareVendorsSection(document)
+                      val softwareVendorsSection = getSoftwareVendorsSection(document)
 
                       "has a count of the number of software vendors on the page" in {
                         softwareVendorsSection.selectHead("h3").text shouldBe SearchSoftwarePageContent.numberOfVendorsAlpha
@@ -528,7 +529,7 @@ object SearchSoftwareViewSpec extends ViewSpec {
     checkbox.hasAttr("checked") shouldBe checked
   }
 
-  def softwareVendorsSection(document: Document): Element = {
+  def getSoftwareVendorsSection(document: Document): Element = {
     document
       .mainContent
       .selectHead("#software-section")
@@ -537,7 +538,7 @@ object SearchSoftwareViewSpec extends ViewSpec {
 
   def getAccordionSectionHeaderAndCheckboxGroup(document: Document, betaFeatureSwitch: Boolean, n: Int): (Option[Element], Element) = {
     if (betaFeatureSwitch) {
-      val accordionSection = filterSection(document)
+      val accordionSection = getFilterSection(document)
         .selectHead(".govuk-accordion")
         .selectNth(".govuk-accordion__section", n)
       (
@@ -547,14 +548,14 @@ object SearchSoftwareViewSpec extends ViewSpec {
     } else {
       (
         None,
-        filterSection(document)
+        getFilterSection(document)
           .selectNth(".govuk-form-group", n)
           .selectNth(".govuk-fieldset", 1)
       )
     }
   }
 
-  def filterSection(document: Document): Element = document.mainContent.selectHead("#software-section").selectHead(".filters-section")
+  def getFilterSection(document: Document): Element = document.mainContent.selectHead("#software-section").selectHead(".filters-section")
 
   private val searchSoftwarePage = app.injector.instanceOf[SearchSoftwarePage]
   private val testFormError: FormError = FormError(FiltersForm.searchTerm, "test error message")

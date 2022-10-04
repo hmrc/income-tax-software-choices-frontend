@@ -36,7 +36,7 @@ class FeatureSwitchingSpec extends PlaySpec with BeforeAndAfterEach with GuiceOn
     val featureSwitching: FeatureSwitchingImpl = new GuiceApplicationBuilder()
       .in(Environment.simple(mode = Mode.Dev))
       .configure(config)
-      .build
+      .build()
       .injector
       .instanceOf[FeatureSwitchingImpl]
 

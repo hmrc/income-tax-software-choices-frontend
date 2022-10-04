@@ -25,7 +25,7 @@ import play.api.mvc.Request
 import play.api.test.FakeRequest
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 
 trait ViewSpec extends AnyWordSpecLike with Matchers with GuiceOneAppPerSuite {
 
@@ -48,7 +48,7 @@ trait ViewSpec extends AnyWordSpecLike with Matchers with GuiceOneAppPerSuite {
       case None => fail(s"No elements returned for selector: $selector")
     }
 
-    def selectSeq(selector: String): Seq[Element] = element.select(selector).asScala
+    def selectSeq(selector: String): Seq[Element] = element.select(selector).asScala.toSeq
 
     def selectOptionally(selector: String): Option[Element] = element.select(selector).asScala.headOption
 
