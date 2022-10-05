@@ -35,7 +35,7 @@ class SoftwareChoicesService @Inject()(appConfig: AppConfig, environment: Enviro
       throw new InternalServerException(s"[SoftwareChoicesService][jsonFile] - ${appConfig.softwareChoicesVendorFileName} not found")
   }
 
-  val softwareVendors: SoftwareVendors = Json.fromJson[SoftwareVendors](softwareVendorsJson) match {
+  private[services] val softwareVendors: SoftwareVendors = Json.fromJson[SoftwareVendors](softwareVendorsJson) match {
     case JsSuccess(value, _) =>
       value
     case JsError(errors) =>
@@ -50,13 +50,20 @@ class SoftwareChoicesService @Inject()(appConfig: AppConfig, environment: Enviro
       }
   }
 
-  def filterVendors(maybeSearchTerm: Option[String], filters: Seq[VendorFilter]): SoftwareVendors = softwareVendors.copy(
-    vendors = (SoftwareChoicesService.matchSearchTerm(maybeSearchTerm) _ andThen SoftwareChoicesService.matchFilter(filters)) (softwareVendors.vendors)
+  def getVendors(maybeSearchTerm: Option[String] = None, filters: Seq[VendorFilter] = Seq.empty): SoftwareVendors = softwareVendors.copy(
+    vendors = (
+      SoftwareChoicesService.matchSearchTerm(maybeSearchTerm) _
+        andThen SoftwareChoicesService.matchFilter(filters)
+        andThen SoftwareChoicesService.sortVendors
+      ) (softwareVendors.vendors)
   )
 
 }
 
 object SoftwareChoicesService {
+
+  private[services] def sortVendors(vendors: Seq[SoftwareVendorModel]) =
+    vendors.sortBy(vendor => vendor.name)
 
   private[services] def matchSearchTerm(maybeSearchTerm: Option[String])(vendors: Seq[SoftwareVendorModel]) = {
     val searchTermWords = maybeSearchTerm.map(_.toLowerCase().split("\\s+").toSeq).getOrElse(Seq.empty)

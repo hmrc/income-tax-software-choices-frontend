@@ -38,43 +38,25 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
                                          softwareChoicesService: SoftwareChoicesService) extends BaseFrontendController(mcc) with FeatureSwitching {
 
 
-  val show: Action[AnyContent] = Action { implicit request =>
-    val vendors: SoftwareVendors = softwareChoicesService.softwareVendors
-    Ok(view(vendors))
-  }
+  val show: Action[AnyContent] = Action { implicit request => Ok(view(softwareChoicesService.getVendors(), false, FiltersForm.form)) }
 
-  val search: Action[AnyContent] = Action { implicit request =>
+  def search(ajax: Boolean): Action[AnyContent] = Action { implicit request =>
     FiltersForm.form.bindFromRequest().fold(
-      error => {
-        val vendors: SoftwareVendors = softwareChoicesService.softwareVendors
-        BadRequest(view(vendors, error))
-      },
+      error => BadRequest(view(softwareChoicesService.getVendors(), ajax, error)),
       search => {
-        val vendors = softwareChoicesService.filterVendors(search.searchTerm, search.filters)
-        Ok(view(vendors, FiltersForm.form.fill(search)))
+        val vendors = softwareChoicesService.getVendors(search.searchTerm, search.filters)
+        Ok(view(vendors, ajax, FiltersForm.form.fill(search)))
       }
     )
   }
 
-  val ajaxSearch: Action[AnyContent] = Action { implicit request =>
-    FiltersForm.form.bindFromRequest().fold(
-      error => {
-        val vendors: SoftwareVendors = softwareChoicesService.softwareVendors
-        BadRequest(view(vendors, error))
-      },
-      search => {
-        val vendors = softwareChoicesService.filterVendors(search.searchTerm, search.filters)
-        if (isEnabled(BetaFeatures)) {
-          Ok(softwareVendorsTemplate(vendors))
-        } else {
-          Ok(softwareVendorsTemplateAlpha(vendors, isEnabled(ExtraPricingOptions)))
-        }
-      }
-    )
-  }
-
-  private def view(vendors: SoftwareVendors, form: Form[FiltersFormModel] = FiltersForm.form)
+  private def view(vendors: SoftwareVendors, ajax: Boolean, form: Form[FiltersFormModel])
                   (implicit request: Request[_]): Html =
-    searchSoftwarePage(vendors, form, routes.SearchSoftwareController.search, isEnabled(BetaFeatures), isEnabled(ExtraPricingOptions))
+    (ajax, isEnabled(BetaFeatures)) match {
+      case (true, true) => softwareVendorsTemplate(vendors)
+      case (true, false) => softwareVendorsTemplateAlpha(vendors, isEnabled(ExtraPricingOptions))
+      case _ =>
+        searchSoftwarePage(vendors, form, routes.SearchSoftwareController.search(ajax), isEnabled(BetaFeatures), isEnabled(ExtraPricingOptions))
+    }
 
 }

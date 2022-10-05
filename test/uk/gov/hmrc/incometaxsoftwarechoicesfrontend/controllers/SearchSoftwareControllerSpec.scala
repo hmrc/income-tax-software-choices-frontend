@@ -55,7 +55,7 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec with BeforeAndAfte
 
   "search" should {
     "return OK status with the search software page" in withController { controller =>
-      val result = controller.search(FakeRequest("POST", "/")
+      val result = controller.search(false)(FakeRequest("POST", "/")
         .withFormUrlEncodedBody(FiltersForm.searchTerm -> "Vendor", s"${FiltersForm.filters}[0]" -> "free-version"))
 
       status(result) shouldBe Status.OK
@@ -64,7 +64,7 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec with BeforeAndAfte
     }
 
     "return BAD_REQUEST" in withController { controller =>
-      val result = controller.search(FakeRequest("POST", "/").withFormUrlEncodedBody((FiltersForm.searchTerm, "test" * 65)))
+      val result = controller.search(false)(FakeRequest("POST", "/").withFormUrlEncodedBody((FiltersForm.searchTerm, "test" * 65)))
 
       status(result) shouldBe Status.BAD_REQUEST
       contentType(result) shouldBe Some(HTML)
@@ -152,7 +152,7 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec with BeforeAndAfte
     }
     "ajaxSearch" when {
       "return BAD_REQUEST" in withController { controller =>
-        val result = controller.ajaxSearch(FakeRequest("POST", "/").withFormUrlEncodedBody((FiltersForm.searchTerm, "test" * 65)))
+        val result = controller.search(true)(FakeRequest("POST", "/").withFormUrlEncodedBody((FiltersForm.searchTerm, "test" * 65)))
 
         status(result) shouldBe Status.BAD_REQUEST
         contentType(result) shouldBe Some(HTML)
@@ -162,7 +162,7 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec with BeforeAndAfte
   }
 
   private def testSearch(controller: SearchSoftwareController, message: String, tuple: Seq[(String, String)]) = {
-    val result = controller.ajaxSearch(FakeRequest("POST", "/").withFormUrlEncodedBody(tuple: _*))
+    val result = controller.search(true)(FakeRequest("POST", "/").withFormUrlEncodedBody(tuple: _*))
     status(result) shouldBe Status.OK
     contentType(result) shouldBe Some(HTML)
     contentAsString(result) should include(message)
