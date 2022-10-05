@@ -90,3 +90,6 @@ search-software.vendor-detail.accessibility.visual    = Gweledol
 search-software.vendor-detail.accessibility.hearing   = Clywedol
 search-software.vendor-detail.accessibility.motor     = Echddygol
 search-software.vendor-detail.accessibility.cognitive = Gwybyddol
+
+product-details.details.before-you-choose-header = Cyn i chi ddewis
+product-details.details.before-you-choose = Mae’n bosibl y bydd gwahanol nodweddion ar gael, neu gyfyngiadau ar ddefnydd, wrth gymharu opsiynau meddalwedd sy’n rhad ac am ddim â meddalwedd y gallwch ei phrynu. Ewch i wefan y cwmni meddalwedd i sicrhau bod ei gynnyrch yn addas ar eich cyfer chi.

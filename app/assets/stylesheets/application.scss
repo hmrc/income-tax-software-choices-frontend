@@ -160,3 +160,7 @@ legend.govuk-hidden {
 .govuk-accordion__section > .govuk-accordion__section-content {
     @include govuk-responsive-padding(0);
 }
+
+.before-you-choose {
+   background-color: govuk-colour("light-grey");
+}

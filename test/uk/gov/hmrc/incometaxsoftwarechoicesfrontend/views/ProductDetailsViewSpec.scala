@@ -38,6 +38,9 @@ class ProductDetailsViewSpec extends ViewSpec {
 
     val productDetailsHeading: String = "Product details"
 
+    val beforeHeader = "Before you choose"
+    val before = "Free or paid for software options may offer different features, or limits on use. Visit the software company’s website to be sure if their product is right for your needs."
+
     object Filters {
 
       val pricing: String = "Pricing"
@@ -220,12 +223,18 @@ class ProductDetailsViewSpec extends ViewSpec {
               document.title shouldBe s"""${ProductDetailsPage.title} - Find software that’s compatible with Making Tax Digital for Income Tax - GOV.UK"""
             }
 
+            "display the 'before you choose' info" in {
+              document.selectFirst(".before-you-choose").selectFirst("h2").text() shouldBe ProductDetailsPage.beforeHeader
+              document.selectFirst(".before-you-choose").selectFirst("p").text() shouldBe ProductDetailsPage.before
+            }
+
             "display the vendor name heading" in {
               document.selectNth("h1", 1).text() shouldBe softwareVendorModelFull.name
             }
 
             "display the vendor contact details heading" in {
-              document.selectNth("h2", 1).text() shouldBe s"${ProductDetailsPage.contactDetailsHeading}"
+              // This is necessary because nth--of-type does not seem to work with disordered header tags
+              document.select("h2").get(1).text() shouldBe ProductDetailsPage.contactDetailsHeading
             }
 
             val vendorInformationSection = document.selectNth("dl", 1)
