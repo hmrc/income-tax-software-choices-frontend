@@ -33,24 +33,6 @@
 )(implicit appConfig: AppConfig)
 @(softwareVendor: SoftwareVendorModel, displayIncomeAndDeductionTypes: Boolean, displayExtraPricingOptions: Boolean)(implicit request: Request[_], messages: Messages)
 
-@mainTemplate(title = messages("product-details.title"), breadcrumbs = Some(pageBreadcrumbs)) {
-
-  @beforeYouChoose
-
-  @vendorNameHeading
-
-  @contactDetails
-
-  @productDetails
-
-  @if(displayIncomeAndDeductionTypes) {
-    @incomeAndDeductionTypes
-  }
-
-  @softwareVendor.accessibilityStatementLink.map(linkText => accessibilityStatement(linkText))
-
-}
-
 @pageBreadcrumbs = {
   @breadcrumbs(Breadcrumbs(
     items = Seq(
@@ -68,26 +50,48 @@
       )
     )
   ))
-}
+  }
 
-@beforeYouChoose = {
+@mainTemplate(title = softwareVendor.name, breadcrumbs = Some(pageBreadcrumbs)) {
   <div class="govuk-body govuk-!-padding-1 govuk-!-padding-left-3 before-you-choose">
     <h2 class="govuk-heading-s">
-      @{messages(s"product-details.details.before-you-choose-header")}
+    @{messages(s"product-details.details.before-you-choose-header")}
     </h2>
     <p>
-      @{messages(s"product-details.details.before-you-choose")}
+    @{messages(s"product-details.details.before-you-choose")}
     </p>
   </div>
-}
 
-@vendorNameHeading = {
   <h1 class="govuk-heading-xl">@{softwareVendor.name}</h1>
+
+  <h2 class="govuk-heading-l">@messages("product-details.contact-details.heading")</h2>
+  @contactDetailsList
+
+  <h2 class="govuk-heading-l">@messages("product-details.details.heading")</h2>
+  @productDetailsList
+
+  @if(displayIncomeAndDeductionTypes) {
+    <h2 class="govuk-heading-l">@messages("product-details.income-and-deduction-types.heading")</h2>
+
+    <p class="govuk-body">
+    @messages(
+      "product-details.income-and-deduction-types.number-covered",
+      softwareVendor.name,
+      softwareVendor.incomeAndDeductions.length,
+      IncomeAndDeduction.incomeAndDeductionKeyToIncomeAndDeduction.toSeq.length
+    )
+    </p>
+
+    @incomeAndDeductionTypesList
+  }
+
+  @softwareVendor.accessibilityStatementLink.map { linkText =>
+    <h2 class="govuk-heading-l">@{messages("product-details.accessibility-statement.heading")}</h2>
+    @accessibilityStatement(linkText)
+  }
 }
 
-@contactDetails = {
-  <h2 class="govuk-heading-l">@messages("product-details.contact-details.heading")</h2>
-
+@contactDetailsList = {
   @govukSummaryList(SummaryList(
     rows = Seq() ++ softwareVendor.email.map(email => SummaryListRow(
       key = Key(content = Text(s"${messages("product-details.contact-details.email")}:")),
@@ -102,9 +106,7 @@
   ))
 }
 
-@productDetails = {
-  <h2 class="govuk-heading-l">@messages("product-details.details.heading")</h2>
-
+@productDetailsList = {
   @govukSummaryList(SummaryList(
     rows = Seq(
       pricingRow,
@@ -121,18 +123,7 @@
   ))
 }
 
-@incomeAndDeductionTypes = {
-  <h2 class="govuk-heading-l">@messages("product-details.income-and-deduction-types.heading")</h2>
-
-  <p class="govuk-body">
-    @messages(
-      "product-details.income-and-deduction-types.number-covered",
-      softwareVendor.name,
-      softwareVendor.incomeAndDeductions.length,
-      IncomeAndDeduction.incomeAndDeductionKeyToIncomeAndDeduction.toSeq.length
-    )
-  </p>
-
+@incomeAndDeductionTypesList = {
   <ol class="govuk-list govuk-list--number">
     @softwareVendor.incomeAndDeductions.map { incomeAndDeduction =>
       <li>@messages(s"product-details.income-and-deduction-types.${incomeAndDeduction.key}")</li>
@@ -141,7 +132,6 @@
 }
 
 @accessibilityStatement(linkText: String) = {
-  <h2 class="govuk-heading-l">@{messages("product-details.accessibility-statement.heading")}</h2>
   @govukSummaryList(SummaryList(
     rows = Seq(
       SummaryListRow(

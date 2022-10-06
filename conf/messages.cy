@@ -82,7 +82,7 @@ search-software.vendor-detail.business-type.agent      = Asiant
 search-software.vendor-detail.software-compatibility.vat        = TAW
 search-software.vendor-detail.software-compatibility.income-tax = Treth Incwm
 
-search-software.vendor-detail.language.welsh = Cymraeg
+search-software.vendor-detail.language.welsh   = Cymraeg
 search-software.vendor-detail.language.english = Saesneg
 
 search-software.vendor-detail.accessibility           = Anghenion Hygyrchedd:
@@ -91,5 +91,57 @@ search-software.vendor-detail.accessibility.hearing   = Clywedol
 search-software.vendor-detail.accessibility.motor     = Echddygol
 search-software.vendor-detail.accessibility.cognitive = Gwybyddol
 
+# Product details page
+
 product-details.details.before-you-choose-header = Cyn i chi ddewis
-product-details.details.before-you-choose = Mae’n bosibl y bydd gwahanol nodweddion ar gael, neu gyfyngiadau ar ddefnydd, wrth gymharu opsiynau meddalwedd sy’n rhad ac am ddim â meddalwedd y gallwch ei phrynu. Ewch i wefan y cwmni meddalwedd i sicrhau bod ei gynnyrch yn addas ar eich cyfer chi.
+product-details.details.before-you-choose        = Mae’n bosibl y bydd gwahanol nodweddion ar gael, neu gyfyngiadau ar ddefnydd, wrth gymharu opsiynau meddalwedd sy’n rhad ac am ddim â meddalwedd y gallwch ei phrynu. Ewch i wefan y cwmni meddalwedd i sicrhau bod ei gynnyrch yn addas ar eich cyfer chi.
+
+# Contact details section
+
+product-details.contact-details.heading    = I gael rhagor o wybodaeth, neu i gael help a chymorth
+product-details.contact-details.email      = E-bost
+product-details.contact-details.phone      = Ffoniwch
+product-details.contact-details.website    = Ewch i’r gwefan
+
+# Product details section
+
+product-details.details.heading                = Manylion y cynnyrch
+product-details.details.pricing                = Prisio
+product-details.details.income-type            = Math o incwm
+product-details.details.compatible-with        = Yn cydweddu â
+product-details.details.mobile-app             = Ap Ffon Symudol
+product-details.details.software-type          = Math o feddalwedd
+product-details.details.software-for           = Meddalwedd ar gyfer
+product-details.details.business-type          = Math o fusnes
+product-details.details.software-compatibility = Cydweddoldeb y meddalwedd
+product-details.details.language               = Iaith
+product-details.details.accessibility          = Nodweddion hygyrchedd
+
+product-details.details.free-version           = Fersiwn rhad ac am ddim
+product-details.details.free-trial             = Cyfnod prawf am ddim
+product-details.details.paid-for               = Wedi’i dalu
+product-details.details.sole-trader            = Unig fasnachwr
+product-details.details.uk-property            = Eiddo yn y DU
+product-details.details.overseas-property      = Eiddo tramor
+product-details.details.microsoft-windows      = Microsoft Windows
+product-details.details.mac-os                 = Mac OS
+product-details.details.android                = Android
+product-details.details.apple-ios              = iOS
+product-details.details.browser-based          = I’w ddefnyddio drwy borwr
+product-details.details.application-based      = I’w ddefnyddio drwy raglen
+product-details.details.record-keeping         = Cadw cofnodion
+product-details.details.bridging               = Pontio
+product-details.details.individual             = Unigolyn
+product-details.details.agent                  = Asiant
+product-details.details.income-tax             = Treth Incwm
+product-details.details.vat                    = TAW
+product-details.details.visual                 = Gweledol
+product-details.details.hearing                = Clywedol
+product-details.details.motor                  = Echddygol
+product-details.details.cognitive              = Gwybyddol
+product-details.details.welsh                  = Cymraeg
+
+# Accessibility statement section
+
+product-details.accessibility-statement.heading = Hygyrchedd
+product-details.accessibility-statement.key     = Datganiad hygyrchedd

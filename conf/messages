@@ -91,15 +91,21 @@ search-software.vendor-detail.accessibility.hearing = Hearing
 search-software.vendor-detail.accessibility.motor = Motor
 search-software.vendor-detail.accessibility.cognitive = Cognitive
 
-product-details.title                      = Choose the right software for your needs
+# Product details page
+
+product-details.details.before-you-choose-header = Before you choose
+product-details.details.before-you-choose = Free or paid for software options may offer different features, or limits on use. Visit the software company’s website to be sure if their product is right for your needs.
+
+# Contact details section
+
 product-details.contact-details.heading    = Find out more or get help and support
 product-details.contact-details.email      = Email
 product-details.contact-details.phone      = Call
 product-details.contact-details.website    = Visit website
 
+# Product details section
+
 product-details.details.heading = Product details
-product-details.details.before-you-choose-header = Before you choose
-product-details.details.before-you-choose = Free or paid for software options may offer different features, or limits on use. Visit the software company’s website to be sure if their product is right for your needs.
 product-details.details.pricing = Pricing
 product-details.details.income-type = Income type
 product-details.details.compatible-with = Compatible with
