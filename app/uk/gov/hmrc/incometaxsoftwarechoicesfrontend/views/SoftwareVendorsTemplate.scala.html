@@ -51,7 +51,7 @@
 } else {
   <div class="software-vendors-num">
     <p class="govuk-body">
-      <b>@{softwareVendors.vendors.size}</b> @messages("search-software.count")
+      @Html(messages("search-software.vendor-count", softwareVendors.vendors.size))
     </p>
   </div>
   <div class="software-packages-full">

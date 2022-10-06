@@ -8,17 +8,9 @@ base.error-heading          = There is a problem
 breadcrumbs.guidance                = Guidance
 breadcrumbs.filter                  = Filter
 
-# Accordion menu
-
-accordion.show-all-sections = Show all
-accordion.hide-all-sections = Hide all
-accordion.show-section      = Show
-accordion.hide-section      = Hide
-
 # Search software page
 
 search-software.title               = Choose your software
-search-software.count               = software providers
 search-software.last-update         = This page was last updated
 search-software.heading             = Choose your software
 search-software.paragraph1          = All software on this page has been through HMRC’s recognition process. But we do not endorse or recommend any one product or software provider.
@@ -43,7 +35,8 @@ search-software.search-form.heading = Search by software name
 search-software.search-form.button  = Search by software name
 search-software.search-form.error   = Enter less than {0} characters
 
-search-software.vendor-count = Currently there are {0} software providers
+search-software.alpha-vendor-count = Currently there are {0} software providers
+search-software.vendor-count       = <b>{0}</b> software providers
 
 search-software.empty-vendor-list = Your search has returned no results. To increase the number of results, we suggest you:
 search-software.empty-vendor-list.bullet1 = reduce the number of filters you apply
