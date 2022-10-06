@@ -10,7 +10,7 @@ $(document).ready(function() {
 
   $('.clear-filters-button').on("click", (event) => {
     event.preventDefault();
-    $('.filters-section .govuk-checkboxes__input').prop("checked", false);
+    $('.filters-section .govuk-checkboxes__input').filter(':enabled').prop("checked", false);
     submitSearch();
   });
 });
