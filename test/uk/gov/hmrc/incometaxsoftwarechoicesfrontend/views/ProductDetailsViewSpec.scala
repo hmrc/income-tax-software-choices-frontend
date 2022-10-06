@@ -258,8 +258,9 @@ class ProductDetailsViewSpec extends ViewSpec {
               row.selectHead("dt").text shouldBe s"${ProductDetailsPage.contactDetailsWebsite}:"
 
               val link = row.selectHead("dd").selectHead("a")
-              link.text shouldBe softwareVendorModelBase.website
+              link.text shouldBe s"${softwareVendorModelBase.website} (opens in a new tab)"
               link.attr("href") shouldBe softwareVendorModelBase.website
+              link.attr("target") shouldBe "_blank"
             }
 
             "have a product details heading" in {
@@ -413,8 +414,9 @@ class ProductDetailsViewSpec extends ViewSpec {
         row.selectHead("dt").text shouldBe s"${ProductDetailsPage.contactDetailsWebsite}:"
 
         val link = row.selectHead("dd").selectHead("a")
-        link.text shouldBe softwareVendorModelBase.website
+        link.text shouldBe s"${softwareVendorModelBase.website} (opens in a new tab)"
         link.attr("href") shouldBe softwareVendorModelBase.website
+        link.attr("target") shouldBe "_blank"
       }
     }
 

@@ -26,224 +26,235 @@
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTemplate
 
 @this(
-  mainTemplate: MainTemplate,
-  breadcrumbs: GovukBreadcrumbs,
-  hmrcNewTabLinkHelper: HmrcNewTabLinkHelper,
-  govukSummaryList : GovukSummaryList
+        mainTemplate: MainTemplate,
+        breadcrumbs: GovukBreadcrumbs,
+        hmrcNewTabLinkHelper: HmrcNewTabLinkHelper,
+        govukSummaryList: GovukSummaryList
 )(implicit appConfig: AppConfig)
 @(softwareVendor: SoftwareVendorModel, displayIncomeAndDeductionTypes: Boolean, displayExtraPricingOptions: Boolean)(implicit request: Request[_], messages: Messages)
 
 @pageBreadcrumbs = {
-  @breadcrumbs(Breadcrumbs(
+@breadcrumbs(Breadcrumbs(
     items = Seq(
-      BreadcrumbsItem(
-        content = Text(messages("breadcrumbs.guidance")),
-        href = Some(appConfig.guidance)
-      ),
-      BreadcrumbsItem(
-        content = Text(messages("breadcrumbs.filter")),
-        href = Some(SearchSoftwareController.show.url)
-      ),
-      BreadcrumbsItem(
-        content = Text(softwareVendor.name),
-        href = None
-      )
+        BreadcrumbsItem(
+            content = Text(messages("breadcrumbs.guidance")),
+            href = Some(appConfig.guidance)
+        ),
+        BreadcrumbsItem(
+            content = Text(messages("breadcrumbs.filter")),
+            href = Some(SearchSoftwareController.show.url)
+        ),
+        BreadcrumbsItem(
+            content = Text(softwareVendor.name),
+            href = None
+        )
     )
-  ))
-  }
+))
+}
 
 @mainTemplate(title = softwareVendor.name, breadcrumbs = Some(pageBreadcrumbs)) {
-  <div class="govuk-body govuk-!-padding-1 govuk-!-padding-left-3 before-you-choose">
-    <h2 class="govuk-heading-s">
-    @{messages(s"product-details.details.before-you-choose-header")}
-    </h2>
-    <p>
-    @{messages(s"product-details.details.before-you-choose")}
-    </p>
-  </div>
+    <div class="govuk-body govuk-!-padding-1 govuk-!-padding-left-3 before-you-choose">
+        <h2 class="govuk-heading-s">
+        @{
+            messages(s"product-details.details.before-you-choose-header")
+        }
+        </h2>
+        <p>
+        @{
+            messages(s"product-details.details.before-you-choose")
+        }
+        </p>
+    </div>
 
-  <h1 class="govuk-heading-xl">@{softwareVendor.name}</h1>
+    <h1 class="govuk-heading-xl">@{
+        softwareVendor.name
+    }</h1>
 
-  <h2 class="govuk-heading-l">@messages("product-details.contact-details.heading")</h2>
-  @contactDetailsList
+    <h2 class="govuk-heading-l">@messages("product-details.contact-details.heading")</h2>
+    @contactDetailsList
 
-  <h2 class="govuk-heading-l">@messages("product-details.details.heading")</h2>
-  @productDetailsList
+    <h2 class="govuk-heading-l">@messages("product-details.details.heading")</h2>
+    @productDetailsList
 
-  @if(displayIncomeAndDeductionTypes) {
-    <h2 class="govuk-heading-l">@messages("product-details.income-and-deduction-types.heading")</h2>
+    @if(displayIncomeAndDeductionTypes) {
+        <h2 class="govuk-heading-l">@messages("product-details.income-and-deduction-types.heading")</h2>
 
-    <p class="govuk-body">
-    @messages(
-      "product-details.income-and-deduction-types.number-covered",
-      softwareVendor.name,
-      softwareVendor.incomeAndDeductions.length,
-      IncomeAndDeduction.incomeAndDeductionKeyToIncomeAndDeduction.toSeq.length
-    )
-    </p>
+        <p class="govuk-body">
+        @messages(
+            "product-details.income-and-deduction-types.number-covered",
+            softwareVendor.name,
+            softwareVendor.incomeAndDeductions.length,
+            IncomeAndDeduction.incomeAndDeductionKeyToIncomeAndDeduction.toSeq.length
+        )
+        </p>
 
-    @incomeAndDeductionTypesList
-  }
+        @incomeAndDeductionTypesList
+    }
 
-  @softwareVendor.accessibilityStatementLink.map { linkText =>
-    <h2 class="govuk-heading-l">@{messages("product-details.accessibility-statement.heading")}</h2>
+    @softwareVendor.accessibilityStatementLink.map { linkText =>
+        <h2 class="govuk-heading-l">@{
+            messages("product-details.accessibility-statement.heading")
+        }</h2>
     @accessibilityStatement(linkText)
-  }
+    }
 }
 
 @contactDetailsList = {
-  @govukSummaryList(SummaryList(
+@govukSummaryList(SummaryList(
     rows = Seq() ++ softwareVendor.email.map(email => SummaryListRow(
-      key = Key(content = Text(s"${messages("product-details.contact-details.email")}:")),
-      value = Value(content = HtmlContent(link(href = s"mailto:${email}", text = email)))
+        key = Key(content = Text(s"${messages("product-details.contact-details.email")}:")),
+        value = Value(content = HtmlContent(link(href = s"mailto:${email}", text = email)))
     )) ++ softwareVendor.phone.map(phone => SummaryListRow(
-      key = Key(content = Text(s"${messages("product-details.contact-details.phone")}:")),
-      value = Value(content = Text(phone))
+        key = Key(content = Text(s"${messages("product-details.contact-details.phone")}:")),
+        value = Value(content = Text(phone))
     )) ++ Seq(SummaryListRow(
-      key = Key(content = Text(s"${messages("product-details.contact-details.website")}:")),
-      value = Value(content = HtmlContent(link(href = softwareVendor.website, text = softwareVendor.website)))
+        key = Key(content = Text(s"${messages("product-details.contact-details.website")}:")),
+        value = Value(content = HtmlContent(hmrcNewTabLinkHelper(NewTabLinkHelper(
+          text = softwareVendor.website,
+          href = Some(softwareVendor.website)
+        ))))
     ))
-  ))
+))
 }
 
 @productDetailsList = {
-  @govukSummaryList(SummaryList(
+@govukSummaryList(SummaryList(
     rows = Seq(
-      pricingRow,
-      incomeTypeRow,
-      compatibleWithRow,
-      mobileAppRow,
-      softwareTypeRow,
-      softwareForRow,
-      businessTypeRow,
-      softwareCompatibilityRow,
-      languageRow,
-      accessibilityRow
+        pricingRow,
+        incomeTypeRow,
+        compatibleWithRow,
+        mobileAppRow,
+        softwareTypeRow,
+        softwareForRow,
+        businessTypeRow,
+        softwareCompatibilityRow,
+        languageRow,
+        accessibilityRow
     ).flatten
-  ))
+))
 }
 
 @incomeAndDeductionTypesList = {
-  <ol class="govuk-list govuk-list--number">
+    <ol class="govuk-list govuk-list--number">
     @softwareVendor.incomeAndDeductions.map { incomeAndDeduction =>
-      <li>@messages(s"product-details.income-and-deduction-types.${incomeAndDeduction.key}")</li>
+        <li>@messages(s"product-details.income-and-deduction-types.${incomeAndDeduction.key}")</li>
     }
-  </ol>
+    </ol>
 }
 
 @accessibilityStatement(linkText: String) = {
-  @govukSummaryList(SummaryList(
+@govukSummaryList(SummaryList(
     rows = Seq(
-      SummaryListRow(
-        key = Key(content = Text(messages("product-details.accessibility-statement.key"))),
-        value = Value(content = HtmlContent(link(linkText, linkText)))
-      )
+        SummaryListRow(
+            key = Key(content = Text(messages("product-details.accessibility-statement.key"))),
+            value = Value(content = HtmlContent(link(linkText, linkText)))
+        )
     )
-  ))
+))
 }
 
 @productDetailsRow(key: String, filtersInRow: Seq[VendorFilter]) = @{
 
-  val rowContentMessages = softwareVendor.filters.filter(filtersInRow.contains).map { filter =>
-    messages(s"product-details.details.${filter.key}")
-  }.map { value =>
-    <p class="govuk-body">{value}</p>
-  }.mkString
+    val rowContentMessages = softwareVendor.filters.filter(filtersInRow.contains).map { filter =>
+        messages(s"product-details.details.${filter.key}")
+    }.map { value =>
+        <p class="govuk-body">{value}</p>
+    }.mkString
 
-  if(rowContentMessages.isEmpty) {
-    None
-  } else {
-    Some(SummaryListRow(
-      key = Key(
-        content = Text(messages(s"product-details.details.$key"))
-      ),
-      value = Value(
-        content = HtmlContent(
-          rowContentMessages
-        )
-      )
-    ))
-  }
+    if(rowContentMessages.isEmpty) {
+        None
+    } else {
+        Some(SummaryListRow(
+            key = Key(
+                content = Text(messages(s"product-details.details.$key"))
+            ),
+            value = Value(
+                content = HtmlContent(
+                    rowContentMessages
+                )
+            )
+        ))
+    }
 }
 
 @pricingRow = @{
-  productDetailsRow(
-    key = "pricing",
-    filtersInRow = Seq(Some(FreeTrial).filter(_ => displayExtraPricingOptions), Some(FreeVersion), Some(PaidFor).filter(_ => displayExtraPricingOptions)).flatten
-  )
+    productDetailsRow(
+        key = "pricing",
+        filtersInRow = Seq(Some(FreeTrial).filter(_ => displayExtraPricingOptions), Some(FreeVersion), Some(PaidFor).filter(_ => displayExtraPricingOptions)).flatten
+    )
 }
 
 @incomeTypeRow = @{
-  productDetailsRow(
-    key = "income-type",
-    filtersInRow = Seq(SoleTrader, UkProperty, OverseasProperty)
-  )
+    productDetailsRow(
+        key = "income-type",
+        filtersInRow = Seq(SoleTrader, UkProperty, OverseasProperty)
+    )
 }
 
 @compatibleWithRow = @{
-  productDetailsRow(
-    key = "compatible-with",
-    filtersInRow = Seq(MicrosoftWindows, MacOS)
-  )
+    productDetailsRow(
+        key = "compatible-with",
+        filtersInRow = Seq(MicrosoftWindows, MacOS)
+    )
 }
 
 @mobileAppRow = @{
-  productDetailsRow(
-    key = "mobile-app",
-    filtersInRow = Seq(Android, AppleIOS)
-  )
+    productDetailsRow(
+        key = "mobile-app",
+        filtersInRow = Seq(Android, AppleIOS)
+    )
 }
 
 @softwareTypeRow = @{
-  productDetailsRow(
-    key = "software-type",
-    filtersInRow = Seq(BrowserBased, ApplicationBased)
-  )
+    productDetailsRow(
+        key = "software-type",
+        filtersInRow = Seq(BrowserBased, ApplicationBased)
+    )
 }
 
 @softwareForRow = @{
-  productDetailsRow(
-    key = "software-for",
-    filtersInRow = Seq(RecordKeeping, Bridging)
-  )
+    productDetailsRow(
+        key = "software-for",
+        filtersInRow = Seq(RecordKeeping, Bridging)
+    )
 }
 
 @businessTypeRow = @{
-  productDetailsRow(
-    key = "business-type",
-    filtersInRow = Seq(Individual, Agent)
-  )
+    productDetailsRow(
+        key = "business-type",
+        filtersInRow = Seq(Individual, Agent)
+    )
 }
 
 @softwareCompatibilityRow = @{
 
-  val incomeTaxContent = s"<p class='govuk-body'>${messages("product-details.details.income-tax")}</p>"
-  val vatContent = softwareVendor.filters.find(_ == Vat).map(filter => <p class='govuk-body'>{messages(s"product-details.details.${filter.key}")}</p>).getOrElse("")
+    val incomeTaxContent = s"<p class='govuk-body'>${messages("product-details.details.income-tax")}</p>"
+    val vatContent = softwareVendor.filters.find(_ == Vat).map(filter => <p class='govuk-body'>{messages(s"product-details.details.${filter.key}")}</p>).getOrElse("")
 
-  Some(SummaryListRow(
-    key = Key(
-      content = Text(messages("product-details.details.software-compatibility"))
-    ),
-    value = Value(
-      content = HtmlContent(incomeTaxContent + vatContent)
-    )
-  ))
+    Some(SummaryListRow(
+        key = Key(
+            content = Text(messages("product-details.details.software-compatibility"))
+        ),
+        value = Value(
+            content = HtmlContent(incomeTaxContent + vatContent)
+        )
+    ))
 }
 
 @accessibilityRow = @{
-  productDetailsRow(
-    key = "accessibility",
-    filtersInRow = Seq(Visual, Hearing, Motor, Cognitive)
-  )
+    productDetailsRow(
+        key = "accessibility",
+        filtersInRow = Seq(Visual, Hearing, Motor, Cognitive)
+    )
 }
 
 @languageRow = @{
-  productDetailsRow(
-    key = "language",
-    filtersInRow = Seq(Welsh)
-  )
+    productDetailsRow(
+        key = "language",
+        filtersInRow = Seq(Welsh)
+    )
 }
 
 @link(href: String, text: String) = {
-  <a class="govuk-link" href="@href">@text</a>
+    <a class="govuk-link" href="@href">@text</a>
 }
