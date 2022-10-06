@@ -75,8 +75,38 @@ class SearchSoftwareViewSpec extends ViewSpec {
                         filterSection.selectHead("h2").text shouldBe SearchSoftwarePageContent.Filters.filterHeading
                       }
 
-                      "has a pricing section" that {
+                      "has an accessibility features section" that {
                         val (accordionSectionHeader, checkboxGroup) = getAccordionSectionHeaderAndCheckboxGroup(document, betaFeatureSwitch, 1)
+
+                        if (betaFeatureSwitch) {
+                          "contains a section header" in {
+                            accordionSectionHeader.get.text shouldBe SearchSoftwarePageContent.Filters.accessibilityFeatures
+                          }
+                        }
+
+                        "contains a fieldset legend" in {
+                          checkboxGroup.getElementsByTag("legend").text() shouldBe SearchSoftwarePageContent.Filters.accessibilityFeatures
+                        }
+
+                        "contains an Visual checkbox" in {
+                          validateCheckboxInGroup(checkboxGroup, 1, Visual.key, SearchSoftwarePageContent.visual)
+                        }
+
+                        "contains an Hearing checkbox" in {
+                          validateCheckboxInGroup(checkboxGroup, 2, Hearing.key, SearchSoftwarePageContent.hearing)
+                        }
+
+                        "contains an Motor checkbox" in {
+                          validateCheckboxInGroup(checkboxGroup, 3, Motor.key, SearchSoftwarePageContent.motor)
+                        }
+
+                        "contains an Cognitive checkbox" in {
+                          validateCheckboxInGroup(checkboxGroup, 4, Cognitive.key, SearchSoftwarePageContent.cognitive)
+                        }
+                      }
+
+                      "has a pricing section" that {
+                        val (accordionSectionHeader, checkboxGroup) = getAccordionSectionHeaderAndCheckboxGroup(document, betaFeatureSwitch, 2)
 
                         if (betaFeatureSwitch) {
                           "contains a section header" in {
@@ -107,7 +137,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
                       }
 
                       "has an income type section" that {
-                        val (accordionSectionHeader, checkboxGroup) = getAccordionSectionHeaderAndCheckboxGroup(document, betaFeatureSwitch, 2)
+                        val (accordionSectionHeader, checkboxGroup) = getAccordionSectionHeaderAndCheckboxGroup(document, betaFeatureSwitch, 3)
 
                         if (betaFeatureSwitch) {
                           "contains a section header" in {
@@ -133,7 +163,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
                       }
 
                       "has a compatible with section" that {
-                        val (accordionSectionHeader, checkboxGroup) = getAccordionSectionHeaderAndCheckboxGroup(document, betaFeatureSwitch, 3)
+                        val (accordionSectionHeader, checkboxGroup) = getAccordionSectionHeaderAndCheckboxGroup(document, betaFeatureSwitch, 4)
                         if (betaFeatureSwitch) {
                           "contains a section header" in {
                             accordionSectionHeader.get.text shouldBe SearchSoftwarePageContent.Filters.compatibleWith
@@ -154,7 +184,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
                       }
 
                       "has a mobile app section" that {
-                        val (accordionSectionHeader, checkboxGroup) = getAccordionSectionHeaderAndCheckboxGroup(document, betaFeatureSwitch, 4)
+                        val (accordionSectionHeader, checkboxGroup) = getAccordionSectionHeaderAndCheckboxGroup(document, betaFeatureSwitch, 5)
 
                         if (betaFeatureSwitch) {
                           "contains a section header" in {
@@ -176,7 +206,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
                       }
 
                       "has a software type section" that {
-                        val (accordionSectionHeader, checkboxGroup) = getAccordionSectionHeaderAndCheckboxGroup(document, betaFeatureSwitch, 5)
+                        val (accordionSectionHeader, checkboxGroup) = getAccordionSectionHeaderAndCheckboxGroup(document, betaFeatureSwitch, 6)
 
                         if (betaFeatureSwitch) {
                           "contains a section header" in {
@@ -198,7 +228,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
                       }
 
                       "has a software for section" that {
-                        val (accordionSectionHeader, checkboxGroup) = getAccordionSectionHeaderAndCheckboxGroup(document, betaFeatureSwitch, 6)
+                        val (accordionSectionHeader, checkboxGroup) = getAccordionSectionHeaderAndCheckboxGroup(document, betaFeatureSwitch, 7)
 
                         if (betaFeatureSwitch) {
                           "contains a section header" in {
@@ -220,7 +250,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
                       }
 
                       "has a business type section" that {
-                        val (accordionSectionHeader, checkboxGroup) = getAccordionSectionHeaderAndCheckboxGroup(document, betaFeatureSwitch, 7)
+                        val (accordionSectionHeader, checkboxGroup) = getAccordionSectionHeaderAndCheckboxGroup(document, betaFeatureSwitch, 8)
 
                         if (betaFeatureSwitch) {
                           "contains a section header" in {
@@ -242,7 +272,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
                       }
 
                       "has a software compatibility section" that {
-                        val (accordionSectionHeader, checkboxGroup) = getAccordionSectionHeaderAndCheckboxGroup(document, betaFeatureSwitch, 8)
+                        val (accordionSectionHeader, checkboxGroup) = getAccordionSectionHeaderAndCheckboxGroup(document, betaFeatureSwitch, 9)
 
                         if (betaFeatureSwitch) {
                           "contains a section header" in {
@@ -264,7 +294,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
                       }
 
                       "has a language section" that {
-                        val (accordionSectionHeader, checkboxGroup) = getAccordionSectionHeaderAndCheckboxGroup(document, betaFeatureSwitch, 9)
+                        val (accordionSectionHeader, checkboxGroup) = getAccordionSectionHeaderAndCheckboxGroup(document, betaFeatureSwitch, 10)
 
                         if (betaFeatureSwitch) {
                           "contains a section header" in {
@@ -280,36 +310,6 @@ class SearchSoftwareViewSpec extends ViewSpec {
                           validateCheckboxInGroup(checkboxGroup, 2, "", SearchSoftwarePageContent.english, disabled = true, checked = true)
                         }
 
-                      }
-
-                      "has an accessibility features section" that {
-                        val (accordionSectionHeader, checkboxGroup) = getAccordionSectionHeaderAndCheckboxGroup(document, betaFeatureSwitch, 10)
-
-                        if (betaFeatureSwitch) {
-                          "contains a section header" in {
-                            accordionSectionHeader.get.text shouldBe SearchSoftwarePageContent.Filters.accessibilityFeatures
-                          }
-                        }
-
-                        "contains a fieldset legend" in {
-                          checkboxGroup.getElementsByTag("legend").text() shouldBe SearchSoftwarePageContent.Filters.accessibilityFeatures
-                        }
-
-                        "contains an Visual checkbox" in {
-                          validateCheckboxInGroup(checkboxGroup, 1, Visual.key, SearchSoftwarePageContent.visual)
-                        }
-
-                        "contains an Hearing checkbox" in {
-                          validateCheckboxInGroup(checkboxGroup, 2, Hearing.key, SearchSoftwarePageContent.hearing)
-                        }
-
-                        "contains an Motor checkbox" in {
-                          validateCheckboxInGroup(checkboxGroup, 3, Motor.key, SearchSoftwarePageContent.motor)
-                        }
-
-                        "contains an Cognitive checkbox" in {
-                          validateCheckboxInGroup(checkboxGroup, 4, Cognitive.key, SearchSoftwarePageContent.cognitive)
-                        }
                       }
 
                       "has a apply button section" that {
