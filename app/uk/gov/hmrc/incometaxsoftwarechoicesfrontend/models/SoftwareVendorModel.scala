@@ -26,7 +26,14 @@ case class SoftwareVendorModel(
                                 website: String,
                                 filters: Seq[VendorFilter],
                                 incomeAndDeductions: Seq[IncomeAndDeduction],
-                                accessibilityStatementLink: Option[String] = None)
+                                accessibilityStatementLink: Option[String] = None) {
+  def orderedFilterSubset(subsetFilters: Set[VendorFilter]): Seq[VendorFilter] = {
+    val filtersFromVendor = filters.filter(filter => subsetFilters.contains(filter)).toSet
+    val alwaysDisplayedFilters = subsetFilters.filter(_.alwaysDisplay)
+    (filtersFromVendor ++ alwaysDisplayedFilters).toSeq.sortBy(_.priority)
+  }
+
+}
 
 object SoftwareVendorModel {
   implicit val reads: Reads[SoftwareVendorModel] = Json.reads[SoftwareVendorModel]

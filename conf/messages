@@ -133,6 +133,7 @@ product-details.details.hearing = Hearing
 product-details.details.motor = Motor
 product-details.details.cognitive = Cognitive
 product-details.details.welsh = Welsh
+product-details.details.english = English
 
 product-details.income-and-deduction-types.heading = Self Assessment income and deduction types this software covers
 product-details.income-and-deduction-types.number-covered = {0} covers {1} out of {2}:

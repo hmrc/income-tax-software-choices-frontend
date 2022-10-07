@@ -24,6 +24,7 @@
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTemplate
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilterGroups
 
 @this(
         mainTemplate: MainTemplate,
@@ -118,20 +119,9 @@
 }
 
 @productDetailsList = {
-@govukSummaryList(SummaryList(
-    rows = Seq(
-        pricingRow,
-        incomeTypeRow,
-        compatibleWithRow,
-        mobileAppRow,
-        softwareTypeRow,
-        softwareForRow,
-        businessTypeRow,
-        softwareCompatibilityRow,
-        languageRow,
-        accessibilityRow
-    ).flatten
-))
+    @govukSummaryList(SummaryList(
+        rows = rows.flatten
+    ))
 }
 
 @incomeAndDeductionTypesList = {
@@ -153,9 +143,9 @@
 ))
 }
 
-@productDetailsRow(key: String, filtersInRow: Seq[VendorFilter]) = @{
+@productDetailsRow(key: String, filtersInRow: Set[VendorFilter]) = @{
 
-    val rowContentMessages = softwareVendor.filters.filter(filtersInRow.contains).map { filter =>
+    val rowContentMessages = softwareVendor.orderedFilterSubset(filtersInRow).map { filter =>
         messages(s"product-details.details.${filter.key}")
     }.map { value =>
         <p class="govuk-body">{value}</p>
@@ -177,82 +167,13 @@
     }
 }
 
-@pricingRow = @{
-    productDetailsRow(
-        key = "pricing",
-        filtersInRow = Seq(Some(FreeTrial).filter(_ => displayExtraPricingOptions), Some(FreeVersion), Some(PaidFor).filter(_ => displayExtraPricingOptions)).flatten
-    )
-}
-
-@incomeTypeRow = @{
-    productDetailsRow(
-        key = "income-type",
-        filtersInRow = Seq(SoleTrader, UkProperty, OverseasProperty)
-    )
-}
-
-@compatibleWithRow = @{
-    productDetailsRow(
-        key = "compatible-with",
-        filtersInRow = Seq(MicrosoftWindows, MacOS)
-    )
-}
-
-@mobileAppRow = @{
-    productDetailsRow(
-        key = "mobile-app",
-        filtersInRow = Seq(Android, AppleIOS)
-    )
-}
-
-@softwareTypeRow = @{
-    productDetailsRow(
-        key = "software-type",
-        filtersInRow = Seq(BrowserBased, ApplicationBased)
-    )
-}
-
-@softwareForRow = @{
-    productDetailsRow(
-        key = "software-for",
-        filtersInRow = Seq(RecordKeeping, Bridging)
-    )
-}
-
-@businessTypeRow = @{
-    productDetailsRow(
-        key = "business-type",
-        filtersInRow = Seq(Individual, Agent)
-    )
-}
-
-@softwareCompatibilityRow = @{
-
-    val incomeTaxContent = s"<p class='govuk-body'>${messages("product-details.details.income-tax")}</p>"
-    val vatContent = softwareVendor.filters.find(_ == Vat).map(filter => <p class='govuk-body'>{messages(s"product-details.details.${filter.key}")}</p>).getOrElse("")
-
-    Some(SummaryListRow(
-        key = Key(
-            content = Text(messages("product-details.details.software-compatibility"))
-        ),
-        value = Value(
-            content = HtmlContent(incomeTaxContent + vatContent)
+@rows = @{
+    VendorFilterGroups.detailPageGroups(displayExtraPricingOptions).map{ case (group, label) =>
+        productDetailsRow(
+            key = label,
+            filtersInRow = group
         )
-    ))
-}
-
-@accessibilityRow = @{
-    productDetailsRow(
-        key = "accessibility",
-        filtersInRow = Seq(Visual, Hearing, Motor, Cognitive)
-    )
-}
-
-@languageRow = @{
-    productDetailsRow(
-        key = "language",
-        filtersInRow = Seq(Welsh)
-    )
+    }
 }
 
 @link(href: String, text: String) = {

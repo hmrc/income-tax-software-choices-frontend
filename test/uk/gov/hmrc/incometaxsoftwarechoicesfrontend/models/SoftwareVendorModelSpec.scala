@@ -120,6 +120,48 @@ class SoftwareVendorModelSpec extends PlaySpec {
         Json.fromJson[SoftwareVendorModel](json) mustBe JsError(JsPath \ "incomeAndDeductions", "error.path.missing")
       }
     }
-  }
 
+
+    "search for filters and order the results correctly" should {
+      def getVendorModel(vendorFilters: Seq[VendorFilter]): SoftwareVendorModel = SoftwareVendorModel(
+        name = "name",
+        url = "url",
+        email = None,
+        phone = None,
+        website = "website",
+        filters = vendorFilters,
+        incomeAndDeductions = Seq.empty,
+        accessibilityStatementLink = None
+      )
+
+      "show the always displayed element when it is present in the list but not in the vendor" in {
+        val vendorFilters = Seq(VendorFilter.Welsh)
+        val searchFilters: Set[VendorFilter] = Set(VendorFilter.English)
+        val model: SoftwareVendorModel = getVendorModel(vendorFilters)
+        model.orderedFilterSubset(searchFilters) mustBe Seq(VendorFilter.English)
+      }
+
+      "find no matches when a selection of elements is present in the list but not in the vendor" in {
+        val vendorFilters = Seq(VendorFilter.Visual, VendorFilter.Hearing)
+        val searchFilters: Set[VendorFilter] = Set(VendorFilter.Motor, VendorFilter.Cognitive)
+        val model: SoftwareVendorModel = getVendorModel(vendorFilters)
+        model.orderedFilterSubset(searchFilters) mustBe Seq.empty
+      }
+
+      "find a match when a single element is present both in the vendor and in the list" in {
+        val vendorFilters = Seq(VendorFilter.Motor, VendorFilter.Cognitive, VendorFilter.Visual)
+        val searchFilters: Set[VendorFilter] = Set(VendorFilter.Visual, VendorFilter.Hearing)
+        val model: SoftwareVendorModel = getVendorModel(vendorFilters)
+        model.orderedFilterSubset(searchFilters) mustBe Seq(VendorFilter.Visual)
+      }
+
+      "find and correctly order a selection of elements which are present in the vendor and  the list" in {
+        val vendorFilters = Seq(VendorFilter.Motor, VendorFilter.Cognitive, VendorFilter.Visual, VendorFilter.Hearing).sortBy(_ => Math.random())
+        val searchFilters: Set[VendorFilter] = Set(VendorFilter.Motor, VendorFilter.Cognitive, VendorFilter.Visual, VendorFilter.Hearing)
+        val model: SoftwareVendorModel = getVendorModel(vendorFilters)
+        val expectedResults = Seq(VendorFilter.Motor, VendorFilter.Cognitive, VendorFilter.Visual, VendorFilter.Hearing).sortBy(_.priority)
+        model.orderedFilterSubset(searchFilters) mustBe expectedResults
+      }
+    }
+  }
 }

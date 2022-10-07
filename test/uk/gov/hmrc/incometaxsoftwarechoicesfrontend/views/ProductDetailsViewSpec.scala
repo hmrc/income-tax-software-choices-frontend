@@ -79,6 +79,7 @@ class ProductDetailsViewSpec extends ViewSpec {
 
       val language: String = "Language"
       val welsh: String = "Welsh"
+      val english: String = "English"
 
       val accessibilityFeatures: String = "Accessibility features"
       val visual: String = "Visual"
@@ -432,11 +433,20 @@ class ProductDetailsViewSpec extends ViewSpec {
             row.selectHead("dt").text shouldBe Filters.softwareCompatibility
             row.selectHead("dd").text shouldBe Filters.incomeTax
           }
+          "display the language row" in {
+            val row: Element = document
+              .selectNth("dl", 2)
+              .selectNth("div", 2)
+
+            row.selectHead("dt").text shouldBe Filters.language
+            row.selectHead("dd").text shouldBe Filters.english
+          }
           "display no other rows" in {
             document
               .selectNth("dl", 2)
-              .selectOptionally("div:nth-of-type(2)") shouldBe None
+              .selectOptionally("div:nth-of-type(3)") shouldBe None
           }
+
         }
       )
     }
