@@ -8,17 +8,9 @@ base.error-heading          = Mae problem wedi codi
 breadcrumbs.guidance                = Arweiniad
 breadcrumbs.filter                  = Hidlo
 
-# Accordion menu
-
-accordion.section.open.all  = Dangos pob un
-accordion.section.close.all = Cuddio pob un
-accordion.section.open      = Dangos
-accordion.section.close     = Cuddio
-
 # Search software page
 
 search-software.title               = Dewis eich meddalwedd
-search-software.count               = ?
 search-software.last-update         = Diweddarwyd y dudalen hon ddiwethaf
 search-software.heading             = Dewis eich meddalwedd
 search-software.paragraph1          = Mae’r holl feddalwedd ar y dudalen hon wedi bod trwy broses adnabod CThEM. Ond nid yw CThEM yn argymell nac yn cymeradwyo unrhyw gynnyrch neu gyflenwr meddalwedd penodol.
@@ -43,7 +35,8 @@ search-software.search-form.heading = Chwilio yn ôl enw meddalwedd
 search-software.search-form.button  = Chwilio yn ôl enw meddalwedd
 search-software.search-form.error   = Nodwch lai na {0} o gymeriadau
 
-search-software.vendor-count = Ar hyn o bryd y nifer o ddatblygwyr meddalwedd yw {0}
+search-software.alpha-vendor-count = Ar hyn o bryd y nifer o ddatblygwyr meddalwedd yw {0}
+search-software.vendor-count       = <b>{0}</b> darparwyr meddalwedd
 
 search-software.empty-vendor-list         = Nid yw eich chwiliad wedi dangos unrhyw ganlyniadau. Er mwyn cynyddu nifer y canlyniadau awgrymwn ei bod yn gwneud y canlynol:
 search-software.empty-vendor-list.bullet1 = lleihau nifer yr hidlwyr yr ydych eu defnyddio
