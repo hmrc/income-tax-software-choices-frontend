@@ -42,12 +42,21 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
     when(mockConfig.softwareChoicesVendorFileName) thenReturn testFileName
   }
 
-  val expectedSoftwareVendors: SoftwareVendors = SoftwareVendors(
+  val unsortedSoftwareVendors: SoftwareVendors = SoftwareVendors(
     lastUpdated = "06/07/2022",
     vendors = Seq(
       testVendorOne,
       testVendorTwo,
       testVendorThree,
+    )
+  )
+
+  val expectedSoftwareVendors: SoftwareVendors = SoftwareVendors(
+    lastUpdated = "06/07/2022",
+    vendors = Seq(
+      testVendorOne,
+      testVendorThree,
+      testVendorTwo,
     )
   )
 
@@ -61,8 +70,8 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
   val expectedFilteredByVendorFilterSoftwareVendors: SoftwareVendors = SoftwareVendors(
     lastUpdated = "06/07/2022",
     vendors = Seq(
-      testVendorTwo,
-      testVendorThree
+      testVendorThree,
+      testVendorTwo
     )
   )
 
@@ -79,21 +88,21 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
         when(mockEnvironment.resourceAsStream(eqTo(testFileName)))
           .thenReturn(Some(new FileInputStream("test/resources/test-valid-software-vendors.json")))
 
-        service.softwareVendors mustBe expectedSoftwareVendors
+        service.softwareVendors mustBe unsortedSoftwareVendors
       }
 
       "correctly filter vendors by vendor name" in new Setup {
         when(mockEnvironment.resourceAsStream(eqTo(testFileName)))
           .thenReturn(Some(new FileInputStream("test/resources/test-valid-software-vendors.json")))
 
-        service.filterVendors(Some("two"), Seq()) mustBe expectedFilteredByVendorNameSoftwareVendors
+        service.getVendors(Some("two"), Seq()) mustBe expectedFilteredByVendorNameSoftwareVendors
       }
 
       "correctly filter vendors by vendor filter" in new Setup {
         when(mockEnvironment.resourceAsStream(eqTo(testFileName)))
           .thenReturn(Some(new FileInputStream("test/resources/test-valid-software-vendors.json")))
 
-        service.filterVendors(None, Seq(FreeTrial)) mustBe expectedFilteredByVendorFilterSoftwareVendors
+        service.getVendors(None, Seq(FreeTrial)) mustBe expectedFilteredByVendorFilterSoftwareVendors
       }
 
       "correctly filter vendors by vendor name in disordered sections with whitespace" in new Setup {
@@ -107,14 +116,14 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
         when(mockEnvironment.resourceAsStream(eqTo(testFileName)))
           .thenReturn(Some(new FileInputStream("test/resources/test-valid-software-vendors.json")))
 
-        service.filterVendors(Some("three"), Seq(FreeTrial)) mustBe expectedFilteredSoftwareVendors
+        service.getVendors(Some("three"), Seq(FreeTrial)) mustBe expectedFilteredSoftwareVendors
       }
 
       "not filter when no search term has been provided" in new Setup {
         when(mockEnvironment.resourceAsStream(eqTo(testFileName)))
           .thenReturn(Some(new FileInputStream("test/resources/test-valid-software-vendors.json")))
 
-        service.filterVendors(None, Seq()) mustBe expectedSoftwareVendors
+        service.getVendors(None, Seq()) mustBe expectedSoftwareVendors
       }
     }
     "the software vendor config file does not exist" in new Setup {

@@ -4,6 +4,6 @@
 
 GET        /product-details      uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.ProductDetailsController.show(software: Option[String] ?= None)
 GET        /                     uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SearchSoftwareController.show
-POST       /                     uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SearchSoftwareController.search
-POST       /ajax                 uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SearchSoftwareController.ajaxSearch
+POST       /                     uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SearchSoftwareController.search(ajax: Boolean = false)
+POST       /ajax                 uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SearchSoftwareController.search(ajax: Boolean = true)
 GET        /assets/*file         controllers.Assets.versioned(path = "/public", file: Asset)
