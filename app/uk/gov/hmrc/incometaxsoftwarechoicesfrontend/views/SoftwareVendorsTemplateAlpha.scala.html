@@ -20,7 +20,7 @@
 @import uk.gov.hmrc.hmrcfrontend.views.viewmodels.newtablinkhelper.NewTabLinkHelper
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.SoftwareChoicesService
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilterGroups
 
 @this(
   hmrcNewTabLinkHelper: HmrcNewTabLinkHelper,
@@ -32,6 +32,7 @@
 @customSummaryListRow(key: String, filtersAvailable: Seq[VendorFilter]) = @{
 
   val value: String = filtersAvailable
+          .sortBy(_.priority)
           .map(filter => messages(s"search-software.vendor-detail.$key.${filter.key}"))
           .mkString("/")
 
@@ -51,11 +52,11 @@
   }
 }
 
-@softwareVendorPricing(filters: Seq[VendorFilter]) = @{
+@softwareVendorPricing(vendor: SoftwareVendorModel) = @{
 
   val key: String = {messages("search-software.vendor-detail.pricing")}
-  val freeTrial = if(filters.contains(FreeTrial)) Some(messages("search-software.vendor-detail.pricing.free-trial")) else Some(messages("search-software.vendor-detail.pricing.no-free-trial"))
-  val freeVersion = if(filters.contains(FreeVersion)) Some(messages("search-software.vendor-detail.pricing.free-version")) else Some(messages("search-software.vendor-detail.pricing.no-free-version"))
+  val freeTrial = if(vendor.filters.contains(FreeTrial)) Some(messages("search-software.vendor-detail.pricing.free-trial")) else Some(messages("search-software.vendor-detail.pricing.no-free-trial"))
+  val freeVersion = if(vendor.filters.contains(FreeVersion)) Some(messages("search-software.vendor-detail.pricing.free-version")) else Some(messages("search-software.vendor-detail.pricing.no-free-version"))
   val value = Seq(
     freeTrial.filter(_ => displayExtraPricingOptions),
     freeVersion
@@ -74,59 +75,59 @@
 
 }
 
-@softwareVendorBusinessType(filters: Seq[VendorFilter]) = @{
+@softwareVendorBusinessType(vendor: SoftwareVendorModel) = @{
 
   customSummaryListRow(
     key = "business-type",
-    filtersAvailable = filters.filter(SoftwareChoicesService.businessTypeFilters)
+    filtersAvailable = vendor.orderedFilterSubset(VendorFilterGroups.businessTypeFilters)
   )
 
 }
 
-@softwareVendorCompatibleWith(filters: Seq[VendorFilter]) = @{
+@softwareVendorCompatibleWith(vendor: SoftwareVendorModel) = @{
 
   customSummaryListRow(
     key = "compatible-with",
-    filtersAvailable = filters.filter(SoftwareChoicesService.compatibleWithFilters)
+    filtersAvailable = vendor.orderedFilterSubset(VendorFilterGroups.compatibleWithFilters)
   )
 
 }
 
-@softwareVendorMobileApp(filters: Seq[VendorFilter]) = @{
+@softwareVendorMobileApp(vendor: SoftwareVendorModel) = @{
 
   customSummaryListRow(
     key = "mobile-app",
-    filtersAvailable = filters.filter(SoftwareChoicesService.mobileAppFilters)
+    filtersAvailable = vendor.orderedFilterSubset(VendorFilterGroups.mobileAppFilters)
   )
 
 }
 
-@softwareVendorSoftwareType(filters: Seq[VendorFilter]) = @{
+@softwareVendorSoftwareType(vendor: SoftwareVendorModel) = @{
 
   customSummaryListRow(
     key = "software-type",
-    filtersAvailable = filters.filter(SoftwareChoicesService.softwareTypeFilters)
+    filtersAvailable = vendor.orderedFilterSubset(VendorFilterGroups.softwareTypeFilters)
   )
 
 }
 
-@softwareVendorAccessibility(filters: Seq[VendorFilter]) = @{
+@softwareVendorAccessibility(vendor: SoftwareVendorModel) = @{
 
   customSummaryListRow(
     key = "accessibility",
-    filtersAvailable = filters.filter(SoftwareChoicesService.accessibilityFilters)
+    filtersAvailable = vendor.orderedFilterSubset(VendorFilterGroups.accessibilityFilters)
   )
 
 }
 
-@softwareVendorDetail(filters: Seq[VendorFilter]) = @{
+@softwareVendorDetail(vendor: SoftwareVendorModel) = @{
   Seq(
-    softwareVendorPricing(filters),
-    softwareVendorBusinessType(filters),
-    softwareVendorCompatibleWith(filters),
-    softwareVendorMobileApp(filters),
-    softwareVendorSoftwareType(filters),
-    softwareVendorAccessibility(filters)
+    softwareVendorPricing(vendor),
+    softwareVendorBusinessType(vendor),
+    softwareVendorCompatibleWith(vendor),
+    softwareVendorMobileApp(vendor),
+    softwareVendorSoftwareType(vendor),
+    softwareVendorAccessibility(vendor)
   ).flatten
 }
 
@@ -139,7 +140,7 @@
     ))
     </h3>
     @govukSummaryList(SummaryList(
-      rows = softwareVendorDetail(vendor.filters),
+      rows = softwareVendorDetail(vendor),
       classes = "govuk-summary-list--no-border"
     ))
   </div>

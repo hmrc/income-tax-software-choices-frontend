@@ -133,6 +133,7 @@ product-details.details.hearing                = Clywedol
 product-details.details.motor                  = Echddygol
 product-details.details.cognitive              = Gwybyddol
 product-details.details.welsh                  = Cymraeg
+product-details.details.english                = Saesneg
 
 # Accessibility statement section
 

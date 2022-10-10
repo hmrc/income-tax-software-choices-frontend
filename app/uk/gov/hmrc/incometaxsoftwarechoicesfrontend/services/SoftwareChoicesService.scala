@@ -20,7 +20,6 @@ import play.api.libs.json._
 import play.api.{Environment, Logging}
 import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareVendorModel, SoftwareVendors, VendorFilter}
 
 import javax.inject.{Inject, Singleton}
@@ -72,32 +71,5 @@ object SoftwareChoicesService {
 
   private[services] def matchFilter(filters: Seq[VendorFilter])(vendors: Seq[SoftwareVendorModel]) =
     vendors.filter(vendor => filters.forall(vendor.filters.contains(_)))
-
-  val businessTypeFilters: Set[VendorFilter] = Set(
-    Individual,
-    Agent
-  )
-
-  val compatibleWithFilters: Set[VendorFilter] = Set(
-    MicrosoftWindows,
-    MacOS
-  )
-
-  val mobileAppFilters: Set[VendorFilter] = Set(
-    Android,
-    AppleIOS
-  )
-
-  val softwareTypeFilters: Set[VendorFilter] = Set(
-    BrowserBased,
-    ApplicationBased
-  )
-
-  val accessibilityFilters: Set[VendorFilter] = Set(
-    Visual,
-    Hearing,
-    Motor,
-    Cognitive
-  )
 
 }
