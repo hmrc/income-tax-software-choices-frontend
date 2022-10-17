@@ -21,6 +21,7 @@ import org.jsoup.nodes.{Document, Element}
 import org.scalatest.Assertion
 import play.api.data.FormError
 import play.api.mvc.Call
+import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes.ProductDetailsController
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
@@ -484,7 +485,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
 
 object SearchSoftwareViewSpec extends ViewSpec {
 
-  def page(softwareVendors: SoftwareVendors, hasError: Boolean, beta: Boolean, pricing: Boolean) =
+  def page(softwareVendors: SoftwareVendors, hasError: Boolean, beta: Boolean, pricing: Boolean): HtmlFormat.Appendable =
     searchSoftwarePage(
       softwareVendors,
       if (hasError) {
@@ -671,7 +672,7 @@ private object SearchSoftwarePageContent {
     )
   )
 
-  val softwareVendorsNoResults = SoftwareVendors(lastUpdated = lastUpdateTest, vendors = Seq.empty[SoftwareVendorModel])
+  val softwareVendorsNoResults: SoftwareVendors = SoftwareVendors(lastUpdated = lastUpdateTest, vendors = Seq.empty[SoftwareVendorModel])
 
 
 }

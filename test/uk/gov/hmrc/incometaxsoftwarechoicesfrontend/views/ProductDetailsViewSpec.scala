@@ -59,7 +59,7 @@ class ProductDetailsViewSpec extends ViewSpec {
 
       val mobileApp: String = "Mobile app"
       val android: String = "Android"
-      val iOS: String = "iOS"
+      val iOS: String = "Apple iOS"
 
       val softwareType: String = "Software type"
       val browserBased: String = "Browser based"
@@ -369,7 +369,7 @@ class ProductDetailsViewSpec extends ViewSpec {
         }
 
         "the vendor has minimal incomes and deductions supported" must {
-          val document = createAndParseDocument(softwareVendorModelBase, true)
+          val document = createAndParseDocument(softwareVendorModelBase, displayIncomeAndDeductionTypes = true)
           "display the correct number of incomes and deductions covered" in {
             document
               .selectHead("h2:nth-of-type(3) + p")
