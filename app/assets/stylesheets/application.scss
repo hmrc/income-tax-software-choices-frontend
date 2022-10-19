@@ -164,3 +164,17 @@ legend.govuk-hidden {
 .before-you-choose {
    background-color: govuk-colour("light-grey");
 }
+
+.inverse-header {
+    margin-left: auto;
+    margin-right: auto;
+    background-color: govuk-colour("blue") ;
+    color: govuk-colour("white") ;
+}
+
+.inverse-label {
+    background-color: govuk-colour("blue") ;
+    color: govuk-colour("white") ;
+    padding: 10px;
+    display: inline-block;
+}

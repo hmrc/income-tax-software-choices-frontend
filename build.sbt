@@ -1,6 +1,8 @@
 import uk.gov.hmrc.DefaultBuildSettings.integrationTestSettings
 import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin.publishingSettings
 
+import scala.sys.process._
+
 val appName = "income-tax-software-choices-frontend"
 
 lazy val microservice = Project(appName, file("."))
@@ -18,3 +20,12 @@ lazy val microservice = Project(appName, file("."))
   .settings(integrationTestSettings(): _*)
   .settings(resolvers += Resolver.jcenterRepo)
   .settings(CodeCoverageSettings.settings: _*)
+
+lazy val results = taskKey[Unit]("Opens test results'")
+results := { "open target/test-reports/html-report/index.html" ! }
+Test / results := (results).value
+
+lazy val itResults = taskKey[Unit]("Opens it test results'")
+itResults := { "open target/int-test-reports/html-report/index.html" ! }
+IntegrationTest / results := (itResults).value
+

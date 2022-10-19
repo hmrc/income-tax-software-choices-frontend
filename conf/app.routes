@@ -6,4 +6,5 @@ GET        /product-details      uk.gov.hmrc.incometaxsoftwarechoicesfrontend.co
 GET        /                     uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SearchSoftwareController.show
 POST       /                     uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SearchSoftwareController.search(ajax: Boolean = false)
 POST       /ajax                 uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SearchSoftwareController.search(ajax: Boolean = true)
+GET        /glossary             uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.GlossaryController.show(ajax: Boolean = true)
 GET        /assets/*file         controllers.Assets.versioned(path = "/public", file: Asset)

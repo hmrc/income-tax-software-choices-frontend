@@ -7,6 +7,7 @@ base.error-heading          = Mae problem wedi codi
 
 breadcrumbs.guidance                = Arweiniad
 breadcrumbs.filter                  = Hidlo
+breadcrumbs.glossary                = Geirfa
 
 # Search software page
 
@@ -139,3 +140,50 @@ product-details.details.english                = Saesneg
 
 product-details.accessibility-statement.heading = Hygyrchedd
 product-details.accessibility-statement.key     = Datganiad hygyrchedd
+
+
+glossary.title = Geirfa
+glossary.content = Cynnwy
+glossary.software-choices = Dewisiadau Meddalwedd
+glossary.caption = Lorem Ipsum
+
+glossary.contents.one.key = Un
+glossary.contents.one.value = 1
+glossary.contents.two.key = Dwy
+glossary.contents.two.value = 2
+glossary.contents.three.key = Tri
+glossary.contents.three.value = 3
+glossary.contents.four.key = Pedwar
+glossary.contents.four.value = 4
+glossary.contents.five.key = Pump
+glossary.contents.five.value = 5
+glossary.contents.six.key = Chwech
+glossary.contents.six.value = 6
+glossary.contents.seven.key = Saith
+glossary.contents.seven.value = 7
+glossary.contents.eight.key = Wyth
+glossary.contents.eight.value = 8
+glossary.contents.nine.key = Naw
+glossary.contents.nine.value = 9
+glossary.contents.ten.key = Deg
+glossary.contents.ten.value = 10
+glossary.contents.eleven.key = Unarddeg
+glossary.contents.eleven.value = 11
+glossary.contents.twelve.key = Deuddeg
+glossary.contents.twelve.value = 12
+glossary.contents.thirteen.key = Tri ar ddeg
+glossary.contents.thirteen.value = 13
+glossary.contents.fourteen.key = Pedwar ar ddeg
+glossary.contents.fourteen.value = 14
+glossary.contents.fifteen.key = Pymtheg
+glossary.contents.fifteen.value = 15
+glossary.contents.sixteen.key = Un ar bymtheg
+glossary.contents.sixteen.value = 16
+glossary.contents.seventeen.key = Dwy ar bymtheg
+glossary.contents.seventeen.value = 17
+glossary.contents.eighteen.key = Deunaw
+glossary.contents.eighteen.value = 18
+glossary.contents.nineteen.key = Pedwar ar bymtheg
+glossary.contents.nineteen.value = 19
+glossary.contents.twenty.key = Ugain
+glossary.contents.twenty.value = 20
