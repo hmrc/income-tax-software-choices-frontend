@@ -158,6 +158,29 @@
       "incomeAndDeductions": [
         "self-employment"
       ]
+    },
+    {
+      "name": "QuickBooks Online (Intuit)",
+      "url": "https://quickbooks.intuit.com/uk/",
+      "email": "mtdtest@intuit.com",
+      "website": "https://quickbooks.intuit.com/uk/",
+      "accessibilityStatementLink": "https://intuit.com/accessibility/",
+      "filters": [
+        "paid-for",
+        "free-trial",
+        "individual",
+        "agent",
+        "microsoft-windows",
+        "mac-os",
+        "android",
+        "apple-ios",
+        "browser-based",
+        "vat",
+        "record-keeping"
+      ],
+      "incomeAndDeductions": [
+        "self-employment"
+      ]
     }
   ]
 }
