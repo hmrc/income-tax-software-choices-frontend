@@ -198,7 +198,12 @@ object VendorFilterGroups {
 
   val compatibility: Set[VendorFilter] = Set(IncomeTax, Vat)
 
-  val incomeTypeFilters: Set[VendorFilter] = Set(SoleTrader, UkProperty, OverseasProperty)
+  def incomeTypeFilters(displayOverseasPropertyOption: Boolean): Set[VendorFilter] =
+    Set(
+      Some(SoleTrader),
+      Some(UkProperty),
+      Some(OverseasProperty).filter(_ => displayOverseasPropertyOption)
+    ).flatten.toSet
 
   val compatibleWithFilters: Set[VendorFilter] = Set(MicrosoftWindows, MacOS)
 
@@ -210,10 +215,10 @@ object VendorFilterGroups {
 
   val accessibilityFilters: Set[VendorFilter] = Set(Visual, Hearing, Motor, Cognitive)
 
-  def allGroups(displayExtraPricingOptions: Boolean): Seq[(Set[VendorFilter], String)] = Seq(
+  def allGroups(displayExtraPricingOptions: Boolean, displayOverseasPropertyOption: Boolean): Seq[(Set[VendorFilter], String)] = Seq(
     (accessibilityFilters, "accessibility"),
     (pricingFilters(displayExtraPricingOptions), "pricing"),
-    (incomeTypeFilters, "income-type"),
+    (incomeTypeFilters(displayOverseasPropertyOption), "income-type"),
     (compatibleWithFilters, "compatible-with"),
     (mobileAppFilters, "mobile-app"),
     (softwareTypeFilters, "software-type"),
@@ -222,9 +227,9 @@ object VendorFilterGroups {
     (compatibility, "software-compatibility"),
     (languagesFilters, "language")
   )
-  def detailPageGroups(displayExtraPricingOptions: Boolean): Seq[(Set[VendorFilter], String)] = Seq(
+  def detailPageGroups(displayExtraPricingOptions: Boolean, displayOverseasPropertyOption: Boolean): Seq[(Set[VendorFilter], String)] = Seq(
     (pricingFilters(displayExtraPricingOptions), "pricing"),
-    (incomeTypeFilters, "income-type"),
+    (incomeTypeFilters(displayOverseasPropertyOption), "income-type"),
     (compatibleWithFilters, "compatible-with"),
     (mobileAppFilters, "mobile-app"),
     (softwareTypeFilters, "software-type"),

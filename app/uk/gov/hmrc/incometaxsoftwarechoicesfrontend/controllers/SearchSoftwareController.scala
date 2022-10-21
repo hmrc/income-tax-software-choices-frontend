@@ -20,7 +20,7 @@ import play.api.data.Form
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import play.twirl.api.Html
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.{BetaFeatures, ExtraPricingOptions}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FiltersFormModel, SoftwareVendors}
@@ -56,7 +56,7 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
       case (true, true) => softwareVendorsTemplate(vendors)
       case (true, false) => softwareVendorsTemplateAlpha(vendors, isEnabled(ExtraPricingOptions))
       case _ =>
-        searchSoftwarePage(vendors, form, routes.SearchSoftwareController.search(ajax), isEnabled(BetaFeatures), isEnabled(ExtraPricingOptions))
+        searchSoftwarePage(vendors, form, routes.SearchSoftwareController.search(ajax), isEnabled(BetaFeatures), isEnabled(ExtraPricingOptions), isEnabled(DisplayOverseasProperty))
     }
 
 }

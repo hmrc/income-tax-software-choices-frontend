@@ -36,7 +36,7 @@
   govukAccordion: GovukAccordion,
   govukButton: GovukButton
 )(implicit appConfig: AppConfig)
-@(softwareVendors: SoftwareVendors, searchForm: Form[FiltersFormModel], postAction: Call, betaFeatures: Boolean, displayExtraPricingOptions: Boolean)(implicit request: Request[_], messages: Messages)
+@(softwareVendors: SoftwareVendors, searchForm: Form[FiltersFormModel], postAction: Call, betaFeatures: Boolean, displayExtraPricingOptions: Boolean, displayOverseasPropertyOption: Boolean)(implicit request: Request[_], messages: Messages)
 
 @js = {
   <script @{CSPNonce.attr} src="@routes.Assets.versioned("lib/jquery/jquery.min.js")"></script>
@@ -83,9 +83,9 @@
           <h2 class="govuk-heading-m">@messages("search-software.filters.heading")</h2>
 
           @if(betaFeatures) {
-            @softwareFiltersTemplate(searchForm(FiltersForm.filters), displayExtraPricingOptions)
+            @softwareFiltersTemplate(searchForm(FiltersForm.filters), displayExtraPricingOptions, displayOverseasPropertyOption)
           } else {
-            @softwareFiltersTemplateAlpha(searchForm(FiltersForm.filters), displayExtraPricingOptions)
+            @softwareFiltersTemplateAlpha(searchForm(FiltersForm.filters), displayExtraPricingOptions, displayOverseasPropertyOption)
           }
 
           <div class="govuk-button-group govuk-!-padding-top-0 apply-filters-group">

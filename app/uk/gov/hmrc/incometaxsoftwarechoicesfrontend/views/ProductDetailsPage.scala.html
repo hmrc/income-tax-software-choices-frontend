@@ -32,7 +32,7 @@
         hmrcNewTabLinkHelper: HmrcNewTabLinkHelper,
         govukSummaryList: GovukSummaryList
 )(implicit appConfig: AppConfig)
-@(softwareVendor: SoftwareVendorModel, displayIncomeAndDeductionTypes: Boolean, displayExtraPricingOptions: Boolean)(implicit request: Request[_], messages: Messages)
+@(softwareVendor: SoftwareVendorModel, displayIncomeAndDeductionTypes: Boolean, displayExtraPricingOptions: Boolean, displayOverseasPropertyOption: Boolean)(implicit request: Request[_], messages: Messages)
 
 @pageBreadcrumbs = {
 @breadcrumbs(Breadcrumbs(
@@ -168,7 +168,7 @@
 }
 
 @rows = @{
-    VendorFilterGroups.detailPageGroups(displayExtraPricingOptions).map{ case (group, label) =>
+    VendorFilterGroups.detailPageGroups(displayExtraPricingOptions, displayOverseasPropertyOption).map{ case (group, label) =>
         productDetailsRow(
             key = label,
             filtersInRow = group

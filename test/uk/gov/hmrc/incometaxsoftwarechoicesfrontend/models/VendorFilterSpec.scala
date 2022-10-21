@@ -41,7 +41,7 @@ class VendorFilterSpec extends PlaySpec {
     }
 
     "contain ALL the filters (when displayExtraPricingOptions is true)" in {
-      val filters = VendorFilterGroups.allGroups(true).flatMap(f => f._1)
+      val filters = VendorFilterGroups.allGroups(true, true).flatMap(f => f._1)
       val allFilters = VendorFilter.filterKeyToFilter.values
       allFilters.map(f => filters.contains(f) mustBe true)
     }
