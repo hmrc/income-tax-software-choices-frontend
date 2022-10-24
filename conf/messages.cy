@@ -14,7 +14,7 @@ search-software.title               = Dewis eich meddalwedd
 search-software.last-update         = Diweddarwyd y dudalen hon ddiwethaf
 search-software.heading             = Dewis eich meddalwedd
 search-software.paragraph1          = Mae’r holl feddalwedd ar y dudalen hon wedi bod trwy broses adnabod CThEM. Ond nid yw CThEM yn argymell nac yn cymeradwyo unrhyw gynnyrch neu gyflenwr meddalwedd penodol.
-search-software.inset-text          = Os oes angen help arnoch i ddewis meddalwedd, cysylltwch â darparwr y feddalwedd cyn gwneud penderfyniad.
+search-software.inset-text          = Os oes angen help arnoch i ddewis meddalwedd, cysylltwch â darparwr y feddalwedd neu â’ch asiant treth cyn gwneud penderfyniad.
 
 search-software.filters.heading                = Hidlwyr
 search-software.filters.pricing                = Prisio

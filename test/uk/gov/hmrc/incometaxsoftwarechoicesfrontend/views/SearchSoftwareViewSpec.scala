@@ -569,7 +569,7 @@ private object SearchSoftwarePageContent {
   val heading = "Choose your software"
   val paragraph1: String = "All software on this page has been through HMRC’s recognition process. " +
     "But we do not endorse or recommend any one product or software provider."
-  val insetText = "If you need help to choose software, contact the software provider before making a decision. We are not able to help you choose software."
+  val insetText = "If you need help to choose software, contact the software provider or your tax agent before making a decision."
   val searchFormHeading = "Search by software name"
 
   object Filters {

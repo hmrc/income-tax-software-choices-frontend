@@ -14,7 +14,7 @@ search-software.title               = Choose your software
 search-software.last-update         = This page was last updated
 search-software.heading             = Choose your software
 search-software.paragraph1          = All software on this page has been through HMRC’s recognition process. But we do not endorse or recommend any one product or software provider.
-search-software.inset-text          = If you need help to choose software, contact the software provider before making a decision. We are not able to help you choose software.
+search-software.inset-text          = If you need help to choose software, contact the software provider or your tax agent before making a decision.
 
 search-software.filters.heading = Filters
 search-software.filters.pricing = Pricing
