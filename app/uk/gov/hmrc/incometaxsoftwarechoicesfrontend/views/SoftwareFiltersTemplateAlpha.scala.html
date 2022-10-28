@@ -25,7 +25,7 @@
   checkboxGroup: CheckboxGroupHelper
 )
 
-@(checkboxField: Field, displayExtraPricingOptions: Boolean)(implicit messages: Messages)
+@(checkboxField: Field, displayExtraPricingOptions: Boolean, displayOverseasPropertyOptions: Boolean)(implicit messages: Messages)
 
 @buildCheckBoxes(filters: Set[VendorFilter], label: String) = @{
   filters.toSeq.sortBy(_.priority).map(item =>
@@ -46,7 +46,7 @@
 }
 
 @{
-    VendorFilterGroups.allGroups(displayExtraPricingOptions).map{ case (group, label) =>
+    VendorFilterGroups.allGroups(displayExtraPricingOptions, displayOverseasPropertyOptions).map{ case (group, label) =>
 
         checkboxGroup(
           field = checkboxField,

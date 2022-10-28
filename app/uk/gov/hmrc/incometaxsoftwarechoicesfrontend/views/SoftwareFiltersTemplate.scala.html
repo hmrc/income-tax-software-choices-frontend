@@ -26,7 +26,7 @@
   checkboxGroup: CheckboxGroupHelper
 )
 
-@(checkboxField: Field, displayExtraPricingOptions: Boolean)(implicit messages: Messages)
+@(checkboxField: Field, displayExtraPricingOptions: Boolean, displayOverseasPropertyOption: Boolean)(implicit messages: Messages)
 
 @buildCheckBoxes(filters: Set[VendorFilter], label: String) = @{
   filters.toSeq.sortBy(_.priority).map(item =>
@@ -47,7 +47,7 @@
 }
 
 @sections = @{
-  VendorFilterGroups.allGroups(displayExtraPricingOptions).map{ case (group, label) =>
+  VendorFilterGroups.allGroups(displayExtraPricingOptions, displayOverseasPropertyOption).map{ case (group, label) =>
 
     Section(
       headingContent = Text(messages(s"search-software.filters.$label")),

@@ -452,11 +452,11 @@ class ProductDetailsViewSpec extends ViewSpec {
     }
   }
 
-  private def page(vendorModel: SoftwareVendorModel, displayIncomeAndDeductionTypes: Boolean, displayExtraPricingOptions: Boolean) = productDetailsPage(
-    vendorModel, displayIncomeAndDeductionTypes, displayExtraPricingOptions
+  private def page(vendorModel: SoftwareVendorModel, displayIncomeAndDeductionTypes: Boolean, displayExtraPricingOptions: Boolean, displayOverseasPropertyOption: Boolean) = productDetailsPage(
+    vendorModel, displayIncomeAndDeductionTypes, displayExtraPricingOptions, displayOverseasPropertyOption
   )
 
-  private def createAndParseDocument(vendorModel: SoftwareVendorModel, displayIncomeAndDeductionTypes: Boolean, displayExtraPricingOptions: Boolean = false): Document =
-    Jsoup.parse(page(vendorModel, displayIncomeAndDeductionTypes, displayExtraPricingOptions).body)
+  private def createAndParseDocument(vendorModel: SoftwareVendorModel, displayIncomeAndDeductionTypes: Boolean, displayExtraPricingOptions: Boolean = false, displayOverseasPropertyOption: Boolean = true): Document =
+    Jsoup.parse(page(vendorModel, displayIncomeAndDeductionTypes, displayExtraPricingOptions, displayOverseasPropertyOption).body)
 
 }

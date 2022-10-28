@@ -31,7 +31,8 @@ object FeatureSwitch {
   val switches: Set[FeatureSwitch] = Set(
     BetaFeatures,
     IncomeAndDeduction,
-    ExtraPricingOptions
+    ExtraPricingOptions,
+    DisplayOverseasProperty
   )
 
   def get(str: String): Option[FeatureSwitch] = switches find (_.key == str)
@@ -49,6 +50,11 @@ object FeatureSwitch {
   case object ExtraPricingOptions extends FeatureSwitch {
     override val key = "enable-extra-pricing-options"
     override val displayText = "Extra Pricing Options"
+  }
+
+  case object DisplayOverseasProperty extends FeatureSwitch {
+    override val key = "enable-overseasproperty-option"
+    override val displayText = "Overseas Property Option"
   }
 
 }
