@@ -7,6 +7,7 @@ base.error-heading          = There is a problem
 
 breadcrumbs.guidance                = Guidance
 breadcrumbs.filter                  = Filter
+breadcrumbs.glossary                = Glossary
 
 # Search software page
 
@@ -167,3 +168,49 @@ product-details.income-and-deduction-types.uk-interest = UK interest
 
 product-details.accessibility-statement.heading = Accessibility
 product-details.accessibility-statement.key = Accessibility Statement
+
+glossary.title = Glossary
+glossary.content = Content
+glossary.software-choices = Software Choices
+glossary.caption = Lorem Ipsum
+
+glossary.contents.one.key = One
+glossary.contents.one.value = 1
+glossary.contents.two.key = Two
+glossary.contents.two.value = 2
+glossary.contents.three.key = Three
+glossary.contents.three.value = 3
+glossary.contents.four.key = Four
+glossary.contents.four.value = 4
+glossary.contents.five.key = Five
+glossary.contents.five.value = 5
+glossary.contents.six.key = Six
+glossary.contents.six.value = 6
+glossary.contents.seven.key = Seven
+glossary.contents.seven.value = 7
+glossary.contents.eight.key = Eight
+glossary.contents.eight.value = 8
+glossary.contents.nine.key = Nine
+glossary.contents.nine.value = 9
+glossary.contents.ten.key = Ten
+glossary.contents.ten.value = 10
+glossary.contents.eleven.key = Eleven
+glossary.contents.eleven.value = 11
+glossary.contents.twelve.key = Twelve
+glossary.contents.twelve.value = 12
+glossary.contents.thirteen.key = Thirteen
+glossary.contents.thirteen.value = 13
+glossary.contents.fourteen.key = Fourteen
+glossary.contents.fourteen.value = 14
+glossary.contents.fifteen.key = Fifteen
+glossary.contents.fifteen.value = 15
+glossary.contents.sixteen.key = Sixteen
+glossary.contents.sixteen.value = 16
+glossary.contents.seventeen.key = Seventeen
+glossary.contents.seventeen.value = 17
+glossary.contents.eighteen.key = Eighteen
+glossary.contents.eighteen.value = 18
+glossary.contents.nineteen.key = Nineteen
+glossary.contents.nineteen.value = 19
+glossary.contents.twenty.key = Twenty
+glossary.contents.twenty.value = 20
