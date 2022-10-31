@@ -16,17 +16,21 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
-import play.api.i18n.Lang
+import play.api.i18n.{Lang, Messages}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.GlossaryPage
+import uk.gov.hmrc.play.language.LanguageUtils
 
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import javax.inject.{Inject, Singleton}
 
 @Singleton
 class GlossaryController @Inject()(mcc: MessagesControllerComponents,
                                    val appConfig: AppConfig,
-                                   glossaryPage: GlossaryPage
+                                   glossaryPage: GlossaryPage,
+                                   languageUtils: LanguageUtils
                                   ) extends BaseFrontendController(mcc) {
 
   private val English: Lang = Lang("en")
@@ -40,21 +44,34 @@ class GlossaryController @Inject()(mcc: MessagesControllerComponents,
   private val langToOrderedListOfMessagePairsMap = mcc.langs.availables.map(lang => lang -> getMessagesPairs(lang)).toMap
   if (!langToOrderedListOfMessagePairsMap.keys.toList.contains(English)) throw new GlossaryException(langToOrderedListOfMessagePairsMap.keys.toList)
 
+  private val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
   def show(ajax: Boolean): Action[AnyContent] = Action { implicit request =>
 
-    val requestLanguage = request.lang(mcc.messagesApi)
-    // NB This is actually handled by Play - if you ask for, say, French, it will give you the default language, which will be English.
+    // NB This is handled by Play - if you ask for, say, French, it will give you the default language, which will be English.
     // So we *know* the request language will be present in our map
-    val glossaryList = langToOrderedListOfMessagePairsMap(requestLanguage)
-    Ok(glossaryPage(glossaryList, glossaryMaxLabelsWithoutLinks))
+    implicit val requestLanguage = request.lang(mcc.messagesApi)
+
+    Ok(glossaryPage(getGlossaryList, glossaryMaxLabelsWithoutLinks, getLastChangedString))
   }
+
+  private def getGlossaryList(implicit requestLanguage: Lang) =
+    langToOrderedListOfMessagePairsMap(requestLanguage)
+
+  private[controllers] def getLastChangedString(implicit lang: Lang, messages: Messages) =
+    messagesApi.translate("glossary.last-changed", Seq.empty) match {
+      case Some(lastChangedMessage) =>
+        val lastChangedDate: LocalDate = LocalDate.parse(lastChangedMessage, formatter);
+        languageUtils.Dates.formatDate(lastChangedDate)
+      case None => ""
+    }
 
   private def getMessagesPairs(lang: Lang) = {
     val messages = messagesApi.preferred(Seq(lang))
     allMessageKeys
       .groupBy(k => messages.messages(s"$k.key").substring(0, 1))
       .map { case (initial, messageKeys) => initial ->
-        messageKeys.map(sss => messages.messages(s"$sss.key") -> messages.messages(s"$sss.value") )
+        messageKeys.map(sss => messages.messages(s"$sss.key") -> messages.messages(s"$sss.value"))
           .toList
           .sortBy(_._1)
       }
@@ -72,4 +89,4 @@ class GlossaryController @Inject()(mcc: MessagesControllerComponents,
 
 }
 
-class GlossaryException(l: List[Lang]) extends RuntimeException("No English glossary found, only: " + l.map(ll=>ll.code).mkString(","))
+class GlossaryException(l: List[Lang]) extends RuntimeException("No English glossary found, only: " + l.map(ll => ll.code).mkString(","))

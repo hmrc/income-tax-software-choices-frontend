@@ -34,7 +34,7 @@ breadcrumbs: GovukBreadcrumbs,
 )(implicit appConfig: AppConfig)
 
 @(
-initialsToMessagePairsList: List[(String, List[(String, String)])], glossaryMaxLabelsWithoutLinks: Int)(implicit request: Request[_], messages: Messages)
+initialsToMessagePairsList: List[(String, List[(String, String)])], glossaryMaxLabelsWithoutLinks: Int, lastChanged: String)(implicit request: Request[_], messages: Messages)
 
 @pageBreadcrumbs = {
     @breadcrumbs(Breadcrumbs(
@@ -55,7 +55,7 @@ initialsToMessagePairsList: List[(String, List[(String, String)])], glossaryMaxL
     <div class="inverse-header govuk-!-padding-3">
         <span class="inverse-header govuk-caption-l">@messages("glossary.software-choices")</span>
         <h1 class="inverse-header govuk-heading-xl">@messages("glossary.title")</h1>
-        <p class="inverse-header govuk-body">@messages("glossary.caption")</p>
+        <p class="inverse-header govuk-body">@messages("glossary.caption", lastChanged)</p>
     </div>
     <p class="govuk-label govuk-label--s"> @messages("glossary.content") </p>
 }
@@ -83,7 +83,7 @@ initialsToMessagePairsList: List[(String, List[(String, String)])], glossaryMaxL
                         @word
                     </dt>
                     <dd class="govuk-summary-list__value">
-                        @meaning
+                        @Html(meaning)
                     </dd>
                 </div>
             }
