@@ -16,21 +16,23 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
-import org.mockito.MockitoSugar
+import org.mockito.{ArgumentMatchers, MockitoSugar}
 import org.scalatest.BeforeAndAfterEach
 import play.api.http.Status
-import play.api.i18n.{Lang, Langs, MessagesApi}
+import play.api.i18n.{Lang, Langs, Messages, MessagesApi}
 import play.api.mvc.{Cookie, MessagesControllerComponents}
 import play.api.test.Helpers._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.BetaFeatures
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.GlossaryPage
+import uk.gov.hmrc.play.language.LanguageUtils
 
 class GlossaryControllerSpec extends ControllerBaseSpec with FeatureSwitching with BeforeAndAfterEach with MockitoSugar {
 
   private val mcc = app.injector.instanceOf[MessagesControllerComponents]
   val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
+  val languageUtils: LanguageUtils = app.injector.instanceOf[LanguageUtils]
   private val glossaryPage = app.injector.instanceOf[GlossaryPage]
 
   protected override def beforeEach(): Unit = {
@@ -42,6 +44,9 @@ class GlossaryControllerSpec extends ControllerBaseSpec with FeatureSwitching wi
 
   private val FrenchCode = "fr"
   private val French = Lang(FrenchCode)
+
+  private val EnglishCode = "en"
+  private val English = Lang(EnglishCode)
 
   "Show" when {
     "invoked with no language" in withController { controller =>
@@ -66,21 +71,35 @@ class GlossaryControllerSpec extends ControllerBaseSpec with FeatureSwitching wi
     }
     "built with no default (english) language" should {
       "throw a glossary exception" in {
-        val mccWithNoEnglish: MessagesControllerComponents = getMockMcc(Seq(French))
+        val mccWithNoEnglish: MessagesControllerComponents = getMockMccWithLangs(Seq(French))
         try {
           new GlossaryController(
             mccWithNoEnglish,
             appConfig,
-            glossaryPage)
+            glossaryPage,
+            languageUtils)
           fail("Expected glossary exception")
         } catch {
           case e: GlossaryException => e.getMessage shouldBe "No English glossary found, only: fr"
         }
       }
     }
+    "no last changed date language" should {
+      "have an empty string for last changed" in {
+        val mccWithNoLastChangedMessage: MessagesControllerComponents = getMockMccWithNoLastChangedContent()
+        implicit val lang = English
+        implicit val messages: Messages = mock[Messages]
+        new GlossaryController(
+          mccWithNoLastChangedMessage,
+          appConfig,
+          glossaryPage,
+          languageUtils).getLastChangedString should be ("")
+
+      }
+    }
   }
 
-  private def getMockMcc(langsSeq: Seq[Lang]) = {
+  private def getMockMccWithLangs(langsSeq: Seq[Lang]) = {
     val langs = mock[Langs]
     when(langs.availables).thenReturn(langsSeq)
     val mccWithLangs = mock[MessagesControllerComponents]
@@ -91,11 +110,24 @@ class GlossaryControllerSpec extends ControllerBaseSpec with FeatureSwitching wi
     mccWithLangs
   }
 
+  private def getMockMccWithNoLastChangedContent() = {
+    val langs = mock[Langs]
+    when(langs.availables).thenReturn(Seq(English))
+    val mccWithLangs = mock[MessagesControllerComponents]
+    val messagesApi = mock[MessagesApi]
+    when(mccWithLangs.messagesApi).thenReturn(messagesApi)
+    when(messagesApi.translate(ArgumentMatchers.eq("glossary.last-changed"), ArgumentMatchers.eq(Seq.empty))(ArgumentMatchers.any())).thenReturn(None)
+    when(messagesApi.messages).thenReturn(Map.empty)
+    when(mccWithLangs.langs).thenReturn(langs)
+    mccWithLangs
+  }
+
   private def withController(testCode: GlossaryController => Any): Unit = {
     val controller = new GlossaryController(
       mcc,
       appConfig,
-      glossaryPage
+      glossaryPage,
+      languageUtils
     )
     testCode(controller)
   }

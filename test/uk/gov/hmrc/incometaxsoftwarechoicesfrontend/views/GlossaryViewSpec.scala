@@ -29,7 +29,7 @@ class GlossaryViewSpec extends ViewSpec {
 
   "Glossary page" when {
     "no actual content(!)" should {
-      val document = getDocument(noItems, 1)
+      val document = getDocument(noItems, 1, lastChanged)
 
       "have a breadcrumb menu containing a link to the guidance page" in {
         val link = document.selectNth(".govuk-breadcrumbs__list-item", 1).selectHead("a")
@@ -49,7 +49,7 @@ class GlossaryViewSpec extends ViewSpec {
           document.select(".inverse-header").select(".govuk-heading-xl").text() shouldBe glossary
         }
         "has a caption in the heading" in {
-          document.select(".inverse-header").select(".govuk-body").text() shouldBe caption
+          document.select(".inverse-header").select(".govuk-body").text() shouldBe s"$caption: $lastChanged"
         }
         "has content in the heading" in {
           document.select(".govuk-label").text() shouldBe content
@@ -57,13 +57,15 @@ class GlossaryViewSpec extends ViewSpec {
       }
     }
     "given three initials for items of content, with max without links at four" should {
-      val document = getDocument(threeItems, 4)
+      val moreThanThreeToShowLinks = 4
+      val document = getDocument(threeItems, moreThanThreeToShowLinks, lastChanged)
       "have no magic links" in {
         getHashLinks(document).size() shouldBe 0
       }
     }
     "given three initials for items of content, with max without links at two" should {
-      val document = getDocument(threeItems, 2)
+      val moreThanTwoToShowLinks = 2
+      val document = getDocument(threeItems, moreThanTwoToShowLinks, lastChanged)
       "have three magic links" in {
         getHashLinks(document).size() shouldBe 3
       }
@@ -77,26 +79,29 @@ object GlossaryViewSpec extends ViewSpec {
 
   private val glossaryPage = app.injector.instanceOf[GlossaryPage]
 
-  def page(initialsToMessagePairsList: List[(String, List[(String, String)])], maxWithoutLinks: Int): HtmlFormat.Appendable =
+  def page(initialsToMessagePairsList: List[(String, List[(String, String)])], maxWithoutLinks: Int, lastChanged: String): HtmlFormat.Appendable =
     glossaryPage(
       initialsToMessagePairsList,
-      maxWithoutLinks
+      maxWithoutLinks,
+      lastChanged
     )
 
 
-  def getDocument(initialsToMessagePairsList: List[(String, List[(String, String)])], maxWithoutLinks: Int): Document = {
-    Jsoup.parse(page(initialsToMessagePairsList, maxWithoutLinks).body)
+  def getDocument(initialsToMessagePairsList: List[(String, List[(String, String)])], maxWithoutLinks: Int, lastChanged: String): Document = {
+    Jsoup.parse(page(initialsToMessagePairsList, maxWithoutLinks, lastChanged).body)
   }
 
 }
 
 private object GlossaryPageContent {
-  val title = "Glossary - Find software that’s compatible with Making Tax Digital for Income Tax - GOV.UK"
-  val glossary = "Glossary"
+  val glossary = "Self Assessment income and deduction types explained"
+  val title = s"$glossary - Find software that’s compatible with Making Tax Digital for Income Tax - GOV.UK"
   val content = "Content"
   val softwareChoices = "Software Choices"
-  val caption: String = "Lorem Ipsum"
+  val caption: String = "Last changed"
+  val lastChanged: String = "St Crispin's Day"
 
   val noItems: List[Nothing] = List.empty
-  val threeItems = List("A" -> List("Apple" -> "Apple"), "B" -> List("Banana" -> "Banana"), "C" -> List("Coconut" -> "Coconut"))
+  val threeItems: List[(String, List[(String, String)])] =
+    List("A" -> List("Apple" -> "Apple"), "B" -> List("Banana" -> "Banana"), "C" -> List("Coconut" -> "Coconut"))
 }
