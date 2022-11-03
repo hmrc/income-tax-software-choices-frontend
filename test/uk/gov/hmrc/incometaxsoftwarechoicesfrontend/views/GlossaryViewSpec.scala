@@ -106,6 +106,7 @@ object GlossaryViewSpec extends ViewSpec {
       initialsToMessagePairsList,
       maxWithoutLinks,
       lastChanged,
+      None,
       GlossaryForm.form,
       glossaryCall
     )

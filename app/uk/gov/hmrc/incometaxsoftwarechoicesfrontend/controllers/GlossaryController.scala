@@ -17,15 +17,17 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import play.api.data.Form
+import play.api.http.HeaderNames
 import play.api.i18n.Lang
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.GlossaryController.glossaryMaxLabelsWithoutLinks
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.GlossaryController.{glossaryMaxLabelsWithoutLinks, referringProvider}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.GlossaryForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.GlossaryFormModel
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.GlossaryService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.{GlossaryPage, GlossaryPageList}
 
+import java.net.{URL, URLDecoder}
 import javax.inject.{Inject, Singleton}
 
 @Singleton
@@ -66,6 +68,7 @@ class GlossaryController @Inject()(mcc: MessagesControllerComponents,
         glossaryList,
         glossaryMaxLabelsWithoutLinks,
         glossaryService.getLastChangedString,
+        referringProvider,
         form,
         routes.GlossaryController.search(ajax = false)
       )
@@ -74,6 +77,20 @@ class GlossaryController @Inject()(mcc: MessagesControllerComponents,
 
 }
 
-object GlossaryController {
+object GlossaryController extends HeaderNames {
   val glossaryMaxLabelsWithoutLinks = 7
+
+  def referringProvider(implicit request: Request[_]): Option[String] = {
+    request.headers.get(REFERER).flatMap(r => {
+      val url = new URL(r)
+      val path = URLDecoder.decode(url.getPath, "UTF-8")
+      val softwareProvider = path.split("/").reverse.head
+      val url1 = uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes.ProductDetailsController.show(softwareProvider).url
+      val loopbackCheck = url1 == path
+      if (loopbackCheck)
+        Some(softwareProvider)
+      else
+        None
+    })
+  }
 }

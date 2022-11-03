@@ -24,6 +24,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.Feature
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.SoftwareChoicesService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.ProductDetailsPage
 
+import java.net.URLDecoder
 import javax.inject.{Inject, Singleton}
 
 @Singleton
@@ -32,21 +33,25 @@ class ProductDetailsController @Inject()(mcc: MessagesControllerComponents,
                                          softwareChoicesService: SoftwareChoicesService,
                                          productDetailsPage: ProductDetailsPage) extends BaseFrontendController(mcc) with FeatureSwitching {
 
-  def show(software: Option[String]): Action[AnyContent] = Action { implicit request =>
+  def show(software: String): Action[AnyContent] = Action { implicit request => {
+
+    val softwareName = URLDecoder.decode(software, "UTF-8")
+
     if (isEnabled(BetaFeatures)) {
-      software match {
-        case None =>
-          throw new NotFoundException(ProductDetailsController.NotProvided)
-        case Some(softwareName) => softwareChoicesService.getSoftwareVendor(softwareName) match {
-          case None => throw new NotFoundException(ProductDetailsController.NotFound)
-          case Some(softwareVendor) => Ok(productDetailsPage(softwareVendor, isEnabled(IncomeAndDeduction), isEnabled(ExtraPricingOptions), isEnabled(DisplayOverseasProperty)))
-        }
+      softwareChoicesService.getSoftwareVendor(softwareName) match {
+        case None => throw new NotFoundException(ProductDetailsController.NotFound)
+        case Some(softwareVendor) => Ok(productDetailsPage(
+          softwareVendor,
+          isEnabled(IncomeAndDeduction),
+          isEnabled(ExtraPricingOptions),
+          isEnabled(DisplayOverseasProperty)))
       }
     } else {
       throw new NotFoundException(ProductDetailsController.NotEnabled)
     }
   }
 
+  }
 }
 
 object ProductDetailsController {

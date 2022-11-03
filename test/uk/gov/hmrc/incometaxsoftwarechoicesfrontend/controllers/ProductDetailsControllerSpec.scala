@@ -43,7 +43,7 @@ class ProductDetailsControllerSpec extends ControllerBaseSpec with FeatureSwitch
       "a valid param has been passed" should {
         "return OK status with the product details page" in withController { controller =>
           enable(BetaFeatures)
-          val result = controller.show(Some("test software vendor name one"))(fakeRequest)
+          val result = controller.show("test software vendor name one")(fakeRequest)
 
           status(result) shouldBe Status.OK
         }
@@ -51,19 +51,13 @@ class ProductDetailsControllerSpec extends ControllerBaseSpec with FeatureSwitch
       "an invalid param has been passed" should {
         "return OK status with the product details page" in withController { controller =>
           enable(BetaFeatures)
-          intercept[NotFoundException](await(controller.show(Some("dummy"))(fakeRequest))).message should be (ProductDetailsController.NotFound)
-        }
-      }
-      "no param has been passed" should {
-        "return OK status with the product details page" in withController { controller =>
-          enable(BetaFeatures)
-          intercept[NotFoundException](await(controller.show(None)(fakeRequest))).message should be (ProductDetailsController.NotProvided)
+          intercept[NotFoundException](await(controller.show("dummy")(fakeRequest))).message should be (ProductDetailsController.NotFound)
         }
       }
     }
     "beta features are not enabled" should {
       "throw not found exception" in withController { controller =>
-        intercept[NotFoundException](await(controller.show(None)(fakeRequest))).message should be (ProductDetailsController.NotEnabled)
+        intercept[NotFoundException](await(controller.show("dummy")(fakeRequest))).message should be (ProductDetailsController.NotEnabled)
       }
     }
   }
