@@ -169,10 +169,12 @@ class ProductDetailsViewSpec extends ViewSpec {
     accessibilityStatementLink = None
   )
 
+  private val accessibilityUrl = "https://www.software-vendor-accessibility.com"
+  private val accessibilityLink = s"$accessibilityUrl (opens in a new tab)"
   private val softwareVendorModelFull = softwareVendorModelBase
     .copy(incomeAndDeductions = incomeAndDeductionKeyToIncomeAndDeduction.values.toList) // All income and deductions
     .copy(filters = filterKeyToFilter.values.toList) // All filters
-    .copy(accessibilityStatementLink = Some("software-vendor-accessibility.com"))
+    .copy(accessibilityStatementLink = Some(accessibilityUrl))
 
   val pricingRow = 1
   val incomeTypeRow = 2
@@ -320,8 +322,8 @@ class ProductDetailsViewSpec extends ViewSpec {
             "display the link to the accessibility statement" in {
               val row: Element = accessibilityStatementSection
               row.selectHead("dt").text shouldBe ProductDetailsPage.accessibilityStatement
-              row.selectHead("dd").text shouldBe "software-vendor-accessibility.com"
-              row.selectHead("dd").selectHead("a").attr("href") shouldBe "software-vendor-accessibility.com"
+              row.selectHead("dd").text shouldBe accessibilityLink
+              row.selectHead("dd").selectHead("a").attr("href") shouldBe accessibilityUrl
             }
           }
         )

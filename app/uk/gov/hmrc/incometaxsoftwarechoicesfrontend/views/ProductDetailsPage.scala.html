@@ -137,7 +137,10 @@
     rows = Seq(
         SummaryListRow(
             key = Key(content = Text(messages("product-details.accessibility-statement.key"))),
-            value = Value(content = HtmlContent(link(linkText, linkText)))
+            value = Value(content = HtmlContent(hmrcNewTabLinkHelper(NewTabLinkHelper(
+                text = linkText,
+                href = Some(linkText)
+            ))))
         )
     )
 ))
