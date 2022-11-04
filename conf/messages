@@ -36,8 +36,10 @@ search-software.search-form.heading = Search by software name
 search-software.search-form.button  = Search by software name
 search-software.search-form.error   = Enter less than {0} characters
 
-search-software.alpha-vendor-count = Currently there are {0} software providers
-search-software.vendor-count       = <b>{0}</b> software providers
+search-software.alpha-vendor-count-single = Currently there is 1 software provider
+search-software.alpha-vendor-count        = Currently there are {0} software providers
+search-software.vendor-count-single       = <b>1</b> software provider
+search-software.vendor-count              = <b>{0}</b> software providers
 
 search-software.empty-vendor-list = Your search has returned no results. To increase the number of results, we suggest you:
 search-software.empty-vendor-list.bullet1 = reduce the number of filters you apply

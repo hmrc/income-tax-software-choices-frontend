@@ -156,7 +156,11 @@
   </div>
 } else {
   <h3 class="govuk-body govuk-!-font-weight-bold" id="vendor-count">
-  @messages("search-software.alpha-vendor-count", softwareVendors.vendors.length)
+    @if(softwareVendors.vendors.length>1){
+      @messages("search-software.alpha-vendor-count", softwareVendors.vendors.length)
+    } else {
+      @messages("search-software.alpha-vendor-count-single")
+    }
   </h3>
 }
 

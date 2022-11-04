@@ -169,10 +169,12 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec with BeforeAndAfte
     charset(result) shouldBe Some(Codec.utf_8.charset)
   }
 
-  private def getCountMessage(value: Int, beta: Boolean = false) = if (beta)
-    s"<b>$value</b> software providers"
-  else
-    s"Currently there are $value software providers"
+  private def getCountMessage(value: Int, beta: Boolean = false) = (beta, value>1) match {
+    case (true, true) => s"<b>$value</b> software providers"
+    case (true, false) => s"<b>$value</b> software provider"
+    case (false, true) => s"Currently there are $value software providers"
+    case (false, false) => s"Currently there is 1 software provider"
+  }
 
   private def withController(testCode: SearchSoftwareController => Any): Unit = {
     val mockEnvironment: Environment = mock[Environment]

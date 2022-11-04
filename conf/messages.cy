@@ -36,8 +36,10 @@ search-software.search-form.heading = Chwilio yn ôl enw meddalwedd
 search-software.search-form.button  = Chwilio yn ôl enw meddalwedd
 search-software.search-form.error   = Nodwch lai na {0} o gymeriadau
 
-search-software.alpha-vendor-count = Ar hyn o bryd y nifer o ddatblygwyr meddalwedd yw {0}
-search-software.vendor-count       = <b>{0}</b> darparwyr meddalwedd
+search-software.alpha-vendor-count-single = Ar hyn o bryd, mae 1 darparwr meddalwedd
+search-software.alpha-vendor-count        = Ar hyn o bryd, mae {0} o ddarparwyr meddalwedd
+search-software.vendor-count-single       = <b>1</b> darparwr meddalwedd
+search-software.vendor-count              = <b>{0}</b> darparwyr meddalwedd
 
 search-software.empty-vendor-list         = Nid yw eich chwiliad wedi dangos unrhyw ganlyniadau. Er mwyn cynyddu nifer y canlyniadau awgrymwn ei bod yn gwneud y canlynol:
 search-software.empty-vendor-list.bullet1 = lleihau nifer yr hidlwyr yr ydych eu defnyddio
