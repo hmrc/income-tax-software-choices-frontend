@@ -23,18 +23,29 @@
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes.SearchSoftwareController
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTemplate
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilterGroups
 @import uk.gov.hmrc.govukfrontend.views.viewmodels.breadcrumbs.{Breadcrumbs, BreadcrumbsItem}
 @import uk.gov.hmrc.govukfrontend.views.viewmodels.breadcrumbs.{Breadcrumbs, BreadcrumbsItem}
+@import views.html.helper.CSPNonce
+@import uk.gov.hmrc.govukfrontend.views.html.components.implicits._
+@import uk.gov.hmrc.hmrcfrontend.views.html.components.implicits._
 
 @this(
-mainTemplate: MainTemplate,
-breadcrumbs: GovukBreadcrumbs,
+  mainTemplate: MainTemplate,
+  breadcrumbs: GovukBreadcrumbs,
+  form: FormWithCSRF,
+  glossaryPageList: GlossaryPageList,
+  govukInput: GovukInput
 )(implicit appConfig: AppConfig)
 
-@(
-initialsToMessagePairsList: List[(String, List[(String, String)])], glossaryMaxLabelsWithoutLinks: Int, lastChanged: String)(implicit request: Request[_], messages: Messages)
+@(initialsToMessagePairsList: List[(String, List[(String, String)])], glossaryMaxLabelsWithoutLinks: Int, lastChanged: String, glossaryForm: Form[GlossaryFormModel], postAction: Call)(implicit request: Request[_], messages: Messages)
+
+@js = {
+  <script @{CSPNonce.attr} src="@routes.Assets.versioned("lib/jquery/jquery.min.js")"></script>
+  <script @{CSPNonce.attr} src="@routes.Assets.versioned("javascript/glossarySearch.js")"></script>
+}
 
 @pageBreadcrumbs = {
     @breadcrumbs(Breadcrumbs(
@@ -57,47 +68,49 @@ initialsToMessagePairsList: List[(String, List[(String, String)])], glossaryMaxL
         <h1 class="inverse-header govuk-heading-xl">@messages("glossary.title")</h1>
         <p class="inverse-header govuk-body">@messages("glossary.caption", lastChanged)</p>
     </div>
-    <p class="govuk-label govuk-label--s"> @messages("glossary.content") </p>
 }
 
-@links = {
-    @if(initialsToMessagePairsList.size > glossaryMaxLabelsWithoutLinks) {
-        @initialsToMessagePairsList.map{case (initial, _) =>
-            <a href="#@initial" class="govuk-body govuk-!-padding-3">@initial</a>
-        }
-    }
+@inputForm = {
+  @form(action = postAction) {
+    <h2 class="govuk-heading-s govuk-!-padding-top-7">
+      <label for="searchTerm">
+        @messages("glossary.search-label")
+      </label>
+    </h2>
+    <div class="govuk-form-group search-input-group @{if(glossaryForm(GlossaryForm.searchTerm).hasErrors){"govuk-form-group--error"}}">
+      @glossaryForm(GlossaryForm.searchTerm).errors.map { error =>
+        <span class="govuk-error-message">
+          @messages(error.message, error.args: _*)
+        </span>
+      }
+      <input class="govuk-input" id="searchTerm" name="searchTerm" type="text" value="@glossaryForm(GlossaryForm.searchTerm).value">
+      <button class="govuk-button" id="searchButton" data-module="govuk-button">
+        <span class="search-icon" aria-hidden="true"></span>
+        <span class="govuk-visually-hidden">
+          @messages("search-software.search-form.button")
+        </span>
+      </button>
+    </div>
+  }
 }
 
-@table = {
-    @initialsToMessagePairsList.map{ case (initial, messagePairsList) =>
-        <dl class="govuk-summary-list">
-
-            <dt>
-                <h2 class="inverse-label govuk-heading--s govuk-!-padding-3"><a name="@initial">@initial</a></h2>
-            </dt>
-            <dd></dd>
-
-            @messagePairsList.map{ case (word, meaning) =>
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">
-                        @word
-                    </dt>
-                    <dd class="govuk-summary-list__value">
-                        @Html(meaning)
-                    </dd>
-                </div>
-            }
-        </dl>
-    }
-    <br/>
+@glossaryList = {
+  <div id="glossary-list-container">
+    <div class="loading-status" aria-hidden="true"></div>
+    @glossaryPageList(
+      initialsToMessagePairsList = initialsToMessagePairsList,
+      glossaryMaxLabelsWithoutLinks = glossaryMaxLabelsWithoutLinks,
+      searched = glossaryForm.data.nonEmpty
+    )
+  </div>
 }
 
-@mainTemplate(title = messages("glossary.title"), breadcrumbs = Some(pageBreadcrumbs)) {
+@mainTemplate(title = messages("glossary.title"), breadcrumbs = Some(pageBreadcrumbs), scripts = Some(js)) {
 
     @headerBlock
 
-    @links
+    @inputForm
 
-    @table
+    @glossaryList
 
 }

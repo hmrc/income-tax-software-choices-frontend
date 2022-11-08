@@ -18,118 +18,135 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import org.mockito.{ArgumentMatchers, MockitoSugar}
 import org.scalatest.BeforeAndAfterEach
-import play.api.http.Status
-import play.api.i18n.{Lang, Langs, Messages, MessagesApi}
-import play.api.mvc.{Cookie, MessagesControllerComponents}
+import play.api.data.Form
+import play.api.i18n.Lang
+import play.api.mvc.{MessagesControllerComponents, Result}
+import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.BetaFeatures
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.GlossaryPage
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.GlossaryForm
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.GlossaryFormModel
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.GlossaryService
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.{GlossaryPage, GlossaryPageList}
 import uk.gov.hmrc.play.language.LanguageUtils
+
+import scala.concurrent.Future
 
 class GlossaryControllerSpec extends ControllerBaseSpec with FeatureSwitching with BeforeAndAfterEach with MockitoSugar {
 
   private val mcc = app.injector.instanceOf[MessagesControllerComponents]
   val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
   val languageUtils: LanguageUtils = app.injector.instanceOf[LanguageUtils]
-  private val glossaryPage = app.injector.instanceOf[GlossaryPage]
-
-  protected override def beforeEach(): Unit = {
-    disable(BetaFeatures)
-  }
-
-  private val softwareChoicesInWelsh = "Dewisiadau Meddalwedd"
-  private val softwareChoicesInEnglish = "Software Choices"
-
-  private val FrenchCode = "fr"
-  private val French = Lang(FrenchCode)
 
   private val EnglishCode = "en"
   private val English = Lang(EnglishCode)
 
-  "Show" when {
-    "invoked with no language" in withController { controller =>
-      val result = controller.show(true)(fakeRequest)
-      status(result) shouldBe Status.OK
-    }
+  private val WelshCode = "cy"
+  private val Welsh = Lang(WelshCode)
 
-    "invoked with unknown language (French) results in default language" in withController { controller =>
-      // NB This is actually handled by Play - it will give you the default language, which will be English.
-      val frenchRequest = fakeRequest.withCookies(Cookie("PLAY_LANG", FrenchCode))
-      val result = controller.show(true)(frenchRequest)
-      status(result) shouldBe Status.OK
-      contentAsString(result).indexOf(softwareChoicesInWelsh) > 0 shouldBe false
-      contentAsString(result).indexOf(softwareChoicesInEnglish) > 0 shouldBe true
-    }
+  val testGlossaryList: List[(String, List[(String, String)])] = List(
+    "en" -> List(
+      "english key" -> "english value"
+    ),
+    "cy" -> List(
+      "welsh key" -> "welsh value"
+    )
+  )
 
-    "invoked with welsh language" in withController { controller =>
-      val result = controller.show(true)(fakeRequest.withTransientLang(Lang("cy")))
-      status(result) shouldBe Status.OK
-      contentAsString(result).indexOf(softwareChoicesInWelsh) > 0 shouldBe true
-      contentAsString(result).indexOf(softwareChoicesInEnglish) > 0 shouldBe false
-    }
-    "built with no default (english) language" should {
-      "throw a glossary exception" in {
-        val mccWithNoEnglish: MessagesControllerComponents = getMockMccWithLangs(Seq(French))
-        try {
-          new GlossaryController(
-            mccWithNoEnglish,
-            appConfig,
-            glossaryPage,
-            languageUtils)
-          fail("Expected glossary exception")
-        } catch {
-          case e: GlossaryException => e.getMessage shouldBe "No English glossary found, only: fr"
-        }
+  val testFormattedLastChangedString: String = "3 February 2022"
+
+  "show" when {
+    "invoked with no language" should {
+      s"return OK ($OK) with the page content from an english source" in new Setup {
+        when(mockGlossaryService.getGlossaryList(ArgumentMatchers.eq(English))).thenReturn(testGlossaryList)
+        when(mockGlossaryService.getLastChangedString(ArgumentMatchers.eq(English), ArgumentMatchers.any())).thenReturn(testFormattedLastChangedString)
+        when(mockGlossaryPage.apply(
+          ArgumentMatchers.eq(testGlossaryList),
+          ArgumentMatchers.eq(GlossaryController.glossaryMaxLabelsWithoutLinks),
+          ArgumentMatchers.eq(testFormattedLastChangedString),
+          ArgumentMatchers.any[Form[GlossaryFormModel]](),
+          ArgumentMatchers.eq(routes.GlossaryController.search(ajax = false))
+        )(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(HtmlFormat.empty)
+
+        val result: Future[Result] = controller.show(fakeRequest)
+
+        status(result) shouldBe OK
+        contentType(result) shouldBe Some(HTML)
       }
     }
-    "no last changed date language" should {
-      "have an empty string for last changed" in {
-        val mccWithNoLastChangedMessage: MessagesControllerComponents = getMockMccWithNoLastChangedContent()
-        implicit val lang = English
-        implicit val messages: Messages = mock[Messages]
-        new GlossaryController(
-          mccWithNoLastChangedMessage,
-          appConfig,
-          glossaryPage,
-          languageUtils).getLastChangedString should be ("")
+    "invoked with a welsh language request" should {
+      s"return OK ($OK) with the page content from a welsh source" in new Setup {
+        when(mockGlossaryService.getGlossaryList(ArgumentMatchers.eq(Welsh))).thenReturn(testGlossaryList)
+        when(mockGlossaryService.getLastChangedString(ArgumentMatchers.eq(Welsh), ArgumentMatchers.any())).thenReturn(testFormattedLastChangedString)
+        when(mockGlossaryPage.apply(
+          ArgumentMatchers.eq(testGlossaryList),
+          ArgumentMatchers.eq(GlossaryController.glossaryMaxLabelsWithoutLinks),
+          ArgumentMatchers.eq(testFormattedLastChangedString),
+          ArgumentMatchers.any[Form[GlossaryFormModel]](),
+          ArgumentMatchers.eq(routes.GlossaryController.search(ajax = false))
+        )(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(HtmlFormat.empty)
 
+        val result: Future[Result] = controller.show(fakeRequest.withTransientLang(Welsh))
+
+        status(result) shouldBe OK
+        contentType(result) shouldBe Some(HTML)
       }
     }
   }
 
-  private def getMockMccWithLangs(langsSeq: Seq[Lang]) = {
-    val langs = mock[Langs]
-    when(langs.availables).thenReturn(langsSeq)
-    val mccWithLangs = mock[MessagesControllerComponents]
-    val messagesApi = mock[MessagesApi]
-    when(mccWithLangs.messagesApi).thenReturn(messagesApi)
-    when(messagesApi.messages).thenReturn(Map.empty)
-    when(mccWithLangs.langs).thenReturn(langs)
-    mccWithLangs
+  "search" when {
+    "ajax = false" should {
+      "return the glossary page filtered by the search term requested" in new Setup {
+        val glossarySearchModel: GlossaryFormModel = GlossaryFormModel(searchTerm = Some("search"))
+        val glossaryListResult: List[(String, List[(String, String)])] = List("S" -> List("Search word" -> "Search description"))
+
+        when(mockGlossaryService.getFilteredGlossaryList(ArgumentMatchers.eq(glossarySearchModel))(ArgumentMatchers.eq(English)))
+          .thenReturn(glossaryListResult)
+        when(mockGlossaryService.getLastChangedString(ArgumentMatchers.eq(English), ArgumentMatchers.any()))
+          .thenReturn(testFormattedLastChangedString)
+        when(mockGlossaryPage(
+          ArgumentMatchers.eq(glossaryListResult),
+          ArgumentMatchers.eq(GlossaryController.glossaryMaxLabelsWithoutLinks),
+          ArgumentMatchers.eq(testFormattedLastChangedString),
+          ArgumentMatchers.any[Form[GlossaryFormModel]](),
+          ArgumentMatchers.eq(routes.GlossaryController.search(ajax = false))
+        )(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(HtmlFormat.empty)
+
+        controller.search(ajax = false)(FakeRequest("POST", "/").withFormUrlEncodedBody(GlossaryForm.searchTerm -> "search"))
+      }
+    }
+    "ajax = true" should {
+      "return the glossary list section of the page filtered by the search term requested" in new Setup {
+        val glossarySearchModel: GlossaryFormModel = GlossaryFormModel(searchTerm = Some("search"))
+        val glossaryListResult: List[(String, List[(String, String)])] = List("S" -> List("Search word" -> "Search description"))
+
+        when(mockGlossaryService.getFilteredGlossaryList(ArgumentMatchers.eq(glossarySearchModel))(ArgumentMatchers.eq(English)))
+          .thenReturn(glossaryListResult)
+        when(mockGlossaryPageList(
+          ArgumentMatchers.eq(glossaryListResult),
+          ArgumentMatchers.eq(GlossaryController.glossaryMaxLabelsWithoutLinks),
+          ArgumentMatchers.eq(true)
+        )(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(HtmlFormat.empty)
+
+        controller.search(ajax = true)(FakeRequest("POST", "/").withFormUrlEncodedBody(GlossaryForm.searchTerm -> "search"))
+      }
+    }
   }
 
-  private def getMockMccWithNoLastChangedContent() = {
-    val langs = mock[Langs]
-    when(langs.availables).thenReturn(Seq(English))
-    val mccWithLangs = mock[MessagesControllerComponents]
-    val messagesApi = mock[MessagesApi]
-    when(mccWithLangs.messagesApi).thenReturn(messagesApi)
-    when(messagesApi.translate(ArgumentMatchers.eq("glossary.last-changed"), ArgumentMatchers.eq(Seq.empty))(ArgumentMatchers.any())).thenReturn(None)
-    when(messagesApi.messages).thenReturn(Map.empty)
-    when(mccWithLangs.langs).thenReturn(langs)
-    mccWithLangs
-  }
+  trait Setup {
+    val mockGlossaryPage: GlossaryPage = mock[GlossaryPage]
+    val mockGlossaryPageList: GlossaryPageList = mock[GlossaryPageList]
+    val mockGlossaryService: GlossaryService = mock[GlossaryService]
 
-  private def withController(testCode: GlossaryController => Any): Unit = {
-    val controller = new GlossaryController(
+    lazy val controller = new GlossaryController(
       mcc,
       appConfig,
-      glossaryPage,
-      languageUtils
+      mockGlossaryPage,
+      mockGlossaryPageList,
+      mockGlossaryService
     )
-    testCode(controller)
   }
 
 }

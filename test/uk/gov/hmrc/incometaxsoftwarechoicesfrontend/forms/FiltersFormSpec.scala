@@ -23,6 +23,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{Android
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FiltersFormModel, VendorFilter}
 
 class FiltersFormSpec extends PlaySpec with GuiceOneServerPerSuite {
+
   "FiltersForm" should {
     "validate a search term" when {
       "the search term is not empty" in {
