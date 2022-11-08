@@ -28,9 +28,9 @@ import play.api.libs.ws.{WSClient, WSResponse}
 import play.api.test.FakeRequest
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.{FiltersForm, GlossaryForm}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.baseURI
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FiltersFormModel
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FiltersFormModel, GlossaryFormModel}
 
 trait ComponentSpecBase extends AnyWordSpec
   with GivenWhenThen
@@ -58,6 +58,7 @@ trait ComponentSpecBase extends AnyWordSpec
   implicit val messages: Messages = app.injector.instanceOf[MessagesApi].preferred(FakeRequest())
 
   object SoftwareChoicesFrontend {
+
     def startPage(): WSResponse = get("/")
 
     def productDetails(name: String): WSResponse = get(s"/product-details?software=$name")
@@ -68,6 +69,16 @@ trait ComponentSpecBase extends AnyWordSpec
 
     def submitAjaxSearch(search: FiltersFormModel): WSResponse = post("/ajax")(
       FiltersForm.form.fill(search).data.map { case (k, v) => (k, Seq(v)) }
+    )
+
+    def getGlossaryPage: WSResponse = get("/glossary")
+
+    def submitGlossaryPage(search: GlossaryFormModel): WSResponse = post("/glossary")(
+      GlossaryForm.form.fill(search).data.map { case (k, v) => (k, Seq(v)) }
+    )
+
+    def submitGlossaryPageAjax(search: GlossaryFormModel): WSResponse = post("/glossary/ajax")(
+      GlossaryForm.form.fill(search).data.map { case (k, v) => (k, Seq(v)) }
     )
 
     def healthcheck(): WSResponse =

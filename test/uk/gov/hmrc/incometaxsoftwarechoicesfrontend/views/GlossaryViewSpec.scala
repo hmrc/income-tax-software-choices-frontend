@@ -17,12 +17,14 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views
 
 import org.jsoup.Jsoup
-import org.jsoup.nodes.Document
+import org.jsoup.nodes.{Document, Element}
+import play.api.mvc.Call
 import play.twirl.api.HtmlFormat
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.GlossaryForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.GlossaryPage
 
 class GlossaryViewSpec extends ViewSpec {
-
 
   import GlossaryPageContent._
   import GlossaryViewSpec._
@@ -51,8 +53,26 @@ class GlossaryViewSpec extends ViewSpec {
         "has a caption in the heading" in {
           document.select(".inverse-header").select(".govuk-body").text() shouldBe s"$caption: $lastChanged"
         }
-        "has content in the heading" in {
-          document.select(".govuk-label").text() shouldBe content
+      }
+
+      "have a form" which {
+        def form: Element = document.mainContent.selectHead("form")
+
+        "has the correct attributes" in {
+          form.attr("method") shouldBe "POST"
+          form.attr("action") shouldBe routes.GlossaryController.search(ajax = false).url
+        }
+        "has a search bar section" which {
+          "has a heading label" in {
+            val label: Element = form.selectHead("h2").selectHead("label")
+            label.attr("for") shouldBe GlossaryForm.searchTerm
+            label.text shouldBe searchFor
+          }
+          "has a text field" in {
+            val textField: Element = form.selectHead("input[type=text]")
+            textField.attr("name") shouldBe GlossaryForm.searchTerm
+            textField.attr("id") shouldBe GlossaryForm.searchTerm
+          }
         }
       }
     }
@@ -79,11 +99,15 @@ object GlossaryViewSpec extends ViewSpec {
 
   private val glossaryPage = app.injector.instanceOf[GlossaryPage]
 
+  private val glossaryCall: Call = routes.GlossaryController.search(false)
+
   def page(initialsToMessagePairsList: List[(String, List[(String, String)])], maxWithoutLinks: Int, lastChanged: String): HtmlFormat.Appendable =
     glossaryPage(
       initialsToMessagePairsList,
       maxWithoutLinks,
-      lastChanged
+      lastChanged,
+      GlossaryForm.form,
+      glossaryCall
     )
 
 
@@ -100,6 +124,8 @@ private object GlossaryPageContent {
   val softwareChoices = "Software Choices"
   val caption: String = "Last changed"
   val lastChanged: String = "St Crispin's Day"
+
+  val searchFor: String = "Search for the term you are looking for"
 
   val noItems: List[Nothing] = List.empty
   val threeItems: List[(String, List[(String, String)])] =

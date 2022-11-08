@@ -37,8 +37,7 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
                                          softwareVendorsTemplate: SoftwareVendorsTemplate,
                                          softwareChoicesService: SoftwareChoicesService) extends BaseFrontendController(mcc) with FeatureSwitching {
 
-
-  val show: Action[AnyContent] = Action { implicit request => Ok(view(softwareChoicesService.getVendors(), false, FiltersForm.form)) }
+  val show: Action[AnyContent] = Action { implicit request => Ok(view(softwareChoicesService.getVendors(), ajax = false, FiltersForm.form)) }
 
   def search(ajax: Boolean): Action[AnyContent] = Action { implicit request =>
     FiltersForm.form.bindFromRequest().fold(
@@ -56,7 +55,14 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
       case (true, true) => softwareVendorsTemplate(vendors)
       case (true, false) => softwareVendorsTemplateAlpha(vendors, isEnabled(ExtraPricingOptions))
       case _ =>
-        searchSoftwarePage(vendors, form, routes.SearchSoftwareController.search(ajax), isEnabled(BetaFeatures), isEnabled(ExtraPricingOptions), isEnabled(DisplayOverseasProperty))
+        searchSoftwarePage(
+          vendors,
+          form,
+          routes.SearchSoftwareController.search(ajax),
+          isEnabled(BetaFeatures),
+          isEnabled(ExtraPricingOptions),
+          isEnabled(DisplayOverseasProperty)
+        )
     }
 
 }

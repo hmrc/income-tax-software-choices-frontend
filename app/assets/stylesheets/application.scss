@@ -82,7 +82,7 @@ body:not(.js-enabled) {
   }
 }
 
-#software-vendors {
+#software-vendors, #glossary-list-container {
   .loading-status {
     background-image: url(../images/loading.gif);
     background-repeat: no-repeat;
@@ -92,6 +92,7 @@ body:not(.js-enabled) {
     width: 1.36842em;
     vertical-align: middle;
     display: none;
+    margin-bottom: govuk-spacing(8)
   }
 
   &.loading .loading-status {
