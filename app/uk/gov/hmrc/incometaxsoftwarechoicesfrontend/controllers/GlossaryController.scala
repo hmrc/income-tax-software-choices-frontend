@@ -24,6 +24,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.GlossaryControll
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.GlossaryForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.GlossaryFormModel
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.GlossaryService
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.GlossaryService.GlossaryContent
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.{GlossaryPage, GlossaryPageList}
 
 import javax.inject.{Inject, Singleton}
@@ -39,9 +40,9 @@ class GlossaryController @Inject()(mcc: MessagesControllerComponents,
 
   def show: Action[AnyContent] = Action { implicit request =>
     implicit val requestLanguage: Lang = request.lang(messagesApi)
-    val glossaryList: List[(String, List[(String, String)])] = glossaryService.getGlossaryList
+    val glossaryContent: GlossaryContent = glossaryService.getGlossaryContent()
 
-    Ok(view(ajax = false, glossaryList = glossaryList))
+    Ok(view(ajax = false, glossaryContent = glossaryContent))
   }
 
   def search(ajax: Boolean): Action[AnyContent] = Action { implicit request =>
@@ -49,21 +50,21 @@ class GlossaryController @Inject()(mcc: MessagesControllerComponents,
 
     // form can't produce an error, either we get value or have unreachable code
     val model: GlossaryFormModel = glossaryForm.bindFromRequest().value.get
-    Ok(view(ajax, glossaryForm.fill(model), glossaryService.getFilteredGlossaryList(model)))
+    Ok(view(ajax, glossaryForm.fill(model), glossaryService.getGlossaryContent(model)))
   }
 
   private def view(ajax: Boolean,
                    form: Form[GlossaryFormModel] = glossaryForm,
-                   glossaryList: List[(String, List[(String, String)])])(implicit lang: Lang, request: Request[_]) = {
+                   glossaryContent: GlossaryContent)(implicit lang: Lang, request: Request[_]) = {
     if (ajax) {
       glossaryPageList(
-        glossaryList,
+        glossaryContent,
         glossaryMaxLabelsWithoutLinks,
         searched = true
       )
     } else {
       glossaryPage(
-        glossaryList,
+        glossaryContent,
         glossaryMaxLabelsWithoutLinks,
         glossaryService.getLastChangedString,
         form,

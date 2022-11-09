@@ -60,7 +60,7 @@ class GlossaryControllerSpec extends ControllerBaseSpec with FeatureSwitching wi
   "show" when {
     "invoked with no language" should {
       s"return OK ($OK) with the page content from an english source" in new Setup {
-        when(mockGlossaryService.getGlossaryList(ArgumentMatchers.eq(English))).thenReturn(testGlossaryList)
+        when(mockGlossaryService.getGlossaryContent(ArgumentMatchers.any())(ArgumentMatchers.eq(English))).thenReturn(testGlossaryList)
         when(mockGlossaryService.getLastChangedString(ArgumentMatchers.eq(English), ArgumentMatchers.any())).thenReturn(testFormattedLastChangedString)
         when(mockGlossaryPage.apply(
           ArgumentMatchers.eq(testGlossaryList),
@@ -78,7 +78,7 @@ class GlossaryControllerSpec extends ControllerBaseSpec with FeatureSwitching wi
     }
     "invoked with a welsh language request" should {
       s"return OK ($OK) with the page content from a welsh source" in new Setup {
-        when(mockGlossaryService.getGlossaryList(ArgumentMatchers.eq(Welsh))).thenReturn(testGlossaryList)
+        when(mockGlossaryService.getGlossaryContent(ArgumentMatchers.any())(ArgumentMatchers.eq(Welsh))).thenReturn(testGlossaryList)
         when(mockGlossaryService.getLastChangedString(ArgumentMatchers.eq(Welsh), ArgumentMatchers.any())).thenReturn(testFormattedLastChangedString)
         when(mockGlossaryPage.apply(
           ArgumentMatchers.eq(testGlossaryList),
@@ -102,7 +102,7 @@ class GlossaryControllerSpec extends ControllerBaseSpec with FeatureSwitching wi
         val glossarySearchModel: GlossaryFormModel = GlossaryFormModel(searchTerm = Some("search"))
         val glossaryListResult: List[(String, List[(String, String)])] = List("S" -> List("Search word" -> "Search description"))
 
-        when(mockGlossaryService.getFilteredGlossaryList(ArgumentMatchers.eq(glossarySearchModel))(ArgumentMatchers.eq(English)))
+        when(mockGlossaryService.getGlossaryContent(ArgumentMatchers.eq(glossarySearchModel))(ArgumentMatchers.eq(English)))
           .thenReturn(glossaryListResult)
         when(mockGlossaryService.getLastChangedString(ArgumentMatchers.eq(English), ArgumentMatchers.any()))
           .thenReturn(testFormattedLastChangedString)
@@ -122,7 +122,7 @@ class GlossaryControllerSpec extends ControllerBaseSpec with FeatureSwitching wi
         val glossarySearchModel: GlossaryFormModel = GlossaryFormModel(searchTerm = Some("search"))
         val glossaryListResult: List[(String, List[(String, String)])] = List("S" -> List("Search word" -> "Search description"))
 
-        when(mockGlossaryService.getFilteredGlossaryList(ArgumentMatchers.eq(glossarySearchModel))(ArgumentMatchers.eq(English)))
+        when(mockGlossaryService.getGlossaryContent(ArgumentMatchers.eq(glossarySearchModel))(ArgumentMatchers.eq(English)))
           .thenReturn(glossaryListResult)
         when(mockGlossaryPageList(
           ArgumentMatchers.eq(glossaryListResult),

@@ -70,26 +70,43 @@
     </div>
 }
 
-@inputForm = {
-  @form(action = postAction) {
+@errors = {
+    @glossaryForm(GlossaryForm.sortTerm).errors.map { error => <span class="govuk-error-message">@messages(error.message, error.args: _*)</span> }
+}
+
+@searchTerm = {
     <h2 class="govuk-heading-s govuk-!-padding-top-7">
-      <label for="searchTerm">
-        @messages("glossary.search-label")
-      </label>
+        <label for="searchTerm">
+            @messages("glossary.search-label")
+        </label>
     </h2>
-    <div class="govuk-form-group search-input-group @{if(glossaryForm(GlossaryForm.searchTerm).hasErrors){"govuk-form-group--error"}}">
-      @glossaryForm(GlossaryForm.searchTerm).errors.map { error =>
-        <span class="govuk-error-message">
-          @messages(error.message, error.args: _*)
-        </span>
-      }
-      <input class="govuk-input" id="searchTerm" name="searchTerm" type="text" value="@glossaryForm(GlossaryForm.searchTerm).value">
-      <button class="govuk-button" id="searchButton" data-module="govuk-button">
+    <input class="govuk-input" id="searchTerm" name="searchTerm" type="text" value="@glossaryForm(GlossaryForm.searchTerm).value">
+    <button class="govuk-button" id="searchButton" data-module="govuk-button">
         <span class="search-icon" aria-hidden="true"></span>
         <span class="govuk-visually-hidden">
-          @messages("search-software.search-form.button")
+            @messages("search-software.search-form.button")
         </span>
-      </button>
+    </button>
+}
+
+@sortTerm = {
+    <h2 class="govuk-heading-s govuk-!-padding-top-7">
+        <label for="sortTerm">
+            @messages("glossary.sort-label")
+        </label>
+    </h2>
+    <select name="sortTerm" id="sortTerm">
+        <option value="asc">@messages("glossary.sort-label-asc")</option>
+        <option value="desc">@messages("glossary.sort-label-desc")</option>
+    </select>
+}
+
+@inputForm = {
+  @form(action = postAction) {
+    <div class="govuk-form-group search-input-group @{if(glossaryForm(GlossaryForm.sortTerm).hasErrors){"govuk-form-group--error"}}">
+        @errors
+        @searchTerm
+        @sortTerm
     </div>
   }
 }

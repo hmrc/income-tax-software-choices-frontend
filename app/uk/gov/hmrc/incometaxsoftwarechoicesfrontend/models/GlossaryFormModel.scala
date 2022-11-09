@@ -16,4 +16,4 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models
 
-case class GlossaryFormModel(searchTerm: Option[String] = None)
+case class GlossaryFormModel(searchTerm: Option[String] = None, sortOrder: Option[String] = None)
