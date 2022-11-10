@@ -7,7 +7,7 @@ base.error-heading          = Mae problem wedi codi
 
 breadcrumbs.guidance                = Arweiniad
 breadcrumbs.filter                  = Hidlo
-breadcrumbs.glossary                = Geirfa
+breadcrumbs.glossary                = Self Assessment income and deduction types explained ...but in Welsh
 
 # Search software page
 

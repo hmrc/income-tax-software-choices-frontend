@@ -35,8 +35,15 @@ class GlossaryViewSpec extends ViewSpec {
 
       "have a breadcrumb menu containing a link to the guidance page" in {
         val link = document.selectNth(".govuk-breadcrumbs__list-item", 1).selectHead("a")
-        link.text shouldBe "Guidance"
+        link.text shouldBe guidance
         link.attr("href") shouldBe appConfig.guidance
+      }
+
+      "have a final non-link breadcrumb menu item describing this page" in {
+        val breadcrumbCount = document.select(".govuk-breadcrumbs__list-item").size()
+        val text = document.selectNth(".govuk-breadcrumbs__list-item", breadcrumbCount)
+        text.text() shouldBe glossary
+        text.children().isEmpty shouldBe(true)
       }
 
       "have a title" in {
@@ -125,6 +132,7 @@ private object GlossaryPageContent {
   val softwareChoices = "Software Choices"
   val caption: String = "Last changed"
   val lastChanged: String = "St Crispin's Day"
+  val guidance = "Guidance"
 
   val searchFor: String = "Search for the term you are looking for"
 
