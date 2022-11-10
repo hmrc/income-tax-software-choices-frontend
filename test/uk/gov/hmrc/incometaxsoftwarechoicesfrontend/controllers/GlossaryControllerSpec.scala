@@ -20,7 +20,7 @@ import org.mockito.{ArgumentMatchers, MockitoSugar}
 import org.scalatest.BeforeAndAfterEach
 import play.api.data.Form
 import play.api.i18n.Lang
-import play.api.mvc.{MessagesControllerComponents, Result}
+import play.api.mvc.{AnyContent, MessagesControllerComponents, Request, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import play.twirl.api.HtmlFormat
@@ -66,6 +66,7 @@ class GlossaryControllerSpec extends ControllerBaseSpec with FeatureSwitching wi
           ArgumentMatchers.eq(testGlossaryList),
           ArgumentMatchers.eq(GlossaryController.glossaryMaxLabelsWithoutLinks),
           ArgumentMatchers.eq(testFormattedLastChangedString),
+          ArgumentMatchers.any(),
           ArgumentMatchers.any[Form[GlossaryFormModel]](),
           ArgumentMatchers.eq(routes.GlossaryController.search(ajax = false))
         )(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(HtmlFormat.empty)
@@ -76,6 +77,7 @@ class GlossaryControllerSpec extends ControllerBaseSpec with FeatureSwitching wi
         contentType(result) shouldBe Some(HTML)
       }
     }
+
     "invoked with a welsh language request" should {
       s"return OK ($OK) with the page content from a welsh source" in new Setup {
         when(mockGlossaryService.getGlossaryList(ArgumentMatchers.eq(Welsh))).thenReturn(testGlossaryList)
@@ -84,6 +86,7 @@ class GlossaryControllerSpec extends ControllerBaseSpec with FeatureSwitching wi
           ArgumentMatchers.eq(testGlossaryList),
           ArgumentMatchers.eq(GlossaryController.glossaryMaxLabelsWithoutLinks),
           ArgumentMatchers.eq(testFormattedLastChangedString),
+          ArgumentMatchers.any(),
           ArgumentMatchers.any[Form[GlossaryFormModel]](),
           ArgumentMatchers.eq(routes.GlossaryController.search(ajax = false))
         )(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(HtmlFormat.empty)
@@ -110,6 +113,7 @@ class GlossaryControllerSpec extends ControllerBaseSpec with FeatureSwitching wi
           ArgumentMatchers.eq(glossaryListResult),
           ArgumentMatchers.eq(GlossaryController.glossaryMaxLabelsWithoutLinks),
           ArgumentMatchers.eq(testFormattedLastChangedString),
+          ArgumentMatchers.any(),
           ArgumentMatchers.any[Form[GlossaryFormModel]](),
           ArgumentMatchers.eq(routes.GlossaryController.search(ajax = false))
         )(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(HtmlFormat.empty)
@@ -131,6 +135,32 @@ class GlossaryControllerSpec extends ControllerBaseSpec with FeatureSwitching wi
         )(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(HtmlFormat.empty)
 
         controller.search(ajax = true)(FakeRequest("POST", "/").withFormUrlEncodedBody(GlossaryForm.searchTerm -> "search"))
+      }
+    }
+  }
+
+  "referring provider" when {
+    "the referer header is missing" should {
+      "return None" in {
+        implicit val request: Request[AnyContent] = fakeRequest
+        val result = GlossaryController.referringProvider(request)
+        result shouldBe None
+      }
+    }
+    "the referer header contains an appropriate link to a vendor" should {
+      "return an appropriate link" in {
+        val softwareVendorName = Math.random().toString
+        val validLink = routes.ProductDetailsController.show(softwareVendorName).url
+        implicit val request: Request[AnyContent] = fakeRequest.withHeaders((REFERER, s"http://localhost:9999$validLink"))
+        val result = GlossaryController.referringProvider(request)
+        result shouldBe Some(softwareVendorName)
+      }
+    }
+    "the referer header contains an inappropriate link" should {
+      "return None" in {
+        implicit val request: Request[AnyContent] = fakeRequest.withHeaders((REFERER, "http://www.example.com/some/other/website"))
+        val result = GlossaryController.referringProvider(request)
+        result shouldBe None
       }
     }
   }

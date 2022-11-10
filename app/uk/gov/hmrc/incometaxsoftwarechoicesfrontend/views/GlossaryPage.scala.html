@@ -21,6 +21,7 @@
 @import uk.gov.hmrc.hmrcfrontend.views.viewmodels.newtablinkhelper.NewTabLinkHelper
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes.SearchSoftwareController
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes.ProductDetailsController
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms._
@@ -31,6 +32,7 @@
 @import views.html.helper.CSPNonce
 @import uk.gov.hmrc.govukfrontend.views.html.components.implicits._
 @import uk.gov.hmrc.hmrcfrontend.views.html.components.implicits._
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes.SearchSoftwareController
 
 @this(
   mainTemplate: MainTemplate,
@@ -40,8 +42,7 @@
   govukInput: GovukInput
 )(implicit appConfig: AppConfig)
 
-@(initialsToMessagePairsList: List[(String, List[(String, String)])], glossaryMaxLabelsWithoutLinks: Int, lastChanged: String, glossaryForm: Form[GlossaryFormModel], postAction: Call)(implicit request: Request[_], messages: Messages)
-
+@(initialsToMessagePairsList: List[(String, List[(String, String)])], glossaryMaxLabelsWithoutLinks: Int, lastChanged: String, softwareNameMaybe: Option[String], glossaryForm: Form[GlossaryFormModel], postAction: Call)(implicit request: Request[_], messages: Messages)
 @js = {
   <script @{CSPNonce.attr} src="@routes.Assets.versioned("lib/jquery/jquery.min.js")"></script>
   <script @{CSPNonce.attr} src="@routes.Assets.versioned("javascript/glossarySearch.js")"></script>
@@ -50,15 +51,23 @@
 @pageBreadcrumbs = {
     @breadcrumbs(Breadcrumbs(
         items = Seq(
-            BreadcrumbsItem(
+            Some(BreadcrumbsItem(
                 content = Text(messages("breadcrumbs.guidance")),
                 href = Some(appConfig.guidance)
-            ),
-            BreadcrumbsItem(
+            )),
+            Some(BreadcrumbsItem(
+                content = Text(messages("breadcrumbs.filter")),
+                href = Some(SearchSoftwareController.show.url)
+            )),
+            softwareNameMaybe.map(softwareName => BreadcrumbsItem(
+                content = Text(softwareName),
+                href = Some(ProductDetailsController.show(softwareName).url)
+            )),
+            Some(BreadcrumbsItem(
                 content = Text(messages("breadcrumbs.glossary")),
                 href = None
-            )
-        )
+            ))
+        ).flatten
     ))
 }
 

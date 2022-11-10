@@ -381,7 +381,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
                               "has a heading link for the software vendor" in {
                                 val headingLink: Element = firstVendor.selectHead("h3").selectHead("a")
                                 val firstVendorInModel = SearchSoftwarePageContent.softwareVendorsResults.vendors.head
-                                headingLink.attr("href") shouldBe ProductDetailsController.show(Some(firstVendorInModel.name)).url
+                                headingLink.attr("href") shouldBe ProductDetailsController.show(firstVendorInModel.name).url
                                 headingLink.text shouldBe s"${firstVendorInModel.name}"
                               }
                             }
@@ -392,7 +392,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
                               "has a heading link for the software vendor" in {
                                 val headingLink: Element = secondVendor.selectHead("h3").selectHead("a")
                                 val secondVendorInModel = SearchSoftwarePageContent.softwareVendorsResults.vendors(1)
-                                headingLink.attr("href") shouldBe ProductDetailsController.show(Some(secondVendorInModel.name)).url
+                                headingLink.attr("href") shouldBe ProductDetailsController.show(secondVendorInModel.name).url
                                 headingLink.text shouldBe s"${secondVendorInModel.name}"
                               }
                             }
