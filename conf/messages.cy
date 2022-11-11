@@ -158,8 +158,8 @@ glossary.search-results-count.single = Your search has returned 1 result. ...but
 glossary.search-results-count.multiple = Your search has returned {0} results. ...but in Welsh
 
 glossary.sort-label = Sort by ...but in Welsh
-glossary.sort-label-asc = Alphabetically ascending from A-Z ...but in Welsh
-glossary.sort-label-desc = Alphabetically descending from Z-A ...but in Welsh
+glossary.sort-label-asc = A to Z ...but in Welsh
+glossary.sort-label-desc = Z to A ...but in Welsh
 
 glossary.contents.construction-industry-scheme.key   = Construction Industry Scheme (CIS) ...but in Welsh
 glossary.contents.construction-industry-scheme.value = <p><a href="https://www.gov.uk/what-is-the-construction-industry-scheme">CIS</a> is an HMRC scheme used by contractors in the construction industry. Under the scheme contractors deduct tax from payments made to subcontractors and self-employed individuals who work for them and pay it directly to HMRC. HMRC will give credit for these deductions when calculating how much tax the subcontractors and self-employed individuals owe.</p><p>Subcontractors do not have to register, but deductions are taken from their payments at a higher rate if they’re not registered.</p>...but in Welsh

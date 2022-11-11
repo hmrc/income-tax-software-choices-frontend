@@ -39,7 +39,8 @@
   breadcrumbs: GovukBreadcrumbs,
   form: FormWithCSRF,
   glossaryPageList: GlossaryPageList,
-  govukInput: GovukInput
+  govukInput: GovukInput,
+  govukSelect: GovukSelect
 )(implicit appConfig: AppConfig)
 
 @(initialsToMessagePairsList: List[(String, List[(String, String)])], glossaryMaxLabelsWithoutLinks: Int, lastChanged: String, softwareNameMaybe: Option[String], glossaryForm: Form[GlossaryFormModel], postAction: Call)(implicit request: Request[_], messages: Messages)
@@ -80,43 +81,59 @@
 }
 
 @errors = {
-    @glossaryForm(GlossaryForm.sortTerm).errors.map { error => <span class="govuk-error-message">@messages(error.message, error.args: _*)</span> }
+    <div class="govuk-form-group search-input-group govuk-form-group--error">
+        @glossaryForm(GlossaryForm.sortTerm).errors.map { error => <span class="govuk-error-message">@messages(error.message, error.args: _*)</span> }
+    </div>
 }
 
 @searchTerm = {
-    <h2 class="govuk-heading-s govuk-!-padding-top-7">
+    <h2 class="govuk-heading-m govuk-!-padding-top-7 search-input-group">
         <label for="searchTerm">
             @messages("glossary.search-label")
         </label>
     </h2>
-    <input class="govuk-input" id="searchTerm" name="searchTerm" type="text" value="@glossaryForm(GlossaryForm.searchTerm).value">
-    <button class="govuk-button" id="searchButton" data-module="govuk-button">
-        <span class="search-icon" aria-hidden="true"></span>
-        <span class="govuk-visually-hidden">
-            @messages("search-software.search-form.button")
-        </span>
-    </button>
+    <div class="govuk-form-group search-input-group">
+        <input class="govuk-input" id="searchTerm" name="searchTerm" type="text" value="@glossaryForm(GlossaryForm.searchTerm).value">
+        <button class="govuk-button" id="searchButton" data-module="govuk-button" type="submit">
+            <span class="search-icon" aria-hidden="true"></span>
+            <span class="govuk-visually-hidden">
+                @messages("search-software.search-form.button")
+            </span>
+        </button>
+        <hr/>
+    </div>
 }
 
 @sortTerm = {
-    <h2 class="govuk-heading-s govuk-!-padding-top-7">
-        <label for="sortTerm">
-            @messages("glossary.sort-label")
-        </label>
-    </h2>
-    <select name="sortTerm" id="sortTerm">
-        <option value="asc">@messages("glossary.sort-label-asc")</option>
-        <option value="desc">@messages("glossary.sort-label-desc")</option>
-    </select>
+    <div class="govuk-form-group search-input-group">
+        @govukSelect(Select(
+            id = "sortTerm",
+            name = "sortTerm",
+            items = Seq(
+                SelectItem(
+                    value = Some("asc"),
+                    text = messages("glossary.sort-label-asc"),
+                    selected = glossaryForm(GlossaryForm.sortTerm).value.contains("asc")
+                ),
+                SelectItem(
+                    value = Some("desc"),
+                    text = messages("glossary.sort-label-desc"),
+                    selected = glossaryForm(GlossaryForm.sortTerm).value.contains("desc")
+                )
+            ),
+            label = Label(
+                content = Text(messages("glossary.sort-label")),
+                classes = "govuk-body govuk-body-s search-input-group"
+            )
+        ))
+    </div>
 }
 
 @inputForm = {
   @form(action = postAction) {
-    <div class="govuk-form-group search-input-group @{if(glossaryForm(GlossaryForm.sortTerm).hasErrors){"govuk-form-group--error"}}">
         @errors
         @searchTerm
         @sortTerm
-    </div>
   }
 }
 

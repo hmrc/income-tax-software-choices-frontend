@@ -84,28 +84,37 @@ class GlossaryViewSpec extends ViewSpec {
           form.attr("method") shouldBe "POST"
           form.attr("action") shouldBe routes.GlossaryController.search(ajax = false).url
         }
+        "has a error bar section" which {
+          "is empty" in {
+            val errorBar = form.selectNth("div.search-input-group", 1)
+            errorBar.text() shouldBe ""
+          }
+        }
         "has a search bar section" which {
           "has a heading label" in {
-            val label: Element = form.selectNth("h2", 1).selectHead("label")
+            val label = form.selectNth("h2.search-input-group", 1).selectNth("label", 1)
             label.attr("for") shouldBe GlossaryForm.searchTerm
             label.text shouldBe searchFor
           }
           "has a text field" in {
-            val textField: Element = form.selectHead("input[type=text]")
+            val searchBar = form.selectNth("div.search-input-group", 2)
+            val textField: Element = searchBar.selectHead("input[type=text]")
             textField.attr("name") shouldBe GlossaryForm.searchTerm
             textField.attr("id") shouldBe GlossaryForm.searchTerm
           }
         }
         "has a sort section" which {
           "has a heading label" in {
-            val label: Element = form.selectNth("h2", 2).selectHead("label")
+            val label = form.selectNth("div.search-input-group", 3).selectNth("label", 1)
             label.attr("for") shouldBe GlossaryForm.sortTerm
             label.text shouldBe sortBy
           }
           "has a dropdown" in {
-            val textField: Element = form.selectHead("select")
+            val textField = form.selectNth("div.search-input-group", 3).selectNth("select", 1)
             textField.attr("name") shouldBe GlossaryForm.sortTerm
             textField.attr("id") shouldBe GlossaryForm.sortTerm
+            textField.selectNth("option", 1).text() shouldBe "A to Z"
+            textField.selectNth("option", 2).text() shouldBe "Z to A"
           }
         }
       }
@@ -167,8 +176,6 @@ private object GlossaryPageContent {
   val guidance = "Guidance"
 
   val searchFor: String = "Search for the term you are looking for"
-  val sortBy: String = "Sort by"
-
   val sortBy: String = "Sort by"
 
   val noResultsMessage = "Your search has returned no results. Check the spelling or make sure you have entered the correct term."
