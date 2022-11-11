@@ -153,6 +153,7 @@ glossary.caption = Newidiwyd ddiwethaf: {0}
 glossary.last-changed = 2022-11-01
 
 glossary.search-label = Search for the term you are looking for ...but in Welsh
+glossary.search-results-count.zero = Your search has returned no results. Check the spelling or make sure you have entered the correct term. ...but in Welsh
 glossary.search-results-count.single = Your search has returned 1 result. ...but in Welsh
 glossary.search-results-count.multiple = Your search has returned {0} results. ...but in Welsh
 

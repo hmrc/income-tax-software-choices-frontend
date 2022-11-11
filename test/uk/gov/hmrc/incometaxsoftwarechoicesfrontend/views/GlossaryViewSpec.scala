@@ -22,6 +22,7 @@ import play.api.mvc.Call
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.GlossaryForm
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.GlossaryFormModel
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.GlossaryPage
 
 class GlossaryViewSpec extends ViewSpec {
@@ -30,6 +31,20 @@ class GlossaryViewSpec extends ViewSpec {
   import GlossaryViewSpec._
 
   "Glossary page" when {
+    "search" should {
+      "show the correct no records found message when no records are found" in {
+        val document = getDocument(noItems, 1, lastChanged, GlossaryFormModel(searchTerm = Some("bananananananana")))
+        document.select("#glossary-result-count").first().text() shouldBe noResultsMessage
+      }
+      "show the correct one record found message when one record is found" in {
+        val document = getDocument(oneItem, 1, lastChanged, GlossaryFormModel(searchTerm = Some("bananananananana")))
+        document.select("#glossary-result-count").first().text() shouldBe oneResultMessage
+      }
+      "show the correct n records found message when more than one record is found" in {
+        val document = getDocument(threeItems, 1, lastChanged, GlossaryFormModel(searchTerm = Some("bananananananana")))
+        document.select("#glossary-result-count").first().text() shouldBe threeResultsMessage
+      }
+    }
     "no actual content(!)" should {
       val document = getDocument(noItems, 1, lastChanged)
 
@@ -43,7 +58,7 @@ class GlossaryViewSpec extends ViewSpec {
         val breadcrumbCount = document.select(".govuk-breadcrumbs__list-item").size()
         val text = document.selectNth(".govuk-breadcrumbs__list-item", breadcrumbCount)
         text.text() shouldBe glossary
-        text.children().isEmpty shouldBe(true)
+        text.children().isEmpty shouldBe true
       }
 
       "have a title" in {
@@ -120,19 +135,24 @@ object GlossaryViewSpec extends ViewSpec {
 
   private val glossaryCall: Call = routes.GlossaryController.search(false)
 
-  def page(initialsToMessagePairsList: List[(String, List[(String, String)])], maxWithoutLinks: Int, lastChanged: String): HtmlFormat.Appendable =
+  def page(
+            initialsToMessagePairsList: List[(String, List[(String, String)])],
+            maxWithoutLinks: Int,
+            lastChanged: String,
+            glossaryFormModel: GlossaryFormModel): HtmlFormat.Appendable = {
     glossaryPage(
       initialsToMessagePairsList,
       maxWithoutLinks,
       lastChanged,
       None,
-      GlossaryForm.form,
+      GlossaryForm.form.fill(glossaryFormModel),
       glossaryCall
     )
+  }
 
 
-  def getDocument(initialsToMessagePairsList: List[(String, List[(String, String)])], maxWithoutLinks: Int, lastChanged: String): Document = {
-    Jsoup.parse(page(initialsToMessagePairsList, maxWithoutLinks, lastChanged).body)
+  def getDocument(initialsToMessagePairsList: List[(String, List[(String, String)])], maxWithoutLinks: Int, lastChanged: String, glossaryFormModel: GlossaryFormModel = GlossaryFormModel()): Document = {
+    Jsoup.parse(page(initialsToMessagePairsList, maxWithoutLinks, lastChanged, glossaryFormModel).body)
   }
 
 }
@@ -149,7 +169,14 @@ private object GlossaryPageContent {
   val searchFor: String = "Search for the term you are looking for"
   val sortBy: String = "Sort by"
 
+  val sortBy: String = "Sort by"
+
+  val noResultsMessage = "Your search has returned no results. Check the spelling or make sure you have entered the correct term."
+  val oneResultMessage = "Your search has returned 1 result."
+  val threeResultsMessage = "Your search has returned 3 results."
+
   val noItems: List[Nothing] = List.empty
+  val oneItem: List[(String, List[(String, String)])] = List("A" -> List("Apple" -> "Apple"))
   val threeItems: List[(String, List[(String, String)])] =
     List("A" -> List("Apple" -> "Apple"), "B" -> List("Banana" -> "Banana"), "C" -> List("Coconut" -> "Coconut"))
 }

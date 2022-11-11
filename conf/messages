@@ -180,6 +180,7 @@ glossary.caption = Last changed: {0}
 glossary.last-changed = 2022-10-31
 
 glossary.search-label = Search for the term you are looking for
+glossary.search-results-count.zero = Your search has returned no results. Check the spelling or make sure you have entered the correct term.
 glossary.search-results-count.single = Your search has returned 1 result.
 glossary.search-results-count.multiple = Your search has returned {0} results.
 
