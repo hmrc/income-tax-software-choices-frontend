@@ -2,6 +2,7 @@
 
 $(document).ready(function() {
   $('#searchTerm').on("input", searchEventHandler(500));
+  $('#sortTerm').on("input", searchEventHandler(500));
 });
 
 function searchEventHandler(timeout) {

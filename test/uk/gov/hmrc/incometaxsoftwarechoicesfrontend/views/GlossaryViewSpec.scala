@@ -71,7 +71,7 @@ class GlossaryViewSpec extends ViewSpec {
         }
         "has a search bar section" which {
           "has a heading label" in {
-            val label: Element = form.selectHead("h2").selectHead("label")
+            val label: Element = form.selectNth("h2", 1).selectHead("label")
             label.attr("for") shouldBe GlossaryForm.searchTerm
             label.text shouldBe searchFor
           }
@@ -79,6 +79,18 @@ class GlossaryViewSpec extends ViewSpec {
             val textField: Element = form.selectHead("input[type=text]")
             textField.attr("name") shouldBe GlossaryForm.searchTerm
             textField.attr("id") shouldBe GlossaryForm.searchTerm
+          }
+        }
+        "has a sort section" which {
+          "has a heading label" in {
+            val label: Element = form.selectNth("h2", 2).selectHead("label")
+            label.attr("for") shouldBe GlossaryForm.sortTerm
+            label.text shouldBe sortBy
+          }
+          "has a dropdown" in {
+            val textField: Element = form.selectHead("select")
+            textField.attr("name") shouldBe GlossaryForm.sortTerm
+            textField.attr("id") shouldBe GlossaryForm.sortTerm
           }
         }
       }
@@ -135,6 +147,7 @@ private object GlossaryPageContent {
   val guidance = "Guidance"
 
   val searchFor: String = "Search for the term you are looking for"
+  val sortBy: String = "Sort by"
 
   val noItems: List[Nothing] = List.empty
   val threeItems: List[(String, List[(String, String)])] =

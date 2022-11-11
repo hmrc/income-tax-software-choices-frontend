@@ -23,6 +23,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.GlossaryFormModel
 object GlossaryForm {
 
   val searchTerm = "searchTerm"
+  val sortTerm = "sortTerm"
 
   private val trimmedOptionalText: Mapping[Option[String]] =
     optional(text)
@@ -33,7 +34,8 @@ object GlossaryForm {
 
   val form: Form[GlossaryFormModel] = Form(
     mapping(
-      searchTerm -> trimmedOptionalText
+      searchTerm -> trimmedOptionalText,
+      sortTerm -> trimmedOptionalText
     )(GlossaryFormModel.apply)(GlossaryFormModel.unapply)
   )
 }

@@ -30,18 +30,17 @@ import javax.inject.{Inject, Singleton}
 class GlossaryService @Inject()(messagesApi: MessagesApi, langs: Langs, languageUtils: LanguageUtils) extends Logging {
 
   private val allMessageKeys = getMessageKeySet
-  private val langToOrderedListOfMessagePairsMap = langs.availables.map(lang => lang -> getMessagesPairs(lang)).toMap
+  private val langToOrderedListOfMessagePairsMap = langs.availables.map(lang => lang -> getAllMessagesPairsUnsorted(lang)).toMap
   private val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
 
   if (!langToOrderedListOfMessagePairsMap.keys.toList.contains(English)) throw new GlossaryException(langToOrderedListOfMessagePairsMap.keys.toList)
+  private val defaultGlossarySettings = GlossaryFormModel(sortOrder = Some("asc"))
 
-  def getGlossaryList(implicit requestLanguage: Lang): List[(String, List[(String, String)])] = {
-    langToOrderedListOfMessagePairsMap(requestLanguage)
-  }
+  def getGlossaryContent(glossaryFormModel: GlossaryFormModel = defaultGlossarySettings)(implicit requestLanguage: Lang): GlossaryContent =
+    searchAndSort(glossaryFormModel)(langToOrderedListOfMessagePairsMap(requestLanguage))
 
-  def getFilteredGlossaryList(glossaryFormModel: GlossaryFormModel)(implicit requestLanguage: Lang): List[(String, List[(String, String)])] = {
-    matchSearchTerm(glossaryFormModel.searchTerm)(getGlossaryList)
-  }
+  private def searchAndSort(glossaryFormModel: GlossaryFormModel) =
+    matchSearchTerm(glossaryFormModel.searchTerm) _ andThen sortSearchResults(glossaryFormModel.sortOrder)
 
   def getLastChangedString(implicit lang: Lang, messages: Messages): String = {
     val lastChangedMessage = messagesApi("glossary.last-changed")
@@ -60,34 +59,33 @@ class GlossaryService @Inject()(messagesApi: MessagesApi, langs: Langs, language
       .toSet
   }
 
-  private def getMessagesPairs(lang: Lang): List[(String, List[(String, String)])] = {
+  private def getAllMessagesPairsUnsorted(lang: Lang): GlossaryContent = {
     val messages = messagesApi.preferred(Seq(lang))
     allMessageKeys
       .groupBy(k => messages(s"$k.key").substring(0, 1))
       .map { case (initial, messageKeys) => initial ->
         messageKeys.map(sss => messages(s"$sss.key") -> messages(s"$sss.value"))
           .toList
-          .sortBy(_._1)
       }
       .toList
-      .sortBy(_._1)
   }
 
 }
 
 object GlossaryService {
 
+  type GlossaryContent = List[(String, List[(String, String)])]
   private val English: Lang = Lang("en")
 
   private val glossaryPrefix = "glossary.contents"
   private val glossaryPrefixLabels = glossaryPrefix.split("\\.").length
 
   private[services] def matchSearchTerm(maybeSearchTerm: Option[String])
-                                       (glossaryList: List[(String, List[(String, String)])]): List[(String, List[(String, String)])] = {
+                                       (glossaryContent: GlossaryContent): GlossaryContent = {
 
     val searchTermWords = maybeSearchTerm.map(_.toLowerCase().split("\\s+").toSeq).getOrElse(Seq.empty)
 
-    glossaryList map { case (key, list) =>
+    glossaryContent map { case (key, list) =>
       val newList = list.filter { case (l, r) =>
         searchTermWords.forall((l + r).replaceAll("<.*?>", "").toLowerCase().contains(_))
       }
@@ -95,6 +93,16 @@ object GlossaryService {
     } filter (_._2.nonEmpty)
 
   }
+
+  private[services] def sortSearchResults(maybeSortOrder: Option[String])(glossaryContent: GlossaryContent): GlossaryContent = maybeSortOrder match {
+    case Some("asc") => glossaryContent.sortWith(sortAsc).map { case (initialKey, entries) => (initialKey, entries.sortWith(sortAsc)) }
+    case Some("desc") => glossaryContent.sortWith(sortDesc).map { case (initialKey, entries) => (initialKey, entries.sortWith(sortDesc)) }
+    case _ => glossaryContent
+  }
+
+  private[services] def sortAsc(key1: (String, Any), key2: (String, Any)): Boolean = key1._1 < key2._1
+
+  private[services] def sortDesc(key1: (String, Any), key2: (String, Any)): Boolean = key1._1 > key2._1
 
 }
 
