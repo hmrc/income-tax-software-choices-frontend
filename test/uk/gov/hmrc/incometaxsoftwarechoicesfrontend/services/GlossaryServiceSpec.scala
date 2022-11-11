@@ -42,6 +42,8 @@ class GlossaryServiceSpec extends PlaySpec with BeforeAndAfterEach with GuiceOne
       "glossary.contents.alpha.value" -> "Alpha value two",
       "glossary.contents.beta.key" -> "Beta key three",
       "glossary.contents.beta.value" -> "Beta value four",
+      "glossary.contents.beta2.key" -> "Beta key threx",
+      "glossary.contents.beta2.value" -> "Beta value foux",
       "glossary.contents.gamma.key" -> "Gamma key one",
       "glossary.contents.gamma.value" -> "Gamma value two",
       "glossary.contents.delta.key" -> "Delta key three",
@@ -52,6 +54,8 @@ class GlossaryServiceSpec extends PlaySpec with BeforeAndAfterEach with GuiceOne
       "glossary.contents.alpha.value" -> "Epsilon value two",
       "glossary.contents.beta.key" -> "Zeta key three",
       "glossary.contents.beta.value" -> "Zeta value four",
+      "glossary.contents.beta2.key" -> "Tau key threx",
+      "glossary.contents.beta2.value" -> "Tau value foux",
       "glossary.contents.gamma.key" -> "Eta key one",
       "glossary.contents.gamma.value" -> "Eta value two",
       "glossary.contents.delta.key" -> "Theta key three",
@@ -61,14 +65,14 @@ class GlossaryServiceSpec extends PlaySpec with BeforeAndAfterEach with GuiceOne
 
   val fullEnglishGlossaryList: List[(String, List[(String, String)])] = List(
     "A" -> List("Alpha key one" -> "Alpha value two"),
-    "B" -> List("Beta key three" -> "Beta value four"),
+    "B" -> List("Beta key three" -> "Beta value four", "Beta key threx" -> "Beta value foux"),
     "D" -> List("Delta key three" -> "Delta value four"),
     "G" -> List("Gamma key one" -> "Gamma value two")
   )
 
   val fullWelshGlossaryList: List[(String, List[(String, String)])] = List(
     "E" -> List("Epsilon key one" -> "Epsilon value two", "Eta key one" -> "Eta value two"),
-    "T" -> List("Theta key three" -> "Theta value four"),
+    "T" -> List("Tau key threx" -> "Tau value foux", "Theta key three" -> "Theta value four"),
     "Z" -> List("Zeta key three" -> "Zeta value four"),
   )
 
@@ -120,10 +124,10 @@ class GlossaryServiceSpec extends PlaySpec with BeforeAndAfterEach with GuiceOne
   "getGlossaryList" should {
     "return the full letter, word and description mappings" when {
       "in english" in new Setup {
-        service.getGlossaryList(englishLang) mustBe fullEnglishGlossaryList
+        service.getGlossaryContent()(englishLang) mustBe fullEnglishGlossaryList
       }
       "in welsh" in new Setup {
-        service.getGlossaryList(welshLang) mustBe fullWelshGlossaryList
+        service.getGlossaryContent()(welshLang) mustBe fullWelshGlossaryList
       }
     }
   }
@@ -131,27 +135,59 @@ class GlossaryServiceSpec extends PlaySpec with BeforeAndAfterEach with GuiceOne
   "getFilteredGlossaryList" should {
     "return the letter, word and description mappings which contain the provided search term" when {
       "the search term is not provided" in new Setup {
-        service.getFilteredGlossaryList(GlossaryFormModel(searchTerm = None))(englishLang) mustBe service.getGlossaryList(englishLang)
+        service.getGlossaryContent(GlossaryFormModel(sortOrder = Some("asc")))(englishLang) mustBe service.getGlossaryContent()(englishLang)
       }
       "the search terms provided and matches against words" in new Setup {
-        service.getFilteredGlossaryList(GlossaryFormModel(searchTerm = Some("one")))(englishLang) mustBe List(
+        service.getGlossaryContent(GlossaryFormModel(searchTerm = Some("one")))(englishLang) mustBe List(
           "A" -> List("Alpha key one" -> "Alpha value two"),
           "G" -> List("Gamma key one" -> "Gamma value two")
         )
       }
       "the search terms provided and matches against descriptions" in new Setup {
-        service.getFilteredGlossaryList(GlossaryFormModel(searchTerm = Some("two")))(englishLang) mustBe List(
+        service.getGlossaryContent(GlossaryFormModel(searchTerm = Some("two")))(englishLang) mustBe List(
           "A" -> List("Alpha key one" -> "Alpha value two"),
           "G" -> List("Gamma key one" -> "Gamma value two")
         )
       }
       "the search terms provided match against both words and descriptions" in new Setup {
-        service.getFilteredGlossaryList(GlossaryFormModel(searchTerm = Some("Alpha")))(englishLang) mustBe List(
+        service.getGlossaryContent(GlossaryFormModel(searchTerm = Some("Alpha")))(englishLang) mustBe List(
           "A" -> List("Alpha key one" -> "Alpha value two")
         )
       }
       "the search terms provided do not match against anything" in new Setup {
-        service.getFilteredGlossaryList(GlossaryFormModel(searchTerm = Some("unknown")))(englishLang) mustBe List.empty
+        service.getGlossaryContent(GlossaryFormModel(searchTerm = Some("unknown")))(englishLang) mustBe List.empty
+      }
+    }
+  }
+
+  "getSortedGlossaryList" should {
+    "return the asc sorted glossary indexes" when {
+      "no sort order provided" in new Setup {
+        service.getGlossaryContent(GlossaryFormModel())(englishLang).head._1 mustBe "A"
+      }
+      "asc is specified" in new Setup {
+        service.getGlossaryContent(GlossaryFormModel(sortOrder = Some("asc")))(englishLang).map(_._1).mkString("") mustBe "ABDG"
+      }
+    }
+    "return the desc sorted glossary indexes" when {
+      "desc is specified" in new Setup {
+        service.getGlossaryContent(GlossaryFormModel(sortOrder = Some("desc")))(englishLang).map(_._1).mkString("") mustBe "GDBA"
+      }
+    }
+    "return the asc sorted glossary contents" when {
+      "no sort order provided" in new Setup {
+        val m = service.getGlossaryContent(GlossaryFormModel())(englishLang).toMap
+        m("B").map(_._1) mustBe List("Beta key three", "Beta key threx")
+      }
+      "asc is specified" in new Setup {
+        val m = service.getGlossaryContent(GlossaryFormModel(sortOrder = Some("asc")))(englishLang).toMap
+        m("B").map(_._1) mustBe List("Beta key three", "Beta key threx")
+      }
+    }
+    "return the desc sorted glossary contents" when {
+      "desc is specified" in new Setup {
+        val m = service.getGlossaryContent(GlossaryFormModel(sortOrder = Some("desc")))(englishLang).toMap
+        m("B").map(_._1) mustBe List("Beta key threx", "Beta key three")
       }
     }
   }

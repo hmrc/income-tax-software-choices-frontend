@@ -42,11 +42,11 @@
 @searchCount = {
   @if(searched) {
     <p id="glossary-result-count" class="govuk-body">
-      @if(numberOfResults == 1) {
-        @messages("glossary.search-results-count.single")
-      } else {
-        @messages("glossary.search-results-count.multiple", numberOfResults)
-      }
+      @{numberOfResults match {
+        case 0 => messages("glossary.search-results-count.zero")
+        case 1 => messages("glossary.search-results-count.single")
+        case _ => messages("glossary.search-results-count.multiple", numberOfResults)
+      }}
     </p>
   }
 }
