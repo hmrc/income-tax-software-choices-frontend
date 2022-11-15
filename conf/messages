@@ -171,6 +171,9 @@ product-details.income-and-deduction-types.uk-interest = UK interest
 product-details.accessibility-statement.heading = Accessibility
 product-details.accessibility-statement.key = Accessibility Statement
 
+product-details.explanation-link.text = If you are not sure what any of these terms mean, take a look at the {0} we have created to help you.
+product-details.explanation-link.link = explanations
+
 glossary.title = Self Assessment income and deduction types explained
 glossary.content = Content
 glossary.software-choices = Software Choices
