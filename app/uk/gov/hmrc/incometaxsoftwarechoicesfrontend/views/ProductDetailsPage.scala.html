@@ -20,7 +20,7 @@
 @import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcNewTabLinkHelper
 @import uk.gov.hmrc.hmrcfrontend.views.viewmodels.newtablinkhelper.NewTabLinkHelper
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes.SearchSoftwareController
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTemplate
@@ -43,7 +43,7 @@
         ),
         BreadcrumbsItem(
             content = Text(messages("breadcrumbs.filter")),
-            href = Some(SearchSoftwareController.show.url)
+            href = Some(routes.SearchSoftwareController.show.url)
         ),
         BreadcrumbsItem(
             content = Text(softwareVendor.name),
@@ -77,8 +77,11 @@
     <h2 class="govuk-heading-l">@messages("product-details.details.heading")</h2>
     @productDetailsList
 
+
     @if(displayIncomeAndDeductionTypes) {
         <h2 class="govuk-heading-l">@messages("product-details.income-and-deduction-types.heading")</h2>
+        
+        <p class="govuk-body">@productDetailsExplanationsLink</p>
 
         <p class="govuk-body">
         @messages(
@@ -98,6 +101,7 @@
         }</h2>
     @accessibilityStatement(linkText)
     }
+
 }
 
 @contactDetailsList = {
@@ -118,10 +122,15 @@
 ))
 }
 
-@productDetailsList = {
-    @govukSummaryList(SummaryList(
-        rows = rows.flatten
-    ))
+@productDetailsExplanationsLink = {
+    @Html(
+        messages(
+            "product-details.explanation-link.text",
+            link(
+                text = messages("product-details.explanation-link.link"),
+                href = routes.GlossaryController.show.url
+            ))
+        )
 }
 
 @incomeAndDeductionTypesList = {
@@ -168,6 +177,11 @@
             )
         ))
     }
+}
+@productDetailsList = {
+@govukSummaryList(SummaryList(
+    rows = rows.flatten
+))
 }
 
 @rows = @{

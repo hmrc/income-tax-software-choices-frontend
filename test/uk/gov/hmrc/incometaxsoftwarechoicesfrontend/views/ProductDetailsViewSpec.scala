@@ -91,6 +91,8 @@ class ProductDetailsViewSpec extends ViewSpec {
     }
 
     val incomesAndDeductionsHeading: String = "Self Assessment income and deduction types this software covers"
+    val explanationsLinkText: String = "explanations"
+    val explanations: String = s"If you are not sure what any of these terms mean, take a look at the $explanationsLinkText we have created to help you."
     val blindPersonsAllowance: String = "Blind Person’s Allowance"
     val capitalGainsTax: String = "Capital Gains Tax"
     val complexPartnerships: String = "Complex partnerships"
@@ -354,8 +356,16 @@ class ProductDetailsViewSpec extends ViewSpec {
             document.selectNth("h2", 3).text shouldBe ProductDetailsPage.incomesAndDeductionsHeading
           }
 
+          "have an explanations section linking to the Glossary page" in {
+            val explanations = document.selectHead("h2:nth-of-type(3) + p")
+            explanations.text shouldBe ProductDetailsPage.explanations
+            val link = explanations.selectHead("a")
+            link.text shouldBe ProductDetailsPage.explanationsLinkText
+            link.attr("href") shouldBe routes.GlossaryController.show.url
+          }
+
           "have an income and deductions summary" in {
-            document.selectHead("h2:nth-of-type(3) + p").text shouldBe ProductDetailsPage.numberCovered(
+            document.selectHead("h2:nth-of-type(3) + p + p").text shouldBe ProductDetailsPage.numberCovered(
               softwareVendorModelBase.name,
               softwareVendorModelFull.incomeAndDeductions.length
             )
@@ -374,7 +384,7 @@ class ProductDetailsViewSpec extends ViewSpec {
           val document = createAndParseDocument(softwareVendorModelBase, displayIncomeAndDeductionTypes = true)
           "display the correct number of incomes and deductions covered" in {
             document
-              .selectHead("h2:nth-of-type(3) + p")
+              .selectHead("h2:nth-of-type(3) + p + p")
               .text shouldBe ProductDetailsPage.numberCovered(softwareVendorModelBase.name, 0)
           }
           "display the section without values" in {

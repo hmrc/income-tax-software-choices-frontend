@@ -51,7 +51,9 @@ class MessagesSpec extends PlaySpec with MessagesMatcher {
     "product-details.income-and-deduction-types.foreign-income",
     "product-details.income-and-deduction-types.self-employment",
     "product-details.income-and-deduction-types.high-income-child-benefit",
-    "product-details.income-and-deduction-types.number-covered"
+    "product-details.income-and-deduction-types.number-covered",
+    "product-details.explanation-link.text",
+    "product-details.explanation-link.link"
   )
 
   private val messageKeysEnglish: List[String] = getMessageKeys("messages").toList
