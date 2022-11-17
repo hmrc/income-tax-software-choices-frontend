@@ -26,6 +26,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.Feature
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.SoftwareChoicesService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.ProductDetailsPage
+import java.net.URLEncoder
 
 class ProductDetailsControllerSpec extends ControllerBaseSpec with FeatureSwitching with BeforeAndAfterEach {
 
@@ -43,7 +44,7 @@ class ProductDetailsControllerSpec extends ControllerBaseSpec with FeatureSwitch
       "a valid param has been passed" should {
         "return OK status with the product details page" in withController { controller =>
           enable(BetaFeatures)
-          val result = controller.show("test software vendor name one")(fakeRequest)
+          val result = controller.show(URLEncoder.encode("test software vendor name one", "UTF-8"))(fakeRequest)
 
           status(result) shouldBe Status.OK
         }

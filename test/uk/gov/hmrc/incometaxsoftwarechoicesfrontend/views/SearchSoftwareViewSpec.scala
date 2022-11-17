@@ -27,6 +27,8 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SearchSoftwarePage
+
+import java.net.URLEncoder
 import scala.jdk.CollectionConverters._
 
 class SearchSoftwareViewSpec extends ViewSpec {
@@ -381,7 +383,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
                               "has a heading link for the software vendor" in {
                                 val headingLink: Element = firstVendor.selectHead("h3").selectHead("a")
                                 val firstVendorInModel = SearchSoftwarePageContent.softwareVendorsResults.vendors.head
-                                headingLink.attr("href") shouldBe ProductDetailsController.show(firstVendorInModel.name).url
+                                headingLink.attr("href") shouldBe ProductDetailsController.show(URLEncoder.encode(firstVendorInModel.name, "UTF-8")).url
                                 headingLink.text shouldBe s"${firstVendorInModel.name}"
                               }
                             }
@@ -392,7 +394,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
                               "has a heading link for the software vendor" in {
                                 val headingLink: Element = secondVendor.selectHead("h3").selectHead("a")
                                 val secondVendorInModel = SearchSoftwarePageContent.softwareVendorsResults.vendors(1)
-                                headingLink.attr("href") shouldBe ProductDetailsController.show(secondVendorInModel.name).url
+                                headingLink.attr("href") shouldBe ProductDetailsController.show(URLEncoder.encode(secondVendorInModel.name, "UTF-8")).url
                                 headingLink.text shouldBe s"${secondVendorInModel.name}"
                               }
                             }

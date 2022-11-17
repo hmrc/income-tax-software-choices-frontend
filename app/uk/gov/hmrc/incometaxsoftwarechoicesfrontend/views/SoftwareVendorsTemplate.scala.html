@@ -22,6 +22,7 @@
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.SoftwareChoicesService
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes.ProductDetailsController
+@import java.net.URLEncoder
 
 @this(
   hmrcNewTabLinkHelper: HmrcNewTabLinkHelper,
@@ -34,7 +35,11 @@
   <li>
     <div class="full-software-package">
       <div class="software-package">
-        <h3 class="govuk-heading-m" id="@{"software-vendor-" + index}"><a class="govuk-link govuk-link--no-visited-state" href="@{ProductDetailsController.show(vendor.name)}">@{vendor.name}</a> </h3>
+        <h3 class="govuk-heading-m" id="@{"software-vendor-" + index}">
+          <a class="govuk-link govuk-link--no-visited-state"
+             href="@{ProductDetailsController.show(URLEncoder.encode(vendor.name, "UTF-8"))}">@{vendor.name}
+          </a>
+        </h3>
       </div>
     </div>
   </li>
