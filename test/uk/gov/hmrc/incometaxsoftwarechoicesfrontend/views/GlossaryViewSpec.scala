@@ -21,9 +21,13 @@ import org.jsoup.nodes.{Document, Element}
 import play.api.mvc.Call
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes.ProductDetailsController
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.GlossaryForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.GlossaryFormModel
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.GlossaryService.GlossaryContent
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.GlossaryPage
+
+import java.net.URLEncoder
 
 class GlossaryViewSpec extends ViewSpec {
 
@@ -31,7 +35,7 @@ class GlossaryViewSpec extends ViewSpec {
   import GlossaryViewSpec._
 
   "Glossary page" when {
-    "search" should {
+    "searched" should {
       "show the correct no records found message when no records are found" in {
         val document = getDocument(noItems, 1, lastChanged, GlossaryFormModel(searchTerm = Some("bananananananana")))
         document.select("#glossary-result-count").first().text() shouldBe noResultsMessage
@@ -45,6 +49,19 @@ class GlossaryViewSpec extends ViewSpec {
         document.select("#glossary-result-count").first().text() shouldBe threeResultsMessage
       }
     }
+  }
+  
+  "Glossary page with referer" should {
+    "have a breadcrumb menu containing a link to the guidance page" in {
+      val weirdName = "Name with weird characters #¢£"
+      val document = getDocument(noItems, 1, lastChanged, referrerMaybe = Some(weirdName))
+      val link = document.selectNth(".govuk-breadcrumbs__list-item", 3).select("a")
+      link.text shouldBe weirdName
+      link.attr("href") shouldBe ProductDetailsController.show(URLEncoder.encode(weirdName, "UTF-8")).url
+    }
+  }
+  
+  "Glossary page without referer" when {
     "no actual content(!)" should {
       val document = getDocument(noItems, 1, lastChanged)
 
@@ -148,20 +165,25 @@ object GlossaryViewSpec extends ViewSpec {
             initialsToMessagePairsList: List[(String, List[(String, String)])],
             maxWithoutLinks: Int,
             lastChanged: String,
-            glossaryFormModel: GlossaryFormModel): HtmlFormat.Appendable = {
+            glossaryFormModel: GlossaryFormModel,
+            referrerMaybe: Option[String]): HtmlFormat.Appendable = {
     glossaryPage(
       initialsToMessagePairsList,
       maxWithoutLinks,
       lastChanged,
-      None,
+      referrerMaybe,
       GlossaryForm.form.fill(glossaryFormModel),
       glossaryCall
     )
   }
 
-
-  def getDocument(initialsToMessagePairsList: List[(String, List[(String, String)])], maxWithoutLinks: Int, lastChanged: String, glossaryFormModel: GlossaryFormModel = GlossaryFormModel()): Document = {
-    Jsoup.parse(page(initialsToMessagePairsList, maxWithoutLinks, lastChanged, glossaryFormModel).body)
+  def getDocument(
+                   initialsToMessagePairsList: GlossaryContent,
+                   maxWithoutLinks: Int,
+                   lastChanged: String,
+                   glossaryFormModel: GlossaryFormModel = GlossaryFormModel(),
+                   referrerMaybe: Option[String] = None): Document = {
+    Jsoup.parse(page(initialsToMessagePairsList, maxWithoutLinks, lastChanged, glossaryFormModel, referrerMaybe).body)
   }
 
 }
