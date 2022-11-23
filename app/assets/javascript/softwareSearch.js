@@ -54,10 +54,11 @@ function submitSearch() {
 
 function toggleLoading(showLoading) {
   if(showLoading) {
-    $('#software-vendor-list').empty();
+    $('#software-vendor-list').css('opacity', 0)
     $('#software-vendors').addClass("loading");
   } else {
     $('#software-vendors').removeClass("loading");
+    $('#software-vendor-list').css('opacity', 1)
   }
 }
 
