@@ -22,7 +22,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.MessagesMatcher
 import scala.io.Source
 
 class MessagesSpec extends PlaySpec with MessagesMatcher {
-  override val excludedKeys = Set(
+  override val excludedKeys: Set[String] = Set(
     "product-details.income-and-deduction-types.construction-industry-scheme",
     "product-details.income-and-deduction-types.lloyds-underwriters",
     "product-details.income-and-deduction-types.marriage-allowance",
@@ -70,6 +70,10 @@ class MessagesSpec extends PlaySpec with MessagesMatcher {
     "not contain duplicate keys" in {
       messageKeysWelsh must containUniqueKeys
     }
+
+    "contain only permitted characters" in {
+      messageKeysWelsh must containOnlyPermittedCharacters
+    }
   }
 
   "Messages present in English (conf/messages)" should {
@@ -79,6 +83,10 @@ class MessagesSpec extends PlaySpec with MessagesMatcher {
 
     "not contain duplicate keys" in {
       messageKeysEnglish must containUniqueKeys
+    }
+
+    "contain only permitted characters" in {
+      messageKeysEnglish must containOnlyPermittedCharacters
     }
   }
 
