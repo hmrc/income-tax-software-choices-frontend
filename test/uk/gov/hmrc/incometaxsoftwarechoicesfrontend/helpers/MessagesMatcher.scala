@@ -24,33 +24,38 @@ trait MessagesMatcher {
 
   private val messagesMatcherLogger: Logger = Logger(getClass)
 
-  def allBeIn(messages: Set[String]): MessagesMatcher = MessagesMatcher(messages)
-
-  def containUniqueKeys: DuplicateMatcher = DuplicateMatcher()
-
-  case class MessagesMatcher(messages: Set[String]) extends Matcher[Set[String]] {
-    override def apply(left: Set[String]): MatchResult = {
-      if(excludedKeys.nonEmpty) {
-        messagesMatcherLogger.warn(s"\n ---- WARNING: ${excludedKeys.size} translation key(s) excluded from the test ---- \n  ${excludedKeys.mkString("\n  ")}")
-      }
-
-      val diff = left -- messages -- excludedKeys
-      MatchResult(
-        diff.isEmpty,
-        s"Missing ${diff.size} translation(s):\n  ${diff.mkString("\n  ")}",
-        ""
-      )
-    }
+  def allBeIn(messages: Set[String]): Matcher[Set[String]] = (left: Set[String]) => {
+    val diff = left -- messages -- getExcludedKeys
+    MatchResult(
+      diff.isEmpty,
+      s"Missing ${diff.size} translation(s):\n  ${diff.mkString("\n  ")}",
+      ""
+    )
   }
 
-  case class DuplicateMatcher() extends Matcher[List[String]] {
-    override def apply(left: List[String]): MatchResult = {
-      val diff = left.diff(left.distinct).distinct
-      MatchResult(
-        diff.isEmpty,
-        s"${diff.size} duplicate key(s):${diff.mkString("\n  ","\n  ", "\n")}",
-        ""
-      )
+  def containUniqueKeys: Matcher[Seq[String]] = (left: Seq[String]) => {
+    val diff = left.diff(left.distinct).distinct
+    MatchResult(
+      diff.isEmpty,
+      s"${diff.size} duplicate key(s):${diff.mkString("\n  ", "\n  ", "\n")}",
+      ""
+    )
+  }
+
+  def containOnlyPermittedCharacters: Matcher[Seq[String]] = (left: Seq[String]) => {
+    val bad = left.filter(s => !s.matches("^[a-z0-9.-]*$"))
+    MatchResult(
+      bad.isEmpty,
+      s"${bad.size} bad key(s):${bad.mkString("\n  ", "\n  ", "\n")}",
+      ""
+    )
+  }
+  
+  // Only print the warning once by using a lazy fetch and check
+  private lazy val getExcludedKeys = {
+    if (excludedKeys.nonEmpty) {
+      messagesMatcherLogger.warn(s"\n ---- WARNING: ${excludedKeys.size} translation key(s) excluded from the test ---- \n  ${excludedKeys.mkString("\n  ")}")
     }
+    excludedKeys
   }
 }
