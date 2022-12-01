@@ -91,7 +91,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
                             }
 
                             "contains a fieldset legend" in {
-                              checkboxGroup.getElementsByTag("legend").text() shouldBe SearchSoftwarePageContent.Filters.accessibilityFeatures
+                              checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwarePageContent.Filters.accessibilityFeatures
                             }
 
                             "contains an Visual checkbox" in {
@@ -121,7 +121,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
                             }
 
                             "contains a fieldset legend" in {
-                              checkboxGroup.getElementsByTag("legend").text() shouldBe SearchSoftwarePageContent.Filters.pricing
+                              checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwarePageContent.Filters.pricing
                             }
 
                             if (pricingSwitch) {
@@ -152,7 +152,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
                             }
 
                             "contains a fieldset legend" in {
-                              checkboxGroup.getElementsByTag("legend").text() shouldBe SearchSoftwarePageContent.Filters.incomeType
+                              checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwarePageContent.Filters.incomeType
                             }
 
                             "contains a sole trader checkbox" in {
@@ -182,7 +182,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
                             }
 
                             "contains a fieldset legend" in {
-                              checkboxGroup.getElementsByTag("legend").text() shouldBe SearchSoftwarePageContent.Filters.compatibleWith
+                              checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwarePageContent.Filters.compatibleWith
                             }
 
                             "contains an Microsoft Windows checkbox" in {
@@ -204,7 +204,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
                             }
 
                             "contains a fieldset legend" in {
-                              checkboxGroup.getElementsByTag("legend").text() shouldBe SearchSoftwarePageContent.Filters.mobileApp
+                              checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwarePageContent.Filters.mobileApp
                             }
 
                             "contains an Android checkbox" in {
@@ -226,7 +226,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
                             }
 
                             "contains a fieldset legend" in {
-                              checkboxGroup.getElementsByTag("legend").text() shouldBe SearchSoftwarePageContent.Filters.softwareType
+                              checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwarePageContent.Filters.softwareType
                             }
 
                             "contains an BrowserBased checkbox" in {
@@ -248,7 +248,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
                             }
 
                             "contains a fieldset legend" in {
-                              checkboxGroup.getElementsByTag("legend").text() shouldBe SearchSoftwarePageContent.Filters.softwareFor
+                              checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwarePageContent.Filters.softwareFor
                             }
 
                             "contains a RecordKeeping checkbox" in {
@@ -270,7 +270,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
                             }
 
                             "contains a fieldset legend" in {
-                              checkboxGroup.getElementsByTag("legend").text() shouldBe SearchSoftwarePageContent.Filters.businessType
+                              checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwarePageContent.Filters.businessType
                             }
 
                             "contains an Individual checkbox" in {
@@ -292,7 +292,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
                             }
 
                             "contains a fieldset legend" in {
-                              checkboxGroup.getElementsByTag("legend").text() shouldBe SearchSoftwarePageContent.Filters.softwareCompatibility
+                              checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwarePageContent.Filters.softwareCompatibility
                             }
 
                             "contains an VAT checkbox" in {
@@ -353,15 +353,15 @@ class SearchSoftwareViewSpec extends ViewSpec {
                         }
 
                         if (hasError) "contains an error" in {
-                          document.mainContent.selectHead(".govuk-error-message").text() shouldBe "test error message"
+                          document.mainContent.selectHead(".govuk-error-message").text shouldBe "test error message"
                         }
 
 
                         if (!hasResults) "displays a message when the list is empty" which {
                           val emptyListMessage = document.mainContent.selectHead(".empty-list")
 
-                          "contains a paragraph" in {
-                            emptyListMessage.selectHead("p").text shouldBe SearchSoftwarePageContent.emptyVendorListMessage
+                          "contains a header" in {
+                            emptyListMessage.selectHead("h2").text shouldBe SearchSoftwarePageContent.emptyVendorListMessage
                           }
 
                           "contains two bullet points" in {
@@ -403,7 +403,8 @@ class SearchSoftwareViewSpec extends ViewSpec {
                           val softwareVendorsSection = getSoftwareVendorsSection(document)
 
                           "has a count of the number of software vendors on the page" in {
-                            softwareVendorsSection.selectHead("h3").text shouldBe SearchSoftwarePageContent.numberOfVendorsAlpha
+                            softwareVendorsSection.selectHead(".non-empty-list")
+                              .select("h2").text shouldBe SearchSoftwarePageContent.numberOfVendorsAlpha
                           }
 
                           "has a list of software vendors" which {
