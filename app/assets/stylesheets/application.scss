@@ -53,19 +53,41 @@
 
     .search-icon {
       display: inline-block;
-      height: 31px;
+      height: 30px;
       width: 48px;
       background-image: url(../images/search-button.png);
       background-repeat: no-repeat;
       background-position: -12.5% 45%;
     }
 
-    &:focus .search-icon {
-      background-image: url("../images/search-button-dark.png");
+    &:active {
+      top: 0;
+    }
+
+    &:active:hover, &:focus:hover, &:active:focus {
+      .search-icon {
+        height: 32px;
+      }
     }
   }
 }
 
+@include govuk-media-query ($from: tablet) {
+  .search-input-group {
+    button.govuk-button{
+      .search-icon {
+        display: inline-block;
+        height: 31px;
+      }
+
+      &:active:hover, &:focus:hover, &:active:focus {
+        .search-icon {
+          height: 33px;
+        }
+      }
+    }
+  }
+}
 
 body:not(.js-enabled) {
   #searchButton {
