@@ -327,11 +327,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
                             "contains an apply filters button" in {
                               filterSection.selectHead(".apply-filters-button").text shouldBe SearchSoftwarePageContent.Filters.applyFilters
                             }
-
-                            "contains an clear filters button" in {
-                              filterSection.selectHead(".clear-filters-button").text shouldBe SearchSoftwarePageContent.Filters.clearFilters
-                            }
-
+                            
                           }
                         }
 
@@ -599,7 +595,6 @@ private object SearchSoftwarePageContent {
     val language = "Language"
     val accessibilityFeatures = "Accessibility features"
     val applyFilters = "Apply filters"
-    val clearFilters = "Clear filters"
   }
 
   val numberOfVendorsAlpha = "Currently there are 2 software providers"

@@ -48,7 +48,6 @@
   button.govuk-button{
     position: absolute;
     padding: 0;
-    display: none;
     width: auto;
 
     .search-icon {
@@ -90,7 +89,7 @@
 }
 
 body:not(.js-enabled) {
-  #searchButton {
+  #searchButton, .apply-filters-button {
     display: inline-block;
   }
   #searchTerm {
@@ -101,6 +100,9 @@ body:not(.js-enabled) {
 body.js-enabled {
   #searchTerm {
     width: 100%;
+  }
+  #searchButton, .apply-filters-button {
+    display: none;
   }
 }
 
