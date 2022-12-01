@@ -45,30 +45,33 @@
   </li>
 }
 
-@if(softwareVendors.vendors.isEmpty) {
-  <div class="empty-list">
-    <p class="govuk-body">@messages("search-software.empty-vendor-list")</p>
-    <ul class="govuk-list govuk-list--bullet">
-      <li>@messages("search-software.empty-vendor-list.bullet1")</li>
-      <li>@messages("search-software.empty-vendor-list.bullet2")</li>
-    </ul>
-  </div>
-} else {
-  <div class="software-vendors-num">
-    <p class="govuk-body">
-      @Html(
-        if(softwareVendors.vendors.size>1){
-          messages("search-software.vendor-count", softwareVendors.vendors.size)
+@resultsHeader = {
+  <div class=@if(softwareVendors.vendors.isEmpty){"empty-list"}else{"non-empty-list"}>
+    <h2 class="govuk-body govuk-!-font-weight-bold">
+      <span id="vendor-count" role="status" class="software-vendors-num">
+        @if(softwareVendors.vendors.isEmpty) {
+          @messages("search-software.empty-vendor-list")
+        } else if(softwareVendors.vendors.length==1){
+          @Html(messages("search-software.vendor-count-single"))
         } else {
-          messages("search-software.vendor-count-single")
+          @Html(messages("search-software.vendor-count", softwareVendors.vendors.length))
         }
-      )
-    </p>
-  </div>
-  <div class="software-packages-full">
-    <ul class="software-packages-ul">
+      </span>
+    </h2>
 
-      @softwareVendors.vendors.zipWithIndex.map { case (vendor, index) => @softwareVendorListing(vendor, index) }
+    @if(softwareVendors.vendors.isEmpty) {
+    <ul class="govuk-list govuk-list--bullet">
+        <li>@messages("search-software.empty-vendor-list.bullet1")</li>
+        <li>@messages("search-software.empty-vendor-list.bullet2")</li>
     </ul>
-  </div>
+    }
+  <div>
 }
+
+@resultsHeader
+<div class="software-packages-full">
+  <ul class="software-packages-ul">
+    @softwareVendors.vendors.zipWithIndex.map { case (vendor, index) => @softwareVendorListing(vendor, index) }
+  </ul>
+</div>
+
