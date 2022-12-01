@@ -48,10 +48,19 @@ class SearchSoftwareViewSpec extends ViewSpec {
                       s"there ${if (hasError) "is" else "is not"} an error" should {
                         val document = getDocument(hasResults, hasError = hasError, beta = betaFeatureSwitch, pricing = pricingSwitch, overseas = displayOverseasProperty)
 
-                        "have a breadcrumb menu containing a link to the guidance page" in {
-                          val link = document.selectNth(".govuk-breadcrumbs__list-item", 1).selectHead("a")
-                          link.text shouldBe "Guidance"
-                          link.attr("href") shouldBe appConfig.guidance
+                        if(betaFeatureSwitch) {
+                          "have a breadcrumb menu containing a final link to the guidance page" in {
+                            val breadcrumbCount = document.select(".govuk-breadcrumbs__list-item").size()
+                            val link = document.selectNth(".govuk-breadcrumbs__list-item", breadcrumbCount).selectHead("a")
+                            link.text shouldBe "Guidance"
+                            link.attr("href") shouldBe appConfig.guidance
+                          }
+                        } else {
+                          "have a back link to the guidance page" in {
+                            val link = document.selectHead(".govuk-back-link")
+                            link.text shouldBe "Back"
+                            link.attr("href") shouldBe appConfig.guidance
+                          }
                         }
 
                         "have a title" in {

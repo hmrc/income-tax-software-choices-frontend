@@ -43,22 +43,30 @@
   <script @{CSPNonce.attr} src="@routes.Assets.versioned("javascript/softwareSearch.js")"></script>
 }
 
-@pageBreadcrumbs = {
-  @breadcrumbs(Breadcrumbs(
-    items = Seq(
-      BreadcrumbsItem(
-        content = Text(messages("breadcrumbs.guidance")),
-        href = Some(appConfig.guidance)
-      ),
-      BreadcrumbsItem(
-        content = Text(messages("breadcrumbs.filter")),
-        href = None
-      )
-    )
-  ))
+@pageBackLink = @{
+  if(betaFeatures) {
+    None
+  } else {
+    Some(appConfig.guidance)
+  }
 }
 
-@mainTemplate(title = messages("search-software.title"), breadcrumbs = Some(pageBreadcrumbs), optForm = Some(searchForm), scripts = Some(js)) {
+@pageBreadcrumbs = @{
+  if(betaFeatures) {
+    Some(breadcrumbs(Breadcrumbs(
+      items = Seq(
+        BreadcrumbsItem(
+          content = Text(messages("breadcrumbs.guidance")),
+          href = Some(appConfig.guidance)
+        )
+      )
+    )))
+  } else {
+    None
+  }
+}
+
+@mainTemplate(title = messages("search-software.title"), breadcrumbs = pageBreadcrumbs, backLink = pageBackLink, optForm = Some(searchForm), scripts = Some(js)) {
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">

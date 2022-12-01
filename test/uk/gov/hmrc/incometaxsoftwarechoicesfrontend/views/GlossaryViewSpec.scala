@@ -52,10 +52,11 @@ class GlossaryViewSpec extends ViewSpec {
   }
   
   "Glossary page with referer" should {
-    "have a breadcrumb menu containing a link to the guidance page" in {
+    "have a breadcrumb menu containing a final link to the product details page" in {
       val weirdName = "Name with weird characters #¢£"
       val document = getDocument(noItems, 1, lastChanged, referrerMaybe = Some(weirdName))
-      val link = document.selectNth(".govuk-breadcrumbs__list-item", 3).select("a")
+      val breadcrumbCount = document.select(".govuk-breadcrumbs__list-item").size()
+      val link = document.selectNth(".govuk-breadcrumbs__list-item", breadcrumbCount).selectHead("a")
       link.text shouldBe weirdName
       link.attr("href") shouldBe ProductDetailsController.show(URLEncoder.encode(weirdName, "UTF-8")).url
     }
@@ -71,11 +72,11 @@ class GlossaryViewSpec extends ViewSpec {
         link.attr("href") shouldBe appConfig.guidance
       }
 
-      "have a final non-link breadcrumb menu item describing this page" in {
+      "have a breadcrumb menu containing a final link to the filter page" in {
         val breadcrumbCount = document.select(".govuk-breadcrumbs__list-item").size()
-        val text = document.selectNth(".govuk-breadcrumbs__list-item", breadcrumbCount)
-        text.text() shouldBe glossary
-        text.children().isEmpty shouldBe true
+        val link = document.selectNth(".govuk-breadcrumbs__list-item", breadcrumbCount).selectHead("a")
+        link.text shouldBe filter
+        link.attr("href") shouldBe routes.SearchSoftwareController.show.url
       }
 
       "have a title" in {
@@ -196,6 +197,7 @@ private object GlossaryPageContent {
   val caption: String = "Last changed"
   val lastChanged: String = "St Crispin's Day"
   val guidance = "Guidance"
+  val filter = "Filter"
 
   val searchFor: String = "Search for the term you are looking for"
   val sortBy: String = "Sort by"

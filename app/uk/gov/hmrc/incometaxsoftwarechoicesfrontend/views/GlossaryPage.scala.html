@@ -64,10 +64,6 @@
             softwareNameMaybe.map(softwareName => BreadcrumbsItem(
                 content = Text(softwareName),
                 href = Some(ProductDetailsController.show(URLEncoder.encode(softwareName, "UTF-8")).url)
-            )),
-            Some(BreadcrumbsItem(
-                content = Text(messages("breadcrumbs.glossary")),
-                href = None
             ))
         ).flatten
     ))
