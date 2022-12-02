@@ -182,6 +182,27 @@
       "incomeAndDeductions": [
         "self-employment"
       ]
+    },
+    {
+      "name": "IRIS Accountancy Suite",
+      "url": "https://www.iris.co.uk/products/iris-accountancy-suite/",
+      "phone": "03448155555",
+      "email": "Support@iris.co.uk",
+      "website": "https://www.iris.co.uk/products/iris-accountancy-suite/",
+      "filters": [
+        "paid-for",
+        "agent",
+        "vat",
+        "sole-trader",
+        "uk-property",
+        "microsoft-windows",
+        "application-based",
+        "bridging"
+      ],
+      "incomeAndDeductions": [
+        "property-business",
+        "self-employment"
+      ]
     }
   ]
 }
