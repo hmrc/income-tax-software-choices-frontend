@@ -3,16 +3,7 @@
 $(document).ready(function() {
   $('#searchTerm').on("input", searchEventHandler(500));
 
-  $('.apply-filters-button').on("click", (event) => {
-    event.preventDefault();
-    submitSearch();
-  });
-
-  $('.clear-filters-button').on("click", (event) => {
-    event.preventDefault();
-    $('.filters-section .govuk-checkboxes__input').filter(':enabled').prop("checked", false);
-    submitSearch();
-  });
+  $('.govuk-checkboxes__item').on("click", searchEventHandler(500));
 });
 
 function searchEventHandler(timeout) {
