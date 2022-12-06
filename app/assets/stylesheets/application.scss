@@ -59,6 +59,10 @@
       background-position: -12.5% 45%;
     }
 
+    &:focus:not(:active):not(:hover) .search-icon {
+      background-image: url("../images/search-button-dark.png");
+    }
+
     &:active {
       top: 0;
     }
