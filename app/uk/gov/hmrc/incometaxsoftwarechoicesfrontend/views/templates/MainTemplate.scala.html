@@ -34,7 +34,7 @@
         fullWidthMainContentLayout: FullWidthMainContentLayout,
         standardAlphaBanner: StandardAlphaBanner
 )
-@(title: String, breadcrumbs: Option[Html] = None, optForm: Option[Form[_]] = None, scripts: Option[Html] = None)(contentBlock: Html)(implicit request: Request[_], messages: Messages)
+@(title: String, breadcrumbs: Option[Html] = None, backLink: Option[String]= None, optForm: Option[Form[_]] = None, scripts: Option[Html] = None)(contentBlock: Html)(implicit request: Request[_], messages: Messages)
 
 @prefixedTitle = @{
   optForm match {
@@ -47,8 +47,8 @@
   <link href='@controllers.routes.Assets.versioned("stylesheets/application.css")' media="all" rel="stylesheet" type="text/css"/>
 }
 
-@beforeContentBlock = {
-  @breadcrumbs.map(breadcrumbsHtml => breadcrumbsHtml)
+@beforeContentBlock(breadcrumbsHtml: Html) = {
+  @breadcrumbsHtml
   @hmrcLanguageSelectHelper()
 }
 
@@ -56,7 +56,8 @@
     pageTitle = prefixedTitle,
     serviceName = Some(messages("base.service-name")),
     additionalHeadBlock = Some(additionalHeadBlock),
-    beforeContentBlock = Some(beforeContentBlock),
+    backLinkUrl = backLink,
+    beforeContentBlock = breadcrumbs.map(breadcrumbsHtml => beforeContentBlock(breadcrumbsHtml)),
     nonce = CSPNonce.get,
     isWelshTranslationAvailable = appConfig.welshLanguageSupportEnabled,
     mainContentLayout = Some(fullWidthMainContentLayout(_)),

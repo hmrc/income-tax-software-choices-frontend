@@ -213,14 +213,11 @@ class ProductDetailsViewSpec extends ViewSpec {
                 link.attr("href") shouldBe appConfig.guidance
               }
 
-              "contains the filter page" in {
-                val link = document.selectNth(".govuk-breadcrumbs__list-item", 2).selectHead("a")
+              "contains the filter page as the last element" in {
+                val breadcrumbCount = document.select(".govuk-breadcrumbs__list-item").size()
+                val link = document.selectNth(".govuk-breadcrumbs__list-item", breadcrumbCount).selectHead("a")
                 link.text shouldBe "Filter"
                 link.attr("href") shouldBe routes.SearchSoftwareController.show.url
-              }
-
-              "contains the current page" in {
-                document.selectNth(".govuk-breadcrumbs__list-item", 3).text shouldBe softwareVendorModelFull.name
               }
             }
 
