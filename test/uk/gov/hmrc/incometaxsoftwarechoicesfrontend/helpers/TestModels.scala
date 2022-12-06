@@ -20,6 +20,8 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.IncomeAndDeduction.{B
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{FreeTrial, FreeVersion}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{IncomeAndDeduction, SoftwareVendorModel, SoftwareVendors, VendorFilter}
 
+import java.time.LocalDate
+
 object TestModels {
   val allFilters = Seq(
     VendorFilter.FreeVersion,
@@ -111,7 +113,7 @@ object TestModels {
   )
 
   val fullSoftwareVendorsModel: SoftwareVendors = SoftwareVendors(
-    lastUpdated = "06/07/2022",
+    lastUpdated = LocalDate.of(2022,12,2),
     vendors = Seq(
       fullSoftwareVendorModel.copy(
         filters = Seq.empty[VendorFilter],

@@ -23,6 +23,7 @@
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTemplate
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.{SoftwareFiltersTemplate, SoftwareFiltersTemplateAlpha, SoftwareVendorsTemplate, SoftwareVendorsTemplateAlpha}
 @import views.html.helper.CSPNonce
+@import uk.gov.hmrc.play.language.LanguageUtils
 
 @this(
   mainTemplate: MainTemplate,
@@ -34,8 +35,10 @@
   form: FormWithCSRF,
   govukCheckboxes: GovukCheckboxes,
   govukAccordion: GovukAccordion,
-  govukButton: GovukButton
+  govukButton: GovukButton,
+  languageUtils: LanguageUtils
 )(implicit appConfig: AppConfig)
+
 @(softwareVendors: SoftwareVendors, searchForm: Form[FiltersFormModel], postAction: Call, betaFeatures: Boolean, displayExtraPricingOptions: Boolean, displayOverseasPropertyOption: Boolean)(implicit request: Request[_], messages: Messages)
 
 @js = {
@@ -63,7 +66,7 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <p class="govuk-body-s">
-        @messages("search-software.last-update"): <span class="govuk-!-font-weight-bold">@softwareVendors.lastUpdated</span>
+        @messages("search-software.last-update"): <span class="govuk-!-font-weight-bold">@languageUtils.Dates.formatDateAbbrMonth(softwareVendors.lastUpdated)</span>
       </p>
 
       <h1 class="govuk-heading-xl">@messages("search-software.heading")</h1>

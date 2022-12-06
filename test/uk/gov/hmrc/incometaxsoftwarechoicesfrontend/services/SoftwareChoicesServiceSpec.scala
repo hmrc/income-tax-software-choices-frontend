@@ -28,6 +28,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.FreeTria
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareVendorModel, SoftwareVendors}
 
 import java.io.FileInputStream
+import java.time.LocalDate
 
 class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
 
@@ -43,7 +44,7 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
   }
 
   val unsortedSoftwareVendors: SoftwareVendors = SoftwareVendors(
-    lastUpdated = "06/07/2022",
+    lastUpdated = LocalDate.of(2022,12,2),
     vendors = Seq(
       testVendorOne,
       testVendorTwo,
@@ -52,7 +53,7 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
   )
 
   val expectedSoftwareVendors: SoftwareVendors = SoftwareVendors(
-    lastUpdated = "06/07/2022",
+    lastUpdated = LocalDate.of(2022,12,2),
     vendors = Seq(
       testVendorOne,
       testVendorThree,
@@ -61,14 +62,14 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
   )
 
   val expectedFilteredByVendorNameSoftwareVendors: SoftwareVendors = SoftwareVendors(
-    lastUpdated = "06/07/2022",
+    lastUpdated = LocalDate.of(2022,12,2),
     vendors = Seq(
       testVendorTwo
     )
   )
 
   val expectedFilteredByVendorFilterSoftwareVendors: SoftwareVendors = SoftwareVendors(
-    lastUpdated = "06/07/2022",
+    lastUpdated = LocalDate.of(2022,12,2),
     vendors = Seq(
       testVendorThree,
       testVendorTwo
@@ -76,7 +77,7 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
   )
 
   val expectedFilteredSoftwareVendors: SoftwareVendors = SoftwareVendors(
-    lastUpdated = "06/07/2022",
+    lastUpdated = LocalDate.of(2022,12,2),
     vendors = Seq(
       testVendorThree
     )
