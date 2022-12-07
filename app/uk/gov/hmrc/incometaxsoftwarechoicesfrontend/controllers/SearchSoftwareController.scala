@@ -50,19 +50,25 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
   }
 
   private def view(vendors: SoftwareVendors, ajax: Boolean, form: Form[FiltersFormModel])
-                  (implicit request: Request[_]): Html =
+                  (implicit request: Request[_]): Html = {
+
+    val betaEnabled: Boolean = isEnabled(BetaFeatures)
+    val extraPricingOptionsEnabled: Boolean = isEnabled(ExtraPricingOptions)
+    val overseasPropertyEnabled: Boolean = isEnabled(DisplayOverseasProperty)
+
     (ajax, isEnabled(BetaFeatures)) match {
       case (true, true) => softwareVendorsTemplate(vendors)
-      case (true, false) => softwareVendorsTemplateAlpha(vendors, isEnabled(ExtraPricingOptions))
+      case (true, false) => softwareVendorsTemplateAlpha(vendors, extraPricingOptionsEnabled, overseasPropertyEnabled)
       case _ =>
         searchSoftwarePage(
           vendors,
           form,
           routes.SearchSoftwareController.search(ajax),
-          isEnabled(BetaFeatures),
-          isEnabled(ExtraPricingOptions),
-          isEnabled(DisplayOverseasProperty)
+          betaEnabled,
+          extraPricingOptionsEnabled,
+          overseasPropertyEnabled
         )
     }
+  }
 
 }

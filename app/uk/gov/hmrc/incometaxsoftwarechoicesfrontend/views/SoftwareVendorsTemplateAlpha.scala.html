@@ -27,7 +27,7 @@
   govukSummaryList : GovukSummaryList
 )
 
-@(softwareVendors: SoftwareVendors, displayExtraPricingOptions: Boolean)(implicit messages: Messages)
+@(softwareVendors: SoftwareVendors, displayExtraPricingOptions: Boolean, displayOverseasPropertyOption: Boolean)(implicit messages: Messages)
 
 @customSummaryListRow(key: String, filtersAvailable: Seq[VendorFilter]) = @{
 
@@ -72,6 +72,42 @@
       classes = "govuk-body-s govuk-summary-list--value-override"
     )
   ))
+
+}
+
+@softwareVendorIncomeType(vendor: SoftwareVendorModel) = @{
+
+  customSummaryListRow(
+    key = "income-type",
+    filtersAvailable = vendor.orderedFilterSubset(VendorFilterGroups.incomeTypeFilters(displayOverseasPropertyOption))
+  )
+
+}
+
+@softwareVendorSoftwareFor(vendor: SoftwareVendorModel) = @{
+
+  customSummaryListRow(
+    key = "software-for",
+    filtersAvailable = vendor.orderedFilterSubset(VendorFilterGroups.softwareForFilters)
+  )
+
+}
+
+@softwareVendorCompatibility(vendor: SoftwareVendorModel) = @{
+
+  customSummaryListRow(
+    key = "software-compatibility",
+    filtersAvailable = vendor.orderedFilterSubset(VendorFilterGroups.compatibility)
+  )
+
+}
+
+@softwareVendorLanguage(vendor: SoftwareVendorModel) = @{
+
+  customSummaryListRow(
+    key = "language",
+    filtersAvailable = vendor.orderedFilterSubset(VendorFilterGroups.languagesFilters)
+  )
 
 }
 
@@ -121,14 +157,20 @@
 }
 
 @softwareVendorDetail(vendor: SoftwareVendorModel) = @{
+
   Seq(
+    softwareVendorAccessibility(vendor),
     softwareVendorPricing(vendor),
-    softwareVendorBusinessType(vendor),
+    softwareVendorIncomeType(vendor),
     softwareVendorCompatibleWith(vendor),
     softwareVendorMobileApp(vendor),
     softwareVendorSoftwareType(vendor),
-    softwareVendorAccessibility(vendor)
+    softwareVendorSoftwareFor(vendor),
+    softwareVendorBusinessType(vendor),
+    softwareVendorCompatibility(vendor),
+    softwareVendorLanguage(vendor)
   ).flatten
+
 }
 
 @softwareVendorListing(vendor: SoftwareVendorModel, index: Int) = {
@@ -173,7 +215,6 @@
     }
   <div>
 }
-
 
 @resultsHeader
 

@@ -178,16 +178,16 @@ class ProductDetailsViewSpec extends ViewSpec {
     .copy(filters = filterKeyToFilter.values.toList) // All filters
     .copy(accessibilityStatementLink = Some(accessibilityUrl))
 
-  val pricingRow = 1
-  val incomeTypeRow = 2
-  val compatibleWithRow = 3
-  val mobileAppRow = 4
-  val softwareTypeRow = 5
-  val softwareForRow = 6
-  val businessTypeRow = 7
-  val softwareCompatibilityRow = 8
-  val languageRow = 9
-  val accessibilityRow = 10
+  val accessibilityRow = 1
+  val pricingRow = 2
+  val incomeTypeRow = 3
+  val compatibleWithRow = 4
+  val mobileAppRow = 5
+  val softwareTypeRow = 6
+  val softwareForRow = 7
+  val businessTypeRow = 8
+  val softwareCompatibilityRow = 9
+  val languageRow = 10
 
   private def accessibilitySectionHeading(incomeFs: Boolean) = if (incomeFs) 4 else 3
 

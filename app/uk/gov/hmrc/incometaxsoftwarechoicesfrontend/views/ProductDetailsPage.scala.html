@@ -181,7 +181,7 @@
 }
 
 @rows = @{
-    VendorFilterGroups.detailPageGroups(displayExtraPricingOptions, displayOverseasPropertyOption).map{ case (group, label) =>
+    VendorFilterGroups.allGroups(displayExtraPricingOptions, displayOverseasPropertyOption).map{ case (group, label) =>
         productDetailsRow(
             key = label,
             filtersInRow = group

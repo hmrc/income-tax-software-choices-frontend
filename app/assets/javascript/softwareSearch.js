@@ -34,7 +34,7 @@ function submitSearch() {
     data: searchForm.serialize(),
     success: function(response) {
       $('#software-vendor-list').html(response);
-      $('#vendor-count').attr('role', 'alert');
+      $('#vendor-count').attr('role', 'status');
       toggleLoading(false);
     },
     error: function() {

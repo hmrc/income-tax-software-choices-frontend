@@ -15,12 +15,6 @@
    display: table-cell;
 }
 
-@media (min-width: 40.0625em) {
-    .govuk-summary-list--key-override {
-        width: 25%;
-    }
-}
-
 .software-vendor-list-heading-override {
    @include govuk-responsive-padding(4, "top");
 }
