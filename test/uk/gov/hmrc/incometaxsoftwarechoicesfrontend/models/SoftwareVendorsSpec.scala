@@ -24,7 +24,7 @@ class SoftwareVendorsSpec extends PlaySpec {
 
 
   val fullJson: JsObject = Json.obj(
-    "lastUpdated" -> "06/07/2022",
+    "lastUpdated" -> "2022-12-02",
     "vendors" -> Json.arr(
       Json.obj(
         "name" -> "software vendor name",

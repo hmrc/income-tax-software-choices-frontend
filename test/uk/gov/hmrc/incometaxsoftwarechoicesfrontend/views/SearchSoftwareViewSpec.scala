@@ -29,6 +29,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SearchSoftwarePage
 
 import java.net.URLEncoder
+import java.time.LocalDate
 import scala.jdk.CollectionConverters._
 
 class SearchSoftwareViewSpec extends ViewSpec {
@@ -584,7 +585,7 @@ object SearchSoftwareViewSpec extends ViewSpec {
 
 private object SearchSoftwarePageContent {
   val title = "Choose your software"
-  val lastUpdate = "This page was last updated: 01/07/2022"
+  val lastUpdate = "This page was last updated: 2 Dec 2022"
   val heading = "Choose your software"
   val paragraph1: String = "All software on this page has been through HMRC’s recognition process. " +
     "But we do not endorse or recommend any one product or software provider."
@@ -646,7 +647,7 @@ private object SearchSoftwarePageContent {
   val motor = "Motor"
   val cognitive = "Cognitive"
 
-  private val lastUpdateTest = "01/07/2022"
+  private val lastUpdateTest = LocalDate.of(2022,12,2)
 
   val softwareVendorsResults: SoftwareVendors = SoftwareVendors(
     lastUpdated = lastUpdateTest,
