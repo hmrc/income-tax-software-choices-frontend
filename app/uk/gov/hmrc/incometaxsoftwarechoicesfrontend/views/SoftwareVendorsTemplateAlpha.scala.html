@@ -134,15 +134,16 @@
 @softwareVendorListing(vendor: SoftwareVendorModel, index: Int) = {
   <div id="software-vendor-@index">
     <h3 class="govuk-heading-m software-vendor-list-heading-override">
-    @hmrcNewTabLinkHelper(NewTabLinkHelper(
-      text = vendor.name,
-      href = Some(vendor.url)
-    ))
+      @vendor.name
     </h3>
     @govukSummaryList(SummaryList(
       rows = softwareVendorDetail(vendor),
       classes = "govuk-summary-list--no-border"
     ))
+    <a href="@vendor.url" class="govuk-link">
+      @messages("search-software.vendor-visit-link", vendor.name)
+      <span class="govuk-visually-hidden">@messages("base.opens-in-new-tab")</span>
+    </a>
   </div>
 }
 
@@ -159,6 +160,10 @@
         }
       </span>
     </h2>
+
+    <p class="govuk-body">
+      @messages("search-software.search-form.paragraph")
+    </p>
 
     @if(softwareVendors.vendors.isEmpty) {
       <ul class="govuk-list govuk-list--bullet">

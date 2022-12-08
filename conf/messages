@@ -2,6 +2,7 @@ base.service-name           = Find software that’s compatible with Making Tax 
 base.title                  = {0} - Find software that’s compatible with Making Tax Digital for Income Tax - GOV.UK
 base.title.error            = Error: {0} - Find software that’s compatible with Making Tax Digital for Income Tax - GOV.UK
 base.error-heading          = There is a problem
+base.opens-in-new-tab       = (opens in new tab)
 
 # Breadcrumbs
 
@@ -33,6 +34,7 @@ search-software.filters.apply-filters = Apply filters
 search-software.filters.clear-filters = Clear filters
 
 search-software.search-form.heading = Search by software name
+search-software.search-form.paragraph = All links to the software providers’ websites open in a new tab.
 search-software.search-form.button  = Search by software name
 search-software.search-form.error   = Enter less than {0} characters
 
@@ -40,6 +42,7 @@ search-software.alpha-vendor-count-single = Currently there is 1 software provid
 search-software.alpha-vendor-count        = Currently there are {0} software providers
 search-software.vendor-count-single       = <b>1</b> software provider
 search-software.vendor-count              = <b>{0}</b> software providers
+search-software.vendor-visit-link         = Visit {0} website
 
 search-software.empty-vendor-list = Your search has returned no results. To increase the number of results, we suggest you:
 search-software.empty-vendor-list.bullet1 = reduce the number of filters you apply
