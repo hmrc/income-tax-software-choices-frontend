@@ -427,6 +427,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
                               "has a link for the software vendor" in {
                                 val link: Element = firstVendor.selectHead("a")
                                 link.attr("href") shouldBe SearchSoftwarePageContent.softwareVendorsResults.vendors.head.url
+                                link.attr("target") shouldBe "_blank"
                                 link.text contains s"${SearchSoftwarePageContent.softwareVendorsResults.vendors.head.name}"
                               }
 
@@ -496,6 +497,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
                               "has a link for the software vendor" in {
                                 val link: Element = secondVendor.selectHead("a")
                                 link.attr("href") shouldBe SearchSoftwarePageContent.softwareVendorsResults.vendors(1).url
+                                link.attr("target") shouldBe "_blank"
                                 link.text contains s"${SearchSoftwarePageContent.softwareVendorsResults.vendors(1).name}"
                               }
 
