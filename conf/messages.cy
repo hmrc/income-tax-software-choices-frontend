@@ -2,6 +2,7 @@ base.service-name           = Dod o hyd i feddalwedd am y cynllun Troi Treth yn 
 base.title                  = {0} - Dod o hyd i feddalwedd am y cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm - GOV.UK
 base.title.error            = Gwall: {0} - Dod o hyd i feddalwedd am y cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm - GOV.UK
 base.error-heading          = Mae problem wedi codi
+base.opens-in-new-tab       = (yn agor tab newydd)
 
 # Breadcrumbs
 
@@ -33,6 +34,7 @@ search-software.filters.apply-filters = Gweithredu hidlyddion
 search-software.filters.clear-filters = Clirio hidlyddion
 
 search-software.search-form.heading = Chwilio yn ôl enw meddalwedd
+search-software.search-form.paragraph = Mae pob cysylltiad i wefannau darparwyr meddalwedd yn agor mewn tab newydd.
 search-software.search-form.button  = Chwilio yn ôl enw meddalwedd
 search-software.search-form.error   = Nodwch lai na {0} o gymeriadau
 
@@ -40,6 +42,7 @@ search-software.alpha-vendor-count-single = Ar hyn o bryd, mae 1 darparwr meddal
 search-software.alpha-vendor-count        = Ar hyn o bryd, mae {0} o ddarparwyr meddalwedd
 search-software.vendor-count-single       = <b>1</b> darparwr meddalwedd
 search-software.vendor-count              = <b>{0}</b> darparwyr meddalwedd
+search-software.vendor-visit-link         = Ewch i wefan {0}
 
 search-software.empty-vendor-list         = Nid yw eich chwiliad wedi dangos unrhyw ganlyniadau. Er mwyn cynyddu nifer y canlyniadau awgrymwn ei bod yn gwneud y canlynol:
 search-software.empty-vendor-list.bullet1 = lleihau nifer yr hidlwyr yr ydych eu defnyddio

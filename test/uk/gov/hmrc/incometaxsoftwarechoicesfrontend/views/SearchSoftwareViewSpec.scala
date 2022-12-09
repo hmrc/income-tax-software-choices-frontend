@@ -418,12 +418,16 @@ class SearchSoftwareViewSpec extends ViewSpec {
                             "has a software vendor with lots of detail" which {
                               def firstVendor: Element = softwareVendorsSection.selectHead("#software-vendor-0")
 
-                              "has a heading link for the software vendor" in {
-                                val headingLink: Element = firstVendor.selectHead("h3").selectHead("a")
-                                headingLink.attr("target") shouldBe "_blank"
-                                headingLink.attr("rel") shouldBe "noopener noreferrer"
-                                headingLink.attr("href") shouldBe SearchSoftwarePageContent.softwareVendorsResults.vendors.head.url
-                                headingLink.text shouldBe s"${SearchSoftwarePageContent.softwareVendorsResults.vendors.head.name} (opens in a new tab)"
+                              "has a heading for the software vendor" in {
+                                val heading: Element = firstVendor.selectHead("h3")
+                                val firstVendorInModel = SearchSoftwarePageContent.softwareVendorsResults.vendors.head
+                                heading.text shouldBe s"${firstVendorInModel.name}"
+                              }
+
+                              "has a link for the software vendor" in {
+                                val link: Element = firstVendor.selectHead("a")
+                                link.attr("href") shouldBe SearchSoftwarePageContent.softwareVendorsResults.vendors.head.url
+                                link.text contains s"${SearchSoftwarePageContent.softwareVendorsResults.vendors.head.name}"
                               }
 
                               "has a list of detail for the software vendor with full detail" in {
@@ -463,12 +467,16 @@ class SearchSoftwareViewSpec extends ViewSpec {
                             "has a software vendor with minimal detail" which {
                               def secondVendor: Element = softwareVendorsSection.selectHead("#software-vendor-1")
 
-                              "has a heading link for the software vendor" in {
-                                val headingLink: Element = secondVendor.selectHead("h3").selectHead("a")
-                                headingLink.attr("target") shouldBe "_blank"
-                                headingLink.attr("rel") shouldBe "noopener noreferrer"
-                                headingLink.attr("href") shouldBe SearchSoftwarePageContent.softwareVendorsResults.vendors(1).url
-                                headingLink.text shouldBe s"${SearchSoftwarePageContent.softwareVendorsResults.vendors(1).name} (opens in a new tab)"
+                              "has a heading for the software vendor" in {
+                                val heading: Element = secondVendor.selectHead("h3")
+                                val secondVendorInModel = SearchSoftwarePageContent.softwareVendorsResults.vendors(1)
+                                heading.text shouldBe s"${secondVendorInModel.name}"
+                              }
+
+                              "has a link for the software vendor" in {
+                                val link: Element = secondVendor.selectHead("a")
+                                link.attr("href") shouldBe SearchSoftwarePageContent.softwareVendorsResults.vendors(1).url
+                                link.text contains s"${SearchSoftwarePageContent.softwareVendorsResults.vendors(1).name}"
                               }
 
                               "has a list of detail for the software vendor with minimal detail" in {
