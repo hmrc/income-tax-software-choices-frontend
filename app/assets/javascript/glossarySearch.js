@@ -32,7 +32,7 @@ function submitSearch() {
     data: searchForm.serialize(),
     success: function(response) {
       $('#glossary-list-content').html(response);
-      $('#glossary-result-count').attr('role', 'alert');
+      $('#glossary-result-count').attr('role', 'status');
       toggleLoading(false);
     },
     error: function() {

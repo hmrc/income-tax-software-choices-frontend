@@ -55,6 +55,7 @@ search-software.vendor-detail.pricing.free-version = Free version
 search-software.vendor-detail.pricing.no-free-version = No free version
 search-software.vendor-detail.pricing.paid-for = Paid for
 
+search-software.vendor-detail.income-type = Income type:
 search-software.vendor-detail.income-type.sole-trader = Sole trader
 search-software.vendor-detail.income-type.uk-property = UK property
 search-software.vendor-detail.income-type.overseas-property = Overseas property
@@ -71,6 +72,7 @@ search-software.vendor-detail.software-type = Software type:
 search-software.vendor-detail.software-type.browser-based = Browser based
 search-software.vendor-detail.software-type.application-based = Application based
 
+search-software.vendor-detail.software-for = Software for:
 search-software.vendor-detail.software-for.record-keeping = Record keeping
 search-software.vendor-detail.software-for.bridging = Bridging
 
@@ -78,9 +80,11 @@ search-software.vendor-detail.business-type = Business type:
 search-software.vendor-detail.business-type.individual = Individual
 search-software.vendor-detail.business-type.agent = Agent
 
+search-software.vendor-detail.software-compatibility = Software compatibility:
 search-software.vendor-detail.software-compatibility.vat = VAT
 search-software.vendor-detail.software-compatibility.income-tax = Income Tax
 
+search-software.vendor-detail.language = Language:
 search-software.vendor-detail.language.welsh = Welsh
 search-software.vendor-detail.language.english = English
 

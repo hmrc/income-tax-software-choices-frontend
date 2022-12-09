@@ -434,33 +434,53 @@ class SearchSoftwareViewSpec extends ViewSpec {
                                 val summaryList: Element = firstVendor.selectHead("dl")
 
                                 val firstRow: Element = summaryList.selectNth("div", 1)
-                                firstRow.selectHead("dt").text shouldBe SearchSoftwarePageContent.pricing
+                                firstRow.selectHead("dt").text shouldBe SearchSoftwarePageContent.accessibility
+                                firstRow.selectHead("dd").text shouldBe
+                                  s"${SearchSoftwarePageContent.visual}/${SearchSoftwarePageContent.hearing}/${SearchSoftwarePageContent.motor}/${SearchSoftwarePageContent.cognitive}"
+
+                                val secondRow: Element = summaryList.selectNth("div", 2)
+                                secondRow.selectHead("dt").text shouldBe SearchSoftwarePageContent.pricing
                                 val pricingText = if (pricingSwitch)
                                   s"${SearchSoftwarePageContent.freeTrial}/${SearchSoftwarePageContent.freeVersion}"
                                 else
                                   SearchSoftwarePageContent.freeVersion
-                                firstRow.selectHead("dd").text shouldBe pricingText
-
-                                val secondRow: Element = summaryList.selectNth("div", 2)
-                                secondRow.selectHead("dt").text shouldBe SearchSoftwarePageContent.businessType
-                                secondRow.selectHead("dd").text shouldBe s"${SearchSoftwarePageContent.individual}/${SearchSoftwarePageContent.agent}"
+                                secondRow.selectHead("dd").text shouldBe pricingText
 
                                 val thirdRow: Element = summaryList.selectNth("div", 3)
-                                thirdRow.selectHead("dt").text shouldBe SearchSoftwarePageContent.compatibleWith
-                                thirdRow.selectHead("dd").text shouldBe s"${SearchSoftwarePageContent.microsoftWindows}/${SearchSoftwarePageContent.macOS}"
+                                val incomeTypeText = if(displayOverseasProperty)
+                                  s"${SearchSoftwarePageContent.soleTrader}/${SearchSoftwarePageContent.ukProperty}/${SearchSoftwarePageContent.overseasProperty}"
+                                else
+                                  s"${SearchSoftwarePageContent.soleTrader}/${SearchSoftwarePageContent.ukProperty}"
+                                thirdRow.selectHead("dt").text shouldBe SearchSoftwarePageContent.incomeType
+                                thirdRow.selectHead("dd").text shouldBe incomeTypeText
 
-                                val forthRow: Element = summaryList.selectNth("div", 4)
-                                forthRow.selectHead("dt").text shouldBe SearchSoftwarePageContent.mobileApp
-                                forthRow.selectHead("dd").text shouldBe s"${SearchSoftwarePageContent.android}/${SearchSoftwarePageContent.appleIOS}"
+                                val fourthRow: Element = summaryList.selectNth("div", 4)
+                                fourthRow.selectHead("dt").text shouldBe SearchSoftwarePageContent.compatibleWith
+                                fourthRow.selectHead("dd").text shouldBe s"${SearchSoftwarePageContent.microsoftWindows}/${SearchSoftwarePageContent.macOS}"
 
                                 val fifthRow: Element = summaryList.selectNth("div", 5)
-                                fifthRow.selectHead("dt").text shouldBe SearchSoftwarePageContent.softwareType
-                                fifthRow.selectHead("dd").text shouldBe s"${SearchSoftwarePageContent.browserBased}/${SearchSoftwarePageContent.applicationBased}"
+                                fifthRow.selectHead("dt").text shouldBe SearchSoftwarePageContent.mobileApp
+                                fifthRow.selectHead("dd").text shouldBe s"${SearchSoftwarePageContent.android}/${SearchSoftwarePageContent.appleIOS}"
 
                                 val sixthRow: Element = summaryList.selectNth("div", 6)
-                                sixthRow.selectHead("dt").text shouldBe SearchSoftwarePageContent.accessibility
-                                sixthRow.selectHead("dd").text shouldBe
-                                  s"${SearchSoftwarePageContent.visual}/${SearchSoftwarePageContent.hearing}/${SearchSoftwarePageContent.motor}/${SearchSoftwarePageContent.cognitive}"
+                                sixthRow.selectHead("dt").text shouldBe SearchSoftwarePageContent.softwareType
+                                sixthRow.selectHead("dd").text shouldBe s"${SearchSoftwarePageContent.browserBased}/${SearchSoftwarePageContent.applicationBased}"
+
+                                val seventhRow: Element = summaryList.selectNth("div", 7)
+                                seventhRow.selectHead("dt").text shouldBe SearchSoftwarePageContent.softwareFor
+                                seventhRow.selectHead("dd").text shouldBe s"${SearchSoftwarePageContent.recordKeeping}/${SearchSoftwarePageContent.bridging}"
+
+                                val eighthRow: Element = summaryList.selectNth("div", 8)
+                                eighthRow.selectHead("dt").text shouldBe SearchSoftwarePageContent.businessType
+                                eighthRow.selectHead("dd").text shouldBe s"${SearchSoftwarePageContent.individual}/${SearchSoftwarePageContent.agent}"
+
+                                val ninthRow: Element = summaryList.selectNth("div", 9)
+                                ninthRow.selectHead("dt").text shouldBe SearchSoftwarePageContent.softwareCompatibility
+                                ninthRow.selectHead("dd").text shouldBe s"${SearchSoftwarePageContent.vat}/${SearchSoftwarePageContent.incomeTax}"
+
+                                val tenthRow: Element = summaryList.selectNth("div", 10)
+                                tenthRow.selectHead("dt").text shouldBe SearchSoftwarePageContent.language
+                                tenthRow.selectHead("dd").text shouldBe s"${SearchSoftwarePageContent.welsh}/${SearchSoftwarePageContent.english}"
                               }
                             }
 
@@ -484,15 +504,22 @@ class SearchSoftwareViewSpec extends ViewSpec {
 
                                 val firstRow: Element = summaryList.selectNth("div", 1)
                                 firstRow.selectHead("dt").text shouldBe SearchSoftwarePageContent.pricing
-
                                 val pricingText = if (pricingSwitch)
                                   s"${SearchSoftwarePageContent.noFreeTrial}/${SearchSoftwarePageContent.noFreeVersion}"
                                 else
                                   SearchSoftwarePageContent.noFreeVersion
                                 firstRow.selectHead("dd").text shouldBe pricingText
 
-                                val secondRow: Option[Element] = summaryList.selectOptionally("div:nth-of-type(2)")
-                                secondRow shouldBe None
+                                val secondRow: Element = summaryList.selectNth("div", 2)
+                                secondRow.selectHead("dt").text shouldBe SearchSoftwarePageContent.softwareCompatibility
+                                secondRow.selectHead("dd").text shouldBe SearchSoftwarePageContent.incomeTax
+
+                                val thirdRow: Element = summaryList.selectNth("div", 3)
+                                thirdRow.selectHead("dt").text shouldBe SearchSoftwarePageContent.language
+                                thirdRow.selectHead("dd").text shouldBe SearchSoftwarePageContent.english
+
+                                val fourthRow: Option[Element] = summaryList.selectOptionally("div:nth-of-type(4)")
+                                fourthRow shouldBe None
                               }
                             }
                           }
@@ -622,34 +649,48 @@ private object SearchSoftwarePageContent {
   val emptyVendorListMessage = "Your search has returned no results. To increase the number of results, we suggest you:"
   val emptyVendorListMessageBullet1 = "reduce the number of filters you apply"
   val emptyVendorListMessageBullet2 = "make sure the name you have entered into the search bar is correct"
+
   val pricing = "Pricing:"
   val freeTrial = "Free trial"
   val freeVersion = "Free version"
   val paidFor = "Paid for"
   val noFreeTrial = "No free trial"
   val noFreeVersion = "No free version"
+
+  val incomeType = "Income type:"
   val soleTrader = "Sole trader"
   val ukProperty = "UK property"
   val overseasProperty = "Overseas property"
+
   val businessType = "Business type:"
   val individual = "Individual"
   val agent = "Agent"
+
   val compatibleWith = "Compatible with:"
   val microsoftWindows = "Microsoft Windows"
   val macOS = "Mac OS"
+
+  val softwareFor = "Software for:"
   val recordKeeping = "Record keeping"
   val bridging = "Bridging"
+
   val mobileApp = "Mobile app:"
   val android = "Android"
   val appleIOS = "Apple iOS"
+
   val softwareType = "Software type:"
   val browserBased = "Browser based"
   val applicationBased = "Application based"
+
+  val softwareCompatibility = "Software compatibility:"
   val vat = "VAT"
   val incomeTax = "Income Tax"
-  val accessibility = "Accessibility:"
+
+  val language = "Language:"
   val welsh = "Welsh"
   val english = "English"
+
+  val accessibility = "Accessibility:"
   val visual = "Visual"
   val hearing = "Hearing"
   val motor = "Motor"
@@ -670,6 +711,9 @@ private object SearchSoftwarePageContent {
           VendorFilter.FreeVersion,
           VendorFilter.FreeTrial,
           VendorFilter.PaidFor,
+          VendorFilter.SoleTrader,
+          VendorFilter.UkProperty,
+          VendorFilter.OverseasProperty,
           VendorFilter.Individual,
           VendorFilter.Agent,
           VendorFilter.MicrosoftWindows,
@@ -678,12 +722,14 @@ private object SearchSoftwarePageContent {
           VendorFilter.AppleIOS,
           VendorFilter.BrowserBased,
           VendorFilter.ApplicationBased,
+          VendorFilter.RecordKeeping,
+          VendorFilter.Bridging,
+          VendorFilter.Vat,
+          VendorFilter.Welsh,
           VendorFilter.Visual,
           VendorFilter.Hearing,
           VendorFilter.Motor,
-          VendorFilter.Cognitive,
-          VendorFilter.RecordKeeping,
-          VendorFilter.Bridging
+          VendorFilter.Cognitive
         ),
         incomeAndDeductions = Seq.empty[IncomeAndDeduction]
       ),

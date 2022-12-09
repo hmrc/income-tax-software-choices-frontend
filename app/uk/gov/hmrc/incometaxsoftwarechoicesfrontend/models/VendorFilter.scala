@@ -227,16 +227,5 @@ object VendorFilterGroups {
     (compatibility, "software-compatibility"),
     (languagesFilters, "language")
   )
-  def detailPageGroups(displayExtraPricingOptions: Boolean, displayOverseasPropertyOption: Boolean): Seq[(Set[VendorFilter], String)] = Seq(
-    (pricingFilters(displayExtraPricingOptions), "pricing"),
-    (incomeTypeFilters(displayOverseasPropertyOption), "income-type"),
-    (compatibleWithFilters, "compatible-with"),
-    (mobileAppFilters, "mobile-app"),
-    (softwareTypeFilters, "software-type"),
-    (softwareForFilters, "software-for"),
-    (businessTypeFilters, "business-type"),
-    (compatibility, "software-compatibility"),
-    (languagesFilters, "language"),
-    (accessibilityFilters, "accessibility")
-  )
+ 
 }

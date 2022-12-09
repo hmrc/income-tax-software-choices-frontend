@@ -55,6 +55,7 @@ search-software.vendor-detail.pricing.free-version    = Fersiwn rhad ac am ddim
 search-software.vendor-detail.pricing.no-free-version = Dim fersiwn sy’n rhad ac am ddim ar gael
 search-software.vendor-detail.pricing.paid-for        = Wedi’i dalu
 
+search-software.vendor-detail.income-type                   = Math o incwm:
 search-software.vendor-detail.income-type.sole-trader       = Unig fasnachwr
 search-software.vendor-detail.income-type.uk-property       = Eiddo yn y DU
 search-software.vendor-detail.income-type.overseas-property = Eiddo tramor
@@ -71,6 +72,7 @@ search-software.vendor-detail.software-type                   = Math o feddalwed
 search-software.vendor-detail.software-type.browser-based     = I’w ddefnyddio drwy borwr
 search-software.vendor-detail.software-type.application-based = I’w ddefnyddio drwy raglen
 
+search-software.vendor-detail.software-for                = Meddalwedd ar gyfer:
 search-software.vendor-detail.software-for.record-keeping = Cadw cofnodion
 search-software.vendor-detail.software-for.bridging       = Pontio
 
@@ -78,9 +80,11 @@ search-software.vendor-detail.business-type            = Math o fusnes:
 search-software.vendor-detail.business-type.individual = Unigolyn
 search-software.vendor-detail.business-type.agent      = Asiant
 
+search-software.vendor-detail.software-compatibility            = Cydweddoldeb y meddalwedd:
 search-software.vendor-detail.software-compatibility.vat        = TAW
 search-software.vendor-detail.software-compatibility.income-tax = Treth Incwm
 
+search-software.vendor-detail.language         = Iaith
 search-software.vendor-detail.language.welsh   = Cymraeg
 search-software.vendor-detail.language.english = Saesneg
 
