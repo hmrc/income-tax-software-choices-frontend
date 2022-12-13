@@ -182,7 +182,7 @@
       rows = softwareVendorDetail(vendor),
       classes = "govuk-summary-list--no-border"
     ))
-    <a href="@vendor.url" class="govuk-link">
+    <a href="@vendor.url" class="govuk-link" target="_blank">
       @messages("search-software.vendor-visit-link", vendor.name)
       <span class="govuk-visually-hidden">@messages("base.opens-in-new-tab")</span>
     </a>
