@@ -23,6 +23,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTem
 
 class MainTemplateViewSpec extends ViewSpec {
   "Main Template" should {
+
     "have the report technical issues link" in {
       document.getTechnicalHelpLink shouldBe "http://localhost:9250/contact/report-technical-problem?newTab=true&service=ITSC&referrerUrl=%2F"
       document.getTechnicalHelpLinkText shouldBe "Is this page not working properly? (opens in new tab)"
@@ -38,6 +39,13 @@ class MainTemplateViewSpec extends ViewSpec {
       val feedbackLink: Element = bannerContent.selectHead("a")
       feedbackLink.text shouldBe "feedback"
       feedbackLink.attr("href") shouldBe "http://localhost:9250/contact/beta-feedback-unauthenticated?service=ITSC"
+    }
+
+    "have a link to the accessibility statement for the service" in {
+      val accessibilityStatementLink: Element = document.selectNth(".govuk-footer__inline-list-item", 2).selectHead("a")
+
+      accessibilityStatementLink.text shouldBe "Accessibility statement"
+      accessibilityStatementLink.attr("href") shouldBe "http://localhost:12346/accessibility-statement/income-tax-software-choices?referrerUrl=%2F"
     }
   }
 
