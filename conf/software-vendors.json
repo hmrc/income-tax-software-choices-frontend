@@ -203,6 +203,26 @@
         "property-business",
         "self-employment"
       ]
+    },
+    {
+      "name": "Tax Bridge: The Drivers App",
+      "url":"www.taxbs.com",
+      "phone": "03333446840",
+      "email": "hello@taxbs.com",
+      "website": "www.taxbs.com",
+      "filters": [
+        "free-version",
+        "individual",
+        "mac-os",
+        "application-based",
+        "record-keeping",
+        "android",
+        "apple-ios",
+        "sole-trader"
+      ],
+      "incomeAndDeductions": [
+        "self-employment"
+      ]
     }
   ]
 }
