@@ -22,7 +22,10 @@
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilterGroups
 
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.SoftwareSearchStatusTemplate
+
 @this(
+  softwareSearchStatusTemplate: SoftwareSearchStatusTemplate,
   hmrcNewTabLinkHelper: HmrcNewTabLinkHelper,
   govukSummaryList : GovukSummaryList
 )
@@ -189,34 +192,18 @@
   </div>
 }
 
-@resultsHeader = {
-  <div class=@if(softwareVendors.vendors.isEmpty){"empty-list"}else{"non-empty-list"}>
-    <h2 class="govuk-body govuk-!-font-weight-bold">
-      <span id="vendor-count" role="status" >
-        @if(softwareVendors.vendors.isEmpty) {
-          @messages("search-software.empty-vendor-list")
-        } else if(softwareVendors.vendors.length==1){
-          @messages("search-software.alpha-vendor-count-single")
-        } else {
-          @messages("search-software.alpha-vendor-count", softwareVendors.vendors.length)
-        }
-      </span>
-    </h2>
-
-    <p class="govuk-body">
-      @messages("search-software.search-form.paragraph")
-    </p>
-
-    @if(softwareVendors.vendors.isEmpty) {
-      <ul class="govuk-list govuk-list--bullet">
-        <li>@messages("search-software.empty-vendor-list.bullet1")</li>
-        <li>@messages("search-software.empty-vendor-list.bullet2")</li>
-      </ul>
-    }
+<div aria-hidden="true" class="govuk-visually-hidden">
+  <div id="updated-vendor-count">
+  @softwareSearchStatusTemplate(softwareVendors.vendors)
   </div>
-}
+</div>
 
-@resultsHeader
+
+@if(softwareVendors.vendors.nonEmpty) {
+<p class="govuk-body">
+  @messages("search-software.search-form.paragraph")
+</p>
+}
 
 @softwareVendors.vendors.zipWithIndex.map { case (vendor, index) =>
   @softwareVendorListing(vendor, index)

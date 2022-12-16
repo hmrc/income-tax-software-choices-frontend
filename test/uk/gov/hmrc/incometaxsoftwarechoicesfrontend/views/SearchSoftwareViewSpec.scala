@@ -364,15 +364,30 @@ class SearchSoftwareViewSpec extends ViewSpec {
 
 
                         if (!hasResults) "displays a message when the list is empty" which {
-                          val emptyListMessage = document.mainContent.selectHead(".empty-list")
+                          def emptyListMessage(selector: String = "#vendor-count"): Element = document.mainContent.selectHead(selector)
 
-                          "contains a header" in {
-                            emptyListMessage.selectHead("h2").text shouldBe SearchSoftwarePageContent.emptyVendorListMessage
-                          }
+                          if (betaFeatureSwitch) {
+                            "contains a header" in {
+                              emptyListMessage(".empty-list").selectHead("h2").text shouldBe SearchSoftwarePageContent.emptyVendorListMessage
+                            }
 
-                          "contains two bullet points" in {
-                            emptyListMessage.selectNth("ul li", 1).text shouldBe SearchSoftwarePageContent.emptyVendorListMessageBullet1
-                            emptyListMessage.selectNth("ul li", 2).text shouldBe SearchSoftwarePageContent.emptyVendorListMessageBullet2
+                            "contains two bullet points" in {
+                              emptyListMessage(".empty-list").selectNth("ul li", 1).text shouldBe SearchSoftwarePageContent.emptyVendorListMessageBullet1
+                              emptyListMessage(".empty-list").selectNth("ul li", 2).text shouldBe SearchSoftwarePageContent.emptyVendorListMessageBullet2
+                            }
+                          } else {
+                            "contains a header" in {
+                              emptyListMessage().selectHead("h2").text shouldBe SearchSoftwarePageContent.emptyVendorListMessageHeading
+                            }
+
+                            "contains a paragraph" in {
+                              emptyListMessage().selectHead("p").text shouldBe SearchSoftwarePageContent.emptyVendorListMessageParagraph
+                            }
+
+                            "contains two bullet points" in {
+                              emptyListMessage().selectNth("ul li", 1).text shouldBe SearchSoftwarePageContent.emptyVendorListMessageBullet1
+                              emptyListMessage().selectNth("ul li", 2).text shouldBe SearchSoftwarePageContent.emptyVendorListMessageBullet2
+                            }
                           }
                         } else if (betaFeatureSwitch) "have a beta software vendor section" which {
                           val softwareVendorsSection = getSoftwareVendorsSection(document)
@@ -409,7 +424,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
                           val softwareVendorsSection = getSoftwareVendorsSection(document)
 
                           "has a count of the number of software vendors on the page" in {
-                            softwareVendorsSection.selectHead(".non-empty-list")
+                            softwareVendorsSection.selectHead("#vendor-count")
                               .select("h2").text shouldBe SearchSoftwarePageContent.numberOfVendorsAlpha
                           }
 
@@ -649,6 +664,8 @@ private object SearchSoftwarePageContent {
   val numberOfVendors = "2 software providers"
 
   val emptyVendorListMessage = "Your search has returned no results. To increase the number of results, we suggest you:"
+  val emptyVendorListMessageHeading = "Your search has returned no results."
+  val emptyVendorListMessageParagraph = "To increase the number of results, we suggest you:"
   val emptyVendorListMessageBullet1 = "reduce the number of filters you apply"
   val emptyVendorListMessageBullet2 = "make sure the name you have entered into the search bar is correct"
 
@@ -748,6 +765,4 @@ private object SearchSoftwarePageContent {
   )
 
   val softwareVendorsNoResults: SoftwareVendors = SoftwareVendors(lastUpdated = lastUpdateTest, vendors = Seq.empty[SoftwareVendorModel])
-
-
 }

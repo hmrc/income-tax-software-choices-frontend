@@ -25,7 +25,8 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.Feature
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FiltersFormModel, SoftwareVendors}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.SoftwareChoicesService
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.{SearchSoftwarePage, SoftwareVendorsTemplate, SoftwareVendorsTemplateAlpha}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SearchSoftwarePage
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.{SoftwareVendorsTemplate, SoftwareVendorsTemplateAlpha}
 
 import javax.inject.{Inject, Singleton}
 

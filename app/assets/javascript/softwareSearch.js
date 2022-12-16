@@ -33,8 +33,9 @@ function submitSearch() {
     },
     data: searchForm.serialize(),
     success: function(response) {
+      const searchStatus = $(response).find('#updated-vendor-count').html()
+      $('#vendor-count').html(searchStatus)
       $('#software-vendor-list').html(response);
-      $('#vendor-count').attr('role', 'status');
       toggleLoading(false);
     },
     error: function() {

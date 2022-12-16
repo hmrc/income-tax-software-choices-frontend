@@ -20,13 +20,13 @@
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTemplate
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.{SoftwareFiltersTemplate, SoftwareFiltersTemplateAlpha, SoftwareVendorsTemplate, SoftwareVendorsTemplateAlpha}
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.{MainTemplate, SoftwareSearchStatusTemplate, SoftwareFiltersTemplate, SoftwareFiltersTemplateAlpha, SoftwareVendorsTemplate, SoftwareVendorsTemplateAlpha}
 @import views.html.helper.CSPNonce
 @import uk.gov.hmrc.play.language.LanguageUtils
 
 @this(
   mainTemplate: MainTemplate,
+  softwareSearchStatusTemplate: SoftwareSearchStatusTemplate,
   softwareVendorsTemplate: SoftwareVendorsTemplate,
   softwareVendorsTemplateAlpha: SoftwareVendorsTemplateAlpha,
   softwareFiltersTemplate: SoftwareFiltersTemplate,
@@ -124,6 +124,12 @@
             <span class="govuk-visually-hidden">@messages("search-software.search-form.button")</span>
           </button>
         </div>
+
+        @if(!betaFeatures) {
+          <div id="vendor-count" role="status">
+          @softwareSearchStatusTemplate(softwareVendors.vendors)
+          </div>
+        }
 
         <div id="software-vendors">
           <div class="loading-status" aria-hidden="true"></div>
