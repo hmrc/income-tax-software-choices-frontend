@@ -44,9 +44,11 @@ search-software.vendor-count-single       = <b>1</b> darparwr meddalwedd
 search-software.vendor-count              = <b>{0}</b> darparwyr meddalwedd
 search-software.vendor-visit-link         = Ewch i wefan {0}
 
-search-software.empty-vendor-list         = Nid yw eich chwiliad wedi dangos unrhyw ganlyniadau. Er mwyn cynyddu nifer y canlyniadau awgrymwn ei bod yn gwneud y canlynol:
-search-software.empty-vendor-list.bullet1 = lleihau nifer yr hidlwyr yr ydych eu defnyddio
-search-software.empty-vendor-list.bullet2 = gwneud yn siŵr bod yr enw yr ydych wedi’i nodi yn y bar chwilio yn gywir
+search-software.empty-vendor-list           = Nid yw eich chwiliad wedi dangos unrhyw ganlyniadau. Er mwyn cynyddu nifer y canlyniadau awgrymwn ei bod yn gwneud y canlynol:
+search-software.empty-vendor-list.heading   = Er mwyn cynyddu nifer y canlyniadau awgrymwn ei bod yn gwneud y canlynol:
+search-software.empty-vendor-list.paragraph = To increase the number of results, we suggest you:
+search-software.empty-vendor-list.bullet1   = lleihau nifer yr hidlwyr yr ydych eu defnyddio
+search-software.empty-vendor-list.bullet2   = gwneud yn siŵr bod yr enw yr ydych wedi’i nodi yn y bar chwilio yn gywir
 
 search-software.vendor-detail.pricing                 = Prisio:
 search-software.vendor-detail.pricing.free-trial      = Cyfnod prawf am ddim

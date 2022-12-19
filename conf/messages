@@ -44,9 +44,11 @@ search-software.vendor-count-single       = <b>1</b> software provider
 search-software.vendor-count              = <b>{0}</b> software providers
 search-software.vendor-visit-link         = Visit {0} website
 
-search-software.empty-vendor-list = Your search has returned no results. To increase the number of results, we suggest you:
-search-software.empty-vendor-list.bullet1 = reduce the number of filters you apply
-search-software.empty-vendor-list.bullet2 = make sure the name you have entered into the search bar is correct
+search-software.empty-vendor-list           = Your search has returned no results. To increase the number of results, we suggest you:
+search-software.empty-vendor-list.heading   = Your search has returned no results.
+search-software.empty-vendor-list.paragraph = To increase the number of results, we suggest you:
+search-software.empty-vendor-list.bullet1   = reduce the number of filters you apply
+search-software.empty-vendor-list.bullet2   = make sure the name you have entered into the search bar is correct
 
 search-software.vendor-detail.pricing = Pricing:
 search-software.vendor-detail.pricing.free-trial = Free trial
