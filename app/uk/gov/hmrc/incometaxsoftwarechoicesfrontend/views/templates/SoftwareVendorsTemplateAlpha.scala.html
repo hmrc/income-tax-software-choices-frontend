@@ -17,11 +17,8 @@
 @import uk.gov.hmrc.govukfrontend.views.html.components._
 @import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 @import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcNewTabLinkHelper
-@import uk.gov.hmrc.hmrcfrontend.views.viewmodels.newtablinkhelper.NewTabLinkHelper
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilterGroups
-
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{VendorFilterGroups, _}
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.SoftwareSearchStatusTemplate
 
 @this(
@@ -194,7 +191,7 @@
 
 <div aria-hidden="true" class="govuk-visually-hidden">
   <div id="updated-vendor-count">
-  @softwareSearchStatusTemplate(softwareVendors.vendors)
+  @softwareSearchStatusTemplate(betaFeatures = false, softwareVendors = softwareVendors.vendors)
   </div>
 </div>
 

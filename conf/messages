@@ -40,8 +40,8 @@ search-software.search-form.error   = Enter less than {0} characters
 
 search-software.alpha-vendor-count-single = Currently there is 1 software provider
 search-software.alpha-vendor-count        = Currently there are {0} software providers
-search-software.vendor-count-single       = <b>1</b> software provider
-search-software.vendor-count              = <b>{0}</b> software providers
+search-software.vendor-count-single       = 1 software provider
+search-software.vendor-count              = {0} software providers
 search-software.vendor-visit-link         = Visit {0} website
 
 search-software.empty-vendor-list           = Your search has returned no results. To increase the number of results, we suggest you:
