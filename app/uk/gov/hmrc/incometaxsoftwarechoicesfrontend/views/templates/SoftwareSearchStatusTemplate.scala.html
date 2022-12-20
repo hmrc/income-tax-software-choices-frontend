@@ -18,7 +18,15 @@
 
 @this()
 
-@(softwareVendors: Seq[SoftwareVendorModel])(implicit messages: Messages)
+@(betaFeatures: Boolean = true, softwareVendors: Seq[SoftwareVendorModel])(implicit messages: Messages)
+
+@messagesKeyPrefix = @{
+  if(betaFeatures) {
+    ""
+  } else {
+    "alpha-"
+  }
+}
 
 @{if (softwareVendors.isEmpty) {
   <h2 class="govuk-body govuk-!-font-weight-bold">{messages("search-software.empty-vendor-list.heading")}</h2>
@@ -28,7 +36,7 @@
     <li>{messages("search-software.empty-vendor-list.bullet2")}</li>
   </ul>
 } else if (softwareVendors.length == 1) {
-  <h2 class="govuk-body govuk-!-font-weight-bold">{messages("search-software.alpha-vendor-count-single")}</h2>
+  <h2 class="govuk-body govuk-!-font-weight-bold">{messages(s"search-software.${messagesKeyPrefix}vendor-count-single")}</h2>
 } else {
-  <h2 class="govuk-body govuk-!-font-weight-bold">{messages("search-software.alpha-vendor-count", softwareVendors.length)}</h2>
+  <h2 class="govuk-body govuk-!-font-weight-bold">{messages(s"search-software.${messagesKeyPrefix}vendor-count", softwareVendors.length)}</h2>
 }}

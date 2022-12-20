@@ -171,8 +171,8 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec with BeforeAndAfte
   }
 
   private def getCountMessage(value: Int, beta: Boolean = false) = (beta, value>1) match {
-    case (true, true) => s"<b>$value</b> software providers"
-    case (true, false) => s"<b>$value</b> software provider"
+    case (true, true) => s"$value software providers"
+    case (true, false) => s"$value software provider"
     case (false, true) => s"Currently there are $value software providers"
     case (false, false) => s"Currently there is 1 software provider"
   }

@@ -23,8 +23,10 @@
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.SoftwareChoicesService
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes.ProductDetailsController
 @import java.net.URLEncoder
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.SoftwareSearchStatusTemplate
 
 @this(
+  softwareSearchStatusTemplate: SoftwareSearchStatusTemplate,
   hmrcNewTabLinkHelper: HmrcNewTabLinkHelper,
   govukSummaryList : GovukSummaryList
 )
@@ -45,30 +47,12 @@
   </li>
 }
 
-@resultsHeader = {
-  <div class=@if(softwareVendors.vendors.isEmpty){"empty-list"}else{"non-empty-list"}>
-    <h2 class="govuk-body govuk-!-font-weight-bold">
-      <span id="vendor-count" role="status" class="software-vendors-num">
-        @if(softwareVendors.vendors.isEmpty) {
-          @messages("search-software.empty-vendor-list")
-        } else if(softwareVendors.vendors.length==1){
-          @Html(messages("search-software.vendor-count-single"))
-        } else {
-          @Html(messages("search-software.vendor-count", softwareVendors.vendors.length))
-        }
-      </span>
-    </h2>
+<div aria-hidden="true" class="govuk-visually-hidden">
+  <div id="updated-vendor-count">
+  @softwareSearchStatusTemplate(softwareVendors = softwareVendors.vendors)
+  </div>
+</div>
 
-    @if(softwareVendors.vendors.isEmpty) {
-    <ul class="govuk-list govuk-list--bullet">
-        <li>@messages("search-software.empty-vendor-list.bullet1")</li>
-        <li>@messages("search-software.empty-vendor-list.bullet2")</li>
-    </ul>
-    }
-  <div>
-}
-
-@resultsHeader
 <div class="software-packages-full">
   <ul class="software-packages-ul">
     @softwareVendors.vendors.zipWithIndex.map { case (vendor, index) => @softwareVendorListing(vendor, index) }
