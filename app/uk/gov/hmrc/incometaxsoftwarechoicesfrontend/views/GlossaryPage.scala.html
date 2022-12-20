@@ -17,29 +17,23 @@
 @import uk.gov.hmrc.govukfrontend.views.html.components._
 @import uk.gov.hmrc.govukfrontend.views.viewmodels.breadcrumbs.{Breadcrumbs, BreadcrumbsItem}
 @import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
-@import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcNewTabLinkHelper
-@import uk.gov.hmrc.hmrcfrontend.views.viewmodels.newtablinkhelper.NewTabLinkHelper
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes.SearchSoftwareController
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes.ProductDetailsController
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes.{ProductDetailsController, SearchSoftwareController}
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms._
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTemplate
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilterGroups
-@import uk.gov.hmrc.govukfrontend.views.viewmodels.breadcrumbs.{Breadcrumbs, BreadcrumbsItem}
-@import uk.gov.hmrc.govukfrontend.views.viewmodels.breadcrumbs.{Breadcrumbs, BreadcrumbsItem}
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.GlossaryItemsTemplate
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.GlossarySearchStatusTemplate
 @import views.html.helper.CSPNonce
-@import uk.gov.hmrc.govukfrontend.views.html.components.implicits._
-@import uk.gov.hmrc.hmrcfrontend.views.html.components.implicits._
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes.SearchSoftwareController
+
 @import java.net.URLEncoder
 
 @this(
   mainTemplate: MainTemplate,
   breadcrumbs: GovukBreadcrumbs,
   form: FormWithCSRF,
-  glossaryPageList: GlossaryPageList,
+  glossaryItemsTemplate: GlossaryItemsTemplate,
+  glossarySearchStatusTemplate: GlossarySearchStatusTemplate,
   govukInput: GovukInput,
   govukSelect: GovukSelect
 )(implicit appConfig: AppConfig)
@@ -126,18 +120,16 @@
     </div>
 }
 
-@inputForm = {
-  @form(action = postAction) {
-        @errors
-        @searchTerm
-        @sortTerm
-  }
+@glossarySearchStatus = {
+  <div id="glossary-result-count" role="status">
+    @glossarySearchStatusTemplate(initialsToMessagePairsList, glossaryForm.data.nonEmpty)
+  </div>
 }
 
 @glossaryList = {
   <div id="glossary-list-container">
     <div class="loading-status" aria-hidden="true"></div>
-    @glossaryPageList(
+    @glossaryItemsTemplate(
       initialsToMessagePairsList = initialsToMessagePairsList,
       glossaryMaxLabelsWithoutLinks = glossaryMaxLabelsWithoutLinks,
       searched = glossaryForm.data.nonEmpty
@@ -146,11 +138,15 @@
 }
 
 @mainTemplate(title = messages("glossary.title"), breadcrumbs = Some(pageBreadcrumbs), scripts = Some(js)) {
+  @headerBlock
 
-    @headerBlock
+  @form(action = postAction) {
+    @errors
+    @searchTerm
+    @sortTerm
+  }
 
-    @inputForm
+  @glossarySearchStatus
 
-    @glossaryList
-
+  @glossaryList
 }

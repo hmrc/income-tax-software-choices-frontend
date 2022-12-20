@@ -31,8 +31,9 @@ function submitSearch() {
     },
     data: searchForm.serialize(),
     success: function(response) {
+      const searchStatus = $(response).find('#updated-glossary-result-count').html()
+      $('#glossary-result-count').html(searchStatus)
       $('#glossary-list-content').html(response);
-      $('#glossary-result-count').attr('role', 'status');
       toggleLoading(false);
     },
     error: function() {

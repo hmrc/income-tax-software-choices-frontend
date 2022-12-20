@@ -29,7 +29,8 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.Feature
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.GlossaryForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.GlossaryFormModel
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.GlossaryService
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.{GlossaryPage, GlossaryPageList}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.GlossaryPage
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.GlossaryItemsTemplate
 import uk.gov.hmrc.play.language.LanguageUtils
 
 import scala.concurrent.Future
@@ -128,7 +129,7 @@ class GlossaryControllerSpec extends ControllerBaseSpec with FeatureSwitching wi
 
         when(mockGlossaryService.getGlossaryContent(ArgumentMatchers.eq(glossarySearchModel))(ArgumentMatchers.eq(English)))
           .thenReturn(glossaryListResult)
-        when(mockGlossaryPageList(
+        when(mockGlossaryItemsTemplate(
           ArgumentMatchers.eq(glossaryListResult),
           ArgumentMatchers.eq(GlossaryController.glossaryMaxLabelsWithoutLinks),
           ArgumentMatchers.eq(true)
@@ -167,14 +168,14 @@ class GlossaryControllerSpec extends ControllerBaseSpec with FeatureSwitching wi
 
   trait Setup {
     val mockGlossaryPage: GlossaryPage = mock[GlossaryPage]
-    val mockGlossaryPageList: GlossaryPageList = mock[GlossaryPageList]
+    val mockGlossaryItemsTemplate: GlossaryItemsTemplate = mock[GlossaryItemsTemplate]
     val mockGlossaryService: GlossaryService = mock[GlossaryService]
 
     lazy val controller = new GlossaryController(
       mcc,
       appConfig,
       mockGlossaryPage,
-      mockGlossaryPageList,
+      mockGlossaryItemsTemplate,
       mockGlossaryService
     )
   }

@@ -28,27 +28,21 @@
 @import uk.gov.hmrc.govukfrontend.views.viewmodels.breadcrumbs.{Breadcrumbs, BreadcrumbsItem}
 @import uk.gov.hmrc.govukfrontend.views.viewmodels.breadcrumbs.{Breadcrumbs, BreadcrumbsItem}
 @import views.html.helper.CSPNonce
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.GlossarySearchStatusTemplate
 
 @this(
-  govukSummaryList: GovukSummaryList
+  govukSummaryList: GovukSummaryList,
+  glossarySearchStatusTemplate: GlossarySearchStatusTemplate
 )
 
 @(initialsToMessagePairsList: Seq[(String, Seq[(String, String)])], glossaryMaxLabelsWithoutLinks: Int, searched: Boolean)(implicit messages: Messages, request: Request[_])
 
-@numberOfResults = @{
-  initialsToMessagePairsList.flatMap(_._2).size
-}
-
 @searchCount = {
-  @if(searched) {
-    <p id="glossary-result-count" class="govuk-body">
-      @{numberOfResults match {
-        case 0 => messages("glossary.search-results-count.zero")
-        case 1 => messages("glossary.search-results-count.single")
-        case _ => messages("glossary.search-results-count.multiple", numberOfResults)
-      }}
-    </p>
-  }
+  <div aria-hidden="true" class="govuk-visually-hidden">
+    <div id="updated-glossary-result-count">
+      @glossarySearchStatusTemplate(initialsToMessagePairsList, searched)
+    </div>
+  </div>
 }
 
 @links = {
