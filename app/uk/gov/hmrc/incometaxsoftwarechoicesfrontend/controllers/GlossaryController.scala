@@ -26,7 +26,8 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.GlossaryForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.GlossaryFormModel
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.GlossaryService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.GlossaryService.GlossaryContent
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.{GlossaryPage, GlossaryPageList}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.GlossaryPage
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.GlossaryItemsTemplate
 
 import java.net.{URL, URLDecoder}
 import javax.inject.{Inject, Singleton}
@@ -35,7 +36,7 @@ import javax.inject.{Inject, Singleton}
 class GlossaryController @Inject()(mcc: MessagesControllerComponents,
                                    val appConfig: AppConfig,
                                    glossaryPage: GlossaryPage,
-                                   glossaryPageList: GlossaryPageList,
+                                   glossaryItemsTemplate: GlossaryItemsTemplate,
                                    glossaryService: GlossaryService) extends BaseFrontendController(mcc) {
 
   private val glossaryForm: Form[GlossaryFormModel] = GlossaryForm.form
@@ -59,7 +60,7 @@ class GlossaryController @Inject()(mcc: MessagesControllerComponents,
                    form: Form[GlossaryFormModel] = glossaryForm,
                    glossaryContent: GlossaryContent)(implicit lang: Lang, request: Request[_]) = {
     if (ajax) {
-      glossaryPageList(
+      glossaryItemsTemplate(
         glossaryContent,
         glossaryMaxLabelsWithoutLinks,
         searched = true
