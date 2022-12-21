@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services
 
+import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
 import org.scalatestplus.play.PlaySpec
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.Application
@@ -36,6 +37,21 @@ class SoftwareChoicesServiceISpec extends PlaySpec with GuiceOneServerPerSuite {
           app(file).injector.instanceOf[SoftwareChoicesService].softwareVendors
           succeed
         }.getOrElse(fail(s"[SoftwareChoicesISpec] - could not successfully load using file: $file"))
+      }
+    }
+  }
+
+  Seq("software-vendors.json") foreach { file =>
+    file must {
+      "have url starting with https://" in {
+        Try{
+          val test = app(file).injector.instanceOf[SoftwareChoicesService].softwareVendors.vendors
+          test.foreach{ element =>
+            element.url.startsWith("https://") shouldBe true
+            element.website.startsWith("https://") shouldBe true
+          }
+          succeed
+        }.getOrElse(fail(s"[Software Vendor url] - missing https://"))
       }
     }
   }
