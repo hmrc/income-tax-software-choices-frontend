@@ -28,7 +28,6 @@ class SoftwareVendorsSpec extends PlaySpec {
     "vendors" -> Json.arr(
       Json.obj(
         "name" -> "software vendor name",
-        "url" -> "/test-url",
         "email" -> "test@software-vendor-name.com",
         "phone" -> "00000 000 000",
         "website" -> "software-vendor-name.com",

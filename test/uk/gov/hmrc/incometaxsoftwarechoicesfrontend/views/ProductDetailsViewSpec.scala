@@ -162,7 +162,6 @@ class ProductDetailsViewSpec extends ViewSpec {
 
   val softwareVendorModelBase: SoftwareVendorModel = SoftwareVendorModel(
     name = "abc",
-    url = "/url",
     email = Some("test@software-vendor-name-three.com"),
     phone = Some("00000 000 000"),
     website = "software-vendor-name-three.com",

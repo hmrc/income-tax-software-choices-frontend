@@ -20,7 +20,6 @@ import play.api.libs.json.{Json, Reads}
 
 case class SoftwareVendorModel(
                                 name: String,
-                                url: String,
                                 email: Option[String],
                                 phone: Option[String],
                                 website: String,

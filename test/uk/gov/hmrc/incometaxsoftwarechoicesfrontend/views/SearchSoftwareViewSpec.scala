@@ -430,7 +430,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
 
                               "has a link for the software vendor" in {
                                 val link: Element = firstVendor.selectHead("a")
-                                link.attr("href") shouldBe SearchSoftwarePageContent.softwareVendorsResults.vendors.head.url
+                                link.attr("href") shouldBe SearchSoftwarePageContent.softwareVendorsResults.vendors.head.website
                                 link.attr("target") shouldBe "_blank"
                                 link.text contains s"${SearchSoftwarePageContent.softwareVendorsResults.vendors.head.name}"
                               }
@@ -500,7 +500,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
 
                               "has a link for the software vendor" in {
                                 val link: Element = secondVendor.selectHead("a")
-                                link.attr("href") shouldBe SearchSoftwarePageContent.softwareVendorsResults.vendors(1).url
+                                link.attr("href") shouldBe SearchSoftwarePageContent.softwareVendorsResults.vendors(1).website
                                 link.attr("target") shouldBe "_blank"
                                 link.text contains s"${SearchSoftwarePageContent.softwareVendorsResults.vendors(1).name}"
                               }
@@ -711,7 +711,6 @@ private object SearchSoftwarePageContent {
     vendors = Seq(
       SoftwareVendorModel(
         name = "test software vendor one",
-        url = "/test-vendor-one-url",
         email = Some("test@software-vendor-name-one.com"),
         phone = Some("11111 111 111"),
         website = "software-vendor-name-one.com",
@@ -743,7 +742,6 @@ private object SearchSoftwarePageContent {
       ),
       SoftwareVendorModel(
         name = "test software vendor two",
-        url = "/test-vendor-two-url",
         email = Some("test@software-vendor-name-two.com"),
         phone = Some("22222 222 222"),
         website = "software-vendor-name-two.com",

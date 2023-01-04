@@ -23,7 +23,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{IncomeAndDeduction, 
 import java.time.LocalDate
 
 object TestModels {
-  val allFilters = Seq(
+  private val allFilters = Seq(
     VendorFilter.FreeVersion,
     VendorFilter.FreeTrial,
     VendorFilter.Individual,
@@ -40,7 +40,7 @@ object TestModels {
     VendorFilter.Cognitive
   )
 
-  val allIncomeAndDeductions = Seq(
+  private val allIncomeAndDeductions = Seq(
     IncomeAndDeduction.BlindPersonsAllowance,
     IncomeAndDeduction.CapitalGainsTax,
     IncomeAndDeduction.ComplexPartnerships,
@@ -72,7 +72,6 @@ object TestModels {
 
   val fullSoftwareVendorModel: SoftwareVendorModel = SoftwareVendorModel(
     name = "software vendor name",
-    url = "/test-url",
     email = Some("test@software-vendor-name.com"),
     phone = Some("00000 000 000"),
     website = "software-vendor-name.com",
@@ -83,7 +82,6 @@ object TestModels {
 
   val testVendorOne: SoftwareVendorModel = SoftwareVendorModel(
     "test software vendor one",
-    "/test-url-one",
     Some("test@software-vendor-name-one.com"),
     Some("11111 111 111"),
     "software-vendor-name-one.com",
@@ -94,7 +92,6 @@ object TestModels {
 
   val testVendorTwo: SoftwareVendorModel = SoftwareVendorModel(
     "test software vendor two",
-    "/test-url-two",
     Some("test@software-vendor-name-two.com"),
     Some("22222 222 222"),
     "software-vendor-name-two.com",
@@ -104,7 +101,6 @@ object TestModels {
 
   val testVendorThree: SoftwareVendorModel = SoftwareVendorModel(
     "test software vendor three",
-    "/test-url-three",
     Some("test@software-vendor-name-three.com"),
     Some("33333 333 333"),
     "software-vendor-name-three.com",
