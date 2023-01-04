@@ -3,7 +3,7 @@
   "invalid-vendors": [
     {
       "invalid-name": "test software vendor one",
-      "invalid-url": "/test-url",
+      "invalid-website": "smtp:///test-website",
       "invalid-filters": [
         "free-version"
       ]

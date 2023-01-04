@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,6 @@ class SoftwareVendorsSpec extends PlaySpec {
     "vendors" -> Json.arr(
       Json.obj(
         "name" -> "software vendor name",
-        "url" -> "/test-url",
         "email" -> "test@software-vendor-name.com",
         "phone" -> "00000 000 000",
         "website" -> "software-vendor-name.com",

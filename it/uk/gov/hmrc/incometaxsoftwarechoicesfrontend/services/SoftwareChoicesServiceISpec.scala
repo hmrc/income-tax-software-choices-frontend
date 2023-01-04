@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,19 +41,9 @@ class SoftwareChoicesServiceISpec extends PlaySpec with GuiceOneServerPerSuite {
     }
   }
 
-  Seq("software-vendors.json") foreach { file =>
-    file must {
-      "have url starting with https://" in {
-        Try{
-          val test = app(file).injector.instanceOf[SoftwareChoicesService].softwareVendors.vendors
-          test.foreach{ element =>
-            element.url.startsWith("https://") shouldBe true
-            element.website.startsWith("https://") shouldBe true
-          }
-          succeed
-        }.getOrElse(fail(s"[Software Vendor url] - missing https://"))
-      }
-    }
+  "software-vendors.json must have all websites starting with https://" in {
+    val test = app("software-vendors.json").injector.instanceOf[SoftwareChoicesService].softwareVendors.vendors
+    test.foreach(element => element.website should startWith("https://"))
   }
 
   "a file which does not exist" must {

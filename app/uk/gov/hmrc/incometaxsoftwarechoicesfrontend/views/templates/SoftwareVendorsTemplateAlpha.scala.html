@@ -1,5 +1,5 @@
 @*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -182,7 +182,7 @@
       rows = softwareVendorDetail(vendor),
       classes = "govuk-summary-list--no-border"
     ))
-    <a href="@vendor.url" class="govuk-link" target="_blank">
+    <a href="@vendor.website" class="govuk-link" target="_blank">
       @messages("search-software.vendor-visit-link", vendor.name)
       <span class="govuk-visually-hidden">@messages("base.opens-in-new-tab")</span>
     </a>

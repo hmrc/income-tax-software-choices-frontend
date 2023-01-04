@@ -3,7 +3,6 @@
   "vendors": [
     {
       "name": "FreeAgent",
-      "url": "https://www.freeagent.com/guides/making-tax-digital/",
       "email": "support@freeagent.com",
       "website": "https://www.freeagent.com/guides/making-tax-digital/",
       "accessibilityStatementLink": "https://www.freeagent.com/website/accessibility/",
@@ -28,7 +27,6 @@
     },
     {
       "name": "APARI: Self-Employed, Landlords & Accountants",
-      "url": "https://www.apari-digital.com/making-tax-digital?utm_source=gov.uk&utm_medium=web_referral&utm_campaign=hmrc_mtd_software/",
       "email": "register@apari-digital.com",
       "website": "https://www.apari-digital.com/making-tax-digital?utm_source=gov.uk&utm_medium=web_referral&utm_campaign=hmrc_mtd_software/",
       "filters": [
@@ -49,7 +47,6 @@
     },
     {
       "name": "VitalTax",
-      "url": "https://vitaltax.uk",
       "email": "info@vitaltax.uk",
       "website": "https://vitaltax.uk",
       "filters": [
@@ -73,7 +70,6 @@
     },
     {
       "name": "# 1 2 3 Sheets Ltd",
-      "url": "https://123sheets.com/",
       "website": "https://123sheets.com/",
       "filters": [
         "paid-for",
@@ -93,7 +89,6 @@
     },
     {
       "name": "Xero MTD for Income Tax Self Assessment",
-      "url": "https://www.xero.com/uk/programme/making-tax-digital/income-tax-self-assessment/",
       "website": "https://www.xero.com/uk/programme/making-tax-digital/income-tax-self-assessment/",
       "filters": [
         "paid-for",
@@ -113,7 +108,6 @@
     },
     {
       "name": "Cirrostratus Exedra Cloud Service",
-      "url": "https://www.vat.direct",
       "email": "john@hemming.email",
       "website": "https://www.vat.direct",
       "filters": [
@@ -138,7 +132,6 @@
     },
     {
       "name": "Sage",
-      "url": "https://www.sage.com/en-gb/making-tax-digital/accountants/",
       "phone": "08000928091",
       "website": "https://www.sage.com/en-gb/making-tax-digital/accountants/",
       "accessibilityStatementLink": "https://www.sage.com/en-gb/legal/accessibility/",
@@ -161,7 +154,6 @@
     },
     {
       "name": "QuickBooks Online (Intuit)",
-      "url": "https://quickbooks.intuit.com/uk/",
       "email": "mtdtest@intuit.com",
       "website": "https://quickbooks.intuit.com/uk/",
       "accessibilityStatementLink": "https://intuit.com/accessibility/",
@@ -185,7 +177,6 @@
     },
     {
       "name": "IRIS Accountancy Suite",
-      "url": "https://www.iris.co.uk/products/iris-accountancy-suite/",
       "phone": "03448155555",
       "email": "Support@iris.co.uk",
       "website": "https://www.iris.co.uk/products/iris-accountancy-suite/",
@@ -206,7 +197,6 @@
     },
     {
       "name": "Tax Bridge: The Drivers App",
-      "url":"https://www.taxbs.com",
       "phone": "03333446840",
       "email": "hello@taxbs.com",
       "website": "https://www.taxbs.com",

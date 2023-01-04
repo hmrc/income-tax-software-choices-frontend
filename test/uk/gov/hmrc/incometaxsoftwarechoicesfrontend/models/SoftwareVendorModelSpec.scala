@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,6 @@ class SoftwareVendorModelSpec extends PlaySpec {
 
   val fullJson: JsObject = Json.obj(
     "name" -> "software vendor name",
-    "url" -> "/test-url",
     "email" -> "test@software-vendor-name.com",
     "phone" -> "00000 000 000",
     "website" -> "software-vendor-name.com",
@@ -107,9 +106,9 @@ class SoftwareVendorModelSpec extends PlaySpec {
         val json: JsObject = fullJson - "name"
         Json.fromJson[SoftwareVendorModel](json) mustBe JsError(JsPath \ "name", "error.path.missing")
       }
-      "url is missing" in {
-        val json: JsObject = fullJson - "url"
-        Json.fromJson[SoftwareVendorModel](json) mustBe JsError(JsPath \ "url", "error.path.missing")
+      "website is missing" in {
+        val json: JsObject = fullJson - "website"
+        Json.fromJson[SoftwareVendorModel](json) mustBe JsError(JsPath \ "website", "error.path.missing")
       }
       "filters is missing" in {
         val json: JsObject = fullJson - "filters"
@@ -125,7 +124,6 @@ class SoftwareVendorModelSpec extends PlaySpec {
     "search for filters and order the results correctly" should {
       def getVendorModel(vendorFilters: Seq[VendorFilter]): SoftwareVendorModel = SoftwareVendorModel(
         name = "name",
-        url = "url",
         email = None,
         phone = None,
         website = "website",

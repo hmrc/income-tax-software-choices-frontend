@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,7 +32,10 @@ import java.time.LocalDate
 
 class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
 
-  val testFileName: String = "test-software-vendors.json"
+  private val testFileName: String = "test-software-vendors.json"
+  private val validVendors = "test/resources/test-valid-software-vendors.json"
+  private val invalidVendors = "test/resources/test-invalid-software-vendors.json"
+  private val realVendors = "conf/software-vendors.json"
 
   class Setup {
     val mockConfig: AppConfig = mock[AppConfig]
@@ -44,7 +47,7 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
   }
 
   val unsortedSoftwareVendors: SoftwareVendors = SoftwareVendors(
-    lastUpdated = LocalDate.of(2022,12,2),
+    lastUpdated = LocalDate.of(2022, 12, 2),
     vendors = Seq(
       testVendorOne,
       testVendorTwo,
@@ -53,7 +56,7 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
   )
 
   val expectedSoftwareVendors: SoftwareVendors = SoftwareVendors(
-    lastUpdated = LocalDate.of(2022,12,2),
+    lastUpdated = LocalDate.of(2022, 12, 2),
     vendors = Seq(
       testVendorOne,
       testVendorThree,
@@ -62,14 +65,14 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
   )
 
   val expectedFilteredByVendorNameSoftwareVendors: SoftwareVendors = SoftwareVendors(
-    lastUpdated = LocalDate.of(2022,12,2),
+    lastUpdated = LocalDate.of(2022, 12, 2),
     vendors = Seq(
       testVendorTwo
     )
   )
 
   val expectedFilteredByVendorFilterSoftwareVendors: SoftwareVendors = SoftwareVendors(
-    lastUpdated = LocalDate.of(2022,12,2),
+    lastUpdated = LocalDate.of(2022, 12, 2),
     vendors = Seq(
       testVendorThree,
       testVendorTwo
@@ -77,7 +80,7 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
   )
 
   val expectedFilteredSoftwareVendors: SoftwareVendors = SoftwareVendors(
-    lastUpdated = LocalDate.of(2022,12,2),
+    lastUpdated = LocalDate.of(2022, 12, 2),
     vendors = Seq(
       testVendorThree
     )
@@ -87,42 +90,42 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
     "the software vendor config file exists" must {
       "correctly retrieve and parse file" in new Setup {
         when(mockEnvironment.resourceAsStream(eqTo(testFileName)))
-          .thenReturn(Some(new FileInputStream("test/resources/test-valid-software-vendors.json")))
+          .thenReturn(Some(new FileInputStream(validVendors)))
 
         service.softwareVendors mustBe unsortedSoftwareVendors
       }
 
       "correctly filter vendors by vendor name" in new Setup {
         when(mockEnvironment.resourceAsStream(eqTo(testFileName)))
-          .thenReturn(Some(new FileInputStream("test/resources/test-valid-software-vendors.json")))
+          .thenReturn(Some(new FileInputStream(validVendors)))
 
         service.getVendors(Some("two"), Seq()) mustBe expectedFilteredByVendorNameSoftwareVendors
       }
 
       "correctly filter vendors by vendor filter" in new Setup {
         when(mockEnvironment.resourceAsStream(eqTo(testFileName)))
-          .thenReturn(Some(new FileInputStream("test/resources/test-valid-software-vendors.json")))
+          .thenReturn(Some(new FileInputStream(validVendors)))
 
         service.getVendors(None, Seq(FreeTrial)) mustBe expectedFilteredByVendorFilterSoftwareVendors
       }
 
       "correctly filter vendors by vendor name in disordered sections with whitespace" in new Setup {
         val vendors = Seq("one two three", "two three four", "five four three two one")
-            .map(s => SoftwareVendorModel(s, url="", email=None, phone=None, website="", filters=Seq.empty, incomeAndDeductions=Seq.empty))
+          .map(s => SoftwareVendorModel(s, email = None, phone = None, website = "", filters = Seq.empty, incomeAndDeductions = Seq.empty))
         private val searchTerms = s"one  \t   three    two"
         SoftwareChoicesService.matchSearchTerm(Some(searchTerms))(vendors).length mustBe 2
       }
 
       "correctly filter vendors by vendor name and vendor filter" in new Setup {
         when(mockEnvironment.resourceAsStream(eqTo(testFileName)))
-          .thenReturn(Some(new FileInputStream("test/resources/test-valid-software-vendors.json")))
+          .thenReturn(Some(new FileInputStream(validVendors)))
 
         service.getVendors(Some("three"), Seq(FreeTrial)) mustBe expectedFilteredSoftwareVendors
       }
 
       "not filter when no search term has been provided" in new Setup {
         when(mockEnvironment.resourceAsStream(eqTo(testFileName)))
-          .thenReturn(Some(new FileInputStream("test/resources/test-valid-software-vendors.json")))
+          .thenReturn(Some(new FileInputStream(validVendors)))
 
         service.getVendors(None, Seq()) mustBe expectedSoftwareVendors
       }
@@ -135,7 +138,7 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
     }
     "the software vendor config file contains invalid json" in new Setup {
       when(mockEnvironment.resourceAsStream(eqTo(testFileName)))
-        .thenReturn(Some(new FileInputStream("test/resources/test-invalid-software-vendors.json")))
+        .thenReturn(Some(new FileInputStream(invalidVendors)))
 
       intercept[InternalServerException](service.softwareVendors).message
         .contains("[SoftwareChoicesService][softwareVendors] - Json parse failures") mustBe true
@@ -146,7 +149,7 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
     "fetching a software vendor which exists" should {
       "return that vendor" in new Setup {
         when(mockEnvironment.resourceAsStream(eqTo(testFileName)))
-          .thenReturn(Some(new FileInputStream("test/resources/test-valid-software-vendors.json")))
+          .thenReturn(Some(new FileInputStream(validVendors)))
 
         private val name = "test software vendor one"
         private val maybeVendorModel: Option[SoftwareVendorModel] = service.getSoftwareVendor(name)
@@ -157,7 +160,7 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
     "fetching a software vendor which does not exist" should {
       "return None" in new Setup {
         when(mockEnvironment.resourceAsStream(eqTo(testFileName)))
-          .thenReturn(Some(new FileInputStream("test/resources/test-valid-software-vendors.json")))
+          .thenReturn(Some(new FileInputStream(validVendors)))
 
         private val name = "test software vendor one hundred"
         private val maybeVendorModel: Option[SoftwareVendorModel] = service.getSoftwareVendor(name)
