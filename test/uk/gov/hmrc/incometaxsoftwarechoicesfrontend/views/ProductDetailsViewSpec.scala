@@ -82,10 +82,10 @@ class ProductDetailsViewSpec extends ViewSpec {
       val english: String = "English"
 
       val accessibilityFeatures: String = "Accessibility features"
-      val visual: String = "Visual"
-      val hearing: String = "Hearing"
-      val motor: String = "Motor"
-      val cognitive: String = "Cognitive"
+      val visual: String = "Impaired vision and blindness"
+      val hearing: String = "Deafness and impaired hearing"
+      val motor: String = "Motor difficulties"
+      val cognitive: String = "Cognitive impairments"
 
       val accessibility: String = "Accessibility"
     }

@@ -699,10 +699,10 @@ private object SearchSoftwarePageContent {
   val english = "English"
 
   val accessibility = "Accessibility:"
-  val visual = "Visual"
-  val hearing = "Hearing"
-  val motor = "Motor"
-  val cognitive = "Cognitive"
+  val visual = "Impaired vision and blindness"
+  val hearing = "Deafness and impaired hearing"
+  val motor = "Motor difficulties"
+  val cognitive = "Cognitive impairments"
 
   private val lastUpdateTest = LocalDate.of(2022,12,2)
 
