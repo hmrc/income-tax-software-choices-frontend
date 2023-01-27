@@ -91,10 +91,10 @@ search-software.vendor-detail.language.welsh = Welsh
 search-software.vendor-detail.language.english = English
 
 search-software.vendor-detail.accessibility = Accessibility:
-search-software.vendor-detail.accessibility.visual = Visual
-search-software.vendor-detail.accessibility.hearing = Hearing
-search-software.vendor-detail.accessibility.motor = Motor
-search-software.vendor-detail.accessibility.cognitive = Cognitive
+search-software.vendor-detail.accessibility.visual = Impaired vision and blindness
+search-software.vendor-detail.accessibility.hearing = Deafness and impaired hearing
+search-software.vendor-detail.accessibility.motor = Motor difficulties
+search-software.vendor-detail.accessibility.cognitive = Cognitive impairments
 
 # Product details page
 
@@ -140,10 +140,10 @@ product-details.details.individual = Individual
 product-details.details.agent = Agent
 product-details.details.income-tax = Income tax
 product-details.details.vat = VAT
-product-details.details.visual = Visual
-product-details.details.hearing = Hearing
-product-details.details.motor = Motor
-product-details.details.cognitive = Cognitive
+product-details.details.visual = Impaired vision and blindness
+product-details.details.hearing = Deafness and impaired hearing
+product-details.details.motor = Motor difficulties
+product-details.details.cognitive = Cognitive impairments
 product-details.details.welsh = Welsh
 product-details.details.english = English
 

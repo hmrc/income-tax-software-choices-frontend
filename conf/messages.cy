@@ -91,10 +91,10 @@ search-software.vendor-detail.language.welsh   = Cymraeg
 search-software.vendor-detail.language.english = Saesneg
 
 search-software.vendor-detail.accessibility           = Anghenion Hygyrchedd:
-search-software.vendor-detail.accessibility.visual    = Gweledol
-search-software.vendor-detail.accessibility.hearing   = Clywedol
-search-software.vendor-detail.accessibility.motor     = Echddygol
-search-software.vendor-detail.accessibility.cognitive = Gwybyddol
+search-software.vendor-detail.accessibility.visual = Impaired vision and blindness ... but in Welsh
+search-software.vendor-detail.accessibility.hearing = Deafness and impaired hearing ... but in Welsh
+search-software.vendor-detail.accessibility.motor = Motor difficulties ... but in Welsh
+search-software.vendor-detail.accessibility.cognitive = Cognitive impairments ... but in Welsh
 
 # Product details page
 
@@ -140,10 +140,10 @@ product-details.details.individual             = Unigolyn
 product-details.details.agent                  = Asiant
 product-details.details.income-tax             = Treth Incwm
 product-details.details.vat                    = TAW
-product-details.details.visual                 = Gweledol
-product-details.details.hearing                = Clywedol
-product-details.details.motor                  = Echddygol
-product-details.details.cognitive              = Gwybyddol
+product-details.details.visual                 = Impaired vision and blindness ... but in Welsh
+product-details.details.hearing                = Deafness and impaired hearing ... but in Welsh
+product-details.details.motor                  = Motor difficulties ... but in Welsh
+product-details.details.cognitive              = Cognitive impairments ... but in Welsh
 product-details.details.welsh                  = Cymraeg
 product-details.details.english                = Saesneg
 
