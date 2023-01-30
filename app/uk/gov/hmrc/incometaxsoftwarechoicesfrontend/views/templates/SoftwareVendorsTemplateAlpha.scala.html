@@ -75,11 +75,11 @@
 
 }
 
-@softwareVendorIncomeType(vendor: SoftwareVendorModel) = @{
+@softwareVendorSuitableFor(vendor: SoftwareVendorModel) = @{
 
   customSummaryListRow(
-    key = "income-type",
-    filtersAvailable = vendor.orderedFilterSubset(VendorFilterGroups.incomeTypeFilters(displayOverseasPropertyOption))
+    key = "suitable-for",
+    filtersAvailable = vendor.orderedFilterSubset(VendorFilterGroups.suitableForFilters(displayOverseasPropertyOption))
   )
 
 }
@@ -161,7 +161,7 @@
   Seq(
     softwareVendorAccessibility(vendor),
     softwareVendorPricing(vendor),
-    softwareVendorIncomeType(vendor),
+    softwareVendorSuitableFor(vendor),
     softwareVendorCompatibleWith(vendor),
     softwareVendorMobileApp(vendor),
     softwareVendorSoftwareType(vendor),

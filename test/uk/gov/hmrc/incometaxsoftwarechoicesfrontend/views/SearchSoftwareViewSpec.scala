@@ -152,17 +152,17 @@ class SearchSoftwareViewSpec extends ViewSpec {
                             }
                           }
 
-                          "has an income type section" that {
+                          "has an suitable for section" that {
                             val (accordionSectionHeader, checkboxGroup) = getAccordionSectionHeaderAndCheckboxGroup(document, betaFeatureSwitch, 3)
 
                             if (betaFeatureSwitch) {
                               "contains a section header" in {
-                                accordionSectionHeader.get.text shouldBe SearchSoftwarePageContent.Filters.incomeType
+                                accordionSectionHeader.get.text shouldBe SearchSoftwarePageContent.Filters.suitableFor
                               }
                             }
 
                             "contains a fieldset legend" in {
-                              checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwarePageContent.Filters.incomeType
+                              checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwarePageContent.Filters.suitableFor
                             }
 
                             "contains a sole trader checkbox" in {
@@ -452,12 +452,12 @@ class SearchSoftwareViewSpec extends ViewSpec {
                                 secondRow.selectHead("dd").text shouldBe pricingText
 
                                 val thirdRow: Element = summaryList.selectNth("div", 3)
-                                val incomeTypeText = if(displayOverseasProperty)
+                                val suitableForText = if(displayOverseasProperty)
                                   s"${SearchSoftwarePageContent.soleTrader}/${SearchSoftwarePageContent.ukProperty}/${SearchSoftwarePageContent.overseasProperty}"
                                 else
                                   s"${SearchSoftwarePageContent.soleTrader}/${SearchSoftwarePageContent.ukProperty}"
-                                thirdRow.selectHead("dt").text shouldBe SearchSoftwarePageContent.incomeType
-                                thirdRow.selectHead("dd").text shouldBe incomeTypeText
+                                thirdRow.selectHead("dt").text shouldBe SearchSoftwarePageContent.suitableFor
+                                thirdRow.selectHead("dd").text shouldBe suitableForText
 
                                 val fourthRow: Element = summaryList.selectNth("div", 4)
                                 fourthRow.selectHead("dt").text shouldBe SearchSoftwarePageContent.compatibleWith
@@ -636,7 +636,7 @@ private object SearchSoftwarePageContent {
   object Filters {
     val filterHeading = "Filters"
     val pricing = "Pricing"
-    val incomeType = "Income type"
+    val suitableFor = "Suitable for"
     val businessType = "Business type"
     val compatibleWith = "Compatible with"
     val mobileApp = "Mobile app"
@@ -665,7 +665,7 @@ private object SearchSoftwarePageContent {
   val noFreeTrial = "No free trial"
   val noFreeVersion = "No free version"
 
-  val incomeType = "Income type:"
+  val suitableFor = "Suitable for:"
   val soleTrader = "Sole trader"
   val ukProperty = "UK property"
   val overseasProperty = "Overseas property"

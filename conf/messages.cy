@@ -20,7 +20,7 @@ search-software.inset-text          = Os oes angen help arnoch i ddewis meddalwe
 
 search-software.filters.heading                = Hidlwyr
 search-software.filters.pricing                = Prisio
-search-software.filters.income-type            = Math o incwm
+search-software.filters.suitable-for           = Suitable for ... but in Welsh
 search-software.filters.compatible-with        = Yn cydweddu â
 search-software.filters.mobile-app             = Ap Ffon Symudol
 search-software.filters.software-type          = Math o feddalwedd
@@ -57,10 +57,10 @@ search-software.vendor-detail.pricing.free-version    = Fersiwn rhad ac am ddim
 search-software.vendor-detail.pricing.no-free-version = Dim fersiwn sy’n rhad ac am ddim ar gael
 search-software.vendor-detail.pricing.paid-for        = Wedi’i dalu
 
-search-software.vendor-detail.income-type                   = Math o incwm:
-search-software.vendor-detail.income-type.sole-trader       = Unig fasnachwr
-search-software.vendor-detail.income-type.uk-property       = Eiddo yn y DU
-search-software.vendor-detail.income-type.overseas-property = Eiddo tramor
+search-software.vendor-detail.suitable-for                   = Suitable for: ... but in Welsh
+search-software.vendor-detail.suitable-for.sole-trader       = Sole trader ... but in Welsh
+search-software.vendor-detail.suitable-for.uk-property       = UK property ... but in Welsh
+search-software.vendor-detail.suitable-for.overseas-property = Overseas property ... but in Welsh
 
 search-software.vendor-detail.compatible-with                   = Yn cydweddu â:
 search-software.vendor-detail.compatible-with.microsoft-windows = Microsoft Windows
@@ -112,7 +112,7 @@ product-details.contact-details.website    = Ewch i’r gwefan
 
 product-details.details.heading                = Manylion y cynnyrch
 product-details.details.pricing                = Prisio
-product-details.details.income-type            = Math o incwm
+product-details.details.suitable-for           = Suitable for ... but in Welsh
 product-details.details.compatible-with        = Yn cydweddu â
 product-details.details.mobile-app             = Ap Ffon Symudol
 product-details.details.software-type          = Math o feddalwedd

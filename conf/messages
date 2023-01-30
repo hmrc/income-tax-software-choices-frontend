@@ -20,7 +20,7 @@ search-software.inset-text          = If you need help to choose software, conta
 
 search-software.filters.heading = Filters
 search-software.filters.pricing = Pricing
-search-software.filters.income-type = Income type
+search-software.filters.suitable-for = Suitable for
 search-software.filters.compatible-with = Compatible with
 search-software.filters.mobile-app = Mobile app
 search-software.filters.software-type = Software type
@@ -57,10 +57,10 @@ search-software.vendor-detail.pricing.free-version = Free version
 search-software.vendor-detail.pricing.no-free-version = No free version
 search-software.vendor-detail.pricing.paid-for = Paid for
 
-search-software.vendor-detail.income-type = Income type:
-search-software.vendor-detail.income-type.sole-trader = Sole trader
-search-software.vendor-detail.income-type.uk-property = UK property
-search-software.vendor-detail.income-type.overseas-property = Overseas property
+search-software.vendor-detail.suitable-for = Suitable for:
+search-software.vendor-detail.suitable-for.sole-trader = Sole trader
+search-software.vendor-detail.suitable-for.uk-property = UK property
+search-software.vendor-detail.suitable-for.overseas-property = Overseas property
 
 search-software.vendor-detail.compatible-with = Compatible with:
 search-software.vendor-detail.compatible-with.microsoft-windows = Microsoft Windows
@@ -112,7 +112,7 @@ product-details.contact-details.website    = Visit website
 
 product-details.details.heading = Product details
 product-details.details.pricing = Pricing
-product-details.details.income-type = Income type
+product-details.details.suitable-for = Suitable for
 product-details.details.compatible-with = Compatible with
 product-details.details.mobile-app = Mobile app
 product-details.details.software-type = Software type
