@@ -48,7 +48,7 @@ class ProductDetailsViewSpec extends ViewSpec {
       val freeVersion: String = "Free version"
       val paidFor: String = "Paid for"
 
-      val incomeType: String = "Income type"
+      val suitableFor: String = "Suitable for"
       val soleTrader: String = "Sole trader"
       val ukProperty: String = "UK property"
       val overseasProperty: String = "Overseas property"
@@ -179,7 +179,7 @@ class ProductDetailsViewSpec extends ViewSpec {
 
   val accessibilityRow = 1
   val pricingRow = 2
-  val incomeTypeRow = 3
+  val suitableForRow = 3
   val compatibleWithRow = 4
   val mobileAppRow = 5
   val softwareTypeRow = 6
@@ -280,8 +280,8 @@ class ProductDetailsViewSpec extends ViewSpec {
                 checkList(detailsSection, pricingRow, Filters.pricing, Filters.freeVersion)
             }
 
-            "display the income type row" in {
-              checkList(detailsSection, incomeTypeRow, Filters.incomeType, Filters.overseasProperty, Filters.soleTrader, Filters.ukProperty)
+            "display the suitable for row" in {
+              checkList(detailsSection, suitableForRow, Filters.suitableFor, Filters.overseasProperty, Filters.soleTrader, Filters.ukProperty)
             }
 
             "display the compatible with row" in {

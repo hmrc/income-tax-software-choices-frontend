@@ -198,7 +198,7 @@ object VendorFilterGroups {
 
   val compatibility: Set[VendorFilter] = Set(IncomeTax, Vat)
 
-  def incomeTypeFilters(displayOverseasPropertyOption: Boolean): Set[VendorFilter] =
+  def suitableForFilters(displayOverseasPropertyOption: Boolean): Set[VendorFilter] =
     Set(
       Some(SoleTrader),
       Some(UkProperty),
@@ -218,7 +218,7 @@ object VendorFilterGroups {
   def allGroups(displayExtraPricingOptions: Boolean, displayOverseasPropertyOption: Boolean): Seq[(Set[VendorFilter], String)] = Seq(
     (accessibilityFilters, "accessibility"),
     (pricingFilters(displayExtraPricingOptions), "pricing"),
-    (incomeTypeFilters(displayOverseasPropertyOption), "income-type"),
+    (suitableForFilters(displayOverseasPropertyOption), "suitable-for"),
     (compatibleWithFilters, "compatible-with"),
     (mobileAppFilters, "mobile-app"),
     (softwareTypeFilters, "software-type"),
