@@ -20,10 +20,12 @@ import play.api.libs.json.{Reads, __}
 
 import scala.language.implicitConversions
 
+
 sealed trait VendorFilter {
   val key: String
   val priority: Int
   val alwaysDisplay: Boolean = false
+  val showHint: Boolean = false
   override def toString: String = key
 }
 
@@ -39,6 +41,7 @@ object VendorFilter {
   case object FreeVersion extends VendorFilter {
     override val key: String = "free-version"
     override val priority: Int = 2
+    override val showHint: Boolean = true
   }
 
   case object PaidFor extends VendorFilter {

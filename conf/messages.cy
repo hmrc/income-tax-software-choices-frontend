@@ -61,6 +61,7 @@ search-software.vendor-detail.pricing                 = Prisio:
 search-software.vendor-detail.pricing.free-trial      = Cyfnod prawf am ddim
 search-software.vendor-detail.pricing.no-free-trial   = Dim cyfnod prawf rhad ac am ddim ar gael
 search-software.vendor-detail.pricing.free-version    = Fersiwn rhad ac am ddim
+search-software.vendor-detail.pricing.free-version.hint = Fel arfer, dim ond am gyfnod cyfyngedig y mae’r rhain yn rhad ac am ddim, neu fod ganddynt nodweddion cyfyngedig
 search-software.vendor-detail.pricing.no-free-version = Dim fersiwn sy’n rhad ac am ddim ar gael
 search-software.vendor-detail.pricing.paid-for        = Wedi’i dalu
 

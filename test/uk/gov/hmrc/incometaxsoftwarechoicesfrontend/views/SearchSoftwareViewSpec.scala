@@ -174,8 +174,15 @@ class SearchSoftwareViewSpec extends ViewSpec {
 
                             "contains a Free version checkbox" in {
                               val box = if (pricingSwitch) 2 else 1
-                              validateCheckboxInGroup(checkboxGroup, box, FreeVersion.key, SearchSoftwarePageContent.freeVersion)
+                              validateCheckboxInGroup(
+                                checkboxGroup,
+                                box,
+                                FreeVersion.key,
+                                SearchSoftwarePageContent.freeVersion,
+                                Some(SearchSoftwarePageContent.freeVersionHint)
+                              )
                             }
+
 
                             if (pricingSwitch) {
                               "contains a paid for checkbox" in {
@@ -604,17 +611,23 @@ object SearchSoftwareViewSpec extends ViewSpec {
 
   def getCheckboxLabel(checkboxItem: Element): Element = checkboxItem
     .selectHead(".govuk-checkboxes__label")
+  def getCheckboxHint(checkboxItem: Element): Element = checkboxItem
+    .selectHead(".govuk-checkboxes__hint")
 
   def validateCheckboxInGroup(
                                checkboxGroup: Element,
                                n: Int,
                                value: String,
                                label: String,
+                               maybeHint: Option[String] = None,
                                name: String = s"${FiltersForm.filters}[]",
                                disabled: Boolean = false,
                                checked: Boolean = false): Assertion = {
     val checkboxItem = getCheckboxItem(checkboxGroup, n)
     getCheckboxLabel(checkboxItem).text shouldBe label
+    maybeHint.map{ hint =>
+      getCheckboxHint(checkboxItem).text shouldBe hint
+    }
 
     val checkbox = getCheckboxInput(checkboxItem)
     checkbox.attr("value") shouldBe value
@@ -700,6 +713,7 @@ private object SearchSoftwarePageContent {
   val pricing = "Pricing:"
   val freeTrial = "Free trial"
   val freeVersion = "Free version"
+  val freeVersionHint = "These are usually only free for a limited time, or have restricted features"
   val paidFor = "Paid for"
   val noFreeTrial = "No free trial"
   val noFreeVersion = "No free version"
