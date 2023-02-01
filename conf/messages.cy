@@ -12,15 +12,22 @@ breadcrumbs.glossary                = Self Assessment income and deduction types
 
 # Search software page
 
-search-software.title               = Dewis eich meddalwedd
-search-software.last-update         = Diweddarwyd y dudalen hon ddiwethaf
-search-software.heading             = Dewis eich meddalwedd
-search-software.paragraph1          = Mae’r holl feddalwedd ar y dudalen hon wedi bod trwy broses adnabod CThEM. Ond nid yw CThEM yn argymell nac yn cymeradwyo unrhyw gynnyrch neu gyflenwr meddalwedd penodol.
-search-software.inset-text          = Os oes angen help arnoch i ddewis meddalwedd, cysylltwch â darparwr y feddalwedd neu â’ch asiant treth cyn gwneud penderfyniad.
+search-software.title                                     = Dewis eich meddalwedd
+search-software.last-update                               = Diweddarwyd y dudalen hon ddiwethaf
+search-software.heading                                   = Dewis eich meddalwedd
+search-software.paragraph1                                = Mae’r holl feddalwedd ar y dudalen hon wedi bod trwy broses adnabod CThEM. Ond nid yw CThEM yn argymell nac yn cymeradwyo unrhyw gynnyrch neu gyflenwr meddalwedd penodol.
+search-software.inset-text                                = Os oes angen help arnoch i ddewis meddalwedd, cysylltwch â darparwr y feddalwedd neu â’ch asiant treth cyn gwneud penderfyniad.
+search-software.link.what-software.heading                = What Kind of Software is available? ... but in Welsh
+search-software.link.what-software.record-keeping.heading = Record Keeping Software ... but in Welsh
+search-software.link.what-software.record-keeping.bullet1 = updates and stores your records digitally ... but in Welsh
+search-software.link.what-software.record-keeping.bullet2 = works directly with HMRC systems allowing you to file a Income tax ... but in Welsh
+search-software.link.what-software.bridging.heading       = Bridging software ... but in Welsh
+search-software.link.what-software.bridging.bullet1       = works with non-compatible software like spreadsheets, accounting systems and other digital bookkeeping products ... but in Welsh
+search-software.link.what-software.bridging.bullet2       = lets you send the required information digitally to HMRC in the correct format ... but in Welsh
 
 search-software.filters.heading                = Hidlwyr
 search-software.filters.pricing                = Prisio
-search-software.filters.suitable-for           = Suitable for ... but in Welsh
+search-software.filters.suitable-for           = Addas i
 search-software.filters.compatible-with        = Yn cydweddu â
 search-software.filters.mobile-app             = Ap Ffon Symudol
 search-software.filters.software-type          = Math o feddalwedd
@@ -57,10 +64,10 @@ search-software.vendor-detail.pricing.free-version    = Fersiwn rhad ac am ddim
 search-software.vendor-detail.pricing.no-free-version = Dim fersiwn sy’n rhad ac am ddim ar gael
 search-software.vendor-detail.pricing.paid-for        = Wedi’i dalu
 
-search-software.vendor-detail.suitable-for                   = Suitable for: ... but in Welsh
-search-software.vendor-detail.suitable-for.sole-trader       = Sole trader ... but in Welsh
-search-software.vendor-detail.suitable-for.uk-property       = UK property ... but in Welsh
-search-software.vendor-detail.suitable-for.overseas-property = Overseas property ... but in Welsh
+search-software.vendor-detail.suitable-for                   = Addas i:
+search-software.vendor-detail.suitable-for.sole-trader       = Unig fasnachwr
+search-software.vendor-detail.suitable-for.uk-property       = Eiddo yn y DU
+search-software.vendor-detail.suitable-for.overseas-property = Eiddo tramor
 
 search-software.vendor-detail.compatible-with                   = Yn cydweddu â:
 search-software.vendor-detail.compatible-with.microsoft-windows = Microsoft Windows
@@ -91,10 +98,10 @@ search-software.vendor-detail.language.welsh   = Cymraeg
 search-software.vendor-detail.language.english = Saesneg
 
 search-software.vendor-detail.accessibility           = Anghenion Hygyrchedd:
-search-software.vendor-detail.accessibility.visual = Impaired vision and blindness ... but in Welsh
-search-software.vendor-detail.accessibility.hearing = Deafness and impaired hearing ... but in Welsh
-search-software.vendor-detail.accessibility.motor = Motor difficulties ... but in Welsh
-search-software.vendor-detail.accessibility.cognitive = Cognitive impairments ... but in Welsh
+search-software.vendor-detail.accessibility.visual    = Nam ar eu golwg a dallineb
+search-software.vendor-detail.accessibility.hearing   = Trymder clyw a nam ar eu clyw
+search-software.vendor-detail.accessibility.motor     = Anawsterau echddygol
+search-software.vendor-detail.accessibility.cognitive = Anawsterau gwybyddol
 
 # Product details page
 
@@ -112,7 +119,7 @@ product-details.contact-details.website    = Ewch i’r gwefan
 
 product-details.details.heading                = Manylion y cynnyrch
 product-details.details.pricing                = Prisio
-product-details.details.suitable-for           = Suitable for ... but in Welsh
+product-details.details.suitable-for           = Addas i
 product-details.details.compatible-with        = Yn cydweddu â
 product-details.details.mobile-app             = Ap Ffon Symudol
 product-details.details.software-type          = Math o feddalwedd
@@ -140,10 +147,10 @@ product-details.details.individual             = Unigolyn
 product-details.details.agent                  = Asiant
 product-details.details.income-tax             = Treth Incwm
 product-details.details.vat                    = TAW
-product-details.details.visual                 = Impaired vision and blindness ... but in Welsh
-product-details.details.hearing                = Deafness and impaired hearing ... but in Welsh
-product-details.details.motor                  = Motor difficulties ... but in Welsh
-product-details.details.cognitive              = Cognitive impairments ... but in Welsh
+product-details.details.visual                 = Nam ar eu golwg a dallineb
+product-details.details.hearing                = Trymder clyw a nam ar eu clyw
+product-details.details.motor                  = Anawsterau echddygol
+product-details.details.cognitive              = Anawsterau gwybyddol
 product-details.details.welsh                  = Cymraeg
 product-details.details.english                = Saesneg
 

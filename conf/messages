@@ -12,11 +12,18 @@ breadcrumbs.glossary                = Self Assessment income and deduction types
 
 # Search software page
 
-search-software.title               = Choose your software
-search-software.last-update         = This page was last updated
-search-software.heading             = Choose your software
-search-software.paragraph1          = All software on this page has been through HMRC’s recognition process. But we do not endorse or recommend any one product or software provider.
-search-software.inset-text          = If you need help to choose software, contact the software provider or your tax agent before making a decision.
+search-software.title                                     = Choose your software
+search-software.last-update                               = This page was last updated
+search-software.heading                                   = Choose your software
+search-software.paragraph1                                = All software on this page has been through HMRC’s recognition process. But we do not endorse or recommend any one product or software provider.
+search-software.inset-text                                = If you need help to choose software, contact the software provider or your tax agent before making a decision.
+search-software.link.what-software.heading                = What Kind of Software is available?
+search-software.link.what-software.record-keeping.heading = Record Keeping Software
+search-software.link.what-software.record-keeping.bullet1 = updates and stores your records digitally
+search-software.link.what-software.record-keeping.bullet2 = works directly with HMRC systems allowing you to file a Income tax
+search-software.link.what-software.bridging.heading       = Bridging software
+search-software.link.what-software.bridging.bullet1       = works with non-compatible software like spreadsheets, accounting systems and other digital bookkeeping products
+search-software.link.what-software.bridging.bullet2       = lets you send the required information digitally to HMRC in the correct format
 
 search-software.filters.heading = Filters
 search-software.filters.pricing = Pricing

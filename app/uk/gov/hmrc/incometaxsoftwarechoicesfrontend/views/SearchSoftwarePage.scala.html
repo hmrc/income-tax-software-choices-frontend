@@ -20,6 +20,7 @@
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
+@import uk.gov.hmrc.govukfrontend.views.html.components._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.{MainTemplate, SoftwareSearchStatusTemplate, SoftwareFiltersTemplate, SoftwareFiltersTemplateAlpha, SoftwareVendorsTemplate, SoftwareVendorsTemplateAlpha}
 @import views.html.helper.CSPNonce
 @import uk.gov.hmrc.play.language.LanguageUtils
@@ -36,6 +37,7 @@
   govukCheckboxes: GovukCheckboxes,
   govukAccordion: GovukAccordion,
   govukButton: GovukButton,
+  govukDetails: GovukDetails,
   languageUtils: LanguageUtils
 )(implicit appConfig: AppConfig)
 
@@ -69,6 +71,20 @@
   }
 }
 
+@whatKindOfSoftwareContent = {
+  <h2>@messages("search-software.link.what-software.record-keeping.heading")</h2>
+  <ul class="govuk-list govuk-list--bullet">
+    <li class="">@messages("search-software.link.what-software.record-keeping.bullet1")</li>
+    <li class="">@messages("search-software.link.what-software.record-keeping.bullet2")</li>
+  </ul>
+
+  <h2>@messages("search-software.link.what-software.bridging.heading")</h2>
+  <ul class="govuk-list govuk-list--bullet">
+    <li class="">@messages("search-software.link.what-software.bridging.bullet1")</li>
+    <li class="">@messages("search-software.link.what-software.bridging.bullet2")</li>
+  </ul>
+}
+
 @mainTemplate(title = messages("search-software.title"), breadcrumbs = pageBreadcrumbs, backLink = pageBackLink, optForm = Some(searchForm), scripts = Some(js)) {
 
   <div class="govuk-grid-row">
@@ -84,6 +100,12 @@
       <div class="govuk-inset-text">
         @messages("search-software.inset-text")
       </div>
+
+      @govukDetails(Details(
+      summary = Text(messages("search-software.link.what-software.heading")),
+      content = HtmlContent(whatKindOfSoftwareContent)
+      ))
+
     </div>
   </div>
 
