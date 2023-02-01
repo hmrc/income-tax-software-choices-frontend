@@ -84,6 +84,38 @@ class SearchSoftwareViewSpec extends ViewSpec {
                           document.mainContent.selectHead(".govuk-inset-text").text shouldBe SearchSoftwarePageContent.insetText
                         }
 
+                        "have What Kind of Software is available? details and content" which {
+
+                          "has a heading" in {
+                            document.mainContent.selectHead(".govuk-details").selectHead("span").text shouldBe SearchSoftwarePageContent.whatSoftwareHeading
+                          }
+
+                          "has a Record Keeping Software section" in {
+                            document.mainContent.selectHead(".govuk-details").selectNth("h2", 1).text shouldBe SearchSoftwarePageContent.whatSoftwareRecordKeepingHeading
+                          }
+
+                          "has first bullet point in Record Keeping Software section" in {
+                            document.mainContent.selectHead(".govuk-details").selectNth("li", 1).text shouldBe SearchSoftwarePageContent.whatSoftwareRecordKeepingBullet1
+                          }
+
+                          "has second bullet point in Record Keeping Software section" in {
+                            document.mainContent.selectHead(".govuk-details").selectNth("li", 2).text shouldBe SearchSoftwarePageContent.whatSoftwareRecordKeepingBullet2
+                          }
+
+                          "has a Bridging section" in {
+                            document.mainContent.selectHead(".govuk-details").selectNth("h2", 2).text shouldBe SearchSoftwarePageContent.whatSoftwareBridgingHeading
+                          }
+
+                          "has first bullet point in Bridging section" in {
+                            document.mainContent.selectHead(".govuk-details").selectNth("ul",2).selectNth("li", 1).text shouldBe SearchSoftwarePageContent.whatSoftwareBridgingBullet1
+                          }
+
+                          "has second bullet point in Bridging section" in {
+                            document.mainContent.selectHead(".govuk-details").selectNth("ul",2).selectNth("li", 2).text shouldBe SearchSoftwarePageContent.whatSoftwareBridgingBullet2
+                          }
+
+                        }
+
                         "have a filter section" which {
                           val filterSection = getFilterSection(document)
 
@@ -631,6 +663,13 @@ private object SearchSoftwarePageContent {
   val paragraph1: String = "All software on this page has been through HMRC’s recognition process. " +
     "But we do not endorse or recommend any one product or software provider."
   val insetText = "If you need help to choose software, contact the software provider or your tax agent before making a decision."
+  val whatSoftwareHeading = "What Kind of Software is available?"
+  val whatSoftwareRecordKeepingHeading = "Record Keeping Software"
+  val whatSoftwareRecordKeepingBullet1 = "updates and stores your records digitally"
+  val whatSoftwareRecordKeepingBullet2 = "works directly with HMRC systems allowing you to file a Income tax"
+  val whatSoftwareBridgingHeading = "Bridging software"
+  val whatSoftwareBridgingBullet1 = "works with non-compatible software like spreadsheets, accounting systems and other digital bookkeeping products"
+  val whatSoftwareBridgingBullet2 = "lets you send the required information digitally to HMRC in the correct format"
   val searchFormHeading = "Search by software name"
 
   object Filters {
