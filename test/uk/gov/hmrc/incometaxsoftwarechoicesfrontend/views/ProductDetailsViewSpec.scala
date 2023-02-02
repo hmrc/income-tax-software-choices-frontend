@@ -73,7 +73,7 @@ class ProductDetailsViewSpec extends ViewSpec {
       val individual: String = "Individual"
       val agent: String = "Agent"
 
-      val softwareCompatibility: String = "Software compatibility"
+      val softwareCompatibility: String = "Making Tax Digital Compatibility"
       val incomeTax: String = "Income tax"
       val vat: String = "VAT"
 

@@ -33,7 +33,7 @@ search-software.filters.mobile-app             = Ap Ffon Symudol
 search-software.filters.software-type          = Math o feddalwedd
 search-software.filters.software-for           = Meddalwedd ar gyfer
 search-software.filters.business-type          = Math o fusnes
-search-software.filters.software-compatibility = Cydweddoldeb y meddalwedd
+search-software.filters.software-compatibility = Cydnawsedd y cynllun Troi Treth yn Ddigidol
 search-software.filters.language               = Iaith
 search-software.filters.accessibility          = Nodweddion hygyrchedd
 
@@ -90,8 +90,9 @@ search-software.vendor-detail.business-type            = Math o fusnes:
 search-software.vendor-detail.business-type.individual = Unigolyn
 search-software.vendor-detail.business-type.agent      = Asiant
 
-search-software.vendor-detail.software-compatibility            = Cydweddoldeb y meddalwedd:
+search-software.vendor-detail.software-compatibility            = Cydnawsedd y cynllun Troi Treth yn Ddigidol:
 search-software.vendor-detail.software-compatibility.vat        = TAW
+search-software.vendor-detail.software-compatibility.vat.hint   = Meddalwedd y gallwch ei defnyddio hefyd i gyflwyno cofnodion TAW
 search-software.vendor-detail.software-compatibility.income-tax = Treth Incwm
 
 search-software.vendor-detail.language         = Iaith
@@ -126,7 +127,7 @@ product-details.details.mobile-app             = Ap Ffon Symudol
 product-details.details.software-type          = Math o feddalwedd
 product-details.details.software-for           = Meddalwedd ar gyfer
 product-details.details.business-type          = Math o fusnes
-product-details.details.software-compatibility = Cydweddoldeb y meddalwedd
+product-details.details.software-compatibility = Cydnawsedd y cynllun Troi Treth yn Ddigidol
 product-details.details.language               = Iaith
 product-details.details.accessibility          = Nodweddion hygyrchedd
 

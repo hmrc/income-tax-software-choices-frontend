@@ -33,7 +33,7 @@ search-software.filters.mobile-app = Mobile app
 search-software.filters.software-type = Software type
 search-software.filters.software-for = Software for
 search-software.filters.business-type = Business type
-search-software.filters.software-compatibility = Software compatibility
+search-software.filters.software-compatibility = Making Tax Digital Compatibility
 search-software.filters.language = Language
 search-software.filters.accessibility = Accessibility features
 
@@ -90,8 +90,9 @@ search-software.vendor-detail.business-type = Business type:
 search-software.vendor-detail.business-type.individual = Individual
 search-software.vendor-detail.business-type.agent = Agent
 
-search-software.vendor-detail.software-compatibility = Software compatibility:
+search-software.vendor-detail.software-compatibility = Making Tax Digital Compatibility:
 search-software.vendor-detail.software-compatibility.vat = VAT
+search-software.vendor-detail.software-compatibility.vat.hint = Software which you can also use to submit VAT records
 search-software.vendor-detail.software-compatibility.income-tax = Income Tax
 
 search-software.vendor-detail.language = Language:
@@ -126,7 +127,7 @@ product-details.details.mobile-app = Mobile app
 product-details.details.software-type = Software type
 product-details.details.software-for = Software for
 product-details.details.business-type = Business type
-product-details.details.software-compatibility = Software compatibility
+product-details.details.software-compatibility = Making Tax Digital Compatibility
 product-details.details.language = Language
 product-details.details.accessibility = Accessibility features
 
