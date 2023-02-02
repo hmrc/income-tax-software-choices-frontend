@@ -208,7 +208,7 @@ object VendorFilterGroups {
       Some(OverseasProperty).filter(_ => displayOverseasPropertyOption)
     ).flatten.toSet
 
-  val compatibleWithFilters: Set[VendorFilter] = Set(MicrosoftWindows, MacOS)
+  val operatingSystemFilters: Set[VendorFilter] = Set(MicrosoftWindows, MacOS)
 
   val mobileAppFilters: Set[VendorFilter] = Set(Android, AppleIOS)
 
@@ -222,7 +222,7 @@ object VendorFilterGroups {
     (accessibilityFilters, "accessibility"),
     (pricingFilters(displayExtraPricingOptions), "pricing"),
     (suitableForFilters(displayOverseasPropertyOption), "suitable-for"),
-    (compatibleWithFilters, "compatible-with"),
+    (operatingSystemFilters, "operating-system"),
     (mobileAppFilters, "mobile-app"),
     (softwareTypeFilters, "software-type"),
     (softwareForFilters, "software-for"),
