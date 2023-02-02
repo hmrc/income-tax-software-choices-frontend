@@ -61,6 +61,7 @@ search-software.vendor-detail.pricing = Pricing:
 search-software.vendor-detail.pricing.free-trial = Free trial
 search-software.vendor-detail.pricing.no-free-trial = No free trial
 search-software.vendor-detail.pricing.free-version = Free version
+search-software.vendor-detail.pricing.free-version.hint = These are usually only free for a limited time, or have restricted features
 search-software.vendor-detail.pricing.no-free-version = No free version
 search-software.vendor-detail.pricing.paid-for = Paid for
 

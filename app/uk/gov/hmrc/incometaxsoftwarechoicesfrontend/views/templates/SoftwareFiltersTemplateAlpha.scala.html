@@ -16,6 +16,7 @@
 
 @import uk.gov.hmrc.govukfrontend.views.viewmodels.checkboxes.CheckboxItem
 @import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
+@import uk.gov.hmrc.govukfrontend.views.viewmodels.hint.Hint
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilterGroups
@@ -37,11 +38,12 @@
       checked = true
       )
     else
-      CheckboxItem(
-      id = Some(s"$item-filter"),
-      content = Text(messages(s"search-software.vendor-detail.$label.$item")),
-      value = item
-      )
+        CheckboxItem(
+            id = Some(s"$item-filter"),
+            content = Text(messages(s"search-software.vendor-detail.$label.$item")),
+            value = item,
+            hint = if (item.showHint) Some(Hint(content = Text(messages(s"search-software.vendor-detail.$label.$item.hint")))) else None
+            )
   )
 }
 
