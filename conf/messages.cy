@@ -86,9 +86,11 @@ search-software.vendor-detail.software-for                = Meddalwedd ar gyfer:
 search-software.vendor-detail.software-for.record-keeping = Cadw cofnodion
 search-software.vendor-detail.software-for.bridging       = Pontio
 
-search-software.vendor-detail.business-type            = Math o fusnes:
-search-software.vendor-detail.business-type.individual = Unigolyn
-search-software.vendor-detail.business-type.agent      = Asiant
+search-software.vendor-detail.business-type                 = Math o fusnes:
+search-software.vendor-detail.business-type.individual      = Unigolyn
+search-software.vendor-detail.business-type.individual.hint = Addas i bobl sy’n cyflwyno eu cofnodion eu hunain
+search-software.vendor-detail.business-type.agent           = Asiant
+search-software.vendor-detail.business-type.agent.hint      = Meddalwedd i gyfrifwyr a llyfrifwyr
 
 search-software.vendor-detail.software-compatibility            = Cydweddoldeb y meddalwedd:
 search-software.vendor-detail.software-compatibility.vat        = TAW

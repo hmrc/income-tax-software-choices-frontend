@@ -86,9 +86,11 @@ search-software.vendor-detail.software-for = Software for:
 search-software.vendor-detail.software-for.record-keeping = Record keeping
 search-software.vendor-detail.software-for.bridging = Bridging
 
-search-software.vendor-detail.business-type = Business type:
-search-software.vendor-detail.business-type.individual = Individual
-search-software.vendor-detail.business-type.agent = Agent
+search-software.vendor-detail.business-type                 = Business type:
+search-software.vendor-detail.business-type.individual      = Individual
+search-software.vendor-detail.business-type.individual.hint = Suitable for people submitting their own records
+search-software.vendor-detail.business-type.agent           = Agent
+search-software.vendor-detail.business-type.agent.hint      = Software for accountants and bookkeepers
 
 search-software.vendor-detail.software-compatibility = Software compatibility:
 search-software.vendor-detail.software-compatibility.vat = VAT

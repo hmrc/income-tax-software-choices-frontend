@@ -322,12 +322,12 @@ class SearchSoftwareViewSpec extends ViewSpec {
                               checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwarePageContent.Filters.businessType
                             }
 
-                            "contains an Individual checkbox" in {
-                              validateCheckboxInGroup(checkboxGroup, 1, Individual.key, SearchSoftwarePageContent.individual)
+                            "contains an Individual checkbox and hint" in {
+                              validateCheckboxInGroup(checkboxGroup, 1, Individual.key, SearchSoftwarePageContent.individual, Some(SearchSoftwarePageContent.individualHint))
                             }
 
-                            "contains an Agent checkbox" in {
-                              validateCheckboxInGroup(checkboxGroup, 2, Agent.key, SearchSoftwarePageContent.agent)
+                            "contains an Agent checkbox and hint" in {
+                              validateCheckboxInGroup(checkboxGroup, 2, Agent.key, SearchSoftwarePageContent.agent, Some(SearchSoftwarePageContent.agentHint))
                             }
                           }
 
@@ -725,7 +725,9 @@ private object SearchSoftwarePageContent {
 
   val businessType = "Business type:"
   val individual = "Individual"
+  val individualHint = "Suitable for people submitting their own records"
   val agent = "Agent"
+  val agentHint = "Software for accountants and bookkeepers"
 
   val operatingSystem = "Operating system:"
   val microsoftWindows = "Microsoft Windows"
