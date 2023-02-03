@@ -67,11 +67,13 @@ object VendorFilter {
   case object Individual extends VendorFilter {
     override val key: String = "individual"
     override val priority: Int = 1
+    override val showHint: Boolean = true
   }
 
   case object Agent extends VendorFilter {
     override val key: String = "agent"
     override val priority: Int = 2
+    override val showHint: Boolean = true
   }
 
   case object MicrosoftWindows extends VendorFilter {
