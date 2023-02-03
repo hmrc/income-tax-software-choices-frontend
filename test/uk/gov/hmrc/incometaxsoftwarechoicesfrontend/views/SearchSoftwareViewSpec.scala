@@ -226,12 +226,12 @@ class SearchSoftwareViewSpec extends ViewSpec {
                             val (accordionSectionHeader, checkboxGroup) = getAccordionSectionHeaderAndCheckboxGroup(document, betaFeatureSwitch, 4)
                             if (betaFeatureSwitch) {
                               "contains a section header" in {
-                                accordionSectionHeader.get.text shouldBe SearchSoftwarePageContent.Filters.compatibleWith
+                                accordionSectionHeader.get.text shouldBe SearchSoftwarePageContent.Filters.operatingSystem
                               }
                             }
 
                             "contains a fieldset legend" in {
-                              checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwarePageContent.Filters.compatibleWith
+                              checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwarePageContent.Filters.operatingSystem
                             }
 
                             "contains an Microsoft Windows checkbox" in {
@@ -499,7 +499,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
                                 thirdRow.selectHead("dd").text shouldBe suitableForText
 
                                 val fourthRow: Element = summaryList.selectNth("div", 4)
-                                fourthRow.selectHead("dt").text shouldBe SearchSoftwarePageContent.compatibleWith
+                                fourthRow.selectHead("dt").text shouldBe SearchSoftwarePageContent.operatingSystem
                                 fourthRow.selectHead("dd").text shouldBe s"${SearchSoftwarePageContent.microsoftWindows}/${SearchSoftwarePageContent.macOS}"
 
                                 val fifthRow: Element = summaryList.selectNth("div", 5)
@@ -690,7 +690,7 @@ private object SearchSoftwarePageContent {
     val pricing = "Pricing"
     val suitableFor = "Suitable for"
     val businessType = "Business type"
-    val compatibleWith = "Compatible with"
+    val operatingSystem = "Operating system"
     val mobileApp = "Mobile app"
     val softwareType = "Software type"
     val softwareFor = "Software for"
@@ -727,7 +727,7 @@ private object SearchSoftwarePageContent {
   val individual = "Individual"
   val agent = "Agent"
 
-  val compatibleWith = "Compatible with:"
+  val operatingSystem = "Operating system:"
   val microsoftWindows = "Microsoft Windows"
   val macOS = "Mac OS"
 

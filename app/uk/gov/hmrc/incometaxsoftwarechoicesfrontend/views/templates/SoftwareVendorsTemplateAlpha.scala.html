@@ -120,11 +120,11 @@
 
 }
 
-@softwareVendorCompatibleWith(vendor: SoftwareVendorModel) = @{
+@softwareVendorOperatingSystem(vendor: SoftwareVendorModel) = @{
 
   customSummaryListRow(
-    key = "compatible-with",
-    filtersAvailable = vendor.orderedFilterSubset(VendorFilterGroups.compatibleWithFilters)
+    key = "operating-system",
+    filtersAvailable = vendor.orderedFilterSubset(VendorFilterGroups.operatingSystemFilters)
   )
 
 }
@@ -162,7 +162,7 @@
     softwareVendorAccessibility(vendor),
     softwareVendorPricing(vendor),
     softwareVendorSuitableFor(vendor),
-    softwareVendorCompatibleWith(vendor),
+    softwareVendorOperatingSystem(vendor),
     softwareVendorMobileApp(vendor),
     softwareVendorSoftwareType(vendor),
     softwareVendorSoftwareFor(vendor),

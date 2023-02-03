@@ -53,7 +53,7 @@ class ProductDetailsViewSpec extends ViewSpec {
       val ukProperty: String = "UK property"
       val overseasProperty: String = "Overseas property"
 
-      val compatibleWith: String = "Compatible with"
+      val operatingSystem: String = "Operating system"
       val microsoftWindows: String = "Microsoft Windows"
       val macOS: String = "Mac OS"
 
@@ -180,7 +180,7 @@ class ProductDetailsViewSpec extends ViewSpec {
   val accessibilityRow = 1
   val pricingRow = 2
   val suitableForRow = 3
-  val compatibleWithRow = 4
+  val operatingSystemRow = 4
   val mobileAppRow = 5
   val softwareTypeRow = 6
   val softwareForRow = 7
@@ -285,7 +285,7 @@ class ProductDetailsViewSpec extends ViewSpec {
             }
 
             "display the compatible with row" in {
-              checkList(detailsSection, compatibleWithRow, Filters.compatibleWith, Filters.microsoftWindows, Filters.macOS)
+              checkList(detailsSection, operatingSystemRow, Filters.operatingSystem, Filters.microsoftWindows, Filters.macOS)
             }
 
             "display the mobile app row" in {
