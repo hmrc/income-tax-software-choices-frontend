@@ -279,11 +279,23 @@ class SearchSoftwareViewSpec extends ViewSpec {
                             }
 
                             "contains an BrowserBased checkbox" in {
-                              validateCheckboxInGroup(checkboxGroup, 1, BrowserBased.key, SearchSoftwarePageContent.browserBased)
+                              validateCheckboxInGroup(
+                                checkboxGroup,
+                                1,
+                                BrowserBased.key,
+                                SearchSoftwarePageContent.browserBased,
+                                Some(SearchSoftwarePageContent.browserBasedHint)
+                              )
                             }
 
                             "contains an ApplicationBased checkbox" in {
-                              validateCheckboxInGroup(checkboxGroup, 2, ApplicationBased.key, SearchSoftwarePageContent.applicationBased)
+                              validateCheckboxInGroup(
+                                checkboxGroup,
+                                2,
+                                ApplicationBased.key,
+                                SearchSoftwarePageContent.applicationBased,
+                                Some(SearchSoftwarePageContent.applicationBasedHint)
+                              )
                             }
                           }
 
@@ -743,7 +755,9 @@ private object SearchSoftwarePageContent {
 
   val softwareType = "Software type:"
   val browserBased = "Browser based"
+  val browserBasedHint = "Software accessed online with your internet browser"
   val applicationBased = "Application based"
+  val applicationBasedHint = "Software installed on your device"
 
   val softwareCompatibility = "Software compatibility:"
   val vat = "VAT"
