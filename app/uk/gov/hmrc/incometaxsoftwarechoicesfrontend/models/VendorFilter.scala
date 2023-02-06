@@ -111,11 +111,13 @@ object VendorFilter {
   case object RecordKeeping extends VendorFilter {
     override val key: String = "record-keeping"
     override val priority: Int = 1
+    override val showHint: Boolean = true
   }
 
   case object Bridging extends VendorFilter {
     override val key: String = "bridging"
     override val priority: Int = 2
+    override val showHint: Boolean = true
   }
 
   case object IncomeTax extends VendorFilter {

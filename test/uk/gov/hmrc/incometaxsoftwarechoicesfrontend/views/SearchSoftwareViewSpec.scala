@@ -313,11 +313,23 @@ class SearchSoftwareViewSpec extends ViewSpec {
                             }
 
                             "contains a RecordKeeping checkbox" in {
-                              validateCheckboxInGroup(checkboxGroup, 1, RecordKeeping.key, SearchSoftwarePageContent.recordKeeping)
+                              validateCheckboxInGroup(
+                                checkboxGroup,
+                                1,
+                                RecordKeeping.key,
+                                SearchSoftwarePageContent.recordKeeping,
+                                Some(SearchSoftwarePageContent.recordKeepingHint)
+                              )
                             }
 
                             "contains a Bridging checkbox" in {
-                              validateCheckboxInGroup(checkboxGroup, 2, Bridging.key, SearchSoftwarePageContent.bridging)
+                              validateCheckboxInGroup(
+                                checkboxGroup,
+                                2,
+                                Bridging.key,
+                                SearchSoftwarePageContent.bridging,
+                                Some(SearchSoftwarePageContent.bridgingHint)
+                              )
                             }
                           }
 
@@ -747,7 +759,9 @@ private object SearchSoftwarePageContent {
 
   val softwareFor = "Software for:"
   val recordKeeping = "Record keeping"
+  val recordKeepingHint = "Software to store and submit your tax records"
   val bridging = "Bridging"
+  val bridgingHint = "Submit records with selected non-compatible software, like spreadsheets"
 
   val mobileApp = "Mobile app:"
   val android = "Android"
