@@ -86,7 +86,10 @@ search-software.vendor-detail.software-type.application-based.hint = Software in
 
 search-software.vendor-detail.software-for = Software for:
 search-software.vendor-detail.software-for.record-keeping = Record keeping
+search-software.vendor-detail.software-for.record-keeping.hint = Software to store and submit your tax records
 search-software.vendor-detail.software-for.bridging = Bridging
+search-software.vendor-detail.software-for.bridging.hint = Submit records with selected non-compatible software, like spreadsheets
+
 
 search-software.vendor-detail.business-type                 = Business type:
 search-software.vendor-detail.business-type.individual      = Individual
