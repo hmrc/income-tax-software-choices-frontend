@@ -80,7 +80,9 @@ search-software.vendor-detail.mobile-app.apple-ios = Apple iOS
 
 search-software.vendor-detail.software-type = Software type:
 search-software.vendor-detail.software-type.browser-based = Browser based
+search-software.vendor-detail.software-type.browser-based.hint = Software accessed online with your internet browser
 search-software.vendor-detail.software-type.application-based = Application based
+search-software.vendor-detail.software-type.application-based.hint = Software installed on your device
 
 search-software.vendor-detail.software-for = Software for:
 search-software.vendor-detail.software-for.record-keeping = Record keeping

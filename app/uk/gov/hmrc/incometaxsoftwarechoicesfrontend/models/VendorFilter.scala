@@ -99,11 +99,13 @@ object VendorFilter {
   case object BrowserBased extends VendorFilter {
     override val key: String = "browser-based"
     override val priority: Int = 1
+    override val showHint: Boolean = true
   }
 
   case object ApplicationBased extends VendorFilter {
     override val key: String = "application-based"
     override val priority: Int = 2
+    override val showHint: Boolean = true
   }
 
   case object RecordKeeping extends VendorFilter {

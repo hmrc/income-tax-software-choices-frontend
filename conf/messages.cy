@@ -80,7 +80,9 @@ search-software.vendor-detail.mobile-app.apple-ios = Apple iOS
 
 search-software.vendor-detail.software-type                   = Math o feddalwedd:
 search-software.vendor-detail.software-type.browser-based     = I’w ddefnyddio drwy borwr
+search-software.vendor-detail.software-type.browser-based.hint = Meddalwedd sy’n cael ei chyrchu ar-lein gan ddefnyddio’ch porwr rhyngrwyd
 search-software.vendor-detail.software-type.application-based = I’w ddefnyddio drwy raglen
+search-software.vendor-detail.software-type.application-based.hint = Meddalwedd sydd wedi’i gosod ar eich dyfais
 
 search-software.vendor-detail.software-for                = Meddalwedd ar gyfer:
 search-software.vendor-detail.software-for.record-keeping = Cadw cofnodion
