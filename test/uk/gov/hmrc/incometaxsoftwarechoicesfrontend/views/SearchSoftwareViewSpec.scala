@@ -688,7 +688,7 @@ private object SearchSoftwarePageContent {
   val paragraph1: String = "All software on this page has been through HMRC’s recognition process. " +
     "But we do not endorse or recommend any one product or software provider."
   val insetText = "If you need help to choose software, contact the software provider or your tax agent before making a decision."
-  val whatSoftwareHeading = "What Kind of Software is available?"
+  val whatSoftwareHeading = "What kind of software is available?"
   val whatSoftwareRecordKeepingHeading = "Record Keeping Software"
   val whatSoftwareRecordKeepingBullet1 = "updates and stores your records digitally"
   val whatSoftwareRecordKeepingBullet2 = "works directly with HMRC systems allowing you to file a Income tax"
