@@ -129,6 +129,7 @@ object VendorFilter {
   case object Vat extends VendorFilter {
     override val key: String = "vat"
     override val priority: Int = 1
+    override val showHint: Boolean = true
   }
 
   case object English extends VendorFilter {

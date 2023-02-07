@@ -369,7 +369,13 @@ class SearchSoftwareViewSpec extends ViewSpec {
                             }
 
                             "contains an VAT checkbox" in {
-                              validateCheckboxInGroup(checkboxGroup, 1, Vat.key, SearchSoftwarePageContent.vat)
+                              validateCheckboxInGroup(
+                                checkboxGroup,
+                                1,
+                                Vat.key,
+                                SearchSoftwarePageContent.vat,
+                                Some(SearchSoftwarePageContent.vatHint)
+                              )
                             }
 
                             "contains an Income Tax checkbox" in {
@@ -718,7 +724,7 @@ private object SearchSoftwarePageContent {
     val mobileApp = "Mobile app"
     val softwareType = "Software type"
     val softwareFor = "Software for"
-    val softwareCompatibility = "Software compatibility"
+    val softwareCompatibility = "Making Tax Digital Compatibility"
     val language = "Language"
     val accessibilityFeatures = "Accessibility features"
     val applyFilters = "Apply filters"
@@ -773,8 +779,9 @@ private object SearchSoftwarePageContent {
   val applicationBased = "Application based"
   val applicationBasedHint = "Software installed on your device"
 
-  val softwareCompatibility = "Software compatibility:"
+  val softwareCompatibility = "Making Tax Digital Compatibility:"
   val vat = "VAT"
+  val vatHint = "Software which you can also use to submit VAT records"
   val incomeTax = "Income Tax"
 
   val language = "Language:"
