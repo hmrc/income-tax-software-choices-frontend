@@ -24,6 +24,7 @@ search-software.link.what-software.record-keeping.bullet2 = works directly with 
 search-software.link.what-software.bridging.heading       = Bridging software ... but in Welsh
 search-software.link.what-software.bridging.bullet1       = works with non-compatible software like spreadsheets, accounting systems and other digital bookkeeping products ... but in Welsh
 search-software.link.what-software.bridging.bullet2       = lets you send the required information digitally to HMRC in the correct format ... but in Welsh
+search-software.skip-to-results                           = Skip to results. ... but in Welsh
 
 search-software.filters.heading                = Hidlwyr
 search-software.filters.pricing                = Prisio
