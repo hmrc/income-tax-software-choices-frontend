@@ -116,6 +116,10 @@ class SearchSoftwareViewSpec extends ViewSpec {
 
                         }
 
+                        "has a skip to results link" in {
+                          document.mainContent.selectHead(".govuk-skip-link").text shouldBe SearchSoftwarePageContent.skiptoresults
+                        }
+
                         "have a filter section" which {
                           val filterSection = getFilterSection(document)
 
@@ -713,6 +717,7 @@ private object SearchSoftwarePageContent {
   val whatSoftwareBridgingHeading = "Bridging software"
   val whatSoftwareBridgingBullet1 = "works with non-compatible software like spreadsheets, accounting systems and other digital bookkeeping products"
   val whatSoftwareBridgingBullet2 = "lets you send the required information digitally to HMRC in the correct format"
+  val skiptoresults = "Skip to results."
   val searchFormHeading = "Search by software name"
 
   object Filters {
