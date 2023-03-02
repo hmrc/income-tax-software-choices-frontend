@@ -171,7 +171,7 @@ class ProductDetailsViewSpec extends ViewSpec {
   )
 
   private val accessibilityUrl = "https://www.software-vendor-accessibility.com"
-  private val accessibilityLink = s"$accessibilityUrl (opens in a new tab)"
+  private val accessibilityLink = s"$accessibilityUrl (opens in new tab)"
   private val softwareVendorModelFull = softwareVendorModelBase
     .copy(incomeAndDeductions = incomeAndDeductionKeyToIncomeAndDeduction.values.toList) // All income and deductions
     .copy(filters = filterKeyToFilter.values.toList) // All filters
@@ -259,7 +259,7 @@ class ProductDetailsViewSpec extends ViewSpec {
               row.selectHead("dt").text shouldBe s"${ProductDetailsPage.contactDetailsWebsite}:"
 
               val link = row.selectHead("dd").selectHead("a")
-              link.text shouldBe s"${softwareVendorModelBase.website} (opens in a new tab)"
+              link.text shouldBe s"${softwareVendorModelBase.website} (opens in new tab)"
               link.attr("href") shouldBe softwareVendorModelBase.website
               link.attr("target") shouldBe "_blank"
             }
@@ -423,7 +423,7 @@ class ProductDetailsViewSpec extends ViewSpec {
         row.selectHead("dt").text shouldBe s"${ProductDetailsPage.contactDetailsWebsite}:"
 
         val link = row.selectHead("dd").selectHead("a")
-        link.text shouldBe s"${softwareVendorModelBase.website} (opens in a new tab)"
+        link.text shouldBe s"${softwareVendorModelBase.website} (opens in new tab)"
         link.attr("href") shouldBe softwareVendorModelBase.website
         link.attr("target") shouldBe "_blank"
       }
