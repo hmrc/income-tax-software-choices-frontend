@@ -49,7 +49,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
                       s"there ${if (hasError) "is" else "is not"} an error" should {
                         val document = getDocument(hasResults, hasError = hasError, beta = betaFeatureSwitch, pricing = pricingSwitch, overseas = displayOverseasProperty)
 
-                        if(betaFeatureSwitch) {
+                        if (betaFeatureSwitch) {
                           "have a breadcrumb menu containing a final link to the guidance page" in {
                             val breadcrumbCount = document.select(".govuk-breadcrumbs__list-item").size()
                             val link = document.selectNth(".govuk-breadcrumbs__list-item", breadcrumbCount).selectHead("a")
@@ -107,11 +107,11 @@ class SearchSoftwareViewSpec extends ViewSpec {
                           }
 
                           "has first bullet point in Bridging section" in {
-                            document.mainContent.selectHead(".govuk-details").selectNth("ul",2).selectNth("li", 1).text shouldBe SearchSoftwarePageContent.whatSoftwareBridgingBullet1
+                            document.mainContent.selectHead(".govuk-details").selectNth("ul", 2).selectNth("li", 1).text shouldBe SearchSoftwarePageContent.whatSoftwareBridgingBullet1
                           }
 
                           "has second bullet point in Bridging section" in {
-                            document.mainContent.selectHead(".govuk-details").selectNth("ul",2).selectNth("li", 2).text shouldBe SearchSoftwarePageContent.whatSoftwareBridgingBullet2
+                            document.mainContent.selectHead(".govuk-details").selectNth("ul", 2).selectNth("li", 2).text shouldBe SearchSoftwarePageContent.whatSoftwareBridgingBullet2
                           }
 
                         }
@@ -122,6 +122,10 @@ class SearchSoftwareViewSpec extends ViewSpec {
 
                         "have a filter section" which {
                           val filterSection = getFilterSection(document)
+
+                          "has a role attribute to identify it as a search landmark" in {
+                            filterSection.attr("role") shouldBe "search"
+                          }
 
                           "has a heading" in {
                             filterSection.selectHead("h2").text shouldBe SearchSoftwarePageContent.Filters.filterHeading
@@ -221,7 +225,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
                               }
                             } else {
                               "does not contains an overseas property checkbox" in {
-                                checkboxGroup.select(".govuk-checkboxes__item:nth-of-type(3)").asScala.headOption shouldBe(None)
+                                checkboxGroup.select(".govuk-checkboxes__item:nth-of-type(3)").asScala.headOption shouldBe (None)
                               }
                             }
                           }
@@ -410,7 +414,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
                             "contains an apply filters button" in {
                               filterSection.selectHead(".apply-filters-button").text shouldBe SearchSoftwarePageContent.Filters.applyFilters
                             }
-                            
+
                           }
                         }
 
@@ -420,9 +424,12 @@ class SearchSoftwareViewSpec extends ViewSpec {
                           }
 
                           "contains a text input" in {
-                            document.mainContent.selectHead("#searchTerm").attr("name") shouldBe "searchTerm"
-                            if (!hasError)
-                              document.mainContent.selectHead("#searchTerm").attr("value") shouldBe "search test"
+                            val input: Element = document.mainContent.selectHead("#searchTerm")
+                            input.attr("name") shouldBe "searchTerm"
+                            input.attr("role") shouldBe "search"
+                            input.attr("aria-label") shouldBe SearchSoftwarePageContent.searchFormHeading
+
+                            if (!hasError) document.mainContent.selectHead("#searchTerm").attr("value") shouldBe "search test"
                           }
 
                           "contains a submit" in {
@@ -525,7 +532,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
                                 secondRow.selectHead("dd").text shouldBe pricingText
 
                                 val thirdRow: Element = summaryList.selectNth("div", 3)
-                                val suitableForText = if(displayOverseasProperty)
+                                val suitableForText = if (displayOverseasProperty)
                                   s"${SearchSoftwarePageContent.soleTrader}/${SearchSoftwarePageContent.ukProperty}/${SearchSoftwarePageContent.overseasProperty}"
                                 else
                                   s"${SearchSoftwarePageContent.soleTrader}/${SearchSoftwarePageContent.ukProperty}"
@@ -645,6 +652,7 @@ object SearchSoftwareViewSpec extends ViewSpec {
 
   def getCheckboxLabel(checkboxItem: Element): Element = checkboxItem
     .selectHead(".govuk-checkboxes__label")
+
   def getCheckboxHint(checkboxItem: Element): Element = checkboxItem
     .selectHead(".govuk-checkboxes__hint")
 
@@ -659,7 +667,7 @@ object SearchSoftwareViewSpec extends ViewSpec {
                                checked: Boolean = false): Assertion = {
     val checkboxItem = getCheckboxItem(checkboxGroup, n)
     getCheckboxLabel(checkboxItem).text shouldBe label
-    maybeHint.map{ hint =>
+    maybeHint.map { hint =>
       getCheckboxHint(checkboxItem).text shouldBe hint
     }
 
@@ -799,7 +807,7 @@ private object SearchSoftwarePageContent {
   val motor = "Motor difficulties"
   val cognitive = "Cognitive impairments"
 
-  private val lastUpdateTest = LocalDate.of(2022,12,2)
+  private val lastUpdateTest = LocalDate.of(2022, 12, 2)
 
   val softwareVendorsResults: SoftwareVendors = SoftwareVendors(
     lastUpdated = lastUpdateTest,
