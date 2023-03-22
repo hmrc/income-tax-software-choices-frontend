@@ -68,16 +68,12 @@ class SearchSoftwareViewSpec extends ViewSpec {
                           document.title shouldBe s"""${if (hasError) "Error: " else ""}${SearchSoftwarePageContent.title} - Find software that’s compatible with Making Tax Digital for Income Tax - GOV.UK"""
                         }
 
-                        "have the last updated date" in {
-                          document.mainContent.selectNth("p", 1).text shouldBe SearchSoftwarePageContent.lastUpdate
-                        }
-
                         "have a heading" in {
                           document.mainContent.selectHead("h1").text shouldBe SearchSoftwarePageContent.heading
                         }
 
                         "have paragraph1" in {
-                          document.mainContent.selectNth("p", 2).text shouldBe SearchSoftwarePageContent.paragraph1
+                          document.mainContent.selectNth("p", 1).text shouldBe SearchSoftwarePageContent.paragraph1
                         }
 
                         "have inset text" in {
@@ -436,6 +432,10 @@ class SearchSoftwareViewSpec extends ViewSpec {
                             document.mainContent.selectHead("#searchButton").text shouldBe SearchSoftwarePageContent.searchFormHeading
                           }
 
+                        }
+
+                        "have the last updated date" in {
+                          document.mainContent.selectHead("#lastUpdated").text shouldBe SearchSoftwarePageContent.lastUpdate
                         }
 
                         if (hasError) "contains an error" in {
