@@ -714,9 +714,8 @@ object SearchSoftwareViewSpec extends ViewSpec {
 private object SearchSoftwarePageContent {
   val title = "Choose your software"
   val lastUpdate = "This page was last updated: 2 Dec 2022"
-  val heading = "Choose your software"
-  val paragraph1: String = "All software on this page has been through HMRC’s recognition process. " +
-    "But we do not endorse or recommend any one product or software provider."
+  val heading = "Find software for Making Tax Digital for Income Tax"
+  val paragraph1 = "HMRC does not make recommendations for software. However, all software on this page has passed our recognition criteria."
   val insetText = "If you need help to choose software, contact the software provider or your tax agent before making a decision."
   val whatSoftwareHeading = "What kind of software is available?"
   val whatSoftwareRecordKeepingHeading = "Record Keeping Software"

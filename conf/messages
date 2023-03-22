@@ -14,8 +14,8 @@ breadcrumbs.glossary                = Self Assessment income and deduction types
 
 search-software.title                                     = Choose your software
 search-software.last-update                               = This page was last updated
-search-software.heading                                   = Choose your software
-search-software.paragraph1                                = All software on this page has been through HMRC’s recognition process. But we do not endorse or recommend any one product or software provider.
+search-software.heading                                   = Find software for Making Tax Digital for Income Tax
+search-software.paragraph1                                = HMRC does not make recommendations for software. However, all software on this page has passed our recognition criteria.
 search-software.inset-text                                = If you need help to choose software, contact the software provider or your tax agent before making a decision.
 search-software.link.what-software.heading                = What kind of software is available?
 search-software.link.what-software.record-keeping.heading = Record Keeping Software

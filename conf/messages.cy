@@ -14,8 +14,8 @@ breadcrumbs.glossary                = Self Assessment income and deduction types
 
 search-software.title                                     = Dewis eich meddalwedd
 search-software.last-update                               = Diweddarwyd y dudalen hon ddiwethaf
-search-software.heading                                   = Dewis eich meddalwedd
-search-software.paragraph1                                = Mae’r holl feddalwedd ar y dudalen hon wedi bod trwy broses adnabod CThEM. Ond nid yw CThEM yn argymell nac yn cymeradwyo unrhyw gynnyrch neu gyflenwr meddalwedd penodol.
+search-software.heading                                   = Find software for Making Tax Digital for Income Tax ...in Welsh
+search-software.paragraph1                                = HMRC does not make recommendations for software. However, all software on this page has passed our recognition criteria. ...in Welsh
 search-software.inset-text                                = Os oes angen help arnoch i ddewis meddalwedd, cysylltwch â darparwr y feddalwedd neu â’ch asiant treth cyn gwneud penderfyniad.
 search-software.link.what-software.heading                = Pa fath o feddalwedd sydd ar gael?
 search-software.link.what-software.record-keeping.heading = Meddalwedd cadw cofnodion:
