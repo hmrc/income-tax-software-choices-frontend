@@ -12,7 +12,7 @@ breadcrumbs.glossary                = Self Assessment income and deduction types
 
 # Search software page
 
-search-software.title                                     = Dewis eich meddalwedd
+search-software.title                                     = Find software for Making Tax Digital for Income Tax ... but in Welsh
 search-software.last-update                               = Diweddarwyd y dudalen hon ddiwethaf
 search-software.heading                                   = Find software for Making Tax Digital for Income Tax ...in Welsh
 search-software.paragraph1                                = HMRC does not make recommendations for software. However, all software on this page has passed our recognition criteria. ...in Welsh

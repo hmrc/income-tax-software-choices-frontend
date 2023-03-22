@@ -712,7 +712,7 @@ object SearchSoftwareViewSpec extends ViewSpec {
 }
 
 private object SearchSoftwarePageContent {
-  val title = "Choose your software"
+  val title = "Find software for Making Tax Digital for Income Tax"
   val lastUpdate = "This page was last updated: 2 Dec 2022"
   val heading = "Find software for Making Tax Digital for Income Tax"
   val paragraph1 = "HMRC does not make recommendations for software. However, all software on this page has passed our recognition criteria."
