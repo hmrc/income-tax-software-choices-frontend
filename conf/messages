@@ -193,12 +193,13 @@ product-details.income-and-deduction-types.state-pension = State Pension
 product-details.income-and-deduction-types.student-loans = Student loans
 product-details.income-and-deduction-types.uk-dividends = UK dividends
 product-details.income-and-deduction-types.uk-interest = UK interest
+product-details.income-and-deduction-types.link = {0}
 
 product-details.accessibility-statement.heading = Accessibility
 product-details.accessibility-statement.key = Accessibility Statement
 
-product-details.explanation-link.text = If you are not sure what any of these terms mean, take a look at the {0} we have created to help you.
-product-details.explanation-link.link = explanations
+product-details.explanation-link.text = Click on each income and deduction to learn more.
+
 
 glossary.title = Self Assessment income and deduction types explained
 glossary.content = Content

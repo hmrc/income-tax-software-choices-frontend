@@ -76,7 +76,7 @@
 
     @if(displayIncomeAndDeductionTypes) {
         <h2 class="govuk-heading-l">@messages("product-details.income-and-deduction-types.heading")</h2>
-        
+
         <p class="govuk-body">@productDetailsExplanationsLink</p>
 
         <p class="govuk-body">
@@ -132,7 +132,14 @@
 @incomeAndDeductionTypesList = {
     <ol class="govuk-list govuk-list--number">
     @softwareVendor.incomeAndDeductions.map { incomeAndDeduction =>
-        <li>@messages(s"product-details.income-and-deduction-types.${incomeAndDeduction.key}")</li>
+        <li> @Html(
+        messages(
+        "product-details.income-and-deduction-types.link",
+        link(
+        text = messages(s"product-details.income-and-deduction-types.${incomeAndDeduction.key}"),
+        href = routes.GlossaryController.show.url
+        ))
+        )</li>
     }
     </ol>
 }
