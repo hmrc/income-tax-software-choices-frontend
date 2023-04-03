@@ -32,16 +32,19 @@
     border-top: 0;
 }
 
+.filters-section:first-of-type {
+    margin-bottom: 1em;
+}
+
 .apply-filters-group {
     border-top: 0px;
 }
 
 .search-input-group {
-  position: relative;
 
   button.govuk-button{
-    position: absolute;
     padding: 0;
+    margin-bottom: 0;
     width: auto;
 
     .search-icon {
@@ -87,11 +90,8 @@
 }
 
 body:not(.js-enabled) {
-  #searchButton, .apply-filters-button {
-    display: inline-block;
-  }
   #searchTerm {
-    width: calc(100% - 58px);
+    margin-bottom: 1em;
   }
 }
 
