@@ -414,22 +414,22 @@ class SearchSoftwareViewSpec extends ViewSpec {
                           }
                         }
 
-                        "has a search form" which {
+                        "has a search section" which {
                           "contains a heading" in {
-                            document.mainContent.selectHead("form h2 label").text shouldBe SearchSoftwarePageContent.searchFormHeading
+                            document.mainContent.selectNth(".filters-section", 1).selectHead("h2").text shouldBe SearchSoftwarePageContent.SearchSoftwareSection.searchFormHeading
                           }
 
                           "contains a text input" in {
                             val input: Element = document.mainContent.selectHead("#searchTerm")
                             input.attr("name") shouldBe "searchTerm"
                             input.attr("role") shouldBe "search"
-                            input.attr("aria-label") shouldBe SearchSoftwarePageContent.searchFormHeading
+                            input.attr("aria-label") shouldBe SearchSoftwarePageContent.SearchSoftwareSection.searchFormHeading
 
                             if (!hasError) document.mainContent.selectHead("#searchTerm").attr("value") shouldBe "search test"
                           }
 
                           "contains a submit" in {
-                            document.mainContent.selectHead("#searchButton").text shouldBe SearchSoftwarePageContent.searchFormHeading
+                            document.mainContent.selectHead("#searchButton").text shouldBe SearchSoftwarePageContent.SearchSoftwareSection.searchFormHeading
                           }
 
                         }
@@ -704,7 +704,7 @@ object SearchSoftwareViewSpec extends ViewSpec {
     }
   }
 
-  def getFilterSection(document: Document): Element = document.mainContent.selectHead("#software-section").selectHead(".filters-section")
+  def getFilterSection(document: Document): Element = document.mainContent.selectHead("#software-section").selectNth(".filters-section", 2)
 
   private val searchSoftwarePage = app.injector.instanceOf[SearchSoftwarePage]
   private val testFormError: FormError = FormError(FiltersForm.searchTerm, "test error message")
@@ -725,7 +725,10 @@ private object SearchSoftwarePageContent {
   val whatSoftwareBridgingBullet1 = "works with non-compatible software like spreadsheets, accounting systems and other digital bookkeeping products"
   val whatSoftwareBridgingBullet2 = "lets you send the required information digitally to HMRC in the correct format"
   val skiptoresults = "Skip to results."
-  val searchFormHeading = "Search by software name"
+
+  object SearchSoftwareSection {
+    val searchFormHeading = "Search by software name"
+  }
 
   object Filters {
     val filterHeading = "Filters"

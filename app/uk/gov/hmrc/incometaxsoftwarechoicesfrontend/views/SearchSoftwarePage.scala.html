@@ -114,7 +114,25 @@
 
   <div id="software-section" class="govuk-grid-row govuk-!-margin-bottom-8">
     @form(action = postAction) {
+
       <div class="govuk-grid-column-one-third govuk-!-margin-bottom-8">
+        <div class="filters-section">
+          <h2 class="govuk-heading-m">
+            <label for="searchTerm">
+              @messages("search-software.search-form.heading")
+            </label>
+          </h2>
+          <div class="search-input-group @{if(searchForm(FiltersForm.searchTerm).hasErrors){"govuk-form-group--error"}}">
+            @searchForm(FiltersForm.searchTerm).errors.map { error => <span class="govuk-error-message">@messages(error.message, error.args: _*)</span> }
+            <input class="govuk-input" id="searchTerm" name="searchTerm" type="text" value="@searchForm(FiltersForm.searchTerm).value" role="search" aria-label="@messages("search-software.search-form.heading")">
+            <div>
+              <button class="govuk-button" id="searchButton" data-module="govuk-button">
+                <span class="search-icon" aria-hidden="true"></span>
+                <span class="govuk-visually-hidden">@messages("search-software.search-form.button")</span>
+              </button>
+            </div>
+          </div>
+        </div>
         <div class="filters-section" role="search" aria-label="@messages("search-software.filters.heading")">
           <h2 class="govuk-heading-m">@messages("search-software.filters.heading")</h2>
 
@@ -135,21 +153,6 @@
       </div>
 
       <div class="govuk-grid-column-two-thirds">
-        <h2 class="govuk-heading-l">
-          <label for="searchTerm">
-            @messages("search-software.search-form.heading")
-          </label>
-        </h2>
-
-        <div class="govuk-form-group search-input-group @{if(searchForm(FiltersForm.searchTerm).hasErrors){"govuk-form-group--error"}}">
-          @searchForm(FiltersForm.searchTerm).errors.map { error => <span class="govuk-error-message">@messages(error.message, error.args: _*)</span> }
-          <input class="govuk-input" id="searchTerm" name="searchTerm" type="text" value="@searchForm(FiltersForm.searchTerm).value" role="search" aria-label="@messages("search-software.search-form.heading")">
-          <button class="govuk-button" id="searchButton" data-module="govuk-button">
-            <span class="search-icon" aria-hidden="true"></span>
-            <span class="govuk-visually-hidden">@messages("search-software.search-form.button")</span>
-          </button>
-        </div>
-
         <div id="vendor-count" role="status">
           @softwareSearchStatusTemplate(betaFeatures, softwareVendors.vendors)
         </div>
