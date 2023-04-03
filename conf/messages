@@ -120,14 +120,14 @@ product-details.details.before-you-choose = Free or paid for software options ma
 
 # Contact details section
 
-product-details.contact-details.heading    = Find out more or get help and support
+product-details.contact-details.heading    = Visit the company’s website to check if the software is right for you
 product-details.contact-details.email      = Email
-product-details.contact-details.phone      = Call
-product-details.contact-details.website    = Visit website
+product-details.contact-details.phone      = Phone
+product-details.contact-details.website    = Website
 
 # Product details section
 
-product-details.details.heading = Product details
+product-details.details.heading = Software details
 product-details.details.pricing = Pricing
 product-details.details.suitable-for = Suitable for
 product-details.details.operating-system = Operating system

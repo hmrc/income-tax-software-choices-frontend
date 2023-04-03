@@ -50,24 +50,12 @@
 }
 
 @mainTemplate(title = softwareVendor.name, breadcrumbs = Some(pageBreadcrumbs)) {
-    <div class="govuk-body govuk-!-padding-1 govuk-!-padding-left-3 before-you-choose">
-        <h2 class="govuk-heading-s">
-        @{
-            messages(s"product-details.details.before-you-choose-header")
-        }
-        </h2>
-        <p>
-        @{
-            messages(s"product-details.details.before-you-choose")
-        }
-        </p>
-    </div>
 
     <h1 class="govuk-heading-xl">@{
         softwareVendor.name
     }</h1>
 
-    <h2 class="govuk-heading-l">@messages("product-details.contact-details.heading")</h2>
+    <h2 class="govuk-heading-m">@messages("product-details.contact-details.heading")</h2>
     @contactDetailsList
 
     <h2 class="govuk-heading-l">@messages("product-details.details.heading")</h2>
@@ -102,18 +90,18 @@
 
 @contactDetailsList = {
 @govukSummaryList(SummaryList(
-    rows = Seq() ++ softwareVendor.email.map(email => SummaryListRow(
+    rows = Seq(SummaryListRow(
+        key = Key(content = Text(s"${messages("product-details.contact-details.website")}:")),
+        value = Value(content = HtmlContent(hmrcNewTabLinkHelper(NewTabLinkHelper(
+            text = softwareVendor.website,
+            href = Some(softwareVendor.website)
+        ))))
+    )) ++ Seq() ++ softwareVendor.email.map(email => SummaryListRow(
         key = Key(content = Text(s"${messages("product-details.contact-details.email")}:")),
         value = Value(content = HtmlContent(link(href = s"mailto:${email}", text = email)))
     )) ++ softwareVendor.phone.map(phone => SummaryListRow(
         key = Key(content = Text(s"${messages("product-details.contact-details.phone")}:")),
         value = Value(content = Text(phone))
-    )) ++ Seq(SummaryListRow(
-        key = Key(content = Text(s"${messages("product-details.contact-details.website")}:")),
-        value = Value(content = HtmlContent(hmrcNewTabLinkHelper(NewTabLinkHelper(
-          text = softwareVendor.website,
-          href = Some(softwareVendor.website)
-        ))))
     ))
 ))
 }
