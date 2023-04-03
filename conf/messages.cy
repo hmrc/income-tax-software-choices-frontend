@@ -119,14 +119,14 @@ product-details.details.before-you-choose        = Mae’n bosibl y bydd gwahano
 
 # Contact details section
 
-product-details.contact-details.heading    = I gael rhagor o wybodaeth, neu i gael help a chymorth
+product-details.contact-details.heading    = Visit the company's website to check if the software is right for you...but in welsh
 product-details.contact-details.email      = E-bost
-product-details.contact-details.phone      = Ffoniwch
-product-details.contact-details.website    = Ewch i’r gwefan
+product-details.contact-details.phone      = Phone... in welsh
+product-details.contact-details.website    = Website...in welsh
 
 # Product details section
 
-product-details.details.heading                = Manylion y cynnyrch
+product-details.details.heading                = Software details...but in welsh
 product-details.details.pricing                = Prisio
 product-details.details.suitable-for           = Addas i
 product-details.details.operating-system       = System weithredu

@@ -31,12 +31,12 @@ class ProductDetailsViewSpec extends ViewSpec {
   object ProductDetailsPage {
     val title: String = "Choose the right software for your needs"
 
-    val contactDetailsHeading = "Find out more or get help and support"
+    val contactDetailsHeading = "Visit the company’s website to check if the software is right for you"
     val contactDetailsEmail = "Email"
-    val contactDetailsPhone = "Call"
-    val contactDetailsWebsite = "Visit website"
+    val contactDetailsPhone = "Phone"
+    val contactDetailsWebsite = "Website"
 
-    val productDetailsHeading: String = "Product details"
+    val productDetailsHeading: String = "Software details"
 
     val beforeHeader = "Before you choose"
     val before = "Free or paid for software options may offer different features, or limits on use. Visit the software company’s website to be sure if their product is right for your needs."
@@ -224,23 +224,28 @@ class ProductDetailsViewSpec extends ViewSpec {
               document.title shouldBe s"""${softwareVendorModelFull.name} - Find software that’s compatible with Making Tax Digital for Income Tax - GOV.UK"""
             }
 
-            "display the 'before you choose' info" in {
-              document.selectFirst(".before-you-choose").selectFirst("h2").text() shouldBe ProductDetailsPage.beforeHeader
-              document.selectFirst(".before-you-choose").selectFirst("p").text() shouldBe ProductDetailsPage.before
-            }
-
             "display the vendor name heading" in {
               document.selectNth("h1", 1).text() shouldBe softwareVendorModelFull.name
             }
 
             "display the vendor contact details heading" in {
               // This is necessary because nth--of-type does not seem to work with disordered header tags
-              document.select("h2").get(1).text() shouldBe ProductDetailsPage.contactDetailsHeading
+              document.selectNth("h2", 1).text shouldBe ProductDetailsPage.contactDetailsHeading
             }
 
             val vendorInformationSection = document.selectNth("dl", 1)
-            "display the vendor email address" in {
+            "display the vendor website" in {
               val row: Element = vendorInformationSection.selectNth(".govuk-summary-list__row", 1)
+              row.selectHead("dt").text shouldBe s"${ProductDetailsPage.contactDetailsWebsite}:"
+
+              val link = row.selectHead("dd").selectHead("a")
+              link.text shouldBe s"${softwareVendorModelBase.website} (opens in new tab)"
+              link.attr("href") shouldBe softwareVendorModelBase.website
+              link.attr("target") shouldBe "_blank"
+            }
+
+            "display the vendor email address" in {
+              val row: Element = vendorInformationSection.selectNth(".govuk-summary-list__row", 2)
               row.selectHead("dt").text shouldBe s"${ProductDetailsPage.contactDetailsEmail}:"
 
               val link = row.selectHead("dd").selectHead("a")
@@ -249,19 +254,9 @@ class ProductDetailsViewSpec extends ViewSpec {
             }
 
             "display the vendor phone number" in {
-              val row: Element = vendorInformationSection.selectNth(".govuk-summary-list__row", 2)
+              val row: Element = vendorInformationSection.selectNth(".govuk-summary-list__row", 3)
               row.selectHead("dt").text shouldBe s"${ProductDetailsPage.contactDetailsPhone}:"
               row.selectHead("dd").text shouldBe softwareVendorModelBase.phone.get
-            }
-
-            "display the vendor website" in {
-              val row: Element = vendorInformationSection.selectNth(".govuk-summary-list__row", 3)
-              row.selectHead("dt").text shouldBe s"${ProductDetailsPage.contactDetailsWebsite}:"
-
-              val link = row.selectHead("dd").selectHead("a")
-              link.text shouldBe s"${softwareVendorModelBase.website} (opens in new tab)"
-              link.attr("href") shouldBe softwareVendorModelBase.website
-              link.attr("target") shouldBe "_blank"
             }
 
             "have a product details heading" in {
