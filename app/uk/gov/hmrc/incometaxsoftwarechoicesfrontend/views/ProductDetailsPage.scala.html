@@ -30,7 +30,9 @@
         mainTemplate: MainTemplate,
         breadcrumbs: GovukBreadcrumbs,
         hmrcNewTabLinkHelper: HmrcNewTabLinkHelper,
-        govukSummaryList: GovukSummaryList
+        govukSummaryList: GovukSummaryList,
+        govukDetails: GovukDetails,
+        govukTag: GovukTag
 )(implicit appConfig: AppConfig)
 @(softwareVendor: SoftwareVendorModel, displayIncomeAndDeductionTypes: Boolean, displayExtraPricingOptions: Boolean, displayOverseasPropertyOption: Boolean)(implicit request: Request[_], messages: Messages)
 
@@ -78,20 +80,12 @@
         <h2 class="govuk-heading-l">@messages("product-details.income-and-deduction-types.heading")</h2>
 
         <p class="govuk-body">@productDetailsExplanationsLink</p>
-
-        <p class="govuk-body">
-        @messages(
-            "product-details.income-and-deduction-types.number-covered",
-            softwareVendor.name,
-            softwareVendor.incomeAndDeductions.length,
-            IncomeAndDeduction.incomeAndDeductionKeyToIncomeAndDeduction.toSeq.length
-        )
         </p>
 
         @incomeAndDeductionTypesList
     }
 
-    @softwareVendor.accessibilityStatementLink.map { linkText =>
+   @softwareVendor.accessibilityStatementLink.map { linkText =>
         <h2 class="govuk-heading-l">@{
             messages("product-details.accessibility-statement.heading")
         }</h2>
@@ -129,19 +123,41 @@
         )
 }
 
-@incomeAndDeductionTypesList = {
-    <ol class="govuk-list govuk-list--number">
-    @softwareVendor.incomeAndDeductions.map { incomeAndDeduction =>
-        <li> @Html(
-        messages(
-        "product-details.income-and-deduction-types.link",
-        link(
-        text = messages(s"product-details.income-and-deduction-types.${incomeAndDeduction.key}"),
-        href = routes.GlossaryController.show.url
-        ))
-        )</li>
+    @incomeAndDeductionsList(incomeAndDeductions:Seq[IncomeAndDeduction]) = {
+        <ol class="govuk-list govuk-list--number">
+        @incomeAndDeductions.map { incomeAndDeduction =>
+            <li> @govukDetails(Details(
+                summary = Text(messages(s"product-details.income-and-deduction-types.${incomeAndDeduction.key}")) ,
+                content = Text(messages(s"product-details.income-and-deduction-types.${incomeAndDeduction.key}.para")),
+                classes = "govuk-!-margin-bottom-2"
+            ))
+            </li>
+        }
+        </ol>
     }
-    </ol>
+
+@incomeAndDeductionTypesList = {
+    @govukSummaryList(SummaryList(
+        rows = Seq(
+            SummaryListRow(
+                key = Key(
+                    content = HtmlContent(govukTag(Tag(content = Text("Supported"), classes = "govuk-tag--green")))
+                ),
+                value = Value(
+                    content = HtmlContent(incomeAndDeductionsList(softwareVendor.incomeAndDeductions))
+                )
+            ),
+            SummaryListRow(
+                key = Key(
+                    content = HtmlContent(govukTag(Tag(content = Text("Unsupported"), classes = "govuk-tag--orange")))
+                ),
+                value = Value(
+                    content = HtmlContent(incomeAndDeductionsList(softwareVendor.unsupportedIncomeAndeDeductions))
+                )
+            )
+        )
+    )
+    )
 }
 
 @accessibilityStatement(linkText: String) = {

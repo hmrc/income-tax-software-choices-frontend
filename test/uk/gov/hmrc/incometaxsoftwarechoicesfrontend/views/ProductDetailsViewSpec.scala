@@ -90,9 +90,8 @@ class ProductDetailsViewSpec extends ViewSpec {
       val accessibility: String = "Accessibility"
     }
 
-    val incomesAndDeductionsHeading: String = "Self Assessment income and deduction types this software covers"
-    val explanationsLinkText: String = "explanations"
-    val explanations: String = s"If you are not sure what any of these terms mean, take a look at the $explanationsLinkText we have created to help you."
+    val incomesAndDeductionsHeading: String = "Supported income and deductions"
+    val incomeAndDeductionPara: String = "Click on each income and deduction to learn more."
     val blindPersonsAllowance: String = "Blind Person’s Allowance"
     val capitalGainsTax: String = "Capital Gains Tax"
     val complexPartnerships: String = "Complex partnerships"
@@ -316,7 +315,8 @@ class ProductDetailsViewSpec extends ViewSpec {
               checkList(detailsSection, accessibilityRow, Filters.accessibilityFeatures, Filters.visual, Filters.hearing, Filters.motor, Filters.cognitive)
             }
 
-            val accessibilityStatementSection = document.selectNth("dl", 3)
+            def accessibilityStatementSection = document.selectNth(".govuk-summary-list", if (incomeFs) 4 else 3)
+
             "display the link to the accessibility statement" in {
               val row: Element = accessibilityStatementSection
               row.selectHead("dt").text shouldBe ProductDetailsPage.accessibilityStatement
@@ -337,128 +337,162 @@ class ProductDetailsViewSpec extends ViewSpec {
                 .selectOptionally(s"h2:nth-of-type(${accessibilitySectionHeading(incomeFs)})") shouldBe None
             }
             "not display the link to the statement" in {
+              val nth = if (incomeFs) 4 else 3
               document
-                .selectOptionally(s"dl:nth-of-type(3)") shouldBe None
+                .selectOptionally(s".govuk-summary-list:nth-of-type($nth)") shouldBe None
             }
           }
         )
+
+
+        "the income and deductions feature switch is on" must {
+          val incomeFs = true
+          "the vendor has full incomes and deductions supported" must {
+            val document: Document = createAndParseDocument(softwareVendorModelFull, incomeFs)
+            "have a income and deductions heading" in {
+              document.selectNth("h2", 3).text shouldBe ProductDetailsPage.incomesAndDeductionsHeading
+            }
+
+            "have a income and deductions para" in {
+              val explanations = document.selectHead("h2:nth-of-type(3) + p")
+              explanations.text shouldBe ProductDetailsPage.incomeAndDeductionPara
+            }
+
+            "display the supported incomes and deductions section" which {
+              "contains a supported tag" in {
+                val tag = document
+                  .selectNth(".govuk-summary-list", 3)
+                  .selectNth(".govuk-summary-list__row", 1)
+                  .selectHead("dt")
+                tag.attr("class") shouldBe "govuk-tag govuk-tag--green"
+                tag.text("Supported")
+              }
+              "contains an ordered list of supported incomes and deductions" in {
+                val detailsList = document
+                  .selectNth(".govuk-summary-list", 3)
+                  .selectNth(".govuk-summary-list__row", 2)
+                  .selectHead("ol")
+                  .selectSeq("li")
+                  .map(_.selectHead("details"))
+
+                detailsList.map { details =>
+                  details.selectHead(".govuk-details__summary-text").text -> details.selectHead(".govuk-details__text").text
+                }
+              }
+            }
+          }
+        }
+
+        "display the unsupported incomes and deductions section" which {
+          "contains a supported tag" in {
+            val tag = document.selectNth(".govuk-summary-list", 3).selectNth(".govuk-summary-list__row", 2).selectHead("dt")
+            tag.attr("class") shouldBe "govuk-tag govuk-tag--orange"
+            tag.text("Unsupported")
+          }
+          "contains no unsupported incomes and deductions" which {
+            "have a details block" which {
+              "contains a summary" in {
+
+              }
+              "contains content" in {
+
+              }
+            }
+          }
+        }
+
+        "display the unsupported incomes and deductions section" in {
+          document
+            .mainContent
+            .selectHead("ol")
+            .selectSeq("li")
+            .map(_.text).toList.sorted shouldBe ProductDetailsPage.allIncomeAndDeductions.toList.sorted
+        }
       }
 
-      "the income and deductions feature switch is on" must {
-        val incomeFs = true
-        "the vendor has full incomes and deductions supported" must {
-          val document: Document = createAndParseDocument(softwareVendorModelFull, incomeFs)
-          "have a income and deductions heading" in {
-            document.selectNth("h2", 3).text shouldBe ProductDetailsPage.incomesAndDeductionsHeading
-          }
-
-          "have an explanations section linking to the Glossary page" in {
-            val explanations = document.selectHead("h2:nth-of-type(3) + p")
-            explanations.text shouldBe ProductDetailsPage.explanations
-            val link = explanations.selectHead("a")
-            link.text shouldBe ProductDetailsPage.explanationsLinkText
-            link.attr("href") shouldBe routes.GlossaryController.show.url
-          }
-
-          "have an income and deductions summary" in {
-            document.selectHead("h2:nth-of-type(3) + p + p").text shouldBe ProductDetailsPage.numberCovered(
-              softwareVendorModelBase.name,
-              softwareVendorModelFull.incomeAndDeductions.length
-            )
-          }
-
-          "display the incomes and deductions section with all values" in {
-            document
-              .mainContent
-              .selectHead("ol")
-              .selectSeq("li")
-              .map(_.text).toList.sorted shouldBe ProductDetailsPage.allIncomeAndDeductions.toList.sorted
-          }
+      "the vendor has minimal incomes and deductions supported" must {
+        val document = createAndParseDocument(softwareVendorModelBase, displayIncomeAndDeductionTypes = true)
+        "display the correct number of incomes and deductions covered" in {
+          document
+            .selectHead("h2:nth-of-type(3) + p + p")
+            .text shouldBe ProductDetailsPage.numberCovered(softwareVendorModelBase.name, 0)
         }
-
-        "the vendor has minimal incomes and deductions supported" must {
-          val document = createAndParseDocument(softwareVendorModelBase, displayIncomeAndDeductionTypes = true)
-          "display the correct number of incomes and deductions covered" in {
-            document
-              .selectHead("h2:nth-of-type(3) + p + p")
-              .text shouldBe ProductDetailsPage.numberCovered(softwareVendorModelBase.name, 0)
-          }
-          "display the section without values" in {
-            document
-              .mainContent
-              .selectHead("ol")
-              .selectSeq("li")
-              .length shouldBe 0
-          }
+        "display the section without values" in {
+          document
+            .mainContent
+            .selectHead("ol")
+            .selectSeq("li")
+            .length shouldBe 0
         }
-      }
-
-      "the income and deductions feature switch is off" when {
-        val incomeFs = false
-        "the vendor has no accessibility statement" must {
-          val document: Document = createAndParseDocument(softwareVendorModelBase, incomeFs)
-          "not have a income and deductions heading" in {
-            document.selectNthOptionally("h2", 3) shouldBe None
-          }
-        }
-        "the vendor has an accessibility statement" must {
-          val document: Document = createAndParseDocument(softwareVendorModelFull, incomeFs)
-          "have an accessibility heading" in {
-            document.selectNth("h2", 3).text() shouldBe Filters.accessibility
-          }
-        }
-      }
-    }
-
-    "the vendor is missing contact details" should {
-      val vendorInformationSection = createAndParseDocument(
-        softwareVendorModelBase.copy(phone = None, email = None),
-        displayIncomeAndDeductionTypes = false
-      ).selectNth("dl", 1)
-
-      "only display the vendor website" in {
-        val row = vendorInformationSection
-          .selectHead(".govuk-summary-list__row")
-
-        row.selectHead("dt").text shouldBe s"${ProductDetailsPage.contactDetailsWebsite}:"
-
-        val link = row.selectHead("dd").selectHead("a")
-        link.text shouldBe s"${softwareVendorModelBase.website} (opens in new tab)"
-        link.attr("href") shouldBe softwareVendorModelBase.website
-        link.attr("target") shouldBe "_blank"
       }
     }
 
-    "the vendor has minimal filters" when {
-      Seq(true, false).foreach(incomeFs =>
-        s"the income and deductions feature switch is $incomeFs" must {
-          val document = createAndParseDocument(softwareVendorModelBase, incomeFs)
-          "display the software compatibility row" in {
-            val row: Element = document
-              .selectNth("dl", 2)
-              .selectNth("div", 1)
-
-            row.selectHead("dt").text shouldBe Filters.softwareCompatibility
-            row.selectHead("dd").text shouldBe Filters.incomeTax
-          }
-          "display the language row" in {
-            val row: Element = document
-              .selectNth("dl", 2)
-              .selectNth("div", 2)
-
-            row.selectHead("dt").text shouldBe Filters.language
-            row.selectHead("dd").text shouldBe Filters.english
-          }
-          "display no other rows" in {
-            document
-              .selectNth("dl", 2)
-              .selectOptionally("div:nth-of-type(3)") shouldBe None
-          }
-
+    "the income and deductions feature switch is off" when {
+      val incomeFs = false
+      "the vendor has no accessibility statement" must {
+        val document: Document = createAndParseDocument(softwareVendorModelBase, incomeFs)
+        "not have a income and deductions heading" in {
+          document.selectNthOptionally("h2", 3) shouldBe None
         }
-      )
+      }
+      "the vendor has an accessibility statement" must {
+        val document: Document = createAndParseDocument(softwareVendorModelFull, incomeFs)
+        "have an accessibility heading" in {
+          document.selectNth("h2", 3).text() shouldBe Filters.accessibility
+        }
+      }
     }
   }
+
+  "the vendor is missing contact details" should {
+    val vendorInformationSection = createAndParseDocument(
+      softwareVendorModelBase.copy(phone = None, email = None),
+      displayIncomeAndDeductionTypes = false
+    ).selectNth("dl", 1)
+
+    "only display the vendor website" in {
+      val row = vendorInformationSection
+        .selectHead(".govuk-summary-list__row")
+
+      row.selectHead("dt").text shouldBe s"${ProductDetailsPage.contactDetailsWebsite}:"
+
+      val link = row.selectHead("dd").selectHead("a")
+      link.text shouldBe s"${softwareVendorModelBase.website} (opens in new tab)"
+      link.attr("href") shouldBe softwareVendorModelBase.website
+      link.attr("target") shouldBe "_blank"
+    }
+  }
+
+  "the vendor has minimal filters" when {
+    Seq(true, false).foreach(incomeFs =>
+      s"the income and deductions feature switch is $incomeFs" must {
+        val document = createAndParseDocument(softwareVendorModelBase, incomeFs)
+        "display the software compatibility row" in {
+          val row: Element = document
+            .selectNth("dl", 2)
+            .selectNth("div", 1)
+
+          row.selectHead("dt").text shouldBe Filters.softwareCompatibility
+          row.selectHead("dd").text shouldBe Filters.incomeTax
+        }
+        "display the language row" in {
+          val row: Element = document
+            .selectNth("dl", 2)
+            .selectNth("div", 2)
+
+          row.selectHead("dt").text shouldBe Filters.language
+          row.selectHead("dd").text shouldBe Filters.english
+        }
+        "display no other rows" in {
+          document
+            .selectNth("dl", 2)
+            .selectOptionally("div:nth-of-type(3)") shouldBe None
+        }
+
+      }
+    )
+  }
+
 
   private def page(vendorModel: SoftwareVendorModel, displayIncomeAndDeductionTypes: Boolean, displayExtraPricingOptions: Boolean, displayOverseasPropertyOption: Boolean) = productDetailsPage(
     vendorModel, displayIncomeAndDeductionTypes, displayExtraPricingOptions, displayOverseasPropertyOption

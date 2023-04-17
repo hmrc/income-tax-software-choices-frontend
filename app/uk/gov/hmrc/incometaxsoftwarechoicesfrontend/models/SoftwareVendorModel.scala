@@ -32,6 +32,12 @@ case class SoftwareVendorModel(
     (filtersFromVendor ++ alwaysDisplayedFilters).toSeq.sortBy(_.priority)
   }
 
+  val unsupportedIncomeAndeDeductions : Seq[IncomeAndDeduction] = {
+    IncomeAndDeduction.incomeAndDeductionKeyToIncomeAndDeduction.values
+      .filterNot(incomeAndDeductions.contains)
+      .toSeq
+  }
+
 }
 
 object SoftwareVendorModel {
