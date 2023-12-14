@@ -34,6 +34,7 @@
         fullWidthMainContentLayout: FullWidthMainContentLayout,
         standardAlphaBanner: StandardAlphaBanner
 )
+
 @(title: String, breadcrumbs: Option[Html] = None, backLink: Option[String]= None, optForm: Option[Form[_]] = None, scripts: Option[Html] = None)(contentBlock: Html)(implicit request: Request[_], messages: Messages)
 
 @prefixedTitle = @{
@@ -58,7 +59,6 @@
     additionalHeadBlock = Some(additionalHeadBlock),
     backLinkUrl = backLink,
     beforeContentBlock = breadcrumbs.map(breadcrumbsHtml => beforeContentBlock(breadcrumbsHtml)),
-    nonce = CSPNonce.get,
     isWelshTranslationAvailable = appConfig.welshLanguageSupportEnabled,
     mainContentLayout = Some(fullWidthMainContentLayout(_)),
     phaseBanner = Some(standardBetaBanner(url = appConfig.betaFeedbackUnauthenticatedUrl)),

@@ -16,9 +16,10 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
-import org.mockito.ArgumentMatchersSugar.eqTo
-import org.mockito.MockitoSugar.{mock, when}
+import org.mockito.ArgumentMatchers.{eq => eqTo}
+import org.mockito.Mockito.when
 import org.scalatest.BeforeAndAfterEach
+import org.scalatestplus.mockito.MockitoSugar.mock
 import play.api.Environment
 import play.api.http.Status
 import play.api.mvc.{Codec, MessagesControllerComponents}
@@ -29,7 +30,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.Feature
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.SoftwareChoicesService
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.{SearchSoftwarePage}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SearchSoftwarePage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.{SoftwareVendorsTemplate, SoftwareVendorsTemplateAlpha}
 
 import java.io.FileInputStream
@@ -42,7 +43,7 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec with BeforeAndAfte
   private val searchVendorsTemplateAlpha = app.injector.instanceOf[SoftwareVendorsTemplateAlpha]
   private val searchVendorsTemplate = app.injector.instanceOf[SoftwareVendorsTemplate]
 
-  protected override def beforeEach() = disable(BetaFeatures)
+  protected override def beforeEach(): Unit = disable(BetaFeatures)
 
   "Show" should {
     "return OK status with the search software page" in withController { controller =>
@@ -113,7 +114,7 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec with BeforeAndAfte
     "beta features are on" should {
       "return OK status with with the correct count returned for an empty filter" in withController { controller =>
         enable(BetaFeatures)
-        val message = getCountMessage(3, true)
+        val message = getCountMessage(3, beta = true)
         val tuple = Seq.empty[(String, String)]
 
         testSearch(controller, message, tuple)
@@ -121,7 +122,7 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec with BeforeAndAfte
 
       "return OK status with the correct count returned for a vendor name search" in withController { controller =>
         enable(BetaFeatures)
-        val message = getCountMessage(1, true)
+        val message = getCountMessage(1, beta = true)
         val tuple = Seq(FiltersForm.searchTerm -> "test software vendor three")
 
         testSearch(controller, message, tuple)
@@ -129,7 +130,7 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec with BeforeAndAfte
 
       "return OK status with the correct count returned for a vendor name search (case insensitive)" in withController { controller =>
         enable(BetaFeatures)
-        val message = getCountMessage(1, true)
+        val message = getCountMessage(1, beta = true)
         val tuple = Seq(FiltersForm.searchTerm -> "TEST SOFTWARE VENDOR THREE")
 
         testSearch(controller, message, tuple)
@@ -137,7 +138,7 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec with BeforeAndAfte
 
       "return OK status with the correct count returned for one filter" in withController { controller =>
         enable(BetaFeatures)
-        val message = getCountMessage(2, true)
+        val message = getCountMessage(2, beta = true)
         val tuple = Seq(FiltersForm.searchTerm -> "Vendor", s"${FiltersForm.filters}[0]" -> "free-version")
 
         testSearch(controller, message, tuple)
@@ -145,7 +146,7 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec with BeforeAndAfte
 
       "return OK status with the correct count returned for two filters" in withController { controller =>
         enable(BetaFeatures)
-        val message = getCountMessage(1, true)
+        val message = getCountMessage(1, beta = true)
         val tuple = Seq(FiltersForm.searchTerm -> "Vendor", s"${FiltersForm.filters}[0]" -> "free-version", s"${FiltersForm.filters}[1]" -> "free-trial")
 
         testSearch(controller, message, tuple)
@@ -170,7 +171,7 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec with BeforeAndAfte
     charset(result) shouldBe Some(Codec.utf_8.charset)
   }
 
-  private def getCountMessage(value: Int, beta: Boolean = false) = (beta, value>1) match {
+  private def getCountMessage(value: Int, beta: Boolean = false) = (beta, value > 1) match {
     case (true, true) => s"$value software providers"
     case (true, false) => s"$value software provider"
     case (false, true) => s"Currently there are $value software providers"

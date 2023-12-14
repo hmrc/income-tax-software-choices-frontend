@@ -27,7 +27,7 @@ import scala.util.Try
 class SoftwareChoicesServiceISpec extends PlaySpec with GuiceOneServerPerSuite {
 
   def app(file: String): Application = new GuiceApplicationBuilder()
-    .configure("metrics.enabled" -> false, "vendor-list.file-name" -> file)
+    .configure("vendor-list.file-name" -> file)
     .build()
 
   Seq("software-vendors.json", "software-vendors-local.json") foreach { file =>
