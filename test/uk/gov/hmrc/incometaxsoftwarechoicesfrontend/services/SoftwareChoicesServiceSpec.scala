@@ -16,9 +16,10 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services
 
-import org.mockito.ArgumentMatchersSugar.eqTo
-import org.mockito.MockitoSugar.{mock, when}
+import org.mockito.ArgumentMatchers.{eq => eqTo}
+import org.mockito.Mockito.when
 import org.scalatest.BeforeAndAfterEach
+import org.scalatestplus.mockito.MockitoSugar.mock
 import org.scalatestplus.play.PlaySpec
 import play.api.Environment
 import uk.gov.hmrc.http.InternalServerException
@@ -35,7 +36,6 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
   private val testFileName: String = "test-software-vendors.json"
   private val validVendors = "test/resources/test-valid-software-vendors.json"
   private val invalidVendors = "test/resources/test-invalid-software-vendors.json"
-  private val realVendors = "conf/software-vendors.json"
 
   class Setup {
     val mockConfig: AppConfig = mock[AppConfig]
@@ -110,7 +110,7 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
       }
 
       "correctly filter vendors by vendor name in disordered sections with whitespace" in new Setup {
-        val vendors = Seq("one two three", "two three four", "five four three two one")
+        val vendors: Seq[SoftwareVendorModel] = Seq("one two three", "two three four", "five four three two one")
           .map(s => SoftwareVendorModel(s, email = None, phone = None, website = "", filters = Seq.empty, incomeAndDeductions = Seq.empty))
         private val searchTerms = s"one  \t   three    two"
         SoftwareChoicesService.matchSearchTerm(Some(searchTerms))(vendors).length mustBe 2

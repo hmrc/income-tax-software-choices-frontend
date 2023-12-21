@@ -16,9 +16,10 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services
 
-import org.mockito.ArgumentMatchers
-import org.mockito.MockitoSugar.{mock, when}
+import org.mockito.ArgumentMatchers.{any, eq => eqTo}
+import org.mockito.Mockito.when
 import org.scalatest.BeforeAndAfterEach
+import org.scalatestplus.mockito.MockitoSugar.mock
 import org.scalatestplus.play.PlaySpec
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.i18n.{Lang, Langs, Messages, MessagesApi}
@@ -96,7 +97,7 @@ class GlossaryServiceSpec extends PlaySpec with BeforeAndAfterEach with GuiceOne
     when(mockMessagesApi.preferred(Seq(englishLang))) thenReturn mockEnglishMessages
     when(mockMessagesApi.preferred(Seq(welshLang))) thenReturn mockWelshMessages
 
-    when(mockMessagesApi(ArgumentMatchers.eq("glossary.last-changed"))(ArgumentMatchers.any))
+    when(mockMessagesApi(eqTo("glossary.last-changed"), any())(any()))
       .thenReturn("2022-02-03")
 
     val service: GlossaryService = new GlossaryService(
@@ -176,17 +177,17 @@ class GlossaryServiceSpec extends PlaySpec with BeforeAndAfterEach with GuiceOne
     }
     "return the asc sorted glossary contents" when {
       "no sort order provided" in new Setup {
-        val m = service.getGlossaryContent(GlossaryFormModel())(englishLang).toMap
+        val m: Map[String, List[(String, String)]] = service.getGlossaryContent(GlossaryFormModel())(englishLang).toMap
         m("B").map(_._1) mustBe List("Beta key three", "Beta key threx")
       }
       "asc is specified" in new Setup {
-        val m = service.getGlossaryContent(GlossaryFormModel(sortOrder = Some("asc")))(englishLang).toMap
+        val m: Map[String, List[(String, String)]] = service.getGlossaryContent(GlossaryFormModel(sortOrder = Some("asc")))(englishLang).toMap
         m("B").map(_._1) mustBe List("Beta key three", "Beta key threx")
       }
     }
     "return the desc sorted glossary contents" when {
       "desc is specified" in new Setup {
-        val m = service.getGlossaryContent(GlossaryFormModel(sortOrder = Some("desc")))(englishLang).toMap
+        val m: Map[String, List[(String, String)]] = service.getGlossaryContent(GlossaryFormModel(sortOrder = Some("desc")))(englishLang).toMap
         m("B").map(_._1) mustBe List("Beta key threx", "Beta key three")
       }
     }
