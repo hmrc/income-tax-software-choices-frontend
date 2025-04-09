@@ -23,12 +23,14 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FiltersFormModel, SoftwareVendors}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FiltersFormModel, SoftwareVendors, UserFilters}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.SoftwareChoicesService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SearchSoftwarePage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.{SoftwareVendorsTemplate, SoftwareVendorsTemplateAlpha}
 
 import javax.inject.{Inject, Singleton}
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
@@ -36,16 +38,27 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
                                          searchSoftwarePage: SearchSoftwarePage,
                                          softwareVendorsTemplateAlpha: SoftwareVendorsTemplateAlpha,
                                          softwareVendorsTemplate: SoftwareVendorsTemplate,
-                                         softwareChoicesService: SoftwareChoicesService) extends BaseFrontendController(mcc) with FeatureSwitching {
+                                         softwareChoicesService: SoftwareChoicesService,
+                                         userFiltersRepository: UserFiltersRepository,
+                                         implicit val ec: ExecutionContext) extends BaseFrontendController(mcc) with FeatureSwitching {
 
   val show: Action[AnyContent] = Action { implicit request => Ok(view(softwareChoicesService.getVendors(), ajax = false, FiltersForm.form)) }
 
-  def search(ajax: Boolean): Action[AnyContent] = Action { implicit request =>
+  def search(ajax: Boolean): Action[AnyContent] = Action.async { implicit request =>
     FiltersForm.form.bindFromRequest().fold(
-      error => BadRequest(view(softwareChoicesService.getVendors(), ajax, error)),
+      error => Future.successful(BadRequest(view(softwareChoicesService.getVendors(), ajax, error))),
       search => {
-        val vendors = softwareChoicesService.getVendors(search.searchTerm, search.filters)
-        Ok(view(vendors, ajax, FiltersForm.form.fill(search)))
+        val sessionId = request.session.get("sessionId").getOrElse("")
+        for {
+          userFilters <- userFiltersRepository.get(sessionId)
+          _ = userFilters match {
+            case Some(userFilters) => userFiltersRepository.set(userFilters.copy(finalFilters = search.filters))
+            case None => userFiltersRepository.set(UserFilters(sessionId, search.filters))
+          }
+        } yield {
+         val vendors = softwareChoicesService.getVendors(search.searchTerm, search.filters)
+         Ok(view(vendors, ajax, FiltersForm.form.fill(search)))
+        }
       }
     )
   }

@@ -34,4 +34,5 @@ class AppConfig @Inject()(val config: Configuration) {
   val betaFeedbackUnauthenticatedUrl: String =
     s"$contactHost/contact/beta-feedback-unauthenticated?service=$contactFormServiceIdentifier"
 
+  val cacheTtl: Long = config.get[Int]("mongodb.timeToLiveInSeconds")
 }
