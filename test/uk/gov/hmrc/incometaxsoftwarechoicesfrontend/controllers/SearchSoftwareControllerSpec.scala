@@ -30,6 +30,8 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.BetaFeatures
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserFilters
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.FreeVersion
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.SoftwareChoicesService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SearchSoftwarePage
@@ -61,6 +63,16 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec with BeforeAndAfte
 
   "search" should {
     "return OK status with the search software page" in withController { controller =>
+      val result = controller.search(false)(FakeRequest("POST", "/")
+        .withFormUrlEncodedBody(FiltersForm.searchTerm -> "Vendor", s"${FiltersForm.filters}[0]" -> "free-version"))
+
+      status(result) shouldBe Status.OK
+      contentType(result) shouldBe Some(HTML)
+      charset(result) shouldBe Some(Codec.utf_8.charset)
+    }
+
+    "return OK status with the search software page when filter already exists" in withController { controller =>
+      when(mockUserFiltersRepo.get(ArgumentMatchers.any())).thenReturn(Future.successful(Some(UserFilters("sessionId",Seq(FreeVersion)))))
       val result = controller.search(false)(FakeRequest("POST", "/")
         .withFormUrlEncodedBody(FiltersForm.searchTerm -> "Vendor", s"${FiltersForm.filters}[0]" -> "free-version"))
 
