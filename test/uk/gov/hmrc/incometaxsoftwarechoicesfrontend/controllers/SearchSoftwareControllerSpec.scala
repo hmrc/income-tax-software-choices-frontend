@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
+import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.{eq => eqTo}
 import org.mockito.Mockito.when
 import org.scalatest.BeforeAndAfterEach
@@ -29,11 +30,15 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.BetaFeatures
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserFilters
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.FreeVersion
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.SoftwareChoicesService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SearchSoftwarePage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.{SoftwareVendorsTemplate, SoftwareVendorsTemplateAlpha}
 
 import java.io.FileInputStream
+import scala.concurrent.{ExecutionContext, Future}
 
 class SearchSoftwareControllerSpec extends ControllerBaseSpec with BeforeAndAfterEach with FeatureSwitching {
 
@@ -42,7 +47,8 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec with BeforeAndAfte
   private val searchSoftwarePage = app.injector.instanceOf[SearchSoftwarePage]
   private val searchVendorsTemplateAlpha = app.injector.instanceOf[SoftwareVendorsTemplateAlpha]
   private val searchVendorsTemplate = app.injector.instanceOf[SoftwareVendorsTemplate]
-
+  implicit val ec: ExecutionContext = ExecutionContext.Implicits.global
+  val mockUserFiltersRepo: UserFiltersRepository = mock[UserFiltersRepository]
   protected override def beforeEach(): Unit = disable(BetaFeatures)
 
   "Show" should {
@@ -57,6 +63,16 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec with BeforeAndAfte
 
   "search" should {
     "return OK status with the search software page" in withController { controller =>
+      val result = controller.search(false)(FakeRequest("POST", "/")
+        .withFormUrlEncodedBody(FiltersForm.searchTerm -> "Vendor", s"${FiltersForm.filters}[0]" -> "free-version"))
+
+      status(result) shouldBe Status.OK
+      contentType(result) shouldBe Some(HTML)
+      charset(result) shouldBe Some(Codec.utf_8.charset)
+    }
+
+    "return OK status with the search software page when filter already exists" in withController { controller =>
+      when(mockUserFiltersRepo.get(ArgumentMatchers.any())).thenReturn(Future.successful(Some(UserFilters("sessionId",Seq(FreeVersion)))))
       val result = controller.search(false)(FakeRequest("POST", "/")
         .withFormUrlEncodedBody(FiltersForm.searchTerm -> "Vendor", s"${FiltersForm.filters}[0]" -> "free-version"))
 
@@ -181,6 +197,8 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec with BeforeAndAfte
   private def withController(testCode: SearchSoftwareController => Any): Unit = {
     val mockEnvironment: Environment = mock[Environment]
 
+    when(mockUserFiltersRepo.get(ArgumentMatchers.any())).thenReturn(Future.successful(None))
+    when(mockUserFiltersRepo.set(ArgumentMatchers.any())).thenReturn(Future.successful(true))
     when(mockEnvironment.resourceAsStream(eqTo(appConfig.softwareChoicesVendorFileName)))
       .thenReturn(Some(new FileInputStream("test/resources/test-valid-software-vendors.json")))
 
@@ -192,7 +210,9 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec with BeforeAndAfte
       searchSoftwarePage,
       searchVendorsTemplateAlpha,
       searchVendorsTemplate,
-      softwareChoicesService
+      softwareChoicesService,
+      mockUserFiltersRepo,
+      ec
     )
 
     testCode(controller)
