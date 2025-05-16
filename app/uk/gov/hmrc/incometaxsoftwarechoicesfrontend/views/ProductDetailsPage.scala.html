@@ -21,16 +21,22 @@
 @import uk.gov.hmrc.hmrcfrontend.views.viewmodels.newtablinkhelper.NewTabLinkHelper
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.IncomeAndDeduction._
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilterGroups._
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{VendorFilterGroups, _}
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTemplate
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilterGroups
+
+
+
+
 
 @this(
         mainTemplate: MainTemplate,
         breadcrumbs: GovukBreadcrumbs,
         hmrcNewTabLinkHelper: HmrcNewTabLinkHelper,
-        govukSummaryList: GovukSummaryList
+        govukSummaryList: GovukSummaryList,
+        govukTable: GovukTable,
+        govukTag: GovukTag
 )(implicit appConfig: AppConfig)
 @(softwareVendor: SoftwareVendorModel, displayIncomeAndDeductionTypes: Boolean, displayExtraPricingOptions: Boolean, displayOverseasPropertyOption: Boolean)(implicit request: Request[_], messages: Messages)
 
@@ -55,12 +61,16 @@
         softwareVendor.name
     }</h1>
 
-    <h2 class="govuk-heading-m">@messages("product-details.contact-details.heading")</h2>
+    <p class="govuk-body-l">@messages("product-details.contact-details.heading")</p>
     @contactDetailsList
 
     <h2 class="govuk-heading-l">@messages("product-details.details.heading")</h2>
-    @productDetailsList
-
+    @table(Left(featuresProvidedGroup), "features-provided")
+    @table(Left(suitableForFilters(displayOverseasPropertyOption)), "business-income")
+    @table(Right(personalIncomeSourcesGroup), "personal-income")
+    @table(Right(deductionsGroup), "deductions")
+    @table(Right(pensionsGroup), "pensions")
+    @table(Right(allowancesGroup), "allowances")
 
     @if(displayIncomeAndDeductionTypes) {
         <h2 class="govuk-heading-l">@messages("product-details.income-and-deduction-types.heading")</h2>
@@ -96,12 +106,6 @@
             text = softwareVendor.website,
             href = Some(softwareVendor.website)
         ))))
-    )) ++ Seq() ++ softwareVendor.email.map(email => SummaryListRow(
-        key = Key(content = Text(s"${messages("product-details.contact-details.email")}:")),
-        value = Value(content = HtmlContent(link(href = s"mailto:${email}", text = email)))
-    )) ++ softwareVendor.phone.map(phone => SummaryListRow(
-        key = Key(content = Text(s"${messages("product-details.contact-details.phone")}:")),
-        value = Value(content = Text(phone))
     ))
 ))
 }
@@ -114,7 +118,7 @@
                 text = messages("product-details.explanation-link.link"),
                 href = routes.GlossaryController.show.url
             ))
-        )
+    )
 }
 
 @incomeAndDeductionTypesList = {
@@ -180,3 +184,72 @@
 @link(href: String, text: String) = {
     <a class="govuk-link" href="@href">@text</a>
 }
+
+
+@incomeDeductionsRow(filterGroup: Set[IncomeAndDeduction], section: String) = @{
+    val vendorIncomeAndDeductions = softwareVendor.incomeAndDeductions
+
+    filterGroup.toSeq map { filter =>
+        Seq(
+            TableRow(
+                content = Text(messages(s"product-details.$section.${filter.key}"))
+            ),
+            TableRow(
+                content = if(vendorIncomeAndDeductions.contains(filter)) {
+                    Text(messages("product-details.status.included"))
+                } else {
+                    HtmlContent(govukTag(Tag(
+                        content = Text(messages("product-details.status.not-included")),
+                        classes = "govuk-tag--red"
+                    )))
+                }
+            )
+        )
+    }
+}
+
+@featuresRow(filterGroup: Set[VendorFilter], section: String) = @{
+    val vendorFilters = softwareVendor.orderedFilterSubset(filterGroup)
+
+    filterGroup.toSeq map { filter =>
+        Seq(
+            TableRow(
+                content = Text(messages(s"product-details.$section.${filter.key}"))
+            ),
+            TableRow(
+                content = if(vendorFilters.contains(filter)) {
+                    Text(messages("product-details.status.included"))
+                } else {
+                    HtmlContent(govukTag(Tag(
+                        content = Text(messages("product-details.status.not-included")),
+                        classes = "govuk-tag--red"
+                    )))
+                }
+            )
+        )
+    }
+}
+
+@table(filterGroup: Either[Set[VendorFilter], Set[IncomeAndDeduction]], tableHeaderKey: String) = @{
+    govukTable(Table(
+        rows = filterGroup match {
+            case Left(vendorFilter) => {
+                featuresRow(vendorFilter, tableHeaderKey)
+            }
+            case Right(incomeDeductions) => {
+                incomeDeductionsRow(incomeDeductions, tableHeaderKey)
+            }
+        },
+        head = Some(Seq(
+            HeadCell(
+                content = Text(messages(s"product-details.$tableHeaderKey.heading"))
+            ),
+            HeadCell(
+                content = Text(messages("product-details.status.heading"))
+            )
+        )),
+        firstCellIsHeader = false
+    ))
+}
+
+

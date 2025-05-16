@@ -52,6 +52,14 @@ object IncomeAndDeduction {
     override val key: String = "gift-aid"
   }
 
+  case object CharitableGiving extends IncomeAndDeduction {
+    override val key: String = "charitable-giving"
+  }
+
+  case object Class2NationalInsurance extends IncomeAndDeduction {
+    override val key: String = "class-2-national-insurance"
+  }
+
   case object HighIncomeChildBenefit extends IncomeAndDeduction {
     override val key: String = "high-income-child-benefit"
   }
@@ -140,6 +148,8 @@ object IncomeAndDeduction {
     Employment,
     ForeignIncome,
     GiftAid,
+    CharitableGiving,
+    Class2NationalInsurance,
     HighIncomeChildBenefit,
     Investments,
     LloydsUnderwriters,
@@ -164,6 +174,11 @@ object IncomeAndDeduction {
 
   implicit val reads: Reads[IncomeAndDeduction] = __.read[String] map incomeAndDeductionKeyToIncomeAndDeduction
 
+  // product details page groups //
+  val personalIncomeSourcesGroup: Set[IncomeAndDeduction] = Set(ConstructionIndustryScheme, CapitalGainsTax, PAYE, ForeignIncome, UKDividends, UKInterest)
+  val deductionsGroup: Set[IncomeAndDeduction] = Set(CharitableGiving, StudentLoans, Class2NationalInsurance, HighIncomeChildBenefit)
+  val pensionsGroup: Set[IncomeAndDeduction] = Set(StatePension, Pensions, PensionContributions)
+  val allowancesGroup: Set[IncomeAndDeduction] = Set(MarriageAllowance)
 }
 
 

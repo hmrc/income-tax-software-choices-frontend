@@ -26,6 +26,7 @@ sealed trait VendorFilter {
   val priority: Int
   val alwaysDisplay: Boolean = false
   val showHint: Boolean = false
+
   override def toString: String = key
 }
 
@@ -163,6 +164,26 @@ object VendorFilter {
     override val priority: Int = 4
   }
 
+  case object QuarterlyUpdates extends VendorFilter {
+    override val key: String = "quarterly-updates"
+    override val priority: Int = 3
+  }
+
+  case object TaxReturn extends VendorFilter {
+    override val key: String = "tax-return"
+    override val priority: Int = 3
+  }
+
+  case object StandardUpdatePeriods extends VendorFilter {
+    override val key: String = "standard-update-periods"
+    override val priority: Int = 3
+  }
+
+  case object CalendarUpdatePeriods extends VendorFilter {
+    override val key: String = "calendar-update-periods"
+    override val priority: Int = 4
+  }
+
   val filterKeyToFilter: Map[String, VendorFilter] = Seq(
     FreeVersion,
     FreeTrial,
@@ -193,6 +214,7 @@ object VendorFilter {
 }
 
 object VendorFilterGroups {
+
   import VendorFilter._
 
   def pricingFilters(displayExtraPricingOptions: Boolean): Set[VendorFilter] =
@@ -225,6 +247,9 @@ object VendorFilterGroups {
 
   val accessibilityFilters: Set[VendorFilter] = Set(Visual, Hearing, Motor, Cognitive)
 
+  // product details page groups //
+  val featuresProvidedGroup: Set[VendorFilter] = softwareForFilters ++ Set(TaxReturn, QuarterlyUpdates, StandardUpdatePeriods, CalendarUpdatePeriods)
+
   def allGroups(displayExtraPricingOptions: Boolean, displayOverseasPropertyOption: Boolean): Seq[(Set[VendorFilter], String)] = Seq(
     (accessibilityFilters, "accessibility"),
     (pricingFilters(displayExtraPricingOptions), "pricing"),
@@ -237,5 +262,5 @@ object VendorFilterGroups {
     (compatibility, "software-compatibility"),
     (languagesFilters, "language")
   )
- 
+
 }
