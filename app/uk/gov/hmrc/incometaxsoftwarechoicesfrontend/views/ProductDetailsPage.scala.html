@@ -26,10 +26,6 @@
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{VendorFilterGroups, _}
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTemplate
 
-
-
-
-
 @this(
         mainTemplate: MainTemplate,
         breadcrumbs: GovukBreadcrumbs,
@@ -66,119 +62,24 @@
 
     <h2 class="govuk-heading-l">@messages("product-details.details.heading")</h2>
     @table(Left(featuresProvidedGroup), "features-provided")
-    @table(Left(suitableForFilters(displayOverseasPropertyOption)), "business-income")
+    @table(Left(suitableForFilters(displayOverseasPropertyOption = true)), "business-income")
     @table(Right(personalIncomeSourcesGroup), "personal-income")
     @table(Right(deductionsGroup), "deductions")
     @table(Right(pensionsGroup), "pensions")
     @table(Right(allowancesGroup), "allowances")
 
-    @if(displayIncomeAndDeductionTypes) {
-        <h2 class="govuk-heading-l">@messages("product-details.income-and-deduction-types.heading")</h2>
-        
-        <p class="govuk-body">@productDetailsExplanationsLink</p>
-
-        <p class="govuk-body">
-        @messages(
-            "product-details.income-and-deduction-types.number-covered",
-            softwareVendor.name,
-            softwareVendor.incomeAndDeductions.length,
-            IncomeAndDeduction.incomeAndDeductionKeyToIncomeAndDeduction.toSeq.length
-        )
-        </p>
-
-        @incomeAndDeductionTypesList
-    }
-
-    @softwareVendor.accessibilityStatementLink.map { linkText =>
-        <h2 class="govuk-heading-l">@{
-            messages("product-details.accessibility-statement.heading")
-        }</h2>
-    @accessibilityStatement(linkText)
-    }
-
 }
 
 @contactDetailsList = {
-@govukSummaryList(SummaryList(
-    rows = Seq(SummaryListRow(
-        key = Key(content = Text(s"${messages("product-details.contact-details.website")}:")),
-        value = Value(content = HtmlContent(hmrcNewTabLinkHelper(NewTabLinkHelper(
-            text = softwareVendor.website,
-            href = Some(softwareVendor.website)
-        ))))
-    ))
-))
-}
-
-@productDetailsExplanationsLink = {
-    @Html(
-        messages(
-            "product-details.explanation-link.text",
-            link(
-                text = messages("product-details.explanation-link.link"),
-                href = routes.GlossaryController.show.url
-            ))
-    )
-}
-
-@incomeAndDeductionTypesList = {
-    <ol class="govuk-list govuk-list--number">
-    @softwareVendor.incomeAndDeductions.map { incomeAndDeduction =>
-        <li>@messages(s"product-details.income-and-deduction-types.${incomeAndDeduction.key}")</li>
-    }
-    </ol>
-}
-
-@accessibilityStatement(linkText: String) = {
-@govukSummaryList(SummaryList(
-    rows = Seq(
-        SummaryListRow(
-            key = Key(content = Text(messages("product-details.accessibility-statement.key"))),
+    @govukSummaryList(SummaryList(
+        rows = Seq(SummaryListRow(
+            key = Key(content = Text(s"${messages("product-details.contact-details.website")}:")),
             value = Value(content = HtmlContent(hmrcNewTabLinkHelper(NewTabLinkHelper(
-                text = linkText,
-                href = Some(linkText)
+                text = softwareVendor.website,
+                href = Some(softwareVendor.website)
             ))))
-        )
-    )
-))
-}
-
-@productDetailsRow(key: String, filtersInRow: Set[VendorFilter]) = @{
-
-    val rowContentMessages = softwareVendor.orderedFilterSubset(filtersInRow).map { filter =>
-        messages(s"product-details.details.${filter.key}")
-    }.map { value =>
-        <p class="govuk-body">{value}</p>
-    }.mkString
-
-    if(rowContentMessages.isEmpty) {
-        None
-    } else {
-        Some(SummaryListRow(
-            key = Key(
-                content = Text(messages(s"product-details.details.$key"))
-            ),
-            value = Value(
-                content = HtmlContent(
-                    rowContentMessages
-                )
-            )
         ))
-    }
-}
-@productDetailsList = {
-@govukSummaryList(SummaryList(
-    rows = rows.flatten
-))
-}
-
-@rows = @{
-    VendorFilterGroups.allGroups(displayExtraPricingOptions, displayOverseasPropertyOption).map{ case (group, label) =>
-        productDetailsRow(
-            key = label,
-            filtersInRow = group
-        )
-    }
+    ))
 }
 
 @link(href: String, text: String) = {
