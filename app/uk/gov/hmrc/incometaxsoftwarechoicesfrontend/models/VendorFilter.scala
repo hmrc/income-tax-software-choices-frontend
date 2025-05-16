@@ -187,6 +187,10 @@ object VendorFilter {
   val filterKeyToFilter: Map[String, VendorFilter] = Seq(
     FreeVersion,
     FreeTrial,
+    QuarterlyUpdates,
+    TaxReturn,
+    StandardUpdatePeriods,
+    CalendarUpdatePeriods,
     PaidFor,
     SoleTrader,
     UkProperty,
