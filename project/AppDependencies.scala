@@ -2,8 +2,8 @@ import sbt._
 
 object AppDependencies {
 
-  val bootstrapPlayVersion = "8.4.0"
-  val playFrontendHMRCVersion = "9.10.0"
+  val bootstrapPlayVersion = "8.6.0"
+  val playFrontendHMRCVersion = "9.11.0"
   private val hmrcMongoVersion = "2.6.0"
 
   val compile: Seq[ModuleID] = Seq(
@@ -14,9 +14,9 @@ object AppDependencies {
   )
 
   val test: Seq[ModuleID] = Seq(
-    "uk.gov.hmrc" %% "bootstrap-test-play-30" % bootstrapPlayVersion % Test,
-    "uk.gov.hmrc.mongo" %% "hmrc-mongo-test-play-30"   % hmrcMongoVersion % Test,
-    "org.jsoup" % "jsoup" % "1.15.4" % Test
+    "uk.gov.hmrc" %% "bootstrap-test-play-30" % bootstrapPlayVersion % "test",
+    "uk.gov.hmrc.mongo" %% "hmrc-mongo-test-play-30"   % hmrcMongoVersion % "test",
+    "org.jsoup" % "jsoup" % "1.15.4" % "test"
   )
 
   val itTest: Seq[ModuleID] = Seq()
