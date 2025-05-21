@@ -52,14 +52,20 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
   }
 
   def clear(ajax: Boolean): Action[AnyContent] = Action.async { implicit request =>
-    val sessionId = request.session.get("sessionId").getOrElse("")
+    val session = request.session
+    val sessionId = session.get("sessionId").getOrElse("")
     userFiltersRepository.delete(sessionId).flatMap {_ =>
-      update(FiltersFormModel(), ajax)
+      val search = session.get("search") match {
+        case Some("") => None
+        case search => search
+      }
+      update(FiltersFormModel(searchTerm = search), ajax)
     }
   }
 
   private def update(search: FiltersFormModel, ajax: Boolean)(implicit request: Request[_]) = {
-    val sessionId = request.session.get("sessionId").getOrElse("")
+    val session = request.session
+    val sessionId = session.get("sessionId").getOrElse("")
     for {
       userFilters <- userFiltersRepository.get(sessionId)
       _ = userFilters match {
@@ -68,6 +74,9 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
       }
     } yield {
       val vendors = softwareChoicesService.getVendors(search.searchTerm, search.filters)
+      session.copy(
+        data = session.data + ("search" -> search.searchTerm.getOrElse(""))
+      )
       Ok(view(vendors, ajax, FiltersForm.form.fill(search)))
     }
   }
