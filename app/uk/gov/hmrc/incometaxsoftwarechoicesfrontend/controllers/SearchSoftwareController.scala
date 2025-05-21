@@ -47,20 +47,29 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
   def search(ajax: Boolean): Action[AnyContent] = Action.async { implicit request =>
     FiltersForm.form.bindFromRequest().fold(
       error => Future.successful(BadRequest(view(softwareChoicesService.getVendors(), ajax, error))),
-      search => {
-        val sessionId = request.session.get("sessionId").getOrElse("")
-        for {
-          userFilters <- userFiltersRepository.get(sessionId)
-          _ = userFilters match {
-            case Some(userFilters) => userFiltersRepository.set(userFilters.copy(finalFilters = search.filters))
-            case None => userFiltersRepository.set(UserFilters(sessionId, search.filters))
-          }
-        } yield {
-         val vendors = softwareChoicesService.getVendors(search.searchTerm, search.filters)
-         Ok(view(vendors, ajax, FiltersForm.form.fill(search)))
-        }
-      }
+      search => update(search, ajax)
     )
+  }
+
+  def clear(ajax: Boolean): Action[AnyContent] = Action.async { implicit request =>
+    val sessionId = request.session.get("sessionId").getOrElse("")
+    userFiltersRepository.delete(sessionId).flatMap {_ =>
+      update(FiltersFormModel(), ajax)
+    }
+  }
+
+  private def update(search: FiltersFormModel, ajax: Boolean)(implicit request: Request[_]) = {
+    val sessionId = request.session.get("sessionId").getOrElse("")
+    for {
+      userFilters <- userFiltersRepository.get(sessionId)
+      _ = userFilters match {
+        case Some(userFilters) => userFiltersRepository.set(userFilters.copy(finalFilters = search.filters))
+        case None => userFiltersRepository.set(UserFilters(sessionId, search.filters))
+      }
+    } yield {
+      val vendors = softwareChoicesService.getVendors(search.searchTerm, search.filters)
+      Ok(view(vendors, ajax, FiltersForm.form.fill(search)))
+    }
   }
 
   private def view(vendors: SoftwareVendors, ajax: Boolean, form: Form[FiltersFormModel])
@@ -78,6 +87,7 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
           vendors,
           form,
           routes.SearchSoftwareController.search(ajax),
+          routes.SearchSoftwareController.clear(),
           betaEnabled,
           extraPricingOptionsEnabled,
           overseasPropertyEnabled

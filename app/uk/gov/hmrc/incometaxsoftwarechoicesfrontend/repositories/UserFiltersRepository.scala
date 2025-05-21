@@ -88,4 +88,12 @@ class UserFiltersRepository @Inject()(
       .toFuture()
       .map(_ => true)
   }
+
+  def delete(id: String): Future[Boolean] = Mdc.preservingMdc {
+    collection.deleteOne(
+      filter = byId(id)
+    )
+    .toFuture()
+    .map(_ => true)
+  }
 }

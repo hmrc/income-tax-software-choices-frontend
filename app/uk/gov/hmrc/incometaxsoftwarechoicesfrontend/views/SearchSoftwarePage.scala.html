@@ -41,7 +41,7 @@
   languageUtils: LanguageUtils
 )(implicit appConfig: AppConfig)
 
-@(softwareVendors: SoftwareVendors, searchForm: Form[FiltersFormModel], postAction: Call, betaFeatures: Boolean, displayExtraPricingOptions: Boolean, displayOverseasPropertyOption: Boolean)(implicit request: Request[_], messages: Messages)
+@(softwareVendors: SoftwareVendors, searchForm: Form[FiltersFormModel], postAction: Call, clearAction: Call, betaFeatures: Boolean, displayExtraPricingOptions: Boolean, displayOverseasPropertyOption: Boolean)(implicit request: Request[_], messages: Messages)
 
 @js = {
   <script @{CSPNonce.attr} src="@routes.Assets.versioned("lib/jquery/jquery.min.js")"></script>
@@ -144,10 +144,14 @@
 
           <div class="govuk-button-group govuk-!-padding-top-0 apply-filters-group">
             @govukButton(Button(
-              classes = "apply-filters-button",
               content = Text(messages("search-software.filters.apply-filters")),
             ))
 
+            @form(action = clearAction) {
+              @govukButton(Button(
+                content = Text(messages("search-software.filters.clear-filters")),
+              ))
+            }
           </div>
         </div>
       </div>

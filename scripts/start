@@ -7,11 +7,11 @@ function die() {
   exit 1
 }
 
-which sm &>/dev/null || die "Can't find Service Manager"
+which sm2 &>/dev/null || die "Can't find Service Manager"
 
-sm --start ITSA_SOFTWARE_CHOICES_ALL "$@"
+sm2 --start ITSA_SOFTWARE_CHOICES_ALL "$@"
 
 sleep 5
-sm --stop INCOME_TAX_SOFTWARE_CHOICES_FRONTEND
+sm2 --stop INCOME_TAX_SOFTWARE_CHOICES_FRONTEND
 sleep 5
 sbt "run 9591 -Dapplication.router=testOnlyDoNotUseInAppConf.Routes"

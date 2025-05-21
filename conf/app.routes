@@ -6,6 +6,7 @@ GET        /product-details/*software uk.gov.hmrc.incometaxsoftwarechoicesfronte
 
 GET        /                     uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SearchSoftwareController.show
 POST       /                     uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SearchSoftwareController.search(ajax: Boolean = false)
+POST       /clear                uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SearchSoftwareController.clear(ajax: Boolean = false)
 
 POST       /ajax                 uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SearchSoftwareController.search(ajax: Boolean = true)
 
