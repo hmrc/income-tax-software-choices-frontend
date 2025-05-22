@@ -17,13 +17,11 @@
 @import uk.gov.hmrc.govukfrontend.views.html.components._
 @import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 @import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcNewTabLinkHelper
-@import uk.gov.hmrc.hmrcfrontend.views.viewmodels.newtablinkhelper.NewTabLinkHelper
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.SoftwareChoicesService
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes.ProductDetailsController
-@import java.net.URLEncoder
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{VendorFilterGroups, _}
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.SoftwareSearchStatusTemplate
+@import java.net.URLEncoder
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes.ProductDetailsController
 
 @this(
   softwareSearchStatusTemplate: SoftwareSearchStatusTemplate,
@@ -31,31 +29,105 @@
   govukSummaryList : GovukSummaryList
 )
 
-@(softwareVendors: SoftwareVendors)(implicit messages: Messages)
+@(softwareVendors: SoftwareVendors, displayExtraPricingOptions: Boolean, displayOverseasPropertyOption: Boolean)(implicit messages: Messages)
 
-@softwareVendorListing(vendor: SoftwareVendorModel, index: Int) = {
-  <li>
-    <div class="full-software-package">
-      <div class="software-package">
-        <h3 class="govuk-heading-m" id="@{"software-vendor-" + index}">
-          <a class="govuk-link govuk-link--no-visited-state"
-             href="@{ProductDetailsController.show(URLEncoder.encode(vendor.name, "UTF-8"))}">@{vendor.name}
-          </a>
-        </h3>
-      </div>
-    </div>
-  </li>
+@customSummaryListRow(key: String, filtersAvailable: Seq[VendorFilter]) = @{
+
+  val value: String = filtersAvailable
+          .sortBy(_.priority)
+          .map(filter => messages(s"search-software.vendor-detail.$key.${filter.key}"))
+          .mkString(", ")
+
+  if(value.nonEmpty) {
+    Some(SummaryListRow(
+      key = Key(
+        content = Text(messages(s"search-software.vendor-detail.$key"))
+      ),
+      value = Value(
+        content = Text(value)
+      )
+    ))
+  } else {
+    None
+  }
 }
 
-<div aria-hidden="true" class="govuk-visually-hidden">
-  <div id="updated-vendor-count">
-  @softwareSearchStatusTemplate(softwareVendors = softwareVendors.vendors)
+@softwareVendorPricing(vendor: SoftwareVendorModel) = @{
+
+  val key: String = {messages("search-software.vendor-detail.pricing")}
+  val freeTrial = if(vendor.filters.contains(FreeTrial)) Some(messages("search-software.vendor-detail.pricing.free-trial")) else Some(messages("search-software.vendor-detail.pricing.no-free-trial"))
+  val freeVersion = if(vendor.filters.contains(FreeVersion)) Some(messages("search-software.vendor-detail.pricing.free-version")) else Some(messages("search-software.vendor-detail.pricing.no-free-version"))
+  val value = Seq(
+    freeTrial.filter(_ => displayExtraPricingOptions),
+    freeVersion
+  ).flatten.mkString("/")
+
+  Some(SummaryListRow(
+    key = Key(
+      content = Text(key)
+    ),
+    value = Value(
+      content = Text(value)
+    )
+  ))
+
+}
+
+@softwareVendorSuitableFor(vendor: SoftwareVendorModel) = @{
+
+  customSummaryListRow(
+    key = "suitable-for",
+    filtersAvailable = vendor.orderedFilterSubset(VendorFilterGroups.suitableForFilters(displayOverseasPropertyOption))
+  )
+
+}
+
+@softwareVendorSoftwareFor(vendor: SoftwareVendorModel) = @{
+
+  customSummaryListRow(
+    key = "software-for",
+    filtersAvailable = vendor.orderedFilterSubset(VendorFilterGroups.softwareForFilters)
+  )
+
+}
+
+@softwareSubmissionType(vendor: SoftwareVendorModel) = @{
+
+  customSummaryListRow(
+    key = "submission-type",
+    filtersAvailable = vendor.orderedFilterSubset(VendorFilterGroups.submissionTypeFilters)
+  )
+
+}
+
+@softwareVendorDetail(vendor: SoftwareVendorModel) = @{
+
+  Seq(
+    softwareVendorPricing(vendor),
+    softwareVendorSoftwareFor(vendor),
+    softwareSubmissionType(vendor),
+    softwareVendorSuitableFor(vendor)
+  ).flatten
+
+}
+
+@softwareVendorListing(vendor: SoftwareVendorModel, index: Int) = {
+  <div id="software-vendor-@index">
+    <h3 class="govuk-heading-m software-vendor-list-heading-override">
+      @vendor.name
+    </h3>
+    @govukSummaryList(SummaryList(
+      rows = softwareVendorDetail(vendor),
+      classes = "govuk-summary-list--no-border"
+    ))
+    <p class="govuk-body">
+      <a href="@{ProductDetailsController.show(URLEncoder.encode(vendor.name, "UTF-8"))}" class="govuk-link">
+        @messages("search-software.vendor-visit-link", vendor.name)
+      </a>
+    </p>
   </div>
-</div>
+}
 
-<div class="software-packages-full">
-  <ul class="software-packages-ul">
-    @softwareVendors.vendors.zipWithIndex.map { case (vendor, index) => @softwareVendorListing(vendor, index) }
-  </ul>
-</div>
-
+@softwareVendors.vendors.zipWithIndex.map { case (vendor, index) =>
+  @softwareVendorListing(vendor, index)
+}

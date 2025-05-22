@@ -46,11 +46,10 @@ search-software.search-form.paragraph = All links to the software providers’ w
 search-software.search-form.button  = Search by software name
 search-software.search-form.error   = Enter less than {0} characters
 
-search-software.alpha-vendor-count-single = Currently there is 1 software provider
-search-software.alpha-vendor-count        = Currently there are {0} software providers
-search-software.vendor-count-single       = 1 software provider
-search-software.vendor-count              = {0} software providers
-search-software.vendor-visit-link         = Visit {0} website
+search-software.vendor-count.heading = These single products are compatible software that meets all your needs
+search-software.vendor-count-single = Currently there is 1 software provider
+search-software.vendor-count        = There are {0} software providers that can send quarterly updates, submit tax return and meet your selected requirements.
+search-software.vendor-visit-link   = Find out more about {0}
 
 search-software.empty-vendor-list           = Your search has returned no results. To increase the number of results, we suggest you:
 search-software.empty-vendor-list.heading   = Your search has returned no results.
@@ -58,7 +57,7 @@ search-software.empty-vendor-list.paragraph = To increase the number of results,
 search-software.empty-vendor-list.bullet1   = reduce the number of filters you apply
 search-software.empty-vendor-list.bullet2   = make sure the name you have entered into the search bar is correct
 
-search-software.vendor-detail.pricing = Pricing:
+search-software.vendor-detail.pricing = Pricing
 search-software.vendor-detail.pricing.free-trial = Free trial
 search-software.vendor-detail.pricing.no-free-trial = No free trial
 search-software.vendor-detail.pricing.free-version = Free version
@@ -66,10 +65,14 @@ search-software.vendor-detail.pricing.free-version.hint = These are usually only
 search-software.vendor-detail.pricing.no-free-version = No free version
 search-software.vendor-detail.pricing.paid-for = Paid for
 
-search-software.vendor-detail.suitable-for = Suitable for:
+search-software.vendor-detail.suitable-for = Business income sources
 search-software.vendor-detail.suitable-for.sole-trader = Sole trader
 search-software.vendor-detail.suitable-for.uk-property = UK property
 search-software.vendor-detail.suitable-for.overseas-property = Overseas property
+
+search-software.vendor-detail.submission-type = Submission type
+search-software.vendor-detail.submission-type.quarterly-updates = Quarterly updates
+search-software.vendor-detail.submission-type.tax-return = Self Assessment tax return
 
 search-software.vendor-detail.operating-system = Operating system:
 search-software.vendor-detail.operating-system.microsoft-windows = Microsoft Windows
@@ -85,7 +88,7 @@ search-software.vendor-detail.software-type.browser-based.hint = Software access
 search-software.vendor-detail.software-type.application-based = Application based
 search-software.vendor-detail.software-type.application-based.hint = Software installed on your device
 
-search-software.vendor-detail.software-for = Software for:
+search-software.vendor-detail.software-for = Type of software
 search-software.vendor-detail.software-for.record-keeping = Record keeping
 search-software.vendor-detail.software-for.record-keeping.hint = Software to store and submit your tax records
 search-software.vendor-detail.software-for.bridging = Bridging
