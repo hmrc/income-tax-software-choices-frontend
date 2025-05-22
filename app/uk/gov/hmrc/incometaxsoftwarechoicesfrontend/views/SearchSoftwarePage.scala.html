@@ -43,11 +43,6 @@
 
 @(softwareVendors: SoftwareVendors, searchForm: Form[FiltersFormModel], postAction: Call, clearAction: Call, betaFeatures: Boolean, displayExtraPricingOptions: Boolean, displayOverseasPropertyOption: Boolean)(implicit request: Request[_], messages: Messages)
 
-@js = {
-  <script @{CSPNonce.attr} src="@routes.Assets.versioned("lib/jquery/jquery.min.js")"></script>
-  <script @{CSPNonce.attr} src="@routes.Assets.versioned("javascript/softwareSearch.js")"></script>
-}
-
 @pageBackLink = @{
   if(betaFeatures) {
     None
@@ -85,7 +80,7 @@
   </ul>
 }
 
-@mainTemplate(title = messages("search-software.title"), breadcrumbs = pageBreadcrumbs, backLink = pageBackLink, optForm = Some(searchForm), scripts = Some(js)) {
+@mainTemplate(title = messages("search-software.title"), breadcrumbs = pageBreadcrumbs, backLink = pageBackLink, optForm = Some(searchForm)) {
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
@@ -134,6 +129,9 @@
           </div>
         </div>
         <div class="filters-section" role="search" aria-label="@messages("search-software.filters.heading")">
+          <p class="govuk-body">
+            <a class="govuk-link" href="@clearAction.url">@messages("search-software.filters.clear-filters")</a>
+          </p>
           <h2 class="govuk-heading-m">@messages("search-software.filters.heading")</h2>
 
           @if(betaFeatures) {
@@ -146,12 +144,6 @@
             @govukButton(Button(
               content = Text(messages("search-software.filters.apply-filters")),
             ))
-
-            @form(action = clearAction) {
-              @govukButton(Button(
-                content = Text(messages("search-software.filters.clear-filters")),
-              ))
-            }
           </div>
         </div>
       </div>

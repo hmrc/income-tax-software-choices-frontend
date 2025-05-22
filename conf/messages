@@ -26,7 +26,7 @@ search-software.link.what-software.bridging.bullet1       = works with non-compa
 search-software.link.what-software.bridging.bullet2       = lets you send the required information digitally to HMRC in the correct format
 search-software.skip-to-results                           = Skip to results.
 
-search-software.filters.heading = Filters
+search-software.filters.heading = Filter software by
 search-software.filters.pricing = Pricing
 search-software.filters.suitable-for = Suitable for
 search-software.filters.operating-system = Operating system
@@ -39,7 +39,7 @@ search-software.filters.language = Language
 search-software.filters.accessibility = Accessibility features
 
 search-software.filters.apply-filters = Apply filters
-search-software.filters.clear-filters = Clear filters
+search-software.filters.clear-filters = Clear all filters
 
 search-software.search-form.heading = Search by software name
 search-software.search-form.paragraph = All links to the software providers’ websites open in a new tab.

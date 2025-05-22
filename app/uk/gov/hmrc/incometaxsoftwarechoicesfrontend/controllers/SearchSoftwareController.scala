@@ -72,10 +72,8 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
       }
     } yield {
       val vendors = softwareChoicesService.getVendors(search.searchTerm, search.filters)
-      session.copy(
-        data = session.data + ("search" -> search.searchTerm.getOrElse(""))
-      )
       Ok(view(vendors, ajax, FiltersForm.form.fill(search)))
+        .withSession(session + ("search" -> search.searchTerm.getOrElse("")))
     }
   }
 
@@ -94,7 +92,7 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
           vendors,
           form,
           routes.SearchSoftwareController.search(ajax),
-          routes.SearchSoftwareController.clear(),
+          routes.SearchSoftwareController.clear(ajax),
           betaEnabled,
           extraPricingOptionsEnabled,
           overseasPropertyEnabled
