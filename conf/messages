@@ -37,6 +37,7 @@ search-software.filters.business-type = Business type
 search-software.filters.software-compatibility = Making Tax Digital Compatibility
 search-software.filters.language = Language
 search-software.filters.accessibility = Accessibility features
+search-software.filters.accounting-period = Accounting period
 
 search-software.filters.apply-filters = Apply filters
 search-software.filters.clear-filters = Clear all filters
@@ -62,7 +63,7 @@ search-software.vendor-detail.pricing = Pricing:
 search-software.vendor-detail.pricing.free-trial = Free trial
 search-software.vendor-detail.pricing.no-free-trial = No free trial
 search-software.vendor-detail.pricing.free-version = Free version
-search-software.vendor-detail.pricing.free-version.hint = These are usually only free for a limited time, or have restricted features
+search-software.vendor-detail.pricing.free-version.hint = Find the company’s definition of ‘free’ on their website
 search-software.vendor-detail.pricing.no-free-version = No free version
 search-software.vendor-detail.pricing.paid-for = Paid for
 
@@ -87,9 +88,9 @@ search-software.vendor-detail.software-type.application-based.hint = Software in
 
 search-software.vendor-detail.software-for = Software for:
 search-software.vendor-detail.software-for.record-keeping = Record keeping
-search-software.vendor-detail.software-for.record-keeping.hint = Software to store and submit your tax records
+search-software.vendor-detail.software-for.record-keeping.hint = Creates digital records
 search-software.vendor-detail.software-for.bridging = Bridging
-search-software.vendor-detail.software-for.bridging.hint = Submit records with selected non-compatible software, like spreadsheets
+search-software.vendor-detail.software-for.bridging.hint = Connects to digital records like spreadsheets
 
 
 search-software.vendor-detail.business-type                 = Business type:
@@ -110,8 +111,12 @@ search-software.vendor-detail.language.english = English
 search-software.vendor-detail.accessibility = Accessibility:
 search-software.vendor-detail.accessibility.visual = Impaired vision and blindness
 search-software.vendor-detail.accessibility.hearing = Deafness and impaired hearing
-search-software.vendor-detail.accessibility.motor = Motor difficulties
+search-software.vendor-detail.accessibility.motor = Motor or physical difficulties
 search-software.vendor-detail.accessibility.cognitive = Cognitive impairments
+
+search-software.vendor-detail.accounting-period.apr6 = 6th April to 5th April
+search-software.vendor-detail.accounting-period.apr1 = 1st April to 31st March
+search-software.vendor-detail.accounting-period.apr1.hint = This supports calendar update periods
 
 # Product details page
 

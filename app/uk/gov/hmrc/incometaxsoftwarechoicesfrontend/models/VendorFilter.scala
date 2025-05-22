@@ -129,7 +129,6 @@ object VendorFilter {
   case object Vat extends VendorFilter {
     override val key: String = "vat"
     override val priority: Int = 1
-    override val showHint: Boolean = true
   }
 
   case object English extends VendorFilter {
@@ -163,6 +162,17 @@ object VendorFilter {
     override val priority: Int = 4
   }
 
+  case object Apr6 extends VendorFilter {
+    override val key: String = "apr6"
+    override val priority: Int = 1
+  }
+
+  case object Apr1 extends VendorFilter {
+    override val key: String = "apr1"
+    override val priority: Int = 2
+    override val showHint: Boolean = true
+  }
+
   val filterKeyToFilter: Map[String, VendorFilter] = Seq(
     FreeVersion,
     FreeTrial,
@@ -181,11 +191,14 @@ object VendorFilter {
     RecordKeeping,
     Bridging,
     Vat,
+    English,
     Welsh,
     Visual,
     Hearing,
     Motor,
-    Cognitive
+    Cognitive,
+    Apr6,
+    Apr1,
   ).map(value => value.key -> value).toMap
 
   implicit val reads: Reads[VendorFilter] = __.read[String] map filterKeyToFilter
@@ -206,7 +219,7 @@ object VendorFilterGroups {
 
   val businessTypeFilters: Set[VendorFilter] = Set(Individual, Agent)
 
-  val compatibility: Set[VendorFilter] = Set(IncomeTax, Vat)
+  val compatibility: Set[VendorFilter] = Set(Vat)
 
   def suitableForFilters(displayOverseasPropertyOption: Boolean): Set[VendorFilter] =
     Set(
@@ -225,17 +238,15 @@ object VendorFilterGroups {
 
   val accessibilityFilters: Set[VendorFilter] = Set(Visual, Hearing, Motor, Cognitive)
 
+  val accountingPeriodFilters: Set[VendorFilter] = Set(Apr6, Apr1)
+
   def allGroups(displayExtraPricingOptions: Boolean, displayOverseasPropertyOption: Boolean): Seq[(Set[VendorFilter], String)] = Seq(
-    (accessibilityFilters, "accessibility"),
     (pricingFilters(displayExtraPricingOptions), "pricing"),
-    (suitableForFilters(displayOverseasPropertyOption), "suitable-for"),
-    (operatingSystemFilters, "operating-system"),
-    (mobileAppFilters, "mobile-app"),
-    (softwareTypeFilters, "software-type"),
     (softwareForFilters, "software-for"),
-    (businessTypeFilters, "business-type"),
     (compatibility, "software-compatibility"),
-    (languagesFilters, "language")
+    (accessibilityFilters, "accessibility"),
+    (accountingPeriodFilters, "accounting-period"),
+    (suitableForFilters(true), "suitable-for"),
   )
  
 }
