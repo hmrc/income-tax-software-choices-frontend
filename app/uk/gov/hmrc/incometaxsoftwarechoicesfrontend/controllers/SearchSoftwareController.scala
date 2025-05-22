@@ -52,21 +52,19 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
   }
 
   def clear(ajax: Boolean): Action[AnyContent] = Action.async { implicit request =>
-    val session = request.session
-    val sessionId = session.get("sessionId").getOrElse("")
-    userFiltersRepository.delete(sessionId).flatMap {_ =>
-      val search = session.get("search") match {
-        case Some("") => None
-        case search => search
-      }
-      update(FiltersFormModel(searchTerm = search), ajax)
+    val search = request.session.get("search") match {
+      case Some("") => None
+      case search => search
     }
+    update(FiltersFormModel(searchTerm = search), ajax)
   }
 
   private def update(search: FiltersFormModel, ajax: Boolean)(implicit request: Request[_]) = {
     val session = request.session
     val sessionId = session.get("sessionId").getOrElse("")
+    val empty = search.filters.isEmpty
     for {
+      _ <- if (empty) userFiltersRepository.delete(sessionId) else Future.successful()
       userFilters <- userFiltersRepository.get(sessionId)
       _ = userFilters match {
         case Some(userFilters) => userFiltersRepository.set(userFilters.copy(finalFilters = search.filters))
