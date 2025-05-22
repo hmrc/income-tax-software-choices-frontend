@@ -64,12 +64,11 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
     val sessionId = session.get("sessionId").getOrElse("")
     val empty = search.filters.isEmpty
     for {
-      _ <- if (empty) userFiltersRepository.delete(sessionId) else Future.successful()
       userFilters <- userFiltersRepository.get(sessionId)
       _ = (empty, userFilters) match {
         case (false, Some(userFilters)) => userFiltersRepository.set(userFilters.copy(finalFilters = search.filters))
         case (false, None) => userFiltersRepository.set(UserFilters(sessionId, search.filters))
-        case (true, _) => Future.successful()
+        case (true, _) => userFiltersRepository.delete(sessionId)
       }
     } yield {
       val vendors = softwareChoicesService.getVendors(search.searchTerm, search.filters)
