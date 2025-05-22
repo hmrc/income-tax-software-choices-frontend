@@ -252,7 +252,13 @@ object VendorFilterGroups {
   val accessibilityFilters: Set[VendorFilter] = Set(Visual, Hearing, Motor, Cognitive)
 
   // product details page groups //
-  val featuresProvidedGroup: Set[VendorFilter] = softwareForFilters ++ Set(TaxReturn, QuarterlyUpdates, StandardUpdatePeriods, CalendarUpdatePeriods)
+  val featuresProvidedGroup: List[VendorFilter] = List(RecordKeeping, Bridging, QuarterlyUpdates, TaxReturn, StandardUpdatePeriods, CalendarUpdatePeriods)
+  def incomeSourcesGroup(displayOverseasPropertyOption: Boolean): List[VendorFilter] =
+    List(
+      Some(SoleTrader),
+      Some(UkProperty),
+      Some(OverseasProperty).filter(_ => displayOverseasPropertyOption)
+    ).flatten
 
   def allGroups(displayExtraPricingOptions: Boolean, displayOverseasPropertyOption: Boolean): Seq[(Set[VendorFilter], String)] = Seq(
     (accessibilityFilters, "accessibility"),

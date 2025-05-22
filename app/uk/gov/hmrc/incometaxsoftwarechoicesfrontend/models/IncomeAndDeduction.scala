@@ -175,10 +175,10 @@ object IncomeAndDeduction {
   implicit val reads: Reads[IncomeAndDeduction] = __.read[String] map incomeAndDeductionKeyToIncomeAndDeduction
 
   // product details page groups //
-  val personalIncomeSourcesGroup: Set[IncomeAndDeduction] = Set(ConstructionIndustryScheme, CapitalGainsTax, PAYE, ForeignIncome, UKDividends, UKInterest)
-  val deductionsGroup: Set[IncomeAndDeduction] = Set(CharitableGiving, StudentLoans, Class2NationalInsurance, HighIncomeChildBenefit)
-  val pensionsGroup: Set[IncomeAndDeduction] = Set(StatePension, Pensions, PensionContributions)
-  val allowancesGroup: Set[IncomeAndDeduction] = Set(MarriageAllowance)
+  val personalIncomeSourcesGroup: List[IncomeAndDeduction] = List(ConstructionIndustryScheme, CapitalGainsTax, PAYE, ForeignIncome, UKDividends, UKInterest)
+  val deductionsGroup: List[IncomeAndDeduction] = List(CharitableGiving, StudentLoans, Class2NationalInsurance, HighIncomeChildBenefit)
+  val pensionsGroup: List[IncomeAndDeduction] = List(StatePension, Pensions, PensionContributions)
+  val allowancesGroup: List[IncomeAndDeduction] = List(MarriageAllowance)
 }
 
 

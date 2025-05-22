@@ -35,10 +35,31 @@ class ProductDetailsNewViewSpec extends ViewSpec {
     val paragraph = "Visit the company’s website to check if the software is right for you"
     val contactDetailsWebsite = "Website"
 
-    val softwareFeaturesHeading: String = "Software features"
+    val softwareFeaturesHeading = "Software features"
 
+    val recordKeeping = "Record keeping"
+    val bridging = "Bridging"
     val quarterlyUpdates = "Quarterly updates"
+    val saTaxReturn = "Self Assessment tax return"
+    val standardUpdatePeriods = "Standard update periods"
     val calendarUpdatePeriods = "Calendar update periods"
+    val soleTrader = "Sole trader"
+    val ukProperty = "UK property"
+    val foreignProperty = "Foreign property"
+    val cis = "Construction Industry Scheme"
+    val cgt = "Capital Gains Tax"
+    val paye = "Employment (PAYE)"
+    val foreignIncome = "Foreign Income"
+    val ukDividends = "UK dividends"
+    val ukInterest = "UK interest"
+    val charitableGiving = "Charitable giving"
+    val student = "Student Loan"
+    val class2NIC = "Voluntary Class 2 National Insurance"
+    val childBenefitCharge = "High Income Child Benefit Charge"
+    val statePension = "State pension"
+    val privatePensionIncome = "Private pension incomes"
+    val privatePensionContribution = "Private pension contributions"
+    val marriage = "Marriage Allowance"
 
   }
 
@@ -90,21 +111,50 @@ class ProductDetailsNewViewSpec extends ViewSpec {
 
         def getTableHeader(table: Int, col: Int): Element = getTable(table).selectHead(s"thead > tr > th.govuk-table__header:nth-of-type($col)")
 
-        def checkRow(row: Int, field: String, included: Boolean): Assertion = {
+        def checkTableHeader(table: Int, col1: String, col2: String): Assertion = {
+          getTableHeader(table, 1).text shouldBe col1
+          getTableHeader(table, 2).text shouldBe col2
+        }
+
+        def checkRow(table: Int, row: Int, field: String, included: Boolean): Assertion = {
           val status = if (included) "Included" else "Not Included"
-          getTable(1).selectHead(s"tbody > tr:nth-child($row) > td:nth-child(1)").text shouldBe field
-          getTable(1).selectHead(s"tbody > tr:nth-child($row) > td:nth-child(2)").text shouldBe status
+          getTable(table).selectHead(s"tbody > tr:nth-child($row) > td:nth-child(1)").text shouldBe field
+          getTable(table).selectHead(s"tbody > tr:nth-child($row) > td:nth-child(2)").text shouldBe status
         }
 
         "has the correct table headings" in {
-          getTableHeader(1, 1).text shouldBe "Features provided"
-          getTableHeader(1, 2).text shouldBe "Status"
+          checkTableHeader(1, "Features provided", "Status")
+          checkTableHeader(2, "Business income sources", "Status")
+          checkTableHeader(3, "Personal income sources", "Status")
+          checkTableHeader(4, "Deductions", "Status")
+          checkTableHeader(5, "Pensions", "Status")
+          checkTableHeader(6, "Allowances", "Status")
         }
 
         "displays all the rows" in {
-          checkRow(1, ProductDetailsPage.quarterlyUpdates, included = true)
-          checkRow(2, ProductDetailsPage.calendarUpdatePeriods, included = true)
-
+          checkRow(1, 1, ProductDetailsPage.recordKeeping, included = true)
+          checkRow(1, 2, ProductDetailsPage.bridging, included = true)
+          checkRow(1, 3, ProductDetailsPage.quarterlyUpdates, included = true)
+          checkRow(1, 4, ProductDetailsPage.saTaxReturn, included = true)
+          checkRow(1, 5, ProductDetailsPage.standardUpdatePeriods, included = true)
+          checkRow(1, 6, ProductDetailsPage.calendarUpdatePeriods, included = true)
+          checkRow(2, 1, ProductDetailsPage.soleTrader, included = true)
+          checkRow(2, 2, ProductDetailsPage.ukProperty, included = true)
+          checkRow(2, 3, ProductDetailsPage.foreignProperty, included = true)
+          checkRow(3, 1, ProductDetailsPage.cis, included = true)
+          checkRow(3, 2, ProductDetailsPage.cgt, included = true)
+          checkRow(3, 3, ProductDetailsPage.paye, included = true)
+          checkRow(3, 4, ProductDetailsPage.foreignIncome, included = true)
+          checkRow(3, 5, ProductDetailsPage.ukDividends, included = true)
+          checkRow(3, 6, ProductDetailsPage.ukInterest, included = true)
+          checkRow(4, 1, ProductDetailsPage.charitableGiving, included = true)
+          checkRow(4, 2, ProductDetailsPage.student, included = true)
+          checkRow(4, 3, ProductDetailsPage.class2NIC, included = true)
+          checkRow(4, 4, ProductDetailsPage.childBenefitCharge, included = true)
+          checkRow(5, 1, ProductDetailsPage.statePension, included = true)
+          checkRow(5, 2, ProductDetailsPage.privatePensionIncome, included = true)
+          checkRow(5, 3, ProductDetailsPage.privatePensionContribution, included = true)
+          checkRow(6, 1, ProductDetailsPage.marriage, included = true)
         }
       }
 
@@ -113,7 +163,7 @@ class ProductDetailsNewViewSpec extends ViewSpec {
 
   private def page(vendorModel: SoftwareVendorModel) =
     productDetailsPage(
-      vendorModel, displayIncomeAndDeductionTypes = false, displayExtraPricingOptions = false, displayOverseasPropertyOption = false
+      vendorModel, displayIncomeAndDeductionTypes = false, displayExtraPricingOptions = false, displayOverseasPropertyOption = true
     )
 
   private def createAndParseDocument(vendorModel: SoftwareVendorModel): Document =
