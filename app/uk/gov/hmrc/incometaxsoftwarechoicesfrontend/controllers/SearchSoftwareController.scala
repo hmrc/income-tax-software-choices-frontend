@@ -68,7 +68,7 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
       _ = (empty, userFilters) match {
         case (false, Some(userFilters)) => userFiltersRepository.set(userFilters.copy(finalFilters = search.filters))
         case (false, None) => userFiltersRepository.set(UserFilters(sessionId, search.filters))
-        case (true, _) => userFiltersRepository.delete(sessionId)
+        case _ => userFiltersRepository.delete(sessionId)
       }
     } yield {
       val vendors = softwareChoicesService.getVendors(search.searchTerm, search.filters)
