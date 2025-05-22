@@ -33,29 +33,20 @@ class ProductDetailsController @Inject()(mcc: MessagesControllerComponents,
                                          softwareChoicesService: SoftwareChoicesService,
                                          productDetailsPage: ProductDetailsPage) extends BaseFrontendController(mcc) with FeatureSwitching {
 
-  def show(software: String): Action[AnyContent] = Action { implicit request => {
-
+  def show(software: String): Action[AnyContent] = Action { implicit request =>
     val softwareName = URLDecoder.decode(software, "UTF-8")
-
-    if (isEnabled(BetaFeatures)) {
-      softwareChoicesService.getSoftwareVendor(softwareName) match {
-        case None => throw new NotFoundException(ProductDetailsController.NotFound)
-        case Some(softwareVendor) => Ok(productDetailsPage(
-          softwareVendor,
-          isEnabled(IncomeAndDeduction),
-          isEnabled(ExtraPricingOptions),
-          isEnabled(DisplayOverseasProperty)))
-      }
-    } else {
-      throw new NotFoundException(ProductDetailsController.NotEnabled)
+    softwareChoicesService.getSoftwareVendor(softwareName) match {
+      case None => throw new NotFoundException(ProductDetailsController.NotFound)
+      case Some(softwareVendor) => Ok(productDetailsPage(
+        softwareVendor,
+        isEnabled(IncomeAndDeduction),
+        isEnabled(ExtraPricingOptions),
+        isEnabled(DisplayOverseasProperty)))
     }
-  }
-
   }
 }
 
 object ProductDetailsController {
   val NotProvided = "[ProductDetailsController][show] - Software vendor not provided"
   val NotFound = "[ProductDetailsController][show] - Software vendor not found"
-  val NotEnabled = "[ProductDetailsController][show] - Beta features is not enabled"
 }

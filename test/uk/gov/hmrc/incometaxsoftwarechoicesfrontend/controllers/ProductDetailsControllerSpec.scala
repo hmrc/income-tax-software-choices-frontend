@@ -22,28 +22,20 @@ import play.api.mvc.MessagesControllerComponents
 import play.api.test.Helpers._
 import uk.gov.hmrc.http.NotFoundException
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.BetaFeatures
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.SoftwareChoicesService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.ProductDetailsPage
 import java.net.URLEncoder
 
-class ProductDetailsControllerSpec extends ControllerBaseSpec with FeatureSwitching with BeforeAndAfterEach {
+class ProductDetailsControllerSpec extends ControllerBaseSpec with BeforeAndAfterEach {
 
   private val mcc = app.injector.instanceOf[MessagesControllerComponents]
   val appConfig:AppConfig = app.injector.instanceOf[AppConfig]
   private val productDetailsPage = app.injector.instanceOf[ProductDetailsPage]
   private val softwareChoicesService = app.injector.instanceOf[SoftwareChoicesService]
 
-  protected override def beforeEach(): Unit = {
-    disable(BetaFeatures)
-  }
-
   "Show" when {
-    "beta features are enabled" when {
       "a valid param has been passed" should {
         "return OK status with the product details page" in withController { controller =>
-          enable(BetaFeatures)
           val result = controller.show(URLEncoder.encode("test software vendor name one", "UTF-8"))(fakeRequest)
 
           status(result) shouldBe Status.OK
@@ -51,17 +43,10 @@ class ProductDetailsControllerSpec extends ControllerBaseSpec with FeatureSwitch
       }
       "an invalid param has been passed" should {
         "return OK status with the product details page" in withController { controller =>
-          enable(BetaFeatures)
           intercept[NotFoundException](await(controller.show("dummy")(fakeRequest))).message should be (ProductDetailsController.NotFound)
         }
       }
     }
-    "beta features are not enabled" should {
-      "throw not found exception" in withController { controller =>
-        intercept[NotFoundException](await(controller.show("dummy")(fakeRequest))).message should be (ProductDetailsController.NotEnabled)
-      }
-    }
-  }
 
   private def withController(testCode: ProductDetailsController => Any): Unit = {
     val controller = new ProductDetailsController(

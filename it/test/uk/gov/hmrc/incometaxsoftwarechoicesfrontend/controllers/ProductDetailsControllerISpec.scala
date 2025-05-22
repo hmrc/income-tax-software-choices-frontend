@@ -18,53 +18,34 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import org.scalatest.BeforeAndAfterEach
 import play.api.http.Status.{NOT_FOUND, OK}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.BetaFeatures
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.ComponentSpecBase
 
 import java.net.URLEncoder
 
 class ProductDetailsControllerISpec extends ComponentSpecBase with BeforeAndAfterEach {
 
-  protected override def beforeEach(): Unit = {
-    disable(BetaFeatures)
-  }
   val address = "/product-details"
 
   s"GET /making-tax-digital-income-tax-software${address}" when {
     val vendorOneName = "test software vendor name one"
-    "feature switch is off" should {
-      "respond with 200 status" in {
-        When(s"GET ${address} is called")
-        val response = SoftwareChoicesFrontend.productDetails(URLEncoder.encode(vendorOneName, "UTF-8"))
 
-        Then("Should return Not Found")
-        response should have(
-          httpStatus(NOT_FOUND)
-        )
-      }
+    "respond with 200 status for a real software name" in {
+      When(s"GET ${address} is called")
+      val response = SoftwareChoicesFrontend.productDetails(URLEncoder.encode(vendorOneName, "UTF-8"))
+
+      Then("Should return OK with the software search page")
+      response should have(
+        httpStatus(OK)
+      )
     }
+    "respond with 404 status for a fake software name" in {
+      When(s"GET ${address} is called")
+      val response = SoftwareChoicesFrontend.productDetails("fake")
 
-    "feature switch is on" should {
-      "respond with 200 status for a real software name" in {
-        When(s"GET ${address} is called")
-        enable(BetaFeatures)
-        val response = SoftwareChoicesFrontend.productDetails(URLEncoder.encode(vendorOneName, "UTF-8"))
-
-        Then("Should return OK with the software search page")
-        response should have(
-          httpStatus(OK)
-        )
-      }
-      "respond with 404 status for a fake software name" in {
-        When(s"GET ${address} is called")
-        enable(BetaFeatures)
-        val response = SoftwareChoicesFrontend.productDetails("fake")
-
-        Then("Should return Not Found")
-        response should have(
-          httpStatus(NOT_FOUND)
-        )
-      }
+      Then("Should return Not Found")
+      response should have(
+        httpStatus(NOT_FOUND)
+      )
     }
   }
 

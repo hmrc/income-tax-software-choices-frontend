@@ -21,7 +21,7 @@
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
 @import uk.gov.hmrc.govukfrontend.views.html.components._
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.{MainTemplate, SoftwareSearchStatusTemplate, SoftwareFiltersTemplate, SoftwareFiltersTemplateAlpha, SoftwareVendorsTemplate, SoftwareVendorsTemplateAlpha}
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.{MainTemplate, SoftwareSearchStatusTemplate, SoftwareFiltersTemplate, SoftwareFiltersTemplateAlpha, SoftwareVendorsTemplate}
 @import views.html.helper.CSPNonce
 @import uk.gov.hmrc.play.language.LanguageUtils
 
@@ -29,10 +29,8 @@
   mainTemplate: MainTemplate,
   softwareSearchStatusTemplate: SoftwareSearchStatusTemplate,
   softwareVendorsTemplate: SoftwareVendorsTemplate,
-  softwareVendorsTemplateAlpha: SoftwareVendorsTemplateAlpha,
   softwareFiltersTemplate: SoftwareFiltersTemplate,
   softwareFiltersTemplateAlpha: SoftwareFiltersTemplateAlpha,
-  breadcrumbs: GovukBreadcrumbs,
   form: FormWithCSRF,
   govukCheckboxes: GovukCheckboxes,
   govukAccordion: GovukAccordion,
@@ -49,26 +47,7 @@
 }
 
 @pageBackLink = @{
-  if(betaFeatures) {
-    None
-  } else {
     Some(appConfig.guidance)
-  }
-}
-
-@pageBreadcrumbs = @{
-  if(betaFeatures) {
-    Some(breadcrumbs(Breadcrumbs(
-      items = Seq(
-        BreadcrumbsItem(
-          content = Text(messages("breadcrumbs.guidance")),
-          href = Some(appConfig.guidance)
-        )
-      )
-    )))
-  } else {
-    None
-  }
 }
 
 @whatKindOfSoftwareContent = {
@@ -85,7 +64,7 @@
   </ul>
 }
 
-@mainTemplate(title = messages("search-software.title"), breadcrumbs = pageBreadcrumbs, backLink = pageBackLink, optForm = Some(searchForm), scripts = Some(js)) {
+@mainTemplate(title = messages("search-software.title"), backLink = pageBackLink, optForm = Some(searchForm), scripts = Some(js)) {
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
@@ -153,19 +132,12 @@
       </div>
 
       <div class="govuk-grid-column-two-thirds">
-        <div id="vendor-count" role="status">
-          @softwareSearchStatusTemplate(betaFeatures, softwareVendors.vendors)
+        <div id="vendor-count">
+          @softwareSearchStatusTemplate(softwareVendors.vendors)
         </div>
 
-        <div id="software-vendors">
-          <div class="loading-status" aria-hidden="true"></div>
-          <div id="software-vendor-list">
-            @if(betaFeatures) {
-              @softwareVendorsTemplate(softwareVendors)
-            } else {
-              @softwareVendorsTemplateAlpha(softwareVendors, displayExtraPricingOptions, displayOverseasPropertyOption)
-            }
-          </div>
+        <div id="software-vendor-list">
+          @softwareVendorsTemplate(softwareVendors, displayExtraPricingOptions, displayOverseasPropertyOption)
         </div>
 
         <p id = "lastUpdated" class="govuk-body-s govuk-!-padding-top-4">
