@@ -18,25 +18,35 @@
 
 @this()
 
-@(betaFeatures: Boolean = true, softwareVendors: Seq[SoftwareVendorModel])(implicit messages: Messages)
+@(softwareVendors: Seq[SoftwareVendorModel])(implicit messages: Messages)
 
-@messagesKeyPrefix = @{
-  if(betaFeatures) {
-    ""
-  } else {
-    "alpha-"
-  }
+@softwareVendorsCount(count: Int) = {
+    <span class="govuk-!-font-weight-bold">@count</span>
+}
+
+@emptyVendorsList = {
+<h2 class="govuk-body govuk-!-font-weight-bold">@messages("search-software.empty-vendor-list.heading")</h2>
+<p class="govuk-body">@messages("search-software.empty-vendor-list.paragraph")</p>
+<ul class="govuk-list govuk-list--bullet">
+    <li>@messages("search-software.empty-vendor-list.bullet1")</li>
+    <li>@messages("search-software.empty-vendor-list.bullet2")</li>
+</ul>
+}
+
+@singleVendorList = {
+<h2 class="govuk-heading-m">@messages("search-software.vendor-count.heading")</h2>
+<p class="govuk-body">@messages(s"search-software.vendor-count-single")</p>
+}
+
+@multipleVendorList = {
+<h2 class="govuk-heading-m">@messages("search-software.vendor-count.heading")</h2>
+<p class="govuk-body">@Html(messages(s"search-software.vendor-count", softwareVendorsCount(softwareVendors.length)))</p>
 }
 
 @{if (softwareVendors.isEmpty) {
-  <h2 class="govuk-body govuk-!-font-weight-bold">{messages("search-software.empty-vendor-list.heading")}</h2>
-  <p class="govuk-body">{messages("search-software.empty-vendor-list.paragraph")}</p>
-  <ul class="govuk-list govuk-list--bullet">
-    <li>{messages("search-software.empty-vendor-list.bullet1")}</li>
-    <li>{messages("search-software.empty-vendor-list.bullet2")}</li>
-  </ul>
+    emptyVendorsList
 } else if (softwareVendors.length == 1) {
-  <h2 class="govuk-body govuk-!-font-weight-bold">{messages(s"search-software.${messagesKeyPrefix}vendor-count-single")}</h2>
+    singleVendorList
 } else {
-  <h2 class="govuk-body govuk-!-font-weight-bold">{messages(s"search-software.${messagesKeyPrefix}vendor-count", softwareVendors.length)}</h2>
+    multipleVendorList
 }}

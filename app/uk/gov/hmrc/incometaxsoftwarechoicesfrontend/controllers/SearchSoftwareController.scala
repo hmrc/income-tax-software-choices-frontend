@@ -27,7 +27,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FiltersFormModel, So
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.SoftwareChoicesService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SearchSoftwarePage
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.{SoftwareVendorsTemplate, SoftwareVendorsTemplateAlpha}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.SoftwareVendorsTemplate
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
@@ -36,7 +36,6 @@ import scala.concurrent.{ExecutionContext, Future}
 class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
                                          val appConfig: AppConfig,
                                          searchSoftwarePage: SearchSoftwarePage,
-                                         softwareVendorsTemplateAlpha: SoftwareVendorsTemplateAlpha,
                                          softwareVendorsTemplate: SoftwareVendorsTemplate,
                                          softwareChoicesService: SoftwareChoicesService,
                                          userFiltersRepository: UserFiltersRepository,
@@ -84,19 +83,18 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
     val extraPricingOptionsEnabled: Boolean = isEnabled(ExtraPricingOptions)
     val overseasPropertyEnabled: Boolean = isEnabled(DisplayOverseasProperty)
 
-    (ajax, isEnabled(BetaFeatures)) match {
-      case (true, true) => softwareVendorsTemplate(vendors)
-      case (true, false) => softwareVendorsTemplateAlpha(vendors, extraPricingOptionsEnabled, overseasPropertyEnabled)
-      case _ =>
-        searchSoftwarePage(
-          vendors,
-          form,
-          routes.SearchSoftwareController.search(ajax),
-          routes.SearchSoftwareController.clear(ajax),
-          betaEnabled,
-          extraPricingOptionsEnabled,
-          overseasPropertyEnabled
-        )
+    if (ajax) {
+      softwareVendorsTemplate(vendors, extraPricingOptionsEnabled, overseasPropertyEnabled)
+    } else {
+      searchSoftwarePage(
+        vendors,
+        form,
+        routes.SearchSoftwareController.search(ajax),
+        routes.SearchSoftwareController.clear(ajax),
+        betaEnabled,
+        extraPricingOptionsEnabled,
+        overseasPropertyEnabled
+      )
     }
   }
 

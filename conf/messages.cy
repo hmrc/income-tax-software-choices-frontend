@@ -46,11 +46,10 @@ search-software.search-form.paragraph = Mae pob cysylltiad i wefannau darparwyr 
 search-software.search-form.button  = Chwilio yn ôl enw meddalwedd
 search-software.search-form.error   = Nodwch lai na {0} o gymeriadau
 
-search-software.alpha-vendor-count-single = Ar hyn o bryd, mae 1 darparwr meddalwedd
-search-software.alpha-vendor-count        = Ar hyn o bryd, mae {0} o ddarparwyr meddalwedd
-search-software.vendor-count-single       = <b>1</b> darparwr meddalwedd
-search-software.vendor-count              = <b>{0}</b> darparwyr meddalwedd
-search-software.vendor-visit-link         = Ewch i wefan {0}
+search-software.vendor-count.heading    = These single products are compatible software that meets all your needs
+search-software.vendor-count-single     = Currently there is 1 software provider
+search-software.vendor-count            = There are {0} software providers that can send quarterly updates, submit tax return and meet your selected requirements.
+search-software.vendor-visit-link       = Find out more about {0}
 
 search-software.empty-vendor-list           = Nid yw eich chwiliad wedi dangos unrhyw ganlyniadau. Er mwyn cynyddu nifer y canlyniadau awgrymwn ei bod yn gwneud y canlynol:
 search-software.empty-vendor-list.heading   = Er mwyn cynyddu nifer y canlyniadau awgrymwn ei bod yn gwneud y canlynol:
@@ -58,7 +57,7 @@ search-software.empty-vendor-list.paragraph = To increase the number of results,
 search-software.empty-vendor-list.bullet1   = lleihau nifer yr hidlwyr yr ydych eu defnyddio
 search-software.empty-vendor-list.bullet2   = gwneud yn siŵr bod yr enw yr ydych wedi’i nodi yn y bar chwilio yn gywir
 
-search-software.vendor-detail.pricing                 = Prisio:
+search-software.vendor-detail.pricing                 = Prisio
 search-software.vendor-detail.pricing.free-trial      = Cyfnod prawf am ddim
 search-software.vendor-detail.pricing.no-free-trial   = Dim cyfnod prawf rhad ac am ddim ar gael
 search-software.vendor-detail.pricing.free-version    = Fersiwn rhad ac am ddim
@@ -66,10 +65,14 @@ search-software.vendor-detail.pricing.free-version.hint = Fel arfer, dim ond am 
 search-software.vendor-detail.pricing.no-free-version = Dim fersiwn sy’n rhad ac am ddim ar gael
 search-software.vendor-detail.pricing.paid-for        = Wedi’i dalu
 
-search-software.vendor-detail.suitable-for                   = Addas i:
+search-software.vendor-detail.suitable-for                   = Addas i
 search-software.vendor-detail.suitable-for.sole-trader       = Unig fasnachwr
 search-software.vendor-detail.suitable-for.uk-property       = Eiddo yn y DU
 search-software.vendor-detail.suitable-for.overseas-property = Eiddo tramor
+
+search-software.vendor-detail.submission-type = Submission type
+search-software.vendor-detail.submission-type.quarterly-updates = Quarterly updates
+search-software.vendor-detail.submission-type.tax-return = Self Assessment tax return
 
 search-software.vendor-detail.operating-system                   = System weithredu
 search-software.vendor-detail.operating-system.microsoft-windows = Microsoft Windows
@@ -85,7 +88,7 @@ search-software.vendor-detail.software-type.browser-based.hint = Meddalwedd sy�
 search-software.vendor-detail.software-type.application-based = I’w ddefnyddio drwy raglen
 search-software.vendor-detail.software-type.application-based.hint = Meddalwedd sydd wedi’i gosod ar eich dyfais
 
-search-software.vendor-detail.software-for                = Meddalwedd ar gyfer:
+search-software.vendor-detail.software-for                = Meddalwedd ar gyfer
 search-software.vendor-detail.software-for.record-keeping = Cadw cofnodion
 search-software.vendor-detail.software-for.record-keeping.hint = Meddalwedd i storio a chyflwyno’ch cofnodion treth
 search-software.vendor-detail.software-for.bridging       = Pontio
