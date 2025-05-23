@@ -15,16 +15,7 @@ breadcrumbs.glossary                = Self Assessment income and deduction types
 search-software.title                                     = Find software for Making Tax Digital for Income Tax ... but in Welsh
 search-software.last-update                               = Diweddarwyd y dudalen hon ddiwethaf
 search-software.heading                                   = Find software for Making Tax Digital for Income Tax ...in Welsh
-search-software.paragraph1                                = HMRC does not make recommendations for software. However, all software on this page has passed our recognition criteria. ...in Welsh
-search-software.inset-text                                = Os oes angen help arnoch i ddewis meddalwedd, cysylltwch â darparwr y feddalwedd neu â’ch asiant treth cyn gwneud penderfyniad.
-search-software.link.what-software.heading                = Pa fath o feddalwedd sydd ar gael?
-search-software.link.what-software.record-keeping.heading = Meddalwedd cadw cofnodion:
-search-software.link.what-software.record-keeping.bullet1 = mae’n diweddaru a storio’ch cofnodion yn ddigidol
-search-software.link.what-software.record-keeping.bullet2 = mae’n gweithio’n uniongyrchol gyda systemau CThEF sy’n eich galluogi i gyflwyno’ch cofnodion treth incwm
-search-software.link.what-software.bridging.heading       = Meddalwedd pontio:
-search-software.link.what-software.bridging.bullet1       = mae’n gweithio gyda meddalwedd nad yw’n cydweddu megis taenlenni, systemau cyfrifyddu a chynhyrchion digidol eraill ar gyfer cadw cyfrifon
-search-software.link.what-software.bridging.bullet2       = mae’n eich galluogi i anfon yr wybodaeth sydd ei hangen at CThEF yn ddigidol ac yn y fformat cywir
-search-software.skip-to-results                           = Ewch yn syth i’r canlyniadau
+search-software.paragraph                                 = HMRC does not make recommendations for software. However, all software on this page has passed our recognition criteria. ...in Welsh
 
 search-software.filters.heading                = Hidlwyr
 search-software.filters.pricing                = Prisio
@@ -37,6 +28,11 @@ search-software.filters.business-type          = Math o fusnes
 search-software.filters.software-compatibility = Cydnawsedd y cynllun Troi Treth yn Ddigidol
 search-software.filters.language               = Iaith
 search-software.filters.accessibility          = Nodweddion hygyrchedd
+search-software.filters.accounting-period = Accounting period
+search-software.filters.personal-income-sources = Personal income sources
+search-software.filters.deductions = Deductions
+search-software.filters.pensions = Pensions
+search-software.filters.allowances = Allowances
 
 search-software.filters.apply-filters = Gweithredu hidlyddion
 search-software.filters.clear-filters = Clirio hidlyddion
@@ -102,8 +98,6 @@ search-software.vendor-detail.business-type.agent.hint      = Meddalwedd i gyfri
 
 search-software.vendor-detail.software-compatibility            = Cydnawsedd y cynllun Troi Treth yn Ddigidol:
 search-software.vendor-detail.software-compatibility.vat        = TAW
-search-software.vendor-detail.software-compatibility.vat.hint   = Meddalwedd y gallwch ei defnyddio hefyd i gyflwyno cofnodion TAW
-search-software.vendor-detail.software-compatibility.income-tax = Treth Incwm
 
 search-software.vendor-detail.language         = Iaith
 search-software.vendor-detail.language.welsh   = Cymraeg
@@ -114,6 +108,28 @@ search-software.vendor-detail.accessibility.visual    = Nam ar eu golwg a dallin
 search-software.vendor-detail.accessibility.hearing   = Trymder clyw a nam ar eu clyw
 search-software.vendor-detail.accessibility.motor     = Anawsterau echddygol
 search-software.vendor-detail.accessibility.cognitive = Anawsterau gwybyddol
+
+search-software.vendor-detail.accounting-period.apr6 = 6th April to 5th April
+search-software.vendor-detail.accounting-period.apr1 = 1st April to 31st March
+search-software.vendor-detail.accounting-period.apr1.hint = This supports calendar update periods
+
+search-software.vendor-detail.personal-income-sources.construction-industry-scheme = Construction Industry Scheme (CIS)
+search-software.vendor-detail.personal-income-sources.capital-gains-tax = Capital Gains Tax
+search-software.vendor-detail.personal-income-sources.employment = Employment
+search-software.vendor-detail.personal-income-sources.foreign-income = Foreign Income
+search-software.vendor-detail.personal-income-sources.uk-dividends = UK Dividends
+search-software.vendor-detail.personal-income-sources.uk-interest = UK Interest
+
+search-software.vendor-detail.deductions.charitable-giving = Charitable giving
+search-software.vendor-detail.deductions.high-income-child-benefit-charge = High Income Child Benefit Charge
+search-software.vendor-detail.deductions.student-loans = Student loans
+search-software.vendor-detail.deductions.voluntary-class-2-national-insurance = Voluntary Class 2 National Insurance
+
+search-software.vendor-detail.pensions.state-pension-income = State pension income
+search-software.vendor-detail.pensions.private-pension-income = Private pension income
+search-software.vendor-detail.pensions.payments-into-a-private-pension = Payments into a private pension
+
+search-software.vendor-detail.allowances.marriage-allowance = Marriage Allowance
 
 # Product details page
 

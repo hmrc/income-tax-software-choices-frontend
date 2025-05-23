@@ -45,37 +45,13 @@
     Some(appConfig.guidance)
 }
 
-@whatKindOfSoftwareContent = {
-  <h2 class="govuk-heading-s">@messages("search-software.link.what-software.record-keeping.heading")</h2>
-  <ul class="govuk-list govuk-list--bullet">
-    <li class="">@messages("search-software.link.what-software.record-keeping.bullet1")</li>
-    <li class="">@messages("search-software.link.what-software.record-keeping.bullet2")</li>
-  </ul>
-
-  <h2 class="govuk-heading-s">@messages("search-software.link.what-software.bridging.heading")</h2>
-  <ul class="govuk-list govuk-list--bullet">
-    <li class="">@messages("search-software.link.what-software.bridging.bullet1")</li>
-    <li class="">@messages("search-software.link.what-software.bridging.bullet2")</li>
-  </ul>
-}
-
 @mainTemplate(title = messages("search-software.title"), backLink = pageBackLink, optForm = Some(searchForm)) {
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <h1 class="govuk-heading-xl">@messages("search-software.heading")</h1>
 
-      <p class="govuk-body">@messages("search-software.paragraph1")</p>
-
-      <div class="govuk-inset-text">
-        @messages("search-software.inset-text")
-      </div>
-
-      @govukDetails(Details(
-      summary = Text(messages("search-software.link.what-software.heading")),
-      content = HtmlContent(whatKindOfSoftwareContent)
-      ))
-
+      <p class="govuk-body">@messages("search-software.paragraph")</p>
     </div>
   </div>
 
