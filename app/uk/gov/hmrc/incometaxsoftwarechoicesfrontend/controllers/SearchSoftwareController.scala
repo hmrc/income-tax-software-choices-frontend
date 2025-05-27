@@ -27,7 +27,6 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FiltersFormModel, So
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.SoftwareChoicesService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SearchSoftwarePage
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.SoftwareVendorsTemplate
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
@@ -36,51 +35,58 @@ import scala.concurrent.{ExecutionContext, Future}
 class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
                                          val appConfig: AppConfig,
                                          searchSoftwarePage: SearchSoftwarePage,
-                                         softwareVendorsTemplate: SoftwareVendorsTemplate,
                                          softwareChoicesService: SoftwareChoicesService,
                                          userFiltersRepository: UserFiltersRepository,
                                          implicit val ec: ExecutionContext) extends BaseFrontendController(mcc) with FeatureSwitching {
 
-  val show: Action[AnyContent] = Action { implicit request => Ok(view(softwareChoicesService.getVendors(), ajax = false, FiltersForm.form)) }
+  val show: Action[AnyContent] = Action { implicit request => Ok(view(softwareChoicesService.getVendors(), FiltersForm.form)) }
 
-  def search(ajax: Boolean): Action[AnyContent] = Action.async { implicit request =>
+  def search: Action[AnyContent] = Action.async { implicit request =>
     FiltersForm.form.bindFromRequest().fold(
-      error => Future.successful(BadRequest(view(softwareChoicesService.getVendors(), ajax, error))),
-      search => {
-        val sessionId = request.session.get("sessionId").getOrElse("")
-        for {
-          userFilters <- userFiltersRepository.get(sessionId)
-          _ = userFilters match {
-            case Some(userFilters) => userFiltersRepository.set(userFilters.copy(finalFilters = search.filters))
-            case None => userFiltersRepository.set(UserFilters(sessionId, search.filters))
-          }
-        } yield {
-         val vendors = softwareChoicesService.getVendors(search.searchTerm, search.filters)
-         Ok(view(vendors, ajax, FiltersForm.form.fill(search)))
-        }
+      error => Future.successful(BadRequest(view(softwareChoicesService.getVendors(), error))),
+      search => update(search) map { _ =>
+        val vendors = softwareChoicesService.getVendors(search.searchTerm, search.filters)
+        Ok(view(vendors, FiltersForm.form.fill(search)))
       }
     )
   }
 
-  private def view(vendors: SoftwareVendors, ajax: Boolean, form: Form[FiltersFormModel])
+  def clear: Action[AnyContent] = Action.async { implicit request =>
+    update(FiltersFormModel()) map { _ =>
+      Redirect(routes.SearchSoftwareController.show)
+    }
+  }
+
+  private def update(search: FiltersFormModel)(implicit request: Request[_]): Future[Boolean] = {
+    val session = request.session
+    val sessionId = session.get("sessionId").getOrElse("")
+    for {
+      userFilters <- userFiltersRepository.get(sessionId)
+      result <- userFilters match {
+        case Some(userFilters) => userFiltersRepository.set(userFilters.copy(finalFilters = search.filters))
+        case None => userFiltersRepository.set(UserFilters(sessionId, search.filters))
+      }
+    } yield {
+      result
+    }
+  }
+
+  private def view(vendors: SoftwareVendors, form: Form[FiltersFormModel])
                   (implicit request: Request[_]): Html = {
 
     val betaEnabled: Boolean = isEnabled(BetaFeatures)
     val extraPricingOptionsEnabled: Boolean = isEnabled(ExtraPricingOptions)
     val overseasPropertyEnabled: Boolean = isEnabled(DisplayOverseasProperty)
 
-    if (ajax) {
-      softwareVendorsTemplate(vendors, extraPricingOptionsEnabled, overseasPropertyEnabled)
-    } else {
-      searchSoftwarePage(
-        vendors,
-        form,
-        routes.SearchSoftwareController.search(ajax),
-        betaEnabled,
-        extraPricingOptionsEnabled,
-        overseasPropertyEnabled
-      )
-    }
+    searchSoftwarePage(
+      vendors,
+      form,
+      routes.SearchSoftwareController.search,
+      routes.SearchSoftwareController.clear,
+      betaEnabled,
+      extraPricingOptionsEnabled,
+      overseasPropertyEnabled
+    )
   }
 
 }

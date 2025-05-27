@@ -25,7 +25,7 @@ import play.api.Environment
 import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.TestModels.{testVendorOne, testVendorThree, testVendorTwo}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.FreeTrial
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{FreeTrial, FreeVersion}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareVendorModel, SoftwareVendors}
 
 import java.io.FileInputStream
@@ -74,8 +74,8 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
   val expectedFilteredByVendorFilterSoftwareVendors: SoftwareVendors = SoftwareVendors(
     lastUpdated = LocalDate.of(2022, 12, 2),
     vendors = Seq(
-      testVendorThree,
-      testVendorTwo
+      testVendorOne,
+      testVendorThree
     )
   )
 
@@ -106,7 +106,7 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
         when(mockEnvironment.resourceAsStream(eqTo(testFileName)))
           .thenReturn(Some(new FileInputStream(validVendors)))
 
-        service.getVendors(None, Seq(FreeTrial)) mustBe expectedFilteredByVendorFilterSoftwareVendors
+        service.getVendors(None, Seq(FreeVersion)) mustBe expectedFilteredByVendorFilterSoftwareVendors
       }
 
       "correctly filter vendors by vendor name in disordered sections with whitespace" in new Setup {
@@ -120,7 +120,7 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
         when(mockEnvironment.resourceAsStream(eqTo(testFileName)))
           .thenReturn(Some(new FileInputStream(validVendors)))
 
-        service.getVendors(Some("three"), Seq(FreeTrial)) mustBe expectedFilteredSoftwareVendors
+        service.getVendors(Some("three"), Seq(FreeVersion)) mustBe expectedFilteredSoftwareVendors
       }
 
       "not filter when no search term has been provided" in new Setup {

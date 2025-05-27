@@ -7,15 +7,8 @@
       "website": "https://www.freeagent.com/guides/making-tax-digital/",
       "accessibilityStatementLink": "https://www.freeagent.com/website/accessibility/",
       "filters": [
-        "agent",
-        "individual",
         "vat",
-        "microsoft-windows",
-        "mac-os",
-        "browser-based",
         "record-keeping",
-        "apple-ios",
-        "android",
         "free-version",
         "uk-property",
         "sole-trader"
@@ -30,12 +23,7 @@
       "email": "register@apari-digital.com",
       "website": "https://www.apari-digital.com/making-tax-digital?utm_source=gov.uk&utm_medium=web_referral&utm_campaign=hmrc_mtd_software/",
       "filters": [
-        "agent",
-        "individual",
         "free-version",
-        "microsoft-windows",
-        "mac-os",
-        "browser-based",
         "record-keeping",
         "uk-property",
         "sole-trader"
@@ -51,13 +39,6 @@
       "website": "https://vitaltax.uk",
       "filters": [
         "free-version",
-        "individual",
-        "agent",
-        "microsoft-windows",
-        "mac-os",
-        "android",
-        "apple-ios",
-        "browser-based",
         "vat",
         "sole-trader",
         "uk-property",
@@ -72,13 +53,7 @@
       "name": "# 1 2 3 Sheets Ltd",
       "website": "https://123sheets.com/",
       "filters": [
-        "paid-for",
         "sole-trader",
-        "agent",
-        "individual",
-        "microsoft-windows",
-        "mac-os",
-        "browser-based",
         "record-keeping",
         "bridging",
         "vat"
@@ -91,14 +66,8 @@
       "name": "Xero MTD for Income Tax Self Assessment",
       "website": "https://www.xero.com/uk/programme/making-tax-digital/income-tax-self-assessment/",
       "filters": [
-        "paid-for",
         "sole-trader",
         "uk-property",
-        "agent",
-        "individual",
-        "microsoft-windows",
-        "mac-os",
-        "browser-based",
         "record-keeping"
       ],
       "incomeAndDeductions": [
@@ -111,16 +80,9 @@
       "email": "john@hemming.email",
       "website": "https://www.vat.direct",
       "filters": [
-        "individual",
-        "agent",
         "vat",
-        "microsoft-windows",
-        "mac-os",
-        "browser-based",
         "record-keeping",
         "bridging",
-        "apple-ios",
-        "android",
         "free-version",
         "sole-trader",
         "uk-property"
@@ -136,14 +98,6 @@
       "website": "https://www.sage.com/en-gb/making-tax-digital/accountants/",
       "accessibilityStatementLink": "https://www.sage.com/en-gb/legal/accessibility/",
       "filters": [
-        "paid-for",
-        "individual",
-        "agent",
-        "microsoft-windows",
-        "mac-os",
-        "android",
-        "apple-ios",
-        "browser-based",
         "vat",
         "sole-trader",
         "record-keeping"
@@ -158,16 +112,6 @@
       "website": "https://quickbooks.intuit.com/uk/",
       "accessibilityStatementLink": "https://intuit.com/accessibility/",
       "filters": [
-        "paid-for",
-        "free-trial",
-        "individual",
-        "agent",
-        "microsoft-windows",
-        "mac-os",
-        "android",
-        "apple-ios",
-        "browser-based",
-        "sole-trader",
         "vat",
         "record-keeping"
       ],
@@ -181,13 +125,9 @@
       "email": "Support@iris.co.uk",
       "website": "https://www.iris.co.uk/products/iris-accountancy-suite/",
       "filters": [
-        "paid-for",
-        "agent",
         "vat",
         "sole-trader",
         "uk-property",
-        "microsoft-windows",
-        "application-based",
         "bridging"
       ],
       "incomeAndDeductions": [
@@ -201,13 +141,7 @@
       "email": "hello@taxbs.com",
       "website": "https://www.taxbs.com",
       "filters": [
-        "free-version",
-        "individual",
-        "mac-os",
-        "application-based",
         "record-keeping",
-        "android",
-        "apple-ios",
         "sole-trader"
       ],
       "incomeAndDeductions": [

@@ -19,9 +19,7 @@
       "email": "test@software-vendor-name-two.com",
       "phone": "22222 222 222",
       "website": "software-vendor-name-two.com",
-      "filters": [
-        "free-trial"
-      ],
+      "filters": [],
       "incomeAndDeductions": [
         "capital-gains-tax"
       ]
@@ -32,7 +30,6 @@
       "phone": "33333 333 333",
       "website": "software-vendor-name-three.com",
       "filters": [
-        "free-trial",
         "free-version"
       ],
       "incomeAndDeductions": [

@@ -61,11 +61,13 @@ trait ComponentSpecBase extends AnyWordSpec
 
     def startPage(): WSResponse = get("/")
 
+    def clear(): WSResponse = get("/clear")
+
     def productDetails(name: String): WSResponse = get(s"/product-details/$name")
 
-    def submitSearch(search: FiltersFormModel): WSResponse = post("/")(
+    def submitSearch(search: FiltersFormModel): WSResponse = post("/") {
       FiltersForm.form.fill(search).data.map { case (k, v) => (k, Seq(v)) }
-    )
+    }
 
     def submitAjaxSearch(search: FiltersFormModel): WSResponse = post("/ajax")(
       FiltersForm.form.fill(search).data.map { case (k, v) => (k, Seq(v)) }
@@ -102,6 +104,7 @@ trait ComponentSpecBase extends AnyWordSpec
     private def buildClient(path: String) = {
       wsClient
         .url(s"$baseUrl$baseURI$path")
+        .withFollowRedirects(false)
     }
   }
 }

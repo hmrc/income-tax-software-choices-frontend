@@ -21,7 +21,7 @@
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
 @import uk.gov.hmrc.govukfrontend.views.html.components._
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.{MainTemplate, SoftwareSearchStatusTemplate, SoftwareFiltersTemplate, SoftwareFiltersTemplateAlpha, SoftwareVendorsTemplate}
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.{MainTemplate, SoftwareSearchStatusTemplate, SoftwareFiltersTemplate, SoftwareVendorsTemplate}
 @import views.html.helper.CSPNonce
 @import uk.gov.hmrc.play.language.LanguageUtils
 
@@ -30,7 +30,6 @@
   softwareSearchStatusTemplate: SoftwareSearchStatusTemplate,
   softwareVendorsTemplate: SoftwareVendorsTemplate,
   softwareFiltersTemplate: SoftwareFiltersTemplate,
-  softwareFiltersTemplateAlpha: SoftwareFiltersTemplateAlpha,
   form: FormWithCSRF,
   govukCheckboxes: GovukCheckboxes,
   govukAccordion: GovukAccordion,
@@ -39,48 +38,19 @@
   languageUtils: LanguageUtils
 )(implicit appConfig: AppConfig)
 
-@(softwareVendors: SoftwareVendors, searchForm: Form[FiltersFormModel], postAction: Call, betaFeatures: Boolean, displayExtraPricingOptions: Boolean, displayOverseasPropertyOption: Boolean)(implicit request: Request[_], messages: Messages)
-
-@js = {
-  <script @{CSPNonce.attr} src="@routes.Assets.versioned("lib/jquery/jquery.min.js")"></script>
-  <script @{CSPNonce.attr} src="@routes.Assets.versioned("javascript/softwareSearch.js")"></script>
-}
+@(softwareVendors: SoftwareVendors, searchForm: Form[FiltersFormModel], postAction: Call, clearAction: Call, betaFeatures: Boolean, displayExtraPricingOptions: Boolean, displayOverseasPropertyOption: Boolean)(implicit request: Request[_], messages: Messages)
 
 @pageBackLink = @{
     Some(appConfig.guidance)
 }
 
-@whatKindOfSoftwareContent = {
-  <h2 class="govuk-heading-s">@messages("search-software.link.what-software.record-keeping.heading")</h2>
-  <ul class="govuk-list govuk-list--bullet">
-    <li class="">@messages("search-software.link.what-software.record-keeping.bullet1")</li>
-    <li class="">@messages("search-software.link.what-software.record-keeping.bullet2")</li>
-  </ul>
-
-  <h2 class="govuk-heading-s">@messages("search-software.link.what-software.bridging.heading")</h2>
-  <ul class="govuk-list govuk-list--bullet">
-    <li class="">@messages("search-software.link.what-software.bridging.bullet1")</li>
-    <li class="">@messages("search-software.link.what-software.bridging.bullet2")</li>
-  </ul>
-}
-
-@mainTemplate(title = messages("search-software.title"), backLink = pageBackLink, optForm = Some(searchForm), scripts = Some(js)) {
+@mainTemplate(title = messages("search-software.title"), backLink = pageBackLink, optForm = Some(searchForm)) {
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <h1 class="govuk-heading-xl">@messages("search-software.heading")</h1>
 
-      <p class="govuk-body">@messages("search-software.paragraph1")</p>
-
-      <div class="govuk-inset-text">
-        @messages("search-software.inset-text")
-      </div>
-
-      @govukDetails(Details(
-      summary = Text(messages("search-software.link.what-software.heading")),
-      content = HtmlContent(whatKindOfSoftwareContent)
-      ))
-
+      <p class="govuk-body">@messages("search-software.paragraph")</p>
     </div>
   </div>
 
@@ -113,20 +83,18 @@
           </div>
         </div>
         <div class="filters-section" role="search" aria-label="@messages("search-software.filters.heading")">
+          <p class="govuk-body">
+            <a class="govuk-link" href="@clearAction.url">@messages("search-software.filters.clear-filters")</a>
+          </p>
           <h2 class="govuk-heading-m">@messages("search-software.filters.heading")</h2>
 
-          @if(betaFeatures) {
-            @softwareFiltersTemplate(searchForm(FiltersForm.filters), displayExtraPricingOptions, displayOverseasPropertyOption)
-          } else {
-            @softwareFiltersTemplateAlpha(searchForm(FiltersForm.filters), displayExtraPricingOptions, displayOverseasPropertyOption)
-          }
+          @softwareFiltersTemplate(searchForm(FiltersForm.filters), displayExtraPricingOptions, displayOverseasPropertyOption)
 
           <div class="govuk-button-group govuk-!-padding-top-0 apply-filters-group">
             @govukButton(Button(
               classes = "apply-filters-button",
               content = Text(messages("search-software.filters.apply-filters")),
             ))
-
           </div>
         </div>
       </div>

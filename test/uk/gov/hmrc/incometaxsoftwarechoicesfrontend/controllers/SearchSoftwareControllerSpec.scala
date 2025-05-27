@@ -34,7 +34,6 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.FreeVers
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.SoftwareChoicesService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SearchSoftwarePage
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.SoftwareVendorsTemplate
 
 import java.io.FileInputStream
 import scala.concurrent.{ExecutionContext, Future}
@@ -44,7 +43,6 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec with BeforeAndAfte
   private val mcc = app.injector.instanceOf[MessagesControllerComponents]
   val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
   private val searchSoftwarePage = app.injector.instanceOf[SearchSoftwarePage]
-  private val searchVendorsTemplate = app.injector.instanceOf[SoftwareVendorsTemplate]
   implicit val ec: ExecutionContext = ExecutionContext.Implicits.global
   val mockUserFiltersRepo: UserFiltersRepository = mock[UserFiltersRepository]
 
@@ -60,7 +58,7 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec with BeforeAndAfte
 
   "search" should {
     "return OK status with the search software page" in withController { controller =>
-      val result = controller.search(false)(FakeRequest("POST", "/")
+      val result = controller.search(FakeRequest("POST", "/")
         .withFormUrlEncodedBody(FiltersForm.searchTerm -> "Vendor", s"${FiltersForm.filters}[0]" -> "free-version"))
 
       status(result) shouldBe Status.OK
@@ -70,7 +68,7 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec with BeforeAndAfte
 
     "return OK status with the search software page when filter already exists" in withController { controller =>
       when(mockUserFiltersRepo.get(ArgumentMatchers.any())).thenReturn(Future.successful(Some(UserFilters("sessionId", Seq(FreeVersion)))))
-      val result = controller.search(false)(FakeRequest("POST", "/")
+      val result = controller.search(FakeRequest("POST", "/")
         .withFormUrlEncodedBody(FiltersForm.searchTerm -> "Vendor", s"${FiltersForm.filters}[0]" -> "free-version"))
 
       status(result) shouldBe Status.OK
@@ -79,27 +77,12 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec with BeforeAndAfte
     }
 
     "return BAD_REQUEST" in withController { controller =>
-      val result = controller.search(false)(FakeRequest("POST", "/").withFormUrlEncodedBody((FiltersForm.searchTerm, "test" * 65)))
+      val result = controller.search(FakeRequest("POST", "/").withFormUrlEncodedBody((FiltersForm.searchTerm, "test" * 65)))
 
       status(result) shouldBe Status.BAD_REQUEST
       contentType(result) shouldBe Some(HTML)
       charset(result) shouldBe Some(Codec.utf_8.charset)
     }
-  }
-
-  private def testSearch(controller: SearchSoftwareController, message: String, tuple: Seq[(String, String)]) = {
-    val result = controller.search(true)(FakeRequest("POST", "/").withFormUrlEncodedBody(tuple: _*))
-    status(result) shouldBe Status.OK
-    contentType(result) shouldBe Some(HTML)
-    contentAsString(result) should include(message)
-    charset(result) shouldBe Some(Codec.utf_8.charset)
-  }
-
-  private def getCountMessage(value: Int, beta: Boolean = false) = (beta, value > 1) match {
-    case (true, true) => s"There are $value software providers that can send quarterly updates, submit tax return and meet your selected requirements."
-    case (true, false) => s"There are $value software providers that can send quarterly updates, submit tax return and meet your selected requirements."
-    case (false, true) => s"There are $value software providers that can send quarterly updates, submit tax return and meet your selected requirements."
-    case (false, false) => s"Currently there is 1 software provider"
   }
 
   private def withController(testCode: SearchSoftwareController => Any): Unit = {
@@ -116,7 +99,6 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec with BeforeAndAfte
       mcc,
       appConfig,
       searchSoftwarePage,
-      searchVendorsTemplate,
       softwareChoicesService,
       mockUserFiltersRepo,
       ec

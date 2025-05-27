@@ -29,15 +29,6 @@ class SoftwareVendorModelSpec extends PlaySpec {
     "website" -> "software-vendor-name.com",
     "filters" -> Json.arr(
       VendorFilter.FreeVersion.key,
-      VendorFilter.FreeTrial.key,
-      VendorFilter.Individual.key,
-      VendorFilter.Agent.key,
-      VendorFilter.MicrosoftWindows.key,
-      VendorFilter.MacOS.key,
-      VendorFilter.Android.key,
-      VendorFilter.AppleIOS.key,
-      VendorFilter.BrowserBased.key,
-      VendorFilter.ApplicationBased.key,
       VendorFilter.Visual.key,
       VendorFilter.Hearing.key,
       VendorFilter.Motor.key,
@@ -131,13 +122,6 @@ class SoftwareVendorModelSpec extends PlaySpec {
         incomeAndDeductions = Seq.empty,
         accessibilityStatementLink = None
       )
-
-      "show the always displayed element when it is present in the list but not in the vendor" in {
-        val vendorFilters = Seq(VendorFilter.Welsh)
-        val searchFilters: Set[VendorFilter] = Set(VendorFilter.English)
-        val model: SoftwareVendorModel = getVendorModel(vendorFilters)
-        model.orderedFilterSubset(searchFilters) mustBe Seq(VendorFilter.English)
-      }
 
       "find no matches when a selection of elements is present in the list but not in the vendor" in {
         val vendorFilters = Seq(VendorFilter.Visual, VendorFilter.Hearing)

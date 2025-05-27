@@ -12,34 +12,31 @@ breadcrumbs.glossary                = Self Assessment income and deduction types
 
 # Search software page
 
-search-software.title                                     = Find software for Making Tax Digital for Income Tax
+search-software.title                                     = Software for Making Tax Digital for Income Tax
 search-software.last-update                               = This page was last updated
-search-software.heading                                   = Find software for Making Tax Digital for Income Tax
-search-software.paragraph1                                = HMRC does not make recommendations for software. However, all software on this page has passed our recognition criteria.
-search-software.inset-text                                = If you need help to choose software, contact the software provider or your tax agent before making a decision.
-search-software.link.what-software.heading                = What kind of software is available?
-search-software.link.what-software.record-keeping.heading = Record Keeping Software
-search-software.link.what-software.record-keeping.bullet1 = updates and stores your records digitally
-search-software.link.what-software.record-keeping.bullet2 = works directly with HMRC systems allowing you to file a Income tax
-search-software.link.what-software.bridging.heading       = Bridging software
-search-software.link.what-software.bridging.bullet1       = works with non-compatible software like spreadsheets, accounting systems and other digital bookkeeping products
-search-software.link.what-software.bridging.bullet2       = lets you send the required information digitally to HMRC in the correct format
+search-software.heading                                   = Software for Making Tax Digital for Income Tax
+search-software.paragraph                                 = All of this software has been through a recognition process where HMRC checks it’s capable of filing your taxes. HMRC does not endorse or recommend any one product or software provider.
 search-software.skip-to-results                           = Skip to results.
 
-search-software.filters.heading = Filters
+search-software.filters.heading = Filter software by
 search-software.filters.pricing = Pricing
-search-software.filters.suitable-for = Suitable for
+search-software.filters.suitable-for = Business income sources
 search-software.filters.operating-system = Operating system
 search-software.filters.mobile-app = Mobile app
 search-software.filters.software-type = Software type
-search-software.filters.software-for = Software for
+search-software.filters.software-for = Type of software
 search-software.filters.business-type = Business type
 search-software.filters.software-compatibility = Making Tax Digital Compatibility
 search-software.filters.language = Language
 search-software.filters.accessibility = Accessibility features
+search-software.filters.accounting-period = Accounting period
+search-software.filters.personal-income-sources = Personal income sources
+search-software.filters.deductions = Deductions
+search-software.filters.pensions = Pensions
+search-software.filters.allowances = Allowances
 
 search-software.filters.apply-filters = Apply filters
-search-software.filters.clear-filters = Clear filters
+search-software.filters.clear-filters = Clear all filters
 
 search-software.search-form.heading = Search by software name
 search-software.search-form.paragraph = All links to the software providers’ websites open in a new tab.
@@ -61,14 +58,14 @@ search-software.vendor-detail.pricing = Pricing
 search-software.vendor-detail.pricing.free-trial = Free trial
 search-software.vendor-detail.pricing.no-free-trial = No free trial
 search-software.vendor-detail.pricing.free-version = Free version
-search-software.vendor-detail.pricing.free-version.hint = These are usually only free for a limited time, or have restricted features
+search-software.vendor-detail.pricing.free-version.hint = Find the company’s definition of ‘free’ on their website
 search-software.vendor-detail.pricing.no-free-version = No free version
 search-software.vendor-detail.pricing.paid-for = Paid for
 
 search-software.vendor-detail.suitable-for = Business income sources
-search-software.vendor-detail.suitable-for.sole-trader = Sole trader
+search-software.vendor-detail.suitable-for.sole-trader = Self-employment
 search-software.vendor-detail.suitable-for.uk-property = UK property
-search-software.vendor-detail.suitable-for.overseas-property = Overseas property
+search-software.vendor-detail.suitable-for.overseas-property = Foreign property
 
 search-software.vendor-detail.submission-type = Submission type
 search-software.vendor-detail.submission-type.quarterly-updates = Quarterly updates
@@ -90,10 +87,9 @@ search-software.vendor-detail.software-type.application-based.hint = Software in
 
 search-software.vendor-detail.software-for = Type of software
 search-software.vendor-detail.software-for.record-keeping = Record keeping
-search-software.vendor-detail.software-for.record-keeping.hint = Software to store and submit your tax records
+search-software.vendor-detail.software-for.record-keeping.hint = Creates digital records
 search-software.vendor-detail.software-for.bridging = Bridging
-search-software.vendor-detail.software-for.bridging.hint = Submit records with selected non-compatible software, like spreadsheets
-
+search-software.vendor-detail.software-for.bridging.hint = Connects to digital records like spreadsheets
 
 search-software.vendor-detail.business-type                 = Business type:
 search-software.vendor-detail.business-type.individual      = Individual
@@ -103,18 +99,38 @@ search-software.vendor-detail.business-type.agent.hint      = Software for accou
 
 search-software.vendor-detail.software-compatibility = Making Tax Digital Compatibility:
 search-software.vendor-detail.software-compatibility.vat = VAT
-search-software.vendor-detail.software-compatibility.vat.hint = Software which you can also use to submit VAT records
-search-software.vendor-detail.software-compatibility.income-tax = Income Tax
 
 search-software.vendor-detail.language = Language:
 search-software.vendor-detail.language.welsh = Welsh
 search-software.vendor-detail.language.english = English
 
 search-software.vendor-detail.accessibility = Accessibility:
-search-software.vendor-detail.accessibility.visual = Impaired vision and blindness
-search-software.vendor-detail.accessibility.hearing = Deafness and impaired hearing
-search-software.vendor-detail.accessibility.motor = Motor difficulties
+search-software.vendor-detail.accessibility.visual = Blindness or impaired vision
+search-software.vendor-detail.accessibility.hearing = Deafness or impaired hearing
+search-software.vendor-detail.accessibility.motor = Motor or physical difficulties
 search-software.vendor-detail.accessibility.cognitive = Cognitive impairments
+
+search-software.vendor-detail.accounting-period.standard-update-periods = 6th April to 5th April
+search-software.vendor-detail.accounting-period.calendar-update-periods = 1st April to 31st March
+search-software.vendor-detail.accounting-period.calendar-update-periods.hint = This supports calendar update periods
+
+search-software.vendor-detail.personal-income-sources.construction-industry-scheme = Construction Industry Scheme (CIS)
+search-software.vendor-detail.personal-income-sources.capital-gains-tax = Capital Gains Tax
+search-software.vendor-detail.personal-income-sources.employment = Employment
+search-software.vendor-detail.personal-income-sources.foreign-income = Foreign Income
+search-software.vendor-detail.personal-income-sources.uk-dividends = UK Dividends
+search-software.vendor-detail.personal-income-sources.uk-interest = UK Interest
+
+search-software.vendor-detail.deductions.charitable-giving = Charitable giving
+search-software.vendor-detail.deductions.high-income-child-benefit-charge = High Income Child Benefit Charge
+search-software.vendor-detail.deductions.student-loans = Student loans
+search-software.vendor-detail.deductions.voluntary-class-2-national-insurance = Voluntary Class 2 National Insurance
+
+search-software.vendor-detail.pensions.state-pension-income = State pension income
+search-software.vendor-detail.pensions.private-pension-income = Private pension income
+search-software.vendor-detail.pensions.payments-into-a-private-pension = Payments into a private pension
+
+search-software.vendor-detail.allowances.marriage-allowance = Marriage Allowance
 
 # Product details page
 
@@ -289,10 +305,3 @@ glossary.contents.uk-interest.value                  = <p>Most interest paid by 
 
 glossary.contents.uk-dividends.key                   = UK dividends
 glossary.contents.uk-dividends.value                 = <p>If you own shares from companies/businesses in the UK, you may get income in the form of dividends. Dividends are a portion of the profits made by the company that issued the shares you invested in.</p><p>If you have an investment fund that is invested in shares, then you may earn income which is taxed in the same way as dividends.</p><p>You can earn some <a href="https://www.gov.uk/tax-on-dividends">dividend income each year without paying tax</a> and you do not pay tax on dividends from shares in an <a href="https://www.gov.uk/individual-savings-accounts">Individual Savings Accounts (ISAs)</a>.</p>
-
-
-
-
-
-
-

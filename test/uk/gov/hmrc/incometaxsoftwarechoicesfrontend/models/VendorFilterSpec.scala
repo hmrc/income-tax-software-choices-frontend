@@ -22,26 +22,8 @@ class VendorFilterSpec extends PlaySpec {
 
   "Vendor Filter Groups" should {
 
-    "contain extra pricing elements when displayExtraPricingOptions is true" in {
-      val filters = VendorFilterGroups.pricingFilters(true)
-
-      filters.contains(VendorFilter.FreeTrial) mustBe true
-      filters.contains(VendorFilter.PaidFor) mustBe true
-
-      filters.contains(VendorFilter.FreeVersion) mustBe true
-    }
-
-    "not contain extra pricing elements when displayExtraPricingOptions is false" in {
-      val filters = VendorFilterGroups.pricingFilters(false)
-
-      filters.contains(VendorFilter.FreeTrial) mustBe false
-      filters.contains(VendorFilter.PaidFor) mustBe false
-
-      filters.contains(VendorFilter.FreeVersion) mustBe true
-    }
-
-    "contain ALL the filters (when displayExtraPricingOptions is true)" in {
-      val filters = VendorFilterGroups.allGroups(true, true).flatMap(f => f._1) ++ VendorFilterGroups.featuresProvidedGroup.toSeq
+    "contain ALL the filters" in {
+      val filters = VendorFilterGroups.allGroups.flatMap(f => f._1) ++ VendorFilterGroups.featuresProvidedGroup
       val allFilters = VendorFilter.filterKeyToFilter.values
       allFilters.map(f => filters.contains(f) mustBe true)
     }

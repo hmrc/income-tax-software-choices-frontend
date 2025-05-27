@@ -25,15 +25,6 @@ import java.time.LocalDate
 object TestModels {
   private val allFilters = Seq(
     VendorFilter.FreeVersion,
-    VendorFilter.FreeTrial,
-    VendorFilter.Individual,
-    VendorFilter.Agent,
-    VendorFilter.MicrosoftWindows,
-    VendorFilter.MacOS,
-    VendorFilter.Android,
-    VendorFilter.AppleIOS,
-    VendorFilter.BrowserBased,
-    VendorFilter.ApplicationBased,
     VendorFilter.Visual,
     VendorFilter.Hearing,
     VendorFilter.Motor,
@@ -95,7 +86,7 @@ object TestModels {
     Some("test@software-vendor-name-two.com"),
     Some("22222 222 222"),
     "software-vendor-name-two.com",
-    Seq(FreeTrial),
+    Seq.empty,
     Seq(CapitalGainsTax)
   )
 
@@ -104,7 +95,7 @@ object TestModels {
     Some("test@software-vendor-name-three.com"),
     Some("33333 333 333"),
     "software-vendor-name-three.com",
-    Seq(FreeTrial, FreeVersion),
+    Seq(FreeVersion),
     Seq(BlindPersonsAllowance, CapitalGainsTax)
   )
 
