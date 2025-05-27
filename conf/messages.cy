@@ -1,4 +1,4 @@
-base.service-name           = Dod o hyd i feddalwedd am y cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm
+base.service-name           = Find compatible software for Making Tax Digital for Income Tax ... but in Welsh
 base.title                  = {0} - Dod o hyd i feddalwedd am y cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm - GOV.UK
 base.title.error            = Gwall: {0} - Dod o hyd i feddalwedd am y cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm - GOV.UK
 base.error-heading          = Mae problem wedi codi
@@ -130,6 +130,49 @@ product-details.contact-details.website    = Website...in welsh
 # Product details section
 
 product-details.details.heading                = Software details...but in welsh
+
+product-details.features-provided.heading = Features provided
+product-details.features-provided.quarterly-updates = Quarterly updates
+product-details.features-provided.calendar-update-periods = Calendar update periods
+product-details.features-provided.bridging = Bridging
+product-details.features-provided.record-keeping = Record keeping
+product-details.features-provided.standard-update-periods = Standard update periods
+product-details.features-provided.tax-return = Self Assessment tax return
+
+product-details.business-income.heading = Business income sources
+product-details.business-income.sole-trader = Sole trader
+product-details.business-income.uk-property = UK property
+product-details.business-income.overseas-property = Foreign property
+
+product-details.personal-income.heading = Personal income sources
+product-details.personal-income.construction-industry-scheme = Construction Industry Scheme
+product-details.personal-income.capital-gains-tax = Capital Gains Tax
+product-details.personal-income.paye = Employment (PAYE)
+product-details.personal-income.foreign-income = Foreign Income
+product-details.personal-income.uk-dividends = UK dividends
+product-details.personal-income.uk-interest = UK interest
+
+product-details.deductions.heading = Deductions
+product-details.deductions.charitable-giving = Charitable giving
+product-details.deductions.student-loans = Student Loan
+product-details.deductions.class-2-national-insurance = Voluntary Class 2 National Insurance
+product-details.deductions.high-income-child-benefit = High Income Child Benefit Charge
+
+product-details.pensions.heading = Pensions
+product-details.pensions.state-pension = State pension
+product-details.pensions.pensions = Private pension incomes
+product-details.pensions.pension-contributions = Private pension contributions
+
+product-details.allowances.heading = Allowances
+product-details.allowances.marriage-allowance = Marriage Allowance
+
+product-details.status.heading = Status
+product-details.status.included = Included
+product-details.status.not-included = Not Included
+
+
+
+
 product-details.details.pricing                = Prisio
 product-details.details.suitable-for           = Addas i
 product-details.details.operating-system       = System weithredu

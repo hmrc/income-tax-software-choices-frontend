@@ -58,5 +58,7 @@ trait ViewSpec extends AnyWordSpecLike with Matchers with GuiceOneAppPerSuite {
 
     def mainContent: Element = element.selectHead("main")
 
+    def getTable(index: Int): Element = selectHead(s".govuk-table:nth-of-type($index)")
+
   }
 }
