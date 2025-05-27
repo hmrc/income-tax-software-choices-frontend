@@ -19,8 +19,6 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.http.NotFoundException
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch._
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.SoftwareChoicesService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.ProductDetailsPage
 
@@ -31,17 +29,13 @@ import javax.inject.{Inject, Singleton}
 class ProductDetailsController @Inject()(mcc: MessagesControllerComponents,
                                          val appConfig: AppConfig,
                                          softwareChoicesService: SoftwareChoicesService,
-                                         productDetailsPage: ProductDetailsPage) extends BaseFrontendController(mcc) with FeatureSwitching {
+                                         productDetailsPage: ProductDetailsPage) extends BaseFrontendController(mcc) {
 
   def show(software: String): Action[AnyContent] = Action { implicit request =>
     val softwareName = URLDecoder.decode(software, "UTF-8")
     softwareChoicesService.getSoftwareVendor(softwareName) match {
       case None => throw new NotFoundException(ProductDetailsController.NotFound)
-      case Some(softwareVendor) => Ok(productDetailsPage(
-        softwareVendor,
-        isEnabled(IncomeAndDeduction),
-        isEnabled(ExtraPricingOptions),
-        isEnabled(DisplayOverseasProperty)))
+      case Some(softwareVendor) => Ok(productDetailsPage(softwareVendor))
     }
   }
 }

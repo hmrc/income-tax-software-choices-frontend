@@ -173,11 +173,23 @@ object VendorFilter {
     override val priority: Int = 3
   }
 
+  case object StandardUpdatePeriods extends VendorFilter {
+    override val key: String = "standard-update-periods"
+    override val priority: Int = 3
+  }
+
+  case object CalendarUpdatePeriods extends VendorFilter {
+    override val key: String = "calendar-update-periods"
+    override val priority: Int = 4
+  }
+
   val filterKeyToFilter: Map[String, VendorFilter] = Seq(
     FreeVersion,
     FreeTrial,
     QuarterlyUpdates,
     TaxReturn,
+    StandardUpdatePeriods,
+    CalendarUpdatePeriods,
     PaidFor,
     SoleTrader,
     UkProperty,
@@ -238,6 +250,15 @@ object VendorFilterGroups {
   val accessibilityFilters: Set[VendorFilter] = Set(Visual, Hearing, Motor, Cognitive)
 
   val submissionTypeFilters: Set[VendorFilter] = Set(QuarterlyUpdates, TaxReturn)
+
+  // product details page groups //
+  val featuresProvidedGroup: List[VendorFilter] = List(RecordKeeping, Bridging, QuarterlyUpdates, TaxReturn, StandardUpdatePeriods, CalendarUpdatePeriods)
+  val incomeSourcesGroup: List[VendorFilter] =
+    List(
+      Some(SoleTrader),
+      Some(UkProperty),
+      Some(OverseasProperty)
+    ).flatten
 
   def allGroups(displayExtraPricingOptions: Boolean, displayOverseasPropertyOption: Boolean): Seq[(Set[VendorFilter], String)] = Seq(
     (accessibilityFilters, "accessibility"),

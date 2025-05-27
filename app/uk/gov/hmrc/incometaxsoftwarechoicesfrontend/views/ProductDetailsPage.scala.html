@@ -15,168 +15,130 @@
  *@
 
 @import uk.gov.hmrc.govukfrontend.views.html.components._
-@import uk.gov.hmrc.govukfrontend.views.viewmodels.breadcrumbs.{Breadcrumbs, BreadcrumbsItem}
 @import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 @import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcNewTabLinkHelper
 @import uk.gov.hmrc.hmrcfrontend.views.viewmodels.newtablinkhelper.NewTabLinkHelper
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.IncomeAndDeduction._
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilterGroups._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTemplate
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilterGroups
 
 @this(
         mainTemplate: MainTemplate,
         breadcrumbs: GovukBreadcrumbs,
         hmrcNewTabLinkHelper: HmrcNewTabLinkHelper,
-        govukSummaryList: GovukSummaryList
+        govukSummaryList: GovukSummaryList,
+        govukTable: GovukTable,
+        govukTag: GovukTag
 )(implicit appConfig: AppConfig)
-@(softwareVendor: SoftwareVendorModel, displayIncomeAndDeductionTypes: Boolean, displayExtraPricingOptions: Boolean, displayOverseasPropertyOption: Boolean)(implicit request: Request[_], messages: Messages)
+@(softwareVendor: SoftwareVendorModel)(implicit request: Request[_], messages: Messages)
 
-@pageBreadcrumbs = {
-@breadcrumbs(Breadcrumbs(
-    items = Seq(
-        BreadcrumbsItem(
-            content = Text(messages("breadcrumbs.guidance")),
-            href = Some(appConfig.guidance)
-        ),
-        BreadcrumbsItem(
-            content = Text(messages("breadcrumbs.filter")),
-            href = Some(routes.SearchSoftwareController.show.url)
-        )
-    )
-))
-}
-
-@mainTemplate(title = softwareVendor.name, breadcrumbs = Some(pageBreadcrumbs)) {
+@mainTemplate(title = softwareVendor.name, backLink = Some(routes.SearchSoftwareController.show.url)) {
 
     <h1 class="govuk-heading-xl">@{
         softwareVendor.name
     }</h1>
 
-    <h2 class="govuk-heading-m">@messages("product-details.contact-details.heading")</h2>
+    <p class="govuk-body-l">@messages("product-details.contact-details.heading")</p>
     @contactDetailsList
 
     <h2 class="govuk-heading-l">@messages("product-details.details.heading")</h2>
-    @productDetailsList
-
-
-    @if(displayIncomeAndDeductionTypes) {
-        <h2 class="govuk-heading-l">@messages("product-details.income-and-deduction-types.heading")</h2>
-        
-        <p class="govuk-body">@productDetailsExplanationsLink</p>
-
-        <p class="govuk-body">
-        @messages(
-            "product-details.income-and-deduction-types.number-covered",
-            softwareVendor.name,
-            softwareVendor.incomeAndDeductions.length,
-            IncomeAndDeduction.incomeAndDeductionKeyToIncomeAndDeduction.toSeq.length
-        )
-        </p>
-
-        @incomeAndDeductionTypesList
-    }
-
-    @softwareVendor.accessibilityStatementLink.map { linkText =>
-        <h2 class="govuk-heading-l">@{
-            messages("product-details.accessibility-statement.heading")
-        }</h2>
-    @accessibilityStatement(linkText)
-    }
+    @table(Left(featuresProvidedGroup), "features-provided")
+    @table(Left(incomeSourcesGroup), "business-income")
+    @table(Right(personalIncomeSourcesGroup), "personal-income")
+    @table(Right(deductionsGroup), "deductions")
+    @table(Right(pensionsGroup), "pensions")
+    @table(Right(allowancesGroup), "allowances")
 
 }
 
 @contactDetailsList = {
-@govukSummaryList(SummaryList(
-    rows = Seq(SummaryListRow(
-        key = Key(content = Text(s"${messages("product-details.contact-details.website")}:")),
-        value = Value(content = HtmlContent(hmrcNewTabLinkHelper(NewTabLinkHelper(
-            text = softwareVendor.website,
-            href = Some(softwareVendor.website)
-        ))))
-    )) ++ Seq() ++ softwareVendor.email.map(email => SummaryListRow(
-        key = Key(content = Text(s"${messages("product-details.contact-details.email")}:")),
-        value = Value(content = HtmlContent(link(href = s"mailto:${email}", text = email)))
-    )) ++ softwareVendor.phone.map(phone => SummaryListRow(
-        key = Key(content = Text(s"${messages("product-details.contact-details.phone")}:")),
-        value = Value(content = Text(phone))
-    ))
-))
-}
-
-@productDetailsExplanationsLink = {
-    @Html(
-        messages(
-            "product-details.explanation-link.text",
-            link(
-                text = messages("product-details.explanation-link.link"),
-                href = routes.GlossaryController.show.url
-            ))
-        )
-}
-
-@incomeAndDeductionTypesList = {
-    <ol class="govuk-list govuk-list--number">
-    @softwareVendor.incomeAndDeductions.map { incomeAndDeduction =>
-        <li>@messages(s"product-details.income-and-deduction-types.${incomeAndDeduction.key}")</li>
-    }
-    </ol>
-}
-
-@accessibilityStatement(linkText: String) = {
-@govukSummaryList(SummaryList(
-    rows = Seq(
-        SummaryListRow(
-            key = Key(content = Text(messages("product-details.accessibility-statement.key"))),
+    @govukSummaryList(SummaryList(
+        rows = Seq(SummaryListRow(
+            key = Key(content = Text(s"${messages("product-details.contact-details.website")}:")),
             value = Value(content = HtmlContent(hmrcNewTabLinkHelper(NewTabLinkHelper(
-                text = linkText,
-                href = Some(linkText)
+                text = softwareVendor.website,
+                href = Some(softwareVendor.website)
             ))))
-        )
-    )
-))
-}
-
-@productDetailsRow(key: String, filtersInRow: Set[VendorFilter]) = @{
-
-    val rowContentMessages = softwareVendor.orderedFilterSubset(filtersInRow).map { filter =>
-        messages(s"product-details.details.${filter.key}")
-    }.map { value =>
-        <p class="govuk-body">{value}</p>
-    }.mkString
-
-    if(rowContentMessages.isEmpty) {
-        None
-    } else {
-        Some(SummaryListRow(
-            key = Key(
-                content = Text(messages(s"product-details.details.$key"))
-            ),
-            value = Value(
-                content = HtmlContent(
-                    rowContentMessages
-                )
-            )
         ))
-    }
-}
-@productDetailsList = {
-@govukSummaryList(SummaryList(
-    rows = rows.flatten
-))
-}
-
-@rows = @{
-    VendorFilterGroups.allGroups(displayExtraPricingOptions, displayOverseasPropertyOption).map{ case (group, label) =>
-        productDetailsRow(
-            key = label,
-            filtersInRow = group
-        )
-    }
+    ))
 }
 
 @link(href: String, text: String) = {
     <a class="govuk-link" href="@href">@text</a>
 }
+
+
+@incomeDeductionsRow(filterGroup: List[IncomeAndDeduction], section: String) = @{
+    val vendorIncomeAndDeductions = softwareVendor.incomeAndDeductions
+
+    filterGroup map { filter =>
+        Seq(
+            TableRow(
+                content = Text(messages(s"product-details.$section.${filter.key}")),
+                classes="govuk-!-width-three-quarters"
+            ),
+            TableRow(
+                content = if(vendorIncomeAndDeductions.contains(filter)) {
+                    Text(messages("product-details.status.included"))
+                } else {
+                    HtmlContent(govukTag(Tag(
+                        content = Text(messages("product-details.status.not-included")),
+                        classes = "govuk-tag--red"
+                    )))
+                },
+                classes="govuk-!-width-one-quarter"
+            )
+        )
+    }
+}
+
+@featuresRow(filterGroup: List[VendorFilter], section: String) = @{
+    filterGroup map { filter =>
+        Seq(
+            TableRow(
+                content = Text(messages(s"product-details.$section.${filter.key}")),
+                classes="govuk-!-width-three-quarters"
+            ),
+            TableRow(
+                content = if(softwareVendor.filters.contains(filter)) {
+                    Text(messages("product-details.status.included"))
+                } else {
+                    HtmlContent(govukTag(Tag(
+                        content = Text(messages("product-details.status.not-included")),
+                        classes = "govuk-tag--red"
+                    )))
+                },
+                classes="govuk-!-width-one-quarter"
+            )
+        )
+    }
+}
+
+@table(filterGroup: Either[List[VendorFilter], List[IncomeAndDeduction]], tableHeaderKey: String) = @{
+    govukTable(Table(
+        rows = filterGroup match {
+            case Left(vendorFilter) => {
+                featuresRow(vendorFilter, tableHeaderKey)
+            }
+            case Right(incomeDeductions) => {
+                incomeDeductionsRow(incomeDeductions, tableHeaderKey)
+            }
+        },
+        head = Some(Seq(
+            HeadCell(
+                content = Text(messages(s"product-details.$tableHeaderKey.heading"))
+            ),
+            HeadCell(
+                content = Text(messages("product-details.status.heading"))
+            )
+        )),
+        firstCellIsHeader = false,
+        caption = Some(messages(s"product-details.$tableHeaderKey.heading")),
+        captionClasses = "govuk-visually-hidden"
+    ))
+}
+
+
