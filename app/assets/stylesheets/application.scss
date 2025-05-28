@@ -89,18 +89,9 @@
   }
 }
 
-body:not(.js-enabled) {
+body {
   #searchTerm {
     margin-bottom: 1em;
-  }
-}
-
-body.js-enabled {
-  #searchTerm {
-    width: 100%;
-  }
-  #searchButton, .apply-filters-button {
-    display: none;
   }
 }
 

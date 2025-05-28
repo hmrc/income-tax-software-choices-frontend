@@ -52,48 +52,8 @@ class SearchSoftwareViewSpec extends ViewSpec {
       document.mainContent.selectHead("h1").text shouldBe SearchSoftwarePageContent.heading
     }
 
-    "have paragraph1" in {
-      document.mainContent.selectNth("p", 1).text shouldBe SearchSoftwarePageContent.paragraph1
-    }
-
-    "have inset text" in {
-      document.mainContent.selectHead(".govuk-inset-text").text shouldBe SearchSoftwarePageContent.insetText
-    }
-
-    "have What Kind of Software is available? details and content" which {
-
-      "has a heading" in {
-        document.mainContent.selectHead(".govuk-details").selectHead("span").text shouldBe SearchSoftwarePageContent.whatSoftwareHeading
-      }
-
-      "has a Record Keeping Software section" in {
-        document.mainContent.selectHead(".govuk-details").selectNth("h2", 1).text shouldBe SearchSoftwarePageContent.whatSoftwareRecordKeepingHeading
-      }
-
-      "has first bullet point in Record Keeping Software section" in {
-        document.mainContent.selectHead(".govuk-details").selectNth("li", 1).text shouldBe SearchSoftwarePageContent.whatSoftwareRecordKeepingBullet1
-      }
-
-      "has second bullet point in Record Keeping Software section" in {
-        document.mainContent.selectHead(".govuk-details").selectNth("li", 2).text shouldBe SearchSoftwarePageContent.whatSoftwareRecordKeepingBullet2
-      }
-
-      "has a Bridging section" in {
-        document.mainContent.selectHead(".govuk-details").selectNth("h2", 2).text shouldBe SearchSoftwarePageContent.whatSoftwareBridgingHeading
-      }
-
-      "has first bullet point in Bridging section" in {
-        document.mainContent.selectHead(".govuk-details").selectNth("ul", 2).selectNth("li", 1).text shouldBe SearchSoftwarePageContent.whatSoftwareBridgingBullet1
-      }
-
-      "has second bullet point in Bridging section" in {
-        document.mainContent.selectHead(".govuk-details").selectNth("ul", 2).selectNth("li", 2).text shouldBe SearchSoftwarePageContent.whatSoftwareBridgingBullet2
-      }
-
-    }
-
-    "has a skip to results link" in {
-      document.mainContent.selectHead(".govuk-skip-link").text shouldBe SearchSoftwarePageContent.skiptoresults
+    "have paragraph" in {
+      document.mainContent.selectNth("p", 1).text shouldBe SearchSoftwarePageContent.paragraph
     }
 
     "have a filter section" which {
@@ -107,8 +67,12 @@ class SearchSoftwareViewSpec extends ViewSpec {
         filterSection.selectHead("h2").text shouldBe SearchSoftwarePageContent.Filters.filterHeading
       }
 
+      "has a clear all filters link" in {
+        filterSection.selectHead("a").text shouldBe SearchSoftwarePageContent.Filters.clearFilters
+      }
+
       "has an accessibility features section" that {
-        val checkboxGroup = getCheckboxGroup(document, 1)
+        val checkboxGroup = getCheckboxGroup(document, 4)
 
         "contains a fieldset legend" in {
           checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwarePageContent.Filters.accessibilityFeatures
@@ -132,7 +96,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
       }
 
       "has a pricing section" that {
-        val checkboxGroup = getCheckboxGroup(document, 2)
+        val checkboxGroup = getCheckboxGroup(document, 1)
 
         "contains a fieldset legend" in {
           checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwarePageContent.Filters.pricing
@@ -150,7 +114,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
       }
 
       "has an suitable for section" that {
-        val checkboxGroup = getCheckboxGroup(document, 3)
+        val checkboxGroup = getCheckboxGroup(document, 6)
 
         "contains a fieldset legend" in {
           checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwarePageContent.Filters.suitableFor
@@ -163,74 +127,14 @@ class SearchSoftwareViewSpec extends ViewSpec {
         "contains a UK property checkbox" in {
           validateCheckboxInGroup(checkboxGroup, 2, UkProperty.key, SearchSoftwarePageContent.ukProperty)
         }
-        //      test for foreign property checkbox in the filters section
-        //        "contains an overseas property checkbox" in {
-        //          validateCheckboxInGroup(checkboxGroup, 3, OverseasProperty.key, SearchSoftwarePageContent.overseasProperty)
-        //        }
-      }
 
-      "has a compatible with section" that {
-        val checkboxGroup = getCheckboxGroup(document, 4)
-
-        "contains a fieldset legend" in {
-          checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwarePageContent.Filters.operatingSystem
-        }
-
-        "contains an Microsoft Windows checkbox" in {
-          validateCheckboxInGroup(checkboxGroup, 1, MicrosoftWindows.key, SearchSoftwarePageContent.microsoftWindows)
-        }
-
-        "contains an Mac OS checkbox" in {
-          validateCheckboxInGroup(checkboxGroup, 2, MacOS.key, SearchSoftwarePageContent.macOS)
-        }
-      }
-
-      "has a mobile app section" that {
-        val checkboxGroup = getCheckboxGroup(document, 5)
-
-        "contains a fieldset legend" in {
-          checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwarePageContent.Filters.mobileApp
-        }
-
-        "contains an Android checkbox" in {
-          validateCheckboxInGroup(checkboxGroup, 1, Android.key, SearchSoftwarePageContent.android)
-        }
-
-        "contains an Apple iOS checkbox" in {
-          validateCheckboxInGroup(checkboxGroup, 2, AppleIOS.key, SearchSoftwarePageContent.appleIOS)
-        }
-      }
-
-      "has a software type section" that {
-        val checkboxGroup = getCheckboxGroup(document, 6)
-
-        "contains a fieldset legend" in {
-          checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwarePageContent.Filters.softwareType
-        }
-
-        "contains an BrowserBased checkbox" in {
-          validateCheckboxInGroup(
-            checkboxGroup,
-            1,
-            BrowserBased.key,
-            SearchSoftwarePageContent.browserBased,
-            Some(SearchSoftwarePageContent.browserBasedHint)
-          )
-        }
-
-        "contains an ApplicationBased checkbox" in {
-          validateCheckboxInGroup(
-            checkboxGroup,
-            2,
-            ApplicationBased.key,
-            SearchSoftwarePageContent.applicationBased,
-            Some(SearchSoftwarePageContent.applicationBasedHint)
-          )
+        "contains an overseas property checkbox" in {
+          validateCheckboxInGroup(checkboxGroup, 3, OverseasProperty.key, SearchSoftwarePageContent.overseasProperty)
         }
       }
 
       "has a software for section" that {
-        val checkboxGroup = getCheckboxGroup(document, 7)
+        val checkboxGroup = getCheckboxGroup(document, 2)
 
         "contains a fieldset legend" in {
           checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwarePageContent.Filters.softwareFor
@@ -257,24 +161,8 @@ class SearchSoftwareViewSpec extends ViewSpec {
         }
       }
 
-      "has a business type section" that {
-        val checkboxGroup = getCheckboxGroup(document, 8)
-
-        "contains a fieldset legend" in {
-          checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwarePageContent.Filters.businessType
-        }
-
-        "contains an Individual checkbox and hint" in {
-          validateCheckboxInGroup(checkboxGroup, 1, Individual.key, SearchSoftwarePageContent.individual, Some(SearchSoftwarePageContent.individualHint))
-        }
-
-        "contains an Agent checkbox and hint" in {
-          validateCheckboxInGroup(checkboxGroup, 2, Agent.key, SearchSoftwarePageContent.agent, Some(SearchSoftwarePageContent.agentHint))
-        }
-      }
-
       "has a software compatibility section" that {
-        val checkboxGroup = getCheckboxGroup(document, 9)
+        val checkboxGroup = getCheckboxGroup(document, 3)
 
         "contains a fieldset legend" in {
           checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwarePageContent.Filters.softwareCompatibility
@@ -286,33 +174,119 @@ class SearchSoftwareViewSpec extends ViewSpec {
             1,
             Vat.key,
             SearchSoftwarePageContent.vat,
-            Some(SearchSoftwarePageContent.vatHint)
+            None
           )
         }
 
-        "contains an Income Tax checkbox" in {
-          validateCheckboxInGroup(checkboxGroup, 2, "", SearchSoftwarePageContent.incomeTax, disabled = true, checked = true)
+        "has an accounting period section" that {
+          val checkboxGroup = getCheckboxGroup(document, 5)
+
+          "contains a fieldset legend" in {
+            checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwarePageContent.Filters.accountingPeriod
+          }
+
+          "contains an Apr 6 checkbox" in {
+            validateCheckboxInGroup(checkboxGroup, 1, StandardUpdatePeriods.key, SearchSoftwarePageContent.apr6)
+          }
+
+          "contains an apr 1 checkbox" in {
+            validateCheckboxInGroup(checkboxGroup, 2, CalendarUpdatePeriods.key, SearchSoftwarePageContent.apr1, Some(SearchSoftwarePageContent.apr1Hint))
+          }
         }
-      }
 
-      "has a language section" that {
-        val checkboxGroup = getCheckboxGroup(document, 10)
+        "has an personal income sources section" that {
+          val checkboxGroup = getCheckboxGroup(document, 7)
 
-        "contains a Welsh checkbox" in {
-          validateCheckboxInGroup(checkboxGroup, 1, Welsh.key, SearchSoftwarePageContent.welsh)
+          "contains a fieldset legend" in {
+            checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwarePageContent.Filters.personalIncomeSources
+          }
+
+          "contains an CIS checkbox" in {
+            validateCheckboxInGroup(checkboxGroup, 1, ConstructionIndustryScheme.key, SearchSoftwarePageContent.constructionIndustryScheme)
+          }
+
+          "contains an capital gains tax checkbox" in {
+            validateCheckboxInGroup(checkboxGroup, 2, CapitalGainsTax.key, SearchSoftwarePageContent.capitalGainsTax)
+          }
+
+          "contains an employment checkbox" in {
+            validateCheckboxInGroup(checkboxGroup, 3, Employment.key, SearchSoftwarePageContent.employment)
+          }
+
+          "contains an foreign income tax checkbox" in {
+            validateCheckboxInGroup(checkboxGroup, 4, ForeignIncome.key, SearchSoftwarePageContent.foreignIncome)
+          }
+
+          "contains an UK dividends checkbox" in {
+            validateCheckboxInGroup(checkboxGroup, 5, UkDividends.key, SearchSoftwarePageContent.ukDividends)
+          }
+
+          "contains an UK interest checkbox" in {
+            validateCheckboxInGroup(checkboxGroup, 6, UkInterest.key, SearchSoftwarePageContent.ukInterest)
+          }
         }
 
-        "contains an English checkbox" in {
-          validateCheckboxInGroup(checkboxGroup, 2, "", SearchSoftwarePageContent.english, disabled = true, checked = true)
+        "has an deductions section" that {
+          val checkboxGroup = getCheckboxGroup(document, 8)
+
+          "contains a fieldset legend" in {
+            checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwarePageContent.Filters.deductions
+          }
+
+          "contains an charitable giving checkbox" in {
+            validateCheckboxInGroup(checkboxGroup, 1, CharitableGiving.key, SearchSoftwarePageContent.charitableGiving)
+          }
+
+          "contains an HICB checkbox" in {
+            validateCheckboxInGroup(checkboxGroup, 2, HighIncomeChildBenefitCharge.key, SearchSoftwarePageContent.highIncomeChildBenefit)
+          }
+
+          "contains an students loans checkbox" in {
+            validateCheckboxInGroup(checkboxGroup, 3, StudentLoans.key, SearchSoftwarePageContent.studentLoans)
+          }
+
+          "contains an VC2NI checkbox" in {
+            validateCheckboxInGroup(checkboxGroup, 4, VoluntaryClass2NationalInsurance.key, SearchSoftwarePageContent.volunteer)
+          }
         }
 
+        "has an pensions section" that {
+          val checkboxGroup = getCheckboxGroup(document, 9)
+
+          "contains a fieldset legend" in {
+            checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwarePageContent.Filters.pensions
+          }
+
+          "contains an state pension income checkbox" in {
+            validateCheckboxInGroup(checkboxGroup, 1, StatePensionIncome.key, SearchSoftwarePageContent.statePension)
+          }
+
+          "contains an private pension income checkbox" in {
+            validateCheckboxInGroup(checkboxGroup, 2, PrivatePensionIncome.key, SearchSoftwarePageContent.privatePension)
+          }
+
+          "contains an paying into a private pension loans checkbox" in {
+            validateCheckboxInGroup(checkboxGroup, 3, PaymentsIntoAPrivatePension.key, SearchSoftwarePageContent.payments)
+          }
+        }
+
+        "has an allowances section" that {
+          val checkboxGroup = getCheckboxGroup(document, 10)
+
+          "contains a fieldset legend" in {
+            checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwarePageContent.Filters.allowances
+          }
+
+          "contains an marriage allowance income checkbox" in {
+            validateCheckboxInGroup(checkboxGroup, 1, MarriageAllowance.key, SearchSoftwarePageContent.marriageAllowace)
+          }
+        }
       }
 
       "has a apply button section" that {
         "contains an apply filters button" in {
           filterSection.selectHead(".apply-filters-button").text shouldBe SearchSoftwarePageContent.Filters.applyFilters
         }
-
       }
     }
 
@@ -333,7 +307,6 @@ class SearchSoftwareViewSpec extends ViewSpec {
       "contains a submit" in {
         document.mainContent.selectHead("#searchButton").text shouldBe SearchSoftwarePageContent.SearchSoftwareSection.searchFormHeading
       }
-
     }
 
     "have the last updated date" in {
@@ -356,7 +329,6 @@ class SearchSoftwareViewSpec extends ViewSpec {
         emptyListMessage.selectNth("ul li", 2).text shouldBe SearchSoftwarePageContent.emptyVendorListMessageBullet2
       }
     }
-
 
     "have a software vendor section" which {
       lazy val documentWithVendors = getDocument(hasResults = true, hasError = false)
@@ -403,7 +375,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
 
             val thirdRow = summaryList.selectNth("div", 3)
             thirdRow.selectHead("dt").text shouldBe SearchSoftwarePageContent.suitableFor
-            thirdRow.selectHead("dd").text shouldBe s"${SearchSoftwarePageContent.soleTrader}, ${SearchSoftwarePageContent.ukProperty}"
+            thirdRow.selectHead("dd").text shouldBe s"${SearchSoftwarePageContent.soleTrader}, ${SearchSoftwarePageContent.ukProperty}, ${SearchSoftwarePageContent.overseasProperty}"
           }
         }
 
@@ -430,7 +402,6 @@ class SearchSoftwareViewSpec extends ViewSpec {
 
             val firstRow: Element = summaryList.selectNth("div", 1)
             firstRow.selectHead("dt").text shouldBe SearchSoftwarePageContent.pricing
-            firstRow.selectHead("dd").text shouldBe SearchSoftwarePageContent.noFreeVersion
 
             summaryList.selectOptionally("div:nth-of-type(4)") shouldBe None
           }
@@ -450,6 +421,7 @@ object SearchSoftwareViewSpec extends ViewSpec {
       } else {
         FiltersForm.form.fill(FiltersFormModel(Some("search test")))
       },
+      Call("POST", "/test-url"),
       Call("POST", "/test-url"),
       beta,
       pricing,
@@ -516,36 +488,28 @@ object SearchSoftwareViewSpec extends ViewSpec {
 }
 
 private object SearchSoftwarePageContent {
-  val title = "Find software for Making Tax Digital for Income Tax"
+  val title = "Software for Making Tax Digital for Income Tax"
   val lastUpdate = "This page was last updated: 2 Dec 2022"
-  val heading = "Find software for Making Tax Digital for Income Tax"
-  val paragraph1 = "HMRC does not make recommendations for software. However, all software on this page has passed our recognition criteria."
-  val insetText = "If you need help to choose software, contact the software provider or your tax agent before making a decision."
-  val whatSoftwareHeading = "What kind of software is available?"
-  val whatSoftwareRecordKeepingHeading = "Record Keeping Software"
-  val whatSoftwareRecordKeepingBullet1 = "updates and stores your records digitally"
-  val whatSoftwareRecordKeepingBullet2 = "works directly with HMRC systems allowing you to file a Income tax"
-  val whatSoftwareBridgingHeading = "Bridging software"
-  val whatSoftwareBridgingBullet1 = "works with non-compatible software like spreadsheets, accounting systems and other digital bookkeeping products"
-  val whatSoftwareBridgingBullet2 = "lets you send the required information digitally to HMRC in the correct format"
-  val skiptoresults = "Skip to results."
+  val heading = "Software for Making Tax Digital for Income Tax"
+  val paragraph = "All of this software has been through a recognition process where HMRC checks it’s capable of filing your taxes. HMRC does not endorse or recommend any one product or software provider."
 
   object SearchSoftwareSection {
     val searchFormHeading = "Search by software name"
   }
 
   object Filters {
-    val filterHeading = "Filters"
+    val filterHeading = "Filter software by"
+    val clearFilters = "Clear all filters"
     val pricing = "Pricing"
-    val suitableFor = "Suitable for"
-    val businessType = "Business type"
-    val operatingSystem = "Operating system"
-    val mobileApp = "Mobile app"
-    val softwareType = "Software type"
-    val softwareFor = "Software for"
+    val suitableFor = "Business income sources"
+    val softwareFor = "Type of software"
     val softwareCompatibility = "Making Tax Digital Compatibility"
-    val language = "Language"
     val accessibilityFeatures = "Accessibility features"
+    val accountingPeriod = "Accounting period"
+    val personalIncomeSources = "Personal income sources"
+    val deductions = "Deductions"
+    val pensions = "Pensions"
+    val allowances = "Allowances"
     val applyFilters = "Apply filters"
   }
 
@@ -559,62 +523,59 @@ private object SearchSoftwarePageContent {
   val emptyVendorListMessageBullet2 = "make sure the name you have entered into the search bar is correct"
 
   val pricing = "Pricing"
-  val freeTrial = "Free trial"
   val freeVersion = "Free version"
-  val freeVersionHint = "These are usually only free for a limited time, or have restricted features"
-  val paidFor = "Paid for"
-  val noFreeTrial = "No free trial"
-  val noFreeVersion = "No free version"
+  val freeVersionHint = "Find the company’s definition of ‘free’ on their website"
 
   val suitableFor = "Business income sources"
-  val soleTrader = "Sole trader"
+  val soleTrader = "Self-employment"
   val ukProperty = "UK property"
-  val overseasProperty = "Overseas property"
-
-  val businessType = "Business type:"
-  val individual = "Individual"
-  val individualHint = "Suitable for people submitting their own records"
-  val agent = "Agent"
-  val agentHint = "Software for accountants and bookkeepers"
-
-  val operatingSystem = "Operating system:"
-  val microsoftWindows = "Microsoft Windows"
-  val macOS = "Mac OS"
+  val overseasProperty = "Foreign property"
 
   val softwareFor = "Type of software"
   val recordKeeping = "Record keeping"
-  val recordKeepingHint = "Software to store and submit your tax records"
+  val recordKeepingHint = "Creates digital records"
   val bridging = "Bridging"
-  val bridgingHint = "Submit records with selected non-compatible software, like spreadsheets"
+  val bridgingHint = "Connects to digital records like spreadsheets"
 
   val submissionType = "Submission type"
   val quarterlyUpdates = "Quarterly updates"
   val taxReturn = "Self Assessment tax return"
 
-  val mobileApp = "Mobile app:"
-  val android = "Android"
-  val appleIOS = "Apple iOS"
-
-  val softwareType = "Software type:"
-  val browserBased = "Browser based"
-  val browserBasedHint = "Software accessed online with your internet browser"
-  val applicationBased = "Application based"
-  val applicationBasedHint = "Software installed on your device"
-
   val softwareCompatibility = "Making Tax Digital Compatibility:"
   val vat = "VAT"
-  val vatHint = "Software which you can also use to submit VAT records"
-  val incomeTax = "Income Tax"
-
-  val language = "Language:"
-  val welsh = "Welsh"
-  val english = "English"
 
   val accessibility = "Accessibility:"
-  val visual = "Impaired vision and blindness"
-  val hearing = "Deafness and impaired hearing"
-  val motor = "Motor difficulties"
+  val visual = "Blindness or impaired vision"
+  val hearing = "Deafness or impaired hearing"
+  val motor = "Motor or physical difficulties"
   val cognitive = "Cognitive impairments"
+
+  val accountingPeriod = "Accounting period"
+  val apr6 = "6th April to 5th April"
+  val apr1 = "1st April to 31st March"
+  val apr1Hint = "This supports calendar update periods"
+
+  val personalIncomeSources = "Personal income sources"
+  val constructionIndustryScheme = "Construction Industry Scheme (CIS)"
+  val capitalGainsTax = "Capital Gains Tax"
+  val employment = "Employment"
+  val foreignIncome = "Foreign Income"
+  val ukDividends = "UK Dividends"
+  val ukInterest = "UK Interest"
+
+  val Deductions = "Deductions"
+  val charitableGiving = "Charitable giving"
+  val highIncomeChildBenefit = "High Income Child Benefit Charge"
+  val studentLoans = "Student loans"
+  val volunteer = "Voluntary Class 2 National Insurance"
+
+  val pensions = "Pensions"
+  val statePension = "State pension income"
+  val privatePension = "Private pension income"
+  val payments = "Payments into a private pension"
+
+  val allowances = "Allowances"
+  val marriageAllowace = "Marriage Allowance"
 
   private val lastUpdateTest = LocalDate.of(2022, 12, 2)
 
@@ -629,22 +590,12 @@ private object SearchSoftwarePageContent {
         filters = Seq(
           VendorFilter.FreeVersion,
           VendorFilter.FreeTrial,
-          VendorFilter.PaidFor,
           VendorFilter.SoleTrader,
           VendorFilter.UkProperty,
           VendorFilter.OverseasProperty,
-          VendorFilter.Individual,
-          VendorFilter.Agent,
-          VendorFilter.MicrosoftWindows,
-          VendorFilter.MacOS,
-          VendorFilter.Android,
-          VendorFilter.AppleIOS,
-          VendorFilter.BrowserBased,
-          VendorFilter.ApplicationBased,
           VendorFilter.RecordKeeping,
           VendorFilter.Bridging,
           VendorFilter.Vat,
-          VendorFilter.Welsh,
           VendorFilter.Visual,
           VendorFilter.Hearing,
           VendorFilter.Motor,

@@ -20,12 +20,12 @@ import play.api.libs.json.{Reads, __}
 
 import scala.language.implicitConversions
 
-
 sealed trait VendorFilter {
   val key: String
   val priority: Int
   val alwaysDisplay: Boolean = false
   val showHint: Boolean = false
+
   override def toString: String = key
 }
 
@@ -44,11 +44,6 @@ object VendorFilter {
     override val showHint: Boolean = true
   }
 
-  case object PaidFor extends VendorFilter {
-    override val key: String = "paid-for"
-    override val priority: Int = 3
-  }
-
   case object SoleTrader extends VendorFilter {
     override val key: String = "sole-trader"
     override val priority: Int = 1
@@ -64,50 +59,6 @@ object VendorFilter {
     override val priority: Int = 3
   }
 
-  case object Individual extends VendorFilter {
-    override val key: String = "individual"
-    override val priority: Int = 1
-    override val showHint: Boolean = true
-  }
-
-  case object Agent extends VendorFilter {
-    override val key: String = "agent"
-    override val priority: Int = 2
-    override val showHint: Boolean = true
-  }
-
-  case object MicrosoftWindows extends VendorFilter {
-    override val key: String = "microsoft-windows"
-    override val priority: Int = 1
-  }
-
-  case object MacOS extends VendorFilter {
-    override val key: String = "mac-os"
-    override val priority: Int = 2
-  }
-
-  case object Android extends VendorFilter {
-    override val key: String = "android"
-    override val priority: Int = 1
-  }
-
-  case object AppleIOS extends VendorFilter {
-    override val key: String = "apple-ios"
-    override val priority: Int = 2
-  }
-
-  case object BrowserBased extends VendorFilter {
-    override val key: String = "browser-based"
-    override val priority: Int = 1
-    override val showHint: Boolean = true
-  }
-
-  case object ApplicationBased extends VendorFilter {
-    override val key: String = "application-based"
-    override val priority: Int = 2
-    override val showHint: Boolean = true
-  }
-
   case object RecordKeeping extends VendorFilter {
     override val key: String = "record-keeping"
     override val priority: Int = 1
@@ -120,26 +71,8 @@ object VendorFilter {
     override val showHint: Boolean = true
   }
 
-  case object IncomeTax extends VendorFilter {
-    override val key: String = "income-tax"
-    override val priority: Int = 2
-    override val alwaysDisplay: Boolean = true
-  }
-
   case object Vat extends VendorFilter {
     override val key: String = "vat"
-    override val priority: Int = 1
-    override val showHint: Boolean = true
-  }
-
-  case object English extends VendorFilter {
-    override val key: String = "english"
-    override val priority: Int = 2
-    override val alwaysDisplay: Boolean = true
-  }
-
-  case object Welsh extends VendorFilter {
-    override val key: String = "welsh"
     override val priority: Int = 1
   }
 
@@ -181,35 +114,109 @@ object VendorFilter {
   case object CalendarUpdatePeriods extends VendorFilter {
     override val key: String = "calendar-update-periods"
     override val priority: Int = 4
+    override val showHint: Boolean = true
+  }
+
+  case object ConstructionIndustryScheme extends VendorFilter {
+    override val key: String = "construction-industry-scheme"
+    override val priority: Int = 1
+  }
+
+  case object CapitalGainsTax extends VendorFilter {
+    override val key: String = "capital-gains-tax"
+    override val priority: Int = 2
+  }
+
+  case object Employment extends VendorFilter {
+    override val key: String = "employment"
+    override val priority: Int = 3
+  }
+
+  case object ForeignIncome extends VendorFilter {
+    override val key: String = "foreign-income"
+    override val priority: Int = 4
+  }
+
+  case object UkDividends extends VendorFilter {
+    override val key: String = "uk-dividends"
+    override val priority: Int = 5
+  }
+
+  case object UkInterest extends VendorFilter {
+    override val key: String = "uk-interest"
+    override val priority: Int = 6
+  }
+
+  case object CharitableGiving extends VendorFilter {
+    override val key: String = "charitable-giving"
+    override val priority: Int = 1
+  }
+
+  case object HighIncomeChildBenefitCharge extends VendorFilter {
+    override val key: String = "high-income-child-benefit-charge"
+    override val priority: Int = 2
+  }
+
+  case object StudentLoans extends VendorFilter {
+    override val key: String = "student-loans"
+    override val priority: Int = 3
+  }
+
+  case object VoluntaryClass2NationalInsurance extends VendorFilter {
+    override val key: String = "voluntary-class-2-national-insurance"
+    override val priority: Int = 4
+  }
+
+  case object StatePensionIncome extends VendorFilter {
+    override val key: String = "state-pension-income"
+    override val priority: Int = 1
+  }
+
+  case object PrivatePensionIncome extends VendorFilter {
+    override val key: String = "private-pension-income"
+    override val priority: Int = 2
+  }
+
+  case object PaymentsIntoAPrivatePension extends VendorFilter {
+    override val key: String = "payments-into-a-private-pension"
+    override val priority: Int = 3
+  }
+
+  case object MarriageAllowance extends VendorFilter {
+    override val key: String = "marriage-allowance"
+    override val priority: Int = 1
   }
 
   val filterKeyToFilter: Map[String, VendorFilter] = Seq(
     FreeVersion,
-    FreeTrial,
     QuarterlyUpdates,
     TaxReturn,
     StandardUpdatePeriods,
     CalendarUpdatePeriods,
-    PaidFor,
     SoleTrader,
     UkProperty,
     OverseasProperty,
-    Individual,
-    Agent,
-    MicrosoftWindows,
-    MacOS,
-    Android,
-    AppleIOS,
-    BrowserBased,
-    ApplicationBased,
     RecordKeeping,
     Bridging,
     Vat,
-    Welsh,
     Visual,
     Hearing,
     Motor,
-    Cognitive
+    Cognitive,
+    ConstructionIndustryScheme,
+    CapitalGainsTax,
+    Employment,
+    ForeignIncome,
+    UkDividends,
+    UkInterest,
+    CharitableGiving,
+    HighIncomeChildBenefitCharge,
+    StudentLoans,
+    VoluntaryClass2NationalInsurance,
+    StatePensionIncome,
+    PrivatePensionIncome,
+    PaymentsIntoAPrivatePension,
+    MarriageAllowance
   ).map(value => value.key -> value).toMap
 
   implicit val reads: Reads[VendorFilter] = __.read[String] map filterKeyToFilter
@@ -217,61 +224,86 @@ object VendorFilter {
 }
 
 object VendorFilterGroups {
+
   import VendorFilter._
 
-  def pricingFilters(displayExtraPricingOptions: Boolean): Set[VendorFilter] =
-    Set(
-      Some(FreeTrial).filter(_ => displayExtraPricingOptions),
-      Some(FreeVersion),
-      Some(PaidFor).filter(_ => displayExtraPricingOptions)
-    ).flatten.toSet
+  val pricingFilters: Set[VendorFilter] = Set(FreeVersion)
 
-  val languagesFilters: Set[VendorFilter] = Set(Welsh, English)
+  val compatibility: Set[VendorFilter] = Set(Vat)
 
-  val businessTypeFilters: Set[VendorFilter] = Set(Individual, Agent)
+  val suitableForFilters: Set[VendorFilter] = Set(
+    SoleTrader,
+    UkProperty,
+    OverseasProperty
+  )
 
-  val compatibility: Set[VendorFilter] = Set(IncomeTax, Vat)
+  val softwareForFilters: Set[VendorFilter] = Set(
+    RecordKeeping,
+    Bridging
+  )
 
-  def suitableForFilters(displayOverseasPropertyOption: Boolean): Set[VendorFilter] =
-    Set(
-      Some(SoleTrader),
-      Some(UkProperty),
-      Some(OverseasProperty).filter(_ => displayOverseasPropertyOption)
-    ).flatten.toSet
+  val accessibilityFilters: Set[VendorFilter] = Set(
+    Visual,
+    Hearing,
+    Motor,
+    Cognitive
+  )
 
-  val operatingSystemFilters: Set[VendorFilter] = Set(MicrosoftWindows, MacOS)
+  val accountingPeriodFilters: Set[VendorFilter] = Set(
+    StandardUpdatePeriods,
+    CalendarUpdatePeriods
+  )
 
-  val mobileAppFilters: Set[VendorFilter] = Set(Android, AppleIOS)
+  val submissionTypeFilters: Set[VendorFilter] = Set(
+    QuarterlyUpdates,
+    TaxReturn
+  )
 
-  val softwareTypeFilters: Set[VendorFilter] = Set(BrowserBased, ApplicationBased)
+  val personalIncomeSources: Set[VendorFilter] = Set(
+    ConstructionIndustryScheme,
+    CapitalGainsTax,
+    Employment,
+    ForeignIncome,
+    UkDividends,
+    UkInterest
+  )
 
-  val softwareForFilters: Set[VendorFilter] = Set(RecordKeeping, Bridging)
+  val deductions: Set[VendorFilter] = Set(
+    CharitableGiving,
+    HighIncomeChildBenefitCharge,
+    StudentLoans,
+    VoluntaryClass2NationalInsurance
+  )
 
-  val accessibilityFilters: Set[VendorFilter] = Set(Visual, Hearing, Motor, Cognitive)
+  val pensions: Set[VendorFilter] = Set(
+    StatePensionIncome,
+    PrivatePensionIncome,
+    PaymentsIntoAPrivatePension
+  )
 
-  val submissionTypeFilters: Set[VendorFilter] = Set(QuarterlyUpdates, TaxReturn)
+  val allowances: Set[VendorFilter] = Set(
+    MarriageAllowance
+  )
 
   // product details page groups //
   val featuresProvidedGroup: List[VendorFilter] = List(RecordKeeping, Bridging, QuarterlyUpdates, TaxReturn, StandardUpdatePeriods, CalendarUpdatePeriods)
-  val incomeSourcesGroup: List[VendorFilter] =
-    List(
-      Some(SoleTrader),
-      Some(UkProperty),
-      Some(OverseasProperty)
-    ).flatten
+  val incomeSourcesGroup: List[VendorFilter] = List(
+      SoleTrader,
+      UkProperty,
+      OverseasProperty
+    )
 
-  def allGroups(displayExtraPricingOptions: Boolean, displayOverseasPropertyOption: Boolean): Seq[(Set[VendorFilter], String)] = Seq(
-    (accessibilityFilters, "accessibility"),
-    (pricingFilters(displayExtraPricingOptions), "pricing"),
-    (suitableForFilters(displayOverseasPropertyOption), "suitable-for"),
-    (operatingSystemFilters, "operating-system"),
-    (mobileAppFilters, "mobile-app"),
-    (softwareTypeFilters, "software-type"),
+  def allGroups: Seq[(Set[VendorFilter], String)] = Seq(
+    (pricingFilters, "pricing"),
     (softwareForFilters, "software-for"),
-    (businessTypeFilters, "business-type"),
     (compatibility, "software-compatibility"),
-    (languagesFilters, "language"),
-    (submissionTypeFilters, "submission-type")
+    (accessibilityFilters, "accessibility"),
+    (accountingPeriodFilters, "accounting-period"),
+    (suitableForFilters, "suitable-for"),
+    (personalIncomeSources, "personal-income-sources"),
+    (deductions, "deductions"),
+    (pensions, "pensions"),
+    (allowances, "allowances")
   )
- 
+
 }

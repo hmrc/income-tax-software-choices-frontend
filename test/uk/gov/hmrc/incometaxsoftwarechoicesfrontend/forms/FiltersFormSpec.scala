@@ -19,7 +19,7 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms
 import org.scalatest.matchers.should.Matchers._
 import org.scalatestplus.play.PlaySpec
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{Android, AppleIOS, ApplicationBased, BrowserBased, Cognitive, Hearing, Motor, Vat, Visual}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{Cognitive, Hearing, Motor, Vat, Visual}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FiltersFormModel, VendorFilter}
 
 class FiltersFormSpec extends PlaySpec with GuiceOneServerPerSuite {
@@ -54,49 +54,28 @@ class FiltersFormSpec extends PlaySpec with GuiceOneServerPerSuite {
       }
     }
     "validate a filter" when {
-      "the filter name is known" in {
-        val validInput = Map("filters[0]" -> VendorFilter.Individual.key)
-        FiltersForm.form.bind(validInput).value shouldBe Some(FiltersFormModel(None, List(VendorFilter.Individual)))
-      }
       "several filters, all of which are known" in {
         val validInput = Map(
-          "filters[0]" -> VendorFilter.Individual.key,
-          "filters[1]" -> VendorFilter.Agent.key,
-          "filters[2]" -> VendorFilter.FreeTrial.key,
-          "filters[3]" -> VendorFilter.FreeVersion.key,
-          "filters[4]" -> VendorFilter.MicrosoftWindows.key,
-          "filters[5]" -> VendorFilter.MacOS.key,
-          "filters[6]" -> VendorFilter.Vat.key,
-          "filters[7]" -> VendorFilter.SoleTrader.key,
-          "filters[8]" -> VendorFilter.UkProperty.key,
-          "filters[9]" -> VendorFilter.OverseasProperty.key,
-          "filters[10]" -> Android.key,
-          "filters[11]" -> AppleIOS.key,
-          "filters[12]" -> BrowserBased.key,
-          "filters[13]" -> ApplicationBased.key,
-          "filters[14]" -> Vat.key,
-          "filters[15]" -> Visual.key,
-          "filters[16]" -> Hearing.key,
-          "filters[17]" -> Motor.key,
-          "filters[18]" -> Cognitive.key,
+          "filters[0]" -> VendorFilter.FreeTrial.key,
+          "filters[1]" -> VendorFilter.FreeVersion.key,
+          "filters[2]" -> VendorFilter.Vat.key,
+          "filters[3]" -> VendorFilter.SoleTrader.key,
+          "filters[4]" -> VendorFilter.UkProperty.key,
+          "filters[5]" -> VendorFilter.OverseasProperty.key,
+          "filters[6]" -> Vat.key,
+          "filters[7]" -> Visual.key,
+          "filters[8]" -> Hearing.key,
+          "filters[9]" -> Motor.key,
+          "filters[10]" -> Cognitive.key,
         )
         FiltersForm.form.bind(validInput).value shouldBe Some(FiltersFormModel(
           None,
           List(
-            VendorFilter.Individual,
-            VendorFilter.Agent,
-            VendorFilter.FreeTrial,
             VendorFilter.FreeVersion,
-            VendorFilter.MicrosoftWindows,
-            VendorFilter.MacOS,
             VendorFilter.Vat,
             VendorFilter.SoleTrader,
             VendorFilter.UkProperty,
             VendorFilter.OverseasProperty,
-            VendorFilter.Android,
-            VendorFilter.AppleIOS,
-            VendorFilter.BrowserBased,
-            VendorFilter.ApplicationBased,
             VendorFilter.Vat,
             VendorFilter.Visual,
             VendorFilter.Hearing,

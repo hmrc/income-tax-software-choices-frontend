@@ -14,56 +14,47 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.govukfrontend.views.html.components.{GovukAccordion, _}
+@import uk.gov.hmrc.govukfrontend.views.viewmodels.checkboxes.CheckboxItem
 @import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 @import uk.gov.hmrc.govukfrontend.views.viewmodels.hint.Hint
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilterGroups
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.helpers.CheckboxGroupHelper
 
 @this(
-  govukAccordion: GovukAccordion,
   checkboxGroup: CheckboxGroupHelper
 )
 
-@(checkboxField: Field, displayExtraPricingOptions: Boolean, displayOverseasPropertyOption: Boolean)(implicit messages: Messages)
+@(checkboxField: Field, displayExtraPricingOptions: Boolean, displayOverseasPropertyOptions: Boolean)(implicit messages: Messages)
 
 @buildCheckBoxes(filters: Set[VendorFilter], label: String) = @{
   filters.toSeq.sortBy(_.priority).map(item =>
     if (item.alwaysDisplay)
       CheckboxItem(
-        id = Some(s"$item-filter"),
-        content = Text(messages(s"search-software.vendor-detail.$label.$item")),
-        disabled = true,
-        checked = true
+      id = Some(s"$item-filter"),
+      content = Text(messages(s"search-software.vendor-detail.$label.$item")),
+      disabled = true,
+      checked = true
       )
     else
-      CheckboxItem(
-        id = Some(s"$item-filter"),
-        content = Text(messages(s"search-software.vendor-detail.$label.$item")),
-        value = item,
-        hint = if (item.showHint) Some(Hint(content = Text(messages(s"search-software.vendor-detail.$label.$item.hint")))) else None
-      )
+        CheckboxItem(
+            id = Some(s"$item-filter"),
+            content = Text(messages(s"search-software.vendor-detail.$label.$item")),
+            value = item,
+            hint = if (item.showHint) Some(Hint(content = Text(messages(s"search-software.vendor-detail.$label.$item.hint")))) else None
+            )
   )
 }
 
-@sections = @{
-  VendorFilterGroups.allGroups(displayExtraPricingOptions, displayOverseasPropertyOption).map{ case (group, label) =>
+@{
+    VendorFilterGroups.allGroups.map{ case (group, label) =>
 
-    Section(
-      headingContent = Text(messages(s"search-software.filters.$label")),
-      content = HtmlContent(checkboxGroup(
-        field = checkboxField,
-        fieldsetLegend = messages(s"search-software.filters.$label"),
-        fieldsetClass = "govuk-hidden",
-        checkboxes = buildCheckBoxes(group, label)
-      ))
-    )
-  }
+        checkboxGroup(
+          field = checkboxField,
+          fieldsetLegend = messages(s"search-software.filters.$label"),
+          checkboxes = buildCheckBoxes(group, label)
+        )
+
+    }
 }
-
-@govukAccordion(Accordion(
-  id = "accordion-default",
-  items = sections
-))
