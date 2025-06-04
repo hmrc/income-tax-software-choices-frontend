@@ -27,7 +27,6 @@ import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.ws.{WSClient, WSResponse}
 import play.api.test.FakeRequest
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.{FiltersForm, GlossaryForm}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.baseURI
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FiltersFormModel, GlossaryFormModel}
@@ -38,8 +37,7 @@ trait ComponentSpecBase extends AnyWordSpec
   with CustomMatchers
   with ScalaFutures
   with IntegrationPatience
-  with GuiceOneServerPerSuite
-  with FeatureSwitching {
+  with GuiceOneServerPerSuite {
 
   implicit lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
 

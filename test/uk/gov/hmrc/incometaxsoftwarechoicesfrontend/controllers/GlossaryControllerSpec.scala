@@ -27,7 +27,6 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.GlossaryForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.GlossaryFormModel
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.GlossaryService
@@ -37,7 +36,7 @@ import uk.gov.hmrc.play.language.LanguageUtils
 
 import scala.concurrent.Future
 
-class GlossaryControllerSpec extends ControllerBaseSpec with FeatureSwitching with BeforeAndAfterEach with MockitoSugar {
+class GlossaryControllerSpec extends ControllerBaseSpec with BeforeAndAfterEach with MockitoSugar {
 
   private val mcc = app.injector.instanceOf[MessagesControllerComponents]
   val appConfig: AppConfig = app.injector.instanceOf[AppConfig]

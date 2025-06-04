@@ -26,7 +26,7 @@
   checkboxGroup: CheckboxGroupHelper
 )
 
-@(checkboxField: Field, displayExtraPricingOptions: Boolean, displayOverseasPropertyOptions: Boolean)(implicit messages: Messages)
+@(checkboxField: Field)(implicit messages: Messages)
 
 @buildCheckBoxes(filters: Set[VendorFilter], label: String) = @{
   filters.toSeq.sortBy(_.priority).map(item =>

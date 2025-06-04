@@ -38,7 +38,7 @@
   languageUtils: LanguageUtils
 )(implicit appConfig: AppConfig)
 
-@(softwareVendors: SoftwareVendors, searchForm: Form[FiltersFormModel], postAction: Call, clearAction: Call, betaFeatures: Boolean, displayExtraPricingOptions: Boolean, displayOverseasPropertyOption: Boolean)(implicit request: Request[_], messages: Messages)
+@(softwareVendors: SoftwareVendors, searchForm: Form[FiltersFormModel], postAction: Call, clearAction: Call)(implicit request: Request[_], messages: Messages)
 
 @pageBackLink = @{
     Some(appConfig.guidance)
@@ -88,7 +88,7 @@
           </p>
           <h2 class="govuk-heading-m">@messages("search-software.filters.heading")</h2>
 
-          @softwareFiltersTemplate(searchForm(FiltersForm.filters), displayExtraPricingOptions, displayOverseasPropertyOption)
+          @softwareFiltersTemplate(searchForm(FiltersForm.filters))
 
           <div class="govuk-button-group govuk-!-padding-top-0 apply-filters-group">
             @govukButton(Button(
@@ -105,7 +105,7 @@
         </div>
 
         <div id="software-vendor-list">
-          @softwareVendorsTemplate(softwareVendors, displayExtraPricingOptions, displayOverseasPropertyOption)
+          @softwareVendorsTemplate(softwareVendors)
         </div>
 
         <p id = "lastUpdated" class="govuk-body-s govuk-!-padding-top-4">
