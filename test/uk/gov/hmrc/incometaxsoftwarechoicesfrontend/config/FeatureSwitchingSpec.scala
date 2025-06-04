@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,15 +21,13 @@ import org.scalatestplus.play.PlaySpec
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.{Environment, Mode}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.BetaFeatures
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.{FeatureSwitch, FeatureSwitchingImpl}
 
 class FeatureSwitchingSpec extends PlaySpec with BeforeAndAfterEach with GuiceOneAppPerSuite {
 
-  class Setup(betaFeatures: Boolean = false) {
+  class Setup() {
 
     def config: Map[String, String] = Map(
-      "feature-switch.enable-beta-features" -> betaFeatures.toString,
       "metrics.enabled" -> "false"
     )
 
@@ -39,9 +37,7 @@ class FeatureSwitchingSpec extends PlaySpec with BeforeAndAfterEach with GuiceOn
       .build()
       .injector
       .instanceOf[FeatureSwitchingImpl]
-
   }
-
 
   override def beforeEach(): Unit = {
     super.beforeEach()
@@ -50,22 +46,4 @@ class FeatureSwitchingSpec extends PlaySpec with BeforeAndAfterEach with GuiceOn
     }
   }
 
-  "BetaFeatures" should {
-    "return true if BetaFeatures feature switch is enabled in sys.props" in new Setup {
-      featureSwitching.enable(BetaFeatures)
-      featureSwitching.isEnabled(BetaFeatures) mustBe true
-    }
-    "return false if BetaFeatures feature switch is disabled in sys.props" in new Setup {
-      featureSwitching.disable(BetaFeatures)
-      featureSwitching.isEnabled(BetaFeatures) mustBe false
-    }
-
-    "return false if BetaFeatures feature switch is not in sys.props but is set to off in config" in new Setup(betaFeatures = false) {
-      featureSwitching.isEnabled(BetaFeatures) mustBe false
-    }
-
-    "return true if BetaFeatures feature switch is not in sys.props but is set to on in config" in new Setup(betaFeatures = true) {
-      featureSwitching.isEnabled(BetaFeatures) mustBe true
-    }
-  }
 }

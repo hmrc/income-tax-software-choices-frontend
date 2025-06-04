@@ -20,8 +20,6 @@ import play.api.data.Form
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import play.twirl.api.Html
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch._
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FiltersFormModel, SoftwareVendors, UserFilters}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
@@ -37,7 +35,7 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
                                          searchSoftwarePage: SearchSoftwarePage,
                                          softwareChoicesService: SoftwareChoicesService,
                                          userFiltersRepository: UserFiltersRepository,
-                                         implicit val ec: ExecutionContext) extends BaseFrontendController(mcc) with FeatureSwitching {
+                                         implicit val ec: ExecutionContext) extends BaseFrontendController(mcc) {
 
   val show: Action[AnyContent] = Action { implicit request => Ok(view(softwareChoicesService.getVendors(), FiltersForm.form)) }
 
@@ -74,18 +72,11 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
   private def view(vendors: SoftwareVendors, form: Form[FiltersFormModel])
                   (implicit request: Request[_]): Html = {
 
-    val betaEnabled: Boolean = isEnabled(BetaFeatures)
-    val extraPricingOptionsEnabled: Boolean = isEnabled(ExtraPricingOptions)
-    val overseasPropertyEnabled: Boolean = isEnabled(DisplayOverseasProperty)
-
     searchSoftwarePage(
       vendors,
       form,
       routes.SearchSoftwareController.search,
-      routes.SearchSoftwareController.clear,
-      betaEnabled,
-      extraPricingOptionsEnabled,
-      overseasPropertyEnabled
+      routes.SearchSoftwareController.clear
     )
   }
 

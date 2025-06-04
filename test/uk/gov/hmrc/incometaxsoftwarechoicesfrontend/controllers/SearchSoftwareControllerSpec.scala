@@ -27,7 +27,6 @@ import play.api.mvc.{Codec, MessagesControllerComponents}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserFilters
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.FreeVersion
@@ -38,7 +37,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SearchSoftwarePag
 import java.io.FileInputStream
 import scala.concurrent.{ExecutionContext, Future}
 
-class SearchSoftwareControllerSpec extends ControllerBaseSpec with BeforeAndAfterEach with FeatureSwitching {
+class SearchSoftwareControllerSpec extends ControllerBaseSpec with BeforeAndAfterEach {
 
   private val mcc = app.injector.instanceOf[MessagesControllerComponents]
   val appConfig: AppConfig = app.injector.instanceOf[AppConfig]

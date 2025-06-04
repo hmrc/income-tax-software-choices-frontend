@@ -29,7 +29,7 @@
   govukSummaryList : GovukSummaryList
 )
 
-@(softwareVendors: SoftwareVendors, displayExtraPricingOptions: Boolean, displayOverseasPropertyOption: Boolean)(implicit messages: Messages)
+@(softwareVendors: SoftwareVendors)(implicit messages: Messages)
 
 @customSummaryListRow(key: String, filtersAvailable: Seq[VendorFilter]) = @{
 
@@ -55,10 +55,8 @@
 @softwareVendorPricing(vendor: SoftwareVendorModel) = @{
 
   val key: String = {messages("search-software.vendor-detail.pricing")}
-  val freeTrial = if(vendor.filters.contains(FreeTrial)) Some(messages("search-software.vendor-detail.pricing.free-trial")) else Some(messages("search-software.vendor-detail.pricing.no-free-trial"))
   val freeVersion = if(vendor.filters.contains(FreeVersion)) Some(messages("search-software.vendor-detail.pricing.free-version")) else Some(messages("search-software.vendor-detail.pricing.no-free-version"))
   val value = Seq(
-    freeTrial.filter(_ => displayExtraPricingOptions),
     freeVersion
   ).flatten.mkString("/")
 

@@ -413,7 +413,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
 
 object SearchSoftwareViewSpec extends ViewSpec {
 
-  def page(softwareVendors: SoftwareVendors, hasError: Boolean, beta: Boolean, pricing: Boolean, overseas: Boolean): HtmlFormat.Appendable =
+  def page(softwareVendors: SoftwareVendors, hasError: Boolean): HtmlFormat.Appendable =
     searchSoftwarePage(
       softwareVendors,
       if (hasError) {
@@ -422,15 +422,12 @@ object SearchSoftwareViewSpec extends ViewSpec {
         FiltersForm.form.fill(FiltersFormModel(Some("search test")))
       },
       Call("POST", "/test-url"),
-      Call("POST", "/test-url"),
-      beta,
-      pricing,
-      overseas
+      Call("POST", "/test-url")
     )
 
   def getDocument(hasResults: Boolean, hasError: Boolean): Document = {
     val results = if (hasResults) SearchSoftwarePageContent.softwareVendorsResults else SearchSoftwarePageContent.softwareVendorsNoResults
-    Jsoup.parse(page(results, hasError, false, false, false).body)
+    Jsoup.parse(page(results, hasError).body)
   }
 
   def getCheckboxItem(checkboxGroup: Element, n: Int): Element = checkboxGroup
