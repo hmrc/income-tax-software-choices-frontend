@@ -57,8 +57,8 @@ class UserFiltersRepositoryISpec
 
   val testSessionIdOne: String = "testSessionIdOne"
   val testSessionIdTwo: String = "testSessionIdTwo"
-  val emptyUserFilters: UserFilters = UserFilters(testSessionIdOne,Seq.empty)
-  val oneUserFilters: UserFilters = UserFilters(testSessionIdTwo,Seq(Hearing))
+  val emptyUserFilters: UserFilters = UserFilters(testSessionIdOne, Map.empty, Seq.empty)
+  val oneUserFilters: UserFilters = UserFilters(testSessionIdTwo, Map.empty, Seq(Hearing))
 
 
   "get" should {
