@@ -10,6 +10,10 @@ breadcrumbs.guidance                = Guidance
 breadcrumbs.filter                  = Filter
 breadcrumbs.glossary                = Self Assessment income and deduction types explained
 
+
+# Business Income page
+business-income.error.non-empty          = Select the business incomes that apply to you
+
 # Search software page
 
 search-software.title                                     = Software for Making Tax Digital for Income Tax

@@ -18,11 +18,10 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms
 
 import org.scalatest.matchers.should.Matchers._
 import org.scalatestplus.play.PlaySpec
-import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{Cognitive, Hearing, Motor, Vat, Visual}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FiltersFormModel, VendorFilter}
 
-class FiltersFormSpec extends PlaySpec with GuiceOneServerPerSuite {
+class FiltersFormSpec extends PlaySpec {
 
   "FiltersForm" should {
     "validate a search term" when {
