@@ -62,7 +62,7 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
       userFilters <- userFiltersRepository.get(sessionId)
       result <- userFilters match {
         case Some(userFilters) => userFiltersRepository.set(userFilters.copy(finalFilters = search.filters))
-        case None => userFiltersRepository.set(UserFilters(sessionId, search.filters))
+        case None => userFiltersRepository.set(UserFilters(sessionId, Map.empty, search.filters))
       }
     } yield {
       result

@@ -66,7 +66,7 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec with BeforeAndAfte
     }
 
     "return OK status with the search software page when filter already exists" in withController { controller =>
-      when(mockUserFiltersRepo.get(ArgumentMatchers.any())).thenReturn(Future.successful(Some(UserFilters("sessionId", Seq(FreeVersion)))))
+      when(mockUserFiltersRepo.get(ArgumentMatchers.any())).thenReturn(Future.successful(Some(UserFilters("sessionId", Map.empty, Seq(FreeVersion)))))
       val result = controller.search(FakeRequest("POST", "/")
         .withFormUrlEncodedBody(FiltersForm.searchTerm -> "Vendor", s"${FiltersForm.filters}[0]" -> "free-version"))
 

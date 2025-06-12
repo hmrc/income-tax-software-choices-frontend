@@ -17,21 +17,25 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models
 
 import play.api.libs.json._
+import play.api.libs.json.Reads.mapReads
 import uk.gov.hmrc.mongo.play.json.formats.MongoJavatimeFormats
 
 import java.time.Instant
 
 case class UserFilters(id: String,
-                           finalFilters: Seq[VendorFilter] = Seq.empty,
-                           lastUpdated: Instant = Instant.now)
+                       answers: Map[String, Seq[VendorFilter]] = Map.empty,
+                       finalFilters: Seq[VendorFilter] = Seq.empty,
+                       lastUpdated: Instant = Instant.now)
 
 object UserFilters {
+
   val reads: Reads[UserFilters] = {
 
     import play.api.libs.functional.syntax._
 
     (
       (__ \ "_id").read[String] and
+        (__ \ "answers").read[Map[String, Seq[VendorFilter]]](mapReads[Seq[VendorFilter]]) and
         (__ \ "finalFilters").read[Seq[VendorFilter]] and
         (__ \ "lastUpdated").read(MongoJavatimeFormats.instantFormat)
       ) (UserFilters.apply _)
@@ -43,9 +47,10 @@ object UserFilters {
 
     (
       (__ \ "_id").write[String] and
+        (__ \ "answers").write[Map[String, Seq[VendorFilter]]] and
         (__ \ "finalFilters").write[Seq[VendorFilter]] and
         (__ \ "lastUpdated").write(MongoJavatimeFormats.instantFormat)
-      ) (ua => (ua.id, ua.finalFilters, ua.lastUpdated))
+      ) (ua => (ua.id, ua.answers, ua.finalFilters, ua.lastUpdated))
   }
 
   implicit val format: OFormat[UserFilters] = OFormat(reads, writes)
