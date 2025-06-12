@@ -19,10 +19,13 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.utils
 import play.api.data.validation.{Constraint, Invalid, Valid, ValidationResult}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.utils.ConstraintUtil.constraint
 
-object StringConstraints {
+object Constraints {
   val maxLength: (Int, String) => Constraint[Option[String]] = (length, msgKey) => constraint(oTerm =>
     oTerm.fold[ValidationResult](Valid) { term =>
       if (term.length <= length) Valid else Invalid(msgKey, length)
     }
   )
+
+  val nonEmptySeq: String => Constraint[Seq[_]] = msgKey =>
+    constraint(seq => if (seq.nonEmpty) Valid else Invalid(msgKey))
 }
