@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models
 
-import play.api.libs.json.{JsString, OWrites, Reads, Writes, __}
+import play.api.libs.json.{JsString, Reads, Writes, __}
 
 import scala.language.implicitConversions
 
