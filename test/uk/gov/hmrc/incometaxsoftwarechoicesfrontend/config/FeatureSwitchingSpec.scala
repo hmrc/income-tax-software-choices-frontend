@@ -21,9 +21,11 @@ import org.scalatestplus.play.PlaySpec
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.{Environment, Mode}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.{FeatureSwitch, FeatureSwitchingImpl}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch._
 
-class FeatureSwitchingSpec extends PlaySpec with BeforeAndAfterEach with GuiceOneAppPerSuite {
+class FeatureSwitchingSpec extends PlaySpec with FeatureSwitching with BeforeAndAfterEach with GuiceOneAppPerSuite {
+
+  override val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
 
   class Setup() {
 
@@ -46,4 +48,10 @@ class FeatureSwitchingSpec extends PlaySpec with BeforeAndAfterEach with GuiceOn
     }
   }
 
+  "FeatureSwitching constants" should {
+    "be true and false" in {
+      FEATURE_SWITCH_ON mustBe "true"
+      FEATURE_SWITCH_OFF mustBe "false"
+    }
+  }
 }

@@ -21,9 +21,7 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import play.twirl.api.Html
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.OverseasProperty
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FiltersFormModel, SoftwareVendors, UserFilters}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.MandatoryIncomeSourcesPage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.{PageAnswersService, SoftwareChoicesService}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SearchSoftwarePage
@@ -40,23 +38,14 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
                                          userFiltersRepository: UserFiltersRepository,
                                          implicit val ec: ExecutionContext) extends BaseFrontendController(mcc) {
 
-  val show: Action[AnyContent] = Action { implicit request => {
-    val sessionId = request.session.get("sessionId").getOrElse("")
-    pageAnswersService.getPageAnswers(sessionId, MandatoryIncomeSourcesPage).map{
-      x=>println(Console.BLUE + x + Console.RESET)
-    }
-    pageAnswersService.setPageAnswers(sessionId, MandatoryIncomeSourcesPage, Seq(OverseasProperty))
+  val show: Action[AnyContent] = Action { implicit request =>
     Ok(view(softwareChoicesService.getVendors(), FiltersForm.form))
-  } }
+   }
 
   def search: Action[AnyContent] = Action.async { implicit request =>
-    val sessionId = request.session.get("sessionId").getOrElse("")
     FiltersForm.form.bindFromRequest().fold(
       error => Future.successful(BadRequest(view(softwareChoicesService.getVendors(), error))),
       search => update(search) map { _ =>
-        pageAnswersService.getPageAnswers(sessionId, MandatoryIncomeSourcesPage).map{
-          x=>println(Console.RED + x + Console.RESET)
-        }
         val vendors = softwareChoicesService.getVendors(search.searchTerm, search.filters)
         Ok(view(vendors, FiltersForm.form.fill(search)))
       }
