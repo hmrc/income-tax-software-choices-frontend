@@ -16,7 +16,9 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services
 
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter
+import play.api.libs.json.{Reads, Writes}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{UserAnswers, UserFilters}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.queries._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 
 import javax.inject.{Inject, Singleton}
@@ -25,17 +27,22 @@ import scala.concurrent.{ExecutionContext, Future}
 @Singleton
 class PageAnswersService @Inject()(userFiltersRepository: UserFiltersRepository, implicit val ec: ExecutionContext) {
 
-  def getPageAnswers(id: String, pageId: String): Future[Option[Seq[VendorFilter]]] = {
+  def getPageAnswers[A](id: String, page: Gettable[A])(implicit rds: Reads[A]): Future[Option[A]] = {
     userFiltersRepository.get(id).map {
-      case Some(uf) => uf.answers.get(pageId)
+      case Some(uf) => uf.answers.flatMap(_.get(page))
       case None => None
     }
   }
 
-  def setPageAnswers(id: String, pageId: String, pageAnswers: Seq[VendorFilter]): Future[Boolean] = {
+  def setPageAnswers[A](id: String, page: Settable[A], value: A)(implicit writes: Writes[A]): Future[Boolean] = {
     userFiltersRepository.get(id).flatMap {
-      case Some(uf) => userFiltersRepository.set(uf.copy(answers = uf.answers ++ Map(pageId -> pageAnswers)))
-      case None => Future.successful(false)
+      case Some(uf) => {
+        val newAnswers = uf.answers.flatMap(_.set(page, value).toOption)
+        userFiltersRepository.set(uf.copy(answers = newAnswers))
+      }
+      case None => {
+        userFiltersRepository.set(UserFilters(id, UserAnswers().set(page, value).toOption, Seq.empty))
+      }
     }
   }
 

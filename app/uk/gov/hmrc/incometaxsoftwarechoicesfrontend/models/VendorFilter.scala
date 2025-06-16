@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models
 
-import play.api.libs.json.{Reads, __}
+import play.api.libs.json.{JsString, OWrites, Reads, Writes, __}
 
 import scala.language.implicitConversions
 
@@ -220,7 +220,7 @@ object VendorFilter {
   ).map(value => value.key -> value).toMap
 
   implicit val reads: Reads[VendorFilter] = __.read[String] map filterKeyToFilter
-
+  implicit val writes: Writes[VendorFilter] = Writes(JsString(_))
 }
 
 object VendorFilterGroups {

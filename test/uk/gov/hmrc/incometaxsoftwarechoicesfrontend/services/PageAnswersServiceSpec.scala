@@ -21,20 +21,27 @@ import org.mockito.Mockito.when
 import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.mockito.MockitoSugar.mock
 import org.scalatestplus.play.PlaySpec
+import play.api.libs.json.JsPath
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{ForeignIncome, OverseasProperty}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareVendorModel, SoftwareVendors, UserFilters}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{UserAnswers, UserFilters}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.QuestionPage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class PageAnswersServiceSpec extends PlaySpec with BeforeAndAfterEach {
 
+  private case object DummyPage extends QuestionPage[String] {
+    override def toString: String = "dummy"
+    override def path: JsPath     = JsPath \ toString
+  }
+
   private val pageId: String = "my-page"
   private val sessionId: String = "sessionId"
-  private val emptyUserFilter = UserFilters(sessionId, Map.empty, Seq.empty)
-  private val userFilterNoAnswerForPage = UserFilters(sessionId, Map(pageId -> Seq.empty), Seq.empty)
-  private val userFilterWithAnswerForPage = UserFilters(sessionId, Map(pageId -> Seq(OverseasProperty)), Seq.empty)
+  private val dummyUserAnswers: UserAnswers = UserAnswers().set(DummyPage, "Test").get
+  private val emptyUserFilter = UserFilters(sessionId, None, Seq.empty)
+  private val userFilterNoAnswerForPage = UserFilters(sessionId, None, Seq.empty)
+  private val userFilterWithAnswerForPage = UserFilters(sessionId, Some(dummyUserAnswers), Seq.empty)
 
   class Setup {
     implicit val ec: ExecutionContext = scala.concurrent.ExecutionContext.global
@@ -49,29 +56,22 @@ class PageAnswersServiceSpec extends PlaySpec with BeforeAndAfterEach {
         when(mockUserFiltersRepository.get(eqTo(sessionId)))
           .thenReturn(Future.successful(None))
 
-        await(service.getPageAnswers(sessionId, pageId)) mustBe None
+        await(service.getPageAnswers(sessionId, DummyPage)) mustBe None
       }
 
       "return None if user filters exists for this session but the page does not" in new Setup {
         when(mockUserFiltersRepository.get(eqTo(sessionId)))
           .thenReturn(Future.successful(Some(emptyUserFilter)))
 
-        await(service.getPageAnswers(sessionId, pageId)) mustBe None
+        await(service.getPageAnswers(sessionId, DummyPage)) mustBe None
       }
    }
     "the page has been visited previously" must {
-      "return an empty list if no user filters have been selected (None of the above)" in new Setup {
-        when(mockUserFiltersRepository.get(eqTo(sessionId)))
-          .thenReturn(Future.successful(Some(userFilterNoAnswerForPage)))
-
-        await(service.getPageAnswers(sessionId, pageId)) mustBe Some(Seq.empty)
-      }
-
-      "return a list of answers if user filters exists for this session and the page has answers" in new Setup {
+      "return answers if user filters exists for this session and the page has answers" in new Setup {
         when(mockUserFiltersRepository.get(eqTo(sessionId)))
           .thenReturn(Future.successful(Some(userFilterWithAnswerForPage)))
 
-        await(service.getPageAnswers(sessionId, pageId)) mustBe Some(Seq(OverseasProperty))
+        await(service.getPageAnswers(sessionId, DummyPage)) mustBe Some("Test")
       }
    }
   }
@@ -84,15 +84,17 @@ class PageAnswersServiceSpec extends PlaySpec with BeforeAndAfterEach {
         when(mockUserFiltersRepository.set(any()))
           .thenReturn(Future.successful(true))
 
-        await(service.setPageAnswers(sessionId, pageId, Seq(ForeignIncome, OverseasProperty))) mustBe true
+        await(service.setPageAnswers(sessionId, DummyPage, "Another Test String")) mustBe true
       }
     }
     "the userFilters do not exist" must {
-      "return false to show the answers have not been saved"  in new Setup {
+      "return true to show the answers have been saved once the user filters created"  in new Setup {
         when(mockUserFiltersRepository.get(eqTo(sessionId)))
           .thenReturn(Future.successful(None))
+        when(mockUserFiltersRepository.set(any()))
+          .thenReturn(Future.successful(true))
 
-        await(service.setPageAnswers(sessionId, pageId, Seq(ForeignIncome, OverseasProperty))) mustBe false
+        await(service.setPageAnswers(sessionId, DummyPage, "Third Test String")) mustBe true
       }
     }
   }
