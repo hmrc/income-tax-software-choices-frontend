@@ -36,11 +36,9 @@ class PageAnswersServiceSpec extends PlaySpec with BeforeAndAfterEach {
     override def path: JsPath     = JsPath \ toString
   }
 
-  private val pageId: String = "my-page"
   private val sessionId: String = "sessionId"
   private val dummyUserAnswers: UserAnswers = UserAnswers().set(DummyPage, "Test").get
   private val emptyUserFilter = UserFilters(sessionId, None, Seq.empty)
-  private val userFilterNoAnswerForPage = UserFilters(sessionId, None, Seq.empty)
   private val userFilterWithAnswerForPage = UserFilters(sessionId, Some(dummyUserAnswers), Seq.empty)
 
   class Setup {
