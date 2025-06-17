@@ -31,7 +31,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserFilters
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.FreeVersion
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.SoftwareChoicesService
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.{PageAnswersService, SoftwareChoicesService}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SearchSoftwarePage
 
 import java.io.FileInputStream
@@ -66,7 +66,7 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec with BeforeAndAfte
     }
 
     "return OK status with the search software page when filter already exists" in withController { controller =>
-      when(mockUserFiltersRepo.get(ArgumentMatchers.any())).thenReturn(Future.successful(Some(UserFilters("sessionId", Seq(FreeVersion)))))
+      when(mockUserFiltersRepo.get(ArgumentMatchers.any())).thenReturn(Future.successful(Some(UserFilters("sessionId", None, Seq(FreeVersion)))))
       val result = controller.search(FakeRequest("POST", "/")
         .withFormUrlEncodedBody(FiltersForm.searchTerm -> "Vendor", s"${FiltersForm.filters}[0]" -> "free-version"))
 
@@ -93,12 +93,14 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec with BeforeAndAfte
       .thenReturn(Some(new FileInputStream("test/resources/test-valid-software-vendors.json")))
 
     lazy val softwareChoicesService: SoftwareChoicesService = new SoftwareChoicesService(appConfig, mockEnvironment)
+    lazy val pageAnswerService: PageAnswersService = new PageAnswersService(mockUserFiltersRepo, ec)
 
     val controller = new SearchSoftwareController(
       mcc,
       appConfig,
       searchSoftwarePage,
       softwareChoicesService,
+      pageAnswerService,
       mockUserFiltersRepo,
       ec
     )

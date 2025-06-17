@@ -27,6 +27,8 @@ trait FeatureSwitching {
   val FEATURE_SWITCH_ON: String = true.toString
   val FEATURE_SWITCH_OFF: String = false.toString
 
+  //$COVERAGE-OFF$Disabling scoverage until there are feature switches to test
+
   def isEnabled(featureSwitch: FeatureSwitch): Boolean = {
     (sys.props.get(featureSwitch.name) orElse appConfig.config.getOptional[String](featureSwitch.name)) contains FEATURE_SWITCH_ON
   }
@@ -36,6 +38,8 @@ trait FeatureSwitching {
 
   def disable(featureSwitch: FeatureSwitch): Unit =
     sys.props += featureSwitch.name -> FEATURE_SWITCH_OFF
+
+  //$COVERAGE-ON$
 
 }
 

@@ -23,7 +23,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FiltersFormModel, SoftwareVendors, UserFilters}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.SoftwareChoicesService
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.{PageAnswersService, SoftwareChoicesService}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SearchSoftwarePage
 
 import javax.inject.{Inject, Singleton}
@@ -34,10 +34,13 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
                                          val appConfig: AppConfig,
                                          searchSoftwarePage: SearchSoftwarePage,
                                          softwareChoicesService: SoftwareChoicesService,
+                                         pageAnswersService: PageAnswersService,
                                          userFiltersRepository: UserFiltersRepository,
                                          implicit val ec: ExecutionContext) extends BaseFrontendController(mcc) {
 
-  val show: Action[AnyContent] = Action { implicit request => Ok(view(softwareChoicesService.getVendors(), FiltersForm.form)) }
+  val show: Action[AnyContent] = Action { implicit request =>
+    Ok(view(softwareChoicesService.getVendors(), FiltersForm.form))
+   }
 
   def search: Action[AnyContent] = Action.async { implicit request =>
     FiltersForm.form.bindFromRequest().fold(
@@ -62,7 +65,7 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
       userFilters <- userFiltersRepository.get(sessionId)
       result <- userFilters match {
         case Some(userFilters) => userFiltersRepository.set(userFilters.copy(finalFilters = search.filters))
-        case None => userFiltersRepository.set(UserFilters(sessionId, search.filters))
+        case None => userFiltersRepository.set(UserFilters(sessionId, None, search.filters))
       }
     } yield {
       result

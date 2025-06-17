@@ -22,9 +22,11 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.OptionValues
 import org.scalatest.wordspec.AnyWordSpecLike
 import org.scalatestplus.mockito.MockitoSugar
+import play.api.libs.json.JsPath
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserFilters
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{UserAnswers, UserFilters}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.QuestionPage
 import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 
 import java.time.temporal.ChronoUnit
@@ -39,6 +41,11 @@ class UserFiltersRepositoryISpec
     with OptionValues
     with MockitoSugar {
 
+  private case object DummyPage extends QuestionPage[String] {
+    override def toString: String = "dummy"
+    override def path: JsPath     = JsPath \ toString
+  }
+  private val dummyUserAnswers: UserAnswers = UserAnswers().set(DummyPage, "Test").get
 
   private val instant = Instant.now.truncatedTo(ChronoUnit.MILLIS)
   private val stubClock: Clock = Clock.fixed(instant, ZoneId.systemDefault)
@@ -57,8 +64,8 @@ class UserFiltersRepositoryISpec
 
   val testSessionIdOne: String = "testSessionIdOne"
   val testSessionIdTwo: String = "testSessionIdTwo"
-  val emptyUserFilters: UserFilters = UserFilters(testSessionIdOne,Seq.empty)
-  val oneUserFilters: UserFilters = UserFilters(testSessionIdTwo,Seq(Hearing))
+  val emptyUserFilters: UserFilters = UserFilters(testSessionIdOne, None, Seq.empty)
+  val oneUserFilters: UserFilters = UserFilters(testSessionIdTwo, Some(dummyUserAnswers), Seq(Hearing))
 
 
   "get" should {
@@ -73,6 +80,7 @@ class UserFiltersRepositoryISpec
         val result = repository.get(testSessionIdTwo).futureValue
         result.get.id shouldBe testSessionIdTwo
         result.get.finalFilters shouldBe Seq(Hearing)
+        result.get.answers shouldBe Some(dummyUserAnswers)
       }
     }
   }
@@ -80,9 +88,11 @@ class UserFiltersRepositoryISpec
   "set" should {
     "update a record if it already exists" in {
       repository.set(emptyUserFilters).futureValue
-      repository.set(emptyUserFilters.copy(finalFilters = Seq(Motor)))
+      repository.set(emptyUserFilters.copy(answers = Some(dummyUserAnswers), finalFilters = Seq(Motor)))
 
-      repository.get(testSessionIdOne).futureValue.get.finalFilters shouldBe Seq(Motor)
+      val result = repository.get(testSessionIdOne).futureValue.get
+      result.finalFilters shouldBe Seq(Motor)
+      result.answers shouldBe Some(dummyUserAnswers)
     }
   }
 
