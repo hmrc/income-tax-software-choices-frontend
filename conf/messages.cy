@@ -10,6 +10,9 @@ breadcrumbs.guidance                = Arweiniad
 breadcrumbs.filter                  = Hidlo
 breadcrumbs.glossary                = Self Assessment income and deduction types explained ...but in Welsh
 
+# Business Income page
+business-income.error.non-empty         = Select the business incomes that apply to you
+
 # Search software page
 
 search-software.title                                     = Find software for Making Tax Digital for Income Tax ... but in Welsh
