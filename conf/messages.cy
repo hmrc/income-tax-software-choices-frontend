@@ -15,12 +15,13 @@ breadcrumbs.glossary                = Self Assessment income and deduction types
 # Business Income page
 business-income.title = Which business income do you have?
 business-income.legend = Which business income do you have?
+business-income.para = You’ll need to include this in your quarterly updates and tax return.
 business-income.hint = Select all that apply.
 business-income.self-employment = Self-employment
 business-income.uk-property = UK property
 business-income.foreign-property = Foreign property
 
-business-income.error.non-empty         = Select the business income/s that apply to you
+business-income.error.non-empty         = Select business income or business incomes
 
 # Search software page
 

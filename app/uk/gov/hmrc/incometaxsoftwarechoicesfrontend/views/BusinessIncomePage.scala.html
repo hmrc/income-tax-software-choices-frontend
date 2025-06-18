@@ -34,14 +34,17 @@
 
 @mainTemplate(title = messages("business-income.title"), backLink = Some(appConfig.guidance), optForm = Some(businessIncomeForm)) {
 
+    <h1 class="govuk-heading-l">@messages("business-income.legend")</h1>
+    <p class ="govuk-body">@messages("business-income.para")</p>
+
     @form(action = postAction) {
 
         @govukCheckboxes(Checkboxes(
             fieldset = Some(Fieldset(
                 legend = Some(Legend(
                     content = Text(messages("business-income.legend")),
-                    classes = "govuk-fieldset__legend--l",
-                    isPageHeading = true
+                    classes = "govuk-visually-hidden",
+                    isPageHeading = false,
                 ))
             )),
             hint = Some(Hint(

@@ -60,6 +60,9 @@ class BusinessIncomeSourcesViewSpec extends ViewSpec {
       "have a back link" in {
         document().selectHead(".govuk-back-link").attr("href") shouldBe appConfig.guidance
       }
+      "have a paragraph" in {
+        document().mainContent.selectNth("p", 1).text shouldBe BusinessIncomePageContent.para
+      }
       "have a form" which {
         def form: Element = document().mainContent.selectHead("form")
 
@@ -78,8 +81,8 @@ class BusinessIncomeSourcesViewSpec extends ViewSpec {
           form.mustHaveCheckbox("fieldSet")(
             checkbox = 1,
             legend = BusinessIncomePageContent.legend,
-            isHeading = true,
-            isLegendHidden = false,
+            isHeading = false,
+            isLegendHidden = true,
             name = "businessIncome[]",
             label = BusinessIncomePageContent.selfEmployment,
             value = "sole-trader",
@@ -89,8 +92,8 @@ class BusinessIncomeSourcesViewSpec extends ViewSpec {
           form.mustHaveCheckbox("fieldSet")(
             checkbox = 2,
             legend = BusinessIncomePageContent.legend,
-            isHeading = true,
-            isLegendHidden = false,
+            isHeading = false,
+            isLegendHidden = true,
             name = "businessIncome[]",
             label = BusinessIncomePageContent.ukProperty,
             value = "uk-property",
@@ -100,8 +103,8 @@ class BusinessIncomeSourcesViewSpec extends ViewSpec {
           form.mustHaveCheckbox("fieldSet")(
             checkbox = 3,
             legend = BusinessIncomePageContent.legend,
-            isHeading = true,
-            isLegendHidden = false,
+            isHeading = false,
+            isLegendHidden = true,
             name = "businessIncome[]",
             label = BusinessIncomePageContent.foreignProperty,
             value = "overseas-property",
@@ -118,8 +121,9 @@ class BusinessIncomeSourcesViewSpec extends ViewSpec {
 private object BusinessIncomePageContent {
   val title = "Which business income do you have? - Find software that’s compatible with Making Tax Digital for Income Tax - GOV.UK"
   val legend = "Which business income do you have?"
+  val para = "You’ll need to include this in your quarterly updates and tax return."
   val hint = "Select all that apply."
-  val selfEmployment = "Self-employment"
+  val selfEmployment = "Sole trader"
   val ukProperty = "UK property"
   val foreignProperty = "Foreign property"
   val continue = "Continue"
