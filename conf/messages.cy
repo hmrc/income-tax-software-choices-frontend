@@ -3,6 +3,8 @@ base.title                  = {0} - Dod o hyd i feddalwedd am y cynllun Troi Tre
 base.title.error            = Gwall: {0} - Dod o hyd i feddalwedd am y cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm - GOV.UK
 base.error-heading          = Mae problem wedi codi
 base.opens-in-new-tab       = (yn agor tab newydd)
+base.continue               = Yn eich blaen
+
 
 # Breadcrumbs
 
@@ -11,7 +13,14 @@ breadcrumbs.filter                  = Hidlo
 breadcrumbs.glossary                = Self Assessment income and deduction types explained ...but in Welsh
 
 # Business Income page
-business-income.error.non-empty         = Select the business incomes that apply to you
+business-income.title = Which business income do you have?
+business-income.legend = Which business income do you have?
+business-income.hint = Select all that apply.
+business-income.self-employment = Self-employment
+business-income.uk-property = UK property
+business-income.foreign-property = Foreign property
+
+business-income.error.non-empty         = Select the business income/s that apply to you
 
 # Search software page
 

@@ -17,11 +17,13 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views
 
 import org.jsoup.nodes.Element
+import org.scalatest.Checkpoints.Checkpoint
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
+import org.scalatest.{Assertion, Succeeded}
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.i18n.{Messages, MessagesApi}
-import play.api.mvc.Request
+import play.api.mvc.{Call, Request}
 import play.api.test.FakeRequest
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 
@@ -36,6 +38,8 @@ trait ViewSpec extends AnyWordSpecLike with Matchers with GuiceOneAppPerSuite {
   implicit lazy val mockMessages: Messages = messagesApi.preferred(FakeRequest())
 
   implicit val request: Request[_] = FakeRequest()
+
+  val testCall: Call = Call("POST", "/test-url")
 
   implicit class CustomSelectors(element: Element) {
 
@@ -61,4 +65,78 @@ trait ViewSpec extends AnyWordSpecLike with Matchers with GuiceOneAppPerSuite {
     def getTable(index: Int): Element = selectHead(s".govuk-table:nth-of-type($index)")
 
   }
+
+  implicit class ComponentTests(element: Element) {
+
+    def mustHaveCheckbox(selector: String)(groupNth: Option[Int] = None,
+                                           checkbox: Int,
+                                           legend: String,
+                                           isHeading: Boolean,
+                                           isLegendHidden: Boolean,
+                                           name: String,
+                                           label: String,
+                                           value: String,
+                                           checked: Boolean = false): Assertion = {
+
+      val checkpoint: Checkpoint = new Checkpoint()
+      val fieldSet: Element = element.selectHead(selector)
+
+      val checkboxGroup = groupNth match {
+        case Some(n) if n == 0 => fail(s"Invalid nth selector of $n, must be >= 1")
+        case Some(n) => element.selectNth(".govuk-checkboxes", n)
+        case _ => element.selectHead(".govuk-checkboxes")
+      }
+
+      validateFieldSetLegend(fieldSet, legend, isHeading, isLegendHidden, checkpoint)
+
+      val item: Element = checkboxGroup.selectNth(".govuk-checkboxes__item", checkbox)
+
+      checkpoint {
+        item.selectHead("input").attr("name") shouldBe name
+      }
+      checkpoint {
+        item.selectHead(".govuk-checkboxes__label").text shouldBe label
+      }
+      checkpoint {
+        item.selectHead("input").attr("value") shouldBe value
+      }
+      checkpoint {
+        item.selectHead("input").hasAttr("checked") shouldBe checked
+      }
+
+      checkpoint.reportAll()
+      Succeeded
+
+    }
+
+    private def validateFieldSetLegend(fieldSet: Element,
+                                       legend: String,
+                                       isHeading: Boolean,
+                                       isLegendHidden: Boolean,
+                                       checkpoint: Checkpoint): Unit = {
+      val fieldSetLegend: Element = fieldSet.selectHead("legend")
+
+      if (isHeading) {
+        checkpoint {
+          fieldSetLegend.selectHead("h1").text shouldBe legend
+        }
+      } else {
+        checkpoint {
+          fieldSetLegend.text shouldBe legend
+        }
+      }
+      if (isLegendHidden) {
+        checkpoint {
+          fieldSetLegend.attr("class") should include("govuk-visually-hidden")
+        }
+      } else {
+        checkpoint {
+          fieldSetLegend.attr("class") shouldNot include("govuk-visually-hidden")
+        }
+      }
+    }
+
+  }
+
+
 }

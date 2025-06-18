@@ -8,6 +8,9 @@ GET        /                     uk.gov.hmrc.incometaxsoftwarechoicesfrontend.co
 POST       /                     uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SearchSoftwareController.search
 GET        /clear                uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SearchSoftwareController.clear
 
+GET        /business-income      uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.BusinessIncomeController.show
+POST       /business-income      uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.BusinessIncomeController.submit
+
 GET        /glossary             uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.GlossaryController.show
 POST       /glossary             uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.GlossaryController.search(ajax: Boolean = false)
 POST       /glossary/ajax        uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.GlossaryController.search(ajax: Boolean = true)

@@ -22,12 +22,14 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.utils.Constraints.nonE
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter
 
 object BusinessIncomeForm {
+  val formKey: String = "businessIncome"
+  val formErrorKey: String = "business-income.error.non-empty"
 
   val form: Form[Seq[VendorFilter]] = Form(
     single(
-      "businessIncome" -> seq(text)
+      formKey -> seq(text)
         .transform[Seq[VendorFilter]](toVendorFilters, fromVendorFilters)
-        .verifying(nonEmptySeq("business-income.error.nonEmpty"))
+        .verifying(nonEmptySeq(formErrorKey))
     )
   )
 
