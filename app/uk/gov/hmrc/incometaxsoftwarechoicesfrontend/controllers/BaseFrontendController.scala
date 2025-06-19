@@ -16,9 +16,15 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
+import play.api.data.Form
 import play.api.i18n.I18nSupport
 import play.api.mvc.MessagesControllerComponents
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 abstract class BaseFrontendController(val mcc: MessagesControllerComponents)
-  extends FrontendController(mcc) with I18nSupport
+  extends FrontendController(mcc) with I18nSupport {
+
+  implicit class FormUtil[T](form: Form[T]) {
+    def fill(data: Option[T]): Form[T] = data.fold(form)(form.fill)
+  }
+}

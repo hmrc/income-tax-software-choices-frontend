@@ -3,6 +3,7 @@ base.title                  = {0} - Find software that’s compatible with Makin
 base.title.error            = Error: {0} - Find software that’s compatible with Making Tax Digital for Income Tax - GOV.UK
 base.error-heading          = There is a problem
 base.opens-in-new-tab       = (opens in new tab)
+base.continue               = Continue
 
 # Breadcrumbs
 
@@ -12,7 +13,15 @@ breadcrumbs.glossary                = Self Assessment income and deduction types
 
 
 # Business Income page
-business-income.error.non-empty          = Select the business incomes that apply to you
+business-income.title = Which business income do you have?
+business-income.legend = Which business income do you have?
+business-income.para = You’ll need to include this in your quarterly updates and tax return.
+business-income.hint = Select all that apply.
+business-income.self-employment = Sole trader
+business-income.uk-property = UK property
+business-income.foreign-property = Foreign property
+
+business-income.error.non-empty          = Select business income or business incomes
 
 # Search software page
 

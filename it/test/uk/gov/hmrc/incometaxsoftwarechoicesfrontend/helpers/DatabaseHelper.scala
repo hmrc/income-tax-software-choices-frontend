@@ -16,10 +16,20 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers
 
-import java.util.UUID
+import play.api.libs.json.JsValue
+import play.api.test.Helpers.{await, defaultAwaitTimeout}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserFilters
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 
-object IntegrationTestConstants {
-  val baseURI = "/making-tax-digital-income-tax-software"
+import scala.concurrent.Future
 
-  val SessionId = s"stubbed-${UUID.randomUUID}"
+trait DatabaseHelper extends ComponentSpecBase {
+
+  lazy val userFiltersRepository: UserFiltersRepository = app.injector.instanceOf[UserFiltersRepository]
+
+  def getById(id: String): Future[Option[UserFilters]] = userFiltersRepository.get(id)
+
+  def getPageData(id: String, page: String): Option[JsValue] = await(getById(id)).flatMap(_.answers).flatMap(_.data.value.get(page))
+
+
 }

@@ -18,6 +18,7 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms
 
 import org.scalatestplus.play.PlaySpec
 import play.api.data.FormError
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.BusinessIncomeForm.{formErrorKey, formKey}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{OverseasProperty, SoleTrader, UkProperty}
 
 class BusinessIncomeFormSpec extends PlaySpec {
@@ -58,14 +59,14 @@ class BusinessIncomeFormSpec extends PlaySpec {
         val boundForm = BusinessIncomeForm.form.bindFromRequest(answers)
 
         boundForm.value mustBe None
-        boundForm.errors mustBe Seq(FormError("businessIncome", "business-income.error.nonEmpty"))
+        boundForm.errors mustBe Seq(FormError(formKey, formErrorKey))
       }
       "invalid vendor filter is provided" in {
         val answers = Map("businessIncome[]" -> Seq("not-an-income-source"))
         val boundForm = BusinessIncomeForm.form.bindFromRequest(answers)
 
         boundForm.value mustBe None
-        boundForm.errors mustBe Seq(FormError("businessIncome", "business-income.error.nonEmpty"))
+        boundForm.errors mustBe Seq(FormError(formKey, formErrorKey))
       }
       "both valid and invalid vendor filters are provided" in {
         val answers = Map("businessIncome[]" -> Seq("sole-trader", "not-an-income-source"))

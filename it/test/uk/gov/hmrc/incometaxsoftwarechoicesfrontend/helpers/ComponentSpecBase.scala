@@ -22,14 +22,16 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.Application
+import play.api.http.HeaderNames
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.inject.guice.GuiceApplicationBuilder
+import play.api.libs.crypto.CookieSigner
 import play.api.libs.ws.{WSClient, WSResponse}
 import play.api.test.FakeRequest
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.{FiltersForm, GlossaryForm}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.{BusinessIncomeForm, FiltersForm, GlossaryForm}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.baseURI
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FiltersFormModel, GlossaryFormModel}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FiltersFormModel, GlossaryFormModel, VendorFilter}
 
 trait ComponentSpecBase extends AnyWordSpec
   with GivenWhenThen
@@ -37,15 +39,20 @@ trait ComponentSpecBase extends AnyWordSpec
   with CustomMatchers
   with ScalaFutures
   with IntegrationPatience
-  with GuiceOneServerPerSuite {
+  with GuiceOneServerPerSuite
+  with SessionCookieBaker {
 
   implicit lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
+
+  val cookieSignerCache: Application => CookieSigner = Application.instanceCache[CookieSigner]
+  override lazy val cookieSigner: CookieSigner = cookieSignerCache(app)
 
   private val wsClient = app.injector.instanceOf[WSClient]
   private val baseUrl = s"http://localhost:$port"
 
   def config: Map[String, Any] = Map(
-    "metrics.enabled" -> false
+    "metrics.enabled" -> false,
+    "play.filters.csrf.header.bypassHeaders.Csrf-Token" -> "nocheck",
   )
 
   override def fakeApplication(): Application =
@@ -81,6 +88,12 @@ trait ComponentSpecBase extends AnyWordSpec
       GlossaryForm.form.fill(search).data.map { case (k, v) => (k, Seq(v)) }
     )
 
+    def getBusinessIncome: WSResponse = get("/business-income")
+
+    def postBusinessIncome(pageAnswers: Seq[VendorFilter]): WSResponse = post("/business-income")(
+      BusinessIncomeForm.form.fill(pageAnswers).data.map { case (k, v) => (k, Seq(v)) }
+      )
+
     def healthcheck(): WSResponse =
       wsClient
         .url(s"$baseUrl/ping/ping")
@@ -89,13 +102,14 @@ trait ComponentSpecBase extends AnyWordSpec
 
     private def get(uri: String): WSResponse = {
       buildClient(uri)
+        .withHttpHeaders(HeaderNames.COOKIE -> bakeSessionCookie())
         .get()
         .futureValue
     }
 
     def post(uri: String)(body: Map[String, Seq[String]]): WSResponse =
       buildClient(uri)
-        .withHttpHeaders("Csrf-Token" -> "nocheck")
+        .withHttpHeaders("Csrf-Token" -> "nocheck", HeaderNames.COOKIE -> bakeSessionCookie())
         .post(body)
         .futureValue
 

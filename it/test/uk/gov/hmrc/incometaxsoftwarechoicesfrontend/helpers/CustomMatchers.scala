@@ -53,4 +53,39 @@ trait CustomMatchers {
         redirectLocation.getOrElse("")
       )
     }
+
+  def checkboxSelected(id: String, value: Option[String]): HavePropertyMatcher[WSResponse, String] =
+    (response: WSResponse) => {
+      val body = Jsoup.parse(response.body)
+      val checkbox = body.select(s"input[id^=$id]")
+      val checkedAttr = "checked"
+
+      def checkboxValue(checkboxId: String) =
+        if (checkboxId.isEmpty) ""
+        else body.select(s"input[id=$checkboxId]").attr("value")
+
+      val matchCondition: Boolean = value match {
+        case Some(expectedOption) =>
+          val checkboxId = checkbox.select(s"input[checked]").attr("id")
+          checkboxValue(checkboxId) == expectedOption
+        case None => !checkbox.hasAttr(checkedAttr)
+      }
+
+
+      HavePropertyMatchResult(
+        matches = matchCondition,
+        propertyName = "checkbox",
+        expectedValue = value.fold("")(identity),
+        actualValue = {
+          val selected = checkbox.select("input[checked]")
+          selected.size() match {
+            case 0 =>
+              "no checkbox is selected"
+            case _ =>
+              val checkboxId = selected.attr("id")
+              s"""The "${checkboxValue(checkboxId)}" selected"""
+          }
+        }
+      )
+    }
 }
