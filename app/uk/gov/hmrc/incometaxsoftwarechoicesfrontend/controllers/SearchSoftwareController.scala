@@ -79,7 +79,8 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
       vendors,
       form,
       routes.SearchSoftwareController.search,
-      routes.SearchSoftwareController.clear
+      routes.SearchSoftwareController.clear,
+      routes.AdditionalIncomeSourcesController.show.url
     )
   }
 

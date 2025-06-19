@@ -16,3 +16,6 @@ POST       /glossary             uk.gov.hmrc.incometaxsoftwarechoicesfrontend.co
 POST       /glossary/ajax        uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.GlossaryController.search(ajax: Boolean = true)
 
 GET        /assets/*file         controllers.Assets.versioned(path = "/public", file: Asset)
+
+GET        /additional-income       uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.AdditionalIncomeSourcesController.show
+POST       /additional-income       uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.AdditionalIncomeSourcesController.submit

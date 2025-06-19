@@ -147,6 +147,16 @@ object VendorFilter {
     override val priority: Int = 6
   }
 
+  case object ForeignDividends extends VendorFilter {
+    override val key: String = "foreign-dividends"
+    override val priority: Int = 7
+  }
+
+  case object ForeignInterest extends VendorFilter {
+    override val key: String = "foreign-interest"
+    override val priority: Int = 8
+  }
+
   case object CharitableGiving extends VendorFilter {
     override val key: String = "charitable-giving"
     override val priority: Int = 1
@@ -209,6 +219,8 @@ object VendorFilter {
     ForeignIncome,
     UkDividends,
     UkInterest,
+    ForeignDividends,
+    ForeignInterest,
     CharitableGiving,
     HighIncomeChildBenefitCharge,
     StudentLoans,
@@ -221,6 +233,7 @@ object VendorFilter {
 
   implicit val reads: Reads[VendorFilter] = __.read[String] map filterKeyToFilter
   implicit val writes: Writes[VendorFilter] = Writes(JsString(_))
+  implicit val optReads: Reads[Option[Seq[VendorFilter]]] = Reads.optionWithNull[Seq[VendorFilter]]
 }
 
 object VendorFilterGroups {
@@ -265,7 +278,9 @@ object VendorFilterGroups {
     Employment,
     ForeignIncome,
     UkDividends,
-    UkInterest
+    UkInterest,
+    ForeignDividends,
+    ForeignInterest
   )
 
   val deductions: Set[VendorFilter] = Set(
