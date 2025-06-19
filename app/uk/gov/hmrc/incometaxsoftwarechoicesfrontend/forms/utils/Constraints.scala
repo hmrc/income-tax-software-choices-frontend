@@ -28,4 +28,7 @@ object Constraints {
 
   val nonEmptySeq: String => Constraint[Seq[_]] = msgKey =>
     constraint(seq => if (seq.nonEmpty) Valid else Invalid(msgKey))
+
+  val nonEmptySeqOrNone: String => Constraint[Seq[_]] = msgKey =>
+    constraint(seq => if (seq.nonEmpty) Valid else Invalid(msgKey))
 }

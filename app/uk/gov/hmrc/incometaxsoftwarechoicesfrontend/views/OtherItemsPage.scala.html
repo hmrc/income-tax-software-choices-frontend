@@ -1,0 +1,98 @@
+@*
+ * Copyright 2025 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import uk.gov.hmrc.govukfrontend.views.html.components._
+@import uk.gov.hmrc.govukfrontend.views.html.components.implicits._
+@import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.OtherItemsForm
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.OtherItemsModel
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTemplate
+
+@this(
+        mainTemplate: MainTemplate,
+        govukCheckboxes: GovukCheckboxes,
+        govukButton: GovukButton,
+        form: FormWithCSRF
+)(implicit appConfig: AppConfig)
+
+@(otherItemsForm: Form[OtherItemsModel], postAction: Call, backLink: Call)(implicit request: Request[_], messages: Messages)
+
+@mainTemplate(title = messages("other-items.title"), backLink = Some(backLink.url), optForm = Some(otherItemsForm)) {
+
+    <h1 class="govuk-heading-l">@messages("other-items.legend")</h1>
+    <p class ="govuk-body">@messages("other-items.para")</p>
+
+    @form(action = postAction) {
+
+        @govukCheckboxes(Checkboxes(
+            fieldset = Some(Fieldset(
+                legend = Some(Legend(
+                    content = Text(messages("other-items.legend")),
+                    classes = "govuk-visually-hidden",
+                    isPageHeading = false,
+                ))
+            )),
+            hint = Some(Hint(
+                content = Text(messages("other-items.hint"))
+            )),
+            items = Seq(
+                CheckboxItem(
+                    content = Text(messages("other-items.payments-into-a-private-pension")),
+                    value = PaymentsIntoAPrivatePension.key
+                ),
+                CheckboxItem(
+                    content = Text(messages("other-items.charitable-giving")),
+                    value = CharitableGiving.key
+                ),
+                CheckboxItem(
+                    content = Text(messages("other-items.capital-gains-tax")),
+                    value = CapitalGainsTax.key
+                ),
+                CheckboxItem(
+                    content = Text(messages("other-items.student-loans")),
+                    value = StudentLoans.key
+                ),
+                CheckboxItem(
+                    content = Text(messages("other-items.marriage-allowance")),
+                    value = MarriageAllowance.key
+                ),
+                CheckboxItem(
+                    content = Text(messages("other-items.voluntary-class-2-national-insurance")),
+                    value = VoluntaryClass2NationalInsurance.key
+                ),
+                CheckboxItem(
+                    content = Text(messages("other-items.high-income-child-benefit-charge")),
+                    value = HighIncomeChildBenefitCharge.key
+                ),
+                CheckboxItem(
+                    divider = Some(messages("base.or"))
+                ),
+                CheckboxItem(
+                    content = Text(messages("other-items.none-of-these")),
+                    value = "none",
+                    behaviour = Some(ExclusiveCheckbox)
+                )
+            )
+        ).withFormField(otherItemsForm(OtherItemsForm.formKey)))
+
+        @govukButton(Button(
+            content = Text(messages("base.continue"))
+        ))
+    }
+}
