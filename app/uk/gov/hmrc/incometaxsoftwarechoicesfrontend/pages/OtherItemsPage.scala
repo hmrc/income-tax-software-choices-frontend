@@ -17,7 +17,7 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages
 
 import play.api.libs.json.JsPath
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{OtherItemsModel, VendorFilter}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.OtherItemsModel
 
 case object OtherItemsPage extends QuestionPage[OtherItemsModel] {
 

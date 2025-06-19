@@ -29,6 +29,11 @@ object Constraints {
   val nonEmptySeq: String => Constraint[Seq[_]] = msgKey =>
     constraint(seq => if (seq.nonEmpty) Valid else Invalid(msgKey))
 
-  val nonEmptySeqOrNone: String => Constraint[Seq[_]] = msgKey =>
-    constraint(seq => if (seq.nonEmpty) Valid else Invalid(msgKey))
+  val nonEmptySeqOrNone: (String, String, String) => Constraint[Seq[_]] = (noneKey, emptyMsgKey, invalidSelectionMsgKey) =>
+    constraint(seq => seq match {
+      case _ if seq.filter(_.equals(noneKey)).isEmpty && seq.nonEmpty => Valid
+      case _ if !seq.filter(_.equals(noneKey)).isEmpty && seq.size == 1 => Valid
+      case _ if !seq.filter(_.equals(noneKey)).isEmpty && seq.size > 1 => Invalid(invalidSelectionMsgKey)
+      case _ => Invalid(emptyMsgKey)
+    } )
 }

@@ -18,31 +18,30 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms
 
 import play.api.data.Form
 import play.api.data.Forms._
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.utils.Constraints.nonEmptySeq
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.utils.Constraints.nonEmptySeqOrNone
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{OtherItemsModel, VendorFilter}
 
 
 object OtherItemsForm {
   val formKey: String = "otherItems"
+  val noneKey: String = "none"
   val formErrorKey: String = "other-items.error.non-empty"
 
   val form: Form[OtherItemsModel] = Form(
     single(
       formKey -> seq(text)
+        .verifying(nonEmptySeqOrNone(noneKey, "other-items.error.non-empty", "other-items.error.invalid-selection"))
         .transform[OtherItemsModel](toVendorFilters, fromVendorFilters)
-//        .verifying(nonEmptySeq(formErrorKey))
     )
   )
 
   private def toVendorFilters(seq: Seq[String]): OtherItemsModel = {
     val filters = seq.flatMap(string => VendorFilter.filterKeyToFilter.get(string))
-    val noneOfThese = !seq.filter(_.equals("none")).isEmpty
-    println(Console.RED + OtherItemsModel(filters, noneOfThese) + Console.RESET)
+    val noneOfThese = !seq.filter(_.equals(noneKey)).isEmpty
     OtherItemsModel(filters, noneOfThese)
   }
 
-  private def fromVendorFilters(model: OtherItemsModel): Seq[String] = {
-    if (model.noneOfThese) Seq("none") else model.filters.map(_.key)
-  }
+  private def fromVendorFilters(model: OtherItemsModel): Seq[String] =
+    if (model.noneOfThese) Seq(noneKey) else model.filters.map(_.key)
 
 }

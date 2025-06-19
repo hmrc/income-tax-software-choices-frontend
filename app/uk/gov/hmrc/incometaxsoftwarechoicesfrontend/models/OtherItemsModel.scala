@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models
 
-import play.api.libs.json.{Format, Json, Reads}
+import play.api.libs.json.{Format, Json}
 
 case class OtherItemsModel(
                             filters: Seq[VendorFilter],
