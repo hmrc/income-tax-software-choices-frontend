@@ -21,7 +21,6 @@
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.OtherItemsForm
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.OtherItemsModel
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTemplate
 
 @this(
@@ -31,7 +30,9 @@
         form: FormWithCSRF
 )(implicit appConfig: AppConfig)
 
-@(otherItemsForm: Form[OtherItemsModel], postAction: Call, backLink: Call)(implicit request: Request[_], messages: Messages)
+@(otherItemsForm: Form[Seq[VendorFilter]], postAction: Call, backLink: Call)(implicit request: Request[_], messages: Messages)
+
+@isNoneOption: Boolean = @{otherItemsForm.value.isDefined && otherItemsForm.get.isEmpty}
 
 @mainTemplate(title = messages("other-items.title"), backLink = Some(backLink.url), optForm = Some(otherItemsForm)) {
 
@@ -86,6 +87,7 @@
                 CheckboxItem(
                     content = Text(messages("other-items.none-of-these")),
                     value = "none",
+                    checked = isNoneOption,
                     behaviour = Some(ExclusiveCheckbox)
                 )
             )

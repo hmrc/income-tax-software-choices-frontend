@@ -17,9 +17,9 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages
 
 import play.api.libs.json.JsPath
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.OtherItemsModel
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter
 
-case object OtherItemsPage extends QuestionPage[OtherItemsModel] {
+case object OtherItemsPage extends QuestionPage[Seq[VendorFilter]] {
 
   override def toString: String = "otherItems"
   override def path: JsPath = JsPath \ toString
