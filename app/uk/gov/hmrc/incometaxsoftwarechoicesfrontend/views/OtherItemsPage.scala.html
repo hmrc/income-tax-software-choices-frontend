@@ -32,8 +32,6 @@
 
 @(otherItemsForm: Form[Seq[VendorFilter]], postAction: Call, backLink: Call)(implicit request: Request[_], messages: Messages)
 
-@isNoneOption: Boolean = @{otherItemsForm.value.isDefined && otherItemsForm.get.isEmpty}
-
 @mainTemplate(title = messages("other-items.title"), backLink = Some(backLink.url), optForm = Some(otherItemsForm)) {
 
     <h1 class="govuk-heading-l">@messages("other-items.legend")</h1>
@@ -87,7 +85,6 @@
                 CheckboxItem(
                     content = Text(messages("other-items.none-of-these")),
                     value = "none",
-                    checked = isNoneOption,
                     behaviour = Some(ExclusiveCheckbox)
                 )
             )

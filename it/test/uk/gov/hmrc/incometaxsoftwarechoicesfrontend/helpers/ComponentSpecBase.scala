@@ -30,9 +30,14 @@ import play.api.libs.ws
 import play.api.libs.ws.{WSClient, WSResponse}
 import play.api.test.FakeRequest
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
+<<<<<<< HEAD
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.{BusinessIncomeForm, FiltersForm, GlossaryForm}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.{AdditionalIncomeForm, FiltersForm, GlossaryForm}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.{SessionId, baseURI}
+=======
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.{BusinessIncomeForm, FiltersForm, GlossaryForm, OtherItemsForm}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.baseURI
+>>>>>>> 66a2f4b (Other Items page)
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FiltersFormModel, GlossaryFormModel, VendorFilter}
 
 trait ComponentSpecBase extends AnyWordSpec
@@ -107,6 +112,11 @@ trait ComponentSpecBase extends AnyWordSpec
       post("/additional-income")(body)
     }
 
+    def getOtherItems: WSResponse = get("/other-items")
+
+    def postOtherItems(pageAnswers: Seq[VendorFilter]): WSResponse = post("/other-items")(
+      OtherItemsForm.form.fill(pageAnswers).data.map { case (k, v) => (k, Seq(v)) }
+      )
 
     def healthcheck(): WSResponse =
       wsClient
