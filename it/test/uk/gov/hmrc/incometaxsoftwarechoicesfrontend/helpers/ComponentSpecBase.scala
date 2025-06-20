@@ -116,10 +116,6 @@ trait ComponentSpecBase extends AnyWordSpec
       post("/other-items")(body)
     }
 
-    def postOtherItemsOld(pageAnswers: Seq[VendorFilter]): WSResponse = post("/other-items")(
-      OtherItemsForm.form.fill(pageAnswers).data.map { case (k, v) => (k, Seq(v)) }
-      )
-
     def healthcheck(): WSResponse =
       wsClient
         .url(s"$baseUrl/ping/ping")
