@@ -167,6 +167,7 @@ class OtherItemsViewSpec extends ViewSpec {
             name = "otherItems[]",
             label = OtherItemsPageContent.noneOfThese,
             value = "none",
+            isExclusive = true
           )
         }
         "has a continue button" in {

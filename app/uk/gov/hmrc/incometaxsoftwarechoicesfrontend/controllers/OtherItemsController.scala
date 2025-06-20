@@ -40,7 +40,7 @@ class OtherItemsController @Inject()(view: OtherItemsPage,
       Ok(view(
         otherItemsForm = OtherItemsForm.form.fill(pageAnswers),
         postAction = routes.OtherItemsController.submit,
-        backLink = routes.BusinessIncomeController.show
+        backLink = routes.AdditionalIncomeSourcesController.show
       ))
     }
   }
@@ -52,7 +52,7 @@ class OtherItemsController @Inject()(view: OtherItemsPage,
           BadRequest(view(
             otherItemsForm = formWithErrors,
             postAction = routes.OtherItemsController.submit,
-            backLink = routes.BusinessIncomeController.show
+            backLink = routes.AdditionalIncomeSourcesController.show
           ))
         )
       },

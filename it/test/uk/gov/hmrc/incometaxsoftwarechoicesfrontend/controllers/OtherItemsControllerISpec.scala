@@ -101,7 +101,7 @@ class OtherItemsControllerISpec extends ComponentSpecBase with BeforeAndAfterEac
   "POST /other-items" must {
     s"return $SEE_OTHER and save the page answers" when {
       "user submits one other item" in {
-        val res = SoftwareChoicesFrontend.postOtherItems(Seq(StudentLoans))
+        val res = SoftwareChoicesFrontend.postOtherItems(Some(Seq(StudentLoans)))
 
         res should have(
           httpStatus(SEE_OTHER),
@@ -110,14 +110,23 @@ class OtherItemsControllerISpec extends ComponentSpecBase with BeforeAndAfterEac
         getPageData(SessionId, OtherItemsPage.toString).size shouldBe 1
       }
       "user submits multiple other items" in {
-        val res = SoftwareChoicesFrontend.postOtherItems(Seq(
+        val res = SoftwareChoicesFrontend.postOtherItems(Some(Seq(
           PaymentsIntoAPrivatePension,
           CharitableGiving,
           CapitalGainsTax,
           StudentLoans,
           MarriageAllowance,
           VoluntaryClass2NationalInsurance,
-          HighIncomeChildBenefitCharge))
+          HighIncomeChildBenefitCharge)))
+
+        res should have(
+          httpStatus(SEE_OTHER),
+          redirectURI(routes.SearchSoftwareController.show.url)
+        )
+        getPageData(SessionId, OtherItemsPage.toString).size shouldBe 1
+      }
+      "user submits None of these" in {
+        val res = SoftwareChoicesFrontend.postOtherItems(Some(Seq.empty))
 
         res should have(
           httpStatus(SEE_OTHER),
@@ -128,7 +137,7 @@ class OtherItemsControllerISpec extends ComponentSpecBase with BeforeAndAfterEac
     }
     "return BAD_REQUEST" when {
       "user does not select an answer" in {
-        val res = SoftwareChoicesFrontend.postOtherItems(Seq.empty)
+        val res = SoftwareChoicesFrontend.postOtherItems(None)
 
         res should have(
           httpStatus(BAD_REQUEST),

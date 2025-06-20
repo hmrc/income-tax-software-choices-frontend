@@ -26,7 +26,7 @@ object OtherItemsForm {
   val formKey: String = "otherItems"
   val noneKey: String = "none"
   val formEmptyErrorKey: String = "other-items.error.non-empty"
-  val formInvalidSelectionErrorKey: String = "other-items.error.non-empty"
+  val formInvalidSelectionErrorKey: String = "other-items.error.invalid-selection"
 
   val form: Form[Seq[VendorFilter]] = Form(
     single(
