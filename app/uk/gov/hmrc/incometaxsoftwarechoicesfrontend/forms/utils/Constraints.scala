@@ -28,4 +28,15 @@ object Constraints {
 
   val nonEmptySeq: String => Constraint[Seq[_]] = msgKey =>
     constraint(seq => if (seq.nonEmpty) Valid else Invalid(msgKey))
+
+  val nonEmptySeqOrNone: (String, String, String) => Constraint[Seq[_]] = (noneKey, emptyMsgKey, invalidSelectionMsgKey) =>
+    constraint(seq => {
+      val isNoneSelected = !seq.filter(_.equals(noneKey)).isEmpty
+      isNoneSelected match {
+        case false if seq.size > 0 => Valid // filter selections only
+        case true if seq.size == 1 => Valid // none only
+        case true if seq.size > 1 => Invalid(invalidSelectionMsgKey) // none and others
+        case _ => Invalid(emptyMsgKey) // empty
+      }
+    })
 }

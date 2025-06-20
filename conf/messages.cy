@@ -4,6 +4,7 @@ base.title.error            = Gwall: {0} - Dod o hyd i feddalwedd am y cynllun T
 base.error-heading          = Mae problem wedi codi
 base.opens-in-new-tab       = (yn agor tab newydd)
 base.continue               = Yn eich blaen
+base.or                     = or
 
 
 # Breadcrumbs
@@ -22,6 +23,24 @@ business-income.uk-property = UK property
 business-income.foreign-property = Foreign property
 
 business-income.error.non-empty         = Select business income or business incomes
+
+# Other Items page
+other-items.title = What else do you need to tell HMRC?
+other-items.legend = What else do you need to tell HMRC?
+other-items.para = These are other items you’ll need to include in your tax return.
+other-items.hint = Select all that apply.
+other-items.payments-into-a-private-pension = Private pension contributions
+other-items.charitable-giving = Charitable giving
+other-items.capital-gains-tax = Capital Gains Tax
+other-items.student-loans = Student Loan
+other-items.marriage-allowance = Marriage Allowance
+other-items.voluntary-class-2-national-insurance = Voluntary Class 2 National Insurance
+other-items.high-income-child-benefit-charge = High Income Child Benefit Charge
+other-items.none-of-these = None of these
+
+other-items.error.non-empty = Select one other item or other items
+other-items.error.invalid-selection = Select one other item, other items, or ''none of these''
+
 
 # Search software page
 

@@ -26,13 +26,11 @@ import play.api.http.HeaderNames
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.crypto.CookieSigner
-import play.api.libs.ws
 import play.api.libs.ws.{WSClient, WSResponse}
 import play.api.test.FakeRequest
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.{BusinessIncomeForm, FiltersForm, GlossaryForm}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.{AdditionalIncomeForm, FiltersForm, GlossaryForm}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.{SessionId, baseURI}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.{AdditionalIncomeForm, BusinessIncomeForm, FiltersForm, GlossaryForm, OtherItemsForm}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.baseURI
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FiltersFormModel, GlossaryFormModel, VendorFilter}
 
 trait ComponentSpecBase extends AnyWordSpec
@@ -107,6 +105,16 @@ trait ComponentSpecBase extends AnyWordSpec
       post("/additional-income")(body)
     }
 
+    def getOtherItems: WSResponse = get("/other-items")
+
+    def postOtherItems(maybeKeys: Option[Seq[String]]): WSResponse = {
+      val body: Map[String, Seq[String]] = maybeKeys match {
+        case Some(keys) if keys.nonEmpty => Map("otherItems[]" -> keys)
+        case Some(_) => Map("otherItems[]" -> Seq(OtherItemsForm.noneKey))
+        case None => Map.empty
+      }
+      post("/other-items")(body)
+    }
 
     def healthcheck(): WSResponse =
       wsClient
