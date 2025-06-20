@@ -26,11 +26,13 @@ import play.api.http.HeaderNames
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.crypto.CookieSigner
+import play.api.libs.ws
 import play.api.libs.ws.{WSClient, WSResponse}
 import play.api.test.FakeRequest
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.{BusinessIncomeForm, FiltersForm, GlossaryForm}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.baseURI
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.{AdditionalIncomeForm, FiltersForm, GlossaryForm}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.{SessionId, baseURI}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FiltersFormModel, GlossaryFormModel, VendorFilter}
 
 trait ComponentSpecBase extends AnyWordSpec
@@ -93,6 +95,18 @@ trait ComponentSpecBase extends AnyWordSpec
     def postBusinessIncome(pageAnswers: Seq[VendorFilter]): WSResponse = post("/business-income")(
       BusinessIncomeForm.form.fill(pageAnswers).data.map { case (k, v) => (k, Seq(v)) }
       )
+
+    def getAdditionalIncome: WSResponse = get("/additional-income")
+
+    def submitAdditionalIncome(maybeKeys: Option[Seq[String]]): WSResponse = {
+      val body: Map[String, Seq[String]] = maybeKeys match {
+        case Some(keys) if keys.nonEmpty => Map("additionalIncome[]" -> keys)
+        case Some(_) => Map("additionalIncome[]" -> Seq(AdditionalIncomeForm.noneKey))
+        case None => Map.empty
+      }
+      post("/additional-income")(body)
+    }
+
 
     def healthcheck(): WSResponse =
       wsClient

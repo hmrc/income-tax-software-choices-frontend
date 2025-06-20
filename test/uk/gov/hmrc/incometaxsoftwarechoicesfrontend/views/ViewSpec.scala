@@ -40,6 +40,7 @@ trait ViewSpec extends AnyWordSpecLike with Matchers with GuiceOneAppPerSuite {
   implicit val request: Request[_] = FakeRequest()
 
   val testCall: Call = Call("POST", "/test-url")
+  val testBackUrl = "/test-back-url"
 
   implicit class CustomSelectors(element: Element) {
 
@@ -76,7 +77,8 @@ trait ViewSpec extends AnyWordSpecLike with Matchers with GuiceOneAppPerSuite {
                                            name: String,
                                            label: String,
                                            value: String,
-                                           checked: Boolean = false): Assertion = {
+                                           checked: Boolean = false,
+                                           isExclusive: Boolean = false): Assertion = {
 
       val checkpoint: Checkpoint = new Checkpoint()
       val fieldSet: Element = element.selectHead(selector)
@@ -102,6 +104,13 @@ trait ViewSpec extends AnyWordSpecLike with Matchers with GuiceOneAppPerSuite {
       }
       checkpoint {
         item.selectHead("input").hasAttr("checked") shouldBe checked
+      }
+      checkpoint {
+        if (isExclusive) {
+          item.selectHead("input").attr("data-behaviour") shouldBe "exclusive"
+        } else {
+          item.selectHead("input").hasAttr("data-behaviour") shouldBe false
+        }
       }
 
       checkpoint.reportAll()

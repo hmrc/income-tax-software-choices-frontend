@@ -133,6 +133,8 @@ search-software.vendor-detail.personal-income-sources.employment = Employment
 search-software.vendor-detail.personal-income-sources.foreign-income = Foreign Income
 search-software.vendor-detail.personal-income-sources.uk-dividends = UK Dividends
 search-software.vendor-detail.personal-income-sources.uk-interest = UK Interest
+search-software.vendor-detail.personal-income-sources.foreign-interest = Foreign Interest
+search-software.vendor-detail.personal-income-sources.foreign-dividends = Foreign Dividends
 
 search-software.vendor-detail.deductions.charitable-giving = Charitable giving
 search-software.vendor-detail.deductions.high-income-child-benefit-charge = High Income Child Benefit Charge
@@ -289,4 +291,19 @@ glossary.contents.uk-interest.value                  = <p>Most interest paid by 
 glossary.contents.uk-dividends.key                   = UK dividends...but in Welsh
 glossary.contents.uk-dividends.value                 = <p>If you own shares from companies/businesses in the UK, you may get income in the form of dividends. Dividends are a portion of the profits made by the company that issued the shares you invested in.</p><p>If you have an investment fund that is invested in shares, then you may earn income which is taxed in the same way as dividends.</p><p>You can earn some <a href="https://www.gov.uk/tax-on-dividends">dividend income each year without paying tax</a> and you do not pay tax on dividends from shares in an <a href="https://www.gov.uk/individual-savings-accounts">Individual Savings Accounts (ISAs)</a>.</p>...but in Welsh
 
-
+# Other Income Sources Page
+additional.income.source-heading                                    = Which other income do you have?
+additional.income.source-legend                                     = Which other income do you have?
+additional.income.source-paragraph                                  = This is other income you'll need to include in your tax return.
+additional.income.source-hint                                       = Select all that apply
+additional.income.source-uk-interest                                = UK interest
+additional.income.source-construction-industry-scheme               = Construction Industry Scheme
+additional.income.source-employment                                 = Employment (PAYE)
+additional.income.source-uk-dividends                               = UK dividends
+additional.income.source-state-pension                              = State pension income
+additional.income.source-private-pension                            = Private pension incomes
+additional.income.source-foreign-dividends                          = Foreign dividends
+additional.income.source-foreign-interest                           = Foreign interest
+additional.income.source-none                                       = None of these
+additional.income.source.error-non-empty                            = Select an income type or income types
+additional.income.source.error-none-only                            = Select an income type, income types, or ‘none of these’

@@ -22,6 +22,7 @@ import org.scalatest.Assertion
 import play.api.data.FormError
 import play.api.mvc.Call
 import play.twirl.api.HtmlFormat
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes.ProductDetailsController
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
@@ -37,12 +38,6 @@ class SearchSoftwareViewSpec extends ViewSpec {
 
   "Search software page" must {
     lazy val document = getDocument(hasResults = false, hasError = false)
-
-    "have a back link to the guidance page" in {
-      val link = document.selectHead(".govuk-back-link")
-      link.text shouldBe "Back"
-      link.attr("href") shouldBe appConfig.guidance
-    }
 
     "have a title" in {
       document.title shouldBe s"""${SearchSoftwarePageContent.title} - Find software that’s compatible with Making Tax Digital for Income Tax - GOV.UK"""
@@ -223,6 +218,14 @@ class SearchSoftwareViewSpec extends ViewSpec {
 
           "contains an UK interest checkbox" in {
             validateCheckboxInGroup(checkboxGroup, 6, UkInterest.key, SearchSoftwarePageContent.ukInterest)
+          }
+
+          "contains an foreign dividends checkbox" in {
+            validateCheckboxInGroup(checkboxGroup, 7, ForeignDividends.key, SearchSoftwarePageContent.foreignDividends)
+          }
+
+          "contains an foreign interest checkbox" in {
+            validateCheckboxInGroup(checkboxGroup, 8, ForeignInterest.key, SearchSoftwarePageContent.foreignInterest)
           }
         }
 
@@ -422,7 +425,8 @@ object SearchSoftwareViewSpec extends ViewSpec {
         FiltersForm.form.fill(FiltersFormModel(Some("search test")))
       },
       Call("POST", "/test-url"),
-      Call("POST", "/test-url")
+      Call("POST", "/test-url"),
+      "/test-back-url"
     )
 
   def getDocument(hasResults: Boolean, hasError: Boolean): Document = {
@@ -559,6 +563,9 @@ private object SearchSoftwarePageContent {
   val foreignIncome = "Foreign Income"
   val ukDividends = "UK Dividends"
   val ukInterest = "UK Interest"
+  val foreignDividends = "Foreign Dividends"
+  val foreignInterest = "Foreign Interest"
+
 
   val Deductions = "Deductions"
   val charitableGiving = "Charitable giving"

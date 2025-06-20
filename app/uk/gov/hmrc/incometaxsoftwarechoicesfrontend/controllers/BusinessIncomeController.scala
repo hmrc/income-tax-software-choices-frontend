@@ -57,7 +57,7 @@ class BusinessIncomeController @Inject()(view: BusinessIncomePage,
       answers => {
         val sessionId = request.session.get("sessionId").getOrElse("")
         pageAnswersService.setPageAnswers(sessionId, BusinessIncomePage, answers).flatMap {
-          case true => Future.successful(Redirect(routes.SearchSoftwareController.show))
+          case true => Future.successful(Redirect(routes.AdditionalIncomeSourcesController.show))
           case false => throw new InternalServerException("[BusinessIncomeController][submit] - Could not save business income sources")
         }
       }

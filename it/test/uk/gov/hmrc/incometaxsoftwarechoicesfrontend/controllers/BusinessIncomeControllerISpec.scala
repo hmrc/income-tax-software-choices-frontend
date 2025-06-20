@@ -73,7 +73,7 @@ class BusinessIncomeControllerISpec extends ComponentSpecBase with BeforeAndAfte
 
         res should have(
           httpStatus(SEE_OTHER),
-          redirectURI(routes.SearchSoftwareController.show.url)
+          redirectURI(routes.AdditionalIncomeSourcesController.show.url)
         )
         getPageData(SessionId, BusinessIncomePage.toString).size shouldBe 1
       }
@@ -82,7 +82,7 @@ class BusinessIncomeControllerISpec extends ComponentSpecBase with BeforeAndAfte
 
         res should have(
           httpStatus(SEE_OTHER),
-          redirectURI(routes.SearchSoftwareController.show.url)
+          redirectURI(routes.AdditionalIncomeSourcesController.show.url)
         )
         getPageData(SessionId, BusinessIncomePage.toString).size shouldBe 1
       }
