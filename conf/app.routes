@@ -11,6 +11,9 @@ GET        /clear                uk.gov.hmrc.incometaxsoftwarechoicesfrontend.co
 GET        /business-income      uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.BusinessIncomeController.show
 POST       /business-income      uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.BusinessIncomeController.submit
 
+GET        /other-items          uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.OtherItemsController.show
+POST       /other-items          uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.OtherItemsController.submit
+
 GET        /glossary             uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.GlossaryController.show
 POST       /glossary             uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.GlossaryController.search(ajax: Boolean = false)
 POST       /glossary/ajax        uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.GlossaryController.search(ajax: Boolean = true)
