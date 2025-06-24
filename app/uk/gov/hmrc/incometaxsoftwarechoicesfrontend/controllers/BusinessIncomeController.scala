@@ -32,7 +32,7 @@ class BusinessIncomeController @Inject()(view: BusinessIncomePage,
                                          mcc: MessagesControllerComponents) extends BaseFrontendController(mcc) {
 
 
-  def show: Action[AnyContent] = Action.async { implicit request =>
+  def show(editMode: Boolean): Action[AnyContent] = Action.async { implicit request =>
     val sessionId = request.session.get("sessionId").getOrElse("")
     for (
       pageAnswers <- pageAnswersService.getPageAnswers(sessionId, BusinessIncomePage)
@@ -57,7 +57,7 @@ class BusinessIncomeController @Inject()(view: BusinessIncomePage,
       answers => {
         val sessionId = request.session.get("sessionId").getOrElse("")
         pageAnswersService.setPageAnswers(sessionId, BusinessIncomePage, answers).flatMap {
-          case true => Future.successful(Redirect(routes.AdditionalIncomeSourcesController.show))
+          case true => Future.successful(Redirect(routes.AdditionalIncomeSourcesController.show()))
           case false => throw new InternalServerException("[BusinessIncomeController][submit] - Could not save business income sources")
         }
       }

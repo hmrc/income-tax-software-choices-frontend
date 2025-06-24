@@ -5,6 +5,7 @@ base.error-heading          = Mae problem wedi codi
 base.opens-in-new-tab       = (yn agor tab newydd)
 base.continue               = Yn eich blaen
 base.or                     = or
+base.change                 = Change
 
 
 ## Accounting period page
@@ -44,6 +45,13 @@ other-items.none-of-these = None of these
 
 other-items.error.non-empty = Select one other item or other items
 other-items.error.invalid-selection = Select one other item, other items, or ‘none of these’
+
+# Check Your Answers view
+check-your-answers.heading = Check your answers before viewing compatible software
+check-your-answers.business-income = Business income
+check-your-answers.other-income = Other income
+check-your-answers.other-items = Other items
+check-your-answers.accounting-period = Accounting period
 
 
 # Search software page

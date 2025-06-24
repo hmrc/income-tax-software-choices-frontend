@@ -32,7 +32,7 @@ class OtherItemsController @Inject()(view: OtherItemsPage,
                                          mcc: MessagesControllerComponents) extends BaseFrontendController(mcc) {
 
 
-  def show: Action[AnyContent] = Action.async { implicit request =>
+  def show(editMode: Boolean = false): Action[AnyContent] = Action.async { implicit request =>
     val sessionId = request.session.get("sessionId").getOrElse("")
     for (
       pageAnswers <- pageAnswersService.getPageAnswers(sessionId, OtherItemsPage)
@@ -40,7 +40,7 @@ class OtherItemsController @Inject()(view: OtherItemsPage,
       Ok(view(
         otherItemsForm = OtherItemsForm.form.fill(pageAnswers),
         postAction = routes.OtherItemsController.submit,
-        backLink = routes.AdditionalIncomeSourcesController.show
+        backLink = routes.AdditionalIncomeSourcesController.show()
       ))
     }
   }
@@ -52,7 +52,7 @@ class OtherItemsController @Inject()(view: OtherItemsPage,
           BadRequest(view(
             otherItemsForm = formWithErrors,
             postAction = routes.OtherItemsController.submit,
-            backLink = routes.AdditionalIncomeSourcesController.show
+            backLink = routes.AdditionalIncomeSourcesController.show()
           ))
         )
       },

@@ -80,7 +80,7 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
       form,
       routes.SearchSoftwareController.search,
       routes.SearchSoftwareController.clear,
-      routes.OtherItemsController.show.url
+      routes.OtherItemsController.show().url
     )
   }
 

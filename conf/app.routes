@@ -2,14 +2,14 @@
 
 ->          /hmrc-frontend                      hmrcfrontend.Routes
 
-GET        /business-income                     uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.BusinessIncomeController.show
-POST       /business-income                     uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.BusinessIncomeController.submit
+GET         /business-income                    uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.BusinessIncomeController.show(editMode: Boolean ?= false)
+POST        /business-income                    uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.BusinessIncomeController.submit
 
-GET        /additional-income                   uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.AdditionalIncomeSourcesController.show
+GET        /additional-income                   uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.AdditionalIncomeSourcesController.show(editMode: Boolean ?= false)
 POST       /additional-income                   uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.AdditionalIncomeSourcesController.submit
 
-GET        /other-items                         uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.OtherItemsController.show
-POST       /other-items                         uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.OtherItemsController.submit
+GET         /other-items                         uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.OtherItemsController.show(editMode: Boolean ?= false)
+POST        /other-items                        uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.OtherItemsController.submit
 
 GET         /accounting-period                  uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.AccountingPeriodController.show
 POST        /accounting-period                  uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.AccountingPeriodController.submit
@@ -23,3 +23,7 @@ GET        /clear                               uk.gov.hmrc.incometaxsoftwarecho
 GET         /product-details/*software          uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.ProductDetailsController.show(software: String)
 
 GET         /assets/*file                       controllers.Assets.versioned(path = "/public", file: Asset)
+
+
+GET        /check-your-answers       uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.CheckYourAnswersController.show
+POST       /check-your-answers       uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.CheckYourAnswersController.submit

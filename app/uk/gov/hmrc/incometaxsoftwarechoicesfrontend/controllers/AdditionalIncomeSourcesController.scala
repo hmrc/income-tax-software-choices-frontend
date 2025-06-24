@@ -32,14 +32,14 @@ class AdditionalIncomeSourcesController @Inject()(view: AdditionalIncomeSourcePa
                                                  )(implicit ec: ExecutionContext,
                                                    mcc: MessagesControllerComponents) extends BaseFrontendController(mcc) {
 
-  def show(): Action[AnyContent] = Action.async { implicit request =>
+  def show(editMode: Boolean): Action[AnyContent] = Action.async { implicit request =>
     val sessionId = request.session.get("sessionId").getOrElse("")
     pageAnswersService.getPageAnswers(sessionId, AdditionalIncomeSourcesPage)
       .map { maybeAnswers =>
         Ok(view(
           AdditionalIncomeForm.form.fill(maybeAnswers),
           postAction = routes.AdditionalIncomeSourcesController.submit,
-          backUrl = routes.BusinessIncomeController.show.url
+          backUrl    = routes.BusinessIncomeController.show().url
         ))
       }
   }
@@ -51,15 +51,15 @@ class AdditionalIncomeSourcesController @Inject()(view: AdditionalIncomeSourcePa
           BadRequest(view(
             additionalIncomeForm = formWithErrors,
             postAction = routes.AdditionalIncomeSourcesController.submit,
-            backUrl = routes.BusinessIncomeController.show.url
+            backUrl    = routes.BusinessIncomeController.show().url
           ))
         ),
       answers => {
         val sessionId = request.session.get("sessionId").getOrElse("")
         pageAnswersService.setPageAnswers(sessionId, AdditionalIncomeSourcesPage, answers).flatMap {
-          case true => Future.successful(Redirect(routes.OtherItemsController.show))
-          case false => Future.failed(new InternalServerException("[AdditionalIncomeSourcesController][submit] – could not save additional income sources"))
-        }
+            case true  => Future.successful(Redirect(routes.OtherItemsController.show()))
+            case false => Future.failed(new InternalServerException("[AdditionalIncomeSourcesController][submit] – could not save additional income sources"))
+          }
       }
     )
   }
