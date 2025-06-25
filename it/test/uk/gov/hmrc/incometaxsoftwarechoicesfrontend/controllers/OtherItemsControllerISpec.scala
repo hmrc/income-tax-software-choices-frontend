@@ -169,7 +169,7 @@ class OtherItemsControllerISpec extends ComponentSpecBase with BeforeAndAfterEac
 
   "backUrl" must {
     "return to additional income page when not in edit mode" in {
-      otherItemsController.backUrl(editMode = false) shouldBe routes.AdditionalIncomeSourcesController.show()
+      otherItemsController.backUrl(editMode = false) shouldBe routes.AdditionalIncomeSourcesController.show().url
     }
     "return to check your answers when in edit mode" in {
       otherItemsController.backUrl(editMode = true) shouldBe routes.CheckYourAnswersController.show.url

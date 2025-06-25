@@ -92,7 +92,7 @@ class BusinessIncomeControllerISpec extends ComponentSpecBase with BeforeAndAfte
       }
       "in edit mode" when {
         "user submits one business income" in {
-          val res = SoftwareChoicesFrontend.postBusinessIncome(Seq(UkProperty))
+          val res = SoftwareChoicesFrontend.postBusinessIncome(Seq(UkProperty), editMode = true)
 
           res should have(
             httpStatus(SEE_OTHER),
@@ -101,7 +101,7 @@ class BusinessIncomeControllerISpec extends ComponentSpecBase with BeforeAndAfte
           getPageData(SessionId, BusinessIncomePage.toString).size shouldBe 1
         }
         "user submits multiple business incomes" in {
-          val res = SoftwareChoicesFrontend.postBusinessIncome(Seq(SoleTrader, UkProperty, OverseasProperty))
+          val res = SoftwareChoicesFrontend.postBusinessIncome(Seq(SoleTrader, UkProperty, OverseasProperty), editMode = true)
 
           res should have(
             httpStatus(SEE_OTHER),

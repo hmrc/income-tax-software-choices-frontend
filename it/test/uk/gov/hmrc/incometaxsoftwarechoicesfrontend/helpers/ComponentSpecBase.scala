@@ -103,7 +103,7 @@ trait ComponentSpecBase extends AnyWordSpec
         case Some(_) => Map("otherItems[]" -> Seq(OtherItemsForm.noneKey))
         case None => Map.empty
       }
-      post(s"/other-items?editMode=$editMode\"")(body)
+      post(s"/other-items?editMode=$editMode")(body)
     }
 
     def getUnsupportedAccountingPeriod: WSResponse = get("/unsupported-accounting-period")

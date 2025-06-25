@@ -38,7 +38,7 @@ class CheckYourAnswersController @Inject()(view: CheckYourAnswersView,
       Ok(view(
         summaryList = summaryList,
         postAction = routes.CheckYourAnswersController.submit,
-        backLink = routes.OtherItemsController.show()
+        backLink = routes.OtherItemsController.show().url
       ))
     }
   }
