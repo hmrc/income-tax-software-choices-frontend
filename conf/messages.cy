@@ -7,12 +7,6 @@ base.continue               = Yn eich blaen
 base.or                     = or
 
 
-# Breadcrumbs
-
-breadcrumbs.guidance                = Arweiniad
-breadcrumbs.filter                  = Hidlo
-breadcrumbs.glossary                = Self Assessment income and deduction types explained ...but in Welsh
-
 # Business Income page
 business-income.title = Which business income do you have?
 business-income.legend = Which business income do you have?
@@ -39,7 +33,7 @@ other-items.high-income-child-benefit-charge = High Income Child Benefit Charge
 other-items.none-of-these = None of these
 
 other-items.error.non-empty = Select one other item or other items
-other-items.error.invalid-selection = Select one other item, other items, or ''none of these''
+other-items.error.invalid-selection = Select one other item, other items, or ‘none of these’
 
 
 # Search software page
@@ -173,7 +167,7 @@ product-details.details.before-you-choose        = Mae’n bosibl y bydd gwahano
 
 # Contact details section
 
-product-details.contact-details.heading    = Visit the company's website to check if the software is right for you...but in welsh
+product-details.contact-details.heading    = Visit the company’s website to check if the software is right for you...but in welsh
 product-details.contact-details.email      = E-bost
 product-details.contact-details.phone      = Phone... in welsh
 product-details.contact-details.website    = Website...in welsh
@@ -262,58 +256,10 @@ product-details.details.english                = Saesneg
 product-details.accessibility-statement.heading = Hygyrchedd
 product-details.accessibility-statement.key     = Datganiad hygyrchedd
 
-
-glossary.title = Esboniad o incwm a didyniadau Hunanasesiad
-glossary.content = Cynnwy
-glossary.software-choices = Dewisiadau Meddalwedd
-glossary.caption = Newidiwyd ddiwethaf: {0}
-
-# When any of the below glossary.contents sections are changed, added or removed, please update this date.
-glossary.last-changed = 2022-11-01
-
-glossary.search-label = Search for the term you are looking for ...but in Welsh
-glossary.search-results-count.zero = Your search has returned no results. Check the spelling or make sure you have entered the correct term. ...but in Welsh
-glossary.search-results-count.single = Your search has returned 1 result. ...but in Welsh
-glossary.search-results-count.multiple = Your search has returned {0} results. ...but in Welsh
-
-glossary.sort-label = Sort by ...but in Welsh
-glossary.sort-label-asc = A to Z ...but in Welsh
-glossary.sort-label-desc = Z to A ...but in Welsh
-
-glossary.contents.construction-industry-scheme.key   = Construction Industry Scheme (CIS) ...but in Welsh
-glossary.contents.construction-industry-scheme.value = <p><a href="https://www.gov.uk/what-is-the-construction-industry-scheme">CIS</a> is an HMRC scheme used by contractors in the construction industry. Under the scheme contractors deduct tax from payments made to subcontractors and self-employed individuals who work for them and pay it directly to HMRC. HMRC will give credit for these deductions when calculating how much tax the subcontractors and self-employed individuals owe.</p><p>Subcontractors do not have to register, but deductions are taken from their payments at a higher rate if they’re not registered.</p>...but in Welsh
-
-glossary.contents.charitable-donations.key           = Charitable donations (including Gift Aid)...but in Welsh
-glossary.contents.charitable-donations.value         = <p>You can donate to charity and community amateur sports clubs tax free by using <a href="http://www.gov.uk/donating-to-charity">Gift Aid or Payroll Giving</a>. The tax relief goes to you or the charity depending on the method used and your highest rate of tax. If you use Gift Aid you should include the amount on your end of year tax return.</p><p>You can <a href="https://www.gov.uk/government/publications/community-amateur-sports-clubs-casc-registered-with-hmrc--2">check if a sports club is registered for gift aid</a>.</p>...but in Welsh
-
-glossary.contents.employment-income.key              = Employment income...but in Welsh
-glossary.contents.employment-income.value            = <p><a href="https://www.gov.uk/hmrc-internal-manuals/employment-income-manual/eim00520">Employment income</a> includes any payment of salary, wages, allowances, overtime pay, holiday pay, directors' fees, bonuses, and any other payment in relation to employment.</p><p>If you have more than one source of income, the amounts are combined at the end of the tax year to work out the correct amount of tax due.</p>...but in Welsh
-
-glossary.contents.pension-contributions.key          = Pension contributions...but in Welsh
-glossary.contents.pension-contributions.value        = <p>Almost all <a href="https://www.gov.uk/tax-on-your-private-pension/pension-tax-relief">pension schemes give basic rate relief at source</a>. This means your pension provider claims basic rate tax relief on your personal contributions and adds that to your pension pot.</p><p>If you’re a higher rate taxpayer, you can claim additional tax relief on your end of year tax return.</p>...but in Welsh
-
-glossary.contents.pension-income.key                 = Pension income...but in Welsh
-glossary.contents.pension-income.value               = <p>Any State Pension, private pensions (workplace or personal), and taxable lump sums treated as pensions that you receive are included as taxable income.</p><p>If you have more than one source of income, the different sources are combined at the end of the tax year to work out the correct amount of tax due.</p><p>You may have to pay Income Tax at a higher rate if you take a large amount from a private pension. You may also owe extra tax at the end of the tax year.</p><p></p><p>You can check if you need to pay <a href="https://www.gov.uk/tax-on-pension">tax when you get a pension</a>.</p>...but in Welsh
-
-glossary.contents.income-from-uk-property.key        = Income from UK property...but in Welsh
-glossary.contents.income-from-uk-property.value      = <p>If you have any <a href="https://www.gov.uk/guidance/income-tax-when-you-rent-out-a-property-working-out-your-rental-income">income from property rental</a>, including rent from land or holiday lets, you must declare it on your end of year tax return. However, the first £1,000 of your income from property rental is tax-free. This is your <a href="https://www.gov.uk/guidance/tax-free-allowances-on-property-and-trading-income#property">property allowance</a>. If your total income from property is below £1000 you do not need to declare it.</p><p>If you let out part of a property which is your only or main home, you may be able to receive £7,500 per year tax-free under the <a href="https://www.gov.uk/rent-room-in-your-home/the-rent-a-room-scheme">Rent a Room Scheme</a>.</p>...but in Welsh
-
-glossary.contents.self-employment.key                = Self-employment...but in Welsh
-glossary.contents.self-employment.value              = <p>You are <a href="https://www.gov.uk/working-for-yourself">self-employed</a> if you run your business for yourself and you are responsible for its success or failure.</p><p>Self-employed workers are not paid through PAYE, and they do not have the <a href="https://www.gov.uk/employment-status/employee">rights and responsibilities of an employee</a>.</p>...but in Welsh
-
-glossary.contents.student-loans.key                  = Student loans...but in Welsh
-glossary.contents.student-loans.value                = <p>A student loan is money you borrowed from the Student Loan Company to help pay for university tuition fees and/or maintenance fees to help with living costs. You start <a href="https://www.gov.uk/repaying-your-student-loan">repaying the loan</a> once you earn over a certain amount. The size of your monthly repayments will depend on how much you earn, not what you owe.</p>...but in Welsh
-
-glossary.contents.uk-interest.key                    = UK interest...but in Welsh
-glossary.contents.uk-interest.value                  = <p>Most interest paid by banks and building societies is taxable. Interest counts as income for tax purposes on the date it is credited to your account.</p><p>Most people can earn some <a href="https://www.gov.uk/apply-tax-free-interest-on-savings">interest from their savings without paying tax</a>. Basic rate taxpayers have a £1,000 <a href="https://www.gov.uk/apply-tax-free-interest-on-savings">Personal Savings Allowance</a>. This is reduced to £500 for higher rate taxpayers and there is no allowance for additional rate taxpayers</p>...but in Welsh
-
-glossary.contents.uk-dividends.key                   = UK dividends...but in Welsh
-glossary.contents.uk-dividends.value                 = <p>If you own shares from companies/businesses in the UK, you may get income in the form of dividends. Dividends are a portion of the profits made by the company that issued the shares you invested in.</p><p>If you have an investment fund that is invested in shares, then you may earn income which is taxed in the same way as dividends.</p><p>You can earn some <a href="https://www.gov.uk/tax-on-dividends">dividend income each year without paying tax</a> and you do not pay tax on dividends from shares in an <a href="https://www.gov.uk/individual-savings-accounts">Individual Savings Accounts (ISAs)</a>.</p>...but in Welsh
-
 # Other Income Sources Page
 additional.income.source-heading                                    = Which other income do you have?
 additional.income.source-legend                                     = Which other income do you have?
-additional.income.source-paragraph                                  = This is other income you'll need to include in your tax return.
+additional.income.source-paragraph                                  = This is other income you’ll need to include in your tax return.
 additional.income.source-hint                                       = Select all that apply
 additional.income.source-uk-interest                                = UK interest
 additional.income.source-construction-industry-scheme               = Construction Industry Scheme
@@ -326,3 +272,11 @@ additional.income.source-foreign-interest                           = Foreign in
 additional.income.source-none                                       = None of these
 additional.income.source.error-non-empty                            = Select an income type or income types
 additional.income.source.error-none-only                            = Select an income type, income types, or ‘none of these’
+
+unsupported-accounting-period.heading                               = There is no software product or products that support your accounting period
+unsupported-accounting-period.para-one                              = Making Tax Digital is only available to people who use the business accounting periods:
+unsupported-accounting-period.bullet-one                            = 6 April to 5 April
+unsupported-accounting-period.bullet-two                            = 1 April to 31 March
+unsupported-accounting-period.para-two                              = We may extend this service to people with other accounting periods in the future. You’ll need to continue to submit your {0} as normal.
+unsupported-accounting-period.self-assessment-tax-return.link-text  = Self Assessment tax return
+unsupported-accounting-period.self-assessment-tax-return.link-url   = https://www.gov.uk/ffurflenni-treth-hunanasesiad/anfon-ffurflen-dreth

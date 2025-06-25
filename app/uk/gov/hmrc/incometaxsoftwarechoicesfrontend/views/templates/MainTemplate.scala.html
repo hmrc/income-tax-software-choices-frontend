@@ -14,28 +14,21 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.govukfrontend.views.Aliases.Text
-@import uk.gov.hmrc.govukfrontend.views.html.components.GovukErrorSummary
-@import uk.gov.hmrc.govukfrontend.views.html.components.implicits._
-@import uk.gov.hmrc.govukfrontend.views.viewmodels.errorsummary.ErrorSummary
 @import uk.gov.hmrc.hmrcfrontend.views.config._
-@import uk.gov.hmrc.hmrcfrontend.views.html.helpers.{HmrcLanguageSelectHelper, HmrcLayout, HmrcReportTechnicalIssueHelper}
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.FullWidthMainContentLayout
 @import views.html.helper.CSPNonce
+@import uk.gov.hmrc.hmrcfrontend.views.viewmodels.hmrcstandardpage._
 
 @this(
-        appConfig: AppConfig,
-        hmrcLayout: HmrcLayout,
-        standardBetaBanner: StandardBetaBanner,
-        govukErrorSummary: GovukErrorSummary,
-        hmrcReportTechnicalIssueHelper: HmrcReportTechnicalIssueHelper,
-        hmrcLanguageSelectHelper: HmrcLanguageSelectHelper,
-        fullWidthMainContentLayout: FullWidthMainContentLayout,
-        standardAlphaBanner: StandardAlphaBanner
+    hmrcStandardPage: HmrcStandardPage,
+    appConfig: AppConfig,
+    govukErrorSummary: GovukErrorSummary,
+    hmrcReportTechnicalIssueHelper: HmrcReportTechnicalIssueHelper,
+    standardBetaBanner: StandardBetaBanner,
+    fullWidthPageLayout: FixedWidthPageLayout
 )
 
-@(title: String, breadcrumbs: Option[Html] = None, backLink: Option[String]= None, optForm: Option[Form[_]] = None, scripts: Option[Html] = None)(contentBlock: Html)(implicit request: Request[_], messages: Messages)
+@(title: String, backLink: Option[String] = None, optForm: Option[Form[_]] = None, scripts: Option[Html] = None, isFullWidth: Boolean = false)(contentBlock: Html)(implicit request: RequestHeader, messages: Messages)
 
 @prefixedTitle = @{
   optForm match {
@@ -44,34 +37,40 @@
   }
 }
 
-@additionalHeadBlock = {
-  <link href='@controllers.routes.Assets.versioned("stylesheets/application.css")' media="all" rel="stylesheet" type="text/css"/>
-}
-
-@beforeContentBlock(breadcrumbsHtml: Html) = {
-  @breadcrumbsHtml
-  @hmrcLanguageSelectHelper()
-}
-
-@hmrcLayout(
-    pageTitle = prefixedTitle,
+@hmrcStandardPage(HmrcStandardPageParams(
+    serviceURLs = ServiceURLs(
+        serviceUrl = None
+    ),
+    banners = Banners(
+        phaseBanner = Some(standardBetaBanner(url = appConfig.betaFeedbackUnauthenticatedUrl))
+    ),
+    templateOverrides = TemplateOverrides(
+        additionalHeadBlock = Some(additionalHeadBlock),
+        mainContentLayout = if(isFullWidth) Some(identity) else None
+    ),
     serviceName = Some(messages("base.service-name")),
-    additionalHeadBlock = Some(additionalHeadBlock),
-    backLinkUrl = backLink,
-    beforeContentBlock = breadcrumbs.map(breadcrumbsHtml => beforeContentBlock(breadcrumbsHtml)),
     isWelshTranslationAvailable = appConfig.welshLanguageSupportEnabled,
-    mainContentLayout = Some(fullWidthMainContentLayout(_)),
-    phaseBanner = Some(standardBetaBanner(url = appConfig.betaFeedbackUnauthenticatedUrl)),
-    additionalScriptsBlock = scripts
-){
-  @optForm.map { form =>
-    @if(form.hasErrors) {
-      @govukErrorSummary(ErrorSummary(
-        errorList = form.errors.asTextErrorLinks,
-        title = Text(messages("base.error-heading"))
-      ))
+    pageTitle = prefixedTitle,
+    backLink = backLink.map(href => BackLink(href = href))
+))(content)
+
+@additionalHeadBlock = {
+    <link href='@controllers.routes.Assets.versioned("stylesheets/application.css")' media="all" rel="stylesheet" type="text/css" />
+}
+
+@content = {
+
+    @optForm.map { form =>
+        @if(form.hasErrors) {
+            @govukErrorSummary(ErrorSummary(
+                errorList = form.errors.asTextErrorLinks,
+                title = Text(messages("base.error-heading"))
+            ))
+        }
     }
-  }
-  @contentBlock
-  @hmrcReportTechnicalIssueHelper()
+
+    @contentBlock
+
+    @hmrcReportTechnicalIssueHelper()
+
 }

@@ -16,8 +16,6 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
-import play.api.libs.json._
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.AdditionalIncomeForm
@@ -30,7 +28,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class AdditionalIncomeSourcesController @Inject()(view: AdditionalIncomeSourcePage,
-                                                   pageAnswersService: PageAnswersService
+                                                  pageAnswersService: PageAnswersService
                                                  )(implicit ec: ExecutionContext,
                                                    mcc: MessagesControllerComponents) extends BaseFrontendController(mcc) {
 
@@ -41,7 +39,7 @@ class AdditionalIncomeSourcesController @Inject()(view: AdditionalIncomeSourcePa
         Ok(view(
           AdditionalIncomeForm.form.fill(maybeAnswers),
           postAction = routes.AdditionalIncomeSourcesController.submit,
-          backUrl    = routes.BusinessIncomeController.show.url
+          backUrl = routes.BusinessIncomeController.show.url
         ))
       }
   }
@@ -53,15 +51,15 @@ class AdditionalIncomeSourcesController @Inject()(view: AdditionalIncomeSourcePa
           BadRequest(view(
             additionalIncomeForm = formWithErrors,
             postAction = routes.AdditionalIncomeSourcesController.submit,
-            backUrl    = routes.BusinessIncomeController.show.url
+            backUrl = routes.BusinessIncomeController.show.url
           ))
         ),
       answers => {
         val sessionId = request.session.get("sessionId").getOrElse("")
         pageAnswersService.setPageAnswers(sessionId, AdditionalIncomeSourcesPage, answers).flatMap {
-            case true  => Future.successful(Redirect(routes.OtherItemsController.show))
-            case false => Future.failed(new InternalServerException("[AdditionalIncomeSourcesController][submit] – could not save additional income sources"))
-          }
+          case true => Future.successful(Redirect(routes.OtherItemsController.show))
+          case false => Future.failed(new InternalServerException("[AdditionalIncomeSourcesController][submit] – could not save additional income sources"))
+        }
       }
     )
   }
