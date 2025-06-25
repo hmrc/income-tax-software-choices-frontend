@@ -17,6 +17,7 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models
 
 import play.api.libs.json.{JsString, Reads, Writes, __}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.StandardUpdatePeriods
 
 import scala.language.implicitConversions
 
@@ -298,6 +299,29 @@ object VendorFilterGroups {
 
   val allowances: Set[VendorFilter] = Set(
     MarriageAllowance
+  )
+
+  val userAnswerFilters: Set[VendorFilter] = Set(
+    SoleTrader,
+    UkProperty,
+    OverseasProperty,
+    UkInterest,
+    ConstructionIndustryScheme,
+    Employment,
+    UkDividends,
+    StatePensionIncome,
+    PrivatePensionIncome,
+    ForeignDividends,
+    ForeignInterest,
+    PaymentsIntoAPrivatePension,
+    CharitableGiving,
+    CapitalGainsTax,
+    StudentLoans,
+    MarriageAllowance,
+    VoluntaryClass2NationalInsurance,
+    HighIncomeChildBenefitCharge,
+    StandardUpdatePeriods,
+    CalendarUpdatePeriods
   )
 
   // product details page groups //

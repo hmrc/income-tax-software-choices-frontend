@@ -17,7 +17,8 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services
 
 import play.api.libs.json.{Reads, Writes}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{UserAnswers, UserFilters}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{UserAnswers, UserFilters, VendorFilter}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.queries._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 
@@ -26,6 +27,12 @@ import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class PageAnswersService @Inject()(userFiltersRepository: UserFiltersRepository, implicit val ec: ExecutionContext) {
+
+  private val userPages = Seq(
+    BusinessIncomePage,
+    AdditionalIncomeSourcesPage,
+    OtherItemsPage
+  )
 
   def getPageAnswers[A](id: String, page: Gettable[A])(implicit rds: Reads[A]): Future[Option[A]] = {
     userFiltersRepository.get(id).map {
@@ -43,6 +50,17 @@ class PageAnswersService @Inject()(userFiltersRepository: UserFiltersRepository,
       case None => {
         userFiltersRepository.set(UserFilters(id, UserAnswers().set(page, value).toOption, Seq.empty))
       }
+    }
+  }
+
+  def saveFiltersFromAnswers(id: String): Future[Seq[VendorFilter]] = {
+    userFiltersRepository.get(id).map {
+      case Some(uf) => {
+        val vf = userPages.flatMap(page => uf.answers.map(_.get(page).getOrElse(Seq.empty)).getOrElse(Seq.empty))
+        userFiltersRepository.set(uf.copy(finalFilters = vf))
+        vf
+      }
+      case None => Seq.empty
     }
   }
 

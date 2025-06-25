@@ -17,14 +17,15 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.PageAnswersService
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.{PageAnswersService, SoftwareChoicesService}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.helpers.SummaryListBuilder
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.CheckYourAnswersView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class CheckYourAnswersController @Inject()(view: CheckYourAnswersView)
+class CheckYourAnswersController @Inject()(view: CheckYourAnswersView,
+                                           softwareChoicesService: SoftwareChoicesService)
                                           (implicit val ec: ExecutionContext,
                                            mcc: MessagesControllerComponents,
                                            pageAnswersService: PageAnswersService) extends BaseFrontendController(mcc) with SummaryListBuilder {
@@ -37,14 +38,23 @@ class CheckYourAnswersController @Inject()(view: CheckYourAnswersView)
       Ok(view(
         summaryList = summaryList,
         postAction = routes.CheckYourAnswersController.submit,
-        backLink = routes.CheckYourAnswersController.show
+        backLink = routes.OtherItemsController.show()
       ))
     }
   }
 
   def submit: Action[AnyContent] = Action.async { implicit request =>
-      val sessionId = request.session.get("sessionId").getOrElse("")
-      Future.successful(Redirect(routes.CheckYourAnswersController.show))
+    val sessionId = request.session.get("sessionId").getOrElse("")
+    for {
+      vendorFilters <- pageAnswersService.saveFiltersFromAnswers(sessionId)
+      vendors = softwareChoicesService.getVendors(None, vendorFilters)
+    } yield {
+      if (vendors.vendors.isEmpty) {
+        Redirect(routes.CheckYourAnswersController.show)
+      } else {
+        Redirect(routes.SearchSoftwareController.show)
+      }
+    }
   }
 
 }

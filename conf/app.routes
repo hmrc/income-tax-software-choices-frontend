@@ -3,13 +3,13 @@
 ->          /hmrc-frontend                      hmrcfrontend.Routes
 
 GET         /business-income                    uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.BusinessIncomeController.show(editMode: Boolean ?= false)
-POST        /business-income                    uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.BusinessIncomeController.submit
+POST       /business-income      uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.BusinessIncomeController.submit(editMode: Boolean ?= false)
 
-GET        /additional-income                   uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.AdditionalIncomeSourcesController.show(editMode: Boolean ?= false)
-POST       /additional-income                   uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.AdditionalIncomeSourcesController.submit
+GET        /additional-income       uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.AdditionalIncomeSourcesController.show(editMode: Boolean ?= false)
+GET        /additional-income       uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.AdditionalIncomeSourcesController.show(editMode: Boolean ?= false)
 
 GET         /other-items                         uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.OtherItemsController.show(editMode: Boolean ?= false)
-POST        /other-items                        uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.OtherItemsController.submit
+POST       /other-items          uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.OtherItemsController.submit(editMode: Boolean ?= false)
 
 GET         /accounting-period                  uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.AccountingPeriodController.show
 POST        /accounting-period                  uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.AccountingPeriodController.submit

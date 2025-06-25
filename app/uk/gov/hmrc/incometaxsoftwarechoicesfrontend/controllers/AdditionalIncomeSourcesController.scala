@@ -38,29 +38,36 @@ class AdditionalIncomeSourcesController @Inject()(view: AdditionalIncomeSourcePa
       .map { maybeAnswers =>
         Ok(view(
           AdditionalIncomeForm.form.fill(maybeAnswers),
-          postAction = routes.AdditionalIncomeSourcesController.submit,
-          backUrl    = routes.BusinessIncomeController.show().url
+          postAction = routes.AdditionalIncomeSourcesController.submit(editMode),
+          backUrl    = backUrl(editMode)
         ))
       }
   }
 
-  def submit(): Action[AnyContent] = Action.async { implicit request =>
+  def submit(editMode: Boolean): Action[AnyContent] = Action.async { implicit request =>
     AdditionalIncomeForm.form.bindFromRequest().fold(
       formWithErrors =>
         Future.successful(
           BadRequest(view(
             additionalIncomeForm = formWithErrors,
-            postAction = routes.AdditionalIncomeSourcesController.submit,
-            backUrl    = routes.BusinessIncomeController.show().url
+            postAction = routes.AdditionalIncomeSourcesController.submit(editMode),
+            backUrl    = backUrl(editMode)
           ))
         ),
       answers => {
         val sessionId = request.session.get("sessionId").getOrElse("")
         pageAnswersService.setPageAnswers(sessionId, AdditionalIncomeSourcesPage, answers).flatMap {
-            case true  => Future.successful(Redirect(routes.OtherItemsController.show()))
+            case true  =>
+              if (editMode) Future.successful(Redirect(routes.CheckYourAnswersController.show))
+              else Future.successful(Redirect(routes.OtherItemsController.show()))
             case false => Future.failed(new InternalServerException("[AdditionalIncomeSourcesController][submit] – could not save additional income sources"))
           }
       }
     )
+  }
+
+  def backUrl(editMode: Boolean): String = {
+    if (editMode) routes.CheckYourAnswersController.show.url
+    else routes.BusinessIncomeController.show().url
   }
 }

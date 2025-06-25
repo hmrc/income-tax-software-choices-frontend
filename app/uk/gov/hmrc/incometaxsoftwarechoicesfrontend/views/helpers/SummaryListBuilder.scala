@@ -82,10 +82,12 @@ trait SummaryListBuilder {
                             (implicit messages: Messages): SummaryListRow = {
     SummaryListRow(
       key = Key(
-        content = Text(messages(s"check-your-answers.$messageKey"))
+        content = Text(messages(s"check-your-answers.$messageKey")),
+        classes = "govuk-!-static-padding-right-1"
       ),
       value = Value(
-        content = HtmlContent(value)
+        content = HtmlContent(value),
+        classes = "govuk-!-static-padding-right-1"
       ),
       actions = Some(Actions(
         items = Seq(

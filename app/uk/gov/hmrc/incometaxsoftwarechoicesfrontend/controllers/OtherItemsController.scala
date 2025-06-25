@@ -39,20 +39,20 @@ class OtherItemsController @Inject()(view: OtherItemsPage,
     ) yield {
       Ok(view(
         otherItemsForm = OtherItemsForm.form.fill(pageAnswers),
-        postAction = routes.OtherItemsController.submit,
-        backLink = routes.AdditionalIncomeSourcesController.show()
+        postAction = routes.OtherItemsController.submit(editMode),
+        backLink = backUrl(editMode)
       ))
     }
   }
 
-  def submit: Action[AnyContent] = Action.async { implicit request =>
+  def submit(editMode: Boolean): Action[AnyContent] = Action.async { implicit request =>
     OtherItemsForm.form.bindFromRequest().fold(
       formWithErrors => {
         Future.successful(
           BadRequest(view(
             otherItemsForm = formWithErrors,
-            postAction = routes.OtherItemsController.submit,
-            backLink = routes.AdditionalIncomeSourcesController.show()
+            postAction = routes.OtherItemsController.submit(editMode),
+            backLink = backUrl(editMode)
           ))
         )
       },
@@ -64,6 +64,11 @@ class OtherItemsController @Inject()(view: OtherItemsPage,
         }
       }
     )
+  }
+
+  def backUrl(editMode: Boolean): String = {
+    if (editMode) routes.CheckYourAnswersController.show.url
+    else routes.AdditionalIncomeSourcesController.show().url
   }
 
 }

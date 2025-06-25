@@ -47,11 +47,31 @@ other-items.error.non-empty = Select one other item or other items
 other-items.error.invalid-selection = Select one other item, other items, or ‘none of these’
 
 # Check Your Answers view
-check-your-answers.heading = Check your answers before viewing compatible software
-check-your-answers.business-income = Business income
-check-your-answers.other-income = Other income
-check-your-answers.other-items = Other items
-check-your-answers.accounting-period = Accounting period
+check-your-answers.heading              = Check your answers before viewing compatible software
+check-your-answers.business-income      = Business income
+check-your-answers.additional-income    = Other income
+check-your-answers.other-items          = Other items
+check-your-answers.accounting-period    = Accounting period
+check-your-answers.none-selected        = None selected
+
+check-your-answers.sole-trader                              = Sole trader
+check-your-answers.uk-property                              = UK property
+check-your-answers.overseas-property                        = Foreign property
+check-your-answers.payments-into-a-private-pension          = Private pension contributions
+check-your-answers.charitable-giving                        = Charitable giving
+check-your-answers.capital-gains-tax                        = Capital Gains Tax
+check-your-answers.student-loans                            = Student Loan
+check-your-answers.marriage-allowance                       = Marriage Allowance
+check-your-answers.voluntary-class-2-national-insurance     = Voluntary Class 2 National Insurance
+check-your-answers.high-income-child-benefit-charge         = High Income Child Benefit Charge
+check-your-answers.uk-interest                              = UK interest
+check-your-answers.construction-industry-scheme             = Construction Industry Scheme
+check-your-answers.employment                               = Employment (PAYE)
+check-your-answers.uk-dividends                             = UK dividends
+check-your-answers.state-pension-income                     = State pension income
+check-your-answers.private-pension-income                   = Private pension incomes
+check-your-answers.foreign-dividends                        = Foreign dividends
+check-your-answers.foreign-interest                         = Foreign interest
 
 
 # Search software page
