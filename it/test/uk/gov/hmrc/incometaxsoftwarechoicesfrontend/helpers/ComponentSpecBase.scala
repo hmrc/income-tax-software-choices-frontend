@@ -80,30 +80,30 @@ trait ComponentSpecBase extends AnyWordSpec
 
     def getBusinessIncome: WSResponse = get("/business-income")
 
-    def postBusinessIncome(pageAnswers: Seq[VendorFilter]): WSResponse = post("/business-income")(
+    def postBusinessIncome(pageAnswers: Seq[VendorFilter], editMode: Boolean = false): WSResponse = post(s"/business-income?editMode=$editMode")(
       BusinessIncomeForm.form.fill(pageAnswers).data.map { case (k, v) => (k, Seq(v)) }
     )
 
     def getAdditionalIncome: WSResponse = get("/additional-income")
 
-    def submitAdditionalIncome(maybeKeys: Option[Seq[String]]): WSResponse = {
+    def submitAdditionalIncome(maybeKeys: Option[Seq[String]], editMode: Boolean = false): WSResponse = {
       val body: Map[String, Seq[String]] = maybeKeys match {
         case Some(keys) if keys.nonEmpty => Map("additionalIncome[]" -> keys)
         case Some(_) => Map("additionalIncome[]" -> Seq(AdditionalIncomeForm.noneKey))
         case None => Map.empty
       }
-      post("/additional-income")(body)
+      post(s"/additional-income?editMode=$editMode")(body)
     }
 
     def getOtherItems: WSResponse = get("/other-items")
 
-    def postOtherItems(maybeKeys: Option[Seq[String]]): WSResponse = {
+    def postOtherItems(maybeKeys: Option[Seq[String]], editMode: Boolean = false): WSResponse = {
       val body: Map[String, Seq[String]] = maybeKeys match {
         case Some(keys) if keys.nonEmpty => Map("otherItems[]" -> keys)
         case Some(_) => Map("otherItems[]" -> Seq(OtherItemsForm.noneKey))
         case None => Map.empty
       }
-      post("/other-items")(body)
+      post(s"/other-items?editMode=$editMode\"")(body)
     }
 
     def getUnsupportedAccountingPeriod: WSResponse = get("/unsupported-accounting-period")

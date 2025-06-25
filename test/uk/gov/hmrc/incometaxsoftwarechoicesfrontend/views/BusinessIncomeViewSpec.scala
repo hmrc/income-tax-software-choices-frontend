@@ -35,7 +35,8 @@ class BusinessIncomeSourcesViewSpec extends ViewSpec {
     } else {
       BusinessIncomeForm.form
     },
-    postAction = testCall
+    postAction = testCall,
+    backUrl = testBackUrl
   )
 
   def document(hasError: Boolean = false): Document = Jsoup.parse(page(hasError).body)
@@ -58,7 +59,7 @@ class BusinessIncomeSourcesViewSpec extends ViewSpec {
         document().title() shouldBe BusinessIncomePageContent.title
       }
       "have a back link" in {
-        document().selectHead(".govuk-back-link").attr("href") shouldBe appConfig.guidance
+        document().selectHead(".govuk-back-link").attr("href") shouldBe testBackUrl
       }
       "have a paragraph" in {
         document().mainContent.selectNth("p", 1).text shouldBe BusinessIncomePageContent.para

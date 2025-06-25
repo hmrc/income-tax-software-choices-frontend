@@ -55,10 +55,10 @@ class PageAnswersService @Inject()(userFiltersRepository: UserFiltersRepository,
 
   def saveFiltersFromAnswers(id: String): Future[Seq[VendorFilter]] = {
     userFiltersRepository.get(id).map {
-      case Some(uf) => {
-        val vf = userPages.flatMap(page => uf.answers.map(_.get(page).getOrElse(Seq.empty)).getOrElse(Seq.empty))
-        userFiltersRepository.set(uf.copy(finalFilters = vf))
-        vf
+      case Some(userFilters) => {
+        val vendorFilters = userPages.flatMap(page => userFilters.answers.map(_.get(page).getOrElse(Seq.empty)).getOrElse(Seq.empty))
+        userFiltersRepository.set(userFilters.copy(finalFilters = vendorFilters))
+        vendorFilters
       }
       case None => Seq.empty
     }
