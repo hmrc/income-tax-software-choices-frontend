@@ -17,7 +17,6 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models
 
 import play.api.libs.json.{JsString, Reads, Writes, __}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.StandardUpdatePeriods
 
 import scala.language.implicitConversions
 
