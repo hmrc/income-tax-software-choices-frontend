@@ -24,6 +24,7 @@ import play.api.http.HeaderNames.CACHE_CONTROL
 import play.api.http.Status.INTERNAL_SERVER_ERROR
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.FakeRequest
+import play.api.test.Helpers.{await, defaultAwaitTimeout}
 
 class ErrorHandlerSpec extends AnyWordSpec
   with Matchers
@@ -43,16 +44,16 @@ class ErrorHandlerSpec extends AnyWordSpec
 
   "standardErrorTemplate" should {
     "render HTML" in {
-      val html = handler.standardErrorTemplate("title", "heading", "message")(fakeRequest)
+      val html = await(handler.standardErrorTemplate("title", "heading", "message")(fakeRequest))
       html.contentType shouldBe "text/html"
     }
   }
 
   "resolveError" should {
     "handle unknown exceptions as 500s, with no-cache set" in {
-      val header = handler.resolveError(fakeRequest, new Exception("dummy")).header
-      header.headers should contain ((CACHE_CONTROL -> "no-cache"))
-      header.status should be (INTERNAL_SERVER_ERROR)
+      val header = await(handler.resolveError(fakeRequest, new Exception("dummy"))).header
+      header.headers should contain(CACHE_CONTROL -> "no-cache")
+      header.status should be(INTERNAL_SERVER_ERROR)
     }
   }
 

@@ -1,24 +1,22 @@
 # microservice specific routes
 
-->         /hmrc-frontend        hmrcfrontend.Routes
+->          /hmrc-frontend                      hmrcfrontend.Routes
 
-GET        /product-details/*software uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.ProductDetailsController.show(software: String)
+GET         /business-income                    uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.BusinessIncomeController.show
+POST        /business-income                    uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.BusinessIncomeController.submit
 
-GET        /                     uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SearchSoftwareController.show
-POST       /                     uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SearchSoftwareController.search
-GET        /clear                uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SearchSoftwareController.clear
+GET         /additional-income                  uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.AdditionalIncomeSourcesController.show
+POST        /additional-income                  uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.AdditionalIncomeSourcesController.submit
 
-GET        /business-income      uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.BusinessIncomeController.show
-POST       /business-income      uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.BusinessIncomeController.submit
+GET         /other-items                        uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.OtherItemsController.show
+POST        /other-items                        uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.OtherItemsController.submit
 
-GET        /other-items          uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.OtherItemsController.show
-POST       /other-items          uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.OtherItemsController.submit
+GET         /unsupported-accounting-period      uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.UnsupportedAccountingPeriodController.show
 
-GET        /glossary             uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.GlossaryController.show
-POST       /glossary             uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.GlossaryController.search(ajax: Boolean = false)
-POST       /glossary/ajax        uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.GlossaryController.search(ajax: Boolean = true)
+GET         /                                   uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SearchSoftwareController.show
+POST        /                                   uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SearchSoftwareController.search
+GET         /clear                              uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SearchSoftwareController.clear
 
-GET        /assets/*file         controllers.Assets.versioned(path = "/public", file: Asset)
+GET         /product-details/*software          uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.ProductDetailsController.show(software: String)
 
-GET        /additional-income       uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.AdditionalIncomeSourcesController.show
-POST       /additional-income       uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.AdditionalIncomeSourcesController.submit
+GET         /assets/*file                       controllers.Assets.versioned(path = "/public", file: Asset)

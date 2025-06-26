@@ -19,29 +19,33 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config
 import play.api.Logging
 import play.api.i18n.MessagesApi
 import play.api.mvc.Results.NotFound
-import play.api.mvc.{Request, RequestHeader, Result}
+import play.api.mvc.{RequestHeader, Result}
 import play.twirl.api.Html
 import uk.gov.hmrc.http.NotFoundException
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.ErrorTemplate
 import uk.gov.hmrc.play.bootstrap.frontend.http.FrontendErrorHandler
 
 import javax.inject.{Inject, Singleton}
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class ErrorHandler @Inject()(errorTemplate: ErrorTemplate, val messagesApi: MessagesApi)
-  extends FrontendErrorHandler with Logging {
+class ErrorHandler @Inject()(val messagesApi: MessagesApi,
+                             errorTemplate: ErrorTemplate)
+                            (implicit val ec: ExecutionContext) extends FrontendErrorHandler with Logging {
 
-  override def standardErrorTemplate(pageTitle: String, heading: String, message: String)(implicit request: Request[_]): Html =
-    errorTemplate(pageTitle, heading, message)
+  def standardErrorTemplate(pageTitle: String, heading: String, message: String)(implicit request: RequestHeader): Future[Html] = {
+    Future.successful(errorTemplate(pageTitle, heading, message))
+  }
 
-  override def resolveError(rh: RequestHeader, ex: Throwable): Result = {
+  override def resolveError(rh: RequestHeader, ex: Throwable): Future[Result] = {
     ex match {
       case _: NotFoundException =>
-        NotFound(notFoundTemplate(Request(rh, "")))
+        notFoundTemplate(rh) map { html =>
+          NotFound(html)
+        }
       case _ =>
         logger.error(s"[ErrorHandler][resolveError] Internal Server Error, (${rh.method})(${rh.uri})", ex)
         super.resolveError(rh, ex)
     }
   }
-
 }

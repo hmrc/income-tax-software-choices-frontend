@@ -19,7 +19,7 @@
 
 @this(mainTemplate: MainTemplate)
 
-@(pageTitle: String, heading: String, message: String)(implicit request: Request[_], messages: Messages)
+@(pageTitle: String, heading: String, message: String)(implicit request: RequestHeader, messages: Messages)
 
 @mainTemplate(title = pageTitle) {
     <h1 class="govuk-heading-xl">@{Text(heading).asHtml}</h1>

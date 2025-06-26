@@ -16,9 +16,9 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories
 
+import org.mongodb.scala.SingleObservableFuture
 import org.mongodb.scala.bson.conversions.Bson
 import org.mongodb.scala.model._
-import org.mongodb.scala.SingleObservableFuture
 import play.api.libs.json.Format
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserFilters
@@ -34,15 +34,15 @@ import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class UserFiltersRepository @Inject()(
-                                   mongoComponent: MongoComponent,
-                                   appConfig: AppConfig,
-                                   clock: Clock
-                                 )(implicit ec: ExecutionContext)
+                                       mongoComponent: MongoComponent,
+                                       appConfig: AppConfig,
+                                       clock: Clock
+                                     )(implicit ec: ExecutionContext)
   extends PlayMongoRepository[UserFilters](
     collectionName = "user-filters",
     mongoComponent = mongoComponent,
-    domainFormat   = UserFilters.format,
-    indexes        = Seq(
+    domainFormat = UserFilters.format,
+    indexes = Seq(
       IndexModel(
         Indexes.ascending("lastUpdated"),
         IndexOptions()
@@ -67,11 +67,11 @@ class UserFiltersRepository @Inject()(
   }
 
   def get(id: String): Future[Option[UserFilters]] = Mdc.preservingMdc {
-    keepAlive(id).flatMap {
-      _ =>
-        collection
-          .find(byId(id))
-          .headOption()
+    for {
+      _ <- keepAlive(id)
+      result <- collection.find(byId(id)).headOption()
+    } yield {
+      result
     }
   }
 
@@ -81,11 +81,12 @@ class UserFiltersRepository @Inject()(
 
     collection
       .replaceOne(
-        filter      = byId(updatedFilters.id),
+        filter = byId(updatedFilters.id),
         replacement = updatedFilters,
-        options     = ReplaceOptions().upsert(true)
+        options = ReplaceOptions().upsert(true)
       )
       .toFuture()
       .map(_ => true)
   }
+
 }

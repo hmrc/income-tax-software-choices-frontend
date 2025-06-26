@@ -30,7 +30,7 @@ class ProductDetailsControllerISpec extends ComponentSpecBase with BeforeAndAfte
     val vendorOneName = "test software vendor name one"
 
     "respond with 200 status for a real software name" in {
-      When(s"GET ${address} is called")
+      When(s"GET $address is called")
       val response = SoftwareChoicesFrontend.productDetails(URLEncoder.encode(vendorOneName, "UTF-8"))
 
       Then("Should return OK with the software search page")
@@ -39,7 +39,7 @@ class ProductDetailsControllerISpec extends ComponentSpecBase with BeforeAndAfte
       )
     }
     "respond with 404 status for a fake software name" in {
-      When(s"GET ${address} is called")
+      When(s"GET $address is called")
       val response = SoftwareChoicesFrontend.productDetails("fake")
 
       Then("Should return Not Found")

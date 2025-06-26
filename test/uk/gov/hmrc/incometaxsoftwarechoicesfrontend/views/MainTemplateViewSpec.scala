@@ -25,7 +25,7 @@ class MainTemplateViewSpec extends ViewSpec {
   "Main Template" should {
 
     "have the report technical issues link" in {
-      document.getTechnicalHelpLink shouldBe "http://localhost:9250/contact/report-technical-problem?newTab=true&service=ITSC&referrerUrl=%2F"
+      document.getTechnicalHelpLink shouldBe "http://localhost:9250/contact/report-technical-problem?service=ITSC&referrerUrl=%2F"
       document.getTechnicalHelpLinkText shouldBe "Is this page not working properly? (opens in new tab)"
     }
 

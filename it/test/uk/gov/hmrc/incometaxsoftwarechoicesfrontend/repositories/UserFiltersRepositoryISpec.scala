@@ -17,15 +17,15 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories
 
 import org.mockito.Mockito.when
+import org.scalatest.OptionValues
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
 import org.scalatest.matchers.should.Matchers
-import org.scalatest.OptionValues
 import org.scalatest.wordspec.AnyWordSpecLike
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.libs.json.JsPath
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{UserAnswers, UserFilters}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{UserAnswers, UserFilters}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.QuestionPage
 import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 
@@ -43,8 +43,10 @@ class UserFiltersRepositoryISpec
 
   private case object DummyPage extends QuestionPage[String] {
     override def toString: String = "dummy"
-    override def path: JsPath     = JsPath \ toString
+
+    override def path: JsPath = JsPath \ toString
   }
+
   private val dummyUserAnswers: UserAnswers = UserAnswers().set(DummyPage, "Test").get
 
   private val instant = Instant.now.truncatedTo(ChronoUnit.MILLIS)
@@ -55,11 +57,13 @@ class UserFiltersRepositoryISpec
 
   val repository: UserFiltersRepository = new UserFiltersRepository(
     mongoComponent = mongoComponent,
-    appConfig      = mockAppConfig,
-    clock          = stubClock
+    appConfig = mockAppConfig,
+    clock = stubClock
   )(scala.concurrent.ExecutionContext.Implicits.global)
 
   override def beforeEach(): Unit = {
+    repository.collection.drop().toFuture().futureValue
+    repository.ensureIndexes().futureValue
   }
 
   val testSessionIdOne: String = "testSessionIdOne"

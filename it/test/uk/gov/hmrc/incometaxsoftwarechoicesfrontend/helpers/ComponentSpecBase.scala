@@ -29,9 +29,9 @@ import play.api.libs.crypto.CookieSigner
 import play.api.libs.ws.{WSClient, WSResponse}
 import play.api.test.FakeRequest
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.{AdditionalIncomeForm, BusinessIncomeForm, FiltersForm, GlossaryForm, OtherItemsForm}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.{AdditionalIncomeForm, BusinessIncomeForm, FiltersForm, OtherItemsForm}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.baseURI
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FiltersFormModel, GlossaryFormModel, VendorFilter}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FiltersFormModel, VendorFilter}
 
 trait ComponentSpecBase extends AnyWordSpec
   with GivenWhenThen
@@ -78,21 +78,11 @@ trait ComponentSpecBase extends AnyWordSpec
       FiltersForm.form.fill(search).data.map { case (k, v) => (k, Seq(v)) }
     )
 
-    def getGlossaryPage: WSResponse = get("/glossary")
-
-    def submitGlossaryPage(search: GlossaryFormModel): WSResponse = post("/glossary")(
-      GlossaryForm.form.fill(search).data.map { case (k, v) => (k, Seq(v)) }
-    )
-
-    def submitGlossaryPageAjax(search: GlossaryFormModel): WSResponse = post("/glossary/ajax")(
-      GlossaryForm.form.fill(search).data.map { case (k, v) => (k, Seq(v)) }
-    )
-
     def getBusinessIncome: WSResponse = get("/business-income")
 
     def postBusinessIncome(pageAnswers: Seq[VendorFilter]): WSResponse = post("/business-income")(
       BusinessIncomeForm.form.fill(pageAnswers).data.map { case (k, v) => (k, Seq(v)) }
-      )
+    )
 
     def getAdditionalIncome: WSResponse = get("/additional-income")
 
@@ -115,6 +105,8 @@ trait ComponentSpecBase extends AnyWordSpec
       }
       post("/other-items")(body)
     }
+
+    def getUnsupportedAccountingPeriod: WSResponse = get("/unsupported-accounting-period")
 
     def healthcheck(): WSResponse =
       wsClient
