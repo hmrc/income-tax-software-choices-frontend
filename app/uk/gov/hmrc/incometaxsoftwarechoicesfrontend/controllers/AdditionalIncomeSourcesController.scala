@@ -58,7 +58,7 @@ class AdditionalIncomeSourcesController @Inject()(view: AdditionalIncomeSourcePa
         val sessionId = request.session.get("sessionId").getOrElse("")
         pageAnswersService.setPageAnswers(sessionId, AdditionalIncomeSourcesPage, answers).flatMap {
             case true  =>
-              if (editMode) Future.successful(Redirect(routes.CheckYourAnswersController.show))
+              if (editMode) Future.successful(Redirect(routes.CheckYourAnswersController.show()))
               else Future.successful(Redirect(routes.OtherItemsController.show()))
             case false => Future.failed(new InternalServerException("[AdditionalIncomeSourcesController][submit] – could not save additional income sources"))
           }
@@ -67,7 +67,7 @@ class AdditionalIncomeSourcesController @Inject()(view: AdditionalIncomeSourcePa
   }
 
   def backUrl(editMode: Boolean): String = {
-    if (editMode) routes.CheckYourAnswersController.show.url
+    if (editMode) routes.CheckYourAnswersController.show().url
     else routes.BusinessIncomeController.show().url
   }
 }

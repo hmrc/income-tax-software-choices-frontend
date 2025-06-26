@@ -93,7 +93,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
 
         res should have(
           httpStatus(SEE_OTHER),
-          redirectURI(routes.CheckYourAnswersController.show.url)
+          redirectURI(routes.CheckYourAnswersController.show().url)
         )
       }
       "there are all-in-one vendors found" in {

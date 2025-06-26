@@ -67,7 +67,7 @@ class OtherItemsController @Inject()(view: OtherItemsPage,
   }
 
   def backUrl(editMode: Boolean): String = {
-    if (editMode) routes.CheckYourAnswersController.show.url
+    if (editMode) routes.CheckYourAnswersController.show().url
     else routes.AdditionalIncomeSourcesController.show().url
   }
 

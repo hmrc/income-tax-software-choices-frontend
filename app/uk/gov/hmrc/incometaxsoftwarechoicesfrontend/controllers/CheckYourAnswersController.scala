@@ -30,27 +30,27 @@ class CheckYourAnswersController @Inject()(view: CheckYourAnswersView,
                                            mcc: MessagesControllerComponents,
                                            pageAnswersService: PageAnswersService) extends BaseFrontendController(mcc) with SummaryListBuilder {
 
-  def show: Action[AnyContent] = Action.async { implicit request =>
+  def show(): Action[AnyContent] = Action.async { implicit request =>
     val sessionId = request.session.get("sessionId").getOrElse("")
     for (
       summaryList <- buildSummaryList(sessionId)
     ) yield {
       Ok(view(
         summaryList = summaryList,
-        postAction = routes.CheckYourAnswersController.submit,
+        postAction = routes.CheckYourAnswersController.submit(),
         backLink = routes.OtherItemsController.show().url
       ))
     }
   }
 
-  def submit: Action[AnyContent] = Action.async { implicit request =>
+  def submit(): Action[AnyContent] = Action.async { implicit request =>
     val sessionId = request.session.get("sessionId").getOrElse("")
     for {
       vendorFilters <- pageAnswersService.saveFiltersFromAnswers(sessionId)
-      vendors = softwareChoicesService.getVendors(None, vendorFilters)
+      vendors = softwareChoicesService.getVendors(None, vendorFilters).vendors
     } yield {
-      if (vendors.vendors.isEmpty) {
-        Redirect(routes.CheckYourAnswersController.show)
+      if (vendors.isEmpty) {
+        Redirect(routes.CheckYourAnswersController.show())
       } else {
         Redirect(routes.SearchSoftwareController.show)
       }

@@ -25,5 +25,5 @@ GET         /product-details/*software          uk.gov.hmrc.incometaxsoftwarecho
 GET         /assets/*file                       controllers.Assets.versioned(path = "/public", file: Asset)
 
 
-GET        /check-your-answers       uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.CheckYourAnswersController.show
-POST       /check-your-answers       uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.CheckYourAnswersController.submit
+GET        /check-your-answers       uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.CheckYourAnswersController.show()
+POST       /check-your-answers       uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.CheckYourAnswersController.submit()
