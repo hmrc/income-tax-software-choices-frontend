@@ -2,20 +2,23 @@
 
 ->          /hmrc-frontend                      hmrcfrontend.Routes
 
-GET         /business-income                    uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.BusinessIncomeController.show
-POST        /business-income                    uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.BusinessIncomeController.submit
+GET        /business-income                     uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.BusinessIncomeController.show
+POST       /business-income                     uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.BusinessIncomeController.submit
 
-GET         /additional-income                  uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.AdditionalIncomeSourcesController.show
-POST        /additional-income                  uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.AdditionalIncomeSourcesController.submit
+GET        /additional-income                   uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.AdditionalIncomeSourcesController.show
+POST       /additional-income                   uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.AdditionalIncomeSourcesController.submit
 
-GET         /other-items                        uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.OtherItemsController.show
-POST        /other-items                        uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.OtherItemsController.submit
+GET        /other-items                         uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.OtherItemsController.show
+POST       /other-items                         uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.OtherItemsController.submit
+
+GET         /accounting-period                  uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.AccountingPeriodController.show
+POST        /accounting-period                  uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.AccountingPeriodController.submit
 
 GET         /unsupported-accounting-period      uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.UnsupportedAccountingPeriodController.show
 
-GET         /                                   uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SearchSoftwareController.show
-POST        /                                   uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SearchSoftwareController.search
-GET         /clear                              uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SearchSoftwareController.clear
+GET        /                                    uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SearchSoftwareController.show
+POST       /                                    uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SearchSoftwareController.search
+GET        /clear                               uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SearchSoftwareController.clear
 
 GET         /product-details/*software          uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.ProductDetailsController.show(software: String)
 

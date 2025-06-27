@@ -59,7 +59,7 @@ class OtherItemsController @Inject()(view: OtherItemsPage,
       answers => {
         val sessionId = request.session.get("sessionId").getOrElse("")
         pageAnswersService.setPageAnswers(sessionId, OtherItemsPage, answers).flatMap {
-          case true => Future.successful(Redirect(routes.SearchSoftwareController.show))
+          case true => Future.successful(Redirect(routes.AccountingPeriodController.show))
           case false => throw new InternalServerException("[OtherItemsController][submit] - Could not save other items income sources")
         }
       }

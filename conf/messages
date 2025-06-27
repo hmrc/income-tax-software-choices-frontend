@@ -6,6 +6,16 @@ base.opens-in-new-tab       = (opens in new tab)
 base.continue               = Continue
 base.or                     = or
 
+## Accounting period page
+accounting-period.heading                                         = What accounting period do you use for your business?
+accounting-period.para-one                                        = To keep your record keeping simpler if your accounting period ends on 31 March, you’ll need compatible software to support {0}.
+accounting-period.para-one.link-text                              = calendar update periods
+accounting-period.para-one.link-href                              = https://www.gov.uk/guidance/use-making-tax-digital-for-income-tax/send-quarterly-updates
+accounting-period.sixth-april-to-fifth-april                      = 6 April to 5 April
+accounting-period.first-april-to-thirty-first-march               = 1 April to 31 March
+accounting-period.other                                           = Neither of these
+accounting-period.error                                           = Select if your accounting period runs from 6 April to 5 April, 1 April to 31 March, or neither of these
+
 # Business Income page
 business-income.title = Which business income do you have?
 business-income.legend = Which business income do you have?

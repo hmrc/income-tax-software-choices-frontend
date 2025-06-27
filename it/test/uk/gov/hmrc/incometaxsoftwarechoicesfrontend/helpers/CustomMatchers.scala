@@ -88,4 +88,38 @@ trait CustomMatchers {
         }
       )
     }
+
+  def radioButtonSelected(id: String, selectedRadioButton: Option[String]): HavePropertyMatcher[WSResponse, String] =
+    new HavePropertyMatcher[WSResponse, String] {
+      def apply(response: WSResponse): HavePropertyMatchResult[String] = {
+        val body = Jsoup.parse(response.body)
+        val radios = body.select(s"input[id^=$id]")
+        val checkedAttr = "checked"
+
+        def textForSelectedButton(idForSelectedRadio: String) =
+          if (idForSelectedRadio.isEmpty) ""
+          else body.select(s"label[for=$idForSelectedRadio]").text()
+
+        val matchCondition = selectedRadioButton match {
+          case Some(expectedOption) => radios.select("input[checked]").attr("value") == expectedOption
+          case None => !radios.hasAttr(checkedAttr)
+        }
+
+        HavePropertyMatchResult(
+          matches = matchCondition,
+          propertyName = "accounting-period",
+          expectedValue = selectedRadioButton.fold("")(identity),
+          actualValue = {
+            val selected = radios.select("input[checked]")
+            selected.size() match {
+              case 0 =>
+                "no radio button is selected"
+              case 1 =>
+                val actualKey = selected.attr("value")
+                s"""The "$actualKey" selected"""
+            }
+          }
+        )
+      }
+    }
 }

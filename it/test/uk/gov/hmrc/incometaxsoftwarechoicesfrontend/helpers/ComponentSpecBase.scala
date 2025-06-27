@@ -29,9 +29,9 @@ import play.api.libs.crypto.CookieSigner
 import play.api.libs.ws.{WSClient, WSResponse}
 import play.api.test.FakeRequest
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.{AdditionalIncomeForm, BusinessIncomeForm, FiltersForm, OtherItemsForm}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.{AccountingPeriodForm, AdditionalIncomeForm, BusinessIncomeForm, FiltersForm, OtherItemsForm}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.baseURI
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FiltersFormModel, VendorFilter}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{AccountingPeriod,FiltersFormModel, VendorFilter}
 
 trait ComponentSpecBase extends AnyWordSpec
   with GivenWhenThen
@@ -107,6 +107,16 @@ trait ComponentSpecBase extends AnyWordSpec
     }
 
     def getUnsupportedAccountingPeriod: WSResponse = get("/unsupported-accounting-period")
+
+    def getAccountingPeriod: WSResponse = get("/accounting-period")
+
+    def submitAccountingPeriod(request: Option[AccountingPeriod]): WSResponse = {
+      post("/accounting-period")(
+        request.fold(Map.empty[String, Seq[String]])(
+          model => AccountingPeriodForm.accountingPeriodForm.fill(model).data.map { case (k, v) => (k, Seq(v)) }
+        )
+      )
+    }
 
     def healthcheck(): WSResponse =
       wsClient
