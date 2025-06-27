@@ -32,7 +32,7 @@ class OtherItemsController @Inject()(view: OtherItemsPage,
                                          mcc: MessagesControllerComponents) extends BaseFrontendController(mcc) {
 
 
-  def show(editMode: Boolean = false): Action[AnyContent] = Action.async { implicit request =>
+  def show(editMode: Boolean): Action[AnyContent] = Action.async { implicit request =>
     val sessionId = request.session.get("sessionId").getOrElse("")
     for (
       pageAnswers <- pageAnswersService.getPageAnswers(sessionId, OtherItemsPage)
@@ -59,7 +59,9 @@ class OtherItemsController @Inject()(view: OtherItemsPage,
       answers => {
         val sessionId = request.session.get("sessionId").getOrElse("")
         pageAnswersService.setPageAnswers(sessionId, OtherItemsPage, answers).flatMap {
-          case true => Future.successful(Redirect(routes.AccountingPeriodController.show))
+          case true =>
+            if (editMode) Future.successful(Redirect(routes.CheckYourAnswersController.show()))
+            else Future.successful(Redirect(routes.AccountingPeriodController.show(editMode)))
           case false => throw new InternalServerException("[OtherItemsController][submit] - Could not save other items income sources")
         }
       }

@@ -27,7 +27,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.OtherItemsPage
 
 class OtherItemsControllerISpec extends ComponentSpecBase with BeforeAndAfterEach with DatabaseHelper {
 
-  lazy val otherItemsController = app.injector.instanceOf[OtherItemsController]
+  lazy val otherItemsController: OtherItemsController = app.injector.instanceOf[OtherItemsController]
 
   def testUserFilters(answers: UserAnswers): UserFilters = UserFilters(SessionId, Some(answers))
 
@@ -108,7 +108,7 @@ class OtherItemsControllerISpec extends ComponentSpecBase with BeforeAndAfterEac
 
           res should have(
             httpStatus(SEE_OTHER),
-          redirectURI(routes.AccountingPeriodController.show.url)
+          redirectURI(routes.AccountingPeriodController.show().url)
           )
           getPageData(SessionId, OtherItemsPage.toString).size shouldBe 1
         }
@@ -117,7 +117,7 @@ class OtherItemsControllerISpec extends ComponentSpecBase with BeforeAndAfterEac
 
           res should have(
             httpStatus(SEE_OTHER),
-            redirectURI(routes.CheckYourAnswersController.show.url)
+            redirectURI(routes.AccountingPeriodController.show().url)
           )
           getPageData(SessionId, OtherItemsPage.toString).size shouldBe 1
         }
@@ -126,7 +126,7 @@ class OtherItemsControllerISpec extends ComponentSpecBase with BeforeAndAfterEac
 
           res should have(
             httpStatus(SEE_OTHER),
-            redirectURI(routes.CheckYourAnswersController.show.url)
+            redirectURI(routes.AccountingPeriodController.show().url)
           )
           getPageData(SessionId, OtherItemsPage.toString).size shouldBe 1
         }
@@ -140,16 +140,18 @@ class OtherItemsControllerISpec extends ComponentSpecBase with BeforeAndAfterEac
 
           res should have(
             httpStatus(SEE_OTHER),
-          redirectURI(routes.AccountingPeriodController.show.url)
+          redirectURI(routes.CheckYourAnswersController.show().url)
           )
           getPageData(SessionId, OtherItemsPage.toString).size shouldBe 1
         }
         "user submits None of these" in {
-          val res = SoftwareChoicesFrontend.postOtherItems(Some(Seq.empty))
+          val res = SoftwareChoicesFrontend.postOtherItems(
+            Some(Seq.empty),
+            editMode = true)
 
           res should have(
             httpStatus(SEE_OTHER),
-          redirectURI(routes.AccountingPeriodController.show.url)
+          redirectURI(routes.CheckYourAnswersController.show().url)
           )
           getPageData(SessionId, OtherItemsPage.toString).size shouldBe 1
         }
@@ -172,7 +174,7 @@ class OtherItemsControllerISpec extends ComponentSpecBase with BeforeAndAfterEac
       otherItemsController.backUrl(editMode = false) shouldBe routes.AdditionalIncomeSourcesController.show().url
     }
     "return to check your answers when in edit mode" in {
-      otherItemsController.backUrl(editMode = true) shouldBe routes.CheckYourAnswersController.show.url
+      otherItemsController.backUrl(editMode = true) shouldBe routes.CheckYourAnswersController.show().url
     }
   }
 

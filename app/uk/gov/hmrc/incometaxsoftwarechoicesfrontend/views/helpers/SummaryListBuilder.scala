@@ -39,44 +39,44 @@ trait SummaryListBuilder {
 
   private def businessIncomeSummaryListRow(sessionId: String)
                                           (implicit messages: Messages, ec: ExecutionContext, pageAnswersService: PageAnswersService): Future[SummaryListRow] = {
-    val filterList = pageAnswersService.getPageAnswers(sessionId, BusinessIncomePage).map(_ match {
+    val filterList = pageAnswersService.getPageAnswers(sessionId, BusinessIncomePage).map {
       case Some(vf) => vf.map(f => messages(s"check-your-answers.${f.key}")).mkString("<br>")
       case None => throw new InternalServerException("[SummaryListBuilder][businessIncomeSummaryListRow] - Business income sources data not found")
-    })
+    }
 
     filterList.map(filterList => summaryListRow(filterList, routes.BusinessIncomeController.show(editMode = true).url, "business-income"))
   }
 
   private def otherIncomeSummaryListRow(sessionId: String)
                                        (implicit messages: Messages, ec: ExecutionContext, pageAnswersService: PageAnswersService): Future[SummaryListRow] = {
-    val filterList = pageAnswersService.getPageAnswers(sessionId, AdditionalIncomeSourcesPage).map(_ match {
+    val filterList = pageAnswersService.getPageAnswers(sessionId, AdditionalIncomeSourcesPage).map {
       case Some(vf) if vf.isEmpty => messages(s"check-your-answers.none-selected")
       case Some(vf) => vf.map(f => messages(s"check-your-answers.${f.key}")).mkString("<br>")
       case None => throw new InternalServerException("[SummaryListBuilder][otherIncomeSummaryListRow] - Other income sources data not found")
-    })
+    }
 
     filterList.map(filterList => summaryListRow(filterList, routes.AdditionalIncomeSourcesController.show(editMode = true).url, "additional-income"))
   }
 
   private def otherItemsSummaryListRow(sessionId: String)
                                       (implicit messages: Messages, ec: ExecutionContext, pageAnswersService: PageAnswersService): Future[SummaryListRow] = {
-    val filterList = pageAnswersService.getPageAnswers(sessionId, OtherItemsPage).map(_ match {
+    val filterList = pageAnswersService.getPageAnswers(sessionId, OtherItemsPage).map {
       case Some(vf) if vf.isEmpty => messages(s"check-your-answers.none-selected")
       case Some(vf) => vf.map(f => messages(s"check-your-answers.${f.key}")).mkString("<br>")
       case None => throw new InternalServerException("[SummaryListBuilder][otherItemsSummaryListRow] - Other items data not found")
-    })
+    }
 
     filterList.map(filterList => summaryListRow(filterList, routes.OtherItemsController.show(editMode = true).url, "other-items"))
   }
 
   private def accountingPeriodSummaryListRow(sessionId: String)
-                                            (implicit messages: Messages, ec: ExecutionContext, pageAnswersService: PageAnswersService): Future[SummaryListRow] = {
-    val filterList = pageAnswersService.getPageAnswers(sessionId, AccountingPeriodPage).map(_ match {
-      case Some(vf) => vf.map(f => messages(s"check-your-answers.${f.key}")).mkString("<br>")
+                                            (implicit messages: Messages,ec: ExecutionContext, pageAnswersService: PageAnswersService): Future[SummaryListRow] = {
+    val filterList = pageAnswersService.getPageAnswers(sessionId, AccountingPeriodPage).map {
+      case Some(accountingPeriod) => messages(s"check-your-answers.${accountingPeriod.key}")
       case None => throw new InternalServerException("[SummaryListBuilder][accountingPeriodSummaryListRow] - Accounting period data not found")
-    })
+    }
 
-    filterList.map(filterList => summaryListRow(filterList, routes.OtherItemsController.show(editMode = true).url, "accounting-period"))
+    filterList.map(filterList => summaryListRow(filterList, routes.AccountingPeriodController.show(editMode = true).url, "accounting-period"))
   }
 
   private def summaryListRow(value: String, changeLink: String, messageKey: String)

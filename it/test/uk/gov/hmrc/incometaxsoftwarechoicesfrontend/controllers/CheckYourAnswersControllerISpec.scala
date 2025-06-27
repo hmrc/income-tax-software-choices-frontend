@@ -21,6 +21,7 @@ import play.api.http.Status._
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.SessionId
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, DatabaseHelper}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.AccountingPeriod.{OtherAccountingPeriod, SixthAprilToFifthApril}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{UserAnswers, UserFilters}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.{AccountingPeriodPage, AdditionalIncomeSourcesPage, BusinessIncomePage, OtherItemsPage}
@@ -43,7 +44,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
         val res = SoftwareChoicesFrontend.getCheckYourAnswers
 
         res.status shouldBe INTERNAL_SERVER_ERROR
-        res.body.contains("Sorry, we’re experiencing technical difficulties") shouldBe true
+        res.body.contains("Sorry, there is a problem with the service") shouldBe true
       }
     }
     "there is pre-filled data" should {
@@ -54,7 +55,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
             PrivatePensionIncome, ForeignDividends, ForeignInterest)).get
           .set(OtherItemsPage, Seq(PaymentsIntoAPrivatePension, CharitableGiving, CapitalGainsTax, StudentLoans,
             MarriageAllowance, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge)).get
-          .set(AccountingPeriodPage, Seq(StandardUpdatePeriods)).get
+          .set(AccountingPeriodPage, OtherAccountingPeriod).get
         await(userFiltersRepository.set(testUserFilters(userAnswers)))
 
         val res = SoftwareChoicesFrontend.getCheckYourAnswers
@@ -70,8 +71,8 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
           summaryListRow("Other items", Seq(PaymentsIntoAPrivatePension, CharitableGiving, CapitalGainsTax, StudentLoans,
             MarriageAllowance, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge)
             .map(vf => messages(s"check-your-answers.$vf")).mkString(" ")),
-          summaryListRow("Accounting period", Seq(StandardUpdatePeriods)
-            .map(vf => messages(s"check-your-answers.$vf")).mkString(" "))
+          summaryListRow("Accounting period", Set(OtherAccountingPeriod)
+            .map(vf => messages(s"check-your-answers.${vf.key}")).mkString(" "))
         )
       }
     }
@@ -86,7 +87,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
             PrivatePensionIncome, ForeignDividends, ForeignInterest)).get
           .set(OtherItemsPage, Seq(PaymentsIntoAPrivatePension, CharitableGiving, CapitalGainsTax, StudentLoans,
             MarriageAllowance, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge)).get
-          .set(AccountingPeriodPage, Seq(StandardUpdatePeriods)).get
+          .set(AccountingPeriodPage, SixthAprilToFifthApril).get
         await(userFiltersRepository.set(testUserFilters(userAnswers)))
 
         val res = SoftwareChoicesFrontend.postCheckYourAnswers()
@@ -101,7 +102,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
           .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
           .set(AdditionalIncomeSourcesPage, Seq.empty).get
           .set(OtherItemsPage, Seq.empty).get
-          .set(AccountingPeriodPage, Seq.empty).get
+          .set(AccountingPeriodPage, OtherAccountingPeriod).get
         await(userFiltersRepository.set(testUserFilters(userAnswers)))
 
         val res = SoftwareChoicesFrontend.postCheckYourAnswers()

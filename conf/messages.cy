@@ -72,6 +72,9 @@ check-your-answers.state-pension-income                     = State pension inco
 check-your-answers.private-pension-income                   = Private pension incomes
 check-your-answers.foreign-dividends                        = Foreign dividends
 check-your-answers.foreign-interest                         = Foreign interest
+check-your-answers.sixth-april-to-fifth-april               = 6 April to 5 April
+check-your-answers.first-april-to-thirty-first-march        = 1 April to 31 March
+check-your-answers.other                                    = Neither of these
 
 
 # Search software page
