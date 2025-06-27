@@ -43,7 +43,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
         val res = SoftwareChoicesFrontend.getCheckYourAnswers
 
         res.status shouldBe INTERNAL_SERVER_ERROR
-        res.body.toString.contains("Sorry, we’re experiencing technical difficulties") shouldBe true
+        res.body.contains("Sorry, we’re experiencing technical difficulties") shouldBe true
       }
     }
     "there is pre-filled data" should {

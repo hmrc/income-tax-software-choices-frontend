@@ -44,15 +44,18 @@ class CheckYourAnswersViewSpec extends ViewSpec {
     "have a h1 heading" in {
       document.selectHead("h1").text() shouldBe CheckYourAnswersViewContent.heading
     }
-    "render the summary list correctly" in {
-      def getRows: Seq[Element] = document.getSummaryList.selectSeq("govuk-summary-list__row")
+    "render the summary list correctly" which {
+      def getRow(index: Int): Element = document.getSummaryListRow(index)
 
-      getRows.zip(rowContent).foreach { case (row, (key, value)) =>
-        row.getSummaryListKey.text() shouldBe key
-        row.getSummaryListValue.text() shouldBe value
-        row.getSummaryListActions.text() shouldBe "Change"
-        row.getSummaryListActions.selectHead("a").text() shouldBe "Change"
-        row.getSummaryListActions.selectHead("a").selectHead("span").text() shouldBe s"Change $key"
+      (1 to rowContent.length).zip(rowContent).foreach { case (row, (key, value)) =>
+
+        s"has the correct details for $key" in {
+          getRow(row).getSummaryListKey.text() shouldBe key
+          getRow(row).getSummaryListValue.text() shouldBe value
+          getRow(row).getSummaryListActions.selectHead("a").text() shouldBe s"Change $key"
+          getRow(row).getSummaryListActions.selectHead("a").attr("href") shouldBe s"#$key"
+          getRow(row).getSummaryListActions.selectHead("a").selectHead("span.govuk-visually-hidden").text() shouldBe s"$key"
+        }
       }
     }
     "have a continue button" in {

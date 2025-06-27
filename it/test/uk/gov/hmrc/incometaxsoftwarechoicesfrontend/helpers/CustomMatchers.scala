@@ -64,10 +64,10 @@ trait CustomMatchers {
       val summaryListRows = body.select(".govuk-summary-list__row")
       val summaryListRowsKeys = body.select(".govuk-summary-list__row").select(".govuk-summary-list__key")
 
-      val matchKeyCondition = !(summaryListRowsKeys.asScala.filter(_.text.equals(key)).isEmpty)
+      val matchKeyCondition = summaryListRowsKeys.asScala.exists(_.text.equals(key))
 
-      val matchValueCondition = summaryListRows.asScala.find(_.select(".govuk-summary-list__key").text().contains(key))
-                .map(_.select(".govuk-summary-list__value").text().equals(values)).getOrElse(false)
+      val matchValueCondition = summaryListRows.asScala.find(_.select(".govuk-summary-list__key").text()
+        .contains(key)).exists(_.select(".govuk-summary-list__value").text().equals(values))
 
       HavePropertyMatchResult(
         matches = matchKeyCondition && matchValueCondition,

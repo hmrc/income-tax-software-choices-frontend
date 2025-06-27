@@ -22,7 +22,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.helpers.SummaryListBui
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.CheckYourAnswersView
 
 import javax.inject.Inject
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.ExecutionContext
 
 class CheckYourAnswersController @Inject()(view: CheckYourAnswersView,
                                            softwareChoicesService: SoftwareChoicesService)
