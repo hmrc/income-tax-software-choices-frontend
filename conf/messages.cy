@@ -7,6 +7,16 @@ base.continue               = Yn eich blaen
 base.or                     = or
 
 
+## Accounting period page
+accounting-period.heading                                         = Pa gyfnod cyfrifyddu yr ydych yn ei ddefynyddio ar gyfer eich busnes?
+accounting-period.para-one                                        = To keep your record keeping simpler if your accounting period ends on 31 March, you’ll need compatible software to support {0}.
+accounting-period.para-one.link-text                              = calendar update periods
+accounting-period.para-one.link-href                              = https://www.gov.uk/guidance/defnyddio-r-cynllun-troi-treth-yn-ddigidol-ar-gyfer-treth-incwm/anfon-diweddariadau-chwarterol
+accounting-period.sixth-april-to-fifth-april                      = 6 Ebrill i 5 Ebrill
+accounting-period.first-april-to-thirty-first-march               = 1 Ebrill i 31 Mawrth
+accounting-period.other                                           = Dim un o’r rhain
+accounting-period.error                                           = Dewiswch a yw’ch cyfnod cyfrifyddu yn rhedeg o 6 Ebrill i 5 Ebrill, 1 Ebrill i 31 Mawrth, neu dim un o’r rhain
+
 # Business Income page
 business-income.title = Which business income do you have?
 business-income.legend = Which business income do you have?

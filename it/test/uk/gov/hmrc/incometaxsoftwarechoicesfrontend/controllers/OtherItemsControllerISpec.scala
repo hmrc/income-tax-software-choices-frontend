@@ -105,7 +105,7 @@ class OtherItemsControllerISpec extends ComponentSpecBase with BeforeAndAfterEac
 
         res should have(
           httpStatus(SEE_OTHER),
-          redirectURI(routes.SearchSoftwareController.show.url)
+          redirectURI(routes.AccountingPeriodController.show.url)
         )
         getPageData(SessionId, OtherItemsPage.toString).size shouldBe 1
       }
@@ -121,7 +121,7 @@ class OtherItemsControllerISpec extends ComponentSpecBase with BeforeAndAfterEac
 
         res should have(
           httpStatus(SEE_OTHER),
-          redirectURI(routes.SearchSoftwareController.show.url)
+          redirectURI(routes.AccountingPeriodController.show.url)
         )
         getPageData(SessionId, OtherItemsPage.toString).size shouldBe 1
       }
@@ -130,7 +130,7 @@ class OtherItemsControllerISpec extends ComponentSpecBase with BeforeAndAfterEac
 
         res should have(
           httpStatus(SEE_OTHER),
-          redirectURI(routes.SearchSoftwareController.show.url)
+          redirectURI(routes.AccountingPeriodController.show.url)
         )
         getPageData(SessionId, OtherItemsPage.toString).size shouldBe 1
       }
