@@ -17,6 +17,7 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models
 
 import play.api.libs.json._
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.QuestionPage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.queries._
 
 import scala.util.{Failure, Success, Try}
@@ -25,6 +26,12 @@ final case class UserAnswers(data: JsObject = Json.obj()) {
 
   def get[A](page: Gettable[A])(implicit rds: Reads[A]): Option[A] =
     Reads.optionNoError(Reads.at(page.path)).reads(data).getOrElse(None)
+
+  def getAsFilter[_](page: QuestionPage[_]): Seq[VendorFilter] =
+    Reads.optionNoError(Reads.at(page.path)(page.myReads)).reads(data).getOrElse(None) match {
+      case Some(value) => page.toVendorFilter(value)
+      case None => Seq.empty
+    }
 
   def set[A](page: Settable[A], value: A)(implicit writes: Writes[A]): Try[UserAnswers] = {
 

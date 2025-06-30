@@ -16,12 +16,16 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages
 
-import play.api.libs.json.JsPath
+import play.api.libs.json.{JsPath, Reads}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter
 
 case object AdditionalIncomeSourcesPage extends QuestionPage[Seq[VendorFilter]] {
 
   override def toString: String = "additionalIncome"
   override def path: JsPath     = JsPath \ toString
+
+  override def toVendorFilter(value: Seq[VendorFilter]): Seq[VendorFilter] = value
+
+  override def myReads: Reads[Seq[VendorFilter]] = implicitly
 }
 

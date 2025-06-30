@@ -16,12 +16,22 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages
 
-import play.api.libs.json.JsPath
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.AccountingPeriod
+import play.api.libs.json.{JsPath, Reads}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.AccountingPeriod.{FirstAprilToThirtyFirstMarch, SixthAprilToFifthApril}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{CalendarUpdatePeriods, StandardUpdatePeriods}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{AccountingPeriod, VendorFilter}
 
 case object AccountingPeriodPage extends QuestionPage[AccountingPeriod] {
 
   override def toString: String = "accountingPeriod"
 
   override def path: JsPath = JsPath \ toString
+
+  override def toVendorFilter(value: AccountingPeriod): Seq[VendorFilter] = value match {
+    case SixthAprilToFifthApril => Seq(StandardUpdatePeriods)
+    case FirstAprilToThirtyFirstMarch => Seq(CalendarUpdatePeriods)
+    case _ => Seq.empty
+  }
+
+  override def myReads: Reads[AccountingPeriod] = implicitly
 }

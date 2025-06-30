@@ -23,6 +23,7 @@ import org.scalatestplus.mockito.MockitoSugar.mock
 import org.scalatestplus.play.PlaySpec
 import play.api.libs.json.JsPath
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.AccountingPeriod.FirstAprilToThirtyFirstMarch
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{UserAnswers, UserFilters}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages._
@@ -49,6 +50,7 @@ class PageAnswersServiceSpec extends PlaySpec with BeforeAndAfterEach {
       PrivatePensionIncome, ForeignDividends, ForeignInterest)).get
     .set(OtherItemsPage, Seq(PaymentsIntoAPrivatePension, CharitableGiving, CapitalGainsTax, StudentLoans,
       MarriageAllowance, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge)).get
+    .set(AccountingPeriodPage, FirstAprilToThirtyFirstMarch).get
   private val emptyUserFilter = UserFilters(sessionId, None, Seq.empty)
   private val userFilterWithAnswerForPage = UserFilters(sessionId, Some(dummyUserAnswers), Seq.empty)
   private val userFilterWithVendorFilterAnswerForPage = UserFilters(sessionId, Some(vendorFilterUserAnswers), Seq.empty)
@@ -130,7 +132,7 @@ class PageAnswersServiceSpec extends PlaySpec with BeforeAndAfterEach {
         await(service.saveFiltersFromAnswers(sessionId)) mustBe Seq(SoleTrader, UkProperty, OverseasProperty, UkInterest,
           ConstructionIndustryScheme, Employment, UkDividends, StatePensionIncome, PrivatePensionIncome, ForeignDividends,
           ForeignInterest, PaymentsIntoAPrivatePension, CharitableGiving, CapitalGainsTax, StudentLoans, MarriageAllowance,
-          VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge)
+          VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge, StandardUpdatePeriods)
       }
       "return correct sequence of vendors for the answers that have been saved ignoring not VendorFilter questions"  in new Setup {
         when(mockUserFiltersRepository.get(eqTo(sessionId)))

@@ -16,8 +16,14 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages
 
+import play.api.libs.json.Reads
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.queries.{Gettable, Settable}
 
 trait QuestionPage[A] extends Gettable[A] with Settable[A] {
   implicit def toString(page: QuestionPage[A]): String = page.toString
+
+  def toVendorFilter(value: A): Seq[VendorFilter] = Seq.empty
+  def myReads: Reads[A]
+
 }
