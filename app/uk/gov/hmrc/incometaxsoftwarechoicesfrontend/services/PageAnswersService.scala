@@ -58,7 +58,7 @@ class PageAnswersService @Inject()(userFiltersRepository: UserFiltersRepository,
     userFiltersRepository.get(id).flatMap {
       case Some(userFilters) =>
         val vendorFilters = userPages.flatMap(page => userFilters.answers.map(_.data).map(page.extractVendorFilters).getOrElse(Seq.empty))
-        userFiltersRepository.set(userFilters.copy(finalFilters = Seq.empty)) map { _ =>
+        userFiltersRepository.set(userFilters.copy(finalFilters = vendorFilters)) map { _ =>
           vendorFilters
         }
       case None =>

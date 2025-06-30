@@ -26,11 +26,14 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{UserAnswers, UserFilters}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.{AccountingPeriodPage, AdditionalIncomeSourcesPage, BusinessIncomePage, OtherItemsPage}
 
+import java.time.Instant
+
 class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAfterEach with DatabaseHelper {
 
   lazy val controller = app.injector.instanceOf[CheckYourAnswersController]
+  private val testTime = Instant.now()
 
-  def testUserFilters(answers: UserAnswers): UserFilters = UserFilters(SessionId, Some(answers))
+  def testUserFilters(answers: Option[UserAnswers]): UserFilters = UserFilters(SessionId, answers, lastUpdated = testTime)
 
   override def beforeEach(): Unit = {
     userFiltersRepository.collection.drop().toFuture()
@@ -56,7 +59,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
           .set(OtherItemsPage, Seq(PaymentsIntoAPrivatePension, CharitableGiving, CapitalGainsTax, StudentLoans,
             MarriageAllowance, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge)).get
           .set(AccountingPeriodPage, OtherAccountingPeriod).get
-        await(userFiltersRepository.set(testUserFilters(userAnswers)))
+        await(userFiltersRepository.set(testUserFilters(Some(userAnswers))))
 
         val res = SoftwareChoicesFrontend.getCheckYourAnswers
 
@@ -88,7 +91,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
           .set(OtherItemsPage, Seq(PaymentsIntoAPrivatePension, CharitableGiving, CapitalGainsTax, StudentLoans,
             MarriageAllowance, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge)).get
           .set(AccountingPeriodPage, SixthAprilToFifthApril).get
-        await(userFiltersRepository.set(testUserFilters(userAnswers)))
+        await(userFiltersRepository.set(testUserFilters(Some(userAnswers))))
 
         val res = SoftwareChoicesFrontend.postCheckYourAnswers()
 
@@ -96,6 +99,18 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
           httpStatus(SEE_OTHER),
           redirectURI(routes.CheckYourAnswersController.show().url)
         )
+
+        await(userFiltersRepository.get(SessionId)) match {
+          case Some(uf) => uf.finalFilters shouldBe Seq(
+            SoleTrader, UkProperty, OverseasProperty,
+            UkInterest, ConstructionIndustryScheme, Employment, UkDividends, StatePensionIncome,
+            PrivatePensionIncome, ForeignDividends, ForeignInterest,
+            PaymentsIntoAPrivatePension, CharitableGiving, CapitalGainsTax, StudentLoans,
+            MarriageAllowance, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge,
+            StandardUpdatePeriods
+          )
+          case None => fail
+        }
       }
       "there are all-in-one vendors found" in {
         val userAnswers = UserAnswers()
@@ -103,7 +118,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
           .set(AdditionalIncomeSourcesPage, Seq.empty).get
           .set(OtherItemsPage, Seq.empty).get
           .set(AccountingPeriodPage, OtherAccountingPeriod).get
-        await(userFiltersRepository.set(testUserFilters(userAnswers)))
+        await(userFiltersRepository.set(testUserFilters(Some(userAnswers))))
 
         val res = SoftwareChoicesFrontend.postCheckYourAnswers()
 
@@ -111,6 +126,12 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
           httpStatus(SEE_OTHER),
           redirectURI(routes.SearchSoftwareController.show.url)
         )
+
+        await(userFiltersRepository.get(SessionId)) match {
+            case Some(uf) => uf.finalFilters shouldBe Seq(SoleTrader, UkProperty, OverseasProperty)
+            case None => fail
+        }
+
       }
     }
   }
