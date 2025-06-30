@@ -33,5 +33,5 @@ case object AccountingPeriodPage extends QuestionPage[AccountingPeriod] {
     case _ => Seq.empty
   }
 
-  override def myReads: Reads[AccountingPeriod] = implicitly
+  override def reads: Reads[AccountingPeriod] = implicitly
 }

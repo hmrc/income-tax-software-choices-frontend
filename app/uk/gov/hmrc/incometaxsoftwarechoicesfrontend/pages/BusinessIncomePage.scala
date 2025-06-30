@@ -26,5 +26,5 @@ case object BusinessIncomePage extends QuestionPage[Seq[VendorFilter]] {
 
   override def toVendorFilter(value: Seq[VendorFilter]): Seq[VendorFilter] = value
 
-  override def myReads: Reads[Seq[VendorFilter]] = implicitly
+  override def reads: Reads[Seq[VendorFilter]] = implicitly
 }

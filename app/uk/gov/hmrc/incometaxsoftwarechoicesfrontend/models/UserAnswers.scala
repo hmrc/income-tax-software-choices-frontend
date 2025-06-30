@@ -27,8 +27,8 @@ final case class UserAnswers(data: JsObject = Json.obj()) {
   def get[A](page: Gettable[A])(implicit rds: Reads[A]): Option[A] =
     Reads.optionNoError(Reads.at(page.path)).reads(data).getOrElse(None)
 
-  def getAsFilter[_](page: QuestionPage[_]): Seq[VendorFilter] =
-    Reads.optionNoError(Reads.at(page.path)(page.myReads)).reads(data).getOrElse(None) match {
+  def getAsFilter[A](page: QuestionPage[A])(implicit reads: Reads[A]): Seq[VendorFilter] =
+    Reads.optionNoError(Reads.at(page.path)).reads(data).getOrElse(None) match {
       case Some(value) => page.toVendorFilter(value)
       case None => Seq.empty
     }
@@ -64,7 +64,7 @@ object UserAnswers {
     (__ \ "data").read[JsObject].map(UserAnswers(_))
 
   val writes: OWrites[UserAnswers] =
-    (__ \ "data").write[JsObject].contramap((f:UserAnswers) => f.data)
+    (__ \ "data").write[JsObject].contramap((f: UserAnswers) => f.data)
 
   implicit val format: OFormat[UserAnswers] = OFormat(reads, writes)
 }

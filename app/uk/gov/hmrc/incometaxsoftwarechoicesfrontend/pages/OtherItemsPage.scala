@@ -22,9 +22,10 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter
 case object OtherItemsPage extends QuestionPage[Seq[VendorFilter]] {
 
   override def toString: String = "otherItems"
+
   override def path: JsPath = JsPath \ toString
 
   override def toVendorFilter(value: Seq[VendorFilter]): Seq[VendorFilter] = value
 
-  override def myReads: Reads[Seq[VendorFilter]] = implicitly
+  override def reads: Reads[Seq[VendorFilter]] = implicitly
 }

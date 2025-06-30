@@ -28,7 +28,7 @@ import scala.concurrent.{ExecutionContext, Future}
 @Singleton
 class PageAnswersService @Inject()(userFiltersRepository: UserFiltersRepository, implicit val ec: ExecutionContext) {
 
-  private val userPages= Seq(
+  private val userPages: Seq[QuestionPage[_]] = Seq(
     BusinessIncomePage,
     AdditionalIncomeSourcesPage,
     OtherItemsPage,
@@ -55,13 +55,14 @@ class PageAnswersService @Inject()(userFiltersRepository: UserFiltersRepository,
   }
 
   def saveFiltersFromAnswers(id: String): Future[Seq[VendorFilter]] = {
-    userFiltersRepository.get(id).map {
-      case Some(userFilters) => {
-        val vendorFilters = userPages.flatMap(page => userFilters.answers.map(_.getAsFilter(page)).getOrElse(Seq.empty))
-        userFiltersRepository.set(userFilters.copy(finalFilters = Seq.empty))
-        vendorFilters
-      }
-      case None => Seq.empty
+    userFiltersRepository.get(id).flatMap {
+      case Some(userFilters) =>
+        val vendorFilters = userPages.flatMap(page => userFilters.answers.map(_.data).map(page.extractVendorFilters).getOrElse(Seq.empty))
+        userFiltersRepository.set(userFilters.copy(finalFilters = Seq.empty)) map { _ =>
+          vendorFilters
+        }
+      case None =>
+        Future.successful(Seq.empty[VendorFilter])
     }
   }
 
