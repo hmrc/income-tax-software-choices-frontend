@@ -22,10 +22,10 @@ import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 import org.scalatestplus.mockito.MockitoSugar
-import play.api.libs.json.JsPath
+import play.api.libs.json.{JsPath, Reads}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{UserAnswers, UserFilters}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{UserAnswers, UserFilters, VendorFilter}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.QuestionPage
 import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 
@@ -43,8 +43,9 @@ class UserFiltersRepositoryISpec
 
   private case object DummyPage extends QuestionPage[String] {
     override def toString: String = "dummy"
-
-    override def path: JsPath = JsPath \ toString
+    override def path: JsPath     = JsPath \ toString
+    override def toVendorFilter(value: String): Seq[VendorFilter] = Seq.empty
+    override def reads: Reads[String] = implicitly
   }
 
   private val dummyUserAnswers: UserAnswers = UserAnswers().set(DummyPage, "Test").get

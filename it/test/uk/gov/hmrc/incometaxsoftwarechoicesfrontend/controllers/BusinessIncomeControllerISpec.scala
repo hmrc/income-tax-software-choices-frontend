@@ -96,7 +96,7 @@ class BusinessIncomeControllerISpec extends ComponentSpecBase with BeforeAndAfte
 
           res should have(
             httpStatus(SEE_OTHER),
-            redirectURI(routes.CheckYourAnswersController.show.url)
+            redirectURI(routes.CheckYourAnswersController.show().url)
           )
           getPageData(SessionId, BusinessIncomePage.toString).size shouldBe 1
         }
@@ -105,7 +105,7 @@ class BusinessIncomeControllerISpec extends ComponentSpecBase with BeforeAndAfte
 
           res should have(
             httpStatus(SEE_OTHER),
-            redirectURI(routes.CheckYourAnswersController.show.url)
+            redirectURI(routes.CheckYourAnswersController.show().url)
           )
           getPageData(SessionId, BusinessIncomePage.toString).size shouldBe 1
         }
@@ -129,7 +129,7 @@ class BusinessIncomeControllerISpec extends ComponentSpecBase with BeforeAndAfte
       controller.backUrl(editMode = false) shouldBe appConfig.guidance
     }
     "return to check your answers when in edit mode" in {
-      controller.backUrl(editMode = true) shouldBe routes.CheckYourAnswersController.show.url
+      controller.backUrl(editMode = true) shouldBe routes.CheckYourAnswersController.show().url
     }
   }
 

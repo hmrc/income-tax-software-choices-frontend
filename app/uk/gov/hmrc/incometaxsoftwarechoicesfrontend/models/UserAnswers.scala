@@ -27,12 +27,6 @@ final case class UserAnswers(data: JsObject = Json.obj()) {
   def get[A](page: Gettable[A])(implicit rds: Reads[A]): Option[A] =
     Reads.optionNoError(Reads.at(page.path)).reads(data).getOrElse(None)
 
-  def getAsFilter[A](page: QuestionPage[A])(implicit reads: Reads[A]): Seq[VendorFilter] =
-    Reads.optionNoError(Reads.at(page.path)).reads(data).getOrElse(None) match {
-      case Some(value) => page.toVendorFilter(value)
-      case None => Seq.empty
-    }
-
   def set[A](page: Settable[A], value: A)(implicit writes: Writes[A]): Try[UserAnswers] = {
 
     val updatedData = data.setObject(page.path, Json.toJson(value)) match {

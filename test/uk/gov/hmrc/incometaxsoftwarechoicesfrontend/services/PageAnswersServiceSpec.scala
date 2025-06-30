@@ -21,11 +21,11 @@ import org.mockito.Mockito.when
 import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.mockito.MockitoSugar.mock
 import org.scalatestplus.play.PlaySpec
-import play.api.libs.json.JsPath
+import play.api.libs.json.{JsPath, Reads}
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.AccountingPeriod.FirstAprilToThirtyFirstMarch
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{UserAnswers, UserFilters}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{UserAnswers, UserFilters, VendorFilter}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 
@@ -36,6 +36,8 @@ class PageAnswersServiceSpec extends PlaySpec with BeforeAndAfterEach {
   private case object DummyPage extends QuestionPage[String] {
     override def toString: String = "dummy"
     override def path: JsPath     = JsPath \ toString
+    override def toVendorFilter(value: String): Seq[VendorFilter] = Seq.empty
+    override def reads: Reads[String] = implicitly
   }
 
   private val sessionId: String = "sessionId"
@@ -132,7 +134,7 @@ class PageAnswersServiceSpec extends PlaySpec with BeforeAndAfterEach {
         await(service.saveFiltersFromAnswers(sessionId)) mustBe Seq(SoleTrader, UkProperty, OverseasProperty, UkInterest,
           ConstructionIndustryScheme, Employment, UkDividends, StatePensionIncome, PrivatePensionIncome, ForeignDividends,
           ForeignInterest, PaymentsIntoAPrivatePension, CharitableGiving, CapitalGainsTax, StudentLoans, MarriageAllowance,
-          VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge, StandardUpdatePeriods)
+          VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge, CalendarUpdatePeriods)
       }
       "return correct sequence of vendors for the answers that have been saved ignoring not VendorFilter questions"  in new Setup {
         when(mockUserFiltersRepository.get(eqTo(sessionId)))

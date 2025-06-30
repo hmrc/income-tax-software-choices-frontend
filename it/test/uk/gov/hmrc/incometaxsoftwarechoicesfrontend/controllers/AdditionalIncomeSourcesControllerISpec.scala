@@ -110,7 +110,7 @@ class AdditionalIncomeSourcesControllerISpec extends ComponentSpecBase with Befo
 
           res should have(
             httpStatus(SEE_OTHER),
-            redirectURI(routes.CheckYourAnswersController.show.url)
+            redirectURI(routes.CheckYourAnswersController.show().url)
           )
           getPageData(SessionId, AdditionalIncomeSourcesPage.toString).size shouldBe 1
         }
@@ -119,7 +119,7 @@ class AdditionalIncomeSourcesControllerISpec extends ComponentSpecBase with Befo
 
           res should have(
             httpStatus(SEE_OTHER),
-            redirectURI(routes.CheckYourAnswersController.show.url)
+            redirectURI(routes.CheckYourAnswersController.show().url)
           )
           getPageData(SessionId, AdditionalIncomeSourcesPage.toString).size shouldBe 1
         }
@@ -150,7 +150,7 @@ class AdditionalIncomeSourcesControllerISpec extends ComponentSpecBase with Befo
       additionalIncomeController.backUrl(editMode = false) shouldBe routes.BusinessIncomeController.show().url
     }
     "return to check your answers when in edit mode" in {
-      additionalIncomeController.backUrl(editMode = true) shouldBe routes.CheckYourAnswersController.show.url
+      additionalIncomeController.backUrl(editMode = true) shouldBe routes.CheckYourAnswersController.show().url
     }
   }
 }
