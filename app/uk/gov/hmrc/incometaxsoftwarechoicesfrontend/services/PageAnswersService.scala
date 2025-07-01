@@ -36,6 +36,24 @@ class PageAnswersService @Inject()(userFiltersRepository: UserFiltersRepository,
     AccountingPeriodPage
   )
 
+  def removePageFilters(id: String): Future[Boolean] = {
+    userFiltersRepository.get(id).flatMap {
+      case Some(userFilters) => {
+//        val newAnswers = uf.answers.flatMap(_.set(page, value).toOption)
+//        userFiltersRepository.set(uf.copy(answers = newAnswers))
+        // We need to only remove the user answers filters Not everything in case user has clicked back from search tool
+        // Get exiting ones
+        // Work out what to remove
+        // save the resultant sequence
+        userFiltersRepository.set(userFilters)
+      }
+      case None => {
+        Future.successful(false)
+//        userFiltersRepository.set(UserFilters(id, UserAnswers().set(page, value).toOption, Seq.empty))
+      }
+    }
+  }
+
   def getPageAnswers[A](id: String, page: Gettable[A])(implicit rds: Reads[A]): Future[Option[A]] = {
     userFiltersRepository.get(id).map {
       case Some(uf) => uf.answers.flatMap(_.get(page))
