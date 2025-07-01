@@ -21,62 +21,58 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.content._
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserAnswers
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages._
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.PageAnswersService
-
-import scala.concurrent.{ExecutionContext, Future}
 
 trait SummaryListBuilder {
-  def buildSummaryList(sessionId: String)
-                              (implicit messages: Messages, ec: ExecutionContext, pageAnswersService: PageAnswersService): Future[SummaryList] = {
-    Future.sequence(Seq(
-      businessIncomeSummaryListRow(sessionId),
-      otherIncomeSummaryListRow(sessionId),
-      otherItemsSummaryListRow(sessionId),
-      accountingPeriodSummaryListRow(sessionId)
-    )).map(SummaryList(_))
+  def buildSummaryList(userAnswersOpt: Option[UserAnswers])(implicit messages: Messages): SummaryList = {
+    val userAnswers = userAnswersOpt.getOrElse(throw new InternalServerException("[SummaryListBuilder][buildSummaryList] - User answers is empty found"))
+    SummaryList(
+      Seq(
+        businessIncomeSummaryListRow(userAnswers),
+        otherIncomeSummaryListRow(userAnswers),
+        otherItemsSummaryListRow(userAnswers),
+        accountingPeriodSummaryListRow(userAnswers)
+      )
+    )
   }
 
-  private def businessIncomeSummaryListRow(sessionId: String)
-                                          (implicit messages: Messages, ec: ExecutionContext, pageAnswersService: PageAnswersService): Future[SummaryListRow] = {
-    val filterList = pageAnswersService.getPageAnswers(sessionId, BusinessIncomePage).map {
-      case Some(vf) => vf.map(f => messages(s"check-your-answers.${f.key}")).mkString("<br>")
-      case None => throw new InternalServerException("[SummaryListBuilder][businessIncomeSummaryListRow] - Business income sources data not found")
+  private def businessIncomeSummaryListRow(userAnswers: UserAnswers)(implicit messages: Messages): SummaryListRow = {
+    val filterList: String = userAnswers.get(BusinessIncomePage) match {
+        case Some(vf) if vf.nonEmpty => vf.map(f => messages(s"check-your-answers.${f.key}")).mkString("<br>")
+        case _ => throw new InternalServerException("[SummaryListBuilder][businessIncomeSummaryListRow] - Business income sources data not found")
     }
 
-    filterList.map(filterList => summaryListRow(filterList, routes.BusinessIncomeController.show(editMode = true).url, "business-income"))
+    summaryListRow(filterList, routes.BusinessIncomeController.show(editMode = true).url, "business-income")
   }
 
-  private def otherIncomeSummaryListRow(sessionId: String)
-                                       (implicit messages: Messages, ec: ExecutionContext, pageAnswersService: PageAnswersService): Future[SummaryListRow] = {
-    val filterList = pageAnswersService.getPageAnswers(sessionId, AdditionalIncomeSourcesPage).map {
+  private def otherIncomeSummaryListRow(userAnswers: UserAnswers)(implicit messages: Messages): SummaryListRow = {
+    val filterList: String = userAnswers.get(AdditionalIncomeSourcesPage) match {
       case Some(vf) if vf.isEmpty => messages(s"check-your-answers.none-selected")
       case Some(vf) => vf.map(f => messages(s"check-your-answers.${f.key}")).mkString("<br>")
       case None => throw new InternalServerException("[SummaryListBuilder][otherIncomeSummaryListRow] - Other income sources data not found")
     }
 
-    filterList.map(filterList => summaryListRow(filterList, routes.AdditionalIncomeSourcesController.show(editMode = true).url, "additional-income"))
+    summaryListRow(filterList, routes.AdditionalIncomeSourcesController.show(editMode = true).url, "additional-income")
   }
 
-  private def otherItemsSummaryListRow(sessionId: String)
-                                      (implicit messages: Messages, ec: ExecutionContext, pageAnswersService: PageAnswersService): Future[SummaryListRow] = {
-    val filterList = pageAnswersService.getPageAnswers(sessionId, OtherItemsPage).map {
+  private def otherItemsSummaryListRow(userAnswers: UserAnswers)(implicit messages: Messages): SummaryListRow = {
+    val filterList: String = userAnswers.get(OtherItemsPage) match {
       case Some(vf) if vf.isEmpty => messages(s"check-your-answers.none-selected")
       case Some(vf) => vf.map(f => messages(s"check-your-answers.${f.key}")).mkString("<br>")
       case None => throw new InternalServerException("[SummaryListBuilder][otherItemsSummaryListRow] - Other items data not found")
     }
 
-    filterList.map(filterList => summaryListRow(filterList, routes.OtherItemsController.show(editMode = true).url, "other-items"))
+    summaryListRow(filterList, routes.OtherItemsController.show(editMode = true).url, "other-items")
   }
 
-  private def accountingPeriodSummaryListRow(sessionId: String)
-                                            (implicit messages: Messages,ec: ExecutionContext, pageAnswersService: PageAnswersService): Future[SummaryListRow] = {
-    val filterList = pageAnswersService.getPageAnswers(sessionId, AccountingPeriodPage).map {
+  private def accountingPeriodSummaryListRow(userAnswers: UserAnswers)(implicit messages: Messages): SummaryListRow = {
+    val filterList: String = userAnswers.get(AccountingPeriodPage) match {
       case Some(accountingPeriod) => messages(s"check-your-answers.${accountingPeriod.key}")
       case None => throw new InternalServerException("[SummaryListBuilder][accountingPeriodSummaryListRow] - Accounting period data not found")
     }
 
-    filterList.map(filterList => summaryListRow(filterList, routes.AccountingPeriodController.show(editMode = true).url, "accounting-period"))
+    summaryListRow(filterList, routes.AccountingPeriodController.show(editMode = true).url, "accounting-period")
   }
 
   private def summaryListRow(value: String, changeLink: String, messageKey: String)
@@ -95,7 +91,7 @@ trait SummaryListBuilder {
           ActionItem(
             href = changeLink,
             content = Text(messages("base.change")),
-            visuallyHiddenText = Some(s"${messages("base.change")} ${messages(s"check-your-answers.$messageKey")}")
+            visuallyHiddenText = Some(s"${messages(s"check-your-answers.$messageKey")}")
           )
         )
       ))

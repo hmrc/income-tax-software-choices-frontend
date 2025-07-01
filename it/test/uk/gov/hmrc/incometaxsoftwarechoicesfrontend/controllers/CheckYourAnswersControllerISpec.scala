@@ -36,7 +36,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
   def testUserFilters(answers: Option[UserAnswers]): UserFilters = UserFilters(SessionId, answers, lastUpdated = testTime)
 
   override def beforeEach(): Unit = {
-    userFiltersRepository.collection.drop().toFuture()
+    await(userFiltersRepository.collection.drop().toFuture())
     super.beforeEach()
   }
 

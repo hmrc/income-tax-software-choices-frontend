@@ -17,6 +17,7 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.{PageAnswersService, SoftwareChoicesService}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.helpers.SummaryListBuilder
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.CheckYourAnswersView
@@ -25,16 +26,18 @@ import javax.inject.Inject
 import scala.concurrent.ExecutionContext
 
 class CheckYourAnswersController @Inject()(view: CheckYourAnswersView,
-                                           softwareChoicesService: SoftwareChoicesService)
+                                           softwareChoicesService: SoftwareChoicesService,
+                                           userFiltersRepository: UserFiltersRepository)
                                           (implicit val ec: ExecutionContext,
                                            mcc: MessagesControllerComponents,
                                            pageAnswersService: PageAnswersService) extends BaseFrontendController(mcc) with SummaryListBuilder {
 
   def show(): Action[AnyContent] = Action.async { implicit request =>
     val sessionId = request.session.get("sessionId").getOrElse("")
-    for (
-      summaryList <- buildSummaryList(sessionId)
-    ) yield {
+    for {
+      userFilters <- userFiltersRepository.get(sessionId)
+      summaryList = buildSummaryList(userFilters.flatMap(_.answers))
+    } yield {
       Ok(view(
         summaryList = summaryList,
         postAction = routes.CheckYourAnswersController.submit(),

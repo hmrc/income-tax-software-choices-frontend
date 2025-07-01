@@ -17,6 +17,7 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services
 
 import play.api.libs.json.{Reads, Writes}
+import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{UserAnswers, UserFilters, VendorFilter}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.queries._

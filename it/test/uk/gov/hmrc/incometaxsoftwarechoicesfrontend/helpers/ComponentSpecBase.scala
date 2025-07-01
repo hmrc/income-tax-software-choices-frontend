@@ -120,7 +120,7 @@ trait ComponentSpecBase extends AnyWordSpec
 
     def getCheckYourAnswers: WSResponse = get("/check-your-answers")
 
-    def postCheckYourAnswers(): WSResponse = post(s"/check-your-answers")(Map.empty)
+    def postCheckYourAnswers(): WSResponse = post("/check-your-answers")(Map.empty)
 
     def healthcheck(): WSResponse =
       wsClient
