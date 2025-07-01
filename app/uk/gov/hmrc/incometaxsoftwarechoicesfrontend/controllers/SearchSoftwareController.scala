@@ -76,11 +76,11 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
                   (implicit request: Request[_]): Html = {
 
     searchSoftwarePage(
-      vendors,
-      form,
-      routes.SearchSoftwareController.search,
-      routes.SearchSoftwareController.clear,
-      routes.OtherItemsController.show.url
+      softwareVendors = vendors,
+      searchForm = form,
+      postAction = routes.SearchSoftwareController.search,
+      clearAction = routes.SearchSoftwareController.clear,
+      backUrl = routes.CheckYourAnswersController.show().url
     )
   }
 

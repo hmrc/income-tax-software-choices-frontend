@@ -26,6 +26,8 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{UserAnswers, UserFil
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.AccountingPeriodPage
 
 class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAfterEach with DatabaseHelper {
+
+  lazy val accountingPeriodController: AccountingPeriodController = app.injector.instanceOf[AccountingPeriodController]
   def testUserFilters(answers: UserAnswers): UserFilters = UserFilters(SessionId, Some(answers))
 
   override def beforeEach(): Unit = {
@@ -108,6 +110,15 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
 
         getPageData(SessionId, AccountingPeriodPage.toString).size shouldBe 0
       }
+    }
+  }
+
+  "backUrl" must {
+    "return to additional income page when not in edit mode" in {
+      accountingPeriodController.backUrl(editMode = false) shouldBe routes.OtherItemsController.show().url
+    }
+    "return to check your answers when in edit mode" in {
+      accountingPeriodController.backUrl(editMode = true) shouldBe routes.CheckYourAnswersController.show().url
     }
   }
 }

@@ -35,27 +35,27 @@ class AccountingPeriodController @Inject()(view: AccountingPeriodPage,
                                           (implicit val ec: ExecutionContext,
                                            mcc: MessagesControllerComponents) extends BaseFrontendController(mcc) with I18nSupport {
 
-  def show: Action[AnyContent] = Action.async { implicit request =>
+  def show(editMode: Boolean): Action[AnyContent] = Action.async { implicit request =>
     val sessionId = request.session.get("sessionId").getOrElse("")
     for (
       pageAnswers <- pageAnswersService.getPageAnswers(sessionId, AccountingPeriodPage)
     ) yield {
       Ok(view(
         accountingPeriodForm = AccountingPeriodForm.accountingPeriodForm.fill(pageAnswers),
-        postAction = routes.AccountingPeriodController.submit,
-        backUrl = routes.OtherItemsController.show.url
+        postAction = routes.AccountingPeriodController.submit(editMode),
+        backUrl = backUrl(editMode)
       ))
     }
   }
 
-  def submit: Action[AnyContent] = Action.async { implicit request =>
+  def submit(editMode: Boolean): Action[AnyContent] = Action.async { implicit request =>
     accountingPeriodForm.bindFromRequest().fold(
       formWithErrors => {
         Future.successful(
           BadRequest(view(
             accountingPeriodForm = formWithErrors,
-            postAction = routes.AccountingPeriodController.submit,
-            backUrl = routes.OtherItemsController.show.url
+            postAction = routes.AccountingPeriodController.submit(editMode),
+            backUrl = backUrl(editMode)
           ))
         )
       },
@@ -64,13 +64,18 @@ class AccountingPeriodController @Inject()(view: AccountingPeriodPage,
         pageAnswersService.setPageAnswers(sessionId, AccountingPeriodPage, selectedPeriod).flatMap {
           case true =>
             selectedPeriod match {
-              case SixthAprilToFifthApril => Future.successful(Redirect(routes.SearchSoftwareController.show))
-              case FirstAprilToThirtyFirstMarch => Future.successful(Redirect(routes.SearchSoftwareController.show))
+              case SixthAprilToFifthApril => Future.successful(Redirect(routes.CheckYourAnswersController.show()))
+              case FirstAprilToThirtyFirstMarch => Future.successful(Redirect(routes.CheckYourAnswersController.show()))
               case OtherAccountingPeriod => Future.successful(Redirect(routes.UnsupportedAccountingPeriodController.show))
             }
           case false => throw new InternalServerException("[AccountingPeriodController][submit] - Could not save accounting period")
         }
       }
     )
+  }
+
+  def backUrl(editMode: Boolean): String = {
+    if (editMode) routes.CheckYourAnswersController.show().url
+    else routes.OtherItemsController.show().url
   }
 }

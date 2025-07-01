@@ -36,7 +36,7 @@ class OtherItemsViewSpec extends ViewSpec {
       OtherItemsForm.form
     },
     postAction = testCall,
-    backLink = backLink
+    backLink = testBackUrl
   )
 
   def document(hasError: Boolean = false): Document = Jsoup.parse(page(hasError).body)
@@ -59,7 +59,7 @@ class OtherItemsViewSpec extends ViewSpec {
         document().title() shouldBe OtherItemsPageContent.title
       }
       "have a back link" in {
-        document().selectHead(".govuk-back-link").attr("href") shouldBe backLink.url
+        document().selectHead(".govuk-back-link").attr("href") shouldBe testBackUrl
       }
       "have a paragraph" in {
         document().mainContent.selectNth("p", 1).text shouldBe OtherItemsPageContent.para

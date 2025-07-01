@@ -16,8 +16,25 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages
 
+import play.api.libs.json.{JsObject, Reads}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.queries.{Gettable, Settable}
 
+import scala.language.implicitConversions
+
 trait QuestionPage[A] extends Gettable[A] with Settable[A] {
+
   implicit def toString(page: QuestionPage[A]): String = page.toString
+
+  def reads: Reads[A]
+
+  def toVendorFilter(value: A): Seq[VendorFilter] = Seq.empty
+
+  def extractVendorFilters(json: JsObject): Seq[VendorFilter] = {
+    Reads.optionNoError(Reads.at(path)(reads)).reads(json).getOrElse(None) match {
+      case Some(value) => toVendorFilter(value)
+      case None => Seq.empty
+    }
+  }
+
 }

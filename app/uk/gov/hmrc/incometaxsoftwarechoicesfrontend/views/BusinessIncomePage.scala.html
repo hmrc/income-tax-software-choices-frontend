@@ -30,9 +30,9 @@
         form: FormWithCSRF
 )(implicit appConfig: AppConfig)
 
-@(businessIncomeForm: Form[Seq[VendorFilter]], postAction: Call)(implicit request: Request[_], messages: Messages)
+@(businessIncomeForm: Form[Seq[VendorFilter]], postAction: Call, backUrl: String)(implicit request: Request[_], messages: Messages)
 
-@mainTemplate(title = messages("business-income.title"), backLink = Some(appConfig.guidance), optForm = Some(businessIncomeForm)) {
+@mainTemplate(title = messages("business-income.title"), backLink = Some(backUrl), optForm = Some(businessIncomeForm)) {
 
     <h1 class="govuk-heading-l">@messages("business-income.legend")</h1>
     <p class ="govuk-body">@messages("business-income.para")</p>

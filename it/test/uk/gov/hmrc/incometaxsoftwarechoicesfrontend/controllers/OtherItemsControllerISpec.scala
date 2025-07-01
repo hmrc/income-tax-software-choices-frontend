@@ -27,6 +27,8 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.OtherItemsPage
 
 class OtherItemsControllerISpec extends ComponentSpecBase with BeforeAndAfterEach with DatabaseHelper {
 
+  lazy val otherItemsController: OtherItemsController = app.injector.instanceOf[OtherItemsController]
+
   def testUserFilters(answers: UserAnswers): UserFilters = UserFilters(SessionId, Some(answers))
 
   override def beforeEach(): Unit = {
@@ -100,39 +102,59 @@ class OtherItemsControllerISpec extends ComponentSpecBase with BeforeAndAfterEac
 
   "POST /other-items" must {
     s"return $SEE_OTHER and save the page answers" when {
-      "user submits one other item" in {
-        val res = SoftwareChoicesFrontend.postOtherItems(Some(Seq(StudentLoans)))
+      "not in edit mode" when {
+        "user submits one other item" in {
+          val res = SoftwareChoicesFrontend.postOtherItems(Some(Seq(StudentLoans)))
 
-        res should have(
-          httpStatus(SEE_OTHER),
-          redirectURI(routes.AccountingPeriodController.show.url)
-        )
-        getPageData(SessionId, OtherItemsPage.toString).size shouldBe 1
+          res should have(
+            httpStatus(SEE_OTHER),
+          redirectURI(routes.AccountingPeriodController.show().url)
+          )
+          getPageData(SessionId, OtherItemsPage.toString).size shouldBe 1
+        }
+        "user submits multiple other items" in {
+          val res = SoftwareChoicesFrontend.postOtherItems(Some(allItems))
+
+          res should have(
+            httpStatus(SEE_OTHER),
+            redirectURI(routes.AccountingPeriodController.show().url)
+          )
+          getPageData(SessionId, OtherItemsPage.toString).size shouldBe 1
+        }
+        "user submits None of these" in {
+          val res = SoftwareChoicesFrontend.postOtherItems(Some(Seq.empty))
+
+          res should have(
+            httpStatus(SEE_OTHER),
+            redirectURI(routes.AccountingPeriodController.show().url)
+          )
+          getPageData(SessionId, OtherItemsPage.toString).size shouldBe 1
+        }
       }
-      "user submits multiple other items" in {
-        val res = SoftwareChoicesFrontend.postOtherItems(Some(Seq(
-          PaymentsIntoAPrivatePension,
-          CharitableGiving,
-          CapitalGainsTax,
-          StudentLoans,
-          MarriageAllowance,
-          VoluntaryClass2NationalInsurance,
-          HighIncomeChildBenefitCharge)))
+      "in edit mode" when {
+        "user submits multiple other items" in {
+          val res = SoftwareChoicesFrontend.postOtherItems(
+            maybeKeys = Some(allItems),
+            editMode = true
+          )
 
-        res should have(
-          httpStatus(SEE_OTHER),
-          redirectURI(routes.AccountingPeriodController.show.url)
-        )
-        getPageData(SessionId, OtherItemsPage.toString).size shouldBe 1
-      }
-      "user submits None of these" in {
-        val res = SoftwareChoicesFrontend.postOtherItems(Some(Seq.empty))
+          res should have(
+            httpStatus(SEE_OTHER),
+          redirectURI(routes.CheckYourAnswersController.show().url)
+          )
+          getPageData(SessionId, OtherItemsPage.toString).size shouldBe 1
+        }
+        "user submits None of these" in {
+          val res = SoftwareChoicesFrontend.postOtherItems(
+            Some(Seq.empty),
+            editMode = true)
 
-        res should have(
-          httpStatus(SEE_OTHER),
-          redirectURI(routes.AccountingPeriodController.show.url)
-        )
-        getPageData(SessionId, OtherItemsPage.toString).size shouldBe 1
+          res should have(
+            httpStatus(SEE_OTHER),
+          redirectURI(routes.CheckYourAnswersController.show().url)
+          )
+          getPageData(SessionId, OtherItemsPage.toString).size shouldBe 1
+        }
       }
     }
     "return BAD_REQUEST" when {
@@ -146,5 +168,24 @@ class OtherItemsControllerISpec extends ComponentSpecBase with BeforeAndAfterEac
       }
     }
   }
+
+  "backUrl" must {
+    "return to additional income page when not in edit mode" in {
+      otherItemsController.backUrl(editMode = false) shouldBe routes.AdditionalIncomeSourcesController.show().url
+    }
+    "return to check your answers when in edit mode" in {
+      otherItemsController.backUrl(editMode = true) shouldBe routes.CheckYourAnswersController.show().url
+    }
+  }
+
+  private val allItems: Seq[String] = Seq(
+    PaymentsIntoAPrivatePension,
+    CharitableGiving,
+    CapitalGainsTax,
+    StudentLoans,
+    MarriageAllowance,
+    VoluntaryClass2NationalInsurance,
+    HighIncomeChildBenefitCharge
+  )
 
 }

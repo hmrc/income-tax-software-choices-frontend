@@ -26,6 +26,8 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{Constru
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{UserAnswers, UserFilters}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.AdditionalIncomeSourcesPage
 class AdditionalIncomeSourcesControllerISpec extends ComponentSpecBase with BeforeAndAfterEach with DatabaseHelper {
+
+  lazy val additionalIncomeController = app.injector.instanceOf[AdditionalIncomeSourcesController]
   def testUserFilters(answers: UserAnswers): UserFilters = UserFilters(SessionId, Some(answers))
 
   override def beforeEach(): Unit = {
@@ -73,32 +75,54 @@ class AdditionalIncomeSourcesControllerISpec extends ComponentSpecBase with Befo
 
   "POST /additional-income" must {
     s"return $SEE_OTHER and save the page answers" when {
-      "user submits one additional income source" in {
-        val res = SoftwareChoicesFrontend.submitAdditionalIncome(Some(Seq(UkInterest)))
+      "not in edit mode" when {
+        "user submits one additional income source" in {
+          val res = SoftwareChoicesFrontend.submitAdditionalIncome(Some(Seq(UkInterest)))
 
-        res should have(
-          httpStatus(SEE_OTHER),
-          redirectURI(routes.SearchSoftwareController.show.url)
-        )
-        getPageData(SessionId, AdditionalIncomeSourcesPage.toString).size shouldBe 1
+          res should have(
+            httpStatus(SEE_OTHER),
+            redirectURI(routes.OtherItemsController.show().url)
+          )
+          getPageData(SessionId, AdditionalIncomeSourcesPage.toString).size shouldBe 1
+        }
+        "user submits multiple income sources" in {
+          val res = SoftwareChoicesFrontend.submitAdditionalIncome(Some(Seq(UkInterest, ConstructionIndustryScheme, Employment)))
+
+          res should have(
+            httpStatus(SEE_OTHER),
+            redirectURI(routes.OtherItemsController.show().url)
+          )
+          getPageData(SessionId, AdditionalIncomeSourcesPage.toString).size shouldBe 1
+        }
+        "user submits none" in {
+          val res = SoftwareChoicesFrontend.submitAdditionalIncome(Some(Seq.empty))
+
+          res should have(
+            httpStatus(SEE_OTHER),
+            redirectURI(routes.OtherItemsController.show().url)
+          )
+          getPageData(SessionId, AdditionalIncomeSourcesPage.toString).size shouldBe 1
+        }
       }
-      "user submits multiple income sources" in {
-        val res = SoftwareChoicesFrontend.submitAdditionalIncome(Some(Seq(UkInterest, ConstructionIndustryScheme, Employment)))
+      "in edit mode" when {
+        "user submits multiple income sources" in {
+          val res = SoftwareChoicesFrontend.submitAdditionalIncome(Some(Seq(UkInterest, ConstructionIndustryScheme, Employment)), editMode = true)
 
-        res should have(
-          httpStatus(SEE_OTHER),
-          redirectURI(routes.SearchSoftwareController.show.url)
-        )
-        getPageData(SessionId, AdditionalIncomeSourcesPage.toString).size shouldBe 1
-      }
-      "user submits none" in {
-        val res = SoftwareChoicesFrontend.submitAdditionalIncome(Some(Seq.empty))
+          res should have(
+            httpStatus(SEE_OTHER),
+            redirectURI(routes.CheckYourAnswersController.show().url)
+          )
+          getPageData(SessionId, AdditionalIncomeSourcesPage.toString).size shouldBe 1
+        }
+        "user submits none" in {
+          val res = SoftwareChoicesFrontend.submitAdditionalIncome(Some(Seq.empty), editMode = true)
 
-        res should have(
-          httpStatus(SEE_OTHER),
-          redirectURI(routes.SearchSoftwareController.show.url)
-        )
-        getPageData(SessionId, AdditionalIncomeSourcesPage.toString).size shouldBe 1
+          res should have(
+            httpStatus(SEE_OTHER),
+            redirectURI(routes.CheckYourAnswersController.show().url)
+          )
+          getPageData(SessionId, AdditionalIncomeSourcesPage.toString).size shouldBe 1
+        }
       }
     }
     "return BAD_REQUEST" when {
@@ -118,6 +142,15 @@ class AdditionalIncomeSourcesControllerISpec extends ComponentSpecBase with Befo
         )
         getPageData(SessionId, AdditionalIncomeSourcesPage.toString).size shouldBe 0
       }
+    }
+  }
+
+  "backUrl" must {
+    "return to guidance page when not in edit mode" in {
+      additionalIncomeController.backUrl(editMode = false) shouldBe routes.BusinessIncomeController.show().url
+    }
+    "return to check your answers when in edit mode" in {
+      additionalIncomeController.backUrl(editMode = true) shouldBe routes.CheckYourAnswersController.show().url
     }
   }
 }

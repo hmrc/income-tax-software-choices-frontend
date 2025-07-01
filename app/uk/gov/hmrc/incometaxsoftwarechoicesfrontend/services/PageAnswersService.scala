@@ -17,7 +17,9 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services
 
 import play.api.libs.json.{Reads, Writes}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{UserAnswers, UserFilters}
+import uk.gov.hmrc.http.InternalServerException
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{UserAnswers, UserFilters, VendorFilter}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.queries._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 
@@ -26,6 +28,13 @@ import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class PageAnswersService @Inject()(userFiltersRepository: UserFiltersRepository, implicit val ec: ExecutionContext) {
+
+  private val userPages: Seq[QuestionPage[_]] = Seq(
+    BusinessIncomePage,
+    AdditionalIncomeSourcesPage,
+    OtherItemsPage,
+    AccountingPeriodPage
+  )
 
   def getPageAnswers[A](id: String, page: Gettable[A])(implicit rds: Reads[A]): Future[Option[A]] = {
     userFiltersRepository.get(id).map {
@@ -43,6 +52,18 @@ class PageAnswersService @Inject()(userFiltersRepository: UserFiltersRepository,
       case None => {
         userFiltersRepository.set(UserFilters(id, UserAnswers().set(page, value).toOption, Seq.empty))
       }
+    }
+  }
+
+  def saveFiltersFromAnswers(id: String): Future[Seq[VendorFilter]] = {
+    userFiltersRepository.get(id).flatMap {
+      case Some(userFilters) =>
+        val vendorFilters = userPages.flatMap(page => userFilters.answers.map(_.data).map(page.extractVendorFilters).getOrElse(Seq.empty))
+        userFiltersRepository.set(userFilters.copy(finalFilters = vendorFilters)) map { _ =>
+          vendorFilters
+        }
+      case None =>
+        Future.successful(Seq.empty[VendorFilter])
     }
   }
 

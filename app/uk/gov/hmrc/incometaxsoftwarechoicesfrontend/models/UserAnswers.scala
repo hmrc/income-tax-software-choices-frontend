@@ -17,6 +17,7 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models
 
 import play.api.libs.json._
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.QuestionPage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.queries._
 
 import scala.util.{Failure, Success, Try}
@@ -57,7 +58,7 @@ object UserAnswers {
     (__ \ "data").read[JsObject].map(UserAnswers(_))
 
   val writes: OWrites[UserAnswers] =
-    (__ \ "data").write[JsObject].contramap((f:UserAnswers) => f.data)
+    (__ \ "data").write[JsObject].contramap((f: UserAnswers) => f.data)
 
   implicit val format: OFormat[UserAnswers] = OFormat(reads, writes)
 }

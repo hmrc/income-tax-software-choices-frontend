@@ -32,38 +32,45 @@ class OtherItemsController @Inject()(view: OtherItemsPage,
                                          mcc: MessagesControllerComponents) extends BaseFrontendController(mcc) {
 
 
-  def show: Action[AnyContent] = Action.async { implicit request =>
+  def show(editMode: Boolean): Action[AnyContent] = Action.async { implicit request =>
     val sessionId = request.session.get("sessionId").getOrElse("")
     for (
       pageAnswers <- pageAnswersService.getPageAnswers(sessionId, OtherItemsPage)
     ) yield {
       Ok(view(
         otherItemsForm = OtherItemsForm.form.fill(pageAnswers),
-        postAction = routes.OtherItemsController.submit,
-        backLink = routes.AdditionalIncomeSourcesController.show
+        postAction = routes.OtherItemsController.submit(editMode),
+        backLink = backUrl(editMode)
       ))
     }
   }
 
-  def submit: Action[AnyContent] = Action.async { implicit request =>
+  def submit(editMode: Boolean): Action[AnyContent] = Action.async { implicit request =>
     OtherItemsForm.form.bindFromRequest().fold(
       formWithErrors => {
         Future.successful(
           BadRequest(view(
             otherItemsForm = formWithErrors,
-            postAction = routes.OtherItemsController.submit,
-            backLink = routes.AdditionalIncomeSourcesController.show
+            postAction = routes.OtherItemsController.submit(editMode),
+            backLink = backUrl(editMode)
           ))
         )
       },
       answers => {
         val sessionId = request.session.get("sessionId").getOrElse("")
         pageAnswersService.setPageAnswers(sessionId, OtherItemsPage, answers).flatMap {
-          case true => Future.successful(Redirect(routes.AccountingPeriodController.show))
+          case true =>
+            if (editMode) Future.successful(Redirect(routes.CheckYourAnswersController.show()))
+            else Future.successful(Redirect(routes.AccountingPeriodController.show(editMode)))
           case false => throw new InternalServerException("[OtherItemsController][submit] - Could not save other items income sources")
         }
       }
     )
+  }
+
+  def backUrl(editMode: Boolean): String = {
+    if (editMode) routes.CheckYourAnswersController.show().url
+    else routes.AdditionalIncomeSourcesController.show().url
   }
 
 }

@@ -27,6 +27,8 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.BusinessIncomePage
 
 class BusinessIncomeControllerISpec extends ComponentSpecBase with BeforeAndAfterEach with DatabaseHelper {
 
+  lazy val controller = app.injector.instanceOf[BusinessIncomeController]
+
   def testUserFilters(answers: UserAnswers): UserFilters = UserFilters(SessionId, Some(answers))
 
   override def beforeEach(): Unit = {
@@ -68,23 +70,45 @@ class BusinessIncomeControllerISpec extends ComponentSpecBase with BeforeAndAfte
 
   "POST /business-income" must {
     s"return $SEE_OTHER and save the page answers" when {
-      "user submits one business income" in {
-        val res = SoftwareChoicesFrontend.postBusinessIncome(Seq(UkProperty))
+      "not in edit mode" when {
+        "user submits one business income" in {
+          val res = SoftwareChoicesFrontend.postBusinessIncome(Seq(UkProperty))
 
-        res should have(
-          httpStatus(SEE_OTHER),
-          redirectURI(routes.AdditionalIncomeSourcesController.show.url)
-        )
-        getPageData(SessionId, BusinessIncomePage.toString).size shouldBe 1
+          res should have(
+            httpStatus(SEE_OTHER),
+            redirectURI(routes.AdditionalIncomeSourcesController.show().url)
+          )
+          getPageData(SessionId, BusinessIncomePage.toString).size shouldBe 1
+        }
+        "user submits multiple business incomes" in {
+          val res = SoftwareChoicesFrontend.postBusinessIncome(Seq(SoleTrader, UkProperty, OverseasProperty))
+
+          res should have(
+            httpStatus(SEE_OTHER),
+            redirectURI(routes.AdditionalIncomeSourcesController.show().url)
+          )
+          getPageData(SessionId, BusinessIncomePage.toString).size shouldBe 1
+        }
       }
-      "user submits multiple business incomes" in {
-        val res = SoftwareChoicesFrontend.postBusinessIncome(Seq(SoleTrader, UkProperty, OverseasProperty))
+      "in edit mode" when {
+        "user submits one business income" in {
+          val res = SoftwareChoicesFrontend.postBusinessIncome(Seq(UkProperty), editMode = true)
 
-        res should have(
-          httpStatus(SEE_OTHER),
-          redirectURI(routes.AdditionalIncomeSourcesController.show.url)
-        )
-        getPageData(SessionId, BusinessIncomePage.toString).size shouldBe 1
+          res should have(
+            httpStatus(SEE_OTHER),
+            redirectURI(routes.CheckYourAnswersController.show().url)
+          )
+          getPageData(SessionId, BusinessIncomePage.toString).size shouldBe 1
+        }
+        "user submits multiple business incomes" in {
+          val res = SoftwareChoicesFrontend.postBusinessIncome(Seq(SoleTrader, UkProperty, OverseasProperty), editMode = true)
+
+          res should have(
+            httpStatus(SEE_OTHER),
+            redirectURI(routes.CheckYourAnswersController.show().url)
+          )
+          getPageData(SessionId, BusinessIncomePage.toString).size shouldBe 1
+        }
       }
     }
     "return BAD_REQUEST" when {
@@ -96,6 +120,16 @@ class BusinessIncomeControllerISpec extends ComponentSpecBase with BeforeAndAfte
         )
         getPageData(SessionId, BusinessIncomePage.toString).size shouldBe 0
       }
+    }
+
+  }
+
+  "backUrl" must {
+    "return to guidance page when not in edit mode" in {
+      controller.backUrl(editMode = false) shouldBe appConfig.guidance
+    }
+    "return to check your answers when in edit mode" in {
+      controller.backUrl(editMode = true) shouldBe routes.CheckYourAnswersController.show().url
     }
   }
 

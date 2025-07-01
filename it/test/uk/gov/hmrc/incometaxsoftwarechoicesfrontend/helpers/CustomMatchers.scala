@@ -19,6 +19,9 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers
 import org.jsoup.Jsoup
 import org.scalatest.matchers.{HavePropertyMatchResult, HavePropertyMatcher}
 import play.api.libs.ws.WSResponse
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter
+
+import scala.jdk.CollectionConverters.CollectionHasAsScala
 
 trait CustomMatchers {
   def httpStatus(expectedValue: Int): HavePropertyMatcher[WSResponse, Int] =
@@ -51,6 +54,27 @@ trait CustomMatchers {
         "redirectURI",
         expectedValue,
         redirectLocation.getOrElse("")
+      )
+    }
+
+  def summaryListRow(key: String, values: String): HavePropertyMatcher[WSResponse, String] =
+    (response: WSResponse) => {
+      val body = Jsoup.parse(response.body)
+
+      val summaryListRows = body.select(".govuk-summary-list__row")
+      val summaryListRowsKeys = body.select(".govuk-summary-list__row").select(".govuk-summary-list__key")
+
+      val matchKeyCondition = summaryListRowsKeys.asScala.exists(_.text.equals(key))
+
+      val matchValueCondition = summaryListRows.asScala.find(_.select(".govuk-summary-list__key").text()
+        .contains(key)).exists(_.select(".govuk-summary-list__value").text().equals(values))
+
+      HavePropertyMatchResult(
+        matches = matchKeyCondition && matchValueCondition,
+        propertyName = "summaryList",
+        expectedValue = values,
+        actualValue = summaryListRows.asScala.find(_.select(".govuk-summary-list__key").text().contains(key))
+                        .map(_.select(".govuk-summary-list__value").text()).getOrElse("")
       )
     }
 

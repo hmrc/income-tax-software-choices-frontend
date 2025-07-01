@@ -72,6 +72,15 @@ trait ViewSpec extends AnyWordSpecLike with Matchers with GuiceOneAppPerSuite {
 
     def getTable(index: Int): Element = selectHead(s".govuk-table:nth-of-type($index)")
 
+    def getSummaryList: Element = element.selectHead("dl.govuk-summary-list")
+
+    def getSummaryListRow(nth: Int): Element = element.selectHead(s"div.govuk-summary-list__row:nth-of-type($nth)")
+
+    def getSummaryListKey: Element = element.selectHead("dt.govuk-summary-list__key")
+
+    def getSummaryListValue: Element = element.selectHead("dd.govuk-summary-list__value")
+
+    def getSummaryListActions: Element = element.selectHead("dd.govuk-summary-list__actions")
   }
 
   implicit class ComponentTests(element: Element) {

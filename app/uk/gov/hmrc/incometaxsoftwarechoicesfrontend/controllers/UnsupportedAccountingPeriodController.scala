@@ -29,7 +29,7 @@ class UnsupportedAccountingPeriodController @Inject()(view: UnsupportedAccountin
 
   def show: Action[AnyContent] = Action { implicit request =>
     Ok(view(
-      backLink = routes.AccountingPeriodController.show.url
+      backLink = routes.AccountingPeriodController.show().url
     ))
   }
 
