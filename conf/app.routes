@@ -2,6 +2,9 @@
 
 ->          /hmrc-frontend                       hmrcfrontend.Routes
 
+GET         /type-of-user                       uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.UserTypeController.show()
+POST        /type-of-user                       uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.UserTypeController.submit()
+
 GET         /business-income                     uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.BusinessIncomeController.show(editMode: Boolean ?= false)
 POST        /business-income                     uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.BusinessIncomeController.submit(editMode: Boolean ?= false)
 

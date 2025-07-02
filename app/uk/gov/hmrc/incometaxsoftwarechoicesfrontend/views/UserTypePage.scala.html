@@ -1,0 +1,62 @@
+@*
+ * Copyright 2023 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import uk.gov.hmrc.govukfrontend.views.html.components._
+@import uk.gov.hmrc.govukfrontend.views.html.components.implicits._
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTemplate
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.UserTypeForm._
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType._
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.helpers._
+@import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcNewTabLinkHelper
+@import uk.gov.hmrc.hmrcfrontend.views.viewmodels.newtablinkhelper.NewTabLinkHelper
+
+@this(
+        mainTemplate: MainTemplate,
+        form: FormWithCSRF,
+        radioHelper: RadioHelper,
+        hmrcNewTabLinkHelper: HmrcNewTabLinkHelper,
+        govukButton: GovukButton
+)
+
+@(userTypeForm: Form[UserType], postAction: Call, backUrl: String)(implicit request: Request[_], messages: Messages)
+
+@mainTemplate(title = messages("type-of-user.heading"), optForm = Some(userTypeForm), backLink = Some(backUrl)) {
+
+    <h1 class="govuk-heading-l">@messages("type-of-user.heading")</h1>
+
+    @form(action = postAction) {
+        @radioHelper(
+            field = userTypeForm(fieldName),
+            legend = messages("type-of-user.heading"),
+            isPageHeading = false,
+            radioItems = Seq(
+                RadioItem(
+                    content = Text(messages(s"type-of-user.${SoleTraderOrLandlord.key}")),
+                    value = Some(SoleTraderOrLandlord.key)
+                ),
+                RadioItem(
+                    content = Text(messages(s"type-of-user.${Agent.key}")),
+                    value = Some(Agent.key)
+                )
+            ),
+            inline = false
+        )
+
+        @govukButton(Button(content = Text(messages("base.continue"))))
+    }
+}

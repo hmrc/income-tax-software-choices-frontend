@@ -29,9 +29,9 @@ import play.api.libs.crypto.CookieSigner
 import play.api.libs.ws.{WSClient, WSResponse}
 import play.api.test.FakeRequest
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.{AccountingPeriodForm, AdditionalIncomeForm, BusinessIncomeForm, FiltersForm, OtherItemsForm}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.{AccountingPeriodForm, AdditionalIncomeForm, BusinessIncomeForm, FiltersForm, OtherItemsForm, UserTypeForm}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.baseURI
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{AccountingPeriod,FiltersFormModel, VendorFilter}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{AccountingPeriod, FiltersFormModel, UserType, VendorFilter}
 
 trait ComponentSpecBase extends AnyWordSpec
   with GivenWhenThen
@@ -114,6 +114,16 @@ trait ComponentSpecBase extends AnyWordSpec
       post("/accounting-period")(
         request.fold(Map.empty[String, Seq[String]])(
           model => AccountingPeriodForm.accountingPeriodForm.fill(model).data.map { case (k, v) => (k, Seq(v)) }
+        )
+      )
+    }
+
+    def getUserType: WSResponse = get("/type-of-user")
+
+    def submitUserType(request: Option[UserType]): WSResponse = {
+      post("/type-of-user")(
+        request.fold(Map.empty[String, Seq[String]])(
+          model => UserTypeForm.userTypeForm.fill(model).data.map { case (k, v) => (k, Seq(v)) }
         )
       )
     }
