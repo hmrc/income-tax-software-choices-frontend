@@ -7,6 +7,11 @@ base.continue               = Yn eich blaen
 base.or                     = or
 base.change                 = Change
 
+## User type page
+type-of-user.heading                                              = How will you use this tool to choose software?
+type-of-user.sole-trader-or-landlord                              = As a sole trader or landlord doing my taxes
+type-of-user.agent                                                = As an agent working on behalf of a client
+type-of-user.error                                                = Select if you’re a sole trader, landlord, or an agent
 
 ## Accounting period page
 accounting-period.heading                                         = Pa gyfnod cyfrifyddu yr ydych yn ei ddefynyddio ar gyfer eich busnes?

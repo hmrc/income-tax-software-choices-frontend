@@ -71,7 +71,7 @@ class BusinessIncomeController @Inject()(view: BusinessIncomePage,
   }
 
   def backUrl(editMode: Boolean): String = {
-    if (editMode) routes.CheckYourAnswersController.show().url else appConfig.guidance
+    if (editMode) routes.CheckYourAnswersController.show().url else routes.UserTypeController.show().url
   }
 
 }

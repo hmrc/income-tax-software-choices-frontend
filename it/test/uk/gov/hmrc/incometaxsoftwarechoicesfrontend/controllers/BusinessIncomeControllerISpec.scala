@@ -126,7 +126,7 @@ class BusinessIncomeControllerISpec extends ComponentSpecBase with BeforeAndAfte
 
   "backUrl" must {
     "return to guidance page when not in edit mode" in {
-      controller.backUrl(editMode = false) shouldBe appConfig.guidance
+      controller.backUrl(editMode = false) shouldBe routes.UserTypeController.show().url
     }
     "return to check your answers when in edit mode" in {
       controller.backUrl(editMode = true) shouldBe routes.CheckYourAnswersController.show().url
