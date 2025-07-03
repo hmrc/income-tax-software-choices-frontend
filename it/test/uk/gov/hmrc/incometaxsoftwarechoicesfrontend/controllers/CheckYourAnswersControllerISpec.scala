@@ -19,6 +19,7 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 import org.scalatest.BeforeAndAfterEach
 import play.api.http.Status._
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
+import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.SessionId
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, DatabaseHelper}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.AccountingPeriod.{OtherAccountingPeriod, SixthAprilToFifthApril}
@@ -78,6 +79,71 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
             .map(vf => messages(s"check-your-answers.${vf.key}")).mkString(" "))
         )
       }
+      "'None of these' is selected for other income and other items sources" in {
+        val userAnswers = UserAnswers()
+          .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
+          .set(AdditionalIncomeSourcesPage, Seq.empty).get
+          .set(OtherItemsPage, Seq.empty).get
+          .set(AccountingPeriodPage, OtherAccountingPeriod).get
+        await(userFiltersRepository.set(testUserFilters(Some(userAnswers))))
+
+        val res = SoftwareChoicesFrontend.getCheckYourAnswers
+
+        res should have(
+          httpStatus(OK),
+          pageTitle(s"${messages("check-your-answers.heading")} - Find software that’s compatible with Making Tax Digital for Income Tax - GOV.UK"),
+          summaryListRow("Business income", Seq(SoleTrader,UkProperty,OverseasProperty)
+            .map(vf => messages(s"check-your-answers.$vf")).mkString(" ")),
+          summaryListRow("Other income", messages(s"check-your-answers.none-selected")),
+          summaryListRow("Other items", messages(s"check-your-answers.none-selected")),
+          summaryListRow("Accounting period", Set(OtherAccountingPeriod)
+            .map(vf => messages(s"check-your-answers.${vf.key}")).mkString(" "))
+        )
+      }
+      "Business Incomes sources is not set" in {
+        val userAnswers = UserAnswers()
+          .set(AdditionalIncomeSourcesPage, Seq.empty).get
+          .set(OtherItemsPage, Seq.empty).get
+          .set(AccountingPeriodPage, OtherAccountingPeriod).get
+        await(userFiltersRepository.set(testUserFilters(Some(userAnswers))))
+
+        val res = SoftwareChoicesFrontend.getCheckYourAnswers
+        res.status shouldBe INTERNAL_SERVER_ERROR
+        res.body.contains("Sorry, there is a problem with the service") shouldBe true
+      }
+      "Other Incomes sources is not set" in {
+        val userAnswers = UserAnswers()
+          .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
+          .set(OtherItemsPage, Seq.empty).get
+          .set(AccountingPeriodPage, OtherAccountingPeriod).get
+        await(userFiltersRepository.set(testUserFilters(Some(userAnswers))))
+
+        val res = SoftwareChoicesFrontend.getCheckYourAnswers
+        res.status shouldBe INTERNAL_SERVER_ERROR
+        res.body.contains("Sorry, there is a problem with the service") shouldBe true
+      }
+      "Other Items sources is not set" in {
+        val userAnswers = UserAnswers()
+          .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
+          .set(AdditionalIncomeSourcesPage, Seq.empty).get
+          .set(AccountingPeriodPage, OtherAccountingPeriod).get
+        await(userFiltersRepository.set(testUserFilters(Some(userAnswers))))
+
+        val res = SoftwareChoicesFrontend.getCheckYourAnswers
+        res.status shouldBe INTERNAL_SERVER_ERROR
+        res.body.contains("Sorry, there is a problem with the service") shouldBe true
+      }
+      "Accounting Period is not set" in {
+        val userAnswers = UserAnswers()
+          .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
+          .set(AdditionalIncomeSourcesPage, Seq.empty).get
+          .set(OtherItemsPage, Seq.empty).get
+        await(userFiltersRepository.set(testUserFilters(Some(userAnswers))))
+
+        val res = SoftwareChoicesFrontend.getCheckYourAnswers
+        res.status shouldBe INTERNAL_SERVER_ERROR
+        res.body.contains("Sorry, there is a problem with the service") shouldBe true
+      }
     }
   }
 
@@ -131,7 +197,6 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
             case Some(uf) => uf.finalFilters shouldBe Seq(SoleTrader, UkProperty, OverseasProperty)
             case None => fail("No user filters found")
         }
-
       }
     }
   }
