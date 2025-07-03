@@ -17,7 +17,6 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models
 
 import play.api.libs.json._
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.QuestionPage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.queries._
 
 import scala.util.{Failure, Success, Try}
@@ -34,18 +33,6 @@ final case class UserAnswers(data: JsObject = Json.obj()) {
         Success(jsValue)
       case JsError(errors) =>
         Failure(JsResultException(errors))
-    }
-
-    updatedData.map(UserAnswers(_))
-  }
-
-  def remove[A](page: Settable[A]): Try[UserAnswers] = {
-
-    val updatedData = data.removeObject(page.path) match {
-      case JsSuccess(jsValue, _) =>
-        Success(jsValue)
-      case JsError(_) =>
-        Success(data)
     }
 
     updatedData.map(UserAnswers(_))

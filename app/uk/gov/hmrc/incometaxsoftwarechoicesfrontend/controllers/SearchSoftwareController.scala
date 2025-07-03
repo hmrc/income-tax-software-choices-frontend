@@ -38,29 +38,28 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
                                          userFiltersRepository: UserFiltersRepository,
                                          implicit val ec: ExecutionContext) extends BaseFrontendController(mcc) {
 
-  val show: Action[AnyContent] = Action { implicit request =>
-    Ok(view(softwareChoicesService.getVendors(), FiltersForm.form))
+  def show(zeroResults: Boolean): Action[AnyContent] = Action { implicit request =>
+    Ok(view(softwareChoicesService.getVendors(), FiltersForm.form, zeroResults))
    }
 
-  def search: Action[AnyContent] = Action.async { implicit request =>
+  def search(zeroResults: Boolean): Action[AnyContent] = Action.async { implicit request =>
     FiltersForm.form.bindFromRequest().fold(
-      error => Future.successful(BadRequest(view(softwareChoicesService.getVendors(), error))),
+      error => Future.successful(BadRequest(view(softwareChoicesService.getVendors(), error, zeroResults))),
       search => update(search) map { _ =>
         val vendors = softwareChoicesService.getVendors(search.searchTerm, search.filters)
-        Ok(view(vendors, FiltersForm.form.fill(search)))
+        Ok(view(vendors, FiltersForm.form.fill(search), zeroResults))
       }
     )
   }
 
-  def clear: Action[AnyContent] = Action.async { implicit request =>
+  def clear(zeroResults: Boolean): Action[AnyContent] = Action.async { implicit request =>
     update(FiltersFormModel()) map { _ =>
-      Redirect(routes.SearchSoftwareController.show)
+      Redirect(routes.SearchSoftwareController.show(zeroResults))
     }
   }
 
   private def update(search: FiltersFormModel)(implicit request: Request[_]): Future[Boolean] = {
-    val session = request.session
-    val sessionId = session.get("sessionId").getOrElse("")
+    val sessionId = request.session.get("sessionId").getOrElse("")
     for {
       userFilters <- userFiltersRepository.get(sessionId)
       result <- userFilters match {
@@ -72,16 +71,22 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
     }
   }
 
-  private def view(vendors: SoftwareVendors, form: Form[FiltersFormModel])
+  private def view(vendors: SoftwareVendors, form: Form[FiltersFormModel], zeroResults: Boolean)
                   (implicit request: Request[_]): Html = {
 
     searchSoftwarePage(
       softwareVendors = vendors,
       searchForm = form,
-      postAction = routes.SearchSoftwareController.search,
-      clearAction = routes.SearchSoftwareController.clear,
-      backUrl = routes.CheckYourAnswersController.show().url
+      postAction = routes.SearchSoftwareController.search(zeroResults),
+      clearAction = routes.SearchSoftwareController.clear(zeroResults),
+      backUrl = backLinkUrl(zeroResults),
+      zeroResults = zeroResults
     )
+  }
+
+  private def backLinkUrl(zeroResults: Boolean): String = {
+   if (zeroResults) routes.ZeroSoftwareResultsController.show().url
+   else routes.CheckYourAnswersController.show().url
   }
 
 }

@@ -37,7 +37,7 @@
   languageUtils: LanguageUtils
 )(implicit appConfig: AppConfig)
 
-@(softwareVendors: SoftwareVendors, searchForm: Form[FiltersFormModel], postAction: Call, clearAction: Call, backUrl: String)(implicit request: Request[_], messages: Messages)
+@(softwareVendors: SoftwareVendors, searchForm: Form[FiltersFormModel], postAction: Call, clearAction: Call, backUrl: String, zeroResults: Boolean)(implicit request: Request[_], messages: Messages)
 
 @mainTemplate(title = messages("search-software.title"), backLink = Some(backUrl), optForm = Some(searchForm), isFullWidth = true) {
 
@@ -100,7 +100,7 @@
         </div>
 
         <div id="software-vendor-list">
-          @softwareVendorsTemplate(softwareVendors)
+          @softwareVendorsTemplate(softwareVendors, zeroResults)
         </div>
 
         <p id = "lastUpdated" class="govuk-body-s govuk-!-padding-top-4">

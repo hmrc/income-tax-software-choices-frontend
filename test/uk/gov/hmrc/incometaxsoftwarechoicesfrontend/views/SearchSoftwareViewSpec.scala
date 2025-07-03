@@ -359,7 +359,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
 
           "has a link for the software vendor" in {
             val link: Element = firstVendor.selectHead("a")
-            val expectedUrl = ProductDetailsController.show(URLEncoder.encode(firstModel.name, "UTF-8")).url
+            val expectedUrl = ProductDetailsController.show(URLEncoder.encode(firstModel.name, "UTF-8"), zeroResults = false).url
 
             link.attr("href") shouldBe expectedUrl
             link.text should include(firstModel.name)
@@ -394,7 +394,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
 
           "has a link for the software vendor" in {
             val link: Element = secondVendor.selectHead("a")
-            val expectedUrl = ProductDetailsController.show(URLEncoder.encode(secondModel.name, "UTF-8")).url
+            val expectedUrl = ProductDetailsController.show(URLEncoder.encode(secondModel.name, "UTF-8"), zeroResults = false).url
 
             link.attr("href") shouldBe expectedUrl
             link.text should include(secondModel.name)
@@ -426,7 +426,8 @@ object SearchSoftwareViewSpec extends ViewSpec {
       },
       Call("POST", "/test-url"),
       Call("POST", "/test-url"),
-      "/test-back-url"
+      "/test-back-url",
+      zeroResults = false
     )
 
   def getDocument(hasResults: Boolean, hasError: Boolean): Document = {

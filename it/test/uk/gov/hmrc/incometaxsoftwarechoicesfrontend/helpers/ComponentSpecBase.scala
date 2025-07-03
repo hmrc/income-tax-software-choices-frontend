@@ -122,6 +122,10 @@ trait ComponentSpecBase extends AnyWordSpec
 
     def postCheckYourAnswers(): WSResponse = post("/check-your-answers")(Map.empty)
 
+    def getZeroSoftwareResults(): WSResponse = get("/zero-software-results")
+
+    def postZeroSoftwareResults(): WSResponse = post("/zero-software-results")(Map.empty)
+
     def healthcheck(): WSResponse =
       wsClient
         .url(s"$baseUrl/ping/ping")

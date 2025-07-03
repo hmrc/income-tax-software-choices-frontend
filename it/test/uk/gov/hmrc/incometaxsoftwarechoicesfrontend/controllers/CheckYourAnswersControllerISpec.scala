@@ -97,7 +97,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
 
         res should have(
           httpStatus(SEE_OTHER),
-          redirectURI(routes.CheckYourAnswersController.show().url)
+          redirectURI(routes.ZeroSoftwareResultsController.show().url)
         )
 
         await(userFiltersRepository.get(SessionId)) match {
@@ -109,7 +109,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
             MarriageAllowance, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge,
             StandardUpdatePeriods
           )
-          case None => fail
+          case None => fail("No user filters found")
         }
       }
       "there are all-in-one vendors found" in {
@@ -124,12 +124,12 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
 
         res should have(
           httpStatus(SEE_OTHER),
-          redirectURI(routes.SearchSoftwareController.show.url)
+          redirectURI(routes.SearchSoftwareController.show().url)
         )
 
         await(userFiltersRepository.get(SessionId)) match {
             case Some(uf) => uf.finalFilters shouldBe Seq(SoleTrader, UkProperty, OverseasProperty)
-            case None => fail
+            case None => fail("No user filters found")
         }
 
       }

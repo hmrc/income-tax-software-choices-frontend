@@ -73,7 +73,7 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
 
         res should have(
           httpStatus(SEE_OTHER),
-          redirectURI(routes.SearchSoftwareController.show.url)
+          redirectURI(routes.CheckYourAnswersController.show().url)
         )
 
         getPageData(SessionId, AccountingPeriodPage.toString).size shouldBe 1
@@ -84,7 +84,7 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
 
         res should have(
           httpStatus(SEE_OTHER),
-          redirectURI(routes.SearchSoftwareController.show.url)
+          redirectURI(routes.CheckYourAnswersController.show().url)
         )
         getPageData(SessionId, AccountingPeriodPage.toString).size shouldBe 1
       }

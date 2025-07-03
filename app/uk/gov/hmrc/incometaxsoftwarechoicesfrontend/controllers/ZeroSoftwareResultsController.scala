@@ -33,14 +33,14 @@ class ZeroSoftwareResultsController @Inject()(view: ZeroSoftwareResultsView,
   def show(): Action[AnyContent] = Action.async { implicit request =>
     Future.successful(Ok(view(
       postAction = routes.ZeroSoftwareResultsController.submit(),
-      backLink = routes.ZeroSoftwareResultsController.show() // Needs to be CYA
+      backLink = routes.CheckYourAnswersController.show()
     )))
   }
 
   def submit(): Action[AnyContent] = Action.async { implicit request =>
     val sessionId = request.session.get("sessionId").getOrElse("")
     pageAnswersService.removePageFilters(sessionId).map {
-      case true => Redirect(routes.SearchSoftwareController.show)
+      case true => Redirect(routes.SearchSoftwareController.show(zeroResults = true))
       case false => throw new InternalServerException("[ZeroSoftwareResultsController][submit] - Could not remove user filters")
     }
   }
