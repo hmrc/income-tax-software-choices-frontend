@@ -85,8 +85,11 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
   }
 
   private def backLinkUrl(zeroResults: Boolean): String = {
-   if (zeroResults) routes.ZeroSoftwareResultsController.show().url
-   else routes.CheckYourAnswersController.show().url
+   if (zeroResults) {
+     routes.ZeroSoftwareResultsController.show().url
+   } else {
+     routes.CheckYourAnswersController.show().url
+   }
   }
 
 }
