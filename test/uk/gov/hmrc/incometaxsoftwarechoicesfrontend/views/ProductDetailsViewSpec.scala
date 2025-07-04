@@ -270,7 +270,7 @@ class ProductDetailsViewSpec extends ViewSpec {
   }
 
   private def page(vendorModel: SoftwareVendorModel) =
-    productDetailsPage(vendorModel)
+    productDetailsPage(vendorModel, zeroResults = false)
 
   private def createAndParseDocument(vendorModel: SoftwareVendorModel): Document =
     Jsoup.parse(page(vendorModel).body)

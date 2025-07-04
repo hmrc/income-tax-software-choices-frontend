@@ -44,7 +44,7 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase {
       Then("Should return SEE_OTHER to the show page")
       response should have(
         httpStatus(SEE_OTHER),
-        redirectURI(routes.SearchSoftwareController.show.url)
+        redirectURI(routes.SearchSoftwareController.show().url)
       )
     }
   }

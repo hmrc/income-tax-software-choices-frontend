@@ -53,9 +53,9 @@ class CheckYourAnswersController @Inject()(view: CheckYourAnswersView,
       vendors = softwareChoicesService.getVendors(None, vendorFilters).vendors
     } yield {
       if (vendors.isEmpty) {
-        Redirect(routes.CheckYourAnswersController.show())
+        Redirect(routes.ZeroSoftwareResultsController.show())
       } else {
-        Redirect(routes.SearchSoftwareController.show)
+        Redirect(routes.SearchSoftwareController.show())
       }
     }
   }

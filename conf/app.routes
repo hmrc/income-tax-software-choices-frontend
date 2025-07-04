@@ -17,15 +17,18 @@ POST        /other-items                         uk.gov.hmrc.incometaxsoftwarech
 GET         /accounting-period                   uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.AccountingPeriodController.show(editMode: Boolean ?= false)
 POST        /accounting-period                   uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.AccountingPeriodController.submit(editMode: Boolean ?= false)
 
-GET         /unsupported-accounting-period       uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.UnsupportedAccountingPeriodController.show
-
-GET         /                                    uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SearchSoftwareController.show
-POST        /                                    uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SearchSoftwareController.search
-GET         /clear                               uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SearchSoftwareController.clear
-
-GET         /product-details/*software           uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.ProductDetailsController.show(software: String)
-
-GET         /assets/*file                        controllers.Assets.versioned(path = "/public", file: Asset)
-
 GET         /check-your-answers                  uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.CheckYourAnswersController.show()
 POST        /check-your-answers                  uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.CheckYourAnswersController.submit()
+
+GET         /zero-software-results               uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.ZeroSoftwareResultsController.show()
+POST        /zero-software-results               uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.ZeroSoftwareResultsController.submit()
+
+GET         /unsupported-accounting-period       uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.UnsupportedAccountingPeriodController.show
+
+GET         /                                    uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SearchSoftwareController.show(zeroResults: Boolean ?= false)
+POST        /                                    uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SearchSoftwareController.search(zeroResults: Boolean ?= false)
+GET         /clear                               uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SearchSoftwareController.clear(zeroResults: Boolean ?= false)
+
+GET         /product-details/*software           uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.ProductDetailsController.show(software: String, zeroResults: Boolean ?= false)
+
+GET         /assets/*file                        controllers.Assets.versioned(path = "/public", file: Asset)

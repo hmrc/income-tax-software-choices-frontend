@@ -34,6 +34,13 @@ business-income.foreign-property = Foreign property
 
 business-income.error.non-empty         = Select business income or business incomes
 
+# Zero Results page
+zero-results.title = There is no all-in-one software product to meet your needs
+zero-results.heading = There is no all-in-one software product to meet your needs
+zero-results.para1 = You may be able to find more than one software product that works together.
+zero-results.para2 = You’ll need to make sure that the combined products let you send quarterly updates and your tax return.
+zero-results.para3 = If you use an agent or accountant, talk to them about what software you need.
+
 # Other Items page
 other-items.title = What else do you need to tell HMRC?
 other-items.legend = What else do you need to tell HMRC?

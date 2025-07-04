@@ -17,7 +17,6 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services
 
 import play.api.libs.json.{Reads, Writes}
-import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{UserAnswers, UserFilters, VendorFilter}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.queries._
@@ -58,13 +57,29 @@ class PageAnswersService @Inject()(userFiltersRepository: UserFiltersRepository,
   def saveFiltersFromAnswers(id: String): Future[Seq[VendorFilter]] = {
     userFiltersRepository.get(id).flatMap {
       case Some(userFilters) =>
-        val vendorFilters = userPages.flatMap(page => userFilters.answers.map(_.data).map(page.extractVendorFilters).getOrElse(Seq.empty))
+        val vendorFilters = getFiltersFromAnswers(userFilters.answers)
         userFiltersRepository.set(userFilters.copy(finalFilters = vendorFilters)) map { _ =>
           vendorFilters
         }
       case None =>
         Future.successful(Seq.empty[VendorFilter])
     }
+  }
+
+  def removePageFilters(id: String): Future[Boolean] = {
+    userFiltersRepository.get(id).flatMap {
+      case Some(userFilters) => {
+        val filtersFromAnswers = getFiltersFromAnswers(userFilters.answers)
+        userFiltersRepository.set(userFilters.copy(finalFilters = userFilters.finalFilters.filterNot(x=>filtersFromAnswers.contains(x))))
+      }
+      case None => {
+        Future.successful(false)
+      }
+    }
+  }
+
+  def getFiltersFromAnswers(userAnswers: Option[UserAnswers]): Seq[VendorFilter] = {
+    userPages.flatMap(page => userAnswers.map(_.data).map(page.extractVendorFilters).getOrElse(Seq.empty))
   }
 
 }

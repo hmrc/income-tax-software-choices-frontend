@@ -29,7 +29,7 @@
   govukSummaryList : GovukSummaryList
 )
 
-@(softwareVendors: SoftwareVendors)(implicit messages: Messages)
+@(softwareVendors: SoftwareVendors, zeroResults: Boolean)(implicit messages: Messages)
 
 @customSummaryListRow(key: String, filtersAvailable: Seq[VendorFilter]) = @{
 
@@ -119,7 +119,7 @@
       classes = "govuk-summary-list--no-border"
     ))
     <p class="govuk-body">
-      <a href="@{ProductDetailsController.show(URLEncoder.encode(vendor.name, "UTF-8"))}" class="govuk-link">
+      <a href="@{ProductDetailsController.show(URLEncoder.encode(vendor.name, "UTF-8"), zeroResults)}" class="govuk-link">
         @messages("search-software.vendor-visit-link", vendor.name)
       </a>
     </p>
