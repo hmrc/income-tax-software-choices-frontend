@@ -81,7 +81,7 @@ class UserTypeControllerISpec extends ComponentSpecBase with BeforeAndAfterEach 
 
         res should have(
           httpStatus(SEE_OTHER),
-          redirectURI(routes.SearchSoftwareController.show.url)
+          redirectURI(routes.SearchSoftwareController.show().url)
         )
         getPageData(SessionId, UserTypesPage.toString).size shouldBe 1
       }

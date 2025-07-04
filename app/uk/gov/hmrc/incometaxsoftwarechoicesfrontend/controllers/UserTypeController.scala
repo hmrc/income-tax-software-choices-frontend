@@ -36,26 +36,26 @@ class UserTypeController @Inject()(view: UserTypePage,
                                   )(implicit ec: ExecutionContext,
                                     mcc: MessagesControllerComponents) extends BaseFrontendController(mcc) {
 
-  def show: Action[AnyContent] = Action.async { implicit request =>
+  def show(): Action[AnyContent] = Action.async { implicit request =>
     val sessionId = request.session.get("sessionId").getOrElse("")
     for (
       pageAnswers <- pageAnswersService.getPageAnswers(sessionId, UserTypesPage)
     ) yield {
       Ok(view(
         userTypeForm = UserTypeForm.userTypeForm.fill(pageAnswers),
-        postAction = routes.UserTypeController.submit,
+        postAction = routes.UserTypeController.submit(),
         backUrl = appConfig.guidance
       ))
     }
   }
 
-  def submit: Action[AnyContent] = Action.async { implicit request =>
+  def submit(): Action[AnyContent] = Action.async { implicit request =>
     userTypeForm.bindFromRequest().fold(
       formWithErrors => {
         Future.successful(
           BadRequest(view(
             userTypeForm = formWithErrors,
-            postAction = routes.UserTypeController.submit,
+            postAction = routes.UserTypeController.submit(),
             backUrl = appConfig.guidance
           ))
         )
@@ -66,7 +66,7 @@ class UserTypeController @Inject()(view: UserTypePage,
           case true =>
             typeOfUser match {
               case SoleTraderOrLandlord => Future.successful(Redirect(routes.BusinessIncomeController.show()))
-              case Agent => Future.successful(Redirect(routes.SearchSoftwareController.show))
+              case Agent => Future.successful(Redirect(routes.SearchSoftwareController.show()))
             }
           case false => throw new InternalServerException("[UserTypesController][submit] - Could not save type of user")
         }
