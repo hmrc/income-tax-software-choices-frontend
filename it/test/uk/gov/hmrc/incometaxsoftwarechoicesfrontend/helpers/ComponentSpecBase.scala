@@ -64,19 +64,11 @@ trait ComponentSpecBase extends AnyWordSpec
 
   object SoftwareChoicesFrontend {
 
-    def startPage(): WSResponse = get("/")
+    def index(): WSResponse = get("/")
 
     def clear(): WSResponse = get("/clear")
 
     def productDetails(name: String): WSResponse = get(s"/product-details/$name")
-
-    def submitSearch(search: FiltersFormModel): WSResponse = post("/") {
-      FiltersForm.form.fill(search).data.map { case (k, v) => (k, Seq(v)) }
-    }
-
-    def submitAjaxSearch(search: FiltersFormModel): WSResponse = post("/ajax")(
-      FiltersForm.form.fill(search).data.map { case (k, v) => (k, Seq(v)) }
-    )
 
     def getBusinessIncome: WSResponse = get("/business-income")
 
@@ -131,6 +123,12 @@ trait ComponentSpecBase extends AnyWordSpec
     def getCheckYourAnswers: WSResponse = get("/check-your-answers")
 
     def postCheckYourAnswers(): WSResponse = post("/check-your-answers")(Map.empty)
+
+    def getSoftwareResults: WSResponse = get("/software-results")
+
+    def submitSoftwareSearch(search: FiltersFormModel): WSResponse = post("/software-results") {
+      FiltersForm.form.fill(search).data.map { case (k, v) => (k, Seq(v)) }
+    }
 
     def getZeroSoftwareResults(): WSResponse = get("/zero-software-results")
 
