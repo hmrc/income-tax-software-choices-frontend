@@ -23,10 +23,10 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.FreeVers
 
 class SearchSoftwareControllerISpec extends ComponentSpecBase {
 
-  "GET /making-tax-digital-income-tax-software" should {
+  s"GET ${routes.SearchSoftwareController.show().url}" should {
     "respond with 200 status" in {
       When("GET / is called")
-      val response = SoftwareChoicesFrontend.startPage()
+      val response = SoftwareChoicesFrontend.getSoftwareResults
 
       Then("Should return OK with the software search page")
       response should have(
@@ -36,7 +36,7 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase {
     }
   }
 
-  "GET /making-tax-digital-income-tax-software/clear" should {
+  s"GET ${routes.SearchSoftwareController.clear().url}" should {
     "redirect to the show page" in {
       When("GET / is called")
       val response = SoftwareChoicesFrontend.clear()
@@ -49,10 +49,10 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase {
     }
   }
 
-  "POST /making-tax-digital-income-tax-software" should {
+  s"POST ${routes.SearchSoftwareController.search().url}" should {
     "respond with 200 status" in {
       When("GET / is called")
-      val response = SoftwareChoicesFrontend.submitSearch(FiltersFormModel(Some(""), Seq(FreeVersion)))
+      val response = SoftwareChoicesFrontend.submitSoftwareSearch(FiltersFormModel(Some(""), Seq(FreeVersion)))
 
       Then("Should return OK with the software search page")
       response should have(
@@ -63,7 +63,7 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase {
 
     "respond with 400 status" in {
       When("GET / is called")
-      val response = SoftwareChoicesFrontend.submitSearch(FiltersFormModel(Some("test" * 65)))
+      val response = SoftwareChoicesFrontend.submitSoftwareSearch(FiltersFormModel(Some("test" * 65)))
 
       Then("Should return BAD_REQUEST")
       response should have(

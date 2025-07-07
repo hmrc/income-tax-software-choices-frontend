@@ -2,6 +2,8 @@
 
 ->          /hmrc-frontend                       hmrcfrontend.Routes
 
+GET         /                                    uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.IndexController.index
+
 GET         /type-of-user                       uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.UserTypeController.show()
 POST        /type-of-user                       uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.UserTypeController.submit()
 
@@ -25,8 +27,8 @@ POST        /zero-software-results               uk.gov.hmrc.incometaxsoftwarech
 
 GET         /unsupported-accounting-period       uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.UnsupportedAccountingPeriodController.show
 
-GET         /                                    uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SearchSoftwareController.show(zeroResults: Boolean ?= false)
-POST        /                                    uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SearchSoftwareController.search(zeroResults: Boolean ?= false)
+GET         /software-results                    uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SearchSoftwareController.show(zeroResults: Boolean ?= false)
+POST        /software-results                    uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SearchSoftwareController.search(zeroResults: Boolean ?= false)
 GET         /clear                               uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SearchSoftwareController.clear(zeroResults: Boolean ?= false)
 
 GET         /product-details/*software           uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.ProductDetailsController.show(software: String, zeroResults: Boolean ?= false)
