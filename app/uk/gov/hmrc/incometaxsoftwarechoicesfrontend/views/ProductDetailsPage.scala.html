@@ -33,23 +33,23 @@
 )(implicit appConfig: AppConfig)
 @(softwareVendor: SoftwareVendorModel, zeroResults: Boolean)(implicit request: Request[_], messages: Messages)
 
-@mainTemplate(title = softwareVendor.name, backLink = Some(routes.SearchSoftwareController.show(zeroResults).url)) {
+@mainTemplate(title = softwareVendor.name, backLink = Some(routes.SearchSoftwareController.show(zeroResults).url), isFullWidth = true) {
 
     <h1 class="govuk-heading-xl">@{
         softwareVendor.name
     }</h1>
 
     <p class="govuk-body-l">@messages("product-details.contact-details.heading")</p>
-    @contactDetailsList
 
-    <h2 class="govuk-heading-l">@messages("product-details.details.heading")</h2>
-    @table(featuresProvidedGroup, "features-provided")
-    @table(incomeSourcesGroup, "business-income")
-    @table(personalIncomeSourcesGroup, "personal-income")
-    @table(deductionsGroup, "deductions")
-    @table(pensionsGroup, "pensions")
-    @table(allowancesGroup, "allowances")
+    <div class="govuk-!-width-two-thirds govuk-!-padding-0">
+        @contactDetailsList
 
+        <h2 class="govuk-heading-l">@messages("product-details.details.heading")</h2>
+        @table(featuresProvidedGroup, "features-provided")
+        @table(incomeSourcesGroup, "business-income")
+        @table(personalIncomeSourcesGroup, "other-income")
+        @table(deductionsGroup, "other-items")
+    </div>
 }
 
 @contactDetailsList = {
@@ -62,10 +62,6 @@
             ))))
         ))
     ))
-}
-
-@link(href: String, text: String) = {
-    <a class="govuk-link" href="@href">@text</a>
 }
 
 @featuresRow(filterGroup: List[VendorFilter], section: String) = @{
