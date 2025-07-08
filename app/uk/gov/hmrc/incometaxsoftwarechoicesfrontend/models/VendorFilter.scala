@@ -321,4 +321,9 @@ object VendorFilterGroups {
     (allowances, "allowances")
   )
 
+  val personalIncomeSourcesGroup: List[VendorFilter] = List(ConstructionIndustryScheme, CapitalGainsTax, Employment, ForeignIncome, UkDividends, UkInterest)
+  val deductionsGroup: List[VendorFilter] = List(CharitableGiving, StudentLoans, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge)
+  val pensionsGroup: List[VendorFilter] = List(StatePensionIncome, PrivatePensionIncome, PaymentsIntoAPrivatePension)
+  val allowancesGroup: List[VendorFilter] = List(MarriageAllowance)
+
 }

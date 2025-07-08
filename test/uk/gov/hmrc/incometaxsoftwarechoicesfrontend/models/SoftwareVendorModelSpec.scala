@@ -34,35 +34,6 @@ class SoftwareVendorModelSpec extends PlaySpec {
       VendorFilter.Motor.key,
       VendorFilter.Cognitive.key
     ),
-    "incomeAndDeductions" -> Json.arr(
-      IncomeAndDeduction.BlindPersonsAllowance.key,
-      IncomeAndDeduction.CapitalGainsTax.key,
-      IncomeAndDeduction.ComplexPartnerships.key,
-      IncomeAndDeduction.ConstructionIndustryScheme.key,
-      IncomeAndDeduction.Employment.key,
-      IncomeAndDeduction.ForeignIncome.key,
-      IncomeAndDeduction.GiftAid.key,
-      IncomeAndDeduction.HighIncomeChildBenefit.key,
-      IncomeAndDeduction.Investments.key,
-      IncomeAndDeduction.LloydsUnderwriters.key,
-      IncomeAndDeduction.MarriageAllowance.key,
-      IncomeAndDeduction.MarriedAllowance.key,
-      IncomeAndDeduction.MemberOfParliament.key,
-      IncomeAndDeduction.MinisterOfReligion.key,
-      IncomeAndDeduction.PartnerIncome.key,
-      IncomeAndDeduction.PAYE.key,
-      IncomeAndDeduction.PensionContributions.key,
-      IncomeAndDeduction.Pensions.key,
-      IncomeAndDeduction.PropertyBusiness.key,
-      IncomeAndDeduction.ResidenceAndRemittance.key,
-      IncomeAndDeduction.SAAdditionalIncome.key,
-      IncomeAndDeduction.SelfEmployment.key,
-      IncomeAndDeduction.SimplePartnerships.key,
-      IncomeAndDeduction.StatePension.key,
-      IncomeAndDeduction.StudentLoans.key,
-      IncomeAndDeduction.UKDividends.key,
-      IncomeAndDeduction.UKInterest.key
-    ),
     "accessibilityStatementLink" -> "software-vendor-accessibility.com"
   )
 
@@ -80,11 +51,6 @@ class SoftwareVendorModelSpec extends PlaySpec {
         Json.fromJson[SoftwareVendorModel](
           fullJson - "filters" ++ Json.obj("filters" -> Json.arr())
         ) mustBe JsSuccess(fullSoftwareVendorModel.copy(filters = Seq.empty[VendorFilter]))
-      }
-      "the json has no income and deduction coverage" in {
-        Json.fromJson[SoftwareVendorModel](
-          fullJson - "incomeAndDeductions" ++ Json.obj("incomeAndDeductions" -> Json.arr())
-        ) mustBe JsSuccess(fullSoftwareVendorModel.copy(incomeAndDeductions = Seq.empty[IncomeAndDeduction]))
       }
       "there is no accessibility statement link" in {
         Json.fromJson[SoftwareVendorModel](
@@ -105,10 +71,6 @@ class SoftwareVendorModelSpec extends PlaySpec {
         val json: JsObject = fullJson - "filters"
         Json.fromJson[SoftwareVendorModel](json) mustBe JsError(JsPath \ "filters", "error.path.missing")
       }
-      "incomeAndDeductions is missing" in {
-        val json: JsObject = fullJson - "incomeAndDeductions"
-        Json.fromJson[SoftwareVendorModel](json) mustBe JsError(JsPath \ "incomeAndDeductions", "error.path.missing")
-      }
     }
 
 
@@ -119,7 +81,6 @@ class SoftwareVendorModelSpec extends PlaySpec {
         phone = None,
         website = "website",
         filters = vendorFilters,
-        incomeAndDeductions = Seq.empty,
         accessibilityStatementLink = None
       )
 

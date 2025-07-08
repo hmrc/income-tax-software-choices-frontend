@@ -605,16 +605,14 @@ private object SearchSoftwarePageContent {
           VendorFilter.Hearing,
           VendorFilter.Motor,
           VendorFilter.Cognitive
-        ),
-        incomeAndDeductions = Seq.empty[IncomeAndDeduction]
+        )
       ),
       SoftwareVendorModel(
         name = "test software vendor two",
         email = Some("test@software-vendor-name-two.com"),
         phone = Some("22222 222 222"),
         website = "software-vendor-name-two.com",
-        filters = Seq.empty[VendorFilter],
-        incomeAndDeductions = Seq.empty[IncomeAndDeduction]
+        filters = Seq.empty[VendorFilter]
       )
     )
   )
