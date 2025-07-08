@@ -19,7 +19,6 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views
 import org.jsoup.Jsoup
 import org.jsoup.nodes.{Document, Element}
 import org.scalatest.Assertion
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.IncomeAndDeduction._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareVendorModel
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.ProductDetailsPage
@@ -34,19 +33,15 @@ class ProductDetailsViewSpec extends ViewSpec {
     phone = Some("00000 000 000"),
     website = "software-vendor-name.com",
     filters = Seq.empty,
-    incomeAndDeductions = Seq.empty,
     accessibilityStatementLink = None
   )
 
   private val softwareVendorModelFull = softwareVendorModelBase
     .copy(name = "abc full")
-    .copy(incomeAndDeductions = incomeAndDeductionKeyToIncomeAndDeduction.values.toList) // All income and deductions
     .copy(filters = filterKeyToFilter.values.toList) // All filters
 
   private val softwareVendorModelMinimal = softwareVendorModelBase
     .copy(name = "abc minimal")
-    .copy(incomeAndDeductions = Seq(
-      UKInterest))
     .copy(filters = Seq(SoleTrader))
 
   "ProductDetailsPage" when {
@@ -187,7 +182,7 @@ class ProductDetailsViewSpec extends ViewSpec {
           checkRow(table(3), 3, ProductDetailsPage.paye, included = false)
           checkRow(table(3), 4, ProductDetailsPage.foreignIncome, included = false)
           checkRow(table(3), 5, ProductDetailsPage.ukDividends, included = false)
-          checkRow(table(3), 6, ProductDetailsPage.ukInterest, included = true)
+          checkRow(table(3), 6, ProductDetailsPage.ukInterest, included = false)
           checkRow(table(4), 1, ProductDetailsPage.charitableGiving, included = false)
           checkRow(table(4), 2, ProductDetailsPage.student, included = false)
           checkRow(table(4), 3, ProductDetailsPage.class2NIC, included = false)

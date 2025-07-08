@@ -304,6 +304,13 @@ product-details.details.cognitive              = Anawsterau gwybyddol
 product-details.details.welsh                  = Cymraeg
 product-details.details.english                = Saesneg
 
+product-details.personal-income.employment = Employment (PAYE)
+product-details.deductions.voluntary-class-2-national-insurance = Voluntary Class 2 National Insurance
+product-details.deductions.high-income-child-benefit-charge = High Income Child Benefit Charge
+product-details.pensions.state-pension-income = State pension
+product-details.pensions.private-pension-income = Private pension incomes
+product-details.pensions.payments-into-a-private-pension = Private pension contributions
+
 # Accessibility statement section
 
 product-details.accessibility-statement.heading = Hygyrchedd

@@ -24,7 +24,6 @@ case class SoftwareVendorModel(
                                 phone: Option[String],
                                 website: String,
                                 filters: Seq[VendorFilter],
-                                incomeAndDeductions: Seq[IncomeAndDeduction],
                                 accessibilityStatementLink: Option[String] = None) {
   def orderedFilterSubset(subsetFilters: Set[VendorFilter]): Seq[VendorFilter] = {
     val filtersFromVendor = filters.filter(filter => subsetFilters.contains(filter)).toSet

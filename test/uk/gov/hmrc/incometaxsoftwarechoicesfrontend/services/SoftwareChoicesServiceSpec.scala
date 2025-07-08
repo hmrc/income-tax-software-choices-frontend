@@ -111,7 +111,7 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
 
       "correctly filter vendors by vendor name in disordered sections with whitespace" in new Setup {
         val vendors: Seq[SoftwareVendorModel] = Seq("one two three", "two three four", "five four three two one")
-          .map(s => SoftwareVendorModel(s, email = None, phone = None, website = "", filters = Seq.empty, incomeAndDeductions = Seq.empty))
+          .map(s => SoftwareVendorModel(s, email = None, phone = None, website = "", filters = Seq.empty))
         private val searchTerms = s"one  \t   three    two"
         SoftwareChoicesService.matchSearchTerm(Some(searchTerms))(vendors).length mustBe 2
       }
