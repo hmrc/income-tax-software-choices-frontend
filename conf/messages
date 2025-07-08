@@ -231,38 +231,38 @@ product-details.details.heading = Software features
 
 product-details.features-provided.heading = Features provided
 product-details.features-provided.quarterly-updates = Quarterly updates
-product-details.features-provided.calendar-update-periods = Calendar update periods
+product-details.features-provided.calendar-update-periods = Calendar update period (1 April to 31 March)
 product-details.features-provided.bridging = Bridging
 product-details.features-provided.record-keeping = Record keeping
-product-details.features-provided.standard-update-periods = Standard update periods
+product-details.features-provided.standard-update-periods = Standard update period (6 April to 5 April)
 product-details.features-provided.tax-return = Self Assessment tax return
+product-details.features-provided.agent = Agent software
+product-details.features-provided.individual = Individual software
+product-details.features-provided.free-version = Free version
 
 product-details.business-income.heading = Business income sources
 product-details.business-income.sole-trader = Sole trader
 product-details.business-income.uk-property = UK property
 product-details.business-income.overseas-property = Foreign property
 
-product-details.personal-income.heading = Personal income sources
-product-details.personal-income.construction-industry-scheme = Construction Industry Scheme
-product-details.personal-income.capital-gains-tax = Capital Gains Tax
-product-details.personal-income.paye = Employment (PAYE)
-product-details.personal-income.foreign-income = Foreign Income
-product-details.personal-income.uk-dividends = UK dividends
-product-details.personal-income.uk-interest = UK interest
+product-details.other-income.heading = Other income sources
+product-details.other-income.construction-industry-scheme = Construction Industry Scheme
+product-details.other-income.employment = Employment (PAYE)
+product-details.other-income.foreign-interest = Foreign interest
+product-details.other-income.foreign-dividends = Foreign dividends
+product-details.other-income.uk-dividends = UK dividends
+product-details.other-income.uk-interest = UK interest
+product-details.other-income.state-pension-income = State pension
+product-details.other-income.private-pension-income = Private pension incomes
 
-product-details.deductions.heading = Deductions
-product-details.deductions.charitable-giving = Charitable giving
-product-details.deductions.student-loans = Student Loan
-product-details.deductions.class-2-national-insurance = Voluntary Class 2 National Insurance
-product-details.deductions.high-income-child-benefit = High Income Child Benefit Charge
-
-product-details.pensions.heading = Pensions
-product-details.pensions.state-pension = State pension
-product-details.pensions.pensions = Private pension incomes
-product-details.pensions.pension-contributions = Private pension contributions
-
-product-details.allowances.heading = Allowances
-product-details.allowances.marriage-allowance = Marriage Allowance
+product-details.other-items.heading = Other items
+product-details.other-items.capital-gains-tax = Capital Gains Tax
+product-details.other-items.charitable-giving = Charitable giving
+product-details.other-items.student-loans = Student Loan
+product-details.other-items.voluntary-class-2-national-insurance = Voluntary Class 2 National Insurance
+product-details.other-items.high-income-child-benefit-charge = High Income Child Benefit Charge
+product-details.other-items.payments-into-a-private-pension = Private pension contributions
+product-details.other-items.marriage-allowance = Marriage Allowance
 
 product-details.status.heading = Status
 product-details.status.included = Included
@@ -303,13 +303,6 @@ product-details.details.motor = Motor difficulties
 product-details.details.cognitive = Cognitive impairments
 product-details.details.welsh = Welsh
 product-details.details.english = English
-
-product-details.personal-income.employment = Employment (PAYE)
-product-details.deductions.voluntary-class-2-national-insurance = Voluntary Class 2 National Insurance
-product-details.deductions.high-income-child-benefit-charge = High Income Child Benefit Charge
-product-details.pensions.state-pension-income = State pension
-product-details.pensions.private-pension-income = Private pension incomes
-product-details.pensions.payments-into-a-private-pension = Private pension contributions
 
 product-details.accessibility-statement.heading = Accessibility
 product-details.accessibility-statement.key = Accessibility Statement

@@ -197,6 +197,16 @@ object VendorFilter {
     override val priority: Int = 1
   }
 
+  case object Agent extends VendorFilter {
+    override val key: String = "agent"
+    override val priority: Int = 1
+  }
+
+  case object Individual extends VendorFilter {
+    override val key: String = "individual"
+    override val priority: Int = 1
+  }
+
   val filterKeyToFilter: Map[String, VendorFilter] = Seq(
     FreeVersion,
     QuarterlyUpdates,
@@ -228,7 +238,9 @@ object VendorFilter {
     StatePensionIncome,
     PrivatePensionIncome,
     PaymentsIntoAPrivatePension,
-    MarriageAllowance
+    MarriageAllowance,
+    Agent,
+    Individual
   ).map(value => value.key -> value).toMap
 
   implicit val reads: Reads[VendorFilter] = __.read[String] map filterKeyToFilter
@@ -301,7 +313,9 @@ object VendorFilterGroups {
   )
 
   // product details page groups //
-  val featuresProvidedGroup: List[VendorFilter] = List(RecordKeeping, Bridging, QuarterlyUpdates, TaxReturn, StandardUpdatePeriods, CalendarUpdatePeriods)
+  val featuresProvidedGroup: List[VendorFilter] = List(
+    FreeVersion, RecordKeeping, Bridging, QuarterlyUpdates, TaxReturn, Agent, Individual, StandardUpdatePeriods, CalendarUpdatePeriods
+  )
   val incomeSourcesGroup: List[VendorFilter] = List(
       SoleTrader,
       UkProperty,
@@ -321,9 +335,9 @@ object VendorFilterGroups {
     (allowances, "allowances")
   )
 
-  val personalIncomeSourcesGroup: List[VendorFilter] = List(ConstructionIndustryScheme, CapitalGainsTax, Employment, ForeignIncome, UkDividends, UkInterest)
-  val deductionsGroup: List[VendorFilter] = List(CharitableGiving, StudentLoans, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge)
-  val pensionsGroup: List[VendorFilter] = List(StatePensionIncome, PrivatePensionIncome, PaymentsIntoAPrivatePension)
-  val allowancesGroup: List[VendorFilter] = List(MarriageAllowance)
+  val personalIncomeSourcesGroup: List[VendorFilter] = List(
+    ConstructionIndustryScheme, Employment, ForeignInterest, ForeignDividends, UkDividends, UkInterest, StatePensionIncome, PrivatePensionIncome)
+  val deductionsGroup: List[VendorFilter] = List(
+    CapitalGainsTax, CharitableGiving, StudentLoans, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge, PaymentsIntoAPrivatePension, MarriageAllowance)
 
 }
