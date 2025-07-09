@@ -268,6 +268,24 @@ product-details.status.heading = Status
 product-details.status.included = Included
 product-details.status.not-included = Not Included
 
+product-details.software-spec.heading = Software specifications
+
+product-details.software-spec.software-type = Math o feddalwedd
+product-details.software-spec.compatible-with = Compatible with
+product-details.software-spec.mobile-app = Ap Ffon Symudol
+product-details.software-spec.language = Language
+
+product-details.software-type.desktop-based = Desktop application
+
+product-details.compatible-with.microsoft-windows = Microsoft Windows
+product-details.compatible-with.mac-os = Mac OS
+product-details.compatible-with.linux = Linux
+
+product-details.mobile-app.android = Android
+product-details.mobile-app.apple-ios = Apple iOS
+
+product-details.language.english = Saesneg
+
 product-details.details.pricing                = Prisio
 product-details.details.suitable-for           = Addas i
 product-details.details.operating-system       = System weithredu

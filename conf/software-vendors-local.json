@@ -36,7 +36,14 @@
         "state-pension-income",
         "private-pension-income",
         "payments-into-a-private-pension",
-        "marriage-allowance"
+        "marriage-allowance",
+        "desktop-based",
+        "microsoft-windows",
+        "mac-os",
+        "linux",
+        "android",
+        "apple-ios",
+        "english"
       ],
       "incomeAndDeductions": [
         "blind-persons-allowance",
