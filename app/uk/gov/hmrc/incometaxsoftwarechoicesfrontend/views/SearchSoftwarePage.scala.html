@@ -19,6 +19,7 @@
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.viewmodels.SoftwareChoicesResultsViewModel
 @import uk.gov.hmrc.govukfrontend.views.html.components._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.{MainTemplate, SoftwareSearchStatusTemplate, SoftwareFiltersTemplate, SoftwareVendorsTemplate}
 @import views.html.helper.CSPNonce
@@ -37,7 +38,7 @@
   languageUtils: LanguageUtils
 )(implicit appConfig: AppConfig)
 
-@(softwareVendors: SoftwareVendors, searchForm: Form[FiltersFormModel], postAction: Call, clearAction: Call, backUrl: String, zeroResults: Boolean)(implicit request: Request[_], messages: Messages)
+@(viewModel: SoftwareChoicesResultsViewModel, searchForm: Form[FiltersFormModel], postAction: Call, clearAction: Call, backUrl: String)(implicit request: Request[_], messages: Messages)
 
 @mainTemplate(title = messages("search-software.title"), backLink = Some(backUrl), optForm = Some(searchForm), isFullWidth = true) {
 
@@ -96,15 +97,15 @@
 
       <div class="govuk-grid-column-two-thirds">
         <div id="vendor-count">
-          @softwareSearchStatusTemplate(softwareVendors.vendors)
+          @softwareSearchStatusTemplate(viewModel.allInOneVendors.vendors)
         </div>
 
         <div id="software-vendor-list">
-          @softwareVendorsTemplate(softwareVendors, zeroResults)
+          @softwareVendorsTemplate(viewModel.allInOneVendors, viewModel.zeroResults)
         </div>
 
         <p id = "lastUpdated" class="govuk-body-s govuk-!-padding-top-4">
-          @messages("search-software.last-update"): <span class="govuk-!-font-weight-bold">@languageUtils.Dates.formatDateAbbrMonth(softwareVendors.lastUpdated)</span>
+          @messages("search-software.last-update"): <span class="govuk-!-font-weight-bold">@languageUtils.Dates.formatDateAbbrMonth(viewModel.allInOneVendors.lastUpdated)</span>
         </p>
 
       </div>

@@ -27,6 +27,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes.ProductDe
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.viewmodels.SoftwareChoicesResultsViewModel
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SearchSoftwarePage
 
 import java.net.URLEncoder
@@ -416,9 +417,9 @@ class SearchSoftwareViewSpec extends ViewSpec {
 
 object SearchSoftwareViewSpec extends ViewSpec {
 
-  def page(softwareVendors: SoftwareVendors, hasError: Boolean): HtmlFormat.Appendable =
+  def page(model: SoftwareChoicesResultsViewModel, hasError: Boolean): HtmlFormat.Appendable =
     searchSoftwarePage(
-      softwareVendors,
+      model,
       if (hasError) {
         FiltersForm.form.withError(testFormError)
       } else {
@@ -426,13 +427,13 @@ object SearchSoftwareViewSpec extends ViewSpec {
       },
       Call("POST", "/test-url"),
       Call("POST", "/test-url"),
-      "/test-back-url",
-      zeroResults = false
+      "/test-back-url"
     )
 
   def getDocument(hasResults: Boolean, hasError: Boolean): Document = {
     val results = if (hasResults) SearchSoftwarePageContent.softwareVendorsResults else SearchSoftwarePageContent.softwareVendorsNoResults
-    Jsoup.parse(page(results, hasError).body)
+    val model = SoftwareChoicesResultsViewModel(allInOneVendors = results)
+    Jsoup.parse(page(model, hasError).body)
   }
 
   def getCheckboxItem(checkboxGroup: Element, n: Int): Element = checkboxGroup

@@ -24,6 +24,7 @@ case class SoftwareVendors(lastUpdated: LocalDate, vendors: Seq[SoftwareVendorMo
 
 object SoftwareVendors {
   implicit val reads: Reads[SoftwareVendors] = Json.reads[SoftwareVendors]
+  def empty: SoftwareVendors = SoftwareVendors(LocalDate.now(), Seq.empty)
 }
 
 
