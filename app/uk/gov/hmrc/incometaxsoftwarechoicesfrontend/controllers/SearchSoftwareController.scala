@@ -21,9 +21,10 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import play.twirl.api.Html
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FiltersFormModel, SoftwareVendors, UserFilters}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FiltersFormModel, UserFilters}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.{PageAnswersService, SoftwareChoicesService}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.viewmodels.SoftwareChoicesResultsViewModel
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SearchSoftwarePage
 
 import javax.inject.{Inject, Singleton}
@@ -39,15 +40,28 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
                                          implicit val ec: ExecutionContext) extends BaseFrontendController(mcc) {
 
   def show(zeroResults: Boolean): Action[AnyContent] = Action { implicit request =>
-    Ok(view(softwareChoicesService.getVendors(), FiltersForm.form, zeroResults))
+    val model = SoftwareChoicesResultsViewModel(
+      allInOneVendors = softwareChoicesService.getVendors(),
+      zeroResults = zeroResults
+    )
+    Ok(view(model, FiltersForm.form))
    }
 
   def search(zeroResults: Boolean): Action[AnyContent] = Action.async { implicit request =>
     FiltersForm.form.bindFromRequest().fold(
-      error => Future.successful(BadRequest(view(softwareChoicesService.getVendors(), error, zeroResults))),
+      error => {
+        val model = SoftwareChoicesResultsViewModel(
+          allInOneVendors = softwareChoicesService.getVendors(),
+          zeroResults = zeroResults
+        )
+        Future.successful(BadRequest(view(model, error)))
+      },
       search => update(search) map { _ =>
-        val vendors = softwareChoicesService.getVendors(search.searchTerm, search.filters)
-        Ok(view(vendors, FiltersForm.form.fill(search), zeroResults))
+        val model = SoftwareChoicesResultsViewModel(
+          allInOneVendors = softwareChoicesService.getVendors(search.searchTerm, search.filters),
+          zeroResults = zeroResults
+        )
+        Ok(view(model, FiltersForm.form.fill(search)))
       }
     )
   }
@@ -71,16 +85,15 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
     }
   }
 
-  private def view(vendors: SoftwareVendors, form: Form[FiltersFormModel], zeroResults: Boolean)
+  private def view(model: SoftwareChoicesResultsViewModel, form: Form[FiltersFormModel])
                   (implicit request: Request[_]): Html = {
 
     searchSoftwarePage(
-      softwareVendors = vendors,
+      viewModel = model,
       searchForm = form,
-      postAction = routes.SearchSoftwareController.search(zeroResults),
-      clearAction = routes.SearchSoftwareController.clear(zeroResults),
-      backUrl = backLinkUrl(zeroResults),
-      zeroResults = zeroResults
+      postAction = routes.SearchSoftwareController.search(model.zeroResults),
+      clearAction = routes.SearchSoftwareController.clear(model.zeroResults),
+      backUrl = backLinkUrl(model.zeroResults)
     )
   }
 
