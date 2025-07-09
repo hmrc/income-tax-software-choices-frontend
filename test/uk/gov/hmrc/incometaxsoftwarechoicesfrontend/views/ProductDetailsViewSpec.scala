@@ -268,6 +268,50 @@ class ProductDetailsViewSpec extends ViewSpec {
         }
       }
     }
+
+    "display software specifications of the vendor" which {
+      val document: Document = createAndParseDocument(softwareVendorModelFull)
+
+      "have a software spec heading" in {
+        document.select("h2").get(1).text shouldBe ProductDetailsPage.softwareSpecHeading
+      }
+
+      "render the correct rows when every spec is present" in {
+        val specList = document.select("dl.govuk-summary-list").get(1)
+        val rows = specList.select(".govuk-summary-list__row")
+        rows.size shouldBe 4
+
+        rows.get(0).select("dt").text() shouldBe ProductDetailsPage.softwareType
+        rows.get(0).select("dd").text() shouldBe ProductDetailsPage.desktopBased
+
+        rows.get(1).select("dt").text() shouldBe ProductDetailsPage.compatibleWith
+        rows.get(1).select("dd").text() shouldBe
+          Seq(
+            ProductDetailsPage.microsoftWindows,
+            ProductDetailsPage.macOs,
+            ProductDetailsPage.linux
+          ).mkString(" ")
+
+        rows.get(2).select("dt").text() shouldBe ProductDetailsPage.mobileApp
+        rows.get(2).select("dd").text() shouldBe
+          Seq(
+            ProductDetailsPage.android,
+            ProductDetailsPage.appleIOS
+          ).mkString(" ")
+
+        rows.get(3).select("dt").text() shouldBe ProductDetailsPage.language
+        rows.get(3).select("dd").text() shouldBe ProductDetailsPage.english
+      }
+
+      "not render the specs section when no specs are present" in {
+        val docEmpty: Document = createAndParseDocument(softwareVendorModelBase)
+        val allSummaryLists = docEmpty.select("dl.govuk-summary-list")
+        allSummaryLists.size shouldBe 1
+
+        val specHeading = ProductDetailsPage.softwareSpecHeading
+        docEmpty.select(s"h2:contains($specHeading)").size shouldBe 0
+      }
+    }
   }
 
   private def page(vendorModel: SoftwareVendorModel) =
@@ -310,7 +354,18 @@ class ProductDetailsViewSpec extends ViewSpec {
     val privatePensionContribution = "Private pension contributions"
     val marriage = "Marriage Allowance"
 
+    val softwareSpecHeading = "Software specifications"
+    val softwareType = "Software type"
+    val compatibleWith = "Compatible with"
+    val mobileApp = "Mobile App"
+    val language = "Language"
+    val desktopBased = "Desktop application"
+    val microsoftWindows = "Microsoft Windows"
+    val macOs = "Mac OS"
+    val linux = "Linux"
+    val android = "Android"
+    val appleIOS = "Apple iOS"
+    val english = "English"
   }
-
 
 }
