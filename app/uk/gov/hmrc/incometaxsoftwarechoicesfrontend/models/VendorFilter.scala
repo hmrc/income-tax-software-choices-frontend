@@ -377,10 +377,10 @@ object VendorFilterGroups {
   )
 
   val incomeSourcesGroup: List[VendorFilter] = List(
-      SoleTrader,
-      UkProperty,
-      OverseasProperty
-    )
+    SoleTrader,
+    UkProperty,
+    OverseasProperty
+  )
 
   val userTypeFilters: Set[VendorFilter] = Set(
     Agent,

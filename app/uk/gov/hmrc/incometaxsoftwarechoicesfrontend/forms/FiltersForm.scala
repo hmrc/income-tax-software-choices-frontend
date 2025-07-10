@@ -24,17 +24,9 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.filterKe
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FiltersFormModel, VendorFilter}
 
 object FiltersForm {
-  val searchTerm = "searchTerm"
   val filters = "filters"
 
   private val searchTermMaxLength = 256
-
-  private val trimmedOptionalText: Mapping[Option[String]] =
-    optional(text)
-      .transform(_.flatMap { value =>
-        val trimmed = value.trim
-        if (trimmed.isEmpty) None else Some(trimmed)
-      }, identity)
 
   def toVendorFilter(list: List[String]): Seq[VendorFilter] = {
     list.flatMap(filterKey => filterKeyToFilter.get(filterKey))

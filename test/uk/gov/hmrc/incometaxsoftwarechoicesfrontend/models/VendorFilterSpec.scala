@@ -17,15 +17,29 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models
 
 import org.scalatestplus.play.PlaySpec
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.Agent
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.Individual
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilterGroups.{accessibilityFilters, compatibility, pricingFilters, softwareForFilters, userTypeFilters}
 
 class VendorFilterSpec extends PlaySpec {
 
   "Vendor Filter Groups" should {
-
     "contain ALL the filters" in {
-      val filters = VendorFilterGroups.allGroups.flatMap(f => f._1) ++ VendorFilterGroups.featuresProvidedGroup
-      val allFilters = VendorFilter.filterKeyToFilter.values
-      allFilters.map(f => filters.contains(f) mustBe true)
+      val filters = Seq(
+        userTypeFilters,
+        pricingFilters,
+        softwareForFilters,
+        compatibility,
+        accessibilityFilters
+      ).flatten
+      Seq(false, true).foreach { isAgent =>
+        val actual = VendorFilterGroups.allGroups(isAgent).flatMap(f => f._1) ++ VendorFilterGroups.featuresProvidedGroup
+        val expected = isAgent match {
+          case true  => filters
+          case false => filters.filter(_ != Agent).filter(_ != Individual)
+        }
+        expected.map(f => actual.contains(f) mustBe true)
+      }
     }
   }
 

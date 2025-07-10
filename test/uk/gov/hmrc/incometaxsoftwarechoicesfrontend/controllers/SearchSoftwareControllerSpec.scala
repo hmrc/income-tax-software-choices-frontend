@@ -58,27 +58,9 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec with BeforeAndAfte
   "search" should {
     "return OK status with the search software page" in withController { controller =>
       val result = controller.search(zeroResults = false)(FakeRequest("POST", "/")
-        .withFormUrlEncodedBody(FiltersForm.searchTerm -> "Vendor", s"${FiltersForm.filters}[0]" -> "free-version"))
+        .withFormUrlEncodedBody(s"${FiltersForm.filters}[0]" -> "free-version"))
 
       status(result) shouldBe Status.OK
-      contentType(result) shouldBe Some(HTML)
-      charset(result) shouldBe Some(Codec.utf_8.charset)
-    }
-
-    "return OK status with the search software page when filter already exists" in withController { controller =>
-      when(mockUserFiltersRepo.get(ArgumentMatchers.any())).thenReturn(Future.successful(Some(UserFilters("sessionId", None, Seq(FreeVersion)))))
-      val result = controller.search(zeroResults = false)(FakeRequest("POST", "/")
-        .withFormUrlEncodedBody(FiltersForm.searchTerm -> "Vendor", s"${FiltersForm.filters}[0]" -> "free-version"))
-
-      status(result) shouldBe Status.OK
-      contentType(result) shouldBe Some(HTML)
-      charset(result) shouldBe Some(Codec.utf_8.charset)
-    }
-
-    "return BAD_REQUEST" in withController { controller =>
-      val result = controller.search(zeroResults = false)(FakeRequest("POST", "/").withFormUrlEncodedBody((FiltersForm.searchTerm, "test" * 65)))
-
-      status(result) shouldBe Status.BAD_REQUEST
       contentType(result) shouldBe Some(HTML)
       charset(result) shouldBe Some(Codec.utf_8.charset)
     }
