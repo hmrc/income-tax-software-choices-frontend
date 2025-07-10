@@ -263,7 +263,6 @@ object VendorFilterGroups {
   )
 
   val softwareForFilters: Set[VendorFilter] = Set(
-    RecordKeeping,
     Bridging
   )
 
@@ -316,27 +315,35 @@ object VendorFilterGroups {
   val featuresProvidedGroup: List[VendorFilter] = List(
     FreeVersion, RecordKeeping, Bridging, QuarterlyUpdates, TaxReturn, Agent, Individual, StandardUpdatePeriods, CalendarUpdatePeriods
   )
-  val incomeSourcesGroup: List[VendorFilter] = List(
-      SoleTrader,
-      UkProperty,
-      OverseasProperty
-    )
 
-  def allGroups: Seq[(Set[VendorFilter], String)] = Seq(
+  val incomeSourcesGroup: List[VendorFilter] = List(
+    SoleTrader,
+    UkProperty,
+    OverseasProperty
+  )
+
+  val userTypeFilters: Set[VendorFilter] = Set(
+    Agent,
+    Individual
+  )
+
+  def allGroups(isAgent: Boolean): Seq[(Set[VendorFilter], String)] =
+    if (isAgent) {
+      Seq((userTypeFilters, "user-type")) ++ groups
+    } else {
+      groups
+    }
+
+  private val groups: Seq[(Set[VendorFilter], String)] = Seq(
     (pricingFilters, "pricing"),
     (softwareForFilters, "software-for"),
     (compatibility, "software-compatibility"),
-    (accessibilityFilters, "accessibility"),
-    (accountingPeriodFilters, "accounting-period"),
-    (suitableForFilters, "suitable-for"),
-    (personalIncomeSources, "personal-income-sources"),
-    (deductions, "deductions"),
-    (pensions, "pensions"),
-    (allowances, "allowances")
+    (accessibilityFilters, "accessibility")
   )
 
   val personalIncomeSourcesGroup: List[VendorFilter] = List(
     ConstructionIndustryScheme, Employment, ForeignInterest, ForeignDividends, UkDividends, UkInterest, StatePensionIncome, PrivatePensionIncome)
+
   val deductionsGroup: List[VendorFilter] = List(
     CapitalGainsTax, CharitableGiving, StudentLoans, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge, PaymentsIntoAPrivatePension, MarriageAllowance)
 

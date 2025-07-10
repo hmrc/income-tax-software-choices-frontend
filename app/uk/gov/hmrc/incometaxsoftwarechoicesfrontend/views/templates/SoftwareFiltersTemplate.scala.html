@@ -26,7 +26,7 @@
   checkboxGroup: CheckboxGroupHelper
 )
 
-@(checkboxField: Field)(implicit messages: Messages)
+@(checkboxField: Field, isAgent: Boolean)(implicit messages: Messages)
 
 @buildCheckBoxes(filters: Set[VendorFilter], label: String) = @{
   filters.toSeq.sortBy(_.priority).map(item =>
@@ -48,7 +48,7 @@
 }
 
 @{
-    VendorFilterGroups.allGroups.map{ case (group, label) =>
+    VendorFilterGroups.allGroups(isAgent).map{ case (group, label) =>
 
         checkboxGroup(
           field = checkboxField,

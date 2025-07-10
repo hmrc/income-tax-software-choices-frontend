@@ -50,7 +50,7 @@ class CheckYourAnswersController @Inject()(view: CheckYourAnswersView,
     val sessionId = request.session.get("sessionId").getOrElse("")
     for {
       vendorFilters <- pageAnswersService.saveFiltersFromAnswers(sessionId)
-      vendors = softwareChoicesService.getVendors(None, vendorFilters).vendors
+      vendors = softwareChoicesService.getVendors(vendorFilters).vendors
     } yield {
       if (vendors.isEmpty) {
         Redirect(routes.ZeroSoftwareResultsController.show())

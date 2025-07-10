@@ -48,7 +48,6 @@ object FiltersForm {
 
   val form: Form[FiltersFormModel] = Form(
     mapping(
-      searchTerm -> trimmedOptionalText.verifying(nameMaxLength),
       filters -> list(text).transform[Seq[VendorFilter]](toVendorFilter, fromVendorFilter)
     )(FiltersFormModel.apply)(FiltersFormModel.unapply)
   )

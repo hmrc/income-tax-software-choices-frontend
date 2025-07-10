@@ -21,7 +21,9 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import play.twirl.api.Html
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.Agent
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FiltersFormModel, UserFilters}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.UserTypesPage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.{PageAnswersService, SoftwareChoicesService}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.viewmodels.SoftwareChoicesResultsViewModel
@@ -39,30 +41,43 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
                                          userFiltersRepository: UserFiltersRepository,
                                          implicit val ec: ExecutionContext) extends BaseFrontendController(mcc) {
 
-  def show(zeroResults: Boolean): Action[AnyContent] = Action { implicit request =>
-    val model = SoftwareChoicesResultsViewModel(
-      allInOneVendors = softwareChoicesService.getVendors(),
-      zeroResults = zeroResults
-    )
-    Ok(view(model, FiltersForm.form))
-   }
+  def show(zeroResults: Boolean): Action[AnyContent] = Action.async { implicit request =>
+    val sessionId = request.session.get("sessionId").getOrElse("")
+    pageAnswersService.getPageAnswers(sessionId, UserTypesPage).map { userType =>
+      val model = SoftwareChoicesResultsViewModel(
+        allInOneVendors = softwareChoicesService.getVendors(),
+        zeroResults = zeroResults,
+        isAgent = userType.contains(Agent)
+      )
+      Ok(view(model, FiltersForm.form))
+    }
+  }
 
   def search(zeroResults: Boolean): Action[AnyContent] = Action.async { implicit request =>
+    val sessionId = request.session.get("sessionId").getOrElse("")
     FiltersForm.form.bindFromRequest().fold(
       error => {
-        val model = SoftwareChoicesResultsViewModel(
-          allInOneVendors = softwareChoicesService.getVendors(),
-          zeroResults = zeroResults
-        )
-        Future.successful(BadRequest(view(model, error)))
+        pageAnswersService.getPageAnswers(sessionId, UserTypesPage).map { userType =>
+          val model = SoftwareChoicesResultsViewModel(
+            allInOneVendors = softwareChoicesService.getVendors(),
+            zeroResults = zeroResults,
+            isAgent = userType.contains(Agent)
+          )
+          BadRequest(view(model, error))
+        }
       },
-      search => update(search) map { _ =>
-        val model = SoftwareChoicesResultsViewModel(
-          allInOneVendors = softwareChoicesService.getVendors(search.searchTerm, search.filters),
-          zeroResults = zeroResults
-        )
-        Ok(view(model, FiltersForm.form.fill(search)))
-      }
+      search =>
+        for {
+          userType <- pageAnswersService.getPageAnswers(sessionId, UserTypesPage)
+          _ <- update(search)
+        } yield {
+          val model = SoftwareChoicesResultsViewModel(
+            allInOneVendors = softwareChoicesService.getVendors(search.filters),
+            zeroResults = zeroResults,
+            isAgent = userType.contains(Agent)
+          )
+          Ok(view(model, FiltersForm.form.fill(search)))
+        }
     )
   }
 
