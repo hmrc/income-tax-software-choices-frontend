@@ -20,6 +20,8 @@
 @import uk.gov.hmrc.hmrcfrontend.views.viewmodels.newtablinkhelper.NewTabLinkHelper
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilterGroups._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTemplate
@@ -50,6 +52,54 @@
         @table(personalIncomeSourcesGroup, "other-income")
         @table(deductionsGroup, "other-items")
     </div>
+
+    @defining({
+        val rows = Seq.newBuilder[SummaryListRow]
+        val softwareTypes = softwareTypeGroup.filter(softwareVendor.filters.contains)
+        if (softwareTypes.nonEmpty) {
+            rows += SummaryListRow(
+                key = Key(content = Text(messages("product-details.software-spec.software-type"))),
+                value = Value(content = HtmlContent(
+                    softwareTypes.map(f => messages(s"product-details.software-type.${f.key}")).mkString("<br>")
+                ))
+            )
+        }
+        val compatible = compatibleWithGroup.filter(softwareVendor.filters.contains)
+        if (compatible.nonEmpty) {
+            rows += SummaryListRow(
+                key = Key(content = Text(messages("product-details.software-spec.compatible-with"))),
+                value = Value(content = HtmlContent(
+                    compatible.map(f => messages(s"product-details.compatible-with.${f.key}")).mkString("<br>")
+                ))
+            )
+        }
+        val mobiles = mobileGroup.filter(softwareVendor.filters.contains)
+        if (mobiles.nonEmpty) {
+            rows += SummaryListRow(
+                key = Key(content = Text(messages("product-details.software-spec.mobile-app"))),
+                value = Value(content = HtmlContent(
+                    mobiles.map(f => messages(s"product-details.mobile-app.${f.key}")).mkString("<br>")
+                ))
+            )
+        }
+        val languages = languageGroup.filter(softwareVendor.filters.contains)
+        if (languages.nonEmpty) {
+            rows += SummaryListRow(
+                key = Key(content = Text(messages("product-details.software-spec.language"))),
+                value = Value(content = HtmlContent(
+                    languages.map(f => messages(s"product-details.language.${f.key}")).mkString("<br>")
+                ))
+            )
+        }
+        rows.result()
+    }) { specsRows =>
+        @if(specsRows.nonEmpty) {
+            <div class="govuk-!-width-two-thirds govuk-!-padding-0">
+                <h2 class="govuk-heading-l">@messages("product-details.software-spec.heading")</h2>
+                @govukSummaryList(SummaryList(rows = specsRows))
+            </div>
+        }
+    }
 }
 
 @contactDetailsList = {

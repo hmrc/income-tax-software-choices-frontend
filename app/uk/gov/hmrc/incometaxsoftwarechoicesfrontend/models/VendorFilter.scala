@@ -207,6 +207,40 @@ object VendorFilter {
     override val priority: Int = 1
   }
 
+  case object DesktopApplication extends VendorFilter {
+    override val key: String = "desktop-based"
+    override val priority: Int = 1
+  }
+  case object MicrosoftWindows extends VendorFilter {
+    override val key: String = "microsoft-windows"
+    override val priority: Int = 1
+  }
+
+  case object MacOS extends VendorFilter {
+    override val key: String = "mac-os"
+    override val priority: Int = 2
+  }
+
+  case object Linux extends VendorFilter {
+    override val key: String = "linux"
+    override val priority: Int = 3
+  }
+
+  case object Android extends VendorFilter {
+    override val key: String = "android"
+    override val priority: Int = 1
+  }
+
+  case object Apple extends VendorFilter {
+    override val key: String = "apple-ios"
+    override val priority: Int = 2
+  }
+
+  case object English extends VendorFilter {
+    override val key: String = "english"
+    override val priority: Int = 1
+  }
+
   val filterKeyToFilter: Map[String, VendorFilter] = Seq(
     FreeVersion,
     QuarterlyUpdates,
@@ -240,7 +274,14 @@ object VendorFilter {
     PaymentsIntoAPrivatePension,
     MarriageAllowance,
     Agent,
-    Individual
+    Individual,
+    DesktopApplication,
+    MicrosoftWindows,
+    MacOS,
+    Linux,
+    Android,
+    Apple,
+    English
   ).map(value => value.key -> value).toMap
 
   implicit val reads: Reads[VendorFilter] = __.read[String] map filterKeyToFilter
@@ -311,16 +352,35 @@ object VendorFilterGroups {
     MarriageAllowance
   )
 
+  val softwareType: Set[VendorFilter] = Set(
+    DesktopApplication
+  )
+
+  val compatibleWith: Set[VendorFilter] = Set(
+    MicrosoftWindows,
+    MacOS,
+    Linux
+  )
+
+  val mobileApp: Set[VendorFilter] = Set(
+    Android,
+    Apple
+  )
+
+  val languageFilter: Set[VendorFilter] = Set(
+    English
+  )
+
   // product details page groups //
   val featuresProvidedGroup: List[VendorFilter] = List(
     FreeVersion, RecordKeeping, Bridging, QuarterlyUpdates, TaxReturn, Agent, Individual, StandardUpdatePeriods, CalendarUpdatePeriods
   )
 
   val incomeSourcesGroup: List[VendorFilter] = List(
-    SoleTrader,
-    UkProperty,
-    OverseasProperty
-  )
+      SoleTrader,
+      UkProperty,
+      OverseasProperty
+    )
 
   val userTypeFilters: Set[VendorFilter] = Set(
     Agent,
@@ -346,5 +406,10 @@ object VendorFilterGroups {
 
   val deductionsGroup: List[VendorFilter] = List(
     CapitalGainsTax, CharitableGiving, StudentLoans, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge, PaymentsIntoAPrivatePension, MarriageAllowance)
+
+  val softwareTypeGroup: List[VendorFilter] = List(DesktopApplication)
+  val compatibleWithGroup: List[VendorFilter] = List(MicrosoftWindows, MacOS, Linux)
+  val mobileGroup: List[VendorFilter] = List(Android, Apple)
+  val languageGroup: List[VendorFilter] = List(English)
 
 }
