@@ -62,7 +62,11 @@ class SearchSoftwareViewSpec extends ViewSpec {
         filterSection.selectHead("h2").text shouldBe SearchSoftwarePageContent.Filters.filterHeading
       }
 
-      "has a clear all filters link" in {
+      "has a paragraph" in {
+        filterSection.selectHead("p").text shouldBe SearchSoftwarePageContent.Filters.filterParagraph
+      }
+
+      "has a clear filters link" in {
         filterSection.selectHead("a").text shouldBe SearchSoftwarePageContent.Filters.clearFilters
       }
 
@@ -115,20 +119,10 @@ class SearchSoftwareViewSpec extends ViewSpec {
           checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwarePageContent.Filters.softwareFor
         }
 
-        "contains a RecordKeeping checkbox" in {
-          validateCheckboxInGroup(
-            checkboxGroup,
-            1,
-            RecordKeeping.key,
-            SearchSoftwarePageContent.recordKeeping,
-            Some(SearchSoftwarePageContent.recordKeepingHint)
-          )
-        }
-
         "contains a Bridging checkbox" in {
           validateCheckboxInGroup(
             checkboxGroup,
-            2,
+            1,
             Bridging.key,
             SearchSoftwarePageContent.bridging,
             Some(SearchSoftwarePageContent.bridgingHint)
@@ -223,7 +217,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
 
             val secondRow = summaryList.selectNth("div", 2)
             secondRow.selectHead("dt").text shouldBe SearchSoftwarePageContent.softwareFor
-            secondRow.selectHead("dd").text shouldBe s"${SearchSoftwarePageContent.recordKeeping}, ${SearchSoftwarePageContent.bridging}"
+            secondRow.selectHead("dd").text shouldBe s"${SearchSoftwarePageContent.bridging}"
 
             val thirdRow = summaryList.selectNth("div", 3)
             thirdRow.selectHead("dt").text shouldBe SearchSoftwarePageContent.suitableFor
@@ -327,7 +321,7 @@ object SearchSoftwareViewSpec extends ViewSpec {
       .selectNth(".govuk-fieldset", 1)
   }
 
-  def getFilterSection(document: Document): Element = document.mainContent.selectHead("#software-section").selectNth(".filters-section", 2)
+  def getFilterSection(document: Document): Element = document.mainContent.selectHead("#software-section").selectNth(".filters-section", 1)
 
   private val searchSoftwarePage = app.injector.instanceOf[SearchSoftwarePage]
 
@@ -344,8 +338,9 @@ private object SearchSoftwarePageContent {
   }
 
   object Filters {
-    val filterHeading = "Filter software by"
-    val clearFilters = "Clear all filters"
+    val filterHeading = "Filter options"
+    val filterParagraph = "You can use filters to find specific software. All fields are optional."
+    val clearFilters = "Clear filters"
     val pricing = "Price"
     val suitableFor = "Business income sources"
     val softwareFor = "Type of software"

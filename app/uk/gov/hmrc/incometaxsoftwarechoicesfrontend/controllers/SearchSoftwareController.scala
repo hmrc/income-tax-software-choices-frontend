@@ -55,30 +55,18 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
 
   def search(zeroResults: Boolean): Action[AnyContent] = Action.async { implicit request =>
     val sessionId = request.session.get("sessionId").getOrElse("")
-    FiltersForm.form.bindFromRequest().fold(
-      error => {
-        pageAnswersService.getPageAnswers(sessionId, UserTypesPage).map { userType =>
-          val model = SoftwareChoicesResultsViewModel(
-            allInOneVendors = softwareChoicesService.getVendors(),
-            zeroResults = zeroResults,
-            isAgent = userType.contains(Agent)
-          )
-          BadRequest(view(model, error))
-        }
-      },
-      search =>
-        for {
-          userType <- pageAnswersService.getPageAnswers(sessionId, UserTypesPage)
-          _ <- update(search)
-        } yield {
-          val model = SoftwareChoicesResultsViewModel(
-            allInOneVendors = softwareChoicesService.getVendors(search.filters),
-            zeroResults = zeroResults,
-            isAgent = userType.contains(Agent)
-          )
-          Ok(view(model, FiltersForm.form.fill(search)))
-        }
-    )
+    val filters = FiltersForm.form.bindFromRequest().get
+    for {
+      userType <- pageAnswersService.getPageAnswers(sessionId, UserTypesPage)
+      _ <- update(filters)
+    } yield {
+      val model = SoftwareChoicesResultsViewModel(
+        allInOneVendors = softwareChoicesService.getVendors(filters.filters),
+        zeroResults = zeroResults,
+        isAgent = userType.contains(Agent)
+      )
+      Ok(view(model, FiltersForm.form.fill(filters)))
+    }
   }
 
   def clear(zeroResults: Boolean): Action[AnyContent] = Action.async { implicit request =>
@@ -113,11 +101,10 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
   }
 
   private def backLinkUrl(zeroResults: Boolean): String = {
-   if (zeroResults) {
-     routes.ZeroSoftwareResultsController.show().url
-   } else {
+    if (zeroResults) {
+      routes.ZeroSoftwareResultsController.show().url
+    } else {
      routes.CheckYourAnswersController.show().url
-   }
+    }
   }
-
 }

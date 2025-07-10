@@ -52,7 +52,7 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase {
   s"POST ${routes.SearchSoftwareController.search().url}" should {
     "respond with 200 status" in {
       When("GET / is called")
-      val response = SoftwareChoicesFrontend.submitSoftwareSearch(FiltersFormModel(Some(""), Seq(FreeVersion)))
+      val response = SoftwareChoicesFrontend.submitSoftwareSearch(FiltersFormModel(Seq(FreeVersion)))
 
       Then("Should return OK with the software search page")
       response should have(
@@ -60,17 +60,5 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase {
         pageTitle(s"""${messages("search-software.title")} - Find software that’s compatible with Making Tax Digital for Income Tax - GOV.UK""")
       )
     }
-
-    "respond with 400 status" in {
-      When("GET / is called")
-      val response = SoftwareChoicesFrontend.submitSoftwareSearch(FiltersFormModel(Some("test" * 65)))
-
-      Then("Should return BAD_REQUEST")
-      response should have(
-        httpStatus(BAD_REQUEST),
-        pageTitle(s"""Error: ${messages("search-software.title")} - Find software that’s compatible with Making Tax Digital for Income Tax - GOV.UK""")
-      )
-    }
   }
-
 }
