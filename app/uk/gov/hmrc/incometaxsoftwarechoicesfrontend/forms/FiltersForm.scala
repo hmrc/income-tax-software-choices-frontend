@@ -26,8 +26,6 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FiltersFormModel, Ve
 object FiltersForm {
   val filters = "filters"
 
-  private val searchTermMaxLength = 256
-
   def toVendorFilter(list: List[String]): Seq[VendorFilter] = {
     list.flatMap(filterKey => filterKeyToFilter.get(filterKey))
   }
@@ -36,13 +34,10 @@ object FiltersForm {
     filterList.map(_.key).toList
   }
 
-  private val nameMaxLength: Constraint[Option[String]] = Constraints.maxLength(searchTermMaxLength, "search-software.search-form.error")
-
   val form: Form[FiltersFormModel] = Form(
     mapping(
       filters -> list(text).transform[Seq[VendorFilter]](toVendorFilter, fromVendorFilter)
     )(FiltersFormModel.apply)(FiltersFormModel.unapply)
   )
-
 }
 

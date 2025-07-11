@@ -95,7 +95,7 @@ search-software.title                                     = Software for Making 
 search-software.last-update                               = This page was last updated
 search-software.heading                                   = Software for Making Tax Digital for Income Tax
 search-software.p1                                        = All of this software has been through a recognition process where HMRC checks it’s capable of filing your taxes. HMRC does not endorse or recommend any one product or software provider.
-search-software.p2                                        = You'll need to pay for most of the software listed, though some versions are free or have a free trial.
+search-software.p2                                        = You’ll need to pay for most of the software listed, though some versions are free or have a free trial.
 search-software.skip-to-results                           = Skip to results.
 
 search-software.filters.heading = Filter options
@@ -140,7 +140,7 @@ search-software.vendor-detail.pricing = Price
 search-software.vendor-detail.pricing.free-trial = Free trial
 search-software.vendor-detail.pricing.no-free-trial = No free trial
 search-software.vendor-detail.pricing.free-version = Free version
-search-software.vendor-detail.pricing.free-version.hint = Find the company’s definition of ‘free’ on their website
+search-software.vendor-detail.pricing.free-version.hint = Check the company’s website for information on their pricing structure.
 search-software.vendor-detail.pricing.no-free-version = No free version
 search-software.vendor-detail.pricing.paid-for = Paid for
 
