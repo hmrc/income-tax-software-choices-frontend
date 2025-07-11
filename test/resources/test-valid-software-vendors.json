@@ -9,9 +9,6 @@
       "filters": [
         "free-version"
       ],
-      "incomeAndDeductions": [
-        "blind-persons-allowance"
-      ],
       "accessibilityStatementLink": "software-vendor-accessibility.com"
     },
     {
@@ -19,10 +16,7 @@
       "email": "test@software-vendor-name-two.com",
       "phone": "22222 222 222",
       "website": "software-vendor-name-two.com",
-      "filters": [],
-      "incomeAndDeductions": [
-        "capital-gains-tax"
-      ]
+      "filters": []
     },
     {
       "name": "test software vendor three",
@@ -31,10 +25,6 @@
       "website": "software-vendor-name-three.com",
       "filters": [
         "free-version"
-      ],
-      "incomeAndDeductions": [
-        "blind-persons-allowance",
-        "capital-gains-tax"
       ]
     }
   ]

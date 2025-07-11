@@ -86,7 +86,7 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
     )
   )
 
-  "softwareVendors" when {
+  "getAllInOne softwareVendors" when {
     "the software vendor config file exists" must {
       "correctly retrieve and parse file" in new Setup {
         when(mockEnvironment.resourceAsStream(eqTo(testFileName)))
@@ -99,7 +99,14 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
         when(mockEnvironment.resourceAsStream(eqTo(testFileName)))
           .thenReturn(Some(new FileInputStream(validVendors)))
 
-        service.getVendors(Seq(FreeVersion)) mustBe expectedFilteredByVendorFilterSoftwareVendors
+        service.getAllInOneVendors(Seq(FreeVersion)) mustBe expectedFilteredByVendorFilterSoftwareVendors
+      }
+
+      "not filter when no search term has been provided" in new Setup {
+        when(mockEnvironment.resourceAsStream(eqTo(testFileName)))
+          .thenReturn(Some(new FileInputStream(validVendors)))
+
+        service.getAllInOneVendors(Seq()) mustBe expectedSoftwareVendors
       }
     }
 
