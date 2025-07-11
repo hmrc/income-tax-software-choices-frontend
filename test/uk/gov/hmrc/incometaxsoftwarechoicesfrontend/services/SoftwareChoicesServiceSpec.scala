@@ -60,9 +60,11 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
   val expectedSoftwareVendors: SoftwareVendors = SoftwareVendors(
     lastUpdated = LocalDate.of(2022, 12, 2),
     vendors = Seq(
+      testVendorFive,
+      testVendorFour, // vendors are sorted alphabetically
       testVendorOne,
       testVendorThree,
-      testVendorTwo,
+      testVendorTwo
     )
   )
 
