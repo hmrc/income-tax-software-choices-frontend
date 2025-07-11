@@ -94,11 +94,14 @@ check-your-answers.other                                    = Neither of these
 search-software.title                                     = Software for Making Tax Digital for Income Tax
 search-software.last-update                               = This page was last updated
 search-software.heading                                   = Software for Making Tax Digital for Income Tax
-search-software.paragraph                                 = All of this software has been through a recognition process where HMRC checks it’s capable of filing your taxes. HMRC does not endorse or recommend any one product or software provider.
+search-software.p1                                        = All of this software has been through a recognition process where HMRC checks it’s capable of filing your taxes. HMRC does not endorse or recommend any one product or software provider.
+search-software.p2                                        = You’ll need to pay for most of the software listed, though some versions are free or have a free trial.
 search-software.skip-to-results                           = Skip to results.
 
-search-software.filters.heading = Filter software by
-search-software.filters.pricing = Pricing
+search-software.filters.heading = Filter options
+search-software.filters.paragraph = You can use filters to find specific software. All fields are optional.
+search-software.filters.pricing = Price
+search-software.filters.user-type = User type
 search-software.filters.suitable-for = Business income sources
 search-software.filters.operating-system = Operating system
 search-software.filters.mobile-app = Mobile app
@@ -115,7 +118,7 @@ search-software.filters.pensions = Pensions
 search-software.filters.allowances = Allowances
 
 search-software.filters.apply-filters = Apply filters
-search-software.filters.clear-filters = Clear all filters
+search-software.filters.clear-filters = Clear filters
 
 search-software.search-form.heading = Search by software name
 search-software.search-form.paragraph = All links to the software providers’ websites open in a new tab.
@@ -133,11 +136,11 @@ search-software.empty-vendor-list.paragraph = To increase the number of results,
 search-software.empty-vendor-list.bullet1   = reduce the number of filters you apply
 search-software.empty-vendor-list.bullet2   = make sure the name you have entered into the search bar is correct
 
-search-software.vendor-detail.pricing = Pricing
+search-software.vendor-detail.pricing = Price
 search-software.vendor-detail.pricing.free-trial = Free trial
 search-software.vendor-detail.pricing.no-free-trial = No free trial
 search-software.vendor-detail.pricing.free-version = Free version
-search-software.vendor-detail.pricing.free-version.hint = Find the company’s definition of ‘free’ on their website
+search-software.vendor-detail.pricing.free-version.hint = Check the company’s website for information on their pricing structure.
 search-software.vendor-detail.pricing.no-free-version = No free version
 search-software.vendor-detail.pricing.paid-for = Paid for
 
@@ -212,6 +215,9 @@ search-software.vendor-detail.pensions.private-pension-income = Private pension 
 search-software.vendor-detail.pensions.payments-into-a-private-pension = Payments into a private pension
 
 search-software.vendor-detail.allowances.marriage-allowance = Marriage Allowance
+
+search-software.vendor-detail.user-type.agent = Agent
+search-software.vendor-detail.user-type.individual = Individual
 
 # Product details page
 

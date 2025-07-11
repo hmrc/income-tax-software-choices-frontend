@@ -19,10 +19,8 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views
 import org.jsoup.Jsoup
 import org.jsoup.nodes.{Document, Element}
 import org.scalatest.Assertion
-import play.api.data.FormError
 import play.api.mvc.Call
 import play.twirl.api.HtmlFormat
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes.ProductDetailsController
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
@@ -63,7 +61,11 @@ class SearchSoftwareViewSpec extends ViewSpec {
         filterSection.selectHead("h2").text shouldBe SearchSoftwarePageContent.Filters.filterHeading
       }
 
-      "has a clear all filters link" in {
+      "has a paragraph" in {
+        filterSection.selectHead("p").text shouldBe SearchSoftwarePageContent.Filters.filterParagraph
+      }
+
+      "has a clear filters link" in {
         filterSection.selectHead("a").text shouldBe SearchSoftwarePageContent.Filters.clearFilters
       }
 
@@ -109,26 +111,6 @@ class SearchSoftwareViewSpec extends ViewSpec {
         }
       }
 
-      "has an suitable for section" that {
-        val checkboxGroup = getCheckboxGroup(document, 6)
-
-        "contains a fieldset legend" in {
-          checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwarePageContent.Filters.suitableFor
-        }
-
-        "contains a sole trader checkbox" in {
-          validateCheckboxInGroup(checkboxGroup, 1, SoleTrader.key, SearchSoftwarePageContent.soleTrader)
-        }
-
-        "contains a UK property checkbox" in {
-          validateCheckboxInGroup(checkboxGroup, 2, UkProperty.key, SearchSoftwarePageContent.ukProperty)
-        }
-
-        "contains an overseas property checkbox" in {
-          validateCheckboxInGroup(checkboxGroup, 3, OverseasProperty.key, SearchSoftwarePageContent.overseasProperty)
-        }
-      }
-
       "has a software for section" that {
         val checkboxGroup = getCheckboxGroup(document, 2)
 
@@ -136,20 +118,10 @@ class SearchSoftwareViewSpec extends ViewSpec {
           checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwarePageContent.Filters.softwareFor
         }
 
-        "contains a RecordKeeping checkbox" in {
-          validateCheckboxInGroup(
-            checkboxGroup,
-            1,
-            RecordKeeping.key,
-            SearchSoftwarePageContent.recordKeeping,
-            Some(SearchSoftwarePageContent.recordKeepingHint)
-          )
-        }
-
         "contains a Bridging checkbox" in {
           validateCheckboxInGroup(
             checkboxGroup,
-            2,
+            1,
             Bridging.key,
             SearchSoftwarePageContent.bridging,
             Some(SearchSoftwarePageContent.bridgingHint)
@@ -173,143 +145,12 @@ class SearchSoftwareViewSpec extends ViewSpec {
             None
           )
         }
-
-        "has an accounting period section" that {
-          val checkboxGroup = getCheckboxGroup(document, 5)
-
-          "contains a fieldset legend" in {
-            checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwarePageContent.Filters.accountingPeriod
-          }
-
-          "contains an Apr 6 checkbox" in {
-            validateCheckboxInGroup(checkboxGroup, 1, StandardUpdatePeriods.key, SearchSoftwarePageContent.apr6)
-          }
-
-          "contains an apr 1 checkbox" in {
-            validateCheckboxInGroup(checkboxGroup, 2, CalendarUpdatePeriods.key, SearchSoftwarePageContent.apr1, Some(SearchSoftwarePageContent.apr1Hint))
-          }
-        }
-
-        "has an personal income sources section" that {
-          val checkboxGroup = getCheckboxGroup(document, 7)
-
-          "contains a fieldset legend" in {
-            checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwarePageContent.Filters.personalIncomeSources
-          }
-
-          "contains an CIS checkbox" in {
-            validateCheckboxInGroup(checkboxGroup, 1, ConstructionIndustryScheme.key, SearchSoftwarePageContent.constructionIndustryScheme)
-          }
-
-          "contains an capital gains tax checkbox" in {
-            validateCheckboxInGroup(checkboxGroup, 2, CapitalGainsTax.key, SearchSoftwarePageContent.capitalGainsTax)
-          }
-
-          "contains an employment checkbox" in {
-            validateCheckboxInGroup(checkboxGroup, 3, Employment.key, SearchSoftwarePageContent.employment)
-          }
-
-          "contains an foreign income tax checkbox" in {
-            validateCheckboxInGroup(checkboxGroup, 4, ForeignIncome.key, SearchSoftwarePageContent.foreignIncome)
-          }
-
-          "contains an UK dividends checkbox" in {
-            validateCheckboxInGroup(checkboxGroup, 5, UkDividends.key, SearchSoftwarePageContent.ukDividends)
-          }
-
-          "contains an UK interest checkbox" in {
-            validateCheckboxInGroup(checkboxGroup, 6, UkInterest.key, SearchSoftwarePageContent.ukInterest)
-          }
-
-          "contains an foreign dividends checkbox" in {
-            validateCheckboxInGroup(checkboxGroup, 7, ForeignDividends.key, SearchSoftwarePageContent.foreignDividends)
-          }
-
-          "contains an foreign interest checkbox" in {
-            validateCheckboxInGroup(checkboxGroup, 8, ForeignInterest.key, SearchSoftwarePageContent.foreignInterest)
-          }
-        }
-
-        "has an deductions section" that {
-          val checkboxGroup = getCheckboxGroup(document, 8)
-
-          "contains a fieldset legend" in {
-            checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwarePageContent.Filters.deductions
-          }
-
-          "contains an charitable giving checkbox" in {
-            validateCheckboxInGroup(checkboxGroup, 1, CharitableGiving.key, SearchSoftwarePageContent.charitableGiving)
-          }
-
-          "contains an HICB checkbox" in {
-            validateCheckboxInGroup(checkboxGroup, 2, HighIncomeChildBenefitCharge.key, SearchSoftwarePageContent.highIncomeChildBenefit)
-          }
-
-          "contains an students loans checkbox" in {
-            validateCheckboxInGroup(checkboxGroup, 3, StudentLoans.key, SearchSoftwarePageContent.studentLoans)
-          }
-
-          "contains an VC2NI checkbox" in {
-            validateCheckboxInGroup(checkboxGroup, 4, VoluntaryClass2NationalInsurance.key, SearchSoftwarePageContent.volunteer)
-          }
-        }
-
-        "has an pensions section" that {
-          val checkboxGroup = getCheckboxGroup(document, 9)
-
-          "contains a fieldset legend" in {
-            checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwarePageContent.Filters.pensions
-          }
-
-          "contains an state pension income checkbox" in {
-            validateCheckboxInGroup(checkboxGroup, 1, StatePensionIncome.key, SearchSoftwarePageContent.statePension)
-          }
-
-          "contains an private pension income checkbox" in {
-            validateCheckboxInGroup(checkboxGroup, 2, PrivatePensionIncome.key, SearchSoftwarePageContent.privatePension)
-          }
-
-          "contains an paying into a private pension loans checkbox" in {
-            validateCheckboxInGroup(checkboxGroup, 3, PaymentsIntoAPrivatePension.key, SearchSoftwarePageContent.payments)
-          }
-        }
-
-        "has an allowances section" that {
-          val checkboxGroup = getCheckboxGroup(document, 10)
-
-          "contains a fieldset legend" in {
-            checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwarePageContent.Filters.allowances
-          }
-
-          "contains an marriage allowance income checkbox" in {
-            validateCheckboxInGroup(checkboxGroup, 1, MarriageAllowance.key, SearchSoftwarePageContent.marriageAllowace)
-          }
-        }
       }
 
       "has a apply button section" that {
         "contains an apply filters button" in {
           filterSection.selectHead(".apply-filters-button").text shouldBe SearchSoftwarePageContent.Filters.applyFilters
         }
-      }
-    }
-
-    "has a search section" which {
-      "contains a heading" in {
-        document.mainContent.selectNth(".filters-section", 1).selectHead("h2").text shouldBe SearchSoftwarePageContent.SearchSoftwareSection.searchFormHeading
-      }
-
-      "contains a text input" in {
-        val input: Element = document.mainContent.selectHead("#searchTerm")
-        input.attr("name") shouldBe "searchTerm"
-        input.attr("role") shouldBe "search"
-        input.attr("aria-label") shouldBe SearchSoftwarePageContent.SearchSoftwareSection.searchFormHeading
-
-        document.mainContent.selectHead("#searchTerm").attr("value") shouldBe "search test"
-      }
-
-      "contains a submit" in {
-        document.mainContent.selectHead("#searchButton").text shouldBe SearchSoftwarePageContent.SearchSoftwareSection.searchFormHeading
       }
     }
 
@@ -375,7 +216,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
 
             val secondRow = summaryList.selectNth("div", 2)
             secondRow.selectHead("dt").text shouldBe SearchSoftwarePageContent.softwareFor
-            secondRow.selectHead("dd").text shouldBe s"${SearchSoftwarePageContent.recordKeeping}, ${SearchSoftwarePageContent.bridging}"
+            secondRow.selectHead("dd").text shouldBe s"${SearchSoftwarePageContent.bridging}"
 
             val thirdRow = summaryList.selectNth("div", 3)
             thirdRow.selectHead("dt").text shouldBe SearchSoftwarePageContent.suitableFor
@@ -420,11 +261,7 @@ object SearchSoftwareViewSpec extends ViewSpec {
   def page(model: SoftwareChoicesResultsViewModel, hasError: Boolean): HtmlFormat.Appendable =
     searchSoftwarePage(
       model,
-      if (hasError) {
-        FiltersForm.form.withError(testFormError)
-      } else {
-        FiltersForm.form.fill(FiltersFormModel(Some("search test")))
-      },
+      FiltersForm.form.fill(FiltersFormModel()),
       Call("POST", "/test-url"),
       Call("POST", "/test-url"),
       "/test-back-url"
@@ -483,10 +320,9 @@ object SearchSoftwareViewSpec extends ViewSpec {
       .selectNth(".govuk-fieldset", 1)
   }
 
-  def getFilterSection(document: Document): Element = document.mainContent.selectHead("#software-section").selectNth(".filters-section", 2)
+  def getFilterSection(document: Document): Element = document.mainContent.selectHead("#software-section").selectNth(".filters-section", 1)
 
   private val searchSoftwarePage = app.injector.instanceOf[SearchSoftwarePage]
-  private val testFormError: FormError = FormError(FiltersForm.searchTerm, "test error message")
 
 }
 
@@ -501,9 +337,10 @@ private object SearchSoftwarePageContent {
   }
 
   object Filters {
-    val filterHeading = "Filter software by"
-    val clearFilters = "Clear all filters"
-    val pricing = "Pricing"
+    val filterHeading = "Filter options"
+    val filterParagraph = "You can use filters to find specific software. All fields are optional."
+    val clearFilters = "Clear filters"
+    val pricing = "Price"
     val suitableFor = "Business income sources"
     val softwareFor = "Type of software"
     val softwareCompatibility = "Making Tax Digital Compatibility"
@@ -525,9 +362,9 @@ private object SearchSoftwarePageContent {
   val emptyVendorListMessageBullet1 = "reduce the number of filters you apply"
   val emptyVendorListMessageBullet2 = "make sure the name you have entered into the search bar is correct"
 
-  val pricing = "Pricing"
+  val pricing = "Price"
   val freeVersion = "Free version"
-  val freeVersionHint = "Find the company’s definition of ‘free’ on their website"
+  val freeVersionHint = "Check the company’s website for information on their pricing structure."
 
   val suitableFor = "Business income sources"
   val soleTrader = "Self-employment"

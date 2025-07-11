@@ -24,34 +24,6 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FiltersFormModel, Ve
 class FiltersFormSpec extends PlaySpec {
 
   "FiltersForm" should {
-    "validate a search term" when {
-      "the search term is not empty" in {
-        val validInput = Map(FiltersForm.searchTerm -> "Software search")
-        FiltersForm.form.bind(validInput).value shouldBe Some(FiltersFormModel(Some("Software search")))
-      }
-
-      "the search term is not empty and contains spaces to be trimmed" in {
-        val validInput = Map(FiltersForm.searchTerm -> " Software search  ")
-        FiltersForm.form.bind(validInput).value shouldBe Some(FiltersFormModel(Some("Software search")))
-      }
-
-      "the search term contains only a space" in {
-        val validInput = Map(FiltersForm.searchTerm -> " ")
-        FiltersForm.form.bind(validInput).value shouldBe Some(FiltersFormModel(None))
-      }
-
-      "the search term is absent" in {
-        val validInput = Map[String, String]()
-        FiltersForm.form.bind(validInput).value shouldBe Some(FiltersFormModel(None))
-      }
-    }
-
-    "invalidate a search term" when {
-      "the search term is too long" in {
-        val invalidInput = Map(FiltersForm.searchTerm -> "text" * 65)
-        FiltersForm.form.bind(invalidInput).value shouldBe None
-      }
-    }
     "validate a filter" when {
       "several filters, all of which are known" in {
         val validInput = Map(
@@ -68,7 +40,6 @@ class FiltersFormSpec extends PlaySpec {
           "filters[10]" -> Cognitive.key,
         )
         FiltersForm.form.bind(validInput).value shouldBe Some(FiltersFormModel(
-          None,
           List(
             VendorFilter.FreeVersion,
             VendorFilter.Vat,
@@ -85,7 +56,7 @@ class FiltersFormSpec extends PlaySpec {
       }
       "the filter name is unknown" in {
         val invalidInput = Map("filters[0]" -> "rubbish")
-        FiltersForm.form.bind(invalidInput).value shouldBe Some(FiltersFormModel(None, List()))
+        FiltersForm.form.bind(invalidInput).value shouldBe Some(FiltersFormModel(List()))
       }
     }
   }

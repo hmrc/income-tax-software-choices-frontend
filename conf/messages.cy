@@ -94,11 +94,14 @@ check-your-answers.other                                    = Neither of these
 search-software.title                                     = Find software for Making Tax Digital for Income Tax ... but in Welsh
 search-software.last-update                               = Diweddarwyd y dudalen hon ddiwethaf
 search-software.heading                                   = Find software for Making Tax Digital for Income Tax ...in Welsh
-search-software.paragraph                                 = HMRC does not make recommendations for software. However, all software on this page has passed our recognition criteria. ...in Welsh
+search-software.p1                                        = HMRC does not make recommendations for software. However, all software on this page has passed our recognition criteria. ...in Welsh
+search-software.p2                                        = You'll need to pay for most of the software listed, though some versions are free or have a free trial.
 search-software.skip-to-results                           = Skip to results.
 
 search-software.filters.heading                = Hidlwyr
+search-software.filters.paragraph              = You can use filters to find specific software. All fields are optional.
 search-software.filters.pricing                = Prisio
+search-software.filters.user-type              = User type
 search-software.filters.suitable-for           = Addas i
 search-software.filters.operating-system       = System weithredu
 search-software.filters.mobile-app             = Ap Ffon Symudol
@@ -212,6 +215,9 @@ search-software.vendor-detail.pensions.private-pension-income = Private pension 
 search-software.vendor-detail.pensions.payments-into-a-private-pension = Payments into a private pension
 
 search-software.vendor-detail.allowances.marriage-allowance = Marriage Allowance
+
+search-software.vendor-detail.user-type.agent = Agent
+search-software.vendor-detail.user-type.individual = Individual
 
 # Product details page
 

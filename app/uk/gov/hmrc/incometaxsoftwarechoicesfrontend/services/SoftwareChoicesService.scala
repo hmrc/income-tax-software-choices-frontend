@@ -49,10 +49,9 @@ class SoftwareChoicesService @Inject()(appConfig: AppConfig, environment: Enviro
       }
   }
 
-  def getVendors(maybeSearchTerm: Option[String] = None, filters: Seq[VendorFilter] = Seq.empty): SoftwareVendors = softwareVendors.copy(
+  def getVendors(filters: Seq[VendorFilter] = Seq.empty): SoftwareVendors = softwareVendors.copy(
     vendors = (
-      SoftwareChoicesService.matchSearchTerm(maybeSearchTerm) _
-        andThen SoftwareChoicesService.matchFilter(filters)
+      SoftwareChoicesService.matchFilter(filters) _
         andThen SoftwareChoicesService.sortVendors
       ) (softwareVendors.vendors)
   )
@@ -63,11 +62,6 @@ object SoftwareChoicesService {
 
   private[services] def sortVendors(vendors: Seq[SoftwareVendorModel]) =
     vendors.sortBy(vendor => vendor.name)
-
-  private[services] def matchSearchTerm(maybeSearchTerm: Option[String])(vendors: Seq[SoftwareVendorModel]) = {
-    val searchTermWords = maybeSearchTerm.map(_.toLowerCase().split("\\s+").toSeq).getOrElse(Seq.empty)
-    vendors.filter(vendor => searchTermWords.forall(vendor.name.toLowerCase().contains(_)))
-  }
 
   private[services] def matchFilter(filters: Seq[VendorFilter])(vendors: Seq[SoftwareVendorModel]) =
     vendors.filter(vendor => filters.forall(vendor.filters.contains(_)))

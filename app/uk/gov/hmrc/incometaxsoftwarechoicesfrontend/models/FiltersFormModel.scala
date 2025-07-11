@@ -17,6 +17,5 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models
 
 case class FiltersFormModel(
-                             searchTerm: Option[String] = None,
                              filters: Seq[VendorFilter] = Seq.empty
                            )

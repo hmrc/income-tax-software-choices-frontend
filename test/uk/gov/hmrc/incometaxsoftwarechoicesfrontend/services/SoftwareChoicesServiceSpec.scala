@@ -95,41 +95,14 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
         service.softwareVendors mustBe unsortedSoftwareVendors
       }
 
-      "correctly filter vendors by vendor name" in new Setup {
-        when(mockEnvironment.resourceAsStream(eqTo(testFileName)))
-          .thenReturn(Some(new FileInputStream(validVendors)))
-
-        service.getVendors(Some("two"), Seq()) mustBe expectedFilteredByVendorNameSoftwareVendors
-      }
-
       "correctly filter vendors by vendor filter" in new Setup {
         when(mockEnvironment.resourceAsStream(eqTo(testFileName)))
           .thenReturn(Some(new FileInputStream(validVendors)))
 
-        service.getVendors(None, Seq(FreeVersion)) mustBe expectedFilteredByVendorFilterSoftwareVendors
-      }
-
-      "correctly filter vendors by vendor name in disordered sections with whitespace" in new Setup {
-        val vendors: Seq[SoftwareVendorModel] = Seq("one two three", "two three four", "five four three two one")
-          .map(s => SoftwareVendorModel(s, email = None, phone = None, website = "", filters = Seq.empty))
-        private val searchTerms = s"one  \t   three    two"
-        SoftwareChoicesService.matchSearchTerm(Some(searchTerms))(vendors).length mustBe 2
-      }
-
-      "correctly filter vendors by vendor name and vendor filter" in new Setup {
-        when(mockEnvironment.resourceAsStream(eqTo(testFileName)))
-          .thenReturn(Some(new FileInputStream(validVendors)))
-
-        service.getVendors(Some("three"), Seq(FreeVersion)) mustBe expectedFilteredSoftwareVendors
-      }
-
-      "not filter when no search term has been provided" in new Setup {
-        when(mockEnvironment.resourceAsStream(eqTo(testFileName)))
-          .thenReturn(Some(new FileInputStream(validVendors)))
-
-        service.getVendors(None, Seq()) mustBe expectedSoftwareVendors
+        service.getVendors(Seq(FreeVersion)) mustBe expectedFilteredByVendorFilterSoftwareVendors
       }
     }
+
     "the software vendor config file does not exist" in new Setup {
       when(mockEnvironment.resourceAsStream(eqTo(testFileName)))
         .thenReturn(None)
