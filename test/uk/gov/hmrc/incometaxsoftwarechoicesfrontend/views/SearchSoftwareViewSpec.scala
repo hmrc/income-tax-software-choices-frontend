@@ -19,7 +19,6 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views
 import org.jsoup.Jsoup
 import org.jsoup.nodes.{Document, Element}
 import org.scalatest.Assertion
-import play.api.data.FormError
 import play.api.mvc.Call
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes.ProductDetailsController
@@ -365,7 +364,7 @@ private object SearchSoftwarePageContent {
 
   val pricing = "Price"
   val freeVersion = "Free version"
-  val freeVersionHint = "Find the company’s definition of ‘free’ on their website"
+  val freeVersionHint = "Check the company’s website for information on their pricing structure."
 
   val suitableFor = "Business income sources"
   val soleTrader = "Self-employment"
