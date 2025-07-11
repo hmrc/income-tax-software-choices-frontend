@@ -21,6 +21,8 @@ import play.api.{Environment, Logging}
 import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareVendorModel, SoftwareVendors, VendorFilter}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilterGroups._
 
 import javax.inject.{Inject, Singleton}
 
@@ -49,12 +51,19 @@ class SoftwareChoicesService @Inject()(appConfig: AppConfig, environment: Enviro
       }
   }
 
-  def getVendors(filters: Seq[VendorFilter] = Seq.empty): SoftwareVendors = softwareVendors.copy(
+  def getAllInOneVendors(filters: Seq[VendorFilter] = Seq.empty): SoftwareVendors = softwareVendors.copy(
     vendors = (
       SoftwareChoicesService.matchFilter(filters) _
         andThen SoftwareChoicesService.sortVendors
       ) (softwareVendors.vendors)
   )
+
+  def getOtherVendors(filters: Seq[VendorFilter] = Seq.empty): SoftwareVendors = softwareVendors.copy(
+      vendors = (
+        SoftwareChoicesService.matchFilter(filters.filterNot(userPageFilters.contains(_))) _
+          andThen SoftwareChoicesService.sortVendors
+        ) (softwareVendors.vendors)
+    )
 
 }
 

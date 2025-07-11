@@ -43,13 +43,18 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
 
   def show(zeroResults: Boolean): Action[AnyContent] = Action.async { implicit request =>
     val sessionId = request.session.get("sessionId").getOrElse("")
-    pageAnswersService.getPageAnswers(sessionId, UserTypesPage).map { userType =>
-      val model = SoftwareChoicesResultsViewModel(
-        allInOneVendors = softwareChoicesService.getVendors(),
+    for {
+      userFilters <- userFiltersRepository.get(sessionId)
+      filters = userFilters.map(x=>x.finalFilters).getOrElse(Seq.empty)
+      userType <- pageAnswersService.getPageAnswers(sessionId, UserTypesPage)
+      model = SoftwareChoicesResultsViewModel(
+        allInOneVendors = softwareChoicesService.getAllInOneVendors(filters = filters),
+        otherVendors = softwareChoicesService.getOtherVendors(filters = filters),
         zeroResults = zeroResults,
         isAgent = userType.contains(Agent)
       )
-      Ok(view(model, FiltersForm.form))
+    } yield {
+      Ok(view(model, FiltersForm.form.fill(FiltersFormModel(filters = filters))))
     }
   }
 
@@ -61,13 +66,14 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
       _ <- update(filters)
     } yield {
       val model = SoftwareChoicesResultsViewModel(
-        allInOneVendors = softwareChoicesService.getVendors(filters.filters),
+        allInOneVendors = softwareChoicesService.getAllInOneVendors(filters.filters),
+        otherVendors = softwareChoicesService.getOtherVendors(filters.filters),
         zeroResults = zeroResults,
         isAgent = userType.contains(Agent)
       )
       Ok(view(model, FiltersForm.form.fill(filters)))
     }
-  }
+   }
 
   def clear(zeroResults: Boolean): Action[AnyContent] = Action.async { implicit request =>
     update(FiltersFormModel()) map { _ =>

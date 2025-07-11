@@ -371,6 +371,29 @@ object VendorFilterGroups {
     English
   )
 
+  val userPageFilters: Set[VendorFilter] = Set(
+    SoleTrader,
+    UkProperty,
+    OverseasProperty,
+    UkInterest,
+    ConstructionIndustryScheme,
+    Employment,
+    UkDividends,
+    StatePensionIncome,
+    PrivatePensionIncome,
+    ForeignDividends,
+    ForeignInterest,
+    PaymentsIntoAPrivatePension,
+    CharitableGiving,
+    CapitalGainsTax,
+    StudentLoans,
+    MarriageAllowance,
+    VoluntaryClass2NationalInsurance,
+    HighIncomeChildBenefitCharge,
+    StandardUpdatePeriods,
+    CalendarUpdatePeriods
+  )
+
   // product details page groups //
   val featuresProvidedGroup: List[VendorFilter] = List(
     FreeVersion, RecordKeeping, Bridging, QuarterlyUpdates, TaxReturn, Agent, Individual, StandardUpdatePeriods, CalendarUpdatePeriods

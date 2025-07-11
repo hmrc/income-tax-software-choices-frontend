@@ -24,8 +24,8 @@ import org.scalatestplus.play.PlaySpec
 import play.api.Environment
 import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.TestModels.{testVendorOne, testVendorThree, testVendorTwo}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.FreeVersion
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.TestModels._
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareVendorModel, SoftwareVendors}
 
 import java.io.FileInputStream
@@ -52,15 +52,19 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
       testVendorOne,
       testVendorTwo,
       testVendorThree,
+      testVendorFour,
+      testVendorFive
     )
   )
 
   val expectedSoftwareVendors: SoftwareVendors = SoftwareVendors(
     lastUpdated = LocalDate.of(2022, 12, 2),
     vendors = Seq(
+      testVendorFive,
+      testVendorFour, // vendors are sorted alphabetically
       testVendorOne,
       testVendorThree,
-      testVendorTwo,
+      testVendorTwo
     )
   )
 
@@ -86,7 +90,29 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
     )
   )
 
-  "softwareVendors" when {
+  val expectedFilteredIndividualSoftwareVendors: SoftwareVendors = SoftwareVendors(
+    lastUpdated = LocalDate.of(2022, 12, 2),
+    vendors = Seq(
+      testVendorFour
+    )
+  )
+
+  val expectedFilteredAgentSoftwareVendors: SoftwareVendors = SoftwareVendors(
+    lastUpdated = LocalDate.of(2022, 12, 2),
+    vendors = Seq(
+      testVendorFive
+    )
+  )
+
+  val expectedFilteredCombinedSoftwareVendors: SoftwareVendors = SoftwareVendors(
+    lastUpdated = LocalDate.of(2022, 12, 2),
+    vendors = Seq(
+      testVendorFive,
+      testVendorFour // vendors are sorted alphabetically
+    )
+  )
+
+  "getAllInOne softwareVendors" when {
     "the software vendor config file exists" must {
       "correctly retrieve and parse file" in new Setup {
         when(mockEnvironment.resourceAsStream(eqTo(testFileName)))
@@ -99,7 +125,14 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
         when(mockEnvironment.resourceAsStream(eqTo(testFileName)))
           .thenReturn(Some(new FileInputStream(validVendors)))
 
-        service.getVendors(Seq(FreeVersion)) mustBe expectedFilteredByVendorFilterSoftwareVendors
+        service.getAllInOneVendors(Seq(FreeVersion)) mustBe expectedFilteredByVendorFilterSoftwareVendors
+      }
+
+      "not filter when no search term has been provided" in new Setup {
+        when(mockEnvironment.resourceAsStream(eqTo(testFileName)))
+          .thenReturn(Some(new FileInputStream(validVendors)))
+
+        service.getAllInOneVendors(Seq()) mustBe expectedSoftwareVendors
       }
     }
 
@@ -118,7 +151,29 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
     }
   }
 
-  "get software vendor" when {
+  "getOther softwareVendors" when {
+    "correctly filter other vendors by vendor filter with two vendors returned" in new Setup {
+      when(mockEnvironment.resourceAsStream(eqTo(testFileName)))
+        .thenReturn(Some(new FileInputStream(validVendors)))
+
+      service.getOtherVendors(Seq(Individual,SoleTrader)) mustBe expectedFilteredCombinedSoftwareVendors
+    }
+
+    "correctly filter other vendors by vendor filter with one vendors returned" in new Setup {
+      when(mockEnvironment.resourceAsStream(eqTo(testFileName)))
+        .thenReturn(Some(new FileInputStream(validVendors)))
+
+      service.getOtherVendors(Seq(Agent,SoleTrader)) mustBe expectedFilteredAgentSoftwareVendors
+    }
+
+    "correctly filter other vendors by preference filter not user answers filters" in new Setup {
+      when(mockEnvironment.resourceAsStream(eqTo(testFileName)))
+        .thenReturn(Some(new FileInputStream(validVendors)))
+
+      service.getOtherVendors(Seq(Individual,OverseasProperty,Motor)) mustBe expectedFilteredAgentSoftwareVendors
+    }
+  }
+    "get software vendor" when {
     "fetching a software vendor which exists" should {
       "return that vendor" in new Setup {
         when(mockEnvironment.resourceAsStream(eqTo(testFileName)))
