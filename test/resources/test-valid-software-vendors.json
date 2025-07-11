@@ -26,6 +26,28 @@
       "filters": [
         "free-version"
       ]
+    },
+    {
+      "name": "test software vendor four",
+      "email": "test@software-vendor-name-four.com",
+      "phone": "44444 444 444",
+      "website": "software-vendor-name-four.com",
+      "filters": [
+        "sole-trader",
+        "individual"
+      ]
+    },
+    {
+      "name": "test software vendor five",
+      "email": "test@software-vendor-name-five.com",
+      "phone": "55555 555 555",
+      "website": "software-vendor-name-five.com",
+      "filters": [
+        "sole-trader",
+        "individual",
+        "agent",
+        "motor"
+      ]
     }
   ]
 }

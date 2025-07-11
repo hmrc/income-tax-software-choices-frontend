@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers
 
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{FreeTrial, FreeVersion}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareVendorModel, SoftwareVendors, VendorFilter}
 
 import java.time.LocalDate
@@ -62,6 +62,22 @@ object TestModels {
     Some("33333 333 333"),
     "software-vendor-name-three.com",
     Seq(FreeVersion),
+  )
+
+  val testVendorFour: SoftwareVendorModel = SoftwareVendorModel(
+    "test software vendor four",
+    Some("test@software-vendor-name-four.com"),
+    Some("44444 444 444"),
+    "software-vendor-name-four.com",
+    Seq(SoleTrader, Individual)
+  )
+
+  val testVendorFive: SoftwareVendorModel = SoftwareVendorModel(
+    "test software vendor five",
+    Some("test@software-vendor-name-five.com"),
+    Some("55555 555 555"),
+    "software-vendor-name-five.com",
+    Seq(SoleTrader, Individual, Agent, Motor)
   )
 
   val fullSoftwareVendorsModel: SoftwareVendors = SoftwareVendors(
