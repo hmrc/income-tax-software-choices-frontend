@@ -17,6 +17,7 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services
 
 import play.api.libs.json.{Reads, Writes}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.Individual
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{UserAnswers, UserFilters, VendorFilter}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.queries._
@@ -29,6 +30,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class PageAnswersService @Inject()(userFiltersRepository: UserFiltersRepository, implicit val ec: ExecutionContext) {
 
   private val userPages: Seq[QuestionPage[_]] = Seq(
+    UserTypePage,
     BusinessIncomePage,
     AdditionalIncomeSourcesPage,
     OtherItemsPage,
@@ -69,8 +71,8 @@ class PageAnswersService @Inject()(userFiltersRepository: UserFiltersRepository,
   def removePageFilters(id: String): Future[Boolean] = {
     userFiltersRepository.get(id).flatMap {
       case Some(userFilters) => {
-        val filtersFromAnswers = getFiltersFromAnswers(userFilters.answers)
-        userFiltersRepository.set(userFilters.copy(finalFilters = userFilters.finalFilters.filterNot(x=>filtersFromAnswers.contains(x))))
+        val filtersFromAnswers = getFiltersFromAnswers(userFilters.answers).filterNot(_ == Individual)
+        userFiltersRepository.set(userFilters.copy(finalFilters = userFilters.finalFilters.filterNot(x => filtersFromAnswers.contains(x))))
       }
       case None => {
         Future.successful(false)
@@ -80,6 +82,10 @@ class PageAnswersService @Inject()(userFiltersRepository: UserFiltersRepository,
 
   def getFiltersFromAnswers(userAnswers: Option[UserAnswers]): Seq[VendorFilter] = {
     userPages.flatMap(page => userAnswers.map(_.data).map(page.extractVendorFilters).getOrElse(Seq.empty))
+  }
+
+  def resetUserAnswers(id: String): Future[Boolean] = {
+    userFiltersRepository.set(UserFilters(id, Some(UserAnswers()), Seq.empty))
   }
 
 }

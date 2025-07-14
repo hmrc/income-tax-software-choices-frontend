@@ -23,26 +23,20 @@ import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.mockito.MockitoSugar.mock
 import play.api.Environment
 import play.api.http.Status
-import play.api.mvc.{Codec, MessagesControllerComponents}
+import play.api.mvc.Codec
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserFilters
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.FreeVersion
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.{PageAnswersService, SoftwareChoicesService}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SearchSoftwarePage
 
 import java.io.FileInputStream
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.Future
 
 class SearchSoftwareControllerSpec extends ControllerBaseSpec with BeforeAndAfterEach {
 
-  private val mcc = app.injector.instanceOf[MessagesControllerComponents]
-  val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
   private val searchSoftwarePage = app.injector.instanceOf[SearchSoftwarePage]
-  implicit val ec: ExecutionContext = ExecutionContext.Implicits.global
   val mockUserFiltersRepo: UserFiltersRepository = mock[UserFiltersRepository]
 
   "Show" should {
@@ -63,6 +57,22 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec with BeforeAndAfte
       status(result) shouldBe Status.OK
       contentType(result) shouldBe Some(HTML)
       charset(result) shouldBe Some(Codec.utf_8.charset)
+    }
+  }
+
+  "backLinkUrl" when {
+    "user type is Individual" should {
+      "return to the zero software results page when there are no all in one software" in withController { controller =>
+        controller.backLinkUrl(zeroResults = true, isAgent = false) shouldBe routes.ZeroSoftwareResultsController.show().url
+      }
+      "return to the check your answers page when there are all in one software" in withController { controller =>
+        controller.backLinkUrl(zeroResults = false, isAgent = false) shouldBe routes.CheckYourAnswersController.show().url
+      }
+    }
+    "user type is Agent" should {
+      "return to the user type page" in withController { controller =>
+        controller.backLinkUrl(zeroResults = false, isAgent = true) shouldBe routes.UserTypeController.show().url
+      }
     }
   }
 

@@ -17,12 +17,18 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages
 
 import play.api.libs.json.{JsPath, Reads}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType._
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{UserType, VendorFilter}
 
-case object UserTypesPage extends QuestionPage[UserType] {
+case object UserTypePage extends QuestionPage[UserType] {
   override def toString: String = "userType"
 
   override def path: JsPath = JsPath \ toString
+
+  override def toVendorFilter(value: UserType): Seq[VendorFilter] = value match {
+    case SoleTraderOrLandlord => Seq(VendorFilter.Individual)
+    case Agent => Seq(VendorFilter.Agent)
+  }
 
   override def reads: Reads[UserType] = implicitly
 }

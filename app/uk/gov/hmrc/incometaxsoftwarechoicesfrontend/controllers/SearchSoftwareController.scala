@@ -23,7 +23,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.Agent
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FiltersFormModel, UserFilters}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.UserTypesPage
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.UserTypePage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.{PageAnswersService, SoftwareChoicesService}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.viewmodels.SoftwareChoicesResultsViewModel
@@ -45,8 +45,8 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
     val sessionId = request.session.get("sessionId").getOrElse("")
     for {
       userFilters <- userFiltersRepository.get(sessionId)
-      filters = userFilters.map(x=>x.finalFilters).getOrElse(Seq.empty)
-      userType <- pageAnswersService.getPageAnswers(sessionId, UserTypesPage)
+      filters = userFilters.map(_.finalFilters).getOrElse(Seq.empty)
+      userType <- pageAnswersService.getPageAnswers(sessionId, UserTypePage)
       model = SoftwareChoicesResultsViewModel(
         allInOneVendors = softwareChoicesService.getAllInOneVendors(filters = filters),
         otherVendors = softwareChoicesService.getOtherVendors(filters = filters),
@@ -62,7 +62,7 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
     val sessionId = request.session.get("sessionId").getOrElse("")
     val filters = FiltersForm.form.bindFromRequest().get
     for {
-      userType <- pageAnswersService.getPageAnswers(sessionId, UserTypesPage)
+      userType <- pageAnswersService.getPageAnswers(sessionId, UserTypePage)
       _ <- update(filters)
     } yield {
       val model = SoftwareChoicesResultsViewModel(
@@ -73,7 +73,7 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
       )
       Ok(view(model, FiltersForm.form.fill(filters)))
     }
-   }
+  }
 
   def clear(zeroResults: Boolean): Action[AnyContent] = Action.async { implicit request =>
     update(FiltersFormModel()) map { _ =>
@@ -102,15 +102,17 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
       searchForm = form,
       postAction = routes.SearchSoftwareController.search(model.zeroResults),
       clearAction = routes.SearchSoftwareController.clear(model.zeroResults),
-      backUrl = backLinkUrl(model.zeroResults)
+      backUrl = backLinkUrl(model.isAgent, model.zeroResults)
     )
   }
 
-  private def backLinkUrl(zeroResults: Boolean): String = {
-    if (zeroResults) {
+  def backLinkUrl(isAgent: Boolean, zeroResults: Boolean): String = {
+    if (isAgent) {
+      routes.UserTypeController.show().url
+    } else if (zeroResults) {
       routes.ZeroSoftwareResultsController.show().url
     } else {
-     routes.CheckYourAnswersController.show().url
+      routes.CheckYourAnswersController.show().url
     }
   }
 }

@@ -18,18 +18,15 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import org.scalatest.BeforeAndAfterEach
 import play.api.http.Status
-import play.api.mvc.MessagesControllerComponents
 import play.api.test.Helpers._
 import uk.gov.hmrc.http.NotFoundException
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.SoftwareChoicesService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.ProductDetailsPage
+
 import java.net.URLEncoder
 
 class ProductDetailsControllerSpec extends ControllerBaseSpec with BeforeAndAfterEach {
 
-  private val mcc = app.injector.instanceOf[MessagesControllerComponents]
-  val appConfig:AppConfig = app.injector.instanceOf[AppConfig]
   private val productDetailsPage = app.injector.instanceOf[ProductDetailsPage]
   private val softwareChoicesService = app.injector.instanceOf[SoftwareChoicesService]
 
