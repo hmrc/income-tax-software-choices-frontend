@@ -21,15 +21,16 @@ import play.api.http.Status.{BAD_REQUEST, OK, SEE_OTHER}
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.SessionId
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, DatabaseHelper}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.{SoleTraderOrLandlord, Agent}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{UserAnswers, UserFilters}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.UserTypesPage
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.{Agent, SoleTraderOrLandlord}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{UserAnswers, UserFilters, VendorFilter}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages._
 
 class UserTypeControllerISpec extends ComponentSpecBase with BeforeAndAfterEach with DatabaseHelper {
   def testUserFilters(answers: UserAnswers): UserFilters = UserFilters(SessionId, Some(answers))
 
   override def beforeEach(): Unit = {
-    userFiltersRepository.collection.drop().toFuture()
+    await(userFiltersRepository.collection.drop().toFuture())
     super.beforeEach()
   }
 
@@ -49,7 +50,7 @@ class UserTypeControllerISpec extends ComponentSpecBase with BeforeAndAfterEach 
 
     "there are pre-existing page answers with radio option selected" should {
       "display the page with the previously chosen radio checked" in {
-        val userAnswers = UserAnswers().set(UserTypesPage, SoleTraderOrLandlord).get
+        val userAnswers = UserAnswers().set(UserTypePage, SoleTraderOrLandlord).get
         await(userFiltersRepository.set(testUserFilters(userAnswers)))
 
         val res = SoftwareChoicesFrontend.getUserType
@@ -63,9 +64,9 @@ class UserTypeControllerISpec extends ComponentSpecBase with BeforeAndAfterEach 
     }
   }
 
-  "POST /type-of-user" must {
-    s"return $SEE_OTHER and save page answer" when {
-      "user selects sole trader and landlord" in {
+  "POST /type-of-user" when {
+    "user selects sole trader and landlord" must {
+      s"return $SEE_OTHER and save page answer" in {
         val res = SoftwareChoicesFrontend.submitUserType(Some(SoleTraderOrLandlord))
 
         res should have(
@@ -73,17 +74,28 @@ class UserTypeControllerISpec extends ComponentSpecBase with BeforeAndAfterEach 
           redirectURI(routes.BusinessIncomeController.show().url)
         )
 
-        getPageData(SessionId, UserTypesPage.toString).size shouldBe 1
+        getPageData(SessionId, UserTypePage.toString).size shouldBe 1
+        getFinalFilters(SessionId) shouldBe Seq.empty
       }
+    }
+    "user selects agent working on behalf of client" must {
+      s"return $SEE_OTHER, reset user filters and save page answer" in {
+        await(userFiltersRepository.set(testUserFilters(UserAnswers()
+          .set(UserTypePage, SoleTraderOrLandlord).get
+          .set(BusinessIncomePage, Seq(SoleTrader, UkProperty)).get
+        )))
+        getAllPageData(SessionId).size shouldBe 2 //verify existing user answers
 
-      "user selects agent working on behalf of client" in {
         val res = SoftwareChoicesFrontend.submitUserType(Some(Agent))
 
         res should have(
           httpStatus(SEE_OTHER),
           redirectURI(routes.SearchSoftwareController.show().url)
         )
-        getPageData(SessionId, UserTypesPage.toString).size shouldBe 1
+        getPageData(SessionId, UserTypePage.toString).size shouldBe 1
+        getAllPageData(SessionId).size shouldBe 1
+        getFinalFilters(SessionId) shouldBe Seq(VendorFilter.Agent)
+
       }
     }
 
@@ -95,7 +107,7 @@ class UserTypeControllerISpec extends ComponentSpecBase with BeforeAndAfterEach 
           httpStatus(BAD_REQUEST)
         )
 
-        getPageData(SessionId, UserTypesPage.toString).size shouldBe 0
+        getPageData(SessionId, UserTypePage.toString).size shouldBe 0
       }
     }
   }

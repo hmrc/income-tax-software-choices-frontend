@@ -24,8 +24,9 @@ import org.scalatestplus.play.PlaySpec
 import play.api.libs.json.{JsPath, Reads}
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.AccountingPeriod.FirstAprilToThirtyFirstMarch
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.SoleTraderOrLandlord
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{UserAnswers, UserFilters, VendorFilter}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{UserAnswers, UserFilters, UserType, VendorFilter}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 
@@ -35,19 +36,24 @@ class PageAnswersServiceSpec extends PlaySpec with BeforeAndAfterEach {
 
   private case object DummyPage extends QuestionPage[String] {
     override def toString: String = "dummy"
-    override def path: JsPath     = JsPath \ toString
+    override def path: JsPath = JsPath \ toString
     override def toVendorFilter(value: String): Seq[VendorFilter] = Seq.empty
     override def reads: Reads[String] = implicitly
   }
 
   private val sessionId: String = "sessionId"
   private val dummyUserAnswers: UserAnswers = UserAnswers().set(DummyPage, "Test").get
-  private val vendorFilterUserAnswers: UserAnswers = UserAnswers().set(BusinessIncomePage, Seq(SoleTrader,UkProperty,OverseasProperty)).get
+  private val vendorFilterUserAnswers: UserAnswers = UserAnswers().set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
   private val mixedUserAnswers: UserAnswers = UserAnswers()
-    .set(BusinessIncomePage, Seq(SoleTrader,UkProperty,OverseasProperty)).get
+    .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
     .set(DummyPage, "Test").get
+  private val agentMixedUserAnswers: UserAnswers = UserAnswers()
+    .set(UserTypePage, UserType.Agent).get
+    .set(BusinessIncomePage, Seq(SoleTrader)).get
+    .set(OtherItemsPage, Seq(CharitableGiving)).get
   private val fullUserAnswers: UserAnswers = UserAnswers()
-    .set(BusinessIncomePage, Seq(SoleTrader,UkProperty,OverseasProperty)).get
+    .set(UserTypePage, SoleTraderOrLandlord).get
+    .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
     .set(AdditionalIncomeSourcesPage, Seq(UkInterest, ConstructionIndustryScheme, Employment, UkDividends, StatePensionIncome,
       PrivatePensionIncome, ForeignDividends, ForeignInterest)).get
     .set(OtherItemsPage, Seq(PaymentsIntoAPrivatePension, CharitableGiving, CapitalGainsTax, StudentLoans,
@@ -58,6 +64,12 @@ class PageAnswersServiceSpec extends PlaySpec with BeforeAndAfterEach {
   private val userFilterWithVendorFilterAnswerForPage = UserFilters(sessionId, Some(vendorFilterUserAnswers), Seq.empty)
   private val userFilterWithMixedAnswersForPage = UserFilters(sessionId, Some(mixedUserAnswers), Seq.empty)
   private val userFilterWithFullAnswersForPage = UserFilters(sessionId, Some(fullUserAnswers), Seq.empty)
+  private val userFilterWithFullFinalFilters = UserFilters(sessionId, Some(fullUserAnswers),
+    finalFilters = Seq(Individual, SoleTrader, UkProperty, OverseasProperty, UkInterest,
+      ConstructionIndustryScheme, Employment, UkDividends, StatePensionIncome, PrivatePensionIncome, ForeignDividends,
+      ForeignInterest, PaymentsIntoAPrivatePension, CharitableGiving, CapitalGainsTax, StudentLoans, MarriageAllowance,
+      VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge, CalendarUpdatePeriods))
+  private val agentUserFilter = UserFilters(sessionId, Some(agentMixedUserAnswers), Seq(Agent, SoleTrader, CharitableGiving))
 
   class Setup {
     implicit val ec: ExecutionContext = scala.concurrent.ExecutionContext.global
@@ -81,7 +93,7 @@ class PageAnswersServiceSpec extends PlaySpec with BeforeAndAfterEach {
 
         await(service.getPageAnswers(sessionId, DummyPage)) mustBe None
       }
-   }
+    }
     "the page has been visited previously" must {
       "return answers if user filters exists for this session and the page has answers" in new Setup {
         when(mockUserFiltersRepository.get(eqTo(sessionId)))
@@ -89,12 +101,12 @@ class PageAnswersServiceSpec extends PlaySpec with BeforeAndAfterEach {
 
         await(service.getPageAnswers(sessionId, DummyPage)) mustBe Some("Test")
       }
-   }
+    }
   }
 
   "setPageAnswers" when {
     "the userFilters exist" must {
-      "return true to show the answers have been saved"  in new Setup {
+      "return true to show the answers have been saved" in new Setup {
         when(mockUserFiltersRepository.get(eqTo(sessionId)))
           .thenReturn(Future.successful(Some(userFilterWithAnswerForPage)))
         when(mockUserFiltersRepository.set(any()))
@@ -104,7 +116,7 @@ class PageAnswersServiceSpec extends PlaySpec with BeforeAndAfterEach {
       }
     }
     "the userFilters do not exist" must {
-      "return true to show the answers have been saved once the user filters created"  in new Setup {
+      "return true to show the answers have been saved once the user filters created" in new Setup {
         when(mockUserFiltersRepository.get(eqTo(sessionId)))
           .thenReturn(Future.successful(None))
         when(mockUserFiltersRepository.set(any()))
@@ -117,36 +129,36 @@ class PageAnswersServiceSpec extends PlaySpec with BeforeAndAfterEach {
 
   "saveFiltersFromAnswers" when {
     "the userFilters exist" must {
-      "return correct sequence of vendors for the answers that have been saved"  in new Setup {
+      "return correct sequence of vendors for the answers that have been saved" in new Setup {
         when(mockUserFiltersRepository.get(eqTo(sessionId)))
           .thenReturn(Future.successful(Some(userFilterWithVendorFilterAnswerForPage)))
         when(mockUserFiltersRepository.set(any()))
           .thenReturn(Future.successful(true))
 
-        await(service.saveFiltersFromAnswers(sessionId)) mustBe Seq(SoleTrader,UkProperty,OverseasProperty)
+        await(service.saveFiltersFromAnswers(sessionId)) mustBe Seq(SoleTrader, UkProperty, OverseasProperty)
       }
-      "return correct sequence of vendors when all filter have been selected"  in new Setup {
+      "return correct sequence of vendors when all filter have been selected" in new Setup {
         when(mockUserFiltersRepository.get(eqTo(sessionId)))
           .thenReturn(Future.successful(Some(userFilterWithFullAnswersForPage)))
         when(mockUserFiltersRepository.set(any()))
           .thenReturn(Future.successful(true))
 
-        await(service.saveFiltersFromAnswers(sessionId)) mustBe Seq(SoleTrader, UkProperty, OverseasProperty, UkInterest,
+        await(service.saveFiltersFromAnswers(sessionId)) mustBe Seq(Individual, SoleTrader, UkProperty, OverseasProperty, UkInterest,
           ConstructionIndustryScheme, Employment, UkDividends, StatePensionIncome, PrivatePensionIncome, ForeignDividends,
           ForeignInterest, PaymentsIntoAPrivatePension, CharitableGiving, CapitalGainsTax, StudentLoans, MarriageAllowance,
           VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge, CalendarUpdatePeriods)
       }
-      "return correct sequence of vendors for the answers that have been saved ignoring not VendorFilter questions"  in new Setup {
+      "return correct sequence of vendors for the answers that have been saved ignoring not VendorFilter questions" in new Setup {
         when(mockUserFiltersRepository.get(eqTo(sessionId)))
           .thenReturn(Future.successful(Some(userFilterWithMixedAnswersForPage)))
         when(mockUserFiltersRepository.set(any()))
           .thenReturn(Future.successful(true))
 
-        await(service.saveFiltersFromAnswers(sessionId)) mustBe Seq(SoleTrader,UkProperty,OverseasProperty)
+        await(service.saveFiltersFromAnswers(sessionId)) mustBe Seq(SoleTrader, UkProperty, OverseasProperty)
       }
     }
     "the userFilters do not exist" must {
-      "return and empty sequence to show there no filters saved"  in new Setup {
+      "return and empty sequence to show there no filters saved" in new Setup {
         when(mockUserFiltersRepository.get(eqTo(sessionId)))
           .thenReturn(Future.successful(None))
         when(mockUserFiltersRepository.set(any()))
@@ -156,6 +168,27 @@ class PageAnswersServiceSpec extends PlaySpec with BeforeAndAfterEach {
       }
     }
 
+  }
+
+  "removePageFilters" when {
+    "the userFilters exists" must {
+      "return true to show the filters have been removed except Individual" in new Setup {
+        when(mockUserFiltersRepository.get(eqTo(sessionId)))
+          .thenReturn(Future.successful(Some(userFilterWithFullFinalFilters)))
+        when(mockUserFiltersRepository.set(userFilterWithFullFinalFilters.copy(finalFilters = Seq(Individual))))
+          .thenReturn(Future.successful(true))
+
+        await(service.removePageFilters(sessionId)) mustBe true
+      }
+    }
+    "the userFilters do not exist" must {
+      "return false to show no filters were removed" in new Setup {
+        when(mockUserFiltersRepository.get(eqTo(sessionId)))
+          .thenReturn(Future.successful(None))
+
+        await(service.removePageFilters(sessionId)) mustBe false
+      }
+    }
   }
 
 }

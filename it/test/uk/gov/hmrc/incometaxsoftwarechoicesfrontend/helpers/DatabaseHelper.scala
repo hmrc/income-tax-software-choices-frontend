@@ -18,7 +18,7 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers
 
 import play.api.libs.json.JsValue
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserFilters
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{UserFilters, VendorFilter}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 
 import scala.concurrent.Future
@@ -30,6 +30,10 @@ trait DatabaseHelper extends ComponentSpecBase {
   def getById(id: String): Future[Option[UserFilters]] = userFiltersRepository.get(id)
 
   def getPageData(id: String, page: String): Option[JsValue] = await(getById(id)).flatMap(_.answers).flatMap(_.data.value.get(page))
+
+  def getAllPageData(id: String): Iterable[JsValue] = await(getById(id)).get.answers.get.data.values
+
+  def getFinalFilters(id: String): Seq[VendorFilter] = await(getById(id)).get.finalFilters
 
 
 }
