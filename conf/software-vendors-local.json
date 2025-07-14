@@ -44,35 +44,6 @@
         "android",
         "apple-ios",
         "english"
-      ],
-      "incomeAndDeductions": [
-        "blind-persons-allowance",
-        "capital-gains-tax",
-        "complex-partnerships",
-        "construction-industry-scheme",
-        "employment",
-        "foreign-income",
-        "gift-aid",
-        "high-income-child-benefit",
-        "investments",
-        "lloyds-underwriters",
-        "marriage-allowance",
-        "married-allowance",
-        "member-of-parliament",
-        "minister-of-religion",
-        "partner-income",
-        "paye",
-        "pension-contributions",
-        "pensions",
-        "property-business",
-        "residence-and-remittance",
-        "sa-additional-income",
-        "self-employment",
-        "simple-partnerships",
-        "state-pension",
-        "student-loans",
-        "uk-dividends",
-        "uk-interest"
       ]
     },
     {
@@ -80,8 +51,7 @@
       "email": "test@software-vendor-name-two.com",
       "phone": "22222 222 222",
       "website": "software-vendor-name-two.com",
-      "filters": [],
-      "incomeAndDeductions": []
+      "filters": []
     },
     {
       "name": "test software vendor name three",
@@ -104,22 +74,6 @@
         "voluntary-class-2-national-insurance",
         "private-pension-income",
         "marriage-allowance"
-      ],
-      "incomeAndDeductions": [
-        "blind-persons-allowance",
-        "complex-partnerships",
-        "employment",
-        "gift-aid",
-        "investments",
-        "marriage-allowance",
-        "member-of-parliament",
-        "partner-income",
-        "pension-contributions",
-        "property-business",
-        "sa-additional-income",
-        "simple-partnerships",
-        "student-loans",
-        "uk-interest"
       ]
     },
     {
@@ -142,21 +96,6 @@
         "student-loans",
         "state-pension-income",
         "payments-into-a-private-pension"
-      ],
-      "incomeAndDeductions": [
-        "capital-gains-tax",
-        "construction-industry-scheme",
-        "foreign-income",
-        "high-income-child-benefit",
-        "lloyds-underwriters",
-        "married-allowance",
-        "minister-of-religion",
-        "paye",
-        "pensions",
-        "residence-and-remittance",
-        "self-employment",
-        "state-pension",
-        "uk-dividends"
       ]
     }
   ]
