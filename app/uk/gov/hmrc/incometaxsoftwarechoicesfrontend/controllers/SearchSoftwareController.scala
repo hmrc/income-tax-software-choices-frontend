@@ -54,7 +54,7 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
         isAgent = userType.contains(Agent)
       )
     } yield {
-      Ok(view(model, FiltersForm.form.fill(FiltersFormModel(filters = filters)), userType.contains(Agent)))
+      Ok(view(model, FiltersForm.form.fill(FiltersFormModel(filters = filters)), model.isAgent))
     }
   }
 
@@ -71,7 +71,7 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
         zeroResults = zeroResults,
         isAgent = userType.contains(Agent)
       )
-      Ok(view(model, FiltersForm.form.fill(filters), userType.contains(Agent)))
+      Ok(view(model, FiltersForm.form.fill(filters), model.isAgent))
     }
   }
 
@@ -107,10 +107,10 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
   }
 
   def backLinkUrl(zeroResults: Boolean, isAgent: Boolean): String = {
-    if (zeroResults) {
-      routes.ZeroSoftwareResultsController.show().url
-    } else if (isAgent) {
+    if (isAgent) {
       routes.UserTypeController.show().url
+    } else if (zeroResults) {
+      routes.ZeroSoftwareResultsController.show().url
     } else {
       routes.CheckYourAnswersController.show().url
     }
