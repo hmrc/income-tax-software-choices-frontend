@@ -54,7 +54,7 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
         isAgent = userType.contains(Agent)
       )
     } yield {
-      Ok(view(model, FiltersForm.form.fill(FiltersFormModel(filters = filters)), model.isAgent))
+      Ok(view(model, FiltersForm.form.fill(FiltersFormModel(filters = filters))))
     }
   }
 
@@ -71,7 +71,7 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
         zeroResults = zeroResults,
         isAgent = userType.contains(Agent)
       )
-      Ok(view(model, FiltersForm.form.fill(filters), model.isAgent))
+      Ok(view(model, FiltersForm.form.fill(filters)))
     }
   }
 
@@ -94,7 +94,7 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
     }
   }
 
-  private def view(model: SoftwareChoicesResultsViewModel, form: Form[FiltersFormModel], isAgent: Boolean)
+  private def view(model: SoftwareChoicesResultsViewModel, form: Form[FiltersFormModel])
                   (implicit request: Request[_]): Html = {
 
     searchSoftwarePage(
@@ -102,11 +102,11 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
       searchForm = form,
       postAction = routes.SearchSoftwareController.search(model.zeroResults),
       clearAction = routes.SearchSoftwareController.clear(model.zeroResults),
-      backUrl = backLinkUrl(model.zeroResults, isAgent)
+      backUrl = backLinkUrl(model.isAgent, model.zeroResults)
     )
   }
 
-  def backLinkUrl(zeroResults: Boolean, isAgent: Boolean): String = {
+  def backLinkUrl(isAgent: Boolean, zeroResults: Boolean): String = {
     if (isAgent) {
       routes.UserTypeController.show().url
     } else if (zeroResults) {
