@@ -129,6 +129,8 @@ search-software.vendor-count.heading    = These single products are compatible s
 search-software.vendor-count-single     = Currently there is 1 software provider
 search-software.vendor-count            = There are {0} software providers that can send quarterly updates, submit tax return and meet your selected requirements.
 search-software.vendor-visit-link       = Find out more about {0}
+search-software.vendor-count.no-products = You’ll need to combine several of these pieces of software to fully complete your quarterly updates and tax return
+search-software.vendor-count.no-products.count = {0} results found
 
 search-software.empty-vendor-list           = Nid yw eich chwiliad wedi dangos unrhyw ganlyniadau. Er mwyn cynyddu nifer y canlyniadau awgrymwn ei bod yn gwneud y canlynol:
 search-software.empty-vendor-list.heading   = Er mwyn cynyddu nifer y canlyniadau awgrymwn ei bod yn gwneud y canlynol:

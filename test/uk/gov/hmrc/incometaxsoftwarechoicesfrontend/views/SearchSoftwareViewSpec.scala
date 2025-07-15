@@ -158,8 +158,9 @@ class SearchSoftwareViewSpec extends ViewSpec {
       document.mainContent.selectHead("#lastUpdated").text shouldBe SearchSoftwarePageContent.lastUpdate
     }
 
-    "displays a message when the list is empty" which {
-      val emptyListMessage = document.mainContent.selectHead("#vendor-count")
+    "displays a message when the list is empty" should {
+      lazy val document = getDocument(hasResults = false, hasError = false)
+      lazy val emptyListMessage = document.mainContent.selectHead("#vendor-count")
 
       "contains a header" in {
         emptyListMessage.selectHead("h2").text shouldBe SearchSoftwarePageContent.emptyVendorListMessageHeading
@@ -252,6 +253,31 @@ class SearchSoftwareViewSpec extends ViewSpec {
           }
         }
       }
+
+      "when there are no all-in-one products" should {
+        lazy val documentZeroResults = {
+          val model = SoftwareChoicesResultsViewModel(
+            allInOneVendors = SearchSoftwarePageContent.softwareVendorsNoResults,
+            otherVendors   = SearchSoftwarePageContent.softwareVendorsResults,
+            zeroResults    = true
+          )
+          Jsoup.parse(page(model, hasError = false).body)
+        }
+
+        "displays the zero-results header" in {
+          documentZeroResults.mainContent.selectHead("#vendor-count h2").text shouldBe SearchSoftwarePageContent.noProductsHeading
+        }
+
+        "displays the results count" in {
+          documentZeroResults.mainContent.selectHead("#vendor-count h3").text shouldBe SearchSoftwarePageContent.noProductsCount
+        }
+
+        "renders all available software vendors" in {
+          val listings = documentZeroResults.mainContent.select("#software-vendor-list > div")
+          listings.size shouldBe SearchSoftwarePageContent.softwareVendorsResults.vendors.length
+        }
+      }
+
     }
   }
 }
@@ -361,6 +387,9 @@ private object SearchSoftwarePageContent {
   val emptyVendorListMessageParagraph = "To increase the number of results, we suggest you:"
   val emptyVendorListMessageBullet1 = "reduce the number of filters you apply"
   val emptyVendorListMessageBullet2 = "make sure the name you have entered into the search bar is correct"
+
+  val noProductsHeading = "You’ll need to combine several of these pieces of software to fully complete your quarterly updates and tax return"
+  val noProductsCount = "2 results found"
 
   val pricing = "Price"
   val freeVersion = "Free version"
