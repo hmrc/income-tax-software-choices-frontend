@@ -21,7 +21,7 @@
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.viewmodels.SoftwareChoicesResultsViewModel
 @import uk.gov.hmrc.govukfrontend.views.html.components._
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.{MainTemplate, SoftwareSearchStatusTemplate, SoftwareFiltersTemplate, SoftwareVendorsTemplate}
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.{MainTemplate, SoftwareSearchStatusTemplate, SoftwareFiltersTemplate, SoftwareVendorsTemplate, SoftwareVendorsZeroResultsTemplate}
 @import views.html.helper.CSPNonce
 @import uk.gov.hmrc.play.language.LanguageUtils
 
@@ -30,6 +30,7 @@
   softwareSearchStatusTemplate: SoftwareSearchStatusTemplate,
   softwareVendorsTemplate: SoftwareVendorsTemplate,
   softwareFiltersTemplate: SoftwareFiltersTemplate,
+  softwareVendorsZeroResultsTemplate: SoftwareVendorsZeroResultsTemplate,
   form: FormWithCSRF,
   govukCheckboxes: GovukCheckboxes,
   govukAccordion: GovukAccordion,
@@ -82,13 +83,17 @@
       </div>
 
       <div class="govuk-grid-column-two-thirds">
-        <div id="vendor-count">
-          @softwareSearchStatusTemplate(viewModel.allInOneVendors.vendors)
-        </div>
 
-        <div id="software-vendor-list">
-          @softwareVendorsTemplate(viewModel.allInOneVendors, viewModel.zeroResults)
-        </div>
+        @if(viewModel.zeroResults) {
+            @softwareVendorsZeroResultsTemplate(viewModel.otherVendors)
+        } else {
+          <div id="vendor-count">
+              @softwareSearchStatusTemplate(viewModel.allInOneVendors.vendors)
+          </div>
+          <div id="software-vendor-list">
+              @softwareVendorsTemplate(viewModel.allInOneVendors, viewModel.zeroResults)
+          </div>
+        }
 
         <p id = "lastUpdated" class="govuk-body-s govuk-!-padding-top-4">
           @messages("search-software.last-update"): <span class="govuk-!-font-weight-bold">@languageUtils.Dates.formatDateAbbrMonth(viewModel.allInOneVendors.lastUpdated)</span>
