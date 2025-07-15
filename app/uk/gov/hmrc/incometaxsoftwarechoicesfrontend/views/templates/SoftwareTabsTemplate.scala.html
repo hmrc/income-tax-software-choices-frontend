@@ -1,0 +1,65 @@
+@*
+ * Copyright 2023 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.viewmodels.SoftwareChoicesResultsViewModel
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.SoftwareVendorsTemplate
+
+@this(
+        softwareVendorsTemplate: SoftwareVendorsTemplate,
+        govukTabs: GovukTabs
+)
+
+@(viewModel: SoftwareChoicesResultsViewModel)(implicit messages: Messages)
+
+@tabHeading(text: String) = @{
+    s"""<h2 class="govuk-heading-l">$text</h2>"""
+}
+
+@tabSubHeading(text: String) = @{
+    s"""<h3 class="govuk-heading-m">$text</h3>"""
+}
+
+@allInOneTab = @{
+  TabItem(
+    id = Some("all-in-one-software"),
+    label = messages("search-software.all-in-one-tab.title"),
+    panel = TabPanel(
+     content = HtmlContent(
+             tabHeading(messages("search-software.all-in-one-tab.heading")) +
+             tabSubHeading(messages("search-software.all-in-one-tab.results", viewModel.allInOneVendors.vendors.size)) +
+             s"""<hr class="govuk-section-break govuk-section-break--visible">""" +
+             softwareVendorsTemplate(viewModel.allInOneVendors, viewModel.zeroResults)
+  )))
+}
+
+@otherTab = @{
+  TabItem(
+    id = Some("other-software"),
+    label = messages("search-software.other-software-tab.title"),
+    panel = TabPanel(
+        content = HtmlContent(
+             tabHeading(messages("search-software.other-software-tab.heading", viewModel.otherVendors.vendors.size)) +
+             tabSubHeading(messages("search-software.other-software-tab.results", viewModel.otherVendors.vendors.size)) +
+             s"""<hr class="govuk-section-break govuk-section-break--visible">""" +
+             softwareVendorsTemplate(viewModel.otherVendors, viewModel.zeroResults)
+  )))
+}
+
+@{
+ govukTabs(Tabs(
+  items = Seq(allInOneTab, otherTab))
+ )
+}
