@@ -14,22 +14,22 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareVendors
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.viewmodels.SoftwareChoicesResultsViewModel
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.SoftwareVendorsTemplate
 
 @this(
 softwareVendorsTemplate: SoftwareVendorsTemplate
 )
 
-@(vendorGroup: SoftwareVendors)(implicit messages: Messages)
+@(viewModel: SoftwareChoicesResultsViewModel)(implicit messages: Messages)
 
 <div id="vendor-count">
     <h2 class="govuk-heading-l">@messages("search-software.vendor-count.no-products")</h2>
     <h3 class="govuk-heading-m">
-        @messages( "search-software.vendor-count.no-products.count", vendorGroup.vendors.length)
+        @messages( "search-software.vendor-count.no-products.count", viewModel.otherVendors.vendors.length)
     </h3>
 </div>
 
 <div id="software-vendor-list">
-    @softwareVendorsTemplate(vendorGroup, zeroResults = true)
+    @softwareVendorsTemplate(viewModel.otherVendors, viewModel.zeroResults)
 </div>

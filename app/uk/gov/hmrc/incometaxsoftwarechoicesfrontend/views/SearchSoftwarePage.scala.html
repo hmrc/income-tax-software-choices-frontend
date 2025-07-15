@@ -88,7 +88,7 @@
               @softwareTabsTemplate(viewModel)
           }
           case (false, true) => {
-            @softwareVendorsZeroResultsTemplate(viewModel.otherVendors)
+              @softwareVendorsZeroResultsTemplate(viewModel)
           }
           case _ => {
               <div id="vendor-count">
@@ -99,11 +99,6 @@
               </div>
           }
         }
-
-        <p id = "lastUpdated" class="govuk-body-s govuk-!-padding-top-4">
-            @messages("search-software.last-update"): <span class="govuk-!-font-weight-bold">@languageUtils.Dates.formatDateAbbrMonth(viewModel.allInOneVendors.lastUpdated)</span>
-        </p>
-
     </div>
     }
   </div>
