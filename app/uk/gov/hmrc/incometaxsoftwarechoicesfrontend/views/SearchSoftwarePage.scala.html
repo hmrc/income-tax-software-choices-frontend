@@ -21,7 +21,7 @@
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.viewmodels.SoftwareChoicesResultsViewModel
 @import uk.gov.hmrc.govukfrontend.views.html.components._
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.{MainTemplate, SoftwareSearchStatusTemplate, SoftwareFiltersTemplate, SoftwareVendorsTemplate, SoftwareVendorsZeroResultsTemplate}
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates._
 @import views.html.helper.CSPNonce
 @import uk.gov.hmrc.play.language.LanguageUtils
 
@@ -31,6 +31,7 @@
   softwareVendorsTemplate: SoftwareVendorsTemplate,
   softwareFiltersTemplate: SoftwareFiltersTemplate,
   softwareVendorsZeroResultsTemplate: SoftwareVendorsZeroResultsTemplate,
+  softwareTabsTemplate: SoftwareTabsTemplate,
   form: FormWithCSRF,
   govukCheckboxes: GovukCheckboxes,
   govukAccordion: GovukAccordion,
@@ -38,7 +39,6 @@
   govukDetails: GovukDetails,
   languageUtils: LanguageUtils
 )(implicit appConfig: AppConfig)
-
 @(viewModel: SoftwareChoicesResultsViewModel, searchForm: Form[FiltersFormModel], postAction: Call, clearAction: Call, backUrl: String)(implicit request: Request[_], messages: Messages)
 
 @mainTemplate(title = messages("search-software.title"), backLink = Some(backUrl), optForm = Some(searchForm), isFullWidth = true) {
@@ -82,24 +82,24 @@
         </div>
       </div>
 
-      <div class="govuk-grid-column-two-thirds">
-
-        @if(viewModel.zeroResults) {
-            @softwareVendorsZeroResultsTemplate(viewModel.otherVendors)
-        } else {
-          <div id="vendor-count">
+    <div class="govuk-grid-column-two-thirds">
+        @(viewModel.isAgent, viewModel.zeroResults) match {
+          case (false, false) => {
+              @softwareTabsTemplate(viewModel)
+          }
+          case (false, true) => {
+              @softwareVendorsZeroResultsTemplate(viewModel)
+          }
+          case _ => {
+              <div id="vendor-count">
               @softwareSearchStatusTemplate(viewModel.allInOneVendors.vendors)
-          </div>
-          <div id="software-vendor-list">
+              </div>
+              <div id="software-vendor-list">
               @softwareVendorsTemplate(viewModel.allInOneVendors, viewModel.zeroResults)
-          </div>
+              </div>
+          }
         }
-
-        <p id = "lastUpdated" class="govuk-body-s govuk-!-padding-top-4">
-          @messages("search-software.last-update"): <span class="govuk-!-font-weight-bold">@languageUtils.Dates.formatDateAbbrMonth(viewModel.allInOneVendors.lastUpdated)</span>
-        </p>
-
-      </div>
+    </div>
     }
   </div>
 

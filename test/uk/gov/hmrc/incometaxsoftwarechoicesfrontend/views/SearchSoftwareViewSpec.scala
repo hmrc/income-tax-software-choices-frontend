@@ -18,6 +18,7 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views
 
 import org.jsoup.Jsoup
 import org.jsoup.nodes.{Document, Element}
+import org.jsoup.select.Elements
 import org.scalatest.Assertion
 import play.api.mvc.Call
 import play.twirl.api.HtmlFormat
@@ -154,102 +155,169 @@ class SearchSoftwareViewSpec extends ViewSpec {
       }
     }
 
-    "have the last updated date" in {
-      document.mainContent.selectHead("#lastUpdated").text shouldBe SearchSoftwarePageContent.lastUpdate
-    }
-
-    "displays a message when the list is empty" should {
-      lazy val document = getDocument(hasResults = false, hasError = false)
-      lazy val emptyListMessage = document.mainContent.selectHead("#vendor-count")
-
-      "contains a header" in {
-        emptyListMessage.selectHead("h2").text shouldBe SearchSoftwarePageContent.emptyVendorListMessageHeading
-      }
-
-      "contains a paragraph" in {
-        emptyListMessage.selectHead("p").text shouldBe SearchSoftwarePageContent.emptyVendorListMessageParagraph
-      }
-
-      "contains two bullet points" in {
-        emptyListMessage.selectNth("ul li", 1).text shouldBe SearchSoftwarePageContent.emptyVendorListMessageBullet1
-        emptyListMessage.selectNth("ul li", 2).text shouldBe SearchSoftwarePageContent.emptyVendorListMessageBullet2
-      }
-    }
-
-    "have a software vendor section" which {
+    "have a tabbed software vendor section" which {
       lazy val documentWithVendors = getDocument(hasResults = true, hasError = false)
       lazy val softwareVendorsSection = getSoftwareVendorsSection(documentWithVendors)
+      lazy val tabsList = getTabsList(documentWithVendors)
+      lazy val allInOneTab = getAllInOneTabContent(documentWithVendors)
+      lazy val otherTab = getOtherTabContent(documentWithVendors)
 
-      "has a header" in {
-        softwareVendorsSection.selectNth("h2", 1).text shouldBe SearchSoftwarePageContent.vendorsHeading
+      "has correctly named All-in-one tab" in {
+        tabsList.first.select("a").text() shouldBe SearchSoftwarePageContent.allInOneTabTitle
       }
 
-      "has a count of the number of software vendors on the page" in {
-        softwareVendorsSection.selectNth("p", 1).text shouldBe SearchSoftwarePageContent.numberOfVendors
+      "has correctly named Other tab" in {
+        tabsList.last.select("a").text() shouldBe SearchSoftwarePageContent.otherTabTitle
       }
 
-      "has a list of software vendors" which {
-
-        "has a software vendor with lots of detail" which {
-          def firstVendor: Element = softwareVendorsSection.selectHead("#software-vendor-0")
-
-          val firstModel = SearchSoftwarePageContent.softwareVendorsResults.vendors.head
-
-          "has a heading for the software vendor" in {
-            val heading: Element = firstVendor.selectHead("h3")
-            heading.text shouldBe firstModel.name
-          }
-
-          "has a link for the software vendor" in {
-            val link: Element = firstVendor.selectHead("a")
-            val expectedUrl = ProductDetailsController.show(URLEncoder.encode(firstModel.name, "UTF-8"), zeroResults = false).url
-
-            link.attr("href") shouldBe expectedUrl
-            link.text should include(firstModel.name)
-          }
-
-          "has a list of detail for the software vendor with full detail" in {
-            val summaryList: Element = firstVendor.selectHead("dl")
-
-            val firstRow = summaryList.selectNth("div", 1)
-            firstRow.selectHead("dt").text shouldBe SearchSoftwarePageContent.pricing
-            firstRow.selectHead("dd").text shouldBe SearchSoftwarePageContent.freeVersion
-
-            val secondRow = summaryList.selectNth("div", 2)
-            secondRow.selectHead("dt").text shouldBe SearchSoftwarePageContent.softwareFor
-            secondRow.selectHead("dd").text shouldBe s"${SearchSoftwarePageContent.bridging}"
-
-            val thirdRow = summaryList.selectNth("div", 3)
-            thirdRow.selectHead("dt").text shouldBe SearchSoftwarePageContent.suitableFor
-            thirdRow.selectHead("dd").text shouldBe s"${SearchSoftwarePageContent.soleTrader}, ${SearchSoftwarePageContent.ukProperty}, ${SearchSoftwarePageContent.overseasProperty}"
-          }
+      "has the correct All-in-one section" which {
+        "has correct All-in-one header" in {
+          allInOneTab.selectHead("h2").text shouldBe SearchSoftwarePageContent.allInOneTabHeading
         }
 
-        "has a software vendor with minimal detail" which {
-          def secondVendor: Element = softwareVendorsSection.selectHead("#software-vendor-1")
+        "has a count of the number of software vendors on the page" in {
+          allInOneTab.selectHead("h3").text shouldBe SearchSoftwarePageContent.allInOneTabCount
+        }
 
-          val secondModel = SearchSoftwarePageContent.softwareVendorsResults.vendors(1)
+        "has a list of software vendors" which {
 
-          "has a heading for the software vendor" in {
-            val heading: Element = secondVendor.selectHead("h3")
-            heading.text shouldBe secondModel.name
+          "has a software vendor with lots of detail" which {
+            def firstVendor: Element = allInOneTab.selectHead("#software-vendor-0")
+
+            val firstModel = SearchSoftwarePageContent.softwareVendorsResults.vendors.head
+
+            "has a heading for the software vendor" in {
+              val heading: Element = firstVendor.selectHead("h3")
+              heading.text shouldBe firstModel.name
+            }
+
+            "has a link for the software vendor" in {
+              val link: Element = firstVendor.selectHead("a")
+              val expectedUrl = ProductDetailsController.show(URLEncoder.encode(firstModel.name, "UTF-8"), zeroResults = false).url
+
+              link.attr("href") shouldBe expectedUrl
+              link.text should include(firstModel.name)
+            }
+
+            "has a list of detail for the software vendor with full detail" in {
+              val summaryList: Element = firstVendor.selectHead("dl")
+
+              val firstRow = summaryList.selectNth("div", 1)
+              firstRow.selectHead("dt").text shouldBe SearchSoftwarePageContent.pricing
+              firstRow.selectHead("dd").text shouldBe SearchSoftwarePageContent.freeVersion
+
+              val secondRow = summaryList.selectNth("div", 2)
+              secondRow.selectHead("dt").text shouldBe SearchSoftwarePageContent.softwareFor
+              secondRow.selectHead("dd").text shouldBe s"${SearchSoftwarePageContent.bridging}"
+
+              val thirdRow = summaryList.selectNth("div", 3)
+              thirdRow.selectHead("dt").text shouldBe SearchSoftwarePageContent.suitableFor
+              thirdRow.selectHead("dd").text shouldBe s"${SearchSoftwarePageContent.soleTrader}, ${SearchSoftwarePageContent.ukProperty}, ${SearchSoftwarePageContent.overseasProperty}"
+            }
           }
 
-          "has a link for the software vendor" in {
-            val link: Element = secondVendor.selectHead("a")
-            val expectedUrl = ProductDetailsController.show(URLEncoder.encode(secondModel.name, "UTF-8"), zeroResults = false).url
+          "has a software vendor with minimal detail" which {
+            def secondVendor: Element = allInOneTab.selectHead("#software-vendor-1")
 
-            link.attr("href") shouldBe expectedUrl
-            link.text should include(secondModel.name)
+            val secondModel = SearchSoftwarePageContent.softwareVendorsResults.vendors(1)
+
+            "has a heading for the software vendor" in {
+              val heading: Element = secondVendor.selectHead("h3")
+              heading.text shouldBe secondModel.name
+            }
+
+            "has a link for the software vendor" in {
+              val link: Element = secondVendor.selectHead("a")
+              val expectedUrl = ProductDetailsController.show(URLEncoder.encode(secondModel.name, "UTF-8"), zeroResults = false).url
+
+              link.attr("href") shouldBe expectedUrl
+              link.text should include(secondModel.name)
+            }
+
+            "has a list of detail for the software vendor with minimal detail" in {
+              val summaryList: Element = secondVendor.selectHead("dl")
+
+              val firstRow: Element = summaryList.selectNth("div", 1)
+              firstRow.selectHead("dt").text shouldBe SearchSoftwarePageContent.pricing
+
+              summaryList.selectOptionally("div:nth-of-type(4)") shouldBe None
+            }
+          }
+        }
+      }
+
+      "has the correct Other tab section" which {
+        "has correct other tab header" in {
+          otherTab.selectHead("h2").text shouldBe SearchSoftwarePageContent.otherTabHeading
+        }
+
+        "has a count of the number of software vendors on the page" in {
+          otherTab.selectHead("h3").text shouldBe SearchSoftwarePageContent.otherTabCount
+        }
+
+        "has a list of software vendors" which {
+
+          "has a software vendor with lots of detail" which {
+            def firstVendor: Element = otherTab.selectHead("#software-vendor-0")
+
+            val firstModel = SearchSoftwarePageContent.softwareVendorsResults.vendors.head
+
+            "has a heading for the software vendor" in {
+              val heading: Element = firstVendor.selectHead("h3")
+              heading.text shouldBe firstModel.name
+            }
+
+            "has a link for the software vendor" in {
+              val link: Element = firstVendor.selectHead("a")
+              val expectedUrl = ProductDetailsController.show(URLEncoder.encode(firstModel.name, "UTF-8"), zeroResults = false).url
+
+              link.attr("href") shouldBe expectedUrl
+              link.text should include(firstModel.name)
+            }
+
+            "has a list of detail for the software vendor with full detail" in {
+              val summaryList: Element = firstVendor.selectHead("dl")
+
+              val firstRow = summaryList.selectNth("div", 1)
+              firstRow.selectHead("dt").text shouldBe SearchSoftwarePageContent.pricing
+              firstRow.selectHead("dd").text shouldBe SearchSoftwarePageContent.freeVersion
+
+              val secondRow = summaryList.selectNth("div", 2)
+              secondRow.selectHead("dt").text shouldBe SearchSoftwarePageContent.softwareFor
+              secondRow.selectHead("dd").text shouldBe s"${SearchSoftwarePageContent.bridging}"
+
+              val thirdRow = summaryList.selectNth("div", 3)
+              thirdRow.selectHead("dt").text shouldBe SearchSoftwarePageContent.suitableFor
+              thirdRow.selectHead("dd").text shouldBe s"${SearchSoftwarePageContent.soleTrader}, ${SearchSoftwarePageContent.ukProperty}, ${SearchSoftwarePageContent.overseasProperty}"
+            }
           }
 
-          "has a list of detail for the software vendor with minimal detail" in {
-            val summaryList: Element = secondVendor.selectHead("dl")
+          "has a software vendor with minimal detail" which {
+            def secondVendor: Element = otherTab.selectHead("#software-vendor-1")
 
-            val firstRow: Element = summaryList.selectNth("div", 1)
-            firstRow.selectHead("dt").text shouldBe SearchSoftwarePageContent.pricing
+            val secondModel = SearchSoftwarePageContent.softwareVendorsResults.vendors(1)
 
-            summaryList.selectOptionally("div:nth-of-type(4)") shouldBe None
+            "has a heading for the software vendor" in {
+              val heading: Element = secondVendor.selectHead("h3")
+              heading.text shouldBe secondModel.name
+            }
+
+            "has a link for the software vendor" in {
+              val link: Element = secondVendor.selectHead("a")
+              val expectedUrl = ProductDetailsController.show(URLEncoder.encode(secondModel.name, "UTF-8"), zeroResults = false).url
+
+              link.attr("href") shouldBe expectedUrl
+              link.text should include(secondModel.name)
+            }
+
+            "has a list of detail for the software vendor with minimal detail" in {
+              val summaryList: Element = secondVendor.selectHead("dl")
+
+              val firstRow: Element = summaryList.selectNth("div", 1)
+              firstRow.selectHead("dt").text shouldBe SearchSoftwarePageContent.pricing
+
+              summaryList.selectOptionally("div:nth-of-type(4)") shouldBe None
+            }
           }
         }
       }
@@ -295,7 +363,7 @@ object SearchSoftwareViewSpec extends ViewSpec {
 
   def getDocument(hasResults: Boolean, hasError: Boolean): Document = {
     val results = if (hasResults) SearchSoftwarePageContent.softwareVendorsResults else SearchSoftwarePageContent.softwareVendorsNoResults
-    val model = SoftwareChoicesResultsViewModel(allInOneVendors = results)
+    val model = SoftwareChoicesResultsViewModel(allInOneVendors = results, otherVendors = results, zeroResults = results.vendors.isEmpty)
     Jsoup.parse(page(model, hasError).body)
   }
 
@@ -346,6 +414,21 @@ object SearchSoftwareViewSpec extends ViewSpec {
       .selectNth(".govuk-fieldset", 1)
   }
 
+  def getTabsList(document: Document): Elements = {
+    getSoftwareVendorsSection(document)
+      .select("ul > li")
+  }
+
+  def getAllInOneTabContent(document: Document): Element = {
+    document
+      .selectHead("#all-in-one-software")
+  }
+
+  def getOtherTabContent(document: Document): Element = {
+    document
+      .selectHead("#other-software")
+  }
+
   def getFilterSection(document: Document): Element = document.mainContent.selectHead("#software-section").selectNth(".filters-section", 1)
 
   private val searchSoftwarePage = app.injector.instanceOf[SearchSoftwarePage]
@@ -378,6 +461,13 @@ private object SearchSoftwarePageContent {
     val allowances = "Allowances"
     val applyFilters = "Apply filters"
   }
+
+  val allInOneTabTitle = "All-in-one software"
+  val allInOneTabHeading = "Each of these software products can help you complete your quarterly updates and tax return in full"
+  val allInOneTabCount = "2 results found"
+  val otherTabTitle: String = "Other software"
+  val otherTabHeading = "There are 2 software products that you can use together for Making Tax Digital"
+  val otherTabCount = "2 results found"
 
   val vendorsHeading = "These single products are compatible software that meets all your needs"
   val numberOfVendors = "There are 2 software providers that can send quarterly updates, submit tax return and meet your selected requirements."
