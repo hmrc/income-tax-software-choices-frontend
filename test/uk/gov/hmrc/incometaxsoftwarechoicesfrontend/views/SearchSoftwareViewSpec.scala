@@ -49,9 +49,9 @@ class SearchSoftwareViewSpec extends ViewSpec {
     testRow(summaryList, 4, SearchSoftwarePageContent.suitableFor, s"${SearchSoftwarePageContent.soleTrader}, ${SearchSoftwarePageContent.ukProperty}, ${SearchSoftwarePageContent.overseasProperty}")
   }
 
-  private def testCartdTwo(summaryList: Element) = {
+  private def testCardTwo(summaryList: Element) = {
     testRow(summaryList, 1, SearchSoftwarePageContent.pricing, SearchSoftwarePageContent.noFreeVersion)
-    summaryList.selectOptionally("div:nth-of-type(4)") shouldBe None
+    summaryList.selectOptionally("div:nth-of-type(2)") shouldBe None
   }
 
   "Search software page" must {
@@ -239,7 +239,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
             }
 
             "has a list of detail for the software vendor with minimal detail" in {
-              testCartdTwo(secondVendor.selectHead("dl"))
+              testCardTwo(secondVendor.selectHead("dl"))
             }
           }
         }
@@ -297,7 +297,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
             }
 
             "has a list of detail for the software vendor with minimal detail" in {
-              testCartdTwo(secondVendor.selectHead("dl"))
+              testCardTwo(secondVendor.selectHead("dl"))
             }
           }
         }
@@ -383,7 +383,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
             }
 
             "has a list of detail for the software vendor with minimal detail" in {
-              testCartdTwo(secondVendor.selectHead("dl"))
+              testCardTwo(secondVendor.selectHead("dl"))
             }
           }
         }
