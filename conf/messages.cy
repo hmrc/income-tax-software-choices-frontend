@@ -236,6 +236,14 @@ product-details.contact-details.email      = E-bost
 product-details.contact-details.phone      = Phone... in welsh
 product-details.contact-details.website    = Website...in welsh
 
+search-software.all-in-one-tab.title = All-in-one software
+search-software.all-in-one-tab.heading = Each of these software products can help you complete your quarterly updates and tax return in full
+search-software.all-in-one-tab.results = {0} results found
+
+search-software.other-software-tab.title = Other software
+search-software.other-software-tab.heading = There are {0} software products that you can use together for Making Tax Digital
+search-software.other-software-tab.results = {0} results found
+
 # Product details section
 
 product-details.details.heading                = Software details...but in welsh
