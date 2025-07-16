@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.utils
 
-import play.api.data.validation.{Constraint, Invalid, Valid, ValidationResult}
+import play.api.data.validation.{Constraint, Invalid, Valid}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.utils.ConstraintUtil.constraint
 
 object Constraints {

@@ -18,7 +18,7 @@
 
 @this()
 
-@(softwareVendors: Seq[SoftwareVendorModel], isAgent: Boolean)(implicit messages: Messages)
+@(softwareVendors: Seq[SoftwareVendorModel])(implicit messages: Messages)
 
 @softwareVendorsCount(count: Int) = {
     <span class="govuk-!-font-weight-bold">@count</span>
@@ -43,17 +43,10 @@
 <p class="govuk-body">@Html(messages(s"search-software.vendor-count", softwareVendorsCount(softwareVendors.length)))</p>
 }
 
-@agentVendorList = {
-<h2 class="govuk-heading-m">@messages("search-software.vendor-count.agent.heading", softwareVendors.length)</h2>
-<p class="govuk-body">@messages("search-software.vendor-count.agent")</p>
-}
-
 @{if (softwareVendors.isEmpty) {
     emptyVendorsList
 } else if (softwareVendors.length == 1) {
     singleVendorList
-} else if (isAgent) {
-    agentVendorList
 } else {
     multipleVendorList
 }}

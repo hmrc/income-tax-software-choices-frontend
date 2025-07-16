@@ -16,10 +16,8 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms
 
-import play.api.data.Forms.{list, mapping, optional, text}
-import play.api.data.validation.Constraint
-import play.api.data.{Form, Mapping}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.utils.Constraints
+import play.api.data.Form
+import play.api.data.Forms.{list, mapping, text}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.filterKeyToFilter
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FiltersFormModel, VendorFilter}
 
