@@ -36,6 +36,24 @@ class SearchSoftwareViewSpec extends ViewSpec {
 
   import SearchSoftwareViewSpec._
 
+  private def testRow(summaryList: Element, index: Int, key: String, value: String) = {
+    val row = summaryList.selectNth("div", index)
+    row.selectHead("dt").text shouldBe key
+    row.selectHead("dd").text shouldBe value
+  }
+
+  private def testCardOne(summaryList: Element) = {
+    testRow(summaryList, 1, SearchSoftwarePageContent.pricing, SearchSoftwarePageContent.freeVersion)
+    testRow(summaryList, 2, SearchSoftwarePageContent.softwareFor, s"${SearchSoftwarePageContent.bridging}")
+    testRow(summaryList, 3, SearchSoftwarePageContent.submissionType, s"${SearchSoftwarePageContent.taxReturn}")
+    testRow(summaryList, 4, SearchSoftwarePageContent.suitableFor, s"${SearchSoftwarePageContent.soleTrader}, ${SearchSoftwarePageContent.ukProperty}, ${SearchSoftwarePageContent.overseasProperty}")
+  }
+
+  private def testCartdTwo(summaryList: Element) = {
+    testRow(summaryList, 1, SearchSoftwarePageContent.pricing, SearchSoftwarePageContent.noFreeVersion)
+    summaryList.selectOptionally("div:nth-of-type(4)") shouldBe None
+  }
+
   "Search software page" must {
     lazy val document = getDocument(hasResults = false, hasError = false)
 
@@ -198,19 +216,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
             }
 
             "has a list of detail for the software vendor with full detail" in {
-              val summaryList: Element = firstVendor.selectHead("dl")
-
-              val firstRow = summaryList.selectNth("div", 1)
-              firstRow.selectHead("dt").text shouldBe SearchSoftwarePageContent.pricing
-              firstRow.selectHead("dd").text shouldBe SearchSoftwarePageContent.freeVersion
-
-              val secondRow = summaryList.selectNth("div", 2)
-              secondRow.selectHead("dt").text shouldBe SearchSoftwarePageContent.softwareFor
-              secondRow.selectHead("dd").text shouldBe s"${SearchSoftwarePageContent.bridging}"
-
-              val thirdRow = summaryList.selectNth("div", 3)
-              thirdRow.selectHead("dt").text shouldBe SearchSoftwarePageContent.suitableFor
-              thirdRow.selectHead("dd").text shouldBe s"${SearchSoftwarePageContent.soleTrader}, ${SearchSoftwarePageContent.ukProperty}, ${SearchSoftwarePageContent.overseasProperty}"
+              testCardOne(firstVendor.selectHead("dl"))
             }
           }
 
@@ -233,12 +239,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
             }
 
             "has a list of detail for the software vendor with minimal detail" in {
-              val summaryList: Element = secondVendor.selectHead("dl")
-
-              val firstRow: Element = summaryList.selectNth("div", 1)
-              firstRow.selectHead("dt").text shouldBe SearchSoftwarePageContent.pricing
-
-              summaryList.selectOptionally("div:nth-of-type(4)") shouldBe None
+              testCartdTwo(secondVendor.selectHead("dl"))
             }
           }
         }
@@ -273,19 +274,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
             }
 
             "has a list of detail for the software vendor with full detail" in {
-              val summaryList: Element = firstVendor.selectHead("dl")
-
-              val firstRow = summaryList.selectNth("div", 1)
-              firstRow.selectHead("dt").text shouldBe SearchSoftwarePageContent.pricing
-              firstRow.selectHead("dd").text shouldBe SearchSoftwarePageContent.freeVersion
-
-              val secondRow = summaryList.selectNth("div", 2)
-              secondRow.selectHead("dt").text shouldBe SearchSoftwarePageContent.softwareFor
-              secondRow.selectHead("dd").text shouldBe s"${SearchSoftwarePageContent.bridging}"
-
-              val thirdRow = summaryList.selectNth("div", 3)
-              thirdRow.selectHead("dt").text shouldBe SearchSoftwarePageContent.suitableFor
-              thirdRow.selectHead("dd").text shouldBe s"${SearchSoftwarePageContent.soleTrader}, ${SearchSoftwarePageContent.ukProperty}, ${SearchSoftwarePageContent.overseasProperty}"
+              testCardOne(firstVendor.selectHead("dl"))
             }
           }
 
@@ -308,12 +297,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
             }
 
             "has a list of detail for the software vendor with minimal detail" in {
-              val summaryList: Element = secondVendor.selectHead("dl")
-
-              val firstRow: Element = summaryList.selectNth("div", 1)
-              firstRow.selectHead("dt").text shouldBe SearchSoftwarePageContent.pricing
-
-              summaryList.selectOptionally("div:nth-of-type(4)") shouldBe None
+              testCartdTwo(secondVendor.selectHead("dl"))
             }
           }
         }
@@ -376,19 +360,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
             }
 
             "has a list of detail for the software vendor with full detail" in {
-              val summaryList: Element = firstVendor.selectHead("dl")
-
-              val firstRow = summaryList.selectNth("div", 1)
-              firstRow.selectHead("dt").text shouldBe SearchSoftwarePageContent.pricing
-              firstRow.selectHead("dd").text shouldBe SearchSoftwarePageContent.freeVersion
-
-              val secondRow = summaryList.selectNth("div", 2)
-              secondRow.selectHead("dt").text shouldBe SearchSoftwarePageContent.softwareFor
-              secondRow.selectHead("dd").text shouldBe s"${SearchSoftwarePageContent.bridging}"
-
-              val thirdRow = summaryList.selectNth("div", 3)
-              thirdRow.selectHead("dt").text shouldBe SearchSoftwarePageContent.suitableFor
-              thirdRow.selectHead("dd").text shouldBe s"${SearchSoftwarePageContent.soleTrader}, ${SearchSoftwarePageContent.ukProperty}, ${SearchSoftwarePageContent.overseasProperty}"
+              testCardOne(firstVendor.selectHead("dl"))
             }
           }
 
@@ -411,12 +383,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
             }
 
             "has a list of detail for the software vendor with minimal detail" in {
-              val summaryList: Element = secondVendor.selectHead("dl")
-
-              val firstRow: Element = summaryList.selectNth("div", 1)
-              firstRow.selectHead("dt").text shouldBe SearchSoftwarePageContent.pricing
-
-              summaryList.selectOptionally("div:nth-of-type(4)") shouldBe None
+              testCartdTwo(secondVendor.selectHead("dl"))
             }
           }
         }
@@ -561,6 +528,7 @@ private object SearchSoftwarePageContent {
 
   val pricing = "Price"
   val freeVersion = "Free version"
+  val noFreeVersion = "No free version"
   val freeVersionHint = "Check the company’s website for information on their pricing structure."
 
   val suitableFor = "Business income sources"
@@ -639,7 +607,8 @@ private object SearchSoftwarePageContent {
           VendorFilter.Visual,
           VendorFilter.Hearing,
           VendorFilter.Motor,
-          VendorFilter.Cognitive
+          VendorFilter.Cognitive,
+          VendorFilter.TaxReturn
         )
       ),
       SoftwareVendorModel(
