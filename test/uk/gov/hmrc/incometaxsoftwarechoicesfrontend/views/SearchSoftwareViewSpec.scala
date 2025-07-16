@@ -42,14 +42,16 @@ class SearchSoftwareViewSpec extends ViewSpec {
     row.selectHead("dd").text shouldBe value
   }
 
-  private def testCardOne(summaryList: Element) = {
+  private def testCardOne(vendor: Element) = {
+    val summaryList = vendor.selectHead("dl")
     testRow(summaryList, 1, SearchSoftwarePageContent.pricing, SearchSoftwarePageContent.freeVersion)
     testRow(summaryList, 2, SearchSoftwarePageContent.softwareFor, s"${SearchSoftwarePageContent.bridging}")
     testRow(summaryList, 3, SearchSoftwarePageContent.submissionType, s"${SearchSoftwarePageContent.taxReturn}")
     testRow(summaryList, 4, SearchSoftwarePageContent.suitableFor, s"${SearchSoftwarePageContent.soleTrader}, ${SearchSoftwarePageContent.ukProperty}, ${SearchSoftwarePageContent.overseasProperty}")
   }
 
-  private def testCardTwo(summaryList: Element) = {
+  private def testCardTwo(vendor: Element) = {
+    val summaryList = vendor.selectHead("dl")
     testRow(summaryList, 1, SearchSoftwarePageContent.pricing, SearchSoftwarePageContent.noFreeVersion)
     summaryList.selectOptionally("div:nth-of-type(2)") shouldBe None
   }
@@ -216,7 +218,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
             }
 
             "has a list of detail for the software vendor with full detail" in {
-              testCardOne(firstVendor.selectHead("dl"))
+              testCardOne(firstVendor)
             }
           }
 
@@ -239,7 +241,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
             }
 
             "has a list of detail for the software vendor with minimal detail" in {
-              testCardTwo(secondVendor.selectHead("dl"))
+              testCardTwo(secondVendor)
             }
           }
         }
@@ -274,7 +276,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
             }
 
             "has a list of detail for the software vendor with full detail" in {
-              testCardOne(firstVendor.selectHead("dl"))
+              testCardOne(firstVendor)
             }
           }
 
@@ -297,7 +299,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
             }
 
             "has a list of detail for the software vendor with minimal detail" in {
-              testCardTwo(secondVendor.selectHead("dl"))
+              testCardTwo(secondVendor)
             }
           }
         }
@@ -360,7 +362,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
             }
 
             "has a list of detail for the software vendor with full detail" in {
-              testCardOne(firstVendor.selectHead("dl"))
+              testCardOne(firstVendor)
             }
           }
 
@@ -383,7 +385,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
             }
 
             "has a list of detail for the software vendor with minimal detail" in {
-              testCardTwo(secondVendor.selectHead("dl"))
+              testCardTwo(secondVendor)
             }
           }
         }
