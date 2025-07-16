@@ -110,7 +110,8 @@
 }
 
 @softwareVendorListing(vendor: SoftwareVendorModel, index: Int) = {
-  <div id="software-vendor-@index">
+    <hr class="govuk-section-break govuk-section-break--visible">
+    <div id="software-vendor-@index">
     <h3 class="govuk-heading-m software-vendor-list-heading-override">
       @vendor.name
     </h3>
@@ -123,7 +124,6 @@
         @messages("search-software.vendor-visit-link", vendor.name)
       </a>
     </p>
-    <hr>
   </div>
 }
 
