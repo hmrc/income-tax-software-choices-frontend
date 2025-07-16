@@ -157,7 +157,6 @@ class SearchSoftwareViewSpec extends ViewSpec {
 
     "have a tabbed software vendor section" which {
       lazy val documentWithVendors = getDocument(hasResults = true, hasError = false)
-      lazy val softwareVendorsSection = getSoftwareVendorsSection(documentWithVendors)
       lazy val tabsList = getTabsList(documentWithVendors)
       lazy val allInOneTab = getAllInOneTabContent(documentWithVendors)
       lazy val otherTab = getOtherTabContent(documentWithVendors)
@@ -180,7 +179,6 @@ class SearchSoftwareViewSpec extends ViewSpec {
         }
 
         "has a list of software vendors" which {
-
           "has a software vendor with lots of detail" which {
             def firstVendor: Element = allInOneTab.selectHead("#software-vendor-0")
 
@@ -256,7 +254,6 @@ class SearchSoftwareViewSpec extends ViewSpec {
         }
 
         "has a list of software vendors" which {
-
           "has a software vendor with lots of detail" which {
             def firstVendor: Element = otherTab.selectHead("#software-vendor-0")
 
@@ -345,7 +342,85 @@ class SearchSoftwareViewSpec extends ViewSpec {
           listings.size shouldBe SearchSoftwarePageContent.softwareVendorsResults.vendors.length
         }
       }
+    }
 
+    "have a single software vendor section for agents" which {
+      lazy val document = getDocument(hasResults = true, hasError = false, isAgent = true)
+
+      "has the correct Other tab section" which {
+        "has correct other tab header" in {
+          document.selectHead("#vendor-count h2").text shouldBe SearchSoftwarePageContent.agentHeading
+        }
+
+        "has a count of the number of software vendors on the page" in {
+          document.selectHead("#vendor-count h3").text shouldBe SearchSoftwarePageContent.agentText
+        }
+
+        "has a list of software vendors" which {
+          "has a software vendor with lots of detail" which {
+            def firstVendor: Element = document.selectHead("#software-vendor-0")
+
+            val firstModel = SearchSoftwarePageContent.softwareVendorsResults.vendors.head
+
+            "has a heading for the software vendor" in {
+              val heading: Element = firstVendor.selectHead("h3")
+              heading.text shouldBe firstModel.name
+            }
+
+            "has a link for the software vendor" in {
+              val link: Element = firstVendor.selectHead("a")
+              val expectedUrl = ProductDetailsController.show(URLEncoder.encode(firstModel.name, "UTF-8"), zeroResults = false).url
+
+              link.attr("href") shouldBe expectedUrl
+              link.text should include(firstModel.name)
+            }
+
+            "has a list of detail for the software vendor with full detail" in {
+              val summaryList: Element = firstVendor.selectHead("dl")
+
+              val firstRow = summaryList.selectNth("div", 1)
+              firstRow.selectHead("dt").text shouldBe SearchSoftwarePageContent.pricing
+              firstRow.selectHead("dd").text shouldBe SearchSoftwarePageContent.freeVersion
+
+              val secondRow = summaryList.selectNth("div", 2)
+              secondRow.selectHead("dt").text shouldBe SearchSoftwarePageContent.softwareFor
+              secondRow.selectHead("dd").text shouldBe s"${SearchSoftwarePageContent.bridging}"
+
+              val thirdRow = summaryList.selectNth("div", 3)
+              thirdRow.selectHead("dt").text shouldBe SearchSoftwarePageContent.suitableFor
+              thirdRow.selectHead("dd").text shouldBe s"${SearchSoftwarePageContent.soleTrader}, ${SearchSoftwarePageContent.ukProperty}, ${SearchSoftwarePageContent.overseasProperty}"
+            }
+          }
+
+          "has a software vendor with minimal detail" which {
+            def secondVendor: Element = document.selectHead("#software-vendor-1")
+
+            val secondModel = SearchSoftwarePageContent.softwareVendorsResults.vendors(1)
+
+            "has a heading for the software vendor" in {
+              val heading: Element = secondVendor.selectHead("h3")
+              heading.text shouldBe secondModel.name
+            }
+
+            "has a link for the software vendor" in {
+              val link: Element = secondVendor.selectHead("a")
+              val expectedUrl = ProductDetailsController.show(URLEncoder.encode(secondModel.name, "UTF-8"), zeroResults = false).url
+
+              link.attr("href") shouldBe expectedUrl
+              link.text should include(secondModel.name)
+            }
+
+            "has a list of detail for the software vendor with minimal detail" in {
+              val summaryList: Element = secondVendor.selectHead("dl")
+
+              val firstRow: Element = summaryList.selectNth("div", 1)
+              firstRow.selectHead("dt").text shouldBe SearchSoftwarePageContent.pricing
+
+              summaryList.selectOptionally("div:nth-of-type(4)") shouldBe None
+            }
+          }
+        }
+      }
     }
   }
 }
@@ -361,9 +436,9 @@ object SearchSoftwareViewSpec extends ViewSpec {
       "/test-back-url"
     )
 
-  def getDocument(hasResults: Boolean, hasError: Boolean): Document = {
+  def getDocument(hasResults: Boolean, hasError: Boolean, isAgent: Boolean = false): Document = {
     val results = if (hasResults) SearchSoftwarePageContent.softwareVendorsResults else SearchSoftwarePageContent.softwareVendorsNoResults
-    val model = SoftwareChoicesResultsViewModel(allInOneVendors = results, otherVendors = results, zeroResults = results.vendors.isEmpty)
+    val model = SoftwareChoicesResultsViewModel(allInOneVendors = results, otherVendors = results, zeroResults = results.vendors.isEmpty, isAgent = isAgent)
     Jsoup.parse(page(model, hasError).body)
   }
 
@@ -477,6 +552,9 @@ private object SearchSoftwarePageContent {
   val emptyVendorListMessageParagraph = "To increase the number of results, we suggest you:"
   val emptyVendorListMessageBullet1 = "reduce the number of filters you apply"
   val emptyVendorListMessageBullet2 = "make sure the name you have entered into the search bar is correct"
+
+  val agentHeading = "We’ve found 2 results"
+  val agentText = "You can use the filter options to narrow down your search."
 
   val noProductsHeading = "You’ll need to combine several of these pieces of software to fully complete your quarterly updates and tax return"
   val noProductsCount = "2 results found"
