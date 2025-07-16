@@ -17,8 +17,6 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.viewmodels
 
 import org.scalatestplus.play.PlaySpec
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{Agent, Individual}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilterGroups._
 
 class SoftwareChoicesResultsViewModelSpec extends PlaySpec {
 

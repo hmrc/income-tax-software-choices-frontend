@@ -132,6 +132,9 @@ search-software.vendor-visit-link       = Find out more about {0}
 search-software.vendor-count.no-products = You’ll need to combine several of these pieces of software to fully complete your quarterly updates and tax return
 search-software.vendor-count.no-products.count = {0} results found
 
+search-software.vendor-count.agent.heading = We’ve found {0} results
+search-software.vendor-count.agent         = You can use the filter options to narrow down your search.
+
 search-software.empty-vendor-list           = Nid yw eich chwiliad wedi dangos unrhyw ganlyniadau. Er mwyn cynyddu nifer y canlyniadau awgrymwn ei bod yn gwneud y canlynol:
 search-software.empty-vendor-list.heading   = Er mwyn cynyddu nifer y canlyniadau awgrymwn ei bod yn gwneud y canlynol:
 search-software.empty-vendor-list.paragraph = To increase the number of results, we suggest you:

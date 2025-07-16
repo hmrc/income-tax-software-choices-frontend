@@ -26,7 +26,7 @@ import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.AccountingPeriod.FirstAprilToThirtyFirstMarch
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.SoleTraderOrLandlord
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{UserAnswers, UserFilters, UserType, VendorFilter}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{UserAnswers, UserFilters, VendorFilter}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 
@@ -47,10 +47,6 @@ class PageAnswersServiceSpec extends PlaySpec with BeforeAndAfterEach {
   private val mixedUserAnswers: UserAnswers = UserAnswers()
     .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
     .set(DummyPage, "Test").get
-  private val agentMixedUserAnswers: UserAnswers = UserAnswers()
-    .set(UserTypePage, UserType.Agent).get
-    .set(BusinessIncomePage, Seq(SoleTrader)).get
-    .set(OtherItemsPage, Seq(CharitableGiving)).get
   private val fullUserAnswers: UserAnswers = UserAnswers()
     .set(UserTypePage, SoleTraderOrLandlord).get
     .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
@@ -69,7 +65,6 @@ class PageAnswersServiceSpec extends PlaySpec with BeforeAndAfterEach {
       ConstructionIndustryScheme, Employment, UkDividends, StatePensionIncome, PrivatePensionIncome, ForeignDividends,
       ForeignInterest, PaymentsIntoAPrivatePension, CharitableGiving, CapitalGainsTax, StudentLoans, MarriageAllowance,
       VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge, CalendarUpdatePeriods))
-  private val agentUserFilter = UserFilters(sessionId, Some(agentMixedUserAnswers), Seq(Agent, SoleTrader, CharitableGiving))
 
   class Setup {
     implicit val ec: ExecutionContext = scala.concurrent.ExecutionContext.global
