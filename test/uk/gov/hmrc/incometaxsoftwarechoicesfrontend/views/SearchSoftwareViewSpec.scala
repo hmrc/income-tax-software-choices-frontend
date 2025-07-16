@@ -353,7 +353,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
         }
 
         "has a count of the number of software vendors on the page" in {
-          document.selectHead("#vendor-count h3").text shouldBe SearchSoftwarePageContent.agentText
+          document.selectHead("#vendor-count p").text shouldBe SearchSoftwarePageContent.agentText
         }
 
         "has a list of software vendors" which {
