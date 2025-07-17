@@ -64,7 +64,7 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
     val filters = FiltersForm.form.bindFromRequest().get
     for {
       userType <- pageAnswersService.getPageAnswers(sessionId, UserTypePage)
-      userFilters <- update(filters,zeroResults).flatMap(_ => userFiltersRepository.get(sessionId))
+      userFilters <- update(filters, zeroResults).flatMap(_ => userFiltersRepository.get(sessionId))
     } yield {
       val model = SoftwareChoicesResultsViewModel(
         allInOneVendors = softwareChoicesService.getAllInOneVendors(userFilters.getOrElse(UserFilters(sessionId, None, filters.filters)).finalFilters),
@@ -77,7 +77,7 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
   }
 
   def clear(zeroResults: Boolean): Action[AnyContent] = Action.async { implicit request =>
-    update(FiltersFormModel(),zeroResults) map { _ =>
+    update(FiltersFormModel(), zeroResults) map { _ =>
       Redirect(routes.SearchSoftwareController.show(zeroResults))
     }
   }
