@@ -40,7 +40,6 @@
      content = HtmlContent(
              tabHeading(messages("search-software.all-in-one-tab.heading")) +
              tabSubHeading(messages("search-software.all-in-one-tab.results", viewModel.allInOneVendors.vendors.size)) +
-             s"""<hr class="govuk-section-break govuk-section-break--visible">""" +
              softwareVendorsTemplate(viewModel.allInOneVendors, viewModel.zeroResults)
   )))
 }
@@ -53,7 +52,6 @@
         content = HtmlContent(
              tabHeading(messages("search-software.other-software-tab.heading", viewModel.otherVendors.vendors.size)) +
              tabSubHeading(messages("search-software.other-software-tab.results", viewModel.otherVendors.vendors.size)) +
-             s"""<hr class="govuk-section-break govuk-section-break--visible">""" +
              softwareVendorsTemplate(viewModel.otherVendors, viewModel.zeroResults)
   )))
 }

@@ -22,7 +22,8 @@ import play.twirl.api.Html
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.Agent
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FiltersFormModel, UserFilters}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.Individual
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FiltersFormModel, UserFilters, VendorFilter}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.UserTypePage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.{PageAnswersService, SoftwareChoicesService}
@@ -63,11 +64,11 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
     val filters = FiltersForm.form.bindFromRequest().get
     for {
       userType <- pageAnswersService.getPageAnswers(sessionId, UserTypePage)
-      _ <- update(filters)
+      userFilters <- update(filters, zeroResults).flatMap(_ => userFiltersRepository.get(sessionId))
     } yield {
       val model = SoftwareChoicesResultsViewModel(
-        allInOneVendors = softwareChoicesService.getAllInOneVendors(filters.filters),
-        otherVendors = softwareChoicesService.getOtherVendors(filters.filters),
+        allInOneVendors = softwareChoicesService.getAllInOneVendors(userFilters.getOrElse(UserFilters(sessionId, None, filters.filters)).finalFilters),
+        otherVendors = softwareChoicesService.getOtherVendors(userFilters.getOrElse(UserFilters(sessionId, None, filters.filters)).finalFilters),
         zeroResults = zeroResults,
         isAgent = userType.contains(Agent)
       )
@@ -76,17 +77,21 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
   }
 
   def clear(zeroResults: Boolean): Action[AnyContent] = Action.async { implicit request =>
-    update(FiltersFormModel()) map { _ =>
+    update(FiltersFormModel(), zeroResults) map { _ =>
       Redirect(routes.SearchSoftwareController.show(zeroResults))
     }
   }
 
-  private def update(search: FiltersFormModel)(implicit request: Request[_]): Future[Boolean] = {
+  private def update(search: FiltersFormModel, zeroResults: Boolean)(implicit request: Request[_]): Future[Boolean] = {
     val sessionId = request.session.get("sessionId").getOrElse("")
     for {
       userFilters <- userFiltersRepository.get(sessionId)
       result <- userFilters match {
-        case Some(userFilters) => userFiltersRepository.set(userFilters.copy(finalFilters = search.filters))
+        case Some(userFilters) => {
+          val filtersFromAnswers =
+            if (!zeroResults) pageAnswersService.getFiltersFromAnswers(userFilters.answers).filterNot(_.equals(VendorFilter.Agent)) else Seq(Individual)
+          userFiltersRepository.set(userFilters.copy(finalFilters = filtersFromAnswers ++ search.filters))
+        }
         case None => userFiltersRepository.set(UserFilters(sessionId, None, search.filters))
       }
     } yield {
