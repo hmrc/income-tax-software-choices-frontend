@@ -16,19 +16,35 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
-import play.api.http.Status.{BAD_REQUEST, OK, SEE_OTHER}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.ComponentSpecBase
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FiltersFormModel
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.FreeVersion
+import org.scalatest.BeforeAndAfterEach
+import play.api.http.Status.{OK, SEE_OTHER}
+import play.api.test.Helpers.{await, defaultAwaitTimeout}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, DatabaseHelper}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.SessionId
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.AccountingPeriod.SixthAprilToFifthApril
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.{Agent, SoleTraderOrLandlord}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages._
 
-class SearchSoftwareControllerISpec extends ComponentSpecBase {
+import java.time.Instant
+
+class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfterEach with DatabaseHelper {
+  private val testTime = Instant.now()
+
+  def testUserFilters(answers: Option[UserAnswers], filters: Seq[VendorFilter]): UserFilters =
+    UserFilters(SessionId, answers, finalFilters = filters, lastUpdated = testTime)
+
+  override def beforeEach(): Unit = {
+    await(userFiltersRepository.collection.drop().toFuture())
+    super.beforeEach()
+  }
+
 
   s"GET ${routes.SearchSoftwareController.show().url}" should {
     "respond with 200 status" in {
-      When("GET / is called")
       val response = SoftwareChoicesFrontend.getSoftwareResults
 
-      Then("Should return OK with the software search page")
       response should have(
         httpStatus(OK),
         pageTitle(s"""${messages("search-software.title")} - Find software that’s compatible with Making Tax Digital for Income Tax - GOV.UK""")
@@ -38,27 +54,111 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase {
 
   s"GET ${routes.SearchSoftwareController.clear().url}" should {
     "redirect to the show page" in {
-      When("GET / is called")
       val response = SoftwareChoicesFrontend.clear()
 
-      Then("Should return SEE_OTHER to the show page")
       response should have(
         httpStatus(SEE_OTHER),
         redirectURI(routes.SearchSoftwareController.show().url)
       )
     }
+
+    "remove all preference filters leaving user answers filters and UserType for Individual" in {
+      val userAnswers = UserAnswers()
+        .set(UserTypePage, SoleTraderOrLandlord).get
+        .set(BusinessIncomePage, Seq(SoleTrader)).get
+        .set(AdditionalIncomeSourcesPage, Seq(UkInterest)).get
+        .set(OtherItemsPage, Seq(PaymentsIntoAPrivatePension)).get
+        .set(AccountingPeriodPage, SixthAprilToFifthApril).get
+
+      val initialFilter = Seq(Individual,SoleTrader,UkInterest,PaymentsIntoAPrivatePension,StandardUpdatePeriods,FreeVersion)
+
+      await(userFiltersRepository.set(testUserFilters(Some(userAnswers), initialFilter)))
+
+      val response = SoftwareChoicesFrontend.clear()
+      response should have(
+        httpStatus(SEE_OTHER)
+      )
+
+      await(userFiltersRepository.get(SessionId)) match {
+        case Some(uf) => uf.finalFilters shouldBe Seq(
+          Individual, SoleTrader, UkInterest, PaymentsIntoAPrivatePension, StandardUpdatePeriods
+        )
+        case None => fail("No user filters found")
+      }
+    }
+
+    "remove all preference filters including UserType for Agent" in {
+      val userAnswers = UserAnswers()
+        .set(UserTypePage, Agent).get
+
+      val initialFilter = Seq(VendorFilter.Agent,FreeVersion)
+
+      await(userFiltersRepository.set(testUserFilters(Some(userAnswers), initialFilter)))
+
+      val response = SoftwareChoicesFrontend.clear()
+      response should have(
+        httpStatus(SEE_OTHER)
+      )
+
+      await(userFiltersRepository.get(SessionId)) match {
+        case Some(uf) => uf.finalFilters shouldBe Seq()
+        case None => fail("No user filters found")
+      }
+    }
   }
 
   s"POST ${routes.SearchSoftwareController.search().url}" should {
     "respond with 200 status" in {
-      When("GET / is called")
       val response = SoftwareChoicesFrontend.submitSoftwareSearch(FiltersFormModel(Seq(FreeVersion)))
 
-      Then("Should return OK with the software search page")
       response should have(
         httpStatus(OK),
         pageTitle(s"""${messages("search-software.title")} - Find software that’s compatible with Making Tax Digital for Income Tax - GOV.UK""")
       )
+    }
+
+    "add preference filters for Individual including UserAnswers and UserType" in {
+      val userAnswers = UserAnswers()
+        .set(UserTypePage, SoleTraderOrLandlord).get
+        .set(BusinessIncomePage, Seq(SoleTrader)).get
+        .set(AdditionalIncomeSourcesPage, Seq(UkInterest)).get
+        .set(OtherItemsPage, Seq(PaymentsIntoAPrivatePension)).get
+        .set(AccountingPeriodPage, SixthAprilToFifthApril).get
+
+      val initialFilter = Seq()
+      await(userFiltersRepository.set(testUserFilters(Some(userAnswers), initialFilter)))
+
+      val response = SoftwareChoicesFrontend.submitSoftwareSearch(FiltersFormModel(Seq(FreeVersion)))
+
+      response should have(
+        httpStatus(OK)
+      )
+
+      await(userFiltersRepository.get(SessionId)) match {
+        case Some(uf) => uf.finalFilters shouldBe Seq(
+          Individual, SoleTrader, UkInterest, PaymentsIntoAPrivatePension, StandardUpdatePeriods, FreeVersion
+        )
+        case None => fail("No user filters found")
+      }
+    }
+
+    "add preference filters for Agent but not User Type" in {
+      val userAnswers = UserAnswers()
+        .set(UserTypePage, Agent).get
+
+      val initialFilter = Seq()
+      await(userFiltersRepository.set(testUserFilters(Some(userAnswers), initialFilter)))
+
+      val response = SoftwareChoicesFrontend.submitSoftwareSearch(FiltersFormModel(Seq(FreeVersion,Bridging)))
+
+      response should have(
+        httpStatus(OK)
+      )
+
+      await(userFiltersRepository.get(SessionId)) match {
+        case Some(uf) => uf.finalFilters shouldBe Seq(FreeVersion, Bridging)
+        case None => fail("No user filters found")
+      }
     }
   }
 }
