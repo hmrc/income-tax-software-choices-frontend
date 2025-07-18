@@ -26,7 +26,7 @@ import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.TestModels._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareVendorModel, SoftwareVendors}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareVendorModel, SoftwareVendors, VendorFilter}
 
 import java.io.FileInputStream
 import java.time.LocalDate
@@ -41,7 +41,12 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
     val mockConfig: AppConfig = mock[AppConfig]
     val mockEnvironment: Environment = mock[Environment]
 
-    lazy val service: SoftwareChoicesService = new SoftwareChoicesService(mockConfig, mockEnvironment)
+    lazy val service: SoftwareChoicesService = new SoftwareChoicesService(
+      new DataService(
+        mockConfig,
+        mockEnvironment
+      )
+    )
 
     when(mockConfig.softwareChoicesVendorFileName) thenReturn testFileName
   }
@@ -173,7 +178,7 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
       service.getOtherVendors(Seq(Individual,OverseasProperty,Motor)) mustBe expectedFilteredAgentSoftwareVendors
     }
   }
-    "get software vendor" when {
+  "get software vendor" when {
     "fetching a software vendor which exists" should {
       "return that vendor" in new Setup {
         when(mockEnvironment.resourceAsStream(eqTo(testFileName)))
@@ -197,4 +202,66 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
     }
   }
 
+  "Correctly filters software vendors" should {
+
+    val mockConfig: AppConfig = mock[AppConfig]
+    val mockEnvironment: Environment = mock[Environment]
+    val mockDataService = mock[DataService]
+
+    when(mockConfig.softwareChoicesVendorFileName) thenReturn testFileName
+    when(mockEnvironment.resourceAsStream(eqTo(testFileName)))
+      .thenReturn(Some(new FileInputStream(validVendors)))
+
+    def vendor(filters: Seq[VendorFilter]): SoftwareVendorModel = SoftwareVendorModel(
+      name = filters.head.toString,
+      email = None,
+      phone = None,
+      website = "",
+      filters = filters
+    )
+
+    val service = new SoftwareChoicesService(
+      mockDataService
+    )
+
+    "exclude vendors that are not for requested user type" in {
+      val allVendors = SoftwareVendors(
+        lastUpdated = LocalDate.now,
+        vendors = Seq(
+          vendor(Seq(Agent)),
+          vendor(Seq(Individual))
+        )
+      )
+
+      when(mockDataService.getSoftwareVendors()).thenReturn(
+        allVendors
+      )
+
+      Seq(Agent, Individual).foreach { userType =>
+        val result = service.getAllInOneVendors(Seq(userType))
+        result.vendors.size mustBe 1
+        result.vendors.head.name mustBe userType.toString
+      }
+    }
+
+    "ignores question filters in other list" in {
+      val allVendors = SoftwareVendors(
+        lastUpdated = LocalDate.now,
+        vendors = Seq(
+          vendor(Seq(Agent, SoleTrader)),
+          vendor(Seq(Agent))
+        )
+      )
+
+      when(mockDataService.getSoftwareVendors()).thenReturn(
+        allVendors
+      )
+
+      val filters = Seq(Agent, SoleTrader)
+      val allInOne = service.getAllInOneVendors(filters)
+      val other = service.getOtherVendors(filters)
+      allInOne.vendors.size mustBe 1
+      other.vendors.size mustBe 2
+    }
+  }
 }
