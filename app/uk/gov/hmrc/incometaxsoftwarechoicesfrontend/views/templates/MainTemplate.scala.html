@@ -24,7 +24,7 @@
     appConfig: AppConfig,
     govukErrorSummary: GovukErrorSummary,
     hmrcReportTechnicalIssueHelper: HmrcReportTechnicalIssueHelper,
-    standardBetaBanner: StandardBetaBanner,
+    standardAlphaBanner: StandardAlphaBanner,
     fullWidthPageLayout: FixedWidthPageLayout
 )
 
@@ -42,7 +42,7 @@
         serviceUrl = None
     ),
     banners = Banners(
-        phaseBanner = Some(standardBetaBanner(url = appConfig.betaFeedbackUnauthenticatedUrl))
+        phaseBanner = Some(standardAlphaBanner(url = appConfig.betaFeedbackUnauthenticatedUrl))
     ),
     templateOverrides = TemplateOverrides(
         additionalHeadBlock = Some(additionalHeadBlock),
