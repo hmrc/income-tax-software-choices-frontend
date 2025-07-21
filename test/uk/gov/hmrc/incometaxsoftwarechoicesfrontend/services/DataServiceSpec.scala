@@ -23,9 +23,8 @@ import org.scalatestplus.play.PlaySpec
 import play.api.Environment
 import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.TestModels.{testVendorFive, testVendorFour, testVendorOne, testVendorThree, testVendorTwo}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.TestModels._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareVendors
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.FreeVersion
 
 import java.io.FileInputStream
 import java.time.LocalDate

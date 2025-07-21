@@ -35,95 +35,63 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
     filters = filters
   )
 
-  "Correctly filters software vendors" should {
+  val allVendors = SoftwareVendors(
+    lastUpdated = LocalDate.now,
+    vendors = Seq(
+      vendor(Seq(Agent)),
+      vendor(Seq(Agent, SoleTrader)),
+      vendor(Seq(Individual)),
+      vendor(Seq(Individual, SoleTrader)),
+    )
+  )
+
+  val mockDataService = mock[DataService]
+
+  when(mockDataService.getSoftwareVendors()).thenReturn(
+    allVendors
+  )
+
+  val service = new SoftwareChoicesService(
+    mockDataService
+  )
+
+  "getAllInOneVendors" should {
     "exclude vendors that are not for requested user type" in {
-      val allVendors = SoftwareVendors(
-        lastUpdated = LocalDate.now,
-        vendors = Seq(
-          vendor(Seq(Agent)),
-          vendor(Seq(Individual))
-        )
-      )
-
-      val mockDataService = mock[DataService]
-
-      when(mockDataService.getSoftwareVendors()).thenReturn(
-        allVendors
-      )
-
-      val service = new SoftwareChoicesService(
-        mockDataService
-      )
-
       Seq(Agent, Individual).foreach { userType =>
         val result = service.getAllInOneVendors(Seq(userType))
-        result.vendors.size mustBe 1
+        result.vendors.size mustBe 2
         result.vendors.head.name mustBe userType.toString
       }
     }
 
-    "ignores question filters in other list" should {
-      val allVendors = SoftwareVendors(
-        lastUpdated = LocalDate.now,
-        vendors = Seq(
-          vendor(Seq(Agent, SoleTrader)),
-          vendor(Seq(Agent))
-        )
-      )
+    "not ignore question filters" in {
+      val result = service.getAllInOneVendors(Seq(Agent, SoleTrader))
+      result.vendors.size mustBe 1
+    }
 
-      val mockDataService = mock[DataService]
+    "retain preferences filters" in {
+      val result = service.getAllInOneVendors(Seq(Agent, FreeVersion))
+      result.vendors.size mustBe 0
+    }
+  }
 
-      when(mockDataService.getSoftwareVendors()).thenReturn(
-        allVendors
-      )
-
-      val service = new SoftwareChoicesService(
-        mockDataService
-      )
-
-      val filters = Seq(Agent, SoleTrader)
-
-      "allInOneSoftware" in {
-        val allInOne = service.getAllInOneVendors(filters)
-        allInOne.vendors.size mustBe 1
-      }
-
-      "otherSoftware" in {
-        val other = service.getOtherVendors(filters)
-        other.vendors.size mustBe 2
+  "getOtherVendors" should {
+    "exclude vendors that are not for requested user type" in {
+      Seq(Agent, Individual).foreach { userType =>
+        val result = service.getOtherVendors(Seq(userType))
+        result.vendors.size mustBe 2
+        result.vendors.head.name mustBe userType.toString
       }
     }
 
-    "Retains preferences filters" should {
-      val allVendors = SoftwareVendors(
-        lastUpdated = LocalDate.now,
-        vendors = Seq(
-          vendor(Seq(Agent, SoleTrader)),
-          vendor(Seq(Agent))
-        )
-      )
+    "ignore question filters" in {
+      val result = service.getOtherVendors(Seq(Agent, SoleTrader))
+      result.vendors.size mustBe 2
+    }
 
-      val mockDataService = mock[DataService]
-
-      when(mockDataService.getSoftwareVendors()).thenReturn(
-        allVendors
-      )
-
-      val service = new SoftwareChoicesService(
-        mockDataService
-      )
-
-      val filters = Seq(Agent, FreeVersion)
-
-      "allInOneSoftware" in {
-        val allInOne = service.getAllInOneVendors(filters)
-        allInOne.vendors.size mustBe 0
-      }
-
-      "otherSoftware" in {
-        val other = service.getOtherVendors(filters)
-        other.vendors.size mustBe 0
-      }
+    "retain preferences filters" in {
+      val result = service.getOtherVendors(Seq(Agent, FreeVersion))
+      result.vendors.size mustBe 0
     }
   }
 }
