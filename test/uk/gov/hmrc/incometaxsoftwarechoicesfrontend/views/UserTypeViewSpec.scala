@@ -98,7 +98,7 @@ class UserTypeViewSpec extends ViewSpec {
 }
 
 private object UserTypeContent {
-  val title = "How will you use this tool to choose software? - Find software that’s compatible with Making Tax Digital for Income Tax - GOV.UK"
+  val title = s"How will you use this tool to choose software? - ${PageContentBase.title} - GOV.UK"
   val legend = "How will you use this tool to choose software?"
   val soleTraderOrLandlord = "As a sole trader or landlord doing my taxes"
   val agent = "As an agent working on behalf of a client"

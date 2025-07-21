@@ -25,6 +25,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.AccountingPeriod.{Oth
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{UserAnswers, UserFilters}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.{AccountingPeriodPage, AdditionalIncomeSourcesPage, BusinessIncomePage, OtherItemsPage}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
 
 import java.time.Instant
 
@@ -65,7 +66,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
 
         res should have(
           httpStatus(OK),
-          pageTitle(s"${messages("check-your-answers.heading")} - Find software that’s compatible with Making Tax Digital for Income Tax - GOV.UK"),
+          pageTitle(s"${messages("check-your-answers.heading")} - ${PageContentBase.title} - GOV.UK"),
           summaryListRow("Business income", Seq(SoleTrader,UkProperty,OverseasProperty)
             .map(vf => messages(s"check-your-answers.$vf")).mkString(" ")),
           summaryListRow("Other income", Seq(UkInterest, ConstructionIndustryScheme, Employment, UkDividends, StatePensionIncome,
@@ -90,7 +91,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
 
         res should have(
           httpStatus(OK),
-          pageTitle(s"${messages("check-your-answers.heading")} - Find software that’s compatible with Making Tax Digital for Income Tax - GOV.UK"),
+          pageTitle(s"${messages("check-your-answers.heading")} - ${PageContentBase.title} - GOV.UK"),
           summaryListRow("Business income", Seq(SoleTrader,UkProperty,OverseasProperty)
             .map(vf => messages(s"check-your-answers.$vf")).mkString(" ")),
           summaryListRow("Other income", messages(s"check-your-answers.none-selected")),

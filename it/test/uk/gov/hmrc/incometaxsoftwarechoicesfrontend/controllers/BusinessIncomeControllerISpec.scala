@@ -24,6 +24,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, 
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{OverseasProperty, SoleTrader, UkProperty}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{UserAnswers, UserFilters}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.BusinessIncomePage
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
 
 class BusinessIncomeControllerISpec extends ComponentSpecBase with BeforeAndAfterEach with DatabaseHelper {
 
@@ -43,7 +44,7 @@ class BusinessIncomeControllerISpec extends ComponentSpecBase with BeforeAndAfte
 
         res should have(
           httpStatus(OK),
-          pageTitle(s"${messages("business-income.title")} - Find software that’s compatible with Making Tax Digital for Income Tax - GOV.UK"),
+          pageTitle(s"${messages("business-income.title")} - ${PageContentBase.title} - GOV.UK"),
           checkboxSelected("businessIncome", None),
           checkboxSelected("businessIncome-2", None),
           checkboxSelected("businessIncome-3", None)
@@ -59,7 +60,7 @@ class BusinessIncomeControllerISpec extends ComponentSpecBase with BeforeAndAfte
 
         res should have(
           httpStatus(OK),
-          pageTitle(s"${messages("business-income.title")} - Find software that’s compatible with Making Tax Digital for Income Tax - GOV.UK"),
+          pageTitle(s"${messages("business-income.title")} - ${PageContentBase.title} - GOV.UK"),
           checkboxSelected("businessIncome", Some(SoleTrader.key)),
           checkboxSelected("businessIncome-2", Some(UkProperty.key)),
           checkboxSelected("businessIncome-3", Some(OverseasProperty.key)),
