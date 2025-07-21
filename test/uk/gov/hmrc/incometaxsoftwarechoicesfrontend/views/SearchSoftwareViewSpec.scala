@@ -60,7 +60,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
     lazy val document = getDocument(hasResults = false, hasError = false)
 
     "have a title" in {
-      document.title shouldBe s"""${SearchSoftwarePageContent.title} - Find software that’s compatible with Making Tax Digital for Income Tax - GOV.UK"""
+      document.title shouldBe s"""${SearchSoftwarePageContent.title} - ${PageContentBase.title} - GOV.UK"""
     }
 
     "have a heading" in {

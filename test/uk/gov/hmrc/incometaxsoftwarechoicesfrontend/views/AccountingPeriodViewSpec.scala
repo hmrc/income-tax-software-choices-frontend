@@ -112,7 +112,7 @@ class AccountingPeriodViewSpec extends ViewSpec {
 }
 
 private object AccountingPeriodContent {
-  val title = "What accounting period do you use for your business? - Find software that’s compatible with Making Tax Digital for Income Tax - GOV.UK"
+  val title = s"What accounting period do you use for your business? - ${PageContentBase.title} - GOV.UK"
   val legend = "What accounting period do you use for your business?"
   val paraOne = "To keep your record keeping simpler if your accounting period ends on 31 March, you’ll need compatible software to support calendar update periods (opens in new tab)."
   val linkText = "calendar update periods (opens in new tab)"

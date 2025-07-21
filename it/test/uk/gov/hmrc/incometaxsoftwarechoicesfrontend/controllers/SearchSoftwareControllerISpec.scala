@@ -26,6 +26,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.{Agent, Sole
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages._
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
 
 import java.time.Instant
 
@@ -47,7 +48,7 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
 
       response should have(
         httpStatus(OK),
-        pageTitle(s"""${messages("search-software.title")} - Find software that’s compatible with Making Tax Digital for Income Tax - GOV.UK""")
+        pageTitle(s"""${messages("search-software.title")} - ${PageContentBase.title} - GOV.UK""")
       )
     }
   }
@@ -113,7 +114,7 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
 
       response should have(
         httpStatus(OK),
-        pageTitle(s"""${messages("search-software.title")} - Find software that’s compatible with Making Tax Digital for Income Tax - GOV.UK""")
+        pageTitle(s"""${messages("search-software.title")} - ${PageContentBase.title} - GOV.UK""")
       )
     }
 

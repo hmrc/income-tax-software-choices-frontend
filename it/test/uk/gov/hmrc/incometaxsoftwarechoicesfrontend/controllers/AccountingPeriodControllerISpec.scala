@@ -24,6 +24,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, 
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.AccountingPeriod.{FirstAprilToThirtyFirstMarch, OtherAccountingPeriod, SixthAprilToFifthApril}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{UserAnswers, UserFilters}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.AccountingPeriodPage
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
 
 class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAfterEach with DatabaseHelper {
 
@@ -42,7 +43,7 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
 
         res should have(
           httpStatus(OK),
-          pageTitle(s"${messages("accounting-period.heading")} - Find software that’s compatible with Making Tax Digital for Income Tax - GOV.UK"),
+          pageTitle(s"${messages("accounting-period.heading")} - ${PageContentBase.title} - GOV.UK"),
           radioButtonSelected(id = "accounting-period", None),
           radioButtonSelected(id = "accounting-period-2", None),
           radioButtonSelected(id = "accounting-period-4", None)
@@ -59,7 +60,7 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
 
         res should have(
           httpStatus(OK),
-          pageTitle(s"${messages("accounting-period.heading")} - Find software that’s compatible with Making Tax Digital for Income Tax - GOV.UK"),
+          pageTitle(s"${messages("accounting-period.heading")} - ${PageContentBase.title} - GOV.UK"),
           radioButtonSelected(id = "accounting-period", selectedRadioButton = Some(SixthAprilToFifthApril.key))
         )
       }
