@@ -47,7 +47,7 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
 
       response should have(
         httpStatus(OK),
-        pageTitle(s"""${messages("search-software.title")} - Find software that’s compatible with Making Tax Digital for Income Tax - GOV.UK""")
+        pageTitle(s"""${messages("search-software.title")} - Find Software that works with Making Tax Digital for Income Tax - GOV.UK""")
       )
     }
   }
@@ -113,7 +113,7 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
 
       response should have(
         httpStatus(OK),
-        pageTitle(s"""${messages("search-software.title")} - Find software that’s compatible with Making Tax Digital for Income Tax - GOV.UK""")
+        pageTitle(s"""${messages("search-software.title")} - Find Software that works with Making Tax Digital for Income Tax - GOV.UK""")
       )
     }
 

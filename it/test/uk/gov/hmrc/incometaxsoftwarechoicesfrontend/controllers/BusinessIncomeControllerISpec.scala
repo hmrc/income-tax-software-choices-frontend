@@ -43,7 +43,7 @@ class BusinessIncomeControllerISpec extends ComponentSpecBase with BeforeAndAfte
 
         res should have(
           httpStatus(OK),
-          pageTitle(s"${messages("business-income.title")} - Find software that’s compatible with Making Tax Digital for Income Tax - GOV.UK"),
+          pageTitle(s"${messages("business-income.title")} - Find Software that works with Making Tax Digital for Income Tax - GOV.UK"),
           checkboxSelected("businessIncome", None),
           checkboxSelected("businessIncome-2", None),
           checkboxSelected("businessIncome-3", None)
@@ -59,7 +59,7 @@ class BusinessIncomeControllerISpec extends ComponentSpecBase with BeforeAndAfte
 
         res should have(
           httpStatus(OK),
-          pageTitle(s"${messages("business-income.title")} - Find software that’s compatible with Making Tax Digital for Income Tax - GOV.UK"),
+          pageTitle(s"${messages("business-income.title")} - Find Software that works with Making Tax Digital for Income Tax - GOV.UK"),
           checkboxSelected("businessIncome", Some(SoleTrader.key)),
           checkboxSelected("businessIncome-2", Some(UkProperty.key)),
           checkboxSelected("businessIncome-3", Some(OverseasProperty.key)),

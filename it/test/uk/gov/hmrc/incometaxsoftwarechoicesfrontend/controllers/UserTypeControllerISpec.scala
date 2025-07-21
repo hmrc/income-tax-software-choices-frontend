@@ -41,7 +41,7 @@ class UserTypeControllerISpec extends ComponentSpecBase with BeforeAndAfterEach 
 
         res should have(
           httpStatus(OK),
-          pageTitle(s"${messages("type-of-user.heading")} - Find software that’s compatible with Making Tax Digital for Income Tax - GOV.UK"),
+          pageTitle(s"${messages("type-of-user.heading")} - Find Software that works with Making Tax Digital for Income Tax - GOV.UK"),
           radioButtonSelected(id = "type-of-user", None),
           radioButtonSelected(id = "type-of-user-2", None)
         )
@@ -57,7 +57,7 @@ class UserTypeControllerISpec extends ComponentSpecBase with BeforeAndAfterEach 
 
         res should have(
           httpStatus(OK),
-          pageTitle(s"${messages("type-of-user.heading")} - Find software that’s compatible with Making Tax Digital for Income Tax - GOV.UK"),
+          pageTitle(s"${messages("type-of-user.heading")} - Find Software that works with Making Tax Digital for Income Tax - GOV.UK"),
           radioButtonSelected(id = "type-of-user", selectedRadioButton = Some(SoleTraderOrLandlord.key))
         )
       }

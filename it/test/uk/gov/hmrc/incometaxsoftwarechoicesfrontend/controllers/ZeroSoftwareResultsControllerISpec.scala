@@ -42,7 +42,7 @@ class ZeroSoftwareResultsControllerISpec extends ComponentSpecBase with BeforeAn
 
       result should have(
         httpStatus(OK),
-        pageTitle(s"${messages("zero-results.heading")} - Find software that’s compatible with Making Tax Digital for Income Tax - GOV.UK"),
+        pageTitle(s"${messages("zero-results.heading")} - Find Software that works with Making Tax Digital for Income Tax - GOV.UK"),
       )
     }
   }

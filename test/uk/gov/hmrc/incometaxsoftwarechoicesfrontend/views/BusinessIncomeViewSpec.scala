@@ -120,7 +120,7 @@ class BusinessIncomeSourcesViewSpec extends ViewSpec {
 }
 
 private object BusinessIncomePageContent {
-  val title = "Which business income do you have? - Find software that’s compatible with Making Tax Digital for Income Tax - GOV.UK"
+  val title = "Which business income do you have? - Find Software that works with Making Tax Digital for Income Tax - GOV.UK"
   val legend = "Which business income do you have?"
   val para = "You’ll need to include this in your quarterly updates and tax return."
   val hint = "Select all that apply."

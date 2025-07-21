@@ -42,7 +42,7 @@ class AdditionalIncomeSourcesControllerISpec extends ComponentSpecBase with Befo
 
         res should have(
           httpStatus(OK),
-          pageTitle(s"${messages("additional.income.source-heading")} - Find software that’s compatible with Making Tax Digital for Income Tax - GOV.UK"),
+          pageTitle(s"${messages("additional.income.source-heading")} - Find Software that works with Making Tax Digital for Income Tax - GOV.UK"),
           checkboxSelected("additionalIncome", None),
           checkboxSelected("additionalIncome-2", None),
           checkboxSelected("additionalIncome-3", None),
@@ -64,7 +64,7 @@ class AdditionalIncomeSourcesControllerISpec extends ComponentSpecBase with Befo
 
         res should have(
           httpStatus(OK),
-          pageTitle(s"${messages("additional.income.source-heading")} - Find software that’s compatible with Making Tax Digital for Income Tax - GOV.UK"),
+          pageTitle(s"${messages("additional.income.source-heading")} - Find Software that works with Making Tax Digital for Income Tax - GOV.UK"),
           checkboxSelected("additionalIncome", Some(UkInterest.key)),
           checkboxSelected("additionalIncome-2", Some(ConstructionIndustryScheme.key)),
           checkboxSelected("additionalIncome-3", Some(Employment.key)),

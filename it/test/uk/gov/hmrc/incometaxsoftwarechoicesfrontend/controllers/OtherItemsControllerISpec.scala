@@ -43,7 +43,7 @@ class OtherItemsControllerISpec extends ComponentSpecBase with BeforeAndAfterEac
 
         res should have(
           httpStatus(OK),
-          pageTitle(s"${messages("other-items.title")} - Find software that’s compatible with Making Tax Digital for Income Tax - GOV.UK"),
+          pageTitle(s"${messages("other-items.title")} - Find Software that works with Making Tax Digital for Income Tax - GOV.UK"),
           checkboxSelected("otherItems", None),
           checkboxSelected("otherItems-2", None),
           checkboxSelected("otherItems-3", None),
@@ -73,7 +73,7 @@ class OtherItemsControllerISpec extends ComponentSpecBase with BeforeAndAfterEac
 
         res should have(
           httpStatus(OK),
-          pageTitle(s"${messages("other-items.title")} - Find software that’s compatible with Making Tax Digital for Income Tax - GOV.UK"),
+          pageTitle(s"${messages("other-items.title")} - Find Software that works with Making Tax Digital for Income Tax - GOV.UK"),
           checkboxSelected("otherItems", Some("payments-into-a-private-pension")),
           checkboxSelected("otherItems-2", Some("charitable-giving")),
           checkboxSelected("otherItems-3", Some("capital-gains-tax")),
@@ -93,7 +93,7 @@ class OtherItemsControllerISpec extends ComponentSpecBase with BeforeAndAfterEac
 
         res should have(
           httpStatus(OK),
-          pageTitle(s"${messages("other-items.title")} - Find software that’s compatible with Making Tax Digital for Income Tax - GOV.UK"),
+          pageTitle(s"${messages("other-items.title")} - Find Software that works with Making Tax Digital for Income Tax - GOV.UK"),
           checkboxSelected("otherItems-9", Some("none"))
         )
       }

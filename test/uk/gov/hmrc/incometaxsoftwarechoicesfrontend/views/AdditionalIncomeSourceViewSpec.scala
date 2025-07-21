@@ -190,7 +190,7 @@ class AdditionalIncomeSourceViewSpec extends ViewSpec {
 }
 
 private object AdditionalIncomeSourcesPageContent {
-  val title = "Which other income do you have? - Find software that’s compatible with Making Tax Digital for Income Tax - GOV.UK"
+  val title = "Which other income do you have? - Find Software that works with Making Tax Digital for Income Tax - GOV.UK"
   val legend = "Which other income do you have?"
   val para = "This is other income you’ll need to include in your tax return."
   val hint = "Select all that apply"
