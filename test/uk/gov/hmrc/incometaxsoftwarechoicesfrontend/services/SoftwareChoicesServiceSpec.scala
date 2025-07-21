@@ -27,18 +27,12 @@ import java.time.LocalDate
 
 class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
 
-  val mockDataService = mock[DataService]
-
   private def vendor(filters: Seq[VendorFilter]): SoftwareVendorModel = SoftwareVendorModel(
     name = filters.head.toString,
     email = None,
     phone = None,
     website = "",
     filters = filters
-  )
-
-  val service = new SoftwareChoicesService(
-    mockDataService
   )
 
   "Correctly filters software vendors" should {
@@ -51,8 +45,14 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
         )
       )
 
+      val mockDataService = mock[DataService]
+
       when(mockDataService.getSoftwareVendors()).thenReturn(
         allVendors
+      )
+
+      val service = new SoftwareChoicesService(
+        mockDataService
       )
 
       Seq(Agent, Individual).foreach { userType =>
@@ -62,7 +62,7 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
       }
     }
 
-    "ignores question filters in other list" in {
+    "ignores question filters in other list" should {
       val allVendors = SoftwareVendors(
         lastUpdated = LocalDate.now,
         vendors = Seq(
@@ -71,18 +71,30 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
         )
       )
 
+      val mockDataService = mock[DataService]
+
       when(mockDataService.getSoftwareVendors()).thenReturn(
         allVendors
+      )
+
+      val service = new SoftwareChoicesService(
+        mockDataService
       )
 
       val filters = Seq(Agent, SoleTrader)
-      val allInOne = service.getAllInOneVendors(filters)
-      val other = service.getOtherVendors(filters)
-      allInOne.vendors.size mustBe 1
-      other.vendors.size mustBe 2
+
+      "allInOneSoftware" in {
+        val allInOne = service.getAllInOneVendors(filters)
+        allInOne.vendors.size mustBe 1
+      }
+
+      "otherSoftware" in {
+        val other = service.getOtherVendors(filters)
+        other.vendors.size mustBe 2
+      }
     }
 
-    "Retains preferences filters" in {
+    "Retains preferences filters" should {
       val allVendors = SoftwareVendors(
         lastUpdated = LocalDate.now,
         vendors = Seq(
@@ -91,15 +103,27 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
         )
       )
 
+      val mockDataService = mock[DataService]
+
       when(mockDataService.getSoftwareVendors()).thenReturn(
         allVendors
       )
 
+      val service = new SoftwareChoicesService(
+        mockDataService
+      )
+
       val filters = Seq(Agent, FreeVersion)
-      val allInOne = service.getAllInOneVendors(filters)
-      val other = service.getOtherVendors(filters)
-      allInOne.vendors.size mustBe 0
-      other.vendors.size mustBe 0
+
+      "allInOneSoftware" in {
+        val allInOne = service.getAllInOneVendors(filters)
+        allInOne.vendors.size mustBe 0
+      }
+
+      "otherSoftware" in {
+        val other = service.getOtherVendors(filters)
+        other.vendors.size mustBe 0
+      }
     }
   }
 }
