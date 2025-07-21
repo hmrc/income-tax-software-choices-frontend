@@ -26,6 +26,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.SoleTraderOr
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{UserAnswers, UserFilters, VendorFilter}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages._
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
 
 class ZeroSoftwareResultsControllerISpec extends ComponentSpecBase with BeforeAndAfterEach with DatabaseHelper {
 
@@ -42,7 +43,7 @@ class ZeroSoftwareResultsControllerISpec extends ComponentSpecBase with BeforeAn
 
       result should have(
         httpStatus(OK),
-        pageTitle(s"${messages("zero-results.heading")} - Find Software that works with Making Tax Digital for Income Tax - GOV.UK"),
+        pageTitle(s"${messages("zero-results.heading")} - ${PageContentBase.title} - GOV.UK"),
       )
     }
   }

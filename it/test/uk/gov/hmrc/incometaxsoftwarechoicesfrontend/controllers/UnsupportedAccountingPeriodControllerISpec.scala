@@ -18,6 +18,7 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import play.api.http.Status.OK
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.ComponentSpecBase
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
 
 class UnsupportedAccountingPeriodControllerISpec extends ComponentSpecBase {
 
@@ -27,7 +28,7 @@ class UnsupportedAccountingPeriodControllerISpec extends ComponentSpecBase {
 
       result should have(
         httpStatus(OK),
-        pageTitle(s"${messages("unsupported-accounting-period.heading")} - Find Software that works with Making Tax Digital for Income Tax - GOV.UK"),
+        pageTitle(s"${messages("unsupported-accounting-period.heading")} - ${PageContentBase.title} - GOV.UK"),
       )
     }
   }

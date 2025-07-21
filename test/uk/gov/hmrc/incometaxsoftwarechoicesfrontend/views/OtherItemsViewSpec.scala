@@ -179,7 +179,7 @@ class OtherItemsViewSpec extends ViewSpec {
 }
 
 private object OtherItemsPageContent {
-  val title = "What else do you need to tell HMRC? - Find Software that works with Making Tax Digital for Income Tax - GOV.UK"
+  val title = s"What else do you need to tell HMRC? - ${PageContentBase.title} - GOV.UK"
   val legend = "What else do you need to tell HMRC?"
   val para = "These are other items you’ll need to include in your tax return."
   val hint = "Select all that apply."

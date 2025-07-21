@@ -66,7 +66,7 @@ class ProductDetailsViewSpec extends ViewSpec {
       def table(index: Int): Element = document.getTable(index)
 
       "have a title" in {
-        document.title shouldBe s"""${softwareVendorModelFull.name} - Find Software that works with Making Tax Digital for Income Tax - GOV.UK"""
+        document.title shouldBe s"""${softwareVendorModelFull.name} - ${PageContentBase.title} - GOV.UK"""
       }
 
       "display the vendor name heading" in {
@@ -135,7 +135,7 @@ class ProductDetailsViewSpec extends ViewSpec {
       def table(index: Int): Element = document.getTable(index)
 
       "have a title" in {
-        document.title shouldBe s"""${softwareVendorModelMinimal.name} - Find Software that works with Making Tax Digital for Income Tax - GOV.UK"""
+        document.title shouldBe s"""${softwareVendorModelMinimal.name} - ${PageContentBase.title} - GOV.UK"""
       }
 
       "display the vendor name heading" in {
@@ -206,7 +206,7 @@ class ProductDetailsViewSpec extends ViewSpec {
       def table(index: Int): Element = document.getTable(index)
 
       "have a title" in {
-        document.title shouldBe s"""${softwareVendorModelBase.name} - Find Software that works with Making Tax Digital for Income Tax - GOV.UK"""
+        document.title shouldBe s"""${softwareVendorModelBase.name} - ${PageContentBase.title} - GOV.UK"""
       }
 
       "display the vendor name heading" in {

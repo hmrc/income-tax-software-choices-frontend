@@ -92,7 +92,7 @@ class CheckYourAnswersViewSpec extends ViewSpec {
   )
 
   object CheckYourAnswersViewContent {
-    val title = "Check your answers before viewing compatible software - Find Software that works with Making Tax Digital for Income Tax - GOV.UK"
+    val title = s"Check your answers before viewing compatible software - ${PageContentBase.title} - GOV.UK"
     val heading = "Check your answers before viewing compatible software"
     val continue = "Continue"
   }

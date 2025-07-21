@@ -25,7 +25,7 @@ class UnsupportedAccountingPeriodViewSpec extends ViewSpec {
 
   object UnsupportedAccountingPeriodContent {
     val heading = "There is no software product or products that support your accounting period"
-    val title = s"$heading - Find Software that works with Making Tax Digital for Income Tax - GOV.UK"
+    val title = s"$heading - ${PageContentBase.title} - GOV.UK"
     val paraOne = "Making Tax Digital is only available to people who use the business accounting periods:"
     val bulletOne = "6 April to 5 April"
     val bulletTwo = "1 April to 31 March"

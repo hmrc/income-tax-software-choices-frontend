@@ -25,6 +25,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.{Agent, Sole
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{UserAnswers, UserFilters, VendorFilter}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages._
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
 
 class UserTypeControllerISpec extends ComponentSpecBase with BeforeAndAfterEach with DatabaseHelper {
   def testUserFilters(answers: UserAnswers): UserFilters = UserFilters(SessionId, Some(answers))
@@ -41,7 +42,7 @@ class UserTypeControllerISpec extends ComponentSpecBase with BeforeAndAfterEach 
 
         res should have(
           httpStatus(OK),
-          pageTitle(s"${messages("type-of-user.heading")} - Find Software that works with Making Tax Digital for Income Tax - GOV.UK"),
+          pageTitle(s"${messages("type-of-user.heading")} - ${PageContentBase.title} - GOV.UK"),
           radioButtonSelected(id = "type-of-user", None),
           radioButtonSelected(id = "type-of-user-2", None)
         )
@@ -57,7 +58,7 @@ class UserTypeControllerISpec extends ComponentSpecBase with BeforeAndAfterEach 
 
         res should have(
           httpStatus(OK),
-          pageTitle(s"${messages("type-of-user.heading")} - Find Software that works with Making Tax Digital for Income Tax - GOV.UK"),
+          pageTitle(s"${messages("type-of-user.heading")} - ${PageContentBase.title} - GOV.UK"),
           radioButtonSelected(id = "type-of-user", selectedRadioButton = Some(SoleTraderOrLandlord.key))
         )
       }
