@@ -1,4 +1,4 @@
-base.service-name           = Find compatible software for Making Tax Digital for Income Tax ... but in Welsh
+base.service-name           = Find Software that works with Making Tax Digital for Income Tax
 base.title                  = {0} - Dod o hyd i feddalwedd am y cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm - GOV.UK
 base.title.error            = Gwall: {0} - Dod o hyd i feddalwedd am y cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm - GOV.UK
 base.error-heading          = Mae problem wedi codi
