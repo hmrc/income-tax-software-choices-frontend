@@ -351,13 +351,13 @@ product-details.explanation-link.link = explanations
 # Other Income Sources Page
 additional.income.source-heading                                    = Which other income do you have?
 additional.income.source-legend                                     = Which other income do you have?
-additional.income.source-paragraph                                  = This is other income you’ll need to include in your tax return.
+additional.income.source-paragraph                                  = This is additional income you’ll need to include in your tax return.
 additional.income.source-hint                                       = Select all that apply
-additional.income.source-uk-interest                                = UK interest
+additional.income.source-uk-interest                                = UK Interest
 additional.income.source-construction-industry-scheme               = Construction Industry Scheme
 additional.income.source-employment                                 = Employment (PAYE)
-additional.income.source-uk-dividends                               = UK dividends
-additional.income.source-state-pension                              = State pension income
+additional.income.source-uk-dividends                               = UK Dividends
+additional.income.source-state-pension                              = State Pension income
 additional.income.source-private-pension                            = Private pension incomes
 additional.income.source-foreign-dividends                          = Foreign dividends
 additional.income.source-foreign-interest                           = Foreign interest
