@@ -25,15 +25,15 @@ accounting-period.other                                           = Neither of t
 accounting-period.error                                           = Select either 6 April to 5 April, 1 April to 31 March, or neither of these
 
 # Business Income page
-business-income.title = Which business income do you have?
-business-income.legend = Which business income do you have?
+business-income.title = Which of these do you get income from?
+business-income.legend = Which of these do you get income from?
 business-income.para = You’ll need to include this in your quarterly updates and tax return.
-business-income.hint = Select all that apply.
-business-income.self-employment = Sole trader
-business-income.uk-property = UK property
-business-income.foreign-property = Foreign property
+business-income.hint = Select all that apply
+business-income.self-employment = Being a sole trader
+business-income.uk-property = Renting out a UK property
+business-income.foreign-property = Renting out a foreign property
 
-business-income.error.non-empty          = Select business income or business incomes
+business-income.error.non-empty          = Select if you get income from being sole trader, or renting out a UK or foreign property
 
 # Zero Results page
 zero-results.title = There is no all-in-one software product to meet your needs
@@ -46,7 +46,7 @@ zero-results.para3 = If you use an agent or accountant, talk to them about what 
 other-items.title = What else do you need to tell HMRC?
 other-items.legend = What else do you need to tell HMRC?
 other-items.para = These are other items you’ll need to include in your tax return if you have them.
-other-items.hint = Select all that apply.
+other-items.hint = Select all that apply
 other-items.payments-into-a-private-pension = Private pension contributions
 other-items.charitable-giving = Charitable giving
 other-items.capital-gains-tax = Capital Gains
@@ -61,16 +61,16 @@ other-items.error.invalid-selection = Select one other item, other items, or ‘
 
 # Check Your Answers view
 check-your-answers.heading              = Check your answers before viewing compatible software
-check-your-answers.business-income      = Business income
+check-your-answers.business-income      = Income sources
 check-your-answers.additional-income    = Other income
 check-your-answers.other-items          = Other items
 check-your-answers.accounting-period    = Accounting period
 check-your-answers.none-selected        = None selected
 
 
-check-your-answers.sole-trader                              = Sole trader
-check-your-answers.uk-property                              = UK property
-check-your-answers.overseas-property                        = Foreign property
+check-your-answers.sole-trader                              = Being a sole trader
+check-your-answers.uk-property                              = Renting out a UK property
+check-your-answers.overseas-property                        = Renting out a foreign property
 check-your-answers.payments-into-a-private-pension          = Private pension contributions
 check-your-answers.charitable-giving                        = Charitable giving
 check-your-answers.capital-gains-tax                        = Capital Gains
@@ -103,7 +103,7 @@ search-software.filters.heading = Filter options
 search-software.filters.paragraph = You can use filters to find specific software. All fields are optional.
 search-software.filters.pricing = Price
 search-software.filters.user-type = User type
-search-software.filters.suitable-for = Business income sources
+search-software.filters.suitable-for = Income sources
 search-software.filters.operating-system = Operating system
 search-software.filters.mobile-app = Mobile app
 search-software.filters.software-type = Software type
@@ -150,8 +150,8 @@ search-software.vendor-detail.pricing.free-version.hint = Check the company’s 
 search-software.vendor-detail.pricing.no-free-version = No free version
 search-software.vendor-detail.pricing.paid-for = Paid for
 
-search-software.vendor-detail.suitable-for = Business income sources
-search-software.vendor-detail.suitable-for.sole-trader = Self-employment
+search-software.vendor-detail.suitable-for = Income sources
+search-software.vendor-detail.suitable-for.sole-trader = Sole trader
 search-software.vendor-detail.suitable-for.uk-property = UK property
 search-software.vendor-detail.suitable-for.overseas-property = Foreign property
 
@@ -260,7 +260,7 @@ product-details.features-provided.agent = Agent software
 product-details.features-provided.individual = Individual software
 product-details.features-provided.free-version = Free version
 
-product-details.business-income.heading = Business income sources
+product-details.business-income.heading = Income sources
 product-details.business-income.sole-trader = Sole trader
 product-details.business-income.uk-property = UK property
 product-details.business-income.overseas-property = Foreign property
