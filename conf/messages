@@ -272,7 +272,7 @@ product-details.other-income.foreign-interest = Foreign interest
 product-details.other-income.foreign-dividends = Foreign dividends
 product-details.other-income.uk-dividends = UK Dividends
 product-details.other-income.uk-interest = UK Interest
-product-details.other-income.state-pension-income = State Pension Income
+product-details.other-income.state-pension-income = State Pension income
 product-details.other-income.private-pension-income = Private pension income
 
 product-details.other-items.heading = Other items
@@ -364,7 +364,6 @@ additional.income.source-foreign-dividends                          = Foreign di
 additional.income.source-foreign-interest                           = Foreign interest
 additional.income.source-none                                       = None of these
 additional.income.source.error-non-empty                            = Select an income type, income types, or 'none of these'
-additional.income.source.error-none-only                            = Select either an income type, income types, or 'none of these'
 additional.income.source.error-none-only                            = Select either an income type, income types, or 'none of these'
 
 unsupported-accounting-period.heading                               = There is no software product or products that support your accounting period

@@ -199,7 +199,7 @@ private object AdditionalIncomeSourcesPageContent {
   val employment = "Employment (PAYE)"
   val ukDividends = "UK Dividends"
   val statePension = "State Pension income"
-  val privatePension = "Private pension incomes"
+  val privatePension = "Private pension income"
   val foreignDividends = "Foreign dividends"
   val foreignInterest = "Foreign interest"
   val none = "None of these"
