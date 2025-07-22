@@ -62,7 +62,7 @@ class AccountingPeriodViewSpec extends ViewSpec {
         document().mainContent.select("p").get(0).text mustBe AccountingPeriodContent.paraOne
         val link = document().mainContent.select(".govuk-link").first()
         link.text mustBe AccountingPeriodContent.linkText
-        link.attr("href") mustBe "https://www.gov.uk/guidance/use-making-tax-digital-for-income-tax/send-quarterly-updates"
+        link.attr("href") mustBe AccountingPeriodContent.linkHref
       }
 
       "have a form" which {
@@ -112,14 +112,15 @@ class AccountingPeriodViewSpec extends ViewSpec {
 }
 
 private object AccountingPeriodContent {
-  val title = s"What accounting period do you use for your business? - ${PageContentBase.title} - GOV.UK"
-  val legend = "What accounting period do you use for your business?"
-  val paraOne = "To keep your record keeping simpler if your accounting period ends on 31 March, you’ll need compatible software to support calendar update periods (opens in new tab)."
+  val title = s"What accounting period do you use? - ${PageContentBase.title} - GOV.UK"
+  val legend = "What accounting period do you use?"
+  val paraOne = "If your accounting period ends on 31 March, you’ll need software that supports calendar update periods (opens in new tab). This will make keeping records simpler."
   val linkText = "calendar update periods (opens in new tab)"
+  val linkHref = "https://www.gov.uk/guidance/use-making-tax-digital-for-income-tax/send-quarterly-updates#using-calendar-update-periods"
   val sixthToFifth = "6 April to 5 April"
   val firstToThirtyFirst = "1 April to 31 March"
   val or = "or"
   val neither = "Neither of these"
   val continue = "Continue"
-  val error = "Select if your accounting period runs from 6 April to 5 April, 1 April to 31 March, or neither of these"
+  val error = "Select either 6 April to 5 April, 1 April to 31 March, or neither of these"
 }

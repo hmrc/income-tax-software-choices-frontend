@@ -14,14 +14,15 @@ type-of-user.agent                                                = As an agent 
 type-of-user.error                                                = Select if you’re a sole trader, landlord, or an agent
 
 ## Accounting period page
-accounting-period.heading                                         = Pa gyfnod cyfrifyddu yr ydych yn ei ddefynyddio ar gyfer eich busnes?
-accounting-period.para-one                                        = To keep your record keeping simpler if your accounting period ends on 31 March, you’ll need compatible software to support {0}.
+accounting-period.heading                                         = What accounting period do you use?
+accounting-period.para-one                                        = If your accounting period ends on 31 March, you’ll need software that supports {0}.
+accounting-period.para-one-ending                                 = This will make keeping records simpler.
 accounting-period.para-one.link-text                              = calendar update periods
-accounting-period.para-one.link-href                              = https://www.gov.uk/guidance/defnyddio-r-cynllun-troi-treth-yn-ddigidol-ar-gyfer-treth-incwm/anfon-diweddariadau-chwarterol
-accounting-period.sixth-april-to-fifth-april                      = 6 Ebrill i 5 Ebrill
-accounting-period.first-april-to-thirty-first-march               = 1 Ebrill i 31 Mawrth
-accounting-period.other                                           = Dim un o’r rhain
-accounting-period.error                                           = Dewiswch a yw’ch cyfnod cyfrifyddu yn rhedeg o 6 Ebrill i 5 Ebrill, 1 Ebrill i 31 Mawrth, neu dim un o’r rhain
+accounting-period.para-one.link-href                              = https://www.gov.uk/guidance/use-making-tax-digital-for-income-tax/send-quarterly-updates#using-calendar-update-periods
+accounting-period.sixth-april-to-fifth-april                      = 6 April to 5 April
+accounting-period.first-april-to-thirty-first-march               = 1 April to 31 March
+accounting-period.other                                           = Neither of these
+accounting-period.error                                           = Select either 6 April to 5 April, 1 April to 31 March, or neither of these
 
 # Business Income page
 business-income.title = Which business income do you have?
