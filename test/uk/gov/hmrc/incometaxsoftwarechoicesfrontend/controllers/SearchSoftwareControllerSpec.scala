@@ -28,7 +28,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.{PageAnswersService, SoftwareChoicesService}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.{DataService, PageAnswersService, SoftwareChoicesService}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SearchSoftwarePage
 
 import java.io.FileInputStream
@@ -84,7 +84,7 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec with BeforeAndAfte
     when(mockEnvironment.resourceAsStream(eqTo(appConfig.softwareChoicesVendorFileName)))
       .thenReturn(Some(new FileInputStream("test/resources/test-valid-software-vendors.json")))
 
-    lazy val softwareChoicesService: SoftwareChoicesService = new SoftwareChoicesService(appConfig, mockEnvironment)
+    lazy val softwareChoicesService: SoftwareChoicesService = new SoftwareChoicesService(new DataService(appConfig, mockEnvironment))
     lazy val pageAnswerService: PageAnswersService = new PageAnswersService(mockUserFiltersRepo, ec)
 
     val controller = new SearchSoftwareController(

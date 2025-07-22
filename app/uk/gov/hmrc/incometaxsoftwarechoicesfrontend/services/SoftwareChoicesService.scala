@@ -16,31 +16,18 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services
 
-import play.api.libs.json._
-import play.api.{Environment, Logging}
-import uk.gov.hmrc.http.InternalServerException
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilterGroups._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareVendorModel, SoftwareVendors, VendorFilter}
 
 import javax.inject.{Inject, Singleton}
 
 @Singleton
-class SoftwareChoicesService @Inject()(appConfig: AppConfig, environment: Environment) extends Logging {
+class SoftwareChoicesService @Inject()(
+  dataService: DataService
+) {
 
-  private val softwareVendorsJson: JsValue = environment.resourceAsStream(appConfig.softwareChoicesVendorFileName) match {
-    case Some(resource) =>
-      Json.parse(resource)
-    case None =>
-      throw new InternalServerException(s"[SoftwareChoicesService][jsonFile] - ${appConfig.softwareChoicesVendorFileName} not found")
-  }
-
-  private[services] val softwareVendors: SoftwareVendors = Json.fromJson[SoftwareVendors](softwareVendorsJson) match {
-    case JsSuccess(value, _) =>
-      value
-    case JsError(errors) =>
-      throw new InternalServerException(s"[SoftwareChoicesService][softwareVendors] - Json parse failures - ${errors.mkString(",")}")
-  }
+  def softwareVendors: SoftwareVendors =
+    dataService.getSoftwareVendors()
 
   def getSoftwareVendor(software: String): Option[SoftwareVendorModel] = {
     softwareVendors
@@ -50,19 +37,25 @@ class SoftwareChoicesService @Inject()(appConfig: AppConfig, environment: Enviro
       }
   }
 
-  def getAllInOneVendors(filters: Seq[VendorFilter] = Seq.empty): SoftwareVendors = softwareVendors.copy(
-    vendors = (
-      SoftwareChoicesService.matchFilter(filters) _
-        andThen SoftwareChoicesService.sortVendors
-      ) (softwareVendors.vendors)
-  )
+  def getAllInOneVendors(filters: Seq[VendorFilter] = Seq.empty): SoftwareVendors = {
+    val vendors = softwareVendors
+    vendors.copy(
+      vendors = (
+        SoftwareChoicesService.matchFilter(filters) _
+          andThen SoftwareChoicesService.sortVendors
+        ) (vendors.vendors)
+    )
+  }
 
-  def getOtherVendors(filters: Seq[VendorFilter] = Seq.empty): SoftwareVendors = softwareVendors.copy(
+  def getOtherVendors(filters: Seq[VendorFilter] = Seq.empty): SoftwareVendors = {
+    val vendors = softwareVendors
+    vendors.copy(
       vendors = (
         SoftwareChoicesService.matchFilter(filters.filterNot(userPageFilters.contains(_))) _
           andThen SoftwareChoicesService.sortVendors
-        ) (softwareVendors.vendors)
+        ) (vendors.vendors)
     )
+  }
 
 }
 

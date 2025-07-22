@@ -16,185 +16,82 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services
 
-import org.mockito.ArgumentMatchers.{eq => eqTo}
 import org.mockito.Mockito.when
 import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.mockito.MockitoSugar.mock
 import org.scalatestplus.play.PlaySpec
-import play.api.Environment
-import uk.gov.hmrc.http.InternalServerException
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.TestModels._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareVendorModel, SoftwareVendors}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareVendorModel, SoftwareVendors, VendorFilter}
 
-import java.io.FileInputStream
 import java.time.LocalDate
 
 class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
 
-  private val testFileName: String = "test-software-vendors.json"
-  private val validVendors = "test/resources/test-valid-software-vendors.json"
-  private val invalidVendors = "test/resources/test-invalid-software-vendors.json"
+  private def vendor(filters: Seq[VendorFilter]): SoftwareVendorModel = SoftwareVendorModel(
+    name = filters.head.toString,
+    email = None,
+    phone = None,
+    website = "",
+    filters = filters
+  )
 
-  class Setup {
-    val mockConfig: AppConfig = mock[AppConfig]
-    val mockEnvironment: Environment = mock[Environment]
-
-    lazy val service: SoftwareChoicesService = new SoftwareChoicesService(mockConfig, mockEnvironment)
-
-    when(mockConfig.softwareChoicesVendorFileName) thenReturn testFileName
-  }
-
-  val unsortedSoftwareVendors: SoftwareVendors = SoftwareVendors(
-    lastUpdated = LocalDate.of(2022, 12, 2),
+  val allVendors = SoftwareVendors(
+    lastUpdated = LocalDate.now,
     vendors = Seq(
-      testVendorOne,
-      testVendorTwo,
-      testVendorThree,
-      testVendorFour,
-      testVendorFive
+      vendor(Seq(Agent)),
+      vendor(Seq(Agent, SoleTrader)),
+      vendor(Seq(Individual)),
+      vendor(Seq(Individual, SoleTrader)),
     )
   )
 
-  val expectedSoftwareVendors: SoftwareVendors = SoftwareVendors(
-    lastUpdated = LocalDate.of(2022, 12, 2),
-    vendors = Seq(
-      testVendorFive,
-      testVendorFour, // vendors are sorted alphabetically
-      testVendorOne,
-      testVendorThree,
-      testVendorTwo
-    )
+  val mockDataService = mock[DataService]
+
+  when(mockDataService.getSoftwareVendors()).thenReturn(
+    allVendors
   )
 
-  val expectedFilteredByVendorNameSoftwareVendors: SoftwareVendors = SoftwareVendors(
-    lastUpdated = LocalDate.of(2022, 12, 2),
-    vendors = Seq(
-      testVendorTwo
-    )
+  val service = new SoftwareChoicesService(
+    mockDataService
   )
 
-  val expectedFilteredByVendorFilterSoftwareVendors: SoftwareVendors = SoftwareVendors(
-    lastUpdated = LocalDate.of(2022, 12, 2),
-    vendors = Seq(
-      testVendorOne,
-      testVendorThree
-    )
-  )
-
-  val expectedFilteredSoftwareVendors: SoftwareVendors = SoftwareVendors(
-    lastUpdated = LocalDate.of(2022, 12, 2),
-    vendors = Seq(
-      testVendorThree
-    )
-  )
-
-  val expectedFilteredIndividualSoftwareVendors: SoftwareVendors = SoftwareVendors(
-    lastUpdated = LocalDate.of(2022, 12, 2),
-    vendors = Seq(
-      testVendorFour
-    )
-  )
-
-  val expectedFilteredAgentSoftwareVendors: SoftwareVendors = SoftwareVendors(
-    lastUpdated = LocalDate.of(2022, 12, 2),
-    vendors = Seq(
-      testVendorFive
-    )
-  )
-
-  val expectedFilteredCombinedSoftwareVendors: SoftwareVendors = SoftwareVendors(
-    lastUpdated = LocalDate.of(2022, 12, 2),
-    vendors = Seq(
-      testVendorFive,
-      testVendorFour // vendors are sorted alphabetically
-    )
-  )
-
-  "getAllInOne softwareVendors" when {
-    "the software vendor config file exists" must {
-      "correctly retrieve and parse file" in new Setup {
-        when(mockEnvironment.resourceAsStream(eqTo(testFileName)))
-          .thenReturn(Some(new FileInputStream(validVendors)))
-
-        service.softwareVendors mustBe unsortedSoftwareVendors
-      }
-
-      "correctly filter vendors by vendor filter" in new Setup {
-        when(mockEnvironment.resourceAsStream(eqTo(testFileName)))
-          .thenReturn(Some(new FileInputStream(validVendors)))
-
-        service.getAllInOneVendors(Seq(FreeVersion)) mustBe expectedFilteredByVendorFilterSoftwareVendors
-      }
-
-      "not filter when no search term has been provided" in new Setup {
-        when(mockEnvironment.resourceAsStream(eqTo(testFileName)))
-          .thenReturn(Some(new FileInputStream(validVendors)))
-
-        service.getAllInOneVendors(Seq()) mustBe expectedSoftwareVendors
+  "getAllInOneVendors" should {
+    "exclude vendors that are not for requested user type" in {
+      Seq(Agent, Individual).foreach { userType =>
+        val result = service.getAllInOneVendors(Seq(userType))
+        result.vendors.size mustBe 2
+        result.vendors.head.name mustBe userType.toString
       }
     }
 
-    "the software vendor config file does not exist" in new Setup {
-      when(mockEnvironment.resourceAsStream(eqTo(testFileName)))
-        .thenReturn(None)
-
-      intercept[InternalServerException](service.softwareVendors).message mustBe s"[SoftwareChoicesService][jsonFile] - $testFileName not found"
+    "not ignore question filters" in {
+      val result = service.getAllInOneVendors(Seq(Agent, SoleTrader))
+      result.vendors.size mustBe 1
     }
-    "the software vendor config file contains invalid json" in new Setup {
-      when(mockEnvironment.resourceAsStream(eqTo(testFileName)))
-        .thenReturn(Some(new FileInputStream(invalidVendors)))
 
-      intercept[InternalServerException](service.softwareVendors).message
-        .contains("[SoftwareChoicesService][softwareVendors] - Json parse failures") mustBe true
+    "retain preferences filters" in {
+      val result = service.getAllInOneVendors(Seq(Agent, FreeVersion))
+      result.vendors.size mustBe 0
     }
   }
 
-  "getOther softwareVendors" when {
-    "correctly filter other vendors by vendor filter with two vendors returned" in new Setup {
-      when(mockEnvironment.resourceAsStream(eqTo(testFileName)))
-        .thenReturn(Some(new FileInputStream(validVendors)))
-
-      service.getOtherVendors(Seq(Individual,SoleTrader)) mustBe expectedFilteredCombinedSoftwareVendors
-    }
-
-    "correctly filter other vendors by vendor filter with one vendors returned" in new Setup {
-      when(mockEnvironment.resourceAsStream(eqTo(testFileName)))
-        .thenReturn(Some(new FileInputStream(validVendors)))
-
-      service.getOtherVendors(Seq(Agent,SoleTrader)) mustBe expectedFilteredAgentSoftwareVendors
-    }
-
-    "correctly filter other vendors by preference filter not user answers filters" in new Setup {
-      when(mockEnvironment.resourceAsStream(eqTo(testFileName)))
-        .thenReturn(Some(new FileInputStream(validVendors)))
-
-      service.getOtherVendors(Seq(Individual,OverseasProperty,Motor)) mustBe expectedFilteredAgentSoftwareVendors
-    }
-  }
-    "get software vendor" when {
-    "fetching a software vendor which exists" should {
-      "return that vendor" in new Setup {
-        when(mockEnvironment.resourceAsStream(eqTo(testFileName)))
-          .thenReturn(Some(new FileInputStream(validVendors)))
-
-        private val name = "test software vendor one"
-        private val maybeVendorModel: Option[SoftwareVendorModel] = service.getSoftwareVendor(name)
-        maybeVendorModel.isDefined mustBe true
-        maybeVendorModel.get.name mustBe name
+  "getOtherVendors" should {
+    "exclude vendors that are not for requested user type" in {
+      Seq(Agent, Individual).foreach { userType =>
+        val result = service.getOtherVendors(Seq(userType))
+        result.vendors.size mustBe 2
+        result.vendors.head.name mustBe userType.toString
       }
     }
-    "fetching a software vendor which does not exist" should {
-      "return None" in new Setup {
-        when(mockEnvironment.resourceAsStream(eqTo(testFileName)))
-          .thenReturn(Some(new FileInputStream(validVendors)))
 
-        private val name = "test software vendor one hundred"
-        private val maybeVendorModel: Option[SoftwareVendorModel] = service.getSoftwareVendor(name)
-        maybeVendorModel.isDefined mustBe false
-      }
+    "ignore question filters" in {
+      val result = service.getOtherVendors(Seq(Agent, SoleTrader))
+      result.vendors.size mustBe 2
+    }
+
+    "retain preferences filters" in {
+      val result = service.getOtherVendors(Seq(Agent, FreeVersion))
+      result.vendors.size mustBe 0
     }
   }
-
 }
