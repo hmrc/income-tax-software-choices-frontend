@@ -494,7 +494,7 @@ private object SearchSoftwarePageContent {
     val filterParagraph = "You can use filters to find specific software. All fields are optional."
     val clearFilters = "Clear filters"
     val pricing = "Price"
-    val suitableFor = "Business income sources"
+    val suitableFor = "Income sources"
     val softwareFor = "Type of software"
     val softwareCompatibility = "Making Tax Digital Compatibility"
     val accessibilityFeatures = "Accessibility features"
@@ -533,8 +533,8 @@ private object SearchSoftwarePageContent {
   val noFreeVersion = "No free version"
   val freeVersionHint = "Check the company’s website for information on their pricing structure."
 
-  val suitableFor = "Business income sources"
-  val soleTrader = "Self-employment"
+  val suitableFor = "Income sources"
+  val soleTrader = "Sole trader"
   val ukProperty = "UK property"
   val overseasProperty = "Foreign property"
 

@@ -67,7 +67,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
         res should have(
           httpStatus(OK),
           pageTitle(s"${messages("check-your-answers.heading")} - ${PageContentBase.title} - GOV.UK"),
-          summaryListRow("Business income", Seq(SoleTrader,UkProperty,OverseasProperty)
+          summaryListRow("Income sources", Seq(SoleTrader,UkProperty,OverseasProperty)
             .map(vf => messages(s"check-your-answers.$vf")).mkString(" ")),
           summaryListRow("Other income", Seq(UkInterest, ConstructionIndustryScheme, Employment, UkDividends, StatePensionIncome,
             PrivatePensionIncome, ForeignDividends, ForeignInterest)
@@ -92,7 +92,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
         res should have(
           httpStatus(OK),
           pageTitle(s"${messages("check-your-answers.heading")} - ${PageContentBase.title} - GOV.UK"),
-          summaryListRow("Business income", Seq(SoleTrader,UkProperty,OverseasProperty)
+          summaryListRow("Income sources", Seq(SoleTrader,UkProperty,OverseasProperty)
             .map(vf => messages(s"check-your-answers.$vf")).mkString(" ")),
           summaryListRow("Other income", messages(s"check-your-answers.none-selected")),
           summaryListRow("Other items", messages(s"check-your-answers.none-selected")),

@@ -120,12 +120,12 @@ class BusinessIncomeSourcesViewSpec extends ViewSpec {
 }
 
 private object BusinessIncomePageContent {
-  val title = s"Which business income do you have? - ${PageContentBase.title} - GOV.UK"
-  val legend = "Which business income do you have?"
+  val title = s"Which of these do you get income from? - ${PageContentBase.title} - GOV.UK"
+  val legend = "Which of these do you get income from?"
   val para = "You’ll need to include this in your quarterly updates and tax return."
-  val hint = "Select all that apply."
-  val selfEmployment = "Sole trader"
-  val ukProperty = "UK property"
-  val foreignProperty = "Foreign property"
+  val hint = "Select all that apply"
+  val selfEmployment = "Being a sole trader"
+  val ukProperty = "Renting out a UK property"
+  val foreignProperty = "Renting out a foreign property"
   val continue = "Continue"
 }

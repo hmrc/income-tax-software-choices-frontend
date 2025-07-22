@@ -182,7 +182,7 @@ private object OtherItemsPageContent {
   val title = s"What else do you need to tell HMRC? - ${PageContentBase.title} - GOV.UK"
   val legend = "What else do you need to tell HMRC?"
   val para = "These are other items you’ll need to include in your tax return if you have them."
-  val hint = "Select all that apply."
+  val hint = "Select all that apply"
   val privatePensionContributions = "Private pension contributions"
   val charitableGiving = "Charitable giving"
   val capitalGainsTax = "Capital Gains"

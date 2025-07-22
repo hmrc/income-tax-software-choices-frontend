@@ -28,7 +28,7 @@ business-income.title = Which business income do you have?
 business-income.legend = Which business income do you have?
 business-income.para = You’ll need to include this in your quarterly updates and tax return.
 business-income.hint = Select all that apply.
-business-income.self-employment = Self-employment
+business-income.self-employment = Sole trader
 business-income.uk-property = UK property
 business-income.foreign-property = Foreign property
 
@@ -259,7 +259,7 @@ product-details.features-provided.agent = Agent software
 product-details.features-provided.individual = Individual software
 product-details.features-provided.free-version = Free version
 
-product-details.business-income.heading = Business income sources
+product-details.business-income.heading = Income sources
 product-details.business-income.sole-trader = Sole trader
 product-details.business-income.uk-property = UK property
 product-details.business-income.overseas-property = Foreign property
