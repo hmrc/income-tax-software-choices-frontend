@@ -8,7 +8,7 @@ base.or                     = or
 base.change                 = Change
 
 ## User type page
-type-of-user.heading                                              = How will you use this tool to choose software?
+type-of-user.heading                                              = How will you use Making Tax Digital for Income Tax Software?
 type-of-user.sole-trader-or-landlord                              = As a sole trader or landlord doing my taxes
 type-of-user.agent                                                = As an agent working on behalf of a client
 type-of-user.error                                                = Select if you’re a sole trader, landlord, or an agent
