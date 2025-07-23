@@ -1,6 +1,6 @@
-base.service-name           = Find Software that works with Making Tax Digital for Income Tax
-base.title                  = {0} - Find Software that works with Making Tax Digital for Income Tax - GOV.UK
-base.title.error            = Gwall: {0} - Find Software that works with Making Tax Digital for Income Tax - GOV.UK
+base.service-name           = Find software that works with Making Tax Digital for Income Tax
+base.title                  = {0} - Find software that works with Making Tax Digital for Income Tax - GOV.UK
+base.title.error            = Gwall: {0} - Find software that works with Making Tax Digital for Income Tax - GOV.UK
 base.error-heading          = Mae problem wedi codi
 base.opens-in-new-tab       = (yn agor tab newydd)
 base.continue               = Yn eich blaen
