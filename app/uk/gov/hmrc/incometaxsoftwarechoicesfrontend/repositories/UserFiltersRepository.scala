@@ -50,7 +50,7 @@ class UserFiltersRepository @Inject()(
           .expireAfter(appConfig.cacheTtl, TimeUnit.SECONDS)
       )
     ),
-    replaceIndexes = true
+    replaceIndexes = false
   ) {
 
   implicit val instantFormat: Format[Instant] = MongoJavatimeFormats.instantFormat
