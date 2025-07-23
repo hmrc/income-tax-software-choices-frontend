@@ -18,5 +18,5 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views
 
 object PageContentBase {
   val title: String =
-    "Find Software that works with Making Tax Digital for Income Tax"
+    "Find software that works with Making Tax Digital for Income Tax"
 }
