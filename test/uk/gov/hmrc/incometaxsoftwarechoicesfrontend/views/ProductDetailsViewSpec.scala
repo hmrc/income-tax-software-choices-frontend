@@ -327,8 +327,8 @@ class ProductDetailsViewSpec extends ViewSpec {
     val softwareFeaturesHeading = "Software features"
 
     val freeVersion = "Free version"
-    val recordKeeping = "Record keeping"
-    val bridging = "Bridging"
+    val recordKeeping = "Software that creates digital records"
+    val bridging = "Software that connects to your records (bridging software)"
     val quarterlyUpdates = "Quarterly updates"
     val saTaxReturn = "Self Assessment tax return"
     val agent = "Agent software"

@@ -174,10 +174,8 @@ search-software.vendor-detail.software-type.application-based = Application base
 search-software.vendor-detail.software-type.application-based.hint = Software installed on your device
 
 search-software.vendor-detail.software-for = Type of software
-search-software.vendor-detail.software-for.record-keeping = Record keeping
-search-software.vendor-detail.software-for.record-keeping.hint = Creates digital records
-search-software.vendor-detail.software-for.bridging = Bridging
-search-software.vendor-detail.software-for.bridging.hint = Connects to digital records like spreadsheets
+search-software.vendor-detail.software-for.record-keeping = Software that creates digital records
+search-software.vendor-detail.software-for.bridging = Software that connects to your records (bridging software)
 
 search-software.vendor-detail.business-type                 = Business type:
 search-software.vendor-detail.business-type.individual      = Individual
@@ -252,8 +250,8 @@ product-details.details.heading = Software features
 product-details.features-provided.heading = Features provided
 product-details.features-provided.quarterly-updates = Quarterly updates
 product-details.features-provided.calendar-update-periods = Calendar update period (1 April to 31 March)
-product-details.features-provided.bridging = Bridging
-product-details.features-provided.record-keeping = Record keeping
+product-details.features-provided.bridging = Software that connects to your records (bridging software)
+product-details.features-provided.record-keeping = Software that creates digital records
 product-details.features-provided.standard-update-periods = Standard update period (6 April to 5 April)
 product-details.features-provided.tax-return = Self Assessment tax return
 product-details.features-provided.agent = Agent software

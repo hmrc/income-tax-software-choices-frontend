@@ -144,8 +144,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
             checkboxGroup,
             1,
             Bridging.key,
-            SearchSoftwarePageContent.bridging,
-            Some(SearchSoftwarePageContent.bridgingHint)
+            SearchSoftwarePageContent.bridging
           )
         }
       }
@@ -539,10 +538,8 @@ private object SearchSoftwarePageContent {
   val overseasProperty = "Foreign property"
 
   val softwareFor = "Type of software"
-  val recordKeeping = "Record keeping"
-  val recordKeepingHint = "Creates digital records"
-  val bridging = "Bridging"
-  val bridgingHint = "Connects to digital records like spreadsheets"
+  val recordKeeping = "Software that creates digital records"
+  val bridging = "Software that connects to your records (bridging software)"
 
   val submissionType = "Submission type"
   val quarterlyUpdates = "Quarterly updates"

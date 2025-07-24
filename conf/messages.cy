@@ -174,10 +174,8 @@ search-software.vendor-detail.software-type.application-based = I’w ddefnyddio
 search-software.vendor-detail.software-type.application-based.hint = Meddalwedd sydd wedi’i gosod ar eich dyfais
 
 search-software.vendor-detail.software-for                = Meddalwedd ar gyfer
-search-software.vendor-detail.software-for.record-keeping = Cadw cofnodion
-search-software.vendor-detail.software-for.record-keeping.hint = Meddalwedd i storio a chyflwyno’ch cofnodion treth
-search-software.vendor-detail.software-for.bridging       = Pontio
-search-software.vendor-detail.software-for.bridging.hint  = Cyflwyno cofnodion gan ddefnyddio meddalwedd ddewisedig, fel taenlenni, nad yw’n cydweddu
+search-software.vendor-detail.software-for.record-keeping = Software that creates digital records
+search-software.vendor-detail.software-for.bridging       = Software that connects to your records (bridging software)
 
 search-software.vendor-detail.business-type                 = Math o fusnes:
 search-software.vendor-detail.business-type.individual      = Unigolyn
@@ -252,8 +250,8 @@ product-details.details.heading                = Software details...but in welsh
 product-details.features-provided.heading = Features provided
 product-details.features-provided.quarterly-updates = Quarterly updates
 product-details.features-provided.calendar-update-periods = Calendar update period (1 April to 31 March)
-product-details.features-provided.bridging = Bridging
-product-details.features-provided.record-keeping = Record keeping
+product-details.features-provided.bridging = Software that connects to your records (bridging software)
+product-details.features-provided.record-keeping = Software that creates digital records
 product-details.features-provided.standard-update-periods = Standard update period (6 April to 5 April)
 product-details.features-provided.tax-return = Self Assessment tax return
 product-details.features-provided.agent = Agent software
