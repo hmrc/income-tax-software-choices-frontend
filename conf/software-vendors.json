@@ -1,152 +1,27 @@
 {
-  "lastUpdated": "2022-12-02",
+  "lastUpdated": "2025-07-24",
   "vendors": [
-    {
-      "name": "FreeAgent",
-      "email": "support@freeagent.com",
-      "website": "https://www.freeagent.com/guides/making-tax-digital/",
-      "accessibilityStatementLink": "https://www.freeagent.com/website/accessibility/",
-      "filters": [
-        "vat",
-        "record-keeping",
-        "free-version",
-        "uk-property",
-        "sole-trader"
-      ],
-      "incomeAndDeductions": [
-        "property-business",
-        "self-employment"
-      ]
-    },
-    {
-      "name": "APARI: Self-Employed, Landlords & Accountants",
-      "email": "register@apari-digital.com",
-      "website": "https://www.apari-digital.com/making-tax-digital?utm_source=gov.uk&utm_medium=web_referral&utm_campaign=hmrc_mtd_software/",
-      "filters": [
-        "free-version",
-        "record-keeping",
-        "uk-property",
-        "sole-trader"
-      ],
-      "incomeAndDeductions": [
-        "property-business",
-        "self-employment"
-      ]
-    },
-    {
-      "name": "VitalTax",
-      "email": "info@vitaltax.uk",
-      "website": "https://vitaltax.uk",
-      "filters": [
-        "free-version",
-        "vat",
-        "sole-trader",
-        "uk-property",
-        "bridging"
-      ],
-      "incomeAndDeductions": [
-        "property-business",
-        "self-employment"
-      ]
-    },
-    {
-      "name": "# 1 2 3 Sheets Ltd",
-      "website": "https://123sheets.com/",
-      "filters": [
-        "sole-trader",
-        "record-keeping",
-        "bridging",
-        "vat"
-      ],
-      "incomeAndDeductions": [
-        "self-employment"
-      ]
-    },
-    {
-      "name": "Xero MTD for Income Tax Self Assessment",
-      "website": "https://www.xero.com/uk/programme/making-tax-digital/income-tax-self-assessment/",
-      "filters": [
-        "sole-trader",
-        "uk-property",
-        "record-keeping"
-      ],
-      "incomeAndDeductions": [
-        "property-business",
-        "self-employment"
-      ]
-    },
-    {
-      "name": "Cirrostratus Exedra Cloud Service",
-      "email": "john@hemming.email",
-      "website": "https://www.vat.direct",
-      "filters": [
-        "vat",
-        "record-keeping",
-        "bridging",
-        "free-version",
-        "sole-trader",
-        "uk-property"
-      ],
-      "incomeAndDeductions": [
-        "property-business",
-        "self-employment"
-      ]
-    },
-    {
-      "name": "Sage",
-      "phone": "08000928091",
-      "website": "https://www.sage.com/en-gb/making-tax-digital/accountants/",
-      "accessibilityStatementLink": "https://www.sage.com/en-gb/legal/accessibility/",
-      "filters": [
-        "vat",
-        "sole-trader",
-        "record-keeping"
-      ],
-      "incomeAndDeductions": [
-        "self-employment"
-      ]
-    },
-    {
-      "name": "QuickBooks Online (Intuit)",
-      "email": "mtdtest@intuit.com",
-      "website": "https://quickbooks.intuit.com/uk/",
-      "accessibilityStatementLink": "https://intuit.com/accessibility/",
-      "filters": [
-        "vat",
-        "record-keeping"
-      ],
-      "incomeAndDeductions": [
-        "self-employment"
-      ]
-    },
-    {
-      "name": "IRIS Accountancy Suite",
-      "phone": "03448155555",
-      "email": "Support@iris.co.uk",
-      "website": "https://www.iris.co.uk/products/iris-accountancy-suite/",
-      "filters": [
-        "vat",
-        "sole-trader",
-        "uk-property",
-        "bridging"
-      ],
-      "incomeAndDeductions": [
-        "property-business",
-        "self-employment"
-      ]
-    },
-    {
-      "name": "Tax Bridge: The Drivers App",
-      "phone": "03333446840",
-      "email": "hello@taxbs.com",
-      "website": "https://www.taxbs.com",
-      "filters": [
-        "record-keeping",
-        "sole-trader"
-      ],
-      "incomeAndDeductions": [
-        "self-employment"
-      ]
-    }
+    {"name": "Andica Accounting Software","phone": "01949360960","email": "sales@andica.com","website": "https://www.andica.com/andica-accounting-software.html","accessibilityStatementLink": "https://www.andica.com/legal.html","filters": ["sole-trader","uk-property","record-keeping","vat","quarterly-updates","standard-update-periods","calendar-update-periods","individual","agent"]},
+    {"name": "Capium Limited — MTD for IT","phone": "02033225578","email": "info@capium.com","website": "https://www.capium.com","accessibilityStatementLink": "","filters": ["sole-trader","uk-property","overseas-property","record-keeping","bridging","vat","quarterly-updates","tax-return","standard-update-periods","calendar-update-periods","construction-industry-scheme","foreign-interest","uk-interest","charitable-giving","payments-into-a-private-pension","individual","agent"]},
+    {"name": "Clear Books Free","phone": "0203 475 4744","email": "help@clearbooks.co.uk","website": "http://clearbooks.co.uk/free-mtd-software","accessibilityStatementLink": "","filters": ["free-version","sole-trader","uk-property","record-keeping","vat","quarterly-updates","tax-return","standard-update-periods","calendar-update-periods","individual","agent"]},
+    {"name": "Clear Books","phone": "0203 475 4744","email": "help@clearbooks.co.uk","website": "https://www.clearbooks.co.uk/making-tax-digital/","accessibilityStatementLink": "","filters": ["sole-trader","uk-property","record-keeping","vat","quarterly-updates","tax-return","standard-update-periods","calendar-update-periods","individual","agent"]},
+    {"name": "Forbes MTD","phone": "","email": "support@forbes.co.uk","website": "www.forbes.co.uk/mtd.html","accessibilityStatementLink": "","filters": ["sole-trader","uk-property","overseas-property","record-keeping","bridging","vat","quarterly-updates","tax-return","standard-update-periods","calendar-update-periods","individual","agent"]},
+    {"name": "@Coconut","phone": "","email": "support@getcoconut.com","website": "https://www.getcoconut.com/mtd-software?utm_source=govuk&utm_medium=referral&utm_campaign=mtd_software","accessibilityStatementLink": "","filters": ["sole-trader","uk-property","overseas-property","record-keeping","bridging","vat","quarterly-updates","tax-return","standard-update-periods","calendar-update-periods","individual","agent"]},
+    {"name": "Hammock for landlords","phone": "","email": "hello@usehammock.com","website": "https://www.usehammock.com/landlord-mtd-for-accountants/","accessibilityStatementLink": "","filters": ["uk-property","overseas-property","record-keeping","bridging","quarterly-updates","tax-return","standard-update-periods","calendar-update-periods","individual","agent"]},
+    {"name": "IRIS Accountancy Suite ","phone": "0344 815 5555","email": "","website": "https://www.iris.co.uk/accountancy/software/making-tax-digital-mtd/#products","accessibilityStatementLink": "","filters": ["sole-trader","uk-property","overseas-property","bridging","vat","quarterly-updates","tax-return","standard-update-periods","calendar-update-periods","agent"]},
+    {"name": "IRIS Elements Cashbook","phone": "0344 815 5555 - Opt 2","email": "partnersupport@iris.co.uk","website": "https://www.iris.co.uk/products/iris-elements/cashbook/","accessibilityStatementLink": "","filters": ["sole-trader","record-keeping","quarterly-updates","tax-return","standard-update-periods","calendar-update-periods","individual","agent"]},
+    {"name": "IRIS Elements ","phone": "0344 815 5555","email": "","website": "https://www.iris.co.uk/accountancy/software/making-tax-digital-mtd/","accessibilityStatementLink": "","filters": ["sole-trader","uk-property","overseas-property","bridging","vat","quarterly-updates","tax-return","standard-update-periods","calendar-update-periods","agent"]},
+    {"name": "IRIS Kashflow","phone": "03455 815 5555 Opt2","email": "partnersupport@iris.co.uk","website": "https://www.kashflow.com/income-tax-self-assessment/","accessibilityStatementLink": "https://help-iris.co.uk/accountancy/kashflow/technical/accessibility.htm?","filters": ["sole-trader","record-keeping","vat","quarterly-updates","tax-return","standard-update-periods","calendar-update-periods","individual","agent"]},
+    {"name": "MYT","phone": "50 George Street, Croydon, CR0 1PD","email": "support@mytsoftware.co.uk","website": "https://www.mytsoftware.co.uk/","accessibilityStatementLink": "","filters": ["sole-trader","uk-property","overseas-property","record-keeping","vat","quarterly-updates","tax-return","standard-update-periods","calendar-update-periods","individual","agent"]},
+    {"name": "Nomi","phone": "020 3021 2326.","email": "support@nomi.co.uk.","website": "https://www.nomi.co.uk/","accessibilityStatementLink": "","filters": ["sole-trader","uk-property","record-keeping","bridging","quarterly-updates","tax-return","standard-update-periods","calendar-update-periods","individual","agent"]},
+    {"name": "Intuit QuickBooks","phone": "0808 304 2443","email": "https://quickbooks.intuit.com/learn-support/en-uk/help-custom/L7s2G7O65","website": "https://quickbooks.intuit.com/uk/making-tax-digital/income-tax/","accessibilityStatementLink": "","filters": ["sole-trader","uk-property","record-keeping","vat","quarterly-updates","tax-return","standard-update-periods","calendar-update-periods","individual","agent"]},
+    {"name": "QuickFile Accounting Software for MTD IT","phone": "","email": "mtd@quickfile.co.uk","website": "https://www.quickfile.co.uk/making-tax-digital-income-tax-and-self-assessment","accessibilityStatementLink": "https://support.quickfile.co.uk/t/accessibility-statement/37038","filters": ["free-version","sole-trader","uk-property","record-keeping","vat","quarterly-updates","tax-return","standard-update-periods","calendar-update-periods","individual","agent"]},
+    {"name": "Self Assessment Direct","phone": "John Hemming","email": "john@hemming.email","website": "https://www.vat.direct","accessibilityStatementLink": "","filters": ["free-version","sole-trader","uk-property","overseas-property","record-keeping","bridging","vat","quarterly-updates","tax-return","standard-update-periods","calendar-update-periods","foreign-interest","foreign-dividends","uk-dividends","uk-interest","charitable-giving","marriage-allowance","individual","agent"]},
+    {"name": "TaxNav","phone": "","email": "sales@taxnav.digital","website": "https://taxnav.digital","accessibilityStatementLink": "","filters": ["free-version","sole-trader","uk-property","overseas-property","record-keeping","bridging","vat","quarterly-updates","tax-return","standard-update-periods","calendar-update-periods","individual","agent"]},
+    {"name": "CCH iFirm MTD for Income Tax","phone": "03445618181","email": "cchsoftware@wolterskluwer.co.uk","website": "https://www.wolterskluwer.com/en-gb/solutions/cch-ifirm-uk/mtd-for-income-tax","accessibilityStatementLink": "","filters": ["sole-trader","uk-property","bridging","vat","quarterly-updates","tax-return","standard-update-periods","agent"]},
+    {"name": "Solo","phone": "","email": "support@dext.com","website": "https://dext.com/uk/mtd-it","accessibilityStatementLink": "","filters": ["sole-trader","uk-property","record-keeping","quarterly-updates","standard-update-periods","calendar-update-periods","agent"]},
+    {"name": "Acorah Software Products Ltd (TaxCalc)","phone": "0345 5190 883","email": "sales@taxcalc,com","website": "https://www.taxcalc.com/mtd-quarterly-filer","accessibilityStatementLink": "","filters": ["sole-trader","uk-property","overseas-property","bridging","vat","quarterly-updates","tax-return","standard-update-periods","calendar-update-periods","agent"]},
+    {"name": "FreeAgent","phone": "","email": "","website": "https://www.freeagent.com/accounting-software/try/making-tax-digital-income-tax/?utm_source=gov.uk&utm_medium=referral&utm_campaign=mtd_software_page","accessibilityStatementLink": "https://www.freeagent.com/company/accessibility/","filters": ["free-version","sole-trader","uk-property","record-keeping","vat","quarterly-updates","tax-return","standard-update-periods","calendar-update-periods","foreign-interest","uk-interest","individual","agent"]},
+    {"name": "Zoho Books","phone": "","email": " support.uk@eu.zohobooks.com","website": "https://www.zoho.com/uk/books/making-tax-digital-accounting-software/","accessibilityStatementLink": "https://www.zoho.com/uk/books/kb/general/wcag-compliance-zoho-books.html","filters": ["free-version","sole-trader","record-keeping","vat","quarterly-updates","standard-update-periods","individual","agent"]}
   ]
 }
