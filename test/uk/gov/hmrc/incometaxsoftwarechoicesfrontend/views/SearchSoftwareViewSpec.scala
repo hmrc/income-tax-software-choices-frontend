@@ -529,7 +529,7 @@ private object SearchSoftwarePageContent {
 
   val pricing = "Price"
   val freeVersion = "Free version"
-  val noFreeVersion = "No free version"
+  val noFreeVersion = "Paid version"
   val freeVersionHint = "Check the company’s website for information on their pricing structure."
 
   val suitableFor = "Income sources"
