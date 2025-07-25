@@ -68,7 +68,7 @@ object VendorFilter {
   case object Bridging extends VendorFilter {
     override val key: String = "bridging"
     override val priority: Int = 2
-    override val showHint: Boolean = true
+    override val showHint: Boolean = false
   }
 
   case object Vat extends VendorFilter {
