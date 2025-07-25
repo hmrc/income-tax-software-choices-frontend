@@ -330,7 +330,7 @@ class ProductDetailsViewSpec extends ViewSpec {
     val recordKeeping = "Software that creates digital records"
     val bridging = "Software that connects to your records (bridging software)"
     val quarterlyUpdates = "Quarterly updates"
-    val saTaxReturn = "Self Assessment tax return"
+    val saTaxReturn = "Tax return"
     val agent = "Agent software"
     val individual = "Individual software"
     val standardUpdatePeriods = "Standard update period (6 April to 5 April)"

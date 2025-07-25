@@ -304,7 +304,8 @@ object VendorFilterGroups {
   )
 
   val softwareForFilters: Set[VendorFilter] = Set(
-    Bridging
+    Bridging,
+    RecordKeeping
   )
 
   val accessibilityFilters: Set[VendorFilter] = Set(
@@ -419,7 +420,7 @@ object VendorFilterGroups {
 
   private val groups: Seq[(Set[VendorFilter], String)] = Seq(
     (pricingFilters, "pricing"),
-    (softwareForFilters, "software-for"),
+    (Set(Bridging), "software-for"),
     (compatibility, "software-compatibility"),
     (accessibilityFilters, "accessibility")
   )
