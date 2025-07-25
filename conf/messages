@@ -147,7 +147,7 @@ search-software.vendor-detail.pricing.free-trial = Free trial
 search-software.vendor-detail.pricing.no-free-trial = No free trial
 search-software.vendor-detail.pricing.free-version = Free version
 search-software.vendor-detail.pricing.free-version.hint = Check the company’s website for information on their pricing structure.
-search-software.vendor-detail.pricing.no-free-version = No free version
+search-software.vendor-detail.pricing.no-free-version = Paid version
 search-software.vendor-detail.pricing.paid-for = Paid for
 
 search-software.vendor-detail.suitable-for = Income sources
