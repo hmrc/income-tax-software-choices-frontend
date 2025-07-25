@@ -46,6 +46,11 @@ class SoftwareChoicesServiceISpec extends PlaySpec with GuiceOneServerPerSuite {
     test.foreach(element => element.website should startWith("https://"))
   }
 
+  "software-vendors.json must have unique names" in {
+    val test = app("software-vendors.json").injector.instanceOf[SoftwareChoicesService].softwareVendors.vendors.map(_.name)
+    test.size shouldBe test.distinct.size
+  }
+
   "a file which does not exist" must {
     "throw an exception from the service" in {
       intercept[Exception](app("non-existent.json").injector.instanceOf[SoftwareChoicesService].softwareVendors)
