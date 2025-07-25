@@ -157,7 +157,7 @@ search-software.vendor-detail.suitable-for.overseas-property = Foreign property
 
 search-software.vendor-detail.submission-type = Submission type
 search-software.vendor-detail.submission-type.quarterly-updates = Quarterly updates
-search-software.vendor-detail.submission-type.tax-return = Self Assessment tax return
+search-software.vendor-detail.submission-type.tax-return = Tax return
 
 search-software.vendor-detail.operating-system = Operating system:
 search-software.vendor-detail.operating-system.microsoft-windows = Microsoft Windows
@@ -253,7 +253,7 @@ product-details.features-provided.calendar-update-periods = Calendar update peri
 product-details.features-provided.bridging = Software that connects to your records (bridging software)
 product-details.features-provided.record-keeping = Software that creates digital records
 product-details.features-provided.standard-update-periods = Standard update period (6 April to 5 April)
-product-details.features-provided.tax-return = Self Assessment tax return
+product-details.features-provided.tax-return = Tax return
 product-details.features-provided.agent = Agent software
 product-details.features-provided.individual = Individual software
 product-details.features-provided.free-version = Free version

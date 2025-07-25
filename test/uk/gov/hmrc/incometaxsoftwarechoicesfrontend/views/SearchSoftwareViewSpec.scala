@@ -45,7 +45,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
   private def testCardOne(vendor: Element) = {
     val summaryList = vendor.selectHead("dl")
     testRow(summaryList, 1, SearchSoftwarePageContent.pricing, SearchSoftwarePageContent.freeVersion)
-    testRow(summaryList, 2, SearchSoftwarePageContent.softwareFor, s"${SearchSoftwarePageContent.bridging}")
+    testRow(summaryList, 2, SearchSoftwarePageContent.softwareFor, s"${SearchSoftwarePageContent.recordKeeping}, ${SearchSoftwarePageContent.bridging}")
     testRow(summaryList, 3, SearchSoftwarePageContent.submissionType, s"${SearchSoftwarePageContent.taxReturn}")
     testRow(summaryList, 4, SearchSoftwarePageContent.suitableFor, s"${SearchSoftwarePageContent.soleTrader}, ${SearchSoftwarePageContent.ukProperty}, ${SearchSoftwarePageContent.overseasProperty}")
   }
@@ -543,7 +543,7 @@ private object SearchSoftwarePageContent {
 
   val submissionType = "Submission type"
   val quarterlyUpdates = "Quarterly updates"
-  val taxReturn = "Self Assessment tax return"
+  val taxReturn = "Tax return"
 
   val softwareCompatibility = "Making Tax Digital Compatibility:"
   val vat = "VAT"
