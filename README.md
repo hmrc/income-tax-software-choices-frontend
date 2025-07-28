@@ -38,16 +38,24 @@ See Route files for more information.
 ### Local
 
 * Login via: Not needed.
-* Entry page: [http://localhost:9591/making-tax-digital-income-tax-software/](http://localhost:9591/making-tax-digital-income-tax-software/)
-* Feature switches: [http://localhost:9591/making-tax-digital-income-tax-software/test-only/feature-switch](http://localhost:9591/making-tax-digital-income-tax-software/test-only/feature-switch)
+* Entry page: [http://localhost:9591/find-making-tax-digital-income-tax-software/](http://localhost:9591/find-making-tax-digital-income-tax-software/)
+* Feature switches: [http://localhost:9591/find-making-tax-digital-income-tax-software/test-only/feature-switch](http://localhost:9591/find-making-tax-digital-income-tax-software/test-only/feature-switch)
 
-### Staging
+### QA - Real vendor details
 
 *Requires HMRC VPN*
 
 * Login via: N/A
-* Entry page : [https://www.staging.tax.service.gov.uk/making-tax-digital-income-tax-software/](https://www.staging.tax.service.gov.uk/making-tax-digital-income-tax-software/)
-* Feature switches: [https://www.staging.tax.service.gov.uk/making-tax-digital-income-tax-software/test-only/feature-switch](https://www.staging.tax.service.gov.uk/making-tax-digital-income-tax-software/test-only/feature-switch)
+* Entry page : [https://www.qa.tax.service.gov.uk/find-making-tax-digital-income-tax-software/](https://www.qa.tax.service.gov.uk/find-making-tax-digital-income-tax-software/)
+* Feature switches: [https://www.qa.tax.service.gov.uk/find-making-tax-digital-income-tax-software/test-only/feature-switch](https://www.qa.tax.service.gov.uk/find-making-tax-digital-income-tax-software/test-only/feature-switch)
+
+### Staging - Test vendor details
+
+*Requires HMRC VPN*
+
+* Login via: N/A
+* Entry page : [https://www.staging.tax.service.gov.uk/find-making-tax-digital-income-tax-software/](https://www.staging.tax.service.gov.uk/find-making-tax-digital-income-tax-software/)
+* Feature switches: [https://www.staging.tax.service.gov.uk/find-making-tax-digital-income-tax-software/test-only/feature-switch](https://www.staging.tax.service.gov.uk/find-making-tax-digital-income-tax-software/test-only/feature-switch)
 
 ### Notes on behaviour
 
@@ -62,7 +70,7 @@ This service is under development.  Please keep this section up to date.
 
 # Persistence
 
-No data is stored.
+Data is stored in mongodb
 
 ### License.
  

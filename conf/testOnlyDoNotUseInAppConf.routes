@@ -10,8 +10,8 @@
 # Failing to follow this rule may result in test routes deployed in production.
 
 + nocsrf
-POST       /making-tax-digital-income-tax-software/test-only/feature-switch      uk.gov.hmrc.incometaxsoftwarechoicesfrontend.testonly.controllers.FeatureSwitchController.submit
-GET        /making-tax-digital-income-tax-software/test-only/feature-switch      uk.gov.hmrc.incometaxsoftwarechoicesfrontend.testonly.controllers.FeatureSwitchController.show
+POST       /find-making-tax-digital-income-tax-software/test-only/feature-switch      uk.gov.hmrc.incometaxsoftwarechoicesfrontend.testonly.controllers.FeatureSwitchController.submit
+GET        /find-making-tax-digital-income-tax-software/test-only/feature-switch      uk.gov.hmrc.incometaxsoftwarechoicesfrontend.testonly.controllers.FeatureSwitchController.show
 
 # Add all the application routes to the prod.routes file
 ->         /                          prod.Routes
