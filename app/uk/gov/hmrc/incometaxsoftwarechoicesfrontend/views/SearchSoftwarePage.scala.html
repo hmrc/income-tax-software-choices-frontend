@@ -47,10 +47,11 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <h1 class="govuk-heading-xl">@messages("search-software.heading")</h1>
-
       <p class="govuk-body">@messages("search-software.p1")</p>
-
       <p class="govuk-body">@messages("search-software.p2")</p>
+      @if(!viewModel.isAgent && viewModel.zeroResults) {
+        <p class="govuk-body">@messages("search-software.p3")</p>
+      }
     </div>
   </div>
 

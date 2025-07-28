@@ -97,6 +97,7 @@ search-software.last-update                               = This page was last u
 search-software.heading                                   = Software for Making Tax Digital for Income Tax
 search-software.p1                                        = All of this software has been through a recognition process where HMRC checks it’s capable of filing your taxes. HMRC does not endorse or recommend any one product or software provider.
 search-software.p2                                        = You’ll need to pay for most of the software listed, though some versions are free or have a free trial.
+search-software.p3                                        = Software is in development, and more options will be available over time. This may include an all-in-one software product.
 search-software.skip-to-results                           = Skip to results.
 
 search-software.filters.heading = Filter options
