@@ -28,13 +28,14 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
 
 class BusinessIncomeControllerISpec extends ComponentSpecBase with BeforeAndAfterEach with DatabaseHelper {
 
-  lazy val controller = app.injector.instanceOf[BusinessIncomeController]
+  lazy val controller: BusinessIncomeController = app.injector.instanceOf[BusinessIncomeController]
 
   def testUserFilters(answers: UserAnswers): UserFilters = UserFilters(SessionId, Some(answers))
 
   override def beforeEach(): Unit = {
-    userFiltersRepository.collection.drop().toFuture()
     super.beforeEach()
+
+    await(userFiltersRepository.collection.drop().toFuture())
   }
 
   "GET /business-income" when {

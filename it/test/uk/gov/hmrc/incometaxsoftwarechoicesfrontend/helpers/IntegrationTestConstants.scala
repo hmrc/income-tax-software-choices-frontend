@@ -19,7 +19,7 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers
 import java.util.UUID
 
 object IntegrationTestConstants {
-  val baseURI = "/making-tax-digital-income-tax-software"
+  val baseURI = "/find-making-tax-digital-income-tax-software"
 
   val SessionId = s"stubbed-${UUID.randomUUID}"
 }

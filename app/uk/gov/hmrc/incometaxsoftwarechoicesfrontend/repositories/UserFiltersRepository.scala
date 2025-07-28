@@ -16,7 +16,6 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories
 
-import org.mongodb.scala.SingleObservableFuture
 import org.mongodb.scala.bson.conversions.Bson
 import org.mongodb.scala.model._
 import play.api.libs.json.Format
@@ -25,7 +24,6 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserFilters
 import uk.gov.hmrc.mongo.MongoComponent
 import uk.gov.hmrc.mongo.play.json.PlayMongoRepository
 import uk.gov.hmrc.mongo.play.json.formats.MongoJavatimeFormats
-import uk.gov.hmrc.play.http.logging.Mdc
 
 import java.time.{Clock, Instant}
 import java.util.concurrent.TimeUnit
@@ -57,7 +55,7 @@ class UserFiltersRepository @Inject()(
 
   private def byId(id: String): Bson = Filters.equal("_id", id)
 
-  def keepAlive(id: String): Future[Boolean] = Mdc.preservingMdc {
+  def keepAlive(id: String): Future[Boolean] = {
     collection
       .updateOne(
         filter = byId(id),
@@ -67,16 +65,16 @@ class UserFiltersRepository @Inject()(
       .map(_ => true)
   }
 
-  def get(id: String): Future[Option[UserFilters]] = Mdc.preservingMdc {
+  def get(id: String): Future[Option[UserFilters]] = {
     for {
       _ <- keepAlive(id)
-      result <- collection.find(byId(id)).headOption()
+      result <- collection.find(byId(id)).toFuture()
     } yield {
-      result
+      result.headOption
     }
   }
 
-  def set(filters: UserFilters): Future[Boolean] = Mdc.preservingMdc {
+  def set(filters: UserFilters): Future[Boolean] = {
 
     val updatedFilters = filters copy (lastUpdated = Instant.now(clock))
 
