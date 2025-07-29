@@ -211,6 +211,12 @@ object VendorFilter {
     override val key: String = "desktop-based"
     override val priority: Int = 1
   }
+
+  case object WebBrowser extends VendorFilter {
+    override val key: String = "web-browser"
+    override val priority: Int = 1
+  }
+
   case object MicrosoftWindows extends VendorFilter {
     override val key: String = "microsoft-windows"
     override val priority: Int = 1
@@ -276,6 +282,7 @@ object VendorFilter {
     Agent,
     Individual,
     DesktopApplication,
+    WebBrowser,
     MicrosoftWindows,
     MacOS,
     Linux,
@@ -353,9 +360,7 @@ object VendorFilterGroups {
     MarriageAllowance
   )
 
-  val softwareType: Set[VendorFilter] = Set(
-    DesktopApplication
-  )
+
 
   val compatibleWith: Set[VendorFilter] = Set(
     MicrosoftWindows,
@@ -431,7 +436,7 @@ object VendorFilterGroups {
   val deductionsGroup: List[VendorFilter] = List(
     CapitalGainsTax, CharitableGiving, StudentLoans, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge, PaymentsIntoAPrivatePension, MarriageAllowance)
 
-  val softwareTypeGroup: List[VendorFilter] = List(DesktopApplication)
+  val softwareTypeGroup: List[VendorFilter] = List(DesktopApplication, WebBrowser)
   val compatibleWithGroup: List[VendorFilter] = List(MicrosoftWindows, MacOS, Linux)
   val mobileGroup: List[VendorFilter] = List(Android, Apple)
   val languageGroup: List[VendorFilter] = List(English)

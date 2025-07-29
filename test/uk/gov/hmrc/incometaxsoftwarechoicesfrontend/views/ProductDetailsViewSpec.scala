@@ -282,7 +282,11 @@ class ProductDetailsViewSpec extends ViewSpec {
         rows.size shouldBe 4
 
         rows.get(0).select("dt").text() shouldBe ProductDetailsPage.softwareType
-        rows.get(0).select("dd").text() shouldBe ProductDetailsPage.desktopBased
+        rows.get(0).select("dd").text() shouldBe
+          Seq(
+            ProductDetailsPage.desktopBased,
+            ProductDetailsPage.webBrowser
+          ).mkString(" ")
 
         rows.get(1).select("dt").text() shouldBe ProductDetailsPage.compatibleWith
         rows.get(1).select("dd").text() shouldBe
@@ -360,6 +364,7 @@ class ProductDetailsViewSpec extends ViewSpec {
     val mobileApp = "Mobile App"
     val language = "Language"
     val desktopBased = "Desktop application"
+    val webBrowser = "Web browser"
     val microsoftWindows = "Microsoft Windows"
     val macOs = "Mac OS"
     val linux = "Linux"
