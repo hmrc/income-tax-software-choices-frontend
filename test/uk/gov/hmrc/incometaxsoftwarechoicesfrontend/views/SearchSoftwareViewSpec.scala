@@ -57,7 +57,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
   }
 
   "Search software page" must {
-    lazy val document = getDocument(hasResults = false, hasError = false)
+    lazy val document = getDocument(hasResults = false)
 
     "have a title" in {
       document.title shouldBe s"""${SearchSoftwarePageContent.title} - ${PageContentBase.title} - GOV.UK"""
@@ -69,6 +69,25 @@ class SearchSoftwareViewSpec extends ViewSpec {
 
     "have paragraph" in {
       document.mainContent.selectNth("p", 1).text shouldBe SearchSoftwarePageContent.paragraph
+    }
+
+    "have a second paragraph" in {
+      document.mainContent.selectNth("p", 2).text shouldBe SearchSoftwarePageContent.paragraphTwo
+    }
+
+    "have a third paragraph" when {
+      "there are zero all in one products" in {
+        document.mainContent.selectNth("p", 3).text shouldBe SearchSoftwarePageContent.paragraphThree
+      }
+    }
+
+    "not have a third paragraph" when {
+      "there are all in one products" in {
+        getDocument(hasResults = true).mainContent.selectNthOptionally("p", 3) shouldBe None
+      }
+      "it is an agent page" in {
+        getDocument(hasResults = false, isAgent = true).selectNthOptionally("p", 3) shouldBe None
+      }
     }
 
     "have a filter section" which {
@@ -175,7 +194,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
     }
 
     "have a tabbed software vendor section" which {
-      lazy val documentWithVendors = getDocument(hasResults = true, hasError = false)
+      lazy val documentWithVendors = getDocument(hasResults = true)
       lazy val tabsList = getTabsList(documentWithVendors)
       lazy val allInOneTab = getAllInOneTabContent(documentWithVendors)
       lazy val otherTab = getOtherTabContent(documentWithVendors)
@@ -308,10 +327,10 @@ class SearchSoftwareViewSpec extends ViewSpec {
         lazy val documentZeroResults = {
           val model = SoftwareChoicesResultsViewModel(
             allInOneVendors = SearchSoftwarePageContent.softwareVendorsNoResults,
-            otherVendors   = SearchSoftwarePageContent.softwareVendorsResults,
-            zeroResults    = true
+            otherVendors = SearchSoftwarePageContent.softwareVendorsResults,
+            zeroResults = true
           )
-          Jsoup.parse(page(model, hasError = false).body)
+          Jsoup.parse(page(model).body)
         }
 
         "displays the zero-results header" in {
@@ -330,7 +349,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
     }
 
     "have a single software vendor section for agents" which {
-      lazy val document = getDocument(hasResults = true, hasError = false, isAgent = true)
+      lazy val document = getDocument(hasResults = true, isAgent = true)
 
       "has the correct Other tab section" which {
         "has correct other tab header" in {
@@ -395,7 +414,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
 
 object SearchSoftwareViewSpec extends ViewSpec {
 
-  def page(model: SoftwareChoicesResultsViewModel, hasError: Boolean): HtmlFormat.Appendable =
+  def page(model: SoftwareChoicesResultsViewModel): HtmlFormat.Appendable =
     searchSoftwarePage(
       model,
       FiltersForm.form.fill(FiltersFormModel()),
@@ -404,10 +423,10 @@ object SearchSoftwareViewSpec extends ViewSpec {
       "/test-back-url"
     )
 
-  def getDocument(hasResults: Boolean, hasError: Boolean, isAgent: Boolean = false): Document = {
+  def getDocument(hasResults: Boolean, isAgent: Boolean = false): Document = {
     val results = if (hasResults) SearchSoftwarePageContent.softwareVendorsResults else SearchSoftwarePageContent.softwareVendorsNoResults
     val model = SoftwareChoicesResultsViewModel(allInOneVendors = results, otherVendors = results, zeroResults = results.vendors.isEmpty, isAgent = isAgent)
-    Jsoup.parse(page(model, hasError).body)
+    Jsoup.parse(page(model).body)
   }
 
   def getCheckboxItem(checkboxGroup: Element, n: Int): Element = checkboxGroup
@@ -483,6 +502,8 @@ private object SearchSoftwarePageContent {
   val lastUpdate = "This page was last updated: 2 Dec 2022"
   val heading = "Software for Making Tax Digital for Income Tax"
   val paragraph = "All of this software has been through a recognition process where HMRC checks it’s capable of filing your taxes. HMRC does not endorse or recommend any one product or software provider."
+  val paragraphTwo = "You’ll need to pay for most of the software listed, though some versions are free or have a free trial."
+  val paragraphThree = "Software is in development, and more options will be available over time. This may include an all-in-one software product."
 
   object SearchSoftwareSection {
     val searchFormHeading = "Search by software name"

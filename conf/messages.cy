@@ -97,6 +97,7 @@ search-software.last-update                               = Diweddarwyd y dudale
 search-software.heading                                   = Find software for Making Tax Digital for Income Tax ...in Welsh
 search-software.p1                                        = HMRC does not make recommendations for software. However, all software on this page has passed our recognition criteria. ...in Welsh
 search-software.p2                                        = You'll need to pay for most of the software listed, though some versions are free or have a free trial.
+search-software.p3                                        = Software is in development, and more options will be available over time. This may include an all-in-one software product.
 search-software.skip-to-results                           = Skip to results.
 
 search-software.filters.heading                = Hidlwyr
