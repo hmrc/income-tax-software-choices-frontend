@@ -78,20 +78,29 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
   "getOtherVendors" should {
     "exclude vendors that are not for requested user type" in {
       Seq(Agent, Individual).foreach { userType =>
-        val result = service.getOtherVendors(Seq(userType))
-        result.vendors.size mustBe 2
-        result.vendors.head.name mustBe userType.toString
+        val isAgent = userType == Agent
+        val result = service.getOtherVendors(Seq(userType), isAgent)
+        val expected = if (isAgent) 2 else 0
+        result.vendors.size mustBe expected
+        if (expected != 0) {
+          result.vendors.head.name mustBe userType.toString
+        }
       }
     }
 
-    "ignore question filters" in {
-      val result = service.getOtherVendors(Seq(Agent, SoleTrader))
-      result.vendors.size mustBe 2
+    "ignore question filters and excludes all-in-one vendors" in {
+      Seq(false, true).foreach { isAgent =>
+        val result = service.getOtherVendors(Seq(Agent, SoleTrader), isAgent)
+        val expected = if (isAgent) 2 else 1
+        result.vendors.size mustBe expected
+      }
     }
 
     "retain preferences filters" in {
-      val result = service.getOtherVendors(Seq(Agent, FreeVersion))
-      result.vendors.size mustBe 0
+      Seq(false, true).foreach { isAgent =>
+        val result = service.getOtherVendors(Seq(Agent, FreeVersion), isAgent)
+        result.vendors.size mustBe 0
+      }
     }
   }
 }
