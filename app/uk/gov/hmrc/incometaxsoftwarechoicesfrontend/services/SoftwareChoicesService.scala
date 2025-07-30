@@ -47,8 +47,8 @@ class SoftwareChoicesService @Inject()(
     )
   }
 
-  def getOtherVendors(filters: Seq[VendorFilter] = Seq.empty, isAgent: Boolean = false): SoftwareVendors = {
-    val allInOne = if (isAgent) Seq.empty else getAllInOneVendors(filters).vendors
+  def getOtherVendors(filters: Seq[VendorFilter] = Seq.empty, isAgentOrZeroResults: Boolean = false): SoftwareVendors = {
+    val allInOne = if (isAgentOrZeroResults) Seq.empty else getAllInOneVendors(filters).vendors
     val vendors = softwareVendors
     val all = vendors.copy(
       vendors = (
