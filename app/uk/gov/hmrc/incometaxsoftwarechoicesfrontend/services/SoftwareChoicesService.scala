@@ -52,7 +52,7 @@ class SoftwareChoicesService @Inject()(
     val vendors = softwareVendors
     val all = vendors.copy(
       vendors = (
-        SoftwareChoicesService.matchFilter(filters.filterNot(userPageFilters.contains(_))) _
+        SoftwareChoicesService.matchFilter(filters.filterNot(userPageFilters.contains)) _
           andThen SoftwareChoicesService.sortVendors
         ) (vendors.vendors)
     )
