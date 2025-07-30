@@ -295,6 +295,8 @@ product-details.software-spec.mobile-app = Ap Ffon Symudol
 product-details.software-spec.language = Language
 
 product-details.software-type.desktop-based = Desktop application
+product-details.software-type.web-browser = Web browser
+
 
 product-details.compatible-with.microsoft-windows = Microsoft Windows
 product-details.compatible-with.mac-os = Mac OS
