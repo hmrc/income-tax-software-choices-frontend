@@ -33,7 +33,7 @@ class OtherItemsControllerISpec extends ComponentSpecBase with BeforeAndAfterEac
   def testUserFilters(answers: UserAnswers): UserFilters = UserFilters(SessionId, Some(answers))
 
   override def beforeEach(): Unit = {
-    userFiltersRepository.collection.drop().toFuture()
+    await(userFiltersRepository.collection.drop().toFuture())
     super.beforeEach()
   }
 
