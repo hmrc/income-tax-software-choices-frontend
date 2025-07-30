@@ -48,11 +48,12 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
       userFilters <- userFiltersRepository.get(sessionId)
       filters = userFilters.map(_.finalFilters).getOrElse(Seq.empty)
       userType <- pageAnswersService.getPageAnswers(sessionId, UserTypePage)
+      isAgent = userType.contains(Agent)
       model = SoftwareChoicesResultsViewModel(
         allInOneVendors = softwareChoicesService.getAllInOneVendors(filters = filters),
-        otherVendors = softwareChoicesService.getOtherVendors(filters = filters),
+        otherVendors = softwareChoicesService.getOtherVendors(filters = filters, isAgent || zeroResults),
         zeroResults = zeroResults,
-        isAgent = userType.contains(Agent)
+        isAgent = isAgent
       )
     } yield {
       Ok(view(model, FiltersForm.form.fill(FiltersFormModel(filters = filters))))
@@ -69,7 +70,7 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
       val isAgent = userType.contains(Agent)
       val model = SoftwareChoicesResultsViewModel(
         allInOneVendors = softwareChoicesService.getAllInOneVendors(userFilters.getOrElse(UserFilters(sessionId, None, filters.filters)).finalFilters),
-        otherVendors = softwareChoicesService.getOtherVendors(userFilters.getOrElse(UserFilters(sessionId, None, filters.filters)).finalFilters, isAgent),
+        otherVendors = softwareChoicesService.getOtherVendors(userFilters.getOrElse(UserFilters(sessionId, None, filters.filters)).finalFilters, isAgent || zeroResults),
         zeroResults = zeroResults,
         isAgent = isAgent
       )
