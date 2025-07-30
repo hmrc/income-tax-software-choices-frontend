@@ -47,16 +47,19 @@ class SoftwareChoicesService @Inject()(
     )
   }
 
-  def getOtherVendors(filters: Seq[VendorFilter] = Seq.empty): SoftwareVendors = {
+  def getOtherVendors(filters: Seq[VendorFilter] = Seq.empty, isAgent: Boolean = false): SoftwareVendors = {
+    val allInOne = if (isAgent) Seq.empty else getAllInOneVendors(filters).vendors
     val vendors = softwareVendors
-    vendors.copy(
+    val all = vendors.copy(
       vendors = (
         SoftwareChoicesService.matchFilter(filters.filterNot(userPageFilters.contains(_))) _
           andThen SoftwareChoicesService.sortVendors
         ) (vendors.vendors)
     )
+    all.copy(
+      vendors = all.vendors.filterNot(allInOne.contains)
+    )
   }
-
 }
 
 object SoftwareChoicesService {

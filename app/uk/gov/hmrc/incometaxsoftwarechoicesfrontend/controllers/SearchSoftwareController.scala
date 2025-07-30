@@ -66,11 +66,12 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
       userType <- pageAnswersService.getPageAnswers(sessionId, UserTypePage)
       userFilters <- update(filters, zeroResults).flatMap(_ => userFiltersRepository.get(sessionId))
     } yield {
+      val isAgent = userType.contains(Agent)
       val model = SoftwareChoicesResultsViewModel(
         allInOneVendors = softwareChoicesService.getAllInOneVendors(userFilters.getOrElse(UserFilters(sessionId, None, filters.filters)).finalFilters),
-        otherVendors = softwareChoicesService.getOtherVendors(userFilters.getOrElse(UserFilters(sessionId, None, filters.filters)).finalFilters),
+        otherVendors = softwareChoicesService.getOtherVendors(userFilters.getOrElse(UserFilters(sessionId, None, filters.filters)).finalFilters, isAgent),
         zeroResults = zeroResults,
-        isAgent = userType.contains(Agent)
+        isAgent = isAgent
       )
       Ok(view(model, FiltersForm.form.fill(filters)))
     }
