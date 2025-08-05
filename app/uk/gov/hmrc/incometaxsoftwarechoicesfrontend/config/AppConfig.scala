@@ -35,4 +35,10 @@ class AppConfig @Inject()(val config: Configuration) {
     s"$contactHost/contact/beta-feedback-unauthenticated?service=$contactFormServiceIdentifier"
 
   val cacheTtl: Long = config.get[Int]("mongodb.timeToLiveInSeconds")
+
+  val timeoutWarningInSeconds: Int =
+    config.get[Int]("session-timeout.warning")
+
+  val timeoutInSeconds: Int =
+    config.get[Int]("session-timeout.seconds")
 }
