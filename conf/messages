@@ -376,7 +376,7 @@ unsupported-accounting-period.self-assessment-tax-return.link-url   = https://ww
 
 timeout.title = Session About To Expire
 timeout.message = Your session is about to expire and data will be lost in
-timeout.keep-alive = Keep Data
+timeout.continue = Continue finding software for Making Tax Digital for Income Tax
 timeout.reset = Reset
 
 session-expired.title = Session Expired
