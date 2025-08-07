@@ -17,7 +17,6 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views
 
 import org.jsoup.Jsoup
-import org.jsoup.nodes.{Document, Element}
 import org.scalatest.matchers.must.Matchers.convertToAnyMustWrapper
 import play.api.mvc.Call
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SessionExpiredView
@@ -53,8 +52,8 @@ class SessionExpiredViewSpec extends ViewSpec {
 }
 
 private object SessionExpiredContent {
-  val title = s"Session Expired - ${PageContentBase.title} - GOV.UK"
-  val heading = "Session Expired"
-  val paragraph = "Your session has expired and data has been lost."
+  val heading = "Answers Deleted"
+  val title = s"$heading - ${PageContentBase.title} - GOV.UK"
+  val paragraph = "Your answers have been deleted."
   val continue = "Start again"
 }

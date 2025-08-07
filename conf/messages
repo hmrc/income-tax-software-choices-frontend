@@ -374,12 +374,12 @@ unsupported-accounting-period.para-two                              = We may ext
 unsupported-accounting-period.self-assessment-tax-return.link-text  = Self Assessment tax return
 unsupported-accounting-period.self-assessment-tax-return.link-url   = https://www.gov.uk/self-assessment-tax-returns/sending-return
 
-timeout.title = Session About To Expire
-timeout.message = Your session is about to expire and data will be lost in
+timeout.title = For your security
+timeout.message = We will delete your answers in
 timeout.continue = Continue finding software for Making Tax Digital for Income Tax
-timeout.reset = Reset
+timeout.reset = Delete your answers
 
-session-expired.title = Session Expired
-session-expired.heading = Session Expired
-session-expired.paragraph = Your session has expired and data has been lost.
+session-expired.title = Answers Deleted
+session-expired.heading = Answers Deleted
+session-expired.paragraph = Your answers have been deleted.
 session-expired.button = Start again
