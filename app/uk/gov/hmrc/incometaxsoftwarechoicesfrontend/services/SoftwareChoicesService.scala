@@ -16,7 +16,8 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services
 
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilterGroups._
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{OverseasProperty, SoleTrader, UkProperty}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilterGroups.{accountingPeriodFilters, userPageFilters, userTypeFilters}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareVendorModel, SoftwareVendors, VendorFilter}
 
 import javax.inject.{Inject, Singleton}
@@ -50,15 +51,29 @@ class SoftwareChoicesService @Inject()(
   def getOtherVendors(filters: Seq[VendorFilter] = Seq.empty, isAgentOrZeroResults: Boolean = false): SoftwareVendors = {
     val allInOne = if (isAgentOrZeroResults) Seq.empty else getAllInOneVendors(filters).vendors
     val vendors = softwareVendors
-    val all = vendors.copy(
-      vendors = (
-        SoftwareChoicesService.matchFilter(filters.filterNot(userPageFilters.contains)) _
-          andThen SoftwareChoicesService.sortVendors
-        ) (vendors.vendors)
-    )
-    all.copy(
-      vendors = all.vendors.filterNot(allInOne.contains)
-    )
+    val userType = filters.find(userTypeFilters.contains)
+    val accountingPeriod = filters.find(accountingPeriodFilters.contains)
+    (userType, accountingPeriod) match {
+      case (Some(userType), Some(accountingPeriod)) =>
+        val mandatedIncomeSources = filters.filter(Seq(SoleTrader, UkProperty, OverseasProperty).contains)
+        val vendorsForUser = vendors.vendors.filter(v => v.filters.contains(userType) && v.filters.contains(accountingPeriod))
+        val matchingVendors = mandatedIncomeSources.flatMap { incomeSource =>
+          vendorsForUser.filter(_.filters.contains(incomeSource))
+        }.distinct
+        val all = vendors.copy(
+          vendors = (
+            SoftwareChoicesService.matchFilter(filters.filterNot(userPageFilters.contains)) _
+              andThen SoftwareChoicesService.sortVendors
+            )(matchingVendors)
+        )
+        all.copy(
+          vendors = all.vendors.filterNot(allInOne.contains)
+        )
+      case _ =>
+        vendors.copy(
+          vendors = Seq.empty
+        )
+    }
   }
 }
 
