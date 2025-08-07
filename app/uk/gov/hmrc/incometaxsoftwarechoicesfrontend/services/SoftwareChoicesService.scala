@@ -51,15 +51,25 @@ class SoftwareChoicesService @Inject()(
   def getOtherVendors(filters: Seq[VendorFilter] = Seq.empty, isAgentOrZeroResults: Boolean = false): SoftwareVendors = {
     val allInOne = if (isAgentOrZeroResults) Seq.empty else getAllInOneVendors(filters).vendors
     val vendors = softwareVendors
-    val userType = filters.find(userTypeFilters.contains)
-    val accountingPeriod = filters.find(accountingPeriodFilters.contains)
-    (userType, accountingPeriod) match {
-      case (Some(userType), Some(accountingPeriod)) =>
+    filters.find(userTypeFilters.contains) match {
+      case Some(userType) =>
+        val accountingPeriod = filters.find(accountingPeriodFilters.contains)
         val mandatedIncomeSources = filters.filter(Seq(SoleTrader, UkProperty, OverseasProperty).contains)
-        val vendorsForUser = vendors.vendors.filter(v => v.filters.contains(userType) && v.filters.contains(accountingPeriod))
-        val matchingVendors = mandatedIncomeSources.flatMap { incomeSource =>
-          vendorsForUser.filter(_.filters.contains(incomeSource))
-        }.distinct
+        val vendorsForUser = vendors.vendors.filter { v =>
+          val valid = v.filters.contains(userType)
+          accountingPeriod match {
+            case Some(accountingPeriod) => valid && v.filters.contains(accountingPeriod)
+            case None => valid
+          }
+        }
+        val matchingVendors = mandatedIncomeSources.isEmpty match {
+          case false =>
+            mandatedIncomeSources.flatMap { incomeSource =>
+              vendorsForUser.filter(_.filters.contains(incomeSource))
+            }.distinct
+          case true =>
+            vendorsForUser
+        }
         val all = vendors.copy(
           vendors = (
             SoftwareChoicesService.matchFilter(filters.filterNot(userPageFilters.contains)) _

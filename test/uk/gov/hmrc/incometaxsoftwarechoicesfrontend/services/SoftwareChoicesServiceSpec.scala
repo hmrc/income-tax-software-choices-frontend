@@ -105,6 +105,11 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
       }
     }
 
+    "ignores accounting period and mandatory income sources for agent" in {
+      val result = service.getOtherVendors(Seq(Agent), true)
+      result.vendors.size mustBe 5
+    }
+
     "retain preferences filters" in {
       Seq(false, true).foreach { isAgent =>
         val result = service.getOtherVendors(Seq(Agent, SoleTrader, StandardUpdatePeriods, FreeVersion), isAgent)
