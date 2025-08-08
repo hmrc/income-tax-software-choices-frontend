@@ -19,9 +19,9 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models
 import org.scalatestplus.play.PlaySpec
 import play.api.libs.json._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.TestModels.fullSoftwareVendorsModel
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{Agent, FreeTrial, FreeVersion, Individual, SoleTrader}
 
 class SoftwareVendorsSpec extends PlaySpec {
-
 
   val fullJson: JsObject = Json.obj(
     "lastUpdated" -> "2022-12-02",
@@ -57,6 +57,50 @@ class SoftwareVendorsSpec extends PlaySpec {
       "vendors is missing" in {
         val json: JsObject = fullJson - "vendors"
         Json.fromJson[SoftwareVendors](json) mustBe JsError(JsPath \ "vendors", "error.path.missing")
+      }
+    }
+  }
+
+  "SoftwareVendorModel" must {
+
+    val model = SoftwareVendorModel(
+      name = "",
+      email = None,
+      phone = None,
+      website = "",
+      filters = Seq(
+        Individual,
+        Agent,
+        SoleTrader
+      ),
+      accessibilityStatementLink = None
+    )
+
+    "mustHaveAtLeast" should {
+      "return true if model contains one filter" in {
+        model.mustHaveAtLeast(Seq(Individual, FreeVersion)) mustBe true
+      }
+
+      "return true if model contains two filters" in {
+        model.mustHaveAtLeast(Seq(Individual, Agent, FreeVersion)) mustBe true
+      }
+
+      "return false if model does not contain any filters" in {
+        model.mustHaveAtLeast(Seq(FreeTrial, FreeVersion)) mustBe false
+      }
+    }
+
+    "mustHave" should {
+      "return true if model contains filter" in {
+        model.mustHave(Some(Individual)) mustBe true
+      }
+
+      "return true if no filters to check" in {
+        model.mustHave(None) mustBe true
+      }
+
+      "return false if model does not contain filter" in {
+        model.mustHave(Some(FreeVersion)) mustBe false
       }
     }
   }

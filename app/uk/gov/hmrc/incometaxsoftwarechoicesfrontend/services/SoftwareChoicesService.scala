@@ -52,46 +52,34 @@ class SoftwareChoicesService @Inject()(
     val allInOne = if (isAgentOrZeroResults) Seq.empty else getAllInOneVendors(filters).vendors
     val vendors = softwareVendors
     val userTypes = filters.filter(userTypeFilters.contains)
-    userTypes.isEmpty match {
-      case false =>
-        val accountingPeriod = filters.find(accountingPeriodFilters.contains)
-        val mandatedIncomeSources = filters.filter(Seq(SoleTrader, UkProperty, OverseasProperty).contains)
-        val vendorsForUser = vendors.vendors.filter { v =>
-          val contains = userTypes.map(v.filters.contains)
-          val valid = contains.fold(false)((a, b) => a || b)
-          accountingPeriod match {
-            case Some(accountingPeriod) => valid && v.filters.contains(accountingPeriod)
-            case None => valid
-          }
-        }
-        val matchingVendors = mandatedIncomeSources.isEmpty match {
-          case false =>
-            mandatedIncomeSources.flatMap { incomeSource =>
-              vendorsForUser.filter(_.filters.contains(incomeSource))
-            }.distinct
-          case true =>
-            vendorsForUser
-        }
-        val preferencesFilters = filters
-          .filterNot(userTypes.contains)
-          .filterNot(userPageFilters.contains)
-        val all = vendors.copy(
-          vendors = (
-            SoftwareChoicesService.matchFilter(preferencesFilters) _
-              andThen SoftwareChoicesService.sortVendors
-            )(matchingVendors)
-        )
-        all.copy(
-          vendors = all.vendors.filterNot(allInOne.contains)
-        )
-      case true =>
-        vendors.copy(
-          vendors = (
-            SoftwareChoicesService.matchFilter(filters.filterNot(userPageFilters.contains)) _
-              andThen SoftwareChoicesService.sortVendors
-            )(vendors.vendors)
-        )
+    val otherVendors = if (userTypes.isEmpty) {
+      (SoftwareChoicesService.matchFilter(filters.filterNot(userPageFilters.contains)) _
+        andThen SoftwareChoicesService.sortVendors
+      )(vendors.vendors)
+    } else {
+      val accountingPeriod = filters.find(accountingPeriodFilters.contains)
+      val mandatedIncomeSources = filters.filter(Seq(SoleTrader, UkProperty, OverseasProperty).contains)
+      val vendorsForUser = vendors.vendors.filter { vendor =>
+        vendor.mustHaveAtLeast(userTypes) &&
+          vendor.mustHave(accountingPeriod)
+      }
+      val matchingVendors = if (mandatedIncomeSources.isEmpty) {
+        vendorsForUser
+      } else {
+        mandatedIncomeSources.flatMap { incomeSource =>
+          vendorsForUser.filter(_.filters.contains(incomeSource))
+        }.distinct
+      }
+      val preferencesFilters = filters
+        .filterNot(userTypes.contains)
+        .filterNot(userPageFilters.contains)
+      (SoftwareChoicesService.matchFilter(preferencesFilters) _
+        andThen SoftwareChoicesService.sortVendors
+      )(matchingVendors)
     }
+    vendors.copy(
+      vendors = otherVendors.filterNot(allInOne.contains)
+    )
   }
 }
 
