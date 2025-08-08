@@ -51,12 +51,14 @@ class SoftwareChoicesService @Inject()(
   def getOtherVendors(filters: Seq[VendorFilter] = Seq.empty, isAgentOrZeroResults: Boolean = false): SoftwareVendors = {
     val allInOne = if (isAgentOrZeroResults) Seq.empty else getAllInOneVendors(filters).vendors
     val vendors = softwareVendors
-    filters.find(userTypeFilters.contains) match {
-      case Some(userType) =>
+    val userTypes = filters.filter(userTypeFilters.contains)
+    userTypes.isEmpty match {
+      case false =>
         val accountingPeriod = filters.find(accountingPeriodFilters.contains)
         val mandatedIncomeSources = filters.filter(Seq(SoleTrader, UkProperty, OverseasProperty).contains)
         val vendorsForUser = vendors.vendors.filter { v =>
-          val valid = v.filters.contains(userType)
+          val contains = userTypes.map(v.filters.contains)
+          val valid = contains.fold(false)((a, b) => a || b)
           accountingPeriod match {
             case Some(accountingPeriod) => valid && v.filters.contains(accountingPeriod)
             case None => valid
@@ -70,17 +72,25 @@ class SoftwareChoicesService @Inject()(
           case true =>
             vendorsForUser
         }
+        val preferencesFilters = filters
+          .filterNot(userTypes.contains)
+          .filterNot(userPageFilters.contains)
         val all = vendors.copy(
           vendors = (
-            SoftwareChoicesService.matchFilter(filters.filterNot(userPageFilters.contains)) _
+            SoftwareChoicesService.matchFilter(preferencesFilters) _
               andThen SoftwareChoicesService.sortVendors
             )(matchingVendors)
         )
         all.copy(
           vendors = all.vendors.filterNot(allInOne.contains)
         )
-      case _ =>
-        vendors
+      case true =>
+        vendors.copy(
+          vendors = (
+            SoftwareChoicesService.matchFilter(filters.filterNot(userPageFilters.contains)) _
+              andThen SoftwareChoicesService.sortVendors
+            )(vendors.vendors)
+        )
     }
   }
 }

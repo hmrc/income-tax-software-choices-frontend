@@ -36,7 +36,7 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
     filters = filters
   )
 
-  val allVendors = SoftwareVendors(
+  private val allVendors = SoftwareVendors(
     lastUpdated = LocalDate.now,
     vendors = userTypeFilters.flatMap { userType => Seq(
       vendor(Seq(userType, SoleTrader, StandardUpdatePeriods)),
@@ -120,6 +120,16 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
     "does not show duplicates" in {
       val result = service.getOtherVendors(Seq(Agent, SoleTrader, UkProperty, StandardUpdatePeriods), true)
       result.vendors.size mustBe 3
+    }
+
+    "returns all vendors when no user types are specified" in {
+      val result = service.getOtherVendors(Seq(SoleTrader, UkProperty, StandardUpdatePeriods), true)
+      result.vendors.size mustBe 10
+    }
+
+    "returns all vendors when all user types are specified" in {
+      val result = service.getOtherVendors(Seq(Agent, Individual), true)
+      result.vendors.size mustBe 10
     }
   }
 }
