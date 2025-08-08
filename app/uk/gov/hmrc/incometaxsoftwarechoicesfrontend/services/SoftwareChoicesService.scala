@@ -61,7 +61,7 @@ class SoftwareChoicesService @Inject()(
       val mandatedIncomeSources = filters.filter(Seq(SoleTrader, UkProperty, OverseasProperty).contains)
       val vendorsForUser = vendors.vendors.filter { vendor =>
         vendor.mustHaveAtLeast(userTypes) &&
-          vendor.mustHave(accountingPeriod)
+          vendor.mustHaveOption(accountingPeriod)
       }
       val matchingVendors = if (mandatedIncomeSources.isEmpty) {
         vendorsForUser

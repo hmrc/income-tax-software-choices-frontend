@@ -37,7 +37,7 @@ case class SoftwareVendorModel(
     contains.fold(false)((a, b) => a || b)
   }
 
-  def mustHave(optFilter: Option[VendorFilter]): Boolean = optFilter match {
+  def mustHaveOption(optFilter: Option[VendorFilter]): Boolean = optFilter match {
     case Some(one) => mustHaveAtLeast(Seq(one))
     case None => true
   }

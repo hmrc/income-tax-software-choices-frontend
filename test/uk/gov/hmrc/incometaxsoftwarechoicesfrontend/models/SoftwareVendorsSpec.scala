@@ -90,17 +90,17 @@ class SoftwareVendorsSpec extends PlaySpec {
       }
     }
 
-    "mustHave" should {
+    "mustHaveOption" should {
       "return true if model contains filter" in {
-        model.mustHave(Some(Individual)) mustBe true
+        model.mustHaveOption(Some(Individual)) mustBe true
       }
 
       "return true if no filters to check" in {
-        model.mustHave(None) mustBe true
+        model.mustHaveOption(None) mustBe true
       }
 
       "return false if model does not contain filter" in {
-        model.mustHave(Some(FreeVersion)) mustBe false
+        model.mustHaveOption(Some(FreeVersion)) mustBe false
       }
     }
   }
