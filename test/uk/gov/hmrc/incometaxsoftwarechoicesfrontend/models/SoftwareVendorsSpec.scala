@@ -76,17 +76,13 @@ class SoftwareVendorsSpec extends PlaySpec {
       accessibilityStatementLink = None
     )
 
-    "mustHaveAtLeast" should {
-      "return true if model contains one filter" in {
-        model.mustHaveAtLeast(Seq(Individual, FreeVersion)) mustBe true
+    "mustHaveAtAll" should {
+      "return true if model contains all filters" in {
+        model.mustHaveAll(Seq(Individual, Agent)) mustBe true
       }
 
-      "return true if model contains two filters" in {
-        model.mustHaveAtLeast(Seq(Individual, Agent, FreeVersion)) mustBe true
-      }
-
-      "return false if model does not contain any filters" in {
-        model.mustHaveAtLeast(Seq(FreeTrial, FreeVersion)) mustBe false
+      "return false if model does not contain all filters" in {
+        model.mustHaveAll(Seq(Individual, FreeTrial, FreeVersion)) mustBe false
       }
     }
 

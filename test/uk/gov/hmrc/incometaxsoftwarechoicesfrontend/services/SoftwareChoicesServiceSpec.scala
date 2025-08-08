@@ -44,7 +44,9 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
       vendor(Seq(userType, UkProperty, StandardUpdatePeriods)),
       vendor(Seq(userType, OverseasProperty, StandardUpdatePeriods)),
       vendor(Seq(userType, OverseasProperty, CalendarUpdatePeriods)),
-    )}.toSeq
+    )}.toSeq ++ Seq(
+      vendor(userTypeFilters.toSeq)
+    )
   )
 
   val mockDataService = mock[DataService]
@@ -64,8 +66,7 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
     "exclude vendors that are not for requested user type" in {
       Seq(Agent, Individual).foreach { userType =>
         val result = service.getAllInOneVendors(Seq(userType))
-        result.vendors.size mustBe allVendors.vendors.size / 2
-        result.vendors.head.name mustBe userType.toString
+        result.vendors.size mustBe 6
       }
     }
 
@@ -107,7 +108,7 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
 
     "ignores accounting period and mandatory income sources for agent" in {
       val result = service.getOtherVendors(Seq(Agent), true)
-      result.vendors.size mustBe 5
+      result.vendors.size mustBe 6
     }
 
     "retain preferences filters" in {
@@ -124,12 +125,12 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
 
     "returns all vendors when no user types are specified" in {
       val result = service.getOtherVendors(Seq(SoleTrader, UkProperty, StandardUpdatePeriods), true)
-      result.vendors.size mustBe 10
+      result.vendors.size mustBe 11
     }
 
-    "returns all vendors when all user types are specified" in {
-      val result = service.getOtherVendors(Seq(Agent, Individual), true)
-      result.vendors.size mustBe 10
+    "returns vendors that have all user type filters" in {
+      val result = service.getOtherVendors(userTypeFilters.toSeq, true)
+      result.vendors.size mustBe 1
     }
   }
 }

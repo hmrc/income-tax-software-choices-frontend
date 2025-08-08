@@ -32,15 +32,12 @@ case class SoftwareVendorModel(
     (filtersFromVendor ++ alwaysDisplayedFilters).toSeq.sortBy(_.priority)
   }
 
-  def mustHaveAtLeast(list: Seq[VendorFilter]): Boolean = {
-    val contains = list.map(filters.contains)
-    contains.fold(false)((a, b) => a || b)
+  def mustHaveAll(list: Seq[VendorFilter]): Boolean = {
+    list.forall(filters.contains)
   }
 
-  def mustHaveOption(optFilter: Option[VendorFilter]): Boolean = optFilter match {
-    case Some(one) => mustHaveAtLeast(Seq(one))
-    case None => true
-  }
+  def mustHaveOption(optFilter: Option[VendorFilter]): Boolean =
+    mustHaveAll(optFilter.toSeq)
 }
 
 object SoftwareVendorModel {
