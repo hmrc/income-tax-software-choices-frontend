@@ -80,9 +80,7 @@ class SoftwareChoicesService @Inject()(
           vendors = all.vendors.filterNot(allInOne.contains)
         )
       case _ =>
-        vendors.copy(
-          vendors = Seq.empty
-        )
+        vendors
     }
   }
 }
