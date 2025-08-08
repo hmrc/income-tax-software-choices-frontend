@@ -26,13 +26,18 @@
         form: FormWithCSRF
 )
 
-@(postAction: Call)(implicit request: Request[_], messages: Messages)
+@(postAction: Call, timeout: Boolean = false)(implicit request: Request[_], messages: Messages)
 
 @mainTemplate(title = messages("session-expired.title"), backLink = None, showTimeoutDialog = false) {
 
     <h1 class="govuk-heading-l">@messages("session-expired.heading")</h1>
 
-    <p class="govuk-body">@messages("session-expired.paragraph")</p>
+
+    @if(timeout) {
+        <p class="govuk-body">@messages("session-expired.timeout")</p>
+    } else {
+        <p class="govuk-body">@messages("session-expired.user")</p>
+    }
 
     @form(action = postAction) {
 

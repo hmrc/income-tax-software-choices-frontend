@@ -381,5 +381,6 @@ timeout.reset = Delete your answers
 
 session-expired.title = Answers Deleted
 session-expired.heading = Answers Deleted
-session-expired.paragraph = Your answers have been deleted.
+session-expired.user = You deleted your answers.
+session-expired.timeout = For security, we deleted your answers.
 session-expired.button = Start again

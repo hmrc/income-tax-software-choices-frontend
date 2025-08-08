@@ -35,5 +35,5 @@ GET         /product-details/*software           uk.gov.hmrc.incometaxsoftwarech
 
 GET         /assets/*file                        controllers.Assets.versioned(path = "/public", file: Asset)
 
-GET         /session-expired                     uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SessionExpiredController.show()
+GET         /session-expired/:timeout            uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SessionExpiredController.show(timeout: Boolean)
 POST        /session-expired                     uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SessionExpiredController.submit()

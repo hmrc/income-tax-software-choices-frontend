@@ -63,7 +63,8 @@
         @hmrcTimeoutDialogHelper(
             timeout = Some(appConfig.timeoutInSeconds),
             countdown = Some(appConfig.timeoutWarningInSeconds),
-            signOutUrl = routes.SessionExpiredController.show.url,
+            signOutUrl = routes.SessionExpiredController.show(false).url,
+            timeoutUrl = Some(routes.SessionExpiredController.show(true).url),
             keepAliveUrl = Some(request.uri),
             title = Some(messages("timeout.title")),
             message = Some(messages("timeout.message")),
