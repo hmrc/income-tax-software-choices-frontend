@@ -38,6 +38,11 @@ case class SoftwareVendorModel(
 
   def mustHaveOption(optFilter: Option[VendorFilter]): Boolean =
     mustHaveAll(optFilter.toSeq)
+
+  def mustHaveAtLeast(list: Seq[VendorFilter]): Boolean = {
+    val contains = list.map(filters.contains)
+    contains.fold(false)((a, b) => a || b)
+  }
 }
 
 object SoftwareVendorModel {

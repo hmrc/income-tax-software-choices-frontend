@@ -149,5 +149,19 @@ class SoftwareVendorModelSpec extends PlaySpec {
         model.mustHaveOption(Some(FreeVersion)) mustBe false
       }
     }
+
+    "mustHaveAtLeast" should {
+      "return true if model contains one filter" in {
+        model.mustHaveAtLeast(Seq(Individual, FreeTrial)) mustBe true
+      }
+
+      "return true if model contains all filters" in {
+        model.mustHaveAtLeast(Seq(Individual, Agent, SoleTrader)) mustBe true
+      }
+
+      "return false if model does not contain any filters" in {
+        model.mustHaveAtLeast(Seq(FreeVersion, FreeTrial)) mustBe false
+      }
+    }
   }
 }

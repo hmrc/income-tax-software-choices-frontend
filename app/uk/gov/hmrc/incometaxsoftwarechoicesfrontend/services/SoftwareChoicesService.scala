@@ -66,9 +66,9 @@ class SoftwareChoicesService @Inject()(
       val matchingVendors = if (mandatedIncomeSources.isEmpty) {
         vendorsForUser
       } else {
-        mandatedIncomeSources.flatMap { incomeSource =>
-          vendorsForUser.filter(_.filters.contains(incomeSource))
-        }.distinct
+        vendorsForUser
+          .filter(_.mustHaveAtLeast(mandatedIncomeSources))
+          .distinct
       }
       val preferencesFilters = filters
         .filterNot(userTypes.contains)
