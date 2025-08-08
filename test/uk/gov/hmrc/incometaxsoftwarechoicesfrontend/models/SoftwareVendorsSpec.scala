@@ -19,7 +19,6 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models
 import org.scalatestplus.play.PlaySpec
 import play.api.libs.json._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.TestModels.fullSoftwareVendorsModel
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{Agent, FreeTrial, FreeVersion, Individual, SoleTrader}
 
 class SoftwareVendorsSpec extends PlaySpec {
 
