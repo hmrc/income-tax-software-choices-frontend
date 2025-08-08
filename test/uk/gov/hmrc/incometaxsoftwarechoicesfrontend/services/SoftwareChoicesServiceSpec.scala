@@ -21,6 +21,7 @@ import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.mockito.MockitoSugar.mock
 import org.scalatestplus.play.PlaySpec
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilterGroups.userTypeFilters
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareVendorModel, SoftwareVendors, VendorFilter}
 
 import java.time.LocalDate
@@ -35,21 +36,27 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
     filters = filters
   )
 
-  val allVendors = SoftwareVendors(
+  private val allVendors = SoftwareVendors(
     lastUpdated = LocalDate.now,
-    vendors = Seq(
-      vendor(Seq(Agent)),
-      vendor(Seq(Agent, SoleTrader)),
-      vendor(Seq(Individual)),
-      vendor(Seq(Individual, SoleTrader)),
+    vendors = userTypeFilters.flatMap { userType => Seq(
+      vendor(Seq(userType, SoleTrader, StandardUpdatePeriods)),
+      vendor(Seq(userType, SoleTrader, UkProperty, StandardUpdatePeriods)),
+      vendor(Seq(userType, UkProperty, StandardUpdatePeriods)),
+      vendor(Seq(userType, OverseasProperty, StandardUpdatePeriods)),
+      vendor(Seq(userType, OverseasProperty, CalendarUpdatePeriods)),
+    )}.toSeq ++ Seq(
+      vendor(userTypeFilters.toSeq)
     )
   )
 
   val mockDataService = mock[DataService]
 
-  when(mockDataService.getSoftwareVendors()).thenReturn(
-    allVendors
-  )
+  override def beforeEach(): Unit = {
+    super.beforeEach()
+    when(mockDataService.getSoftwareVendors()).thenReturn(
+      allVendors
+    )
+  }
 
   val service = new SoftwareChoicesService(
     mockDataService
@@ -59,14 +66,13 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
     "exclude vendors that are not for requested user type" in {
       Seq(Agent, Individual).foreach { userType =>
         val result = service.getAllInOneVendors(Seq(userType))
-        result.vendors.size mustBe 2
-        result.vendors.head.name mustBe userType.toString
+        result.vendors.size mustBe 6
       }
     }
 
     "not ignore question filters" in {
       val result = service.getAllInOneVendors(Seq(Agent, SoleTrader))
-      result.vendors.size mustBe 1
+      result.vendors.size mustBe 2
     }
 
     "retain preferences filters" in {
@@ -77,30 +83,54 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
 
   "getOtherVendors" should {
     "exclude vendors that are not for requested user type" in {
-      Seq(Agent, Individual).foreach { userType =>
-        val isAgent = userType == Agent
-        val result = service.getOtherVendors(Seq(userType), isAgent)
-        val expected = if (isAgent) 2 else 0
-        result.vendors.size mustBe expected
-        if (expected != 0) {
-          result.vendors.head.name mustBe userType.toString
-        }
+      Seq(Individual, Agent).foreach { userType =>
+        val result = service.getOtherVendors(Seq(userType, SoleTrader, StandardUpdatePeriods), true)
+        result.vendors.size mustBe 2
+        result.vendors.head.name mustBe userType.toString
+      }
+    }
+
+    "returns all vendors so mandatory filters are covered" in {
+      Seq(Individual, Agent).foreach { userType =>
+        val result = service.getOtherVendors(Seq(userType, SoleTrader, UkProperty, StandardUpdatePeriods), true)
+        result.vendors.size mustBe 3
+        result.vendors.head.name mustBe userType.toString
       }
     }
 
     "ignore question filters and excludes all-in-one vendors" in {
       Seq(false, true).foreach { isAgent =>
-        val result = service.getOtherVendors(Seq(Agent, SoleTrader), isAgent)
-        val expected = if (isAgent) 2 else 1
+        val result = service.getOtherVendors(Seq(Agent, SoleTrader, StandardUpdatePeriods), isAgent)
+        val expected = if (isAgent) 2 else 0
         result.vendors.size mustBe expected
       }
     }
 
+    "ignores accounting period and mandatory income sources for agent" in {
+      val result = service.getOtherVendors(Seq(Agent), true)
+      result.vendors.size mustBe 6
+    }
+
     "retain preferences filters" in {
       Seq(false, true).foreach { isAgent =>
-        val result = service.getOtherVendors(Seq(Agent, FreeVersion), isAgent)
+        val result = service.getOtherVendors(Seq(Agent, SoleTrader, StandardUpdatePeriods, FreeVersion), isAgent)
         result.vendors.size mustBe 0
       }
+    }
+
+    "does not show duplicates" in {
+      val result = service.getOtherVendors(Seq(Agent, SoleTrader, UkProperty, StandardUpdatePeriods), true)
+      result.vendors.size mustBe 3
+    }
+
+    "returns all vendors when no user types are specified" in {
+      val result = service.getOtherVendors(Seq(SoleTrader, UkProperty, StandardUpdatePeriods), true)
+      result.vendors.size mustBe 11
+    }
+
+    "returns vendors that have all user type filters" in {
+      val result = service.getOtherVendors(userTypeFilters.toSeq, true)
+      result.vendors.size mustBe 1
     }
   }
 }

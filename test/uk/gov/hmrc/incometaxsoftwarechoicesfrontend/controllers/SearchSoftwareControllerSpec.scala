@@ -27,11 +27,15 @@ import play.api.mvc.Codec
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserFilters
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{Individual, SoleTrader, StandardUpdatePeriods}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.{DataService, PageAnswersService, SoftwareChoicesService}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SearchSoftwarePage
 
 import java.io.FileInputStream
+import java.time.Instant
+import java.util.UUID
 import scala.concurrent.Future
 
 class SearchSoftwareControllerSpec extends ControllerBaseSpec with BeforeAndAfterEach {
@@ -79,7 +83,14 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec with BeforeAndAfte
   private def withController(testCode: SearchSoftwareController => Any): Unit = {
     val mockEnvironment: Environment = mock[Environment]
 
-    when(mockUserFiltersRepo.get(ArgumentMatchers.any())).thenReturn(Future.successful(None))
+    when(mockUserFiltersRepo.get(ArgumentMatchers.any())).thenReturn(
+      Future.successful(Some(UserFilters(
+        id = UUID.randomUUID().toString,
+        answers = None,
+        finalFilters = Seq(Individual, SoleTrader, StandardUpdatePeriods),
+        lastUpdated = Instant.now
+      )))
+    )
     when(mockUserFiltersRepo.set(ArgumentMatchers.any())).thenReturn(Future.successful(true))
     when(mockEnvironment.resourceAsStream(eqTo(appConfig.softwareChoicesVendorFileName)))
       .thenReturn(Some(new FileInputStream("test/resources/test-valid-software-vendors.json")))

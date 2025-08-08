@@ -22,7 +22,6 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.TestModels.fullSoftw
 
 class SoftwareVendorsSpec extends PlaySpec {
 
-
   val fullJson: JsObject = Json.obj(
     "lastUpdated" -> "2022-12-02",
     "vendors" -> Json.arr(
@@ -60,5 +59,4 @@ class SoftwareVendorsSpec extends PlaySpec {
       }
     }
   }
-
 }

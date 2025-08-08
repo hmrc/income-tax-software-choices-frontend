@@ -69,7 +69,7 @@ object TestModels {
     Some("test@software-vendor-name-four.com"),
     Some("44444 444 444"),
     "software-vendor-name-four.com",
-    Seq(SoleTrader, Individual)
+    Seq(SoleTrader, Individual, StandardUpdatePeriods)
   )
 
   val testVendorFive: SoftwareVendorModel = SoftwareVendorModel(

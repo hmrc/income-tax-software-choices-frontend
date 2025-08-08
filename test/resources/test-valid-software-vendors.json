@@ -34,7 +34,8 @@
       "website": "software-vendor-name-four.com",
       "filters": [
         "sole-trader",
-        "individual"
+        "individual",
+        "standard-update-periods"
       ]
     },
     {
