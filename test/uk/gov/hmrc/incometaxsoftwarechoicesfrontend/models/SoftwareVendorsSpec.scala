@@ -60,45 +60,4 @@ class SoftwareVendorsSpec extends PlaySpec {
       }
     }
   }
-
-  "SoftwareVendorModel" must {
-
-    val model = SoftwareVendorModel(
-      name = "",
-      email = None,
-      phone = None,
-      website = "",
-      filters = Seq(
-        Individual,
-        Agent,
-        SoleTrader
-      ),
-      accessibilityStatementLink = None
-    )
-
-    "mustHaveAtAll" should {
-      "return true if model contains all filters" in {
-        model.mustHaveAll(Seq(Individual, Agent)) mustBe true
-      }
-
-      "return false if model does not contain all filters" in {
-        model.mustHaveAll(Seq(Individual, FreeTrial, FreeVersion)) mustBe false
-      }
-    }
-
-    "mustHaveOption" should {
-      "return true if model contains filter" in {
-        model.mustHaveOption(Some(Individual)) mustBe true
-      }
-
-      "return true if no filters to check" in {
-        model.mustHaveOption(None) mustBe true
-      }
-
-      "return false if model does not contain filter" in {
-        model.mustHaveOption(Some(FreeVersion)) mustBe false
-      }
-    }
-  }
-
 }

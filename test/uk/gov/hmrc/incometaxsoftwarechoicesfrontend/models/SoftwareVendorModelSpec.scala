@@ -19,6 +19,7 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models
 import org.scalatestplus.play.PlaySpec
 import play.api.libs.json._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.TestModels.fullSoftwareVendorModel
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{Agent, FreeTrial, FreeVersion, Individual, SoleTrader}
 
 class SoftwareVendorModelSpec extends PlaySpec {
 
@@ -42,37 +43,42 @@ class SoftwareVendorModelSpec extends PlaySpec {
       "the json is complete" in {
         Json.fromJson[SoftwareVendorModel](fullJson) mustBe JsSuccess(fullSoftwareVendorModel)
       }
+
       "the json has no contact details" in {
         Json.fromJson[SoftwareVendorModel](
           fullJson - "email" - "phone"
         ) mustBe JsSuccess(fullSoftwareVendorModel.copy(email = None, phone = None))
       }
+
       "the json has no filter options" in {
         Json.fromJson[SoftwareVendorModel](
           fullJson - "filters" ++ Json.obj("filters" -> Json.arr())
         ) mustBe JsSuccess(fullSoftwareVendorModel.copy(filters = Seq.empty[VendorFilter]))
       }
+
       "there is no accessibility statement link" in {
         Json.fromJson[SoftwareVendorModel](
           fullJson - "accessibilityStatementLink"
         ) mustBe JsSuccess(fullSoftwareVendorModel.copy(accessibilityStatementLink = None))
       }
     }
+
     "fail to read json" when {
       "name is missing" in {
         val json: JsObject = fullJson - "name"
         Json.fromJson[SoftwareVendorModel](json) mustBe JsError(JsPath \ "name", "error.path.missing")
       }
+
       "website is missing" in {
         val json: JsObject = fullJson - "website"
         Json.fromJson[SoftwareVendorModel](json) mustBe JsError(JsPath \ "website", "error.path.missing")
       }
+
       "filters is missing" in {
         val json: JsObject = fullJson - "filters"
         Json.fromJson[SoftwareVendorModel](json) mustBe JsError(JsPath \ "filters", "error.path.missing")
       }
     }
-
 
     "search for filters and order the results correctly" should {
       def getVendorModel(vendorFilters: Seq[VendorFilter]): SoftwareVendorModel = SoftwareVendorModel(
@@ -104,6 +110,43 @@ class SoftwareVendorModelSpec extends PlaySpec {
         val model: SoftwareVendorModel = getVendorModel(vendorFilters)
         val expectedResults = Seq(VendorFilter.Motor, VendorFilter.Cognitive, VendorFilter.Visual, VendorFilter.Hearing).sortBy(_.priority)
         model.orderedFilterSubset(searchFilters) mustBe expectedResults
+      }
+    }
+
+    val model = SoftwareVendorModel(
+      name = "",
+      email = None,
+      phone = None,
+      website = "",
+      filters = Seq(
+        Individual,
+        Agent,
+        SoleTrader
+      ),
+      accessibilityStatementLink = None
+    )
+
+    "mustHaveAtAll" should {
+      "return true if model contains all filters" in {
+        model.mustHaveAll(Seq(Individual, Agent)) mustBe true
+      }
+
+      "return false if model does not contain all filters" in {
+        model.mustHaveAll(Seq(Individual, FreeTrial, FreeVersion)) mustBe false
+      }
+    }
+
+    "mustHaveOption" should {
+      "return true if model contains filter" in {
+        model.mustHaveOption(Some(Individual)) mustBe true
+      }
+
+      "return true if no filters to check" in {
+        model.mustHaveOption(None) mustBe true
+      }
+
+      "return false if model does not contain filter" in {
+        model.mustHaveOption(Some(FreeVersion)) mustBe false
       }
     }
   }
