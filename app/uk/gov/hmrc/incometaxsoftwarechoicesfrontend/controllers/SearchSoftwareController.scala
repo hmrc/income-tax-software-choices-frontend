@@ -90,10 +90,10 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
       userFilters <- userFiltersRepository.get(sessionId)
       result <- userFilters match {
         case Some(userFilters) => {
-          val filtersFromAnswers =
-            if (!zeroResults) pageAnswersService.getFiltersFromAnswers(userFilters.answers).filterNot(_.equals(VendorFilter.Agent)) else Seq(Individual)
-          userFiltersRepository.set(userFilters.copy(finalFilters = filtersFromAnswers ++ search.filters))
-        }
+          val filtersFromAnswers = pageAnswersService
+            .getFiltersFromAnswers(userFilters.answers)
+            .filterNot(_ == VendorFilter.Agent)
+          userFiltersRepository.set(userFilters.copy(finalFilters = filtersFromAnswers ++ search.filters))}
         case None => userFiltersRepository.set(UserFilters(sessionId, None, search.filters))
       }
     } yield {
