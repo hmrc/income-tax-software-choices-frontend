@@ -41,10 +41,6 @@ class SessionExpiredViewSpec extends ViewSpec {
       document.selectHead("h1").text mustBe SessionExpiredContent.heading
     }
 
-    "have the correct paragraph" in {
-      document.selectNth(".govuk-body", 1).text mustBe SessionExpiredContent.paragraph
-    }
-
     "have a continue button" in {
       form.selectNth(".govuk-button", 1).text mustBe SessionExpiredContent.continue
     }
@@ -52,8 +48,7 @@ class SessionExpiredViewSpec extends ViewSpec {
 }
 
 private object SessionExpiredContent {
-  val heading = "Answers Deleted"
-  val title = s"$heading - ${PageContentBase.title} - GOV.UK"
-  val paragraph = "You deleted your answers."
+  val title = s"Answers Deleted - ${PageContentBase.title} - GOV.UK"
+  val heading = "You deleted your answers"
   val continue = "Start again"
 }

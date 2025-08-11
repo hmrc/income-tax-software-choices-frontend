@@ -30,13 +30,10 @@
 
 @mainTemplate(title = messages("session-expired.title"), backLink = None, showTimeoutDialog = false) {
 
-    <h1 class="govuk-heading-l">@messages("session-expired.heading")</h1>
-
-
     @if(timeout) {
-        <p class="govuk-body">@messages("session-expired.timeout")</p>
+        <h1 class="govuk-heading-l">@messages("session-expired.timeout")</h1>
     } else {
-        <p class="govuk-body">@messages("session-expired.user")</p>
+        <h1 class="govuk-heading-l">@messages("session-expired.user")</h1>
     }
 
     @form(action = postAction) {

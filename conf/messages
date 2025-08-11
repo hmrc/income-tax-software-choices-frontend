@@ -380,7 +380,6 @@ timeout.continue = Continue finding software for Making Tax Digital for Income T
 timeout.reset = Delete your answers
 
 session-expired.title = Answers Deleted
-session-expired.heading = Answers Deleted
-session-expired.user = You deleted your answers.
-session-expired.timeout = For security, we deleted your answers.
+session-expired.user = You deleted your answers
+session-expired.timeout = For security, we deleted your answers
 session-expired.button = Start again
