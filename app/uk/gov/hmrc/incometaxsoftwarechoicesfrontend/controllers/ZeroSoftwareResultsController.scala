@@ -37,12 +37,8 @@ class ZeroSoftwareResultsController @Inject()(view: ZeroSoftwareResultsView,
     )))
   }
 
-  def submit(): Action[AnyContent] = Action.async { implicit request =>
-    val sessionId = request.session.get("sessionId").getOrElse("")
-    pageAnswersService.removePageFilters(sessionId).map {
-      case true => Redirect(routes.SearchSoftwareController.show(zeroResults = true))
-      case false => throw new InternalServerException("[ZeroSoftwareResultsController][submit] - Could not remove user filters")
-    }
+  def submit(): Action[AnyContent] = Action { implicit request =>
+    Redirect(routes.SearchSoftwareController.show(zeroResults = true))
   }
 
 }
