@@ -17,21 +17,29 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.AccountingPeriodPage
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SessionExpiredView
 
 import javax.inject.Inject
 import scala.concurrent.ExecutionContext
 
-class SessionExpiredController @Inject()(view: SessionExpiredView)
-                                        (implicit val ec: ExecutionContext,
-                                         mcc: MessagesControllerComponents) extends BaseFrontendController(mcc) {
+class SessionExpiredController @Inject()(
+  repo: UserFiltersRepository,
+  view: SessionExpiredView
+)(implicit val ec: ExecutionContext,
+ mcc: MessagesControllerComponents) extends BaseFrontendController(mcc) {
 
-
-  def show(timeout: Boolean = false): Action[AnyContent] = Action { implicit request =>
-    Ok(view(
-      postAction = routes.SessionExpiredController.submit(),
-      timeout = timeout
-    ))
+  def show(timeout: Boolean = false): Action[AnyContent] = Action.async { implicit request =>
+    val sessionId = request.session.get("sessionId").getOrElse("")
+    for (
+      _ <- repo.delete(sessionId)
+    ) yield {
+      Ok(view(
+        postAction = routes.SessionExpiredController.submit(),
+        timeout = timeout
+      ))
+    }
   }
 
   def submit(): Action[AnyContent] = Action { _ =>

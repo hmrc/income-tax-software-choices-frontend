@@ -16,27 +16,43 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.{reset, times, verify, when}
 import org.scalatest.BeforeAndAfterEach
+import org.scalatestplus.mockito.MockitoSugar.mock
 import play.api.http.Status.{OK, SEE_OTHER}
 import play.api.mvc.Result
 import play.api.test.Helpers.{HTML, contentType, defaultAwaitTimeout, redirectLocation, status}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.UserTypeForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.SoleTraderOrLandlord
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SessionExpiredView
 
 import scala.concurrent.Future
 
 class SessionExpiredControllerSpec extends ControllerBaseSpec with BeforeAndAfterEach {
 
-  lazy val sessionExpiredView: SessionExpiredView =
+  private lazy val sessionExpiredView =
     app.injector.instanceOf[SessionExpiredView]
 
+  private lazy val repo =
+    mock[UserFiltersRepository]
+
   "show" must {
-    "return OK" in new Setup {
+    "delete answers and return OK" in new Setup {
       val result: Future[Result] = controller.show()(fakeRequest)
 
       status(result) shouldBe OK
       contentType(result) shouldBe Some(HTML)
+      verify(repo, times(1)).delete(any())
+    }
+
+    "return OK without deleting answers" in new Setup(false) {
+      val result: Future[Result] = controller.show()(fakeRequest)
+
+      status(result) shouldBe OK
+      contentType(result) shouldBe Some(HTML)
+      verify(repo, times(1)).delete(any())
     }
   }
 
@@ -49,9 +65,14 @@ class SessionExpiredControllerSpec extends ControllerBaseSpec with BeforeAndAfte
     }
   }
 
-  trait Setup {
+  class Setup(delete: Boolean = true) {
     val controller: SessionExpiredController = new SessionExpiredController(
+      repo,
       sessionExpiredView
     )(ec, mcc)
+    reset(repo)
+    when(repo.delete(any())).thenReturn(
+      Future.successful(delete)
+    )
   }
 }
