@@ -90,7 +90,7 @@ class UserFiltersRepository @Inject()(
 
   def delete(id: String): Future[Boolean] = {
     collection.deleteOne(
-      filter = byId(id),
+      filter = byId(id)
     )
     .toFuture()
     .map(_ => true)
