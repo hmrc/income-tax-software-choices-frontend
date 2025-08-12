@@ -38,4 +38,4 @@ GET         /assets/*file                        controllers.Assets.versioned(pa
 GET         /session-expired/:timeout            uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SessionExpiredController.show(timeout: Boolean)
 POST        /session-expired                     uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SessionExpiredController.submit()
 
-GET         /keep-alive/:url                     uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.KeepAliveController.show(url: String)
+GET         /keep-alive                          uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.KeepAliveController.keepAlive()

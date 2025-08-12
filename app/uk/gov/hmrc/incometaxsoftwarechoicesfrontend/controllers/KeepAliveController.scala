@@ -28,12 +28,12 @@ class KeepAliveController @Inject()(
 )(implicit val ec: ExecutionContext,
  mcc: MessagesControllerComponents) extends BaseFrontendController(mcc) {
 
-  def show(url: String): Action[AnyContent] = Action.async { implicit request =>
+  def keepAlive(): Action[AnyContent] = Action.async { implicit request =>
     val sessionId = request.session.get("sessionId").getOrElse("")
     for (
       _ <- repo.keepAlive(sessionId)
     ) yield {
-      Redirect(url)
+      Ok
     }
   }
 }

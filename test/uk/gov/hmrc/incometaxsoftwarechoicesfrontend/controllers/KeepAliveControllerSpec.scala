@@ -20,7 +20,7 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{reset, times, verify, when}
 import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.mockito.MockitoSugar.mock
-import play.api.http.Status.SEE_OTHER
+import play.api.http.Status.{OK, SEE_OTHER}
 import play.api.mvc.Result
 import play.api.test.Helpers.{defaultAwaitTimeout, redirectLocation, status}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
@@ -30,29 +30,21 @@ import scala.concurrent.Future
 
 class KeepAliveControllerSpec extends ControllerBaseSpec with BeforeAndAfterEach {
 
-  private lazy val sessionExpiredView =
-    app.injector.instanceOf[SessionExpiredView]
-
   private lazy val repo =
     mock[UserFiltersRepository]
 
-  private lazy val url =
-    ""
-
-  "show" must {
+  "keepAlive" must {
     "keeps the session alive and return OK" in new Setup {
-      val result: Future[Result] = controller.show(url)(fakeRequest)
+      val result: Future[Result] = controller.keepAlive()(fakeRequest)
 
-      status(result) shouldBe SEE_OTHER
-      redirectLocation(result) shouldBe Some(url)
+      status(result) shouldBe OK
       verify(repo, times(1)).keepAlive(any())
     }
 
     "return OK without keeping the session alive" in new Setup(false) {
-      val result: Future[Result] = controller.show(url)(fakeRequest)
+      val result: Future[Result] = controller.keepAlive()(fakeRequest)
 
-      status(result) shouldBe SEE_OTHER
-      redirectLocation(result) shouldBe Some(url)
+      status(result) shouldBe OK
       verify(repo, times(1)).keepAlive(any())
     }
   }
