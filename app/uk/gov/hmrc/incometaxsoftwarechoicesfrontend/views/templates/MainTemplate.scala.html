@@ -65,7 +65,7 @@
             countdown = Some(appConfig.timeoutWarningInSeconds),
             signOutUrl = routes.SessionExpiredController.show(false).url,
             timeoutUrl = Some(routes.SessionExpiredController.show(true).url),
-            keepAliveUrl = Some(request.uri),
+            keepAliveUrl = Some(routes.KeepAliveController.show(request.uri).url),
             title = Some(messages("timeout.title")),
             message = Some(messages("timeout.message")),
             keepAliveButtonText = Some(messages("timeout.continue")),
