@@ -373,3 +373,13 @@ unsupported-accounting-period.bullet-two                            = 1 April to
 unsupported-accounting-period.para-two                              = We may extend this service to people with other accounting periods in the future. You’ll need to continue to submit your {0} as normal.
 unsupported-accounting-period.self-assessment-tax-return.link-text  = Self Assessment tax return
 unsupported-accounting-period.self-assessment-tax-return.link-url   = https://www.gov.uk/self-assessment-tax-returns/sending-return
+
+timeout.title = For your security
+timeout.message = We will delete your answers in
+timeout.continue = Continue finding software for Making Tax Digital for Income Tax
+timeout.reset = Delete your answers
+
+session-expired.title = Answers Deleted
+session-expired.user = You deleted your answers
+session-expired.timeout = For security, we deleted your answers
+session-expired.button = Start again

@@ -34,14 +34,14 @@ class DataService @Inject()(
     case Some(resource) =>
       Json.parse(resource)
     case None =>
-      throw new InternalServerException(s"[SoftwareChoicesService][jsonFile] - ${appConfig.softwareChoicesVendorFileName} not found")
+      throw new InternalServerException(s"[DataService][jsonFile] - ${appConfig.softwareChoicesVendorFileName} not found")
   }
 
   private val softwareVendors = Json.fromJson[SoftwareVendors](softwareVendorsJson) match {
     case JsSuccess(value, _) =>
       value
     case JsError(errors) =>
-      throw new InternalServerException(s"[SoftwareChoicesService][softwareVendors] - Json parse failures - ${errors.mkString(",")}")
+      throw new InternalServerException(s"[DataService][softwareVendors] - Json parse failures - ${errors.mkString(",")}")
   }
 
   def getSoftwareVendors(): SoftwareVendors =

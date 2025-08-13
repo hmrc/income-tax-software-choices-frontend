@@ -69,7 +69,7 @@ class DataServiceSpec extends PlaySpec {
       when(mockEnvironment.resourceAsStream(eqTo(testFileName)))
         .thenReturn(None)
 
-      intercept[InternalServerException](service.getSoftwareVendors()).message mustBe s"[SoftwareChoicesService][jsonFile] - $testFileName not found"
+      intercept[InternalServerException](service.getSoftwareVendors()).message mustBe s"[DataService][jsonFile] - $testFileName not found"
     }
 
     "the software vendor config file contains invalid json" in new Setup {
@@ -77,7 +77,7 @@ class DataServiceSpec extends PlaySpec {
         .thenReturn(Some(new FileInputStream(invalidVendors)))
 
       intercept[InternalServerException](service.getSoftwareVendors()).message
-        .contains("[SoftwareChoicesService][softwareVendors] - Json parse failures") mustBe true
+        .contains("[DataService][softwareVendors] - Json parse failures") mustBe true
     }
   }
 }

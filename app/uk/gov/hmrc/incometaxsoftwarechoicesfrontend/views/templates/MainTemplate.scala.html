@@ -18,6 +18,7 @@
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 @import views.html.helper.CSPNonce
 @import uk.gov.hmrc.hmrcfrontend.views.viewmodels.hmrcstandardpage._
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes
 
 @this(
     hmrcStandardPage: HmrcStandardPage,
@@ -25,10 +26,11 @@
     govukErrorSummary: GovukErrorSummary,
     hmrcReportTechnicalIssueHelper: HmrcReportTechnicalIssueHelper,
     standardAlphaBanner: StandardAlphaBanner,
+    hmrcTimeoutDialogHelper: HmrcTimeoutDialogHelper,
     fullWidthPageLayout: FixedWidthPageLayout
 )
 
-@(title: String, backLink: Option[String] = None, optForm: Option[Form[_]] = None, scripts: Option[Html] = None, isFullWidth: Boolean = false)(contentBlock: Html)(implicit request: RequestHeader, messages: Messages)
+@(title: String, backLink: Option[String] = None, optForm: Option[Form[_]] = None, scripts: Option[Html] = None, isFullWidth: Boolean = false, showTimeoutDialog: Boolean = true)(contentBlock: Html)(implicit request: RequestHeader, messages: Messages)
 
 @prefixedTitle = @{
   optForm match {
@@ -56,6 +58,20 @@
 
 @additionalHeadBlock = {
     <link href='@controllers.routes.Assets.versioned("stylesheets/application.css")' media="all" rel="stylesheet" type="text/css" />
+
+    @if(showTimeoutDialog) {
+        @hmrcTimeoutDialogHelper(
+            timeout = Some(appConfig.timeoutInSeconds),
+            countdown = Some(appConfig.timeoutWarningInSeconds),
+            signOutUrl = routes.SessionExpiredController.show(false).url,
+            timeoutUrl = Some(routes.SessionExpiredController.show(true).url),
+            keepAliveUrl = Some(routes.KeepAliveController.keepAlive().url),
+            title = Some(messages("timeout.title")),
+            message = Some(messages("timeout.message")),
+            keepAliveButtonText = Some(messages("timeout.continue")),
+            signOutButtonText = Some(messages("timeout.reset"))
+        )
+    }
 }
 
 @content = {

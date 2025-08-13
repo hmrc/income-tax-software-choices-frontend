@@ -32,4 +32,10 @@ class AppConfig @Inject()(val config: Configuration) {
   val feedbackUrl: String = config.get[String]("microservice.services.feedback-frontend.url")
 
   val cacheTtl: Long = config.get[Int]("mongodb.timeToLiveInSeconds")
+
+  val timeoutWarningInSeconds: Int =
+    config.get[Int]("session-timeout.warning")
+
+  val timeoutInSeconds: Int =
+    config.get[Int]("session-timeout.seconds")
 }
