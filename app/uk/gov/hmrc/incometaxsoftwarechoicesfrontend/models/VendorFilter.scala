@@ -416,6 +416,11 @@ object VendorFilterGroups {
     Individual
   )
 
+  val mandatoryFiltersForIndividuals: Set[VendorFilter] = Set(
+    TaxReturn,
+    QuarterlyUpdates
+  )
+
   def allGroups(isAgent: Boolean): Seq[(Set[VendorFilter], String)] =
     if (isAgent) {
       Seq((userTypeFilters, "user-type")) ++ groups
