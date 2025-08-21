@@ -138,10 +138,10 @@ class PageAnswersServiceSpec extends PlaySpec with BeforeAndAfterEach {
         when(mockUserFiltersRepository.set(any()))
           .thenReturn(Future.successful(true))
 
-        await(service.saveFiltersFromAnswers(sessionId)) mustBe Seq(Individual, SoleTrader, UkProperty, OverseasProperty, UkInterest,
-          ConstructionIndustryScheme, Employment, UkDividends, StatePensionIncome, PrivatePensionIncome, ForeignDividends,
-          ForeignInterest, PaymentsIntoAPrivatePension, CharitableGiving, CapitalGainsTax, StudentLoans, MarriageAllowance,
-          VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge, CalendarUpdatePeriods)
+        await(service.saveFiltersFromAnswers(sessionId)) mustBe Seq(Individual, QuarterlyUpdates, TaxReturn, SoleTrader,
+          UkProperty, OverseasProperty, UkInterest, ConstructionIndustryScheme, Employment, UkDividends, StatePensionIncome,
+          PrivatePensionIncome, ForeignDividends, ForeignInterest, PaymentsIntoAPrivatePension, CharitableGiving, CapitalGainsTax,
+          StudentLoans, MarriageAllowance, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge, CalendarUpdatePeriods)
       }
       "return correct sequence of vendors for the answers that have been saved ignoring not VendorFilter questions" in new Setup {
         when(mockUserFiltersRepository.get(eqTo(sessionId)))

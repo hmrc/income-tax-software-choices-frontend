@@ -24,12 +24,12 @@ softwareVendorsTemplate: SoftwareVendorsTemplate
 @(viewModel: SoftwareChoicesResultsViewModel)(implicit messages: Messages)
 
 <div id="vendor-count">
-    <h2 class="govuk-heading-l">@messages("search-software.vendor-count.agent.heading", viewModel.otherVendors.vendors.length)</h2>
+    <h2 class="govuk-heading-l">@messages("search-software.vendor-count.agent.heading", viewModel.allInOneVendors.vendors.length)</h2>
     <p class="govuk-body">
         @messages("search-software.vendor-count.agent")
     </p>
 </div>
 
 <div id="software-vendor-list">
-    @softwareVendorsTemplate(viewModel.otherVendors, viewModel.zeroResults)
+    @softwareVendorsTemplate(viewModel.allInOneVendors, viewModel.zeroResults)
 </div>

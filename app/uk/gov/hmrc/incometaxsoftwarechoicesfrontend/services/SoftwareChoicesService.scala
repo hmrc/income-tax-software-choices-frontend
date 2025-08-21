@@ -17,7 +17,7 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services
 
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{OverseasProperty, SoleTrader, UkProperty}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilterGroups.{accountingPeriodFilters, userPageFilters, userTypeFilters}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilterGroups._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareVendorModel, SoftwareVendors, VendorFilter}
 
 import javax.inject.{Inject, Singleton}
@@ -71,6 +71,7 @@ class SoftwareChoicesService @Inject()(
       val preferencesFilters = filters
         .filterNot(userTypes.contains)
         .filterNot(userPageFilters.contains)
+        .filterNot(mandatoryFiltersForIndividuals.contains)
       (SoftwareChoicesService.matchFilter(preferencesFilters) _
         andThen SoftwareChoicesService.sortVendors
       )(matchingVendors)

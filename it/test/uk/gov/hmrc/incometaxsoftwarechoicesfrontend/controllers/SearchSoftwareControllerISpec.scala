@@ -71,7 +71,7 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
         .set(OtherItemsPage, Seq(PaymentsIntoAPrivatePension)).get
         .set(AccountingPeriodPage, SixthAprilToFifthApril).get
 
-      val initialFilter = Seq(Individual,SoleTrader,UkInterest,PaymentsIntoAPrivatePension,StandardUpdatePeriods,FreeVersion)
+      val initialFilter = Seq(Individual,QuarterlyUpdates,TaxReturn,SoleTrader,UkInterest,PaymentsIntoAPrivatePension,StandardUpdatePeriods,FreeVersion)
 
       await(userFiltersRepository.set(testUserFilters(Some(userAnswers), initialFilter)))
 
@@ -82,7 +82,7 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
 
       await(userFiltersRepository.get(SessionId)) match {
         case Some(uf) => uf.finalFilters shouldBe Seq(
-          Individual, SoleTrader, UkInterest, PaymentsIntoAPrivatePension, StandardUpdatePeriods
+          Individual, QuarterlyUpdates, TaxReturn, SoleTrader, UkInterest, PaymentsIntoAPrivatePension, StandardUpdatePeriods
         )
         case None => fail("No user filters found")
       }
@@ -137,7 +137,7 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
 
       await(userFiltersRepository.get(SessionId)) match {
         case Some(uf) => uf.finalFilters shouldBe Seq(
-          Individual, SoleTrader, UkInterest, PaymentsIntoAPrivatePension, StandardUpdatePeriods, FreeVersion
+          Individual, QuarterlyUpdates, TaxReturn, SoleTrader, UkInterest, PaymentsIntoAPrivatePension, StandardUpdatePeriods, FreeVersion
         )
         case None => fail("No user filters found")
       }

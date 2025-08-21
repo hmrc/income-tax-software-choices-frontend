@@ -39,11 +39,12 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
   private val allVendors = SoftwareVendors(
     lastUpdated = LocalDate.now,
     vendors = userTypeFilters.flatMap { userType => Seq(
-      vendor(Seq(userType, SoleTrader, StandardUpdatePeriods)),
-      vendor(Seq(userType, SoleTrader, UkProperty, StandardUpdatePeriods)),
-      vendor(Seq(userType, UkProperty, StandardUpdatePeriods)),
-      vendor(Seq(userType, OverseasProperty, StandardUpdatePeriods)),
-      vendor(Seq(userType, OverseasProperty, CalendarUpdatePeriods)),
+      vendor(Seq(userType, QuarterlyUpdates, TaxReturn, SoleTrader, StandardUpdatePeriods)),
+      vendor(Seq(userType, QuarterlyUpdates, SoleTrader, StandardUpdatePeriods)),
+      vendor(Seq(userType, QuarterlyUpdates, TaxReturn, SoleTrader, UkProperty, StandardUpdatePeriods)),
+      vendor(Seq(userType, QuarterlyUpdates, TaxReturn, UkProperty, StandardUpdatePeriods)),
+      vendor(Seq(userType, QuarterlyUpdates, TaxReturn, OverseasProperty, StandardUpdatePeriods)),
+      vendor(Seq(userType, QuarterlyUpdates, TaxReturn, OverseasProperty, CalendarUpdatePeriods)),
     )}.toSeq ++ Seq(
       vendor(userTypeFilters.toSeq)
     )
@@ -63,16 +64,14 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
   )
 
   "getAllInOneVendors" should {
-    "exclude vendors that are not for requested user type" in {
-      Seq(Agent, Individual).foreach { userType =>
-        val result = service.getAllInOneVendors(Seq(userType))
-        result.vendors.size mustBe 6
-      }
+    "exclude vendors that are not for Individual and have both Quarterly Submissions and Tax returns" in {
+      val result = service.getAllInOneVendors(Seq(Individual, QuarterlyUpdates, TaxReturn))
+      result.vendors.size mustBe 5
     }
 
     "not ignore question filters" in {
       val result = service.getAllInOneVendors(Seq(Agent, SoleTrader))
-      result.vendors.size mustBe 2
+      result.vendors.size mustBe 3
     }
 
     "retain preferences filters" in {
@@ -85,7 +84,7 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
     "exclude vendors that are not for requested user type" in {
       Seq(Individual, Agent).foreach { userType =>
         val result = service.getOtherVendors(Seq(userType, SoleTrader, StandardUpdatePeriods), true)
-        result.vendors.size mustBe 2
+        result.vendors.size mustBe 3
         result.vendors.head.name mustBe userType.toString
       }
     }
@@ -93,7 +92,7 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
     "returns all vendors so mandatory filters are covered" in {
       Seq(Individual, Agent).foreach { userType =>
         val result = service.getOtherVendors(Seq(userType, SoleTrader, UkProperty, StandardUpdatePeriods), true)
-        result.vendors.size mustBe 3
+        result.vendors.size mustBe 4
         result.vendors.head.name mustBe userType.toString
       }
     }
@@ -101,14 +100,14 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
     "ignore question filters and excludes all-in-one vendors" in {
       Seq(false, true).foreach { isAgent =>
         val result = service.getOtherVendors(Seq(Agent, SoleTrader, StandardUpdatePeriods), isAgent)
-        val expected = if (isAgent) 2 else 0
+        val expected = if (isAgent) 3 else 0
         result.vendors.size mustBe expected
       }
     }
 
     "ignores accounting period and mandatory income sources for agent" in {
       val result = service.getOtherVendors(Seq(Agent), true)
-      result.vendors.size mustBe 6
+      result.vendors.size mustBe 7
     }
 
     "retain preferences filters" in {
@@ -120,12 +119,12 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
 
     "does not show duplicates" in {
       val result = service.getOtherVendors(Seq(Agent, SoleTrader, UkProperty, StandardUpdatePeriods), true)
-      result.vendors.size mustBe 3
+      result.vendors.size mustBe 4
     }
 
     "returns all vendors when no user types are specified" in {
       val result = service.getOtherVendors(Seq(SoleTrader, UkProperty, StandardUpdatePeriods), true)
-      result.vendors.size mustBe 11
+      result.vendors.size mustBe 13
     }
 
     "returns vendors that have all user type filters" in {

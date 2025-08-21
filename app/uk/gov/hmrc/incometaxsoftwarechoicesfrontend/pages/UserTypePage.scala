@@ -26,7 +26,7 @@ case object UserTypePage extends QuestionPage[UserType] {
   override def path: JsPath = JsPath \ toString
 
   override def toVendorFilter(value: UserType): Seq[VendorFilter] = value match {
-    case SoleTraderOrLandlord => Seq(VendorFilter.Individual)
+    case SoleTraderOrLandlord => Seq(VendorFilter.Individual, VendorFilter.QuarterlyUpdates, VendorFilter.TaxReturn)
     case Agent => Seq(VendorFilter.Agent)
   }
 
