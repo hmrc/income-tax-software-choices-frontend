@@ -18,27 +18,27 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.http.InternalServerException
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.SessionIdentifierAction
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.BusinessIncomeForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.BusinessIncomePage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.PageAnswersService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.BusinessIncomePage
 
-import javax.inject.Inject
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
+@Singleton
 class BusinessIncomeController @Inject()(view: BusinessIncomePage,
                                          pageAnswersService: PageAnswersService,
-                                         appConfig: AppConfig)
-                                        (implicit val ec: ExecutionContext,
-                                         mcc: MessagesControllerComponents) extends BaseFrontendController(mcc) {
+                                         identify: SessionIdentifierAction)
+                                        (implicit ec: ExecutionContext,
+                                         mcc: MessagesControllerComponents) extends BaseFrontendController {
 
 
-  def show(editMode: Boolean): Action[AnyContent] = Action.async { implicit request =>
-    val sessionId = request.session.get("sessionId").getOrElse("")
-    for (
-      pageAnswers <- pageAnswersService.getPageAnswers(sessionId, BusinessIncomePage)
-    ) yield {
+  def show(editMode: Boolean): Action[AnyContent] = identify.async { implicit request =>
+    for {
+      pageAnswers <- pageAnswersService.getPageAnswers(request.sessionId, BusinessIncomePage)
+    } yield {
       Ok(view(
         businessIncomeForm = BusinessIncomeForm.form.fill(pageAnswers),
         postAction = routes.BusinessIncomeController.submit(editMode),
@@ -47,7 +47,7 @@ class BusinessIncomeController @Inject()(view: BusinessIncomePage,
     }
   }
 
-  def submit(editMode: Boolean): Action[AnyContent] = Action.async { implicit request =>
+  def submit(editMode: Boolean): Action[AnyContent] = identify.async { implicit request =>
     BusinessIncomeForm.form.bindFromRequest().fold(
       formWithErrors => {
         Future.successful(
@@ -59,8 +59,7 @@ class BusinessIncomeController @Inject()(view: BusinessIncomePage,
         )
       },
       answers => {
-        val sessionId = request.session.get("sessionId").getOrElse("")
-        pageAnswersService.setPageAnswers(sessionId, BusinessIncomePage, answers).flatMap {
+        pageAnswersService.setPageAnswers(request.sessionId, BusinessIncomePage, answers).flatMap {
           case true =>
             if (editMode) Future.successful(Redirect(routes.CheckYourAnswersController.show()))
             else Future.successful(Redirect(routes.AdditionalIncomeSourcesController.show()))

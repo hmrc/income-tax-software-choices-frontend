@@ -19,42 +19,31 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import play.api.Application
 import play.api.data.Form
-import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, MessagesControllerComponents}
 import play.api.test.FakeRequest
-import play.api.test.Helpers.POST
-import uk.gov.hmrc.http.SessionKeys
+import play.api.test.Helpers.{POST, stubMessagesControllerComponents}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 
 import scala.concurrent.ExecutionContext
 
 trait ControllerBaseSpec extends AnyWordSpecLike with Matchers with GuiceOneAppPerSuite {
 
-  val sessionId = "sessionId"
-  val mcc = app.injector.instanceOf[MessagesControllerComponents]
   val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
+
   implicit val ec: ExecutionContext = ExecutionContext.Implicits.global
+  implicit val mcc: MessagesControllerComponents = stubMessagesControllerComponents()
 
-  override def fakeApplication(): Application =
-    new GuiceApplicationBuilder()
-      .configure(
-        "metrics.jvm" -> false,
-        "metrics.enabled" -> false
-      )
-      .build()
-
-  val fakeRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest().withSession((SessionKeys.sessionId -> sessionId))
+  val fakeRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
 
   implicit class FakeRequestUtil(fakeRequest: FakeRequest[_]) {
-    implicit def post[T](form: Form[T], data: T): FakeRequest[AnyContentAsFormUrlEncoded] =
+    def post[T](form: Form[T], data: T): FakeRequest[AnyContentAsFormUrlEncoded] =
       fakeRequest.post(form.fill(data))
 
-    implicit def postInvalid[T, I](form: Form[T], data: I): FakeRequest[AnyContentAsFormUrlEncoded] =
+    def postInvalid[T, I](form: Form[T], data: I): FakeRequest[AnyContentAsFormUrlEncoded] =
       fakeRequest.withFormUrlEncodedBody(form.mapping.key -> data.toString)
 
-    implicit def post[T](form: Form[T]): FakeRequest[AnyContentAsFormUrlEncoded] =
+    def post[T](form: Form[T]): FakeRequest[AnyContentAsFormUrlEncoded] =
       fakeRequest.withFormUrlEncodedBody(form.data.toSeq: _*)
         .withHeaders("Content-Type" -> "application/x-www-form-urlencoded")
         .withMethod(POST)

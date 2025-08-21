@@ -17,12 +17,11 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.{reset, times, verify, when}
-import org.scalatest.BeforeAndAfterEach
-import org.scalatestplus.mockito.MockitoSugar.mock
+import org.mockito.Mockito.{times, verify, when}
 import play.api.http.Status.{OK, SEE_OTHER}
 import play.api.mvc.Result
 import play.api.test.Helpers.{HTML, contentType, defaultAwaitTimeout, redirectLocation, status}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.mocks.MockSessionIdentifierAction
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.UserTypeForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.SoleTraderOrLandlord
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
@@ -30,13 +29,9 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SessionExpiredVie
 
 import scala.concurrent.Future
 
-class SessionExpiredControllerSpec extends ControllerBaseSpec with BeforeAndAfterEach {
+class SessionExpiredControllerSpec extends ControllerBaseSpec with MockSessionIdentifierAction {
 
-  private lazy val sessionExpiredView =
-    app.injector.instanceOf[SessionExpiredView]
-
-  private lazy val repo =
-    mock[UserFiltersRepository]
+  private lazy val sessionExpiredView = app.injector.instanceOf[SessionExpiredView]
 
   "show" must {
     "delete answers and return OK" in new Setup {
@@ -66,11 +61,14 @@ class SessionExpiredControllerSpec extends ControllerBaseSpec with BeforeAndAfte
   }
 
   class Setup(delete: Boolean = true) {
+    val repo: UserFiltersRepository = mock[UserFiltersRepository]
+
     val controller: SessionExpiredController = new SessionExpiredController(
       repo,
-      sessionExpiredView
+      sessionExpiredView,
+      fakeSessionIdentifierAction
     )(ec, mcc)
-    reset(repo)
+
     when(repo.delete(any())).thenReturn(
       Future.successful(delete)
     )

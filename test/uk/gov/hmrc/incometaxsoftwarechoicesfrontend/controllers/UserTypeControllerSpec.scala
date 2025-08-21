@@ -18,13 +18,12 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import org.mockito.ArgumentMatchers.{any, eq => eqTo}
 import org.mockito.Mockito.when
-import org.scalatest.BeforeAndAfterEach
-import org.scalatestplus.mockito.MockitoSugar.mock
 import play.api.http.Status.{OK, SEE_OTHER}
 import play.api.mvc.Result
 import play.api.test.Helpers.{HTML, await, contentType, defaultAwaitTimeout, redirectLocation, status}
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.http.InternalServerException
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.mocks.MockSessionIdentifierAction
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.UserTypeForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.SoleTraderOrLandlord
@@ -36,10 +35,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.UserTypePage
 
 import scala.concurrent.Future
 
-class UserTypeControllerSpec extends ControllerBaseSpec with BeforeAndAfterEach {
-
-  lazy val mockPageAnswersService: PageAnswersService = mock[PageAnswersService]
-  lazy val mockUserTypeView: UserTypePage = mock[UserTypePage]
+class UserTypeControllerSpec extends ControllerBaseSpec with MockSessionIdentifierAction {
 
   "show" must {
     "return OK and display the user type page" when {
@@ -107,6 +103,10 @@ class UserTypeControllerSpec extends ControllerBaseSpec with BeforeAndAfterEach 
         "failed to reset user filters" in new Setup {
           when(mockPageAnswersService.resetUserAnswers(eqTo(sessionId)))
             .thenReturn(Future.successful(false))
+          when(mockPageAnswersService.setPageAnswers(eqTo(sessionId), eqTo(UserTypePage), eqTo(UserType.Agent))(any()))
+            .thenReturn(Future.successful(true))
+          when(mockPageAnswersService.saveFiltersFromAnswers(eqTo(sessionId)))
+            .thenReturn(Future.successful(Seq(Agent)))
 
           val result: Future[Result] = controller.submit()(fakeRequest.post(UserTypeForm.userTypeForm, UserType.Agent))
 
@@ -114,9 +114,11 @@ class UserTypeControllerSpec extends ControllerBaseSpec with BeforeAndAfterEach 
         }
         "failed to set page answers" in new Setup {
           when(mockPageAnswersService.resetUserAnswers(eqTo(sessionId)))
-            .thenReturn(Future.successful(false))
+            .thenReturn(Future.successful(true))
           when(mockPageAnswersService.setPageAnswers(eqTo(sessionId), eqTo(UserTypePage), eqTo(UserType.Agent))(any()))
             .thenReturn(Future.successful(false))
+          when(mockPageAnswersService.saveFiltersFromAnswers(eqTo(sessionId)))
+            .thenReturn(Future.successful(Seq(Agent)))
 
           val result: Future[Result] = controller.submit()(fakeRequest.post(UserTypeForm.userTypeForm, UserType.Agent))
 
@@ -125,11 +127,11 @@ class UserTypeControllerSpec extends ControllerBaseSpec with BeforeAndAfterEach 
 
         "failed to save answers to Filters" in new Setup {
           when(mockPageAnswersService.resetUserAnswers(eqTo(sessionId)))
-            .thenReturn(Future.successful(false))
+            .thenReturn(Future.successful(true))
           when(mockPageAnswersService.setPageAnswers(eqTo(sessionId), eqTo(UserTypePage), eqTo(UserType.Agent))(any()))
-            .thenReturn(Future.successful(false))
-          when(mockPageAnswersService.saveFiltersFromAnswers(sessionId))
-            .thenReturn(Future(Seq.empty))
+            .thenReturn(Future.successful(true))
+          when(mockPageAnswersService.saveFiltersFromAnswers(eqTo(sessionId)))
+            .thenReturn(Future.successful(Seq.empty))
 
           val result: Future[Result] = controller.submit()(fakeRequest.post(UserTypeForm.userTypeForm, UserType.Agent))
 
@@ -141,11 +143,16 @@ class UserTypeControllerSpec extends ControllerBaseSpec with BeforeAndAfterEach 
   }
 
   trait Setup {
+    lazy val mockPageAnswersService: PageAnswersService = mock[PageAnswersService]
+    lazy val mockUserTypeView: UserTypePage = mock[UserTypePage]
+
     val controller: UserTypeController = new UserTypeController(
       mockUserTypeView,
       mockPageAnswersService,
-      appConfig
+      appConfig,
+      fakeSessionIdentifierAction
     )(ec, mcc)
+
     val mockUserFiltersRepository: UserFiltersRepository = mock[UserFiltersRepository]
   }
 

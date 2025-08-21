@@ -17,21 +17,16 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.{reset, times, verify, when}
-import org.scalatest.BeforeAndAfterEach
-import org.scalatestplus.mockito.MockitoSugar.mock
-import play.api.http.Status.{OK, SEE_OTHER}
+import org.mockito.Mockito.{times, verify, when}
+import play.api.http.Status.OK
 import play.api.mvc.Result
-import play.api.test.Helpers.{defaultAwaitTimeout, redirectLocation, status}
+import play.api.test.Helpers.{defaultAwaitTimeout, status}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.mocks.MockSessionIdentifierAction
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SessionExpiredView
 
 import scala.concurrent.Future
 
-class KeepAliveControllerSpec extends ControllerBaseSpec with BeforeAndAfterEach {
-
-  private lazy val repo =
-    mock[UserFiltersRepository]
+class KeepAliveControllerSpec extends ControllerBaseSpec with MockSessionIdentifierAction {
 
   "keepAlive" must {
     "keeps the session alive and return OK" in new Setup {
@@ -50,10 +45,13 @@ class KeepAliveControllerSpec extends ControllerBaseSpec with BeforeAndAfterEach
   }
 
   class Setup(success: Boolean = true) {
+    val repo: UserFiltersRepository = mock[UserFiltersRepository]
+
     val controller: KeepAliveController = new KeepAliveController(
-      repo
-    )(ec, mcc)
-    reset(repo)
+      repo,
+      fakeSessionIdentifierAction
+    )
+
     when(repo.keepAlive(any())).thenReturn(
       Future.successful(success)
     )
