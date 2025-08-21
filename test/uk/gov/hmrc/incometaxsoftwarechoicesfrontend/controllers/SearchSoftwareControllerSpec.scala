@@ -19,13 +19,12 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.{eq => eqTo}
 import org.mockito.Mockito.when
-import org.scalatest.BeforeAndAfterEach
-import org.scalatestplus.mockito.MockitoSugar.mock
 import play.api.Environment
 import play.api.http.Status
 import play.api.mvc.Codec
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.mocks.MockSessionIdentifierAction
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserFilters
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{Individual, SoleTrader, StandardUpdatePeriods}
@@ -38,10 +37,9 @@ import java.time.Instant
 import java.util.UUID
 import scala.concurrent.Future
 
-class SearchSoftwareControllerSpec extends ControllerBaseSpec with BeforeAndAfterEach {
+class SearchSoftwareControllerSpec extends ControllerBaseSpec with MockSessionIdentifierAction {
 
-  private val searchSoftwarePage = app.injector.instanceOf[SearchSoftwarePage]
-  val mockUserFiltersRepo: UserFiltersRepository = mock[UserFiltersRepository]
+  val searchSoftwarePage: SearchSoftwarePage = app.injector.instanceOf[SearchSoftwarePage]
 
   "Show" should {
     "return OK status with the search software page" in withController { controller =>
@@ -82,6 +80,7 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec with BeforeAndAfte
 
   private def withController(testCode: SearchSoftwareController => Any): Unit = {
     val mockEnvironment: Environment = mock[Environment]
+    val mockUserFiltersRepo: UserFiltersRepository = mock[UserFiltersRepository]
 
     when(mockUserFiltersRepo.get(ArgumentMatchers.any())).thenReturn(
       Future.successful(Some(UserFilters(
@@ -99,13 +98,11 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec with BeforeAndAfte
     lazy val pageAnswerService: PageAnswersService = new PageAnswersService(mockUserFiltersRepo, ec)
 
     val controller = new SearchSoftwareController(
-      mcc,
-      appConfig,
       searchSoftwarePage,
       softwareChoicesService,
       pageAnswerService,
       mockUserFiltersRepo,
-      ec
+      fakeSessionIdentifierAction
     )
 
     testCode(controller)

@@ -26,11 +26,10 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.testonly.views.html.FeatureS
 
 import javax.inject.Inject
 import scala.collection.immutable.ListMap
-import scala.concurrent.ExecutionContext
 
-class FeatureSwitchController @Inject()(mcc: MessagesControllerComponents, featureSwitchSettings: FeatureSwitchSettings)
-                                       (implicit val ec: ExecutionContext,
-                                        val appConfig: AppConfig) extends BaseFrontendController(mcc) with FeatureSwitching {
+class FeatureSwitchController @Inject()(featureSwitchSettings: FeatureSwitchSettings)
+                                       (implicit val appConfig: AppConfig,
+                                        mcc: MessagesControllerComponents) extends BaseFrontendController with FeatureSwitching {
 
   private def view(switchNames: Map[FeatureSwitch, Boolean])(implicit request: Request[_]): Html =
     featureSwitchSettings(

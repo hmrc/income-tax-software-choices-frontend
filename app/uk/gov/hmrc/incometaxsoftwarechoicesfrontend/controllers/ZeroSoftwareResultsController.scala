@@ -17,27 +17,23 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import uk.gov.hmrc.http.InternalServerException
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.PageAnswersService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.ZeroSoftwareResultsView
 
-import javax.inject.Inject
-import scala.concurrent.{ExecutionContext, Future}
+import javax.inject.{Inject, Singleton}
 
-class ZeroSoftwareResultsController @Inject()(view: ZeroSoftwareResultsView,
-                                              pageAnswersService: PageAnswersService)
-                                             (implicit val ec: ExecutionContext,
-                                         mcc: MessagesControllerComponents) extends BaseFrontendController(mcc) {
+@Singleton
+class ZeroSoftwareResultsController @Inject()(view: ZeroSoftwareResultsView)
+                                             (implicit mcc: MessagesControllerComponents) extends BaseFrontendController {
 
 
-  def show(): Action[AnyContent] = Action.async { implicit request =>
-    Future.successful(Ok(view(
+  def show(): Action[AnyContent] = Action { implicit request =>
+    Ok(view(
       postAction = routes.ZeroSoftwareResultsController.submit(),
       backLink = routes.CheckYourAnswersController.show()
-    )))
+    ))
   }
 
-  def submit(): Action[AnyContent] = Action { implicit request =>
+  def submit(): Action[AnyContent] = Action { _ =>
     Redirect(routes.SearchSoftwareController.show(zeroResults = true))
   }
 

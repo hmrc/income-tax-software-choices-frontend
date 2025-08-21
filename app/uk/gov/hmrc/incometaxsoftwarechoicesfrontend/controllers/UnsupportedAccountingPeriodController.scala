@@ -19,12 +19,11 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.UnsupportedAccountingPeriod
 
-import javax.inject.Inject
-import scala.concurrent.ExecutionContext
+import javax.inject.{Inject, Singleton}
 
+@Singleton
 class UnsupportedAccountingPeriodController @Inject()(view: UnsupportedAccountingPeriod)
-                                                     (implicit val ec: ExecutionContext,
-                                                      mcc: MessagesControllerComponents) extends BaseFrontendController(mcc) {
+                                                     (implicit mcc: MessagesControllerComponents) extends BaseFrontendController {
 
 
   def show: Action[AnyContent] = Action { implicit request =>

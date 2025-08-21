@@ -18,7 +18,6 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.http.NotFoundException
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.SoftwareChoicesService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.ProductDetailsPage
 
@@ -26,10 +25,9 @@ import java.net.URLDecoder
 import javax.inject.{Inject, Singleton}
 
 @Singleton
-class ProductDetailsController @Inject()(mcc: MessagesControllerComponents,
-                                         val appConfig: AppConfig,
-                                         softwareChoicesService: SoftwareChoicesService,
-                                         productDetailsPage: ProductDetailsPage) extends BaseFrontendController(mcc) {
+class ProductDetailsController @Inject()(softwareChoicesService: SoftwareChoicesService,
+                                         productDetailsPage: ProductDetailsPage)
+                                        (implicit mcc: MessagesControllerComponents) extends BaseFrontendController {
 
   def show(software: String, zeroResults: Boolean): Action[AnyContent] = Action { implicit request =>
     val softwareName = URLDecoder.decode(software, "UTF-8")
@@ -41,6 +39,5 @@ class ProductDetailsController @Inject()(mcc: MessagesControllerComponents,
 }
 
 object ProductDetailsController {
-  val NotProvided = "[ProductDetailsController][show] - Software vendor not provided"
   val NotFound = "[ProductDetailsController][show] - Software vendor not found"
 }

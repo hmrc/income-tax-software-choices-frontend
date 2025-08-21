@@ -19,10 +19,10 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 import play.api.data.Form
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import play.twirl.api.Html
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.SessionIdentifierAction
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.Agent
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.Individual
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.requests.SessionRequest
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FiltersFormModel, UserFilters, VendorFilter}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.UserTypePage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
@@ -34,20 +34,19 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
-                                         val appConfig: AppConfig,
-                                         searchSoftwarePage: SearchSoftwarePage,
+class SearchSoftwareController @Inject()(searchSoftwarePage: SearchSoftwarePage,
                                          softwareChoicesService: SoftwareChoicesService,
                                          pageAnswersService: PageAnswersService,
                                          userFiltersRepository: UserFiltersRepository,
-                                         implicit val ec: ExecutionContext) extends BaseFrontendController(mcc) {
+                                         identify: SessionIdentifierAction)
+                                        (implicit ec: ExecutionContext,
+                                         mcc: MessagesControllerComponents) extends BaseFrontendController {
 
-  def show(zeroResults: Boolean): Action[AnyContent] = Action.async { implicit request =>
-    val sessionId = request.session.get("sessionId").getOrElse("")
+  def show(zeroResults: Boolean): Action[AnyContent] = identify.async { implicit request =>
     for {
-      userFilters <- userFiltersRepository.get(sessionId)
+      userFilters <- userFiltersRepository.get(request.sessionId)
       filters = userFilters.map(_.finalFilters).getOrElse(Seq.empty)
-      userType <- pageAnswersService.getPageAnswers(sessionId, UserTypePage)
+      userType <- pageAnswersService.getPageAnswers(request.sessionId, UserTypePage)
       isAgent = userType.contains(Agent)
       model = SoftwareChoicesResultsViewModel(
         allInOneVendors = softwareChoicesService.getAllInOneVendors(filters = filters),
@@ -60,17 +59,16 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
     }
   }
 
-  def search(zeroResults: Boolean): Action[AnyContent] = Action.async { implicit request =>
-    val sessionId = request.session.get("sessionId").getOrElse("")
+  def search(zeroResults: Boolean): Action[AnyContent] = identify.async { implicit request =>
     val filters = FiltersForm.form.bindFromRequest().get
     for {
-      userType <- pageAnswersService.getPageAnswers(sessionId, UserTypePage)
-      userFilters <- update(filters, zeroResults).flatMap(_ => userFiltersRepository.get(sessionId))
+      userType <- pageAnswersService.getPageAnswers(request.sessionId, UserTypePage)
+      userFilters <- update(filters, zeroResults).flatMap(_ => userFiltersRepository.get(request.sessionId))
     } yield {
       val isAgent = userType.contains(Agent)
       val model = SoftwareChoicesResultsViewModel(
-        allInOneVendors = softwareChoicesService.getAllInOneVendors(userFilters.getOrElse(UserFilters(sessionId, None, filters.filters)).finalFilters),
-        otherVendors = softwareChoicesService.getOtherVendors(userFilters.getOrElse(UserFilters(sessionId, None, filters.filters)).finalFilters, isAgent || zeroResults),
+        allInOneVendors = softwareChoicesService.getAllInOneVendors(userFilters.getOrElse(UserFilters(request.sessionId, None, filters.filters)).finalFilters),
+        otherVendors = softwareChoicesService.getOtherVendors(userFilters.getOrElse(UserFilters(request.sessionId, None, filters.filters)).finalFilters, isAgent || zeroResults),
         zeroResults = zeroResults,
         isAgent = isAgent
       )
@@ -78,23 +76,22 @@ class SearchSoftwareController @Inject()(mcc: MessagesControllerComponents,
     }
   }
 
-  def clear(zeroResults: Boolean): Action[AnyContent] = Action.async { implicit request =>
+  def clear(zeroResults: Boolean): Action[AnyContent] = identify.async { implicit request =>
     update(FiltersFormModel(), zeroResults) map { _ =>
       Redirect(routes.SearchSoftwareController.show(zeroResults))
     }
   }
 
-  private def update(search: FiltersFormModel, zeroResults: Boolean)(implicit request: Request[_]): Future[Boolean] = {
-    val sessionId = request.session.get("sessionId").getOrElse("")
+  private def update(search: FiltersFormModel, zeroResults: Boolean)(implicit request: SessionRequest[_]): Future[Boolean] = {
     for {
-      userFilters <- userFiltersRepository.get(sessionId)
+      userFilters <- userFiltersRepository.get(request.sessionId)
       result <- userFilters match {
-        case Some(userFilters) => {
+        case Some(userFilters) =>
           val filtersFromAnswers = pageAnswersService
             .getFiltersFromAnswers(userFilters.answers)
             .filterNot(_ == VendorFilter.Agent)
-          userFiltersRepository.set(userFilters.copy(finalFilters = filtersFromAnswers ++ search.filters))}
-        case None => userFiltersRepository.set(UserFilters(sessionId, None, search.filters))
+          userFiltersRepository.set(userFilters.copy(finalFilters = filtersFromAnswers ++ search.filters))
+        case None => userFiltersRepository.set(UserFilters(request.sessionId, None, search.filters))
       }
     } yield {
       result

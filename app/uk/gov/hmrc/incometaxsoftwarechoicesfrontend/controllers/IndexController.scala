@@ -18,9 +18,10 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 
-import javax.inject.Inject
+import javax.inject.{Inject, Singleton}
 
-class IndexController @Inject()(mcc: MessagesControllerComponents) extends BaseFrontendController(mcc) {
+@Singleton
+class IndexController @Inject()(implicit mcc: MessagesControllerComponents) extends BaseFrontendController {
 
   def index: Action[AnyContent] = Action { _ =>
     Redirect(routes.UserTypeController.show())

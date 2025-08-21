@@ -17,22 +17,22 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.SessionIdentifierAction
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SessionExpiredView
 
-import javax.inject.Inject
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
 
-class KeepAliveController @Inject()(
-  repo: UserFiltersRepository
-)(implicit val ec: ExecutionContext,
- mcc: MessagesControllerComponents) extends BaseFrontendController(mcc) {
+@Singleton
+class KeepAliveController @Inject()(repo: UserFiltersRepository,
+                                    identify: SessionIdentifierAction)
+                                   (implicit ec: ExecutionContext,
+                                    mcc: MessagesControllerComponents) extends BaseFrontendController {
 
-  def keepAlive(): Action[AnyContent] = Action.async { implicit request =>
-    val sessionId = request.session.get("sessionId").getOrElse("")
-    for (
-      _ <- repo.keepAlive(sessionId)
-    ) yield {
+  def keepAlive(): Action[AnyContent] = identify.async { implicit request =>
+    for {
+      _ <- repo.keepAlive(request.sessionId)
+    } yield {
       Ok
     }
   }

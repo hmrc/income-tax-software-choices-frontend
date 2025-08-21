@@ -19,6 +19,7 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.SessionIdentifierAction
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.UserTypeForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.UserTypeForm.userTypeForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.{Agent, SoleTraderOrLandlord}
@@ -32,15 +33,15 @@ import scala.concurrent.{ExecutionContext, Future}
 @Singleton
 class UserTypeController @Inject()(view: UserTypePage,
                                    pageAnswersService: PageAnswersService,
-                                   appConfig: AppConfig
-                                  )(implicit ec: ExecutionContext,
-                                    mcc: MessagesControllerComponents) extends BaseFrontendController(mcc) {
+                                   appConfig: AppConfig,
+                                   identify: SessionIdentifierAction)
+                                  (implicit ec: ExecutionContext,
+                                   mcc: MessagesControllerComponents) extends BaseFrontendController {
 
-  def show(): Action[AnyContent] = Action.async { implicit request =>
-    val sessionId = request.session.get("sessionId").getOrElse("")
-    for (
-      pageAnswers <- pageAnswersService.getPageAnswers(sessionId, UserTypePage)
-    ) yield {
+  def show(): Action[AnyContent] = identify.async { implicit request =>
+    for {
+      pageAnswers <- pageAnswersService.getPageAnswers(request.sessionId, UserTypePage)
+    } yield {
       Ok(view(
         userTypeForm = UserTypeForm.userTypeForm.fill(pageAnswers),
         postAction = routes.UserTypeController.submit(),
@@ -49,7 +50,7 @@ class UserTypeController @Inject()(view: UserTypePage,
     }
   }
 
-  def submit(): Action[AnyContent] = Action.async { implicit request =>
+  def submit(): Action[AnyContent] = identify.async { implicit request =>
     userTypeForm.bindFromRequest().fold(
       formWithErrors => {
         Future.successful(
@@ -59,28 +60,24 @@ class UserTypeController @Inject()(view: UserTypePage,
             backUrl = appConfig.guidance
           ))
         )
-      },
-      typeOfUser => {
-        val sessionId = request.session.get("sessionId").getOrElse("")
-        typeOfUser match {
-          case SoleTraderOrLandlord =>
-            pageAnswersService.setPageAnswers(sessionId, UserTypePage, typeOfUser).flatMap {
-              case true => Future.successful(Redirect(routes.BusinessIncomeController.show()))
-              case false => throw new InternalServerException("[UserTypeController][submit] - Could not save sole trader or landlord user type")
+      }, {
+        case typeOfUser@SoleTraderOrLandlord =>
+          pageAnswersService.setPageAnswers(request.sessionId, UserTypePage, typeOfUser).flatMap {
+            case true => Future.successful(Redirect(routes.BusinessIncomeController.show()))
+            case false => throw new InternalServerException("[UserTypeController][submit] - Could not save sole trader or landlord user type")
+          }
+        case typeOfUser@Agent =>
+          for {
+            resetUserAnswers <- pageAnswersService.resetUserAnswers(request.sessionId)
+            setPageAnswers <- pageAnswersService.setPageAnswers(request.sessionId, UserTypePage, typeOfUser)
+            saveFiltersFromAnswers <- pageAnswersService.saveFiltersFromAnswers(request.sessionId)
+          } yield {
+            if (resetUserAnswers && setPageAnswers && saveFiltersFromAnswers.nonEmpty) {
+              Redirect(routes.SearchSoftwareController.show())
+            } else {
+              throw new InternalServerException("[UserTypeController][submit] - Could not save agent user type")
             }
-          case Agent =>
-            for {
-              resetUserAnswers <- pageAnswersService.resetUserAnswers(sessionId)
-              setPageAnswers <- pageAnswersService.setPageAnswers(sessionId, UserTypePage, typeOfUser)
-              saveFiltersFromAnswers <- pageAnswersService.saveFiltersFromAnswers(sessionId)
-            } yield {
-              if (resetUserAnswers && setPageAnswers && saveFiltersFromAnswers.nonEmpty) {
-                Redirect(routes.SearchSoftwareController.show())
-              } else {
-                throw new InternalServerException("[UserTypeController][submit] - Could not save agent user type")
-              }
-            }
-        }
+          }
       }
     )
   }

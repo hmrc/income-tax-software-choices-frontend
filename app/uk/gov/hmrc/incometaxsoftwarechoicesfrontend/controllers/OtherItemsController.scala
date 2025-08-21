@@ -18,25 +18,27 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.http.InternalServerException
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.SessionIdentifierAction
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.OtherItemsForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.OtherItemsPage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.PageAnswersService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.OtherItemsPage
 
-import javax.inject.Inject
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
+@Singleton
 class OtherItemsController @Inject()(view: OtherItemsPage,
-                                     pageAnswersService: PageAnswersService)
-                                    (implicit val ec: ExecutionContext,
-                                         mcc: MessagesControllerComponents) extends BaseFrontendController(mcc) {
+                                     pageAnswersService: PageAnswersService,
+                                     identify: SessionIdentifierAction)
+                                    (implicit ec: ExecutionContext,
+                                     mcc: MessagesControllerComponents) extends BaseFrontendController {
 
 
-  def show(editMode: Boolean): Action[AnyContent] = Action.async { implicit request =>
-    val sessionId = request.session.get("sessionId").getOrElse("")
-    for (
-      pageAnswers <- pageAnswersService.getPageAnswers(sessionId, OtherItemsPage)
-    ) yield {
+  def show(editMode: Boolean): Action[AnyContent] = identify.async { implicit request =>
+    for {
+      pageAnswers <- pageAnswersService.getPageAnswers(request.sessionId, OtherItemsPage)
+    } yield {
       Ok(view(
         otherItemsForm = OtherItemsForm.form.fill(pageAnswers),
         postAction = routes.OtherItemsController.submit(editMode),
@@ -45,7 +47,7 @@ class OtherItemsController @Inject()(view: OtherItemsPage,
     }
   }
 
-  def submit(editMode: Boolean): Action[AnyContent] = Action.async { implicit request =>
+  def submit(editMode: Boolean): Action[AnyContent] = identify.async { implicit request =>
     OtherItemsForm.form.bindFromRequest().fold(
       formWithErrors => {
         Future.successful(
@@ -57,8 +59,7 @@ class OtherItemsController @Inject()(view: OtherItemsPage,
         )
       },
       answers => {
-        val sessionId = request.session.get("sessionId").getOrElse("")
-        pageAnswersService.setPageAnswers(sessionId, OtherItemsPage, answers).flatMap {
+        pageAnswersService.setPageAnswers(request.sessionId, OtherItemsPage, answers).flatMap {
           case true =>
             if (editMode) Future.successful(Redirect(routes.CheckYourAnswersController.show()))
             else Future.successful(Redirect(routes.AccountingPeriodController.show(editMode)))
