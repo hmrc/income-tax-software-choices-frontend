@@ -18,6 +18,7 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.http.InternalServerException
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.SessionIdentifierAction
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.AdditionalIncomeForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.AdditionalIncomeSourcesPage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.PageAnswersService
@@ -28,40 +29,39 @@ import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class AdditionalIncomeSourcesController @Inject()(view: AdditionalIncomeSourcePage,
-                                                  pageAnswersService: PageAnswersService
-                                                 )(implicit ec: ExecutionContext,
-                                                   mcc: MessagesControllerComponents) extends BaseFrontendController(mcc) {
+                                                  pageAnswersService: PageAnswersService,
+                                                  identify: SessionIdentifierAction)
+                                                 (implicit ec: ExecutionContext,
+                                                  mcc: MessagesControllerComponents) extends BaseFrontendController {
 
-  def show(editMode: Boolean): Action[AnyContent] = Action.async { implicit request =>
-    val sessionId = request.session.get("sessionId").getOrElse("")
-    pageAnswersService.getPageAnswers(sessionId, AdditionalIncomeSourcesPage)
+  def show(editMode: Boolean): Action[AnyContent] = identify.async { implicit request =>
+    pageAnswersService.getPageAnswers(request.sessionId, AdditionalIncomeSourcesPage)
       .map { maybeAnswers =>
         Ok(view(
           AdditionalIncomeForm.form.fill(maybeAnswers),
           postAction = routes.AdditionalIncomeSourcesController.submit(editMode),
-          backUrl    = backUrl(editMode)
+          backUrl = backUrl(editMode)
         ))
       }
   }
 
-  def submit(editMode: Boolean): Action[AnyContent] = Action.async { implicit request =>
+  def submit(editMode: Boolean): Action[AnyContent] = identify.async { implicit request =>
     AdditionalIncomeForm.form.bindFromRequest().fold(
       formWithErrors =>
         Future.successful(
           BadRequest(view(
             additionalIncomeForm = formWithErrors,
             postAction = routes.AdditionalIncomeSourcesController.submit(editMode),
-            backUrl    = backUrl(editMode)
+            backUrl = backUrl(editMode)
           ))
         ),
       answers => {
-        val sessionId = request.session.get("sessionId").getOrElse("")
-        pageAnswersService.setPageAnswers(sessionId, AdditionalIncomeSourcesPage, answers).flatMap {
-            case true  =>
-              if (editMode) Future.successful(Redirect(routes.CheckYourAnswersController.show()))
-              else Future.successful(Redirect(routes.OtherItemsController.show()))
-            case false => Future.failed(new InternalServerException("[AdditionalIncomeSourcesController][submit] – could not save additional income sources"))
-          }
+        pageAnswersService.setPageAnswers(request.sessionId, AdditionalIncomeSourcesPage, answers).flatMap {
+          case true =>
+            if (editMode) Future.successful(Redirect(routes.CheckYourAnswersController.show()))
+            else Future.successful(Redirect(routes.OtherItemsController.show()))
+          case false => Future.failed(new InternalServerException("[AdditionalIncomeSourcesController][submit] – could not save additional income sources"))
+        }
       }
     )
   }

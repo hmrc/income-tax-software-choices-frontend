@@ -17,24 +17,24 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.AccountingPeriodPage
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.SessionIdentifierAction
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SessionExpiredView
 
-import javax.inject.Inject
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
 
-class SessionExpiredController @Inject()(
-  repo: UserFiltersRepository,
-  view: SessionExpiredView
-)(implicit val ec: ExecutionContext,
- mcc: MessagesControllerComponents) extends BaseFrontendController(mcc) {
+@Singleton
+class SessionExpiredController @Inject()(repo: UserFiltersRepository,
+                                         view: SessionExpiredView,
+                                         identify: SessionIdentifierAction)
+                                        (implicit ec: ExecutionContext,
+                                         mcc: MessagesControllerComponents) extends BaseFrontendController {
 
-  def show(timeout: Boolean = false): Action[AnyContent] = Action.async { implicit request =>
-    val sessionId = request.session.get("sessionId").getOrElse("")
-    for (
-      _ <- repo.delete(sessionId)
-    ) yield {
+  def show(timeout: Boolean = false): Action[AnyContent] = identify.async { implicit request =>
+    for {
+      _ <- repo.delete(request.sessionId)
+    } yield {
       Ok(view(
         postAction = routes.SessionExpiredController.submit(),
         timeout = timeout

@@ -31,24 +31,22 @@ class ProductDetailsControllerSpec extends ControllerBaseSpec with BeforeAndAfte
   private val softwareChoicesService = app.injector.instanceOf[SoftwareChoicesService]
 
   "Show" when {
-      "a valid param has been passed" should {
-        "return OK status with the product details page" in withController { controller =>
-          val result = controller.show(URLEncoder.encode("test software vendor name one", "UTF-8"), false)(fakeRequest)
+    "a valid param has been passed" should {
+      "return OK status with the product details page" in withController { controller =>
+        val result = controller.show(URLEncoder.encode("test software vendor name one", "UTF-8"), zeroResults = false)(fakeRequest)
 
-          status(result) shouldBe Status.OK
-        }
-      }
-      "an invalid param has been passed" should {
-        "return OK status with the product details page" in withController { controller =>
-          intercept[NotFoundException](await(controller.show("dummy", false)(fakeRequest))).message should be (ProductDetailsController.NotFound)
-        }
+        status(result) shouldBe Status.OK
       }
     }
+    "an invalid param has been passed" should {
+      "return OK status with the product details page" in withController { controller =>
+        intercept[NotFoundException](await(controller.show("dummy", zeroResults = false)(fakeRequest))).message should be(ProductDetailsController.NotFound)
+      }
+    }
+  }
 
   private def withController(testCode: ProductDetailsController => Any): Unit = {
     val controller = new ProductDetailsController(
-      mcc,
-      appConfig,
       softwareChoicesService,
       productDetailsPage
     )

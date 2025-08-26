@@ -19,6 +19,7 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.http.InternalServerException
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.SessionIdentifierAction
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.AccountingPeriodForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.AccountingPeriodForm.accountingPeriodForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.AccountingPeriod._
@@ -31,15 +32,15 @@ import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class AccountingPeriodController @Inject()(view: AccountingPeriodPage,
-                                           pageAnswersService: PageAnswersService)
-                                          (implicit val ec: ExecutionContext,
-                                           mcc: MessagesControllerComponents) extends BaseFrontendController(mcc) with I18nSupport {
+                                           pageAnswersService: PageAnswersService,
+                                           identifier: SessionIdentifierAction)
+                                          (implicit ec: ExecutionContext,
+                                           mcc: MessagesControllerComponents) extends BaseFrontendController with I18nSupport {
 
-  def show(editMode: Boolean): Action[AnyContent] = Action.async { implicit request =>
-    val sessionId = request.session.get("sessionId").getOrElse("")
-    for (
-      pageAnswers <- pageAnswersService.getPageAnswers(sessionId, AccountingPeriodPage)
-    ) yield {
+  def show(editMode: Boolean): Action[AnyContent] = identifier.async { implicit request =>
+    for {
+      pageAnswers <- pageAnswersService.getPageAnswers(request.sessionId, AccountingPeriodPage)
+    } yield {
       Ok(view(
         accountingPeriodForm = AccountingPeriodForm.accountingPeriodForm.fill(pageAnswers),
         postAction = routes.AccountingPeriodController.submit(editMode),
@@ -48,7 +49,7 @@ class AccountingPeriodController @Inject()(view: AccountingPeriodPage,
     }
   }
 
-  def submit(editMode: Boolean): Action[AnyContent] = Action.async { implicit request =>
+  def submit(editMode: Boolean): Action[AnyContent] = identifier.async { implicit request =>
     accountingPeriodForm.bindFromRequest().fold(
       formWithErrors => {
         Future.successful(
@@ -60,8 +61,7 @@ class AccountingPeriodController @Inject()(view: AccountingPeriodPage,
         )
       },
       selectedPeriod => {
-        val sessionId = request.session.get("sessionId").getOrElse("")
-        pageAnswersService.setPageAnswers(sessionId, AccountingPeriodPage, selectedPeriod).flatMap {
+        pageAnswersService.setPageAnswers(request.sessionId, AccountingPeriodPage, selectedPeriod).flatMap {
           case true =>
             selectedPeriod match {
               case SixthAprilToFifthApril => Future.successful(Redirect(routes.CheckYourAnswersController.show()))

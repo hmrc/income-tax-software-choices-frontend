@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,17 +14,8 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
+package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.requests
 
-import play.api.data.Form
-import play.api.i18n.I18nSupport
-import play.api.mvc.MessagesControllerComponents
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
+import play.api.mvc.{Request, WrappedRequest}
 
-abstract class BaseFrontendController(implicit mcc: MessagesControllerComponents)
-  extends FrontendController(mcc) with I18nSupport {
-
-  implicit class FormUtil[T](form: Form[T]) {
-    def fill(data: Option[T]): Form[T] = data.fold(form)(form.fill)
-  }
-}
+case class SessionRequest[A](request: Request[A], sessionId: String) extends WrappedRequest[A](request)

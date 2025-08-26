@@ -17,25 +17,27 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.SessionIdentifierAction
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.{PageAnswersService, SoftwareChoicesService}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.helpers.SummaryListBuilder
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.CheckYourAnswersView
 
-import javax.inject.Inject
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
 
+@Singleton
 class CheckYourAnswersController @Inject()(view: CheckYourAnswersView,
                                            softwareChoicesService: SoftwareChoicesService,
-                                           userFiltersRepository: UserFiltersRepository)
-                                          (implicit val ec: ExecutionContext,
+                                           userFiltersRepository: UserFiltersRepository,
+                                           identify: SessionIdentifierAction)
+                                          (implicit ec: ExecutionContext,
                                            mcc: MessagesControllerComponents,
-                                           pageAnswersService: PageAnswersService) extends BaseFrontendController(mcc) with SummaryListBuilder {
+                                           pageAnswersService: PageAnswersService) extends BaseFrontendController with SummaryListBuilder {
 
-  def show(): Action[AnyContent] = Action.async { implicit request =>
-    val sessionId = request.session.get("sessionId").getOrElse("")
+  def show(): Action[AnyContent] = identify.async { implicit request =>
     for {
-      userFilters <- userFiltersRepository.get(sessionId)
+      userFilters <- userFiltersRepository.get(request.sessionId)
       summaryList = buildSummaryList(userFilters.flatMap(_.answers))
     } yield {
       Ok(view(
@@ -46,10 +48,9 @@ class CheckYourAnswersController @Inject()(view: CheckYourAnswersView,
     }
   }
 
-  def submit(): Action[AnyContent] = Action.async { implicit request =>
-    val sessionId = request.session.get("sessionId").getOrElse("")
+  def submit(): Action[AnyContent] = identify.async { implicit request =>
     for {
-      vendorFilters <- pageAnswersService.saveFiltersFromAnswers(sessionId)
+      vendorFilters <- pageAnswersService.saveFiltersFromAnswers(request.sessionId)
       vendors = softwareChoicesService.getAllInOneVendors(vendorFilters).vendors
     } yield {
       if (vendors.isEmpty) {
