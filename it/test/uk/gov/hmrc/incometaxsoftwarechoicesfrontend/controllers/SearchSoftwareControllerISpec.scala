@@ -19,12 +19,12 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 import org.scalatest.BeforeAndAfterEach
 import play.api.http.Status.{OK, SEE_OTHER}
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, DatabaseHelper}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.SessionId
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, DatabaseHelper}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.AccountingPeriod.SixthAprilToFifthApril
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.{Agent, SoleTraderOrLandlord}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
 
@@ -41,26 +41,41 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
     super.beforeEach()
   }
 
-
   s"GET ${routes.SearchSoftwareController.show().url}" should {
-    "respond with 200 status" in {
-      val response = SoftwareChoicesFrontend.getSoftwareResults
+    "redirect to the service index" when {
+      "there is nothing saved in the database for this user" in {
+        val res = SoftwareChoicesFrontend.getSoftwareResults
 
-      response should have(
-        httpStatus(OK),
-        pageTitle(s"""${messages("search-software.title")} - ${PageContentBase.title} - GOV.UK""")
-      )
+        res should have(
+          httpStatus(SEE_OTHER),
+          redirectURI(routes.IndexController.index.url)
+        )
+      }
+    }
+    "display the page" when {
+      "there is data present in the database for this user" in {
+        setupAnswers(SessionId, None)
+
+        val response = SoftwareChoicesFrontend.getSoftwareResults
+
+        response should have(
+          httpStatus(OK),
+          pageTitle(s"""${messages("search-software.title")} - ${PageContentBase.title} - GOV.UK""")
+        )
+      }
     }
   }
 
   s"GET ${routes.SearchSoftwareController.clear().url}" should {
-    "redirect to the show page" in {
-      val response = SoftwareChoicesFrontend.clear()
+    "redirect to the service index" when {
+      "there is nothing saved in the database for this user" in {
+        val res = SoftwareChoicesFrontend.clear()
 
-      response should have(
-        httpStatus(SEE_OTHER),
-        redirectURI(routes.SearchSoftwareController.show().url)
-      )
+        res should have(
+          httpStatus(SEE_OTHER),
+          redirectURI(routes.IndexController.index.url)
+        )
+      }
     }
 
     "remove all preference filters leaving user answers filters and UserType for Individual" in {
@@ -71,7 +86,7 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
         .set(OtherItemsPage, Seq(PaymentsIntoAPrivatePension)).get
         .set(AccountingPeriodPage, SixthAprilToFifthApril).get
 
-      val initialFilter = Seq(Individual,QuarterlyUpdates,TaxReturn,SoleTrader,UkInterest,PaymentsIntoAPrivatePension,StandardUpdatePeriods,FreeVersion)
+      val initialFilter = Seq(Individual, QuarterlyUpdates, TaxReturn, SoleTrader, UkInterest, PaymentsIntoAPrivatePension, StandardUpdatePeriods, FreeVersion)
 
       await(userFiltersRepository.set(testUserFilters(Some(userAnswers), initialFilter)))
 
@@ -92,7 +107,7 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
       val userAnswers = UserAnswers()
         .set(UserTypePage, Agent).get
 
-      val initialFilter = Seq(VendorFilter.Agent,FreeVersion)
+      val initialFilter = Seq(VendorFilter.Agent, FreeVersion)
 
       await(userFiltersRepository.set(testUserFilters(Some(userAnswers), initialFilter)))
 
@@ -109,13 +124,15 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
   }
 
   s"POST ${routes.SearchSoftwareController.search().url}" should {
-    "respond with 200 status" in {
-      val response = SoftwareChoicesFrontend.submitSoftwareSearch(FiltersFormModel(Seq(FreeVersion)))
+    "redirect to the service index" when {
+      "there is nothing saved in the database for this user" in {
+        val res = SoftwareChoicesFrontend.submitSoftwareSearch(FiltersFormModel(Seq(FreeVersion)))
 
-      response should have(
-        httpStatus(OK),
-        pageTitle(s"""${messages("search-software.title")} - ${PageContentBase.title} - GOV.UK""")
-      )
+        res should have(
+          httpStatus(SEE_OTHER),
+          redirectURI(routes.IndexController.index.url)
+        )
+      }
     }
 
     "add preference filters for Individual including UserAnswers and UserType" in {
@@ -150,7 +167,7 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
       val initialFilter = Seq()
       await(userFiltersRepository.set(testUserFilters(Some(userAnswers), initialFilter)))
 
-      val response = SoftwareChoicesFrontend.submitSoftwareSearch(FiltersFormModel(Seq(FreeVersion,Bridging)))
+      val response = SoftwareChoicesFrontend.submitSoftwareSearch(FiltersFormModel(Seq(FreeVersion, Bridging)))
 
       response should have(
         httpStatus(OK)

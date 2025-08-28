@@ -24,7 +24,7 @@ import play.api.http.Status
 import play.api.mvc.Codec
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.mocks.MockSessionIdentifierAction
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.mocks.{MockRequireUserDataRefiner, MockSessionIdentifierAction}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserFilters
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{Individual, SoleTrader, StandardUpdatePeriods}
@@ -37,7 +37,9 @@ import java.time.Instant
 import java.util.UUID
 import scala.concurrent.Future
 
-class SearchSoftwareControllerSpec extends ControllerBaseSpec with MockSessionIdentifierAction {
+class SearchSoftwareControllerSpec extends ControllerBaseSpec
+  with MockSessionIdentifierAction
+  with MockRequireUserDataRefiner {
 
   val searchSoftwarePage: SearchSoftwarePage = app.injector.instanceOf[SearchSoftwarePage]
 
@@ -102,7 +104,8 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec with MockSessionId
       softwareChoicesService,
       pageAnswerService,
       mockUserFiltersRepo,
-      fakeSessionIdentifierAction
+      fakeSessionIdentifierAction,
+      fakeRequireUserDataRefiner
     )
 
     testCode(controller)

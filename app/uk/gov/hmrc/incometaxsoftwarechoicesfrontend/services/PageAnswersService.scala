@@ -46,13 +46,14 @@ class PageAnswersService @Inject()(userFiltersRepository: UserFiltersRepository,
 
   def setPageAnswers[A](id: String, page: Settable[A], value: A)(implicit writes: Writes[A]): Future[Boolean] = {
     userFiltersRepository.get(id).flatMap {
-      case Some(uf) => {
-        val newAnswers = uf.answers.flatMap(_.set(page, value).toOption)
-        userFiltersRepository.set(uf.copy(answers = newAnswers))
-      }
-      case None => {
+      case Some(userFilters) =>
+        val newAnswers = userFilters.answers match {
+          case Some(userAnswers) => userAnswers.set(page, value).toOption
+          case None => UserAnswers().set(page, value).toOption
+        }
+        userFiltersRepository.set(userFilters.copy(answers = newAnswers))
+      case None =>
         userFiltersRepository.set(UserFilters(id, UserAnswers().set(page, value).toOption, Seq.empty))
-      }
     }
   }
 

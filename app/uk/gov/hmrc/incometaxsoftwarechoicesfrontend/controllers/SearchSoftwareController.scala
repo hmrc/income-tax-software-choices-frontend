@@ -19,10 +19,10 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 import play.api.data.Form
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import play.twirl.api.Html
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.SessionIdentifierAction
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{RequireUserDataRefiner, SessionIdentifierAction}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.Agent
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.requests.SessionRequest
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.requests.SessionDataRequest
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FiltersFormModel, UserFilters, VendorFilter}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.UserTypePage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
@@ -38,11 +38,12 @@ class SearchSoftwareController @Inject()(searchSoftwarePage: SearchSoftwarePage,
                                          softwareChoicesService: SoftwareChoicesService,
                                          pageAnswersService: PageAnswersService,
                                          userFiltersRepository: UserFiltersRepository,
-                                         identify: SessionIdentifierAction)
+                                         identify: SessionIdentifierAction,
+                                         requireData: RequireUserDataRefiner)
                                         (implicit ec: ExecutionContext,
                                          mcc: MessagesControllerComponents) extends BaseFrontendController {
 
-  def show(zeroResults: Boolean): Action[AnyContent] = identify.async { implicit request =>
+  def show(zeroResults: Boolean): Action[AnyContent] = (identify andThen requireData).async { implicit request =>
     for {
       userFilters <- userFiltersRepository.get(request.sessionId)
       filters = userFilters.map(_.finalFilters).getOrElse(Seq.empty)
@@ -59,7 +60,7 @@ class SearchSoftwareController @Inject()(searchSoftwarePage: SearchSoftwarePage,
     }
   }
 
-  def search(zeroResults: Boolean): Action[AnyContent] = identify.async { implicit request =>
+  def search(zeroResults: Boolean): Action[AnyContent] = (identify andThen requireData).async { implicit request =>
     val filters = FiltersForm.form.bindFromRequest().get
     for {
       userType <- pageAnswersService.getPageAnswers(request.sessionId, UserTypePage)
@@ -76,13 +77,13 @@ class SearchSoftwareController @Inject()(searchSoftwarePage: SearchSoftwarePage,
     }
   }
 
-  def clear(zeroResults: Boolean): Action[AnyContent] = identify.async { implicit request =>
+  def clear(zeroResults: Boolean): Action[AnyContent] = (identify andThen requireData).async { implicit request =>
     update(FiltersFormModel(), zeroResults) map { _ =>
       Redirect(routes.SearchSoftwareController.show(zeroResults))
     }
   }
 
-  private def update(search: FiltersFormModel, zeroResults: Boolean)(implicit request: SessionRequest[_]): Future[Boolean] = {
+  private def update(search: FiltersFormModel, zeroResults: Boolean)(implicit request: SessionDataRequest[_]): Future[Boolean] = {
     for {
       userFilters <- userFiltersRepository.get(request.sessionId)
       result <- userFilters match {

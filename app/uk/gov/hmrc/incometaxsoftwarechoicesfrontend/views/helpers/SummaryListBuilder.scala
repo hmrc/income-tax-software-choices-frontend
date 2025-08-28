@@ -39,8 +39,8 @@ trait SummaryListBuilder {
 
   private def businessIncomeSummaryListRow(userAnswers: UserAnswers)(implicit messages: Messages): SummaryListRow = {
     val filterList: String = userAnswers.get(BusinessIncomePage) match {
-        case Some(vf) if vf.nonEmpty => vf.map(f => messages(s"check-your-answers.${f.key}")).mkString("<br>")
-        case _ => throw new InternalServerException("[SummaryListBuilder][businessIncomeSummaryListRow] - Business income sources data not found")
+      case Some(vf) if vf.nonEmpty => vf.map(f => messages(s"check-your-answers.${f.key}")).mkString("<br>")
+      case _ => throw new InternalServerException("[SummaryListBuilder][businessIncomeSummaryListRow] - Business income sources data not found")
     }
 
     summaryListRow(filterList, routes.BusinessIncomeController.show(editMode = true).url, "business-income")

@@ -19,7 +19,7 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.http.InternalServerException
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.SessionIdentifierAction
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{RequireUserDataRefiner, SessionIdentifierAction}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.AccountingPeriodForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.AccountingPeriodForm.accountingPeriodForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.AccountingPeriod._
@@ -33,11 +33,12 @@ import scala.concurrent.{ExecutionContext, Future}
 @Singleton
 class AccountingPeriodController @Inject()(view: AccountingPeriodPage,
                                            pageAnswersService: PageAnswersService,
-                                           identifier: SessionIdentifierAction)
+                                           identify: SessionIdentifierAction,
+                                           requireData: RequireUserDataRefiner)
                                           (implicit ec: ExecutionContext,
                                            mcc: MessagesControllerComponents) extends BaseFrontendController with I18nSupport {
 
-  def show(editMode: Boolean): Action[AnyContent] = identifier.async { implicit request =>
+  def show(editMode: Boolean): Action[AnyContent] = (identify andThen requireData).async { implicit request =>
     for {
       pageAnswers <- pageAnswersService.getPageAnswers(request.sessionId, AccountingPeriodPage)
     } yield {
@@ -49,7 +50,7 @@ class AccountingPeriodController @Inject()(view: AccountingPeriodPage,
     }
   }
 
-  def submit(editMode: Boolean): Action[AnyContent] = identifier.async { implicit request =>
+  def submit(editMode: Boolean): Action[AnyContent] = (identify andThen requireData).async { implicit request =>
     accountingPeriodForm.bindFromRequest().fold(
       formWithErrors => {
         Future.successful(
@@ -64,9 +65,10 @@ class AccountingPeriodController @Inject()(view: AccountingPeriodPage,
         pageAnswersService.setPageAnswers(request.sessionId, AccountingPeriodPage, selectedPeriod).flatMap {
           case true =>
             selectedPeriod match {
-              case SixthAprilToFifthApril => Future.successful(Redirect(routes.CheckYourAnswersController.show()))
-              case FirstAprilToThirtyFirstMarch => Future.successful(Redirect(routes.CheckYourAnswersController.show()))
-              case OtherAccountingPeriod => Future.successful(Redirect(routes.UnsupportedAccountingPeriodController.show))
+              case SixthAprilToFifthApril | FirstAprilToThirtyFirstMarch =>
+                Future.successful(Redirect(routes.CheckYourAnswersController.show()))
+              case OtherAccountingPeriod =>
+                Future.successful(Redirect(routes.UnsupportedAccountingPeriodController.show))
             }
           case false => throw new InternalServerException("[AccountingPeriodController][submit] - Could not save accounting period")
         }

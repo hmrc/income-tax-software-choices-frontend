@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views
+package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.requests
 
-object PageContentBase {
-  val title: String = "Find software that works with Making Tax Digital for Income Tax"
-}
+import play.api.mvc.{Request, WrappedRequest}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserFilters
+
+case class SessionDataRequest[A](request: Request[A], sessionId: String, userFilters: UserFilters) extends WrappedRequest[A](request)

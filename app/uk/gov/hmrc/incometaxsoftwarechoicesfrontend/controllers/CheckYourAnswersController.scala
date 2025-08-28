@@ -17,7 +17,7 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.SessionIdentifierAction
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{RequireUserDataRefiner, SessionIdentifierAction}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.{PageAnswersService, SoftwareChoicesService}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.helpers.SummaryListBuilder
@@ -30,12 +30,13 @@ import scala.concurrent.ExecutionContext
 class CheckYourAnswersController @Inject()(view: CheckYourAnswersView,
                                            softwareChoicesService: SoftwareChoicesService,
                                            userFiltersRepository: UserFiltersRepository,
-                                           identify: SessionIdentifierAction)
+                                           identify: SessionIdentifierAction,
+                                           requireData: RequireUserDataRefiner)
                                           (implicit ec: ExecutionContext,
                                            mcc: MessagesControllerComponents,
                                            pageAnswersService: PageAnswersService) extends BaseFrontendController with SummaryListBuilder {
 
-  def show(): Action[AnyContent] = identify.async { implicit request =>
+  def show(): Action[AnyContent] = (identify andThen requireData).async { implicit request =>
     for {
       userFilters <- userFiltersRepository.get(request.sessionId)
       summaryList = buildSummaryList(userFilters.flatMap(_.answers))
@@ -48,7 +49,7 @@ class CheckYourAnswersController @Inject()(view: CheckYourAnswersView,
     }
   }
 
-  def submit(): Action[AnyContent] = identify.async { implicit request =>
+  def submit(): Action[AnyContent] = (identify andThen requireData).async { implicit request =>
     for {
       vendorFilters <- pageAnswersService.saveFiltersFromAnswers(request.sessionId)
       vendors = softwareChoicesService.getAllInOneVendors(vendorFilters).vendors
