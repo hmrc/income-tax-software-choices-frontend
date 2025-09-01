@@ -19,27 +19,31 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 import org.scalatest.BeforeAndAfterEach
 import play.api.http.Status.{BAD_REQUEST, OK, SEE_OTHER}
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.OtherItemsForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.SessionId
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, DatabaseHelper}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{UserAnswers, UserFilters}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.OtherItemsPage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
 
 class OtherItemsControllerISpec extends ComponentSpecBase with BeforeAndAfterEach with DatabaseHelper {
 
-  lazy val otherItemsController: OtherItemsController = app.injector.instanceOf[OtherItemsController]
+  s"GET ${routes.OtherItemsController.show().url}" should {
+    "redirect to the service index" when {
+      "there is nothing saved in the database for this user" in {
+        val res = SoftwareChoicesFrontend.getOtherItems
 
-  def testUserFilters(answers: UserAnswers): UserFilters = UserFilters(SessionId, Some(answers))
+        res should have(
+          httpStatus(SEE_OTHER),
+          redirectURI(routes.IndexController.index.url)
+        )
+      }
+    }
+    "display the page" when {
+      "the other items page has not been answered previously" in {
+        setupAnswers(SessionId, None)
 
-  override def beforeEach(): Unit = {
-    await(userFiltersRepository.collection.drop().toFuture())
-    super.beforeEach()
-  }
-
-  "GET /other-items" when {
-    "there are no existing page answers" should {
-      "display the page with an empty form" in {
         val res = SoftwareChoicesFrontend.getOtherItems
 
         res should have(
@@ -52,120 +56,165 @@ class OtherItemsControllerISpec extends ComponentSpecBase with BeforeAndAfterEac
           checkboxSelected("otherItems-5", None),
           checkboxSelected("otherItems-6", None),
           checkboxSelected("otherItems-7", None),
-          checkboxSelected("otherItems-8", None),
           checkboxSelected("otherItems-9", None)
         )
       }
-    }
-    "there is pre-filled data" should {
-      "display the page with pre-filled checkboxes" in {
-        val userAnswers = UserAnswers().set(OtherItemsPage,
-          Seq(
-            PaymentsIntoAPrivatePension,
-            CharitableGiving,
-            CapitalGainsTax,
-            StudentLoans,
-            MarriageAllowance,
-            VoluntaryClass2NationalInsurance,
-            HighIncomeChildBenefitCharge)).get
-        await(userFiltersRepository.set(testUserFilters(userAnswers)))
+      "the other items page has been answered previously with other items selections" in {
+        setPageData(SessionId, OtherItemsPage, otherItemsFilters)
 
         val res = SoftwareChoicesFrontend.getOtherItems
 
         res should have(
           httpStatus(OK),
           pageTitle(s"${messages("other-items.title")} - ${PageContentBase.title} - GOV.UK"),
-          checkboxSelected("otherItems", Some("payments-into-a-private-pension")),
-          checkboxSelected("otherItems-2", Some("charitable-giving")),
-          checkboxSelected("otherItems-3", Some("capital-gains-tax")),
-          checkboxSelected("otherItems-4", Some("student-loans")),
-          checkboxSelected("otherItems-5", Some("marriage-allowance")),
-          checkboxSelected("otherItems-6", Some("voluntary-class-2-national-insurance")),
-          checkboxSelected("otherItems-7", Some("high-income-child-benefit-charge")),
-          checkboxSelected("otherItems-8", None),
+          checkboxSelected("otherItems", Some(PaymentsIntoAPrivatePension.key)),
+          checkboxSelected("otherItems-2", Some(CharitableGiving.key)),
+          checkboxSelected("otherItems-3", Some(CapitalGainsTax.key)),
+          checkboxSelected("otherItems-4", Some(StudentLoans.key)),
+          checkboxSelected("otherItems-5", Some(MarriageAllowance.key)),
+          checkboxSelected("otherItems-6", Some(VoluntaryClass2NationalInsurance.key)),
+          checkboxSelected("otherItems-7", Some(HighIncomeChildBenefitCharge.key)),
           checkboxSelected("otherItems-9", None)
         )
       }
-      "display the page with None of these pre-filled" in {
-        val userAnswers = UserAnswers().set(OtherItemsPage, Seq()).get
-        await(userFiltersRepository.set(testUserFilters(userAnswers)))
+      "the other items page has been answered previously with none selected" in {
+        setPageData(SessionId, OtherItemsPage, Seq.empty)
 
         val res = SoftwareChoicesFrontend.getOtherItems
 
         res should have(
           httpStatus(OK),
           pageTitle(s"${messages("other-items.title")} - ${PageContentBase.title} - GOV.UK"),
+          checkboxSelected("otherItems", None),
+          checkboxSelected("otherItems-2", None),
+          checkboxSelected("otherItems-3", None),
+          checkboxSelected("otherItems-4", None),
+          checkboxSelected("otherItems-5", None),
+          checkboxSelected("otherItems-6", None),
+          checkboxSelected("otherItems-7", None),
           checkboxSelected("otherItems-9", Some("none"))
         )
       }
     }
   }
 
-  "POST /other-items" must {
-    s"return $SEE_OTHER and save the page answers" when {
-      "not in edit mode" when {
-        "user submits one other item" in {
-          val res = SoftwareChoicesFrontend.postOtherItems(Some(Seq(StudentLoans)))
+  s"POST ${routes.OtherItemsController.submit().url}" when {
+    "there is nothing saved in the database for this user" should {
+      "redirect to the service index" in {
+        val res = SoftwareChoicesFrontend.postOtherItems(Some(Seq(PaymentsIntoAPrivatePension)))
 
-          res should have(
-            httpStatus(SEE_OTHER),
-          redirectURI(routes.AccountingPeriodController.show().url)
-          )
-          getPageData(SessionId, OtherItemsPage.toString).size shouldBe 1
-        }
-        "user submits multiple other items" in {
-          val res = SoftwareChoicesFrontend.postOtherItems(Some(allItems))
+        res should have(
+          httpStatus(SEE_OTHER),
+          redirectURI(routes.IndexController.index.url)
+        )
+      }
+    }
+    "not in edit mode" should {
+      "save answers and redirect to the accounting period page" when {
+        "they submit a single other item" in {
+          setupAnswers(SessionId, None)
+
+          val res = SoftwareChoicesFrontend.postOtherItems(Some(Seq(PaymentsIntoAPrivatePension)))
 
           res should have(
             httpStatus(SEE_OTHER),
             redirectURI(routes.AccountingPeriodController.show().url)
           )
-          getPageData(SessionId, OtherItemsPage.toString).size shouldBe 1
+
+          getPageData(SessionId, OtherItemsPage) shouldBe Some(Seq(PaymentsIntoAPrivatePension))
         }
-        "user submits None of these" in {
+        "they submit multiple other items" in {
+          setupAnswers(SessionId, None)
+
+          val res = SoftwareChoicesFrontend.postOtherItems(Some(otherItemsFilters.map(_.key)))
+
+          res should have(
+            httpStatus(SEE_OTHER),
+            redirectURI(routes.AccountingPeriodController.show().url)
+          )
+
+          getPageData(SessionId, OtherItemsPage) shouldBe Some(otherItemsFilters)
+        }
+        "they submit none for their other items" in {
+          setupAnswers(SessionId, None)
+
           val res = SoftwareChoicesFrontend.postOtherItems(Some(Seq.empty))
 
           res should have(
             httpStatus(SEE_OTHER),
             redirectURI(routes.AccountingPeriodController.show().url)
           )
-          getPageData(SessionId, OtherItemsPage.toString).size shouldBe 1
-        }
-      }
-      "in edit mode" when {
-        "user submits multiple other items" in {
-          val res = SoftwareChoicesFrontend.postOtherItems(
-            maybeKeys = Some(allItems),
-            editMode = true
-          )
 
-          res should have(
-            httpStatus(SEE_OTHER),
-          redirectURI(routes.CheckYourAnswersController.show().url)
-          )
-          getPageData(SessionId, OtherItemsPage.toString).size shouldBe 1
-        }
-        "user submits None of these" in {
-          val res = SoftwareChoicesFrontend.postOtherItems(
-            Some(Seq.empty),
-            editMode = true)
-
-          res should have(
-            httpStatus(SEE_OTHER),
-          redirectURI(routes.CheckYourAnswersController.show().url)
-          )
-          getPageData(SessionId, OtherItemsPage.toString).size shouldBe 1
+          getPageData(SessionId, OtherItemsPage) shouldBe Some(Seq.empty[VendorFilter])
         }
       }
     }
-    "return BAD_REQUEST" when {
-      "user does not select an answer" in {
+    "in edit mode" should {
+      "save answers and redirect to the check your answers page" when {
+        "they submit a single other item" in {
+          setPageData(SessionId, OtherItemsPage, Seq.empty)
+
+          val res = SoftwareChoicesFrontend.postOtherItems(Some(Seq(PaymentsIntoAPrivatePension)), editMode = true)
+
+          res should have(
+            httpStatus(SEE_OTHER),
+            redirectURI(routes.CheckYourAnswersController.show().url)
+          )
+
+          getPageData(SessionId, OtherItemsPage) shouldBe Some(Seq(PaymentsIntoAPrivatePension))
+        }
+        "they submit multiple other items" in {
+          setPageData(SessionId, OtherItemsPage, Seq.empty)
+
+          val res = SoftwareChoicesFrontend.postOtherItems(Some(otherItemsFilters.map(_.key)), editMode = true)
+
+          res should have(
+            httpStatus(SEE_OTHER),
+            redirectURI(routes.CheckYourAnswersController.show().url)
+          )
+
+          getPageData(SessionId, OtherItemsPage) shouldBe Some(otherItemsFilters)
+        }
+        "they submit none for their other items" in {
+          setPageData(SessionId, OtherItemsPage, otherItemsFilters)
+
+          val res = SoftwareChoicesFrontend.postOtherItems(Some(Seq.empty), editMode = true)
+
+          res should have(
+            httpStatus(SEE_OTHER),
+            redirectURI(routes.CheckYourAnswersController.show().url)
+          )
+
+          getPageData(SessionId, OtherItemsPage) shouldBe Some(Seq.empty[VendorFilter])
+        }
+      }
+    }
+    "the user has no checkboxes selected" should {
+      "return a bad request" in {
+        setupAnswers(SessionId, None)
+
         val res = SoftwareChoicesFrontend.postOtherItems(None)
 
         res should have(
           httpStatus(BAD_REQUEST),
+          pageTitle(s"Error: ${messages("other-items.title")} - ${PageContentBase.title} - GOV.UK"),
         )
-        getPageData(SessionId, OtherItemsPage.toString).size shouldBe 0
+
+        getPageData(SessionId, OtherItemsPage) shouldBe None
+      }
+    }
+    "the user has other items and the none checkbox selected" should {
+      "return a bad request" in {
+        setupAnswers(SessionId, None)
+
+        val res = SoftwareChoicesFrontend.postOtherItems(Some(otherItemsFilters.map(_.key) :+ OtherItemsForm.noneKey))
+
+        res should have(
+          httpStatus(BAD_REQUEST),
+          pageTitle(s"Error: ${messages("other-items.title")} - ${PageContentBase.title} - GOV.UK"),
+        )
+
+        getPageData(SessionId, OtherItemsPage) shouldBe None
       }
     }
   }
@@ -179,7 +228,15 @@ class OtherItemsControllerISpec extends ComponentSpecBase with BeforeAndAfterEac
     }
   }
 
-  private val allItems: Seq[String] = Seq(
+  override def beforeEach(): Unit = {
+    super.beforeEach()
+
+    await(userFiltersRepository.collection.drop().toFuture())
+  }
+
+  lazy val otherItemsController: OtherItemsController = app.injector.instanceOf[OtherItemsController]
+
+  lazy val otherItemsFilters: Seq[VendorFilter] = Seq(
     PaymentsIntoAPrivatePension,
     CharitableGiving,
     CapitalGainsTax,

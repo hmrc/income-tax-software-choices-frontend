@@ -19,7 +19,6 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers
 import org.jsoup.Jsoup
 import org.scalatest.matchers.{HavePropertyMatchResult, HavePropertyMatcher}
 import play.api.libs.ws.WSResponse
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter
 
 import scala.jdk.CollectionConverters.CollectionHasAsScala
 
@@ -74,14 +73,14 @@ trait CustomMatchers {
         propertyName = "summaryList",
         expectedValue = values,
         actualValue = summaryListRows.asScala.find(_.select(".govuk-summary-list__key").text().contains(key))
-                        .map(_.select(".govuk-summary-list__value").text()).getOrElse("")
+          .map(_.select(".govuk-summary-list__value").text()).getOrElse("")
       )
     }
 
   def checkboxSelected(id: String, value: Option[String]): HavePropertyMatcher[WSResponse, String] =
     (response: WSResponse) => {
       val body = Jsoup.parse(response.body)
-      val checkbox = body.select(s"input[id^=$id]")
+      val checkbox = body.select(s"input[id=$id]")
       val checkedAttr = "checked"
 
       def checkboxValue(checkboxId: String) =
@@ -114,36 +113,30 @@ trait CustomMatchers {
     }
 
   def radioButtonSelected(id: String, selectedRadioButton: Option[String]): HavePropertyMatcher[WSResponse, String] =
-    new HavePropertyMatcher[WSResponse, String] {
-      def apply(response: WSResponse): HavePropertyMatchResult[String] = {
-        val body = Jsoup.parse(response.body)
-        val radios = body.select(s"input[id^=$id]")
-        val checkedAttr = "checked"
+    (response: WSResponse) => {
+      val body = Jsoup.parse(response.body)
+      val radios = body.select(s"input[id=$id]")
+      val checkedAttr = "checked"
 
-        def textForSelectedButton(idForSelectedRadio: String) =
-          if (idForSelectedRadio.isEmpty) ""
-          else body.select(s"label[for=$idForSelectedRadio]").text()
-
-        val matchCondition = selectedRadioButton match {
-          case Some(expectedOption) => radios.select("input[checked]").attr("value") == expectedOption
-          case None => !radios.hasAttr(checkedAttr)
-        }
-
-        HavePropertyMatchResult(
-          matches = matchCondition,
-          propertyName = "accounting-period",
-          expectedValue = selectedRadioButton.fold("")(identity),
-          actualValue = {
-            val selected = radios.select("input[checked]")
-            selected.size() match {
-              case 0 =>
-                "no radio button is selected"
-              case 1 =>
-                val actualKey = selected.attr("value")
-                s"""The "$actualKey" selected"""
-            }
-          }
-        )
+      val matchCondition = selectedRadioButton match {
+        case Some(expectedOption) => radios.select("input[checked]").attr("value") == expectedOption
+        case None => !radios.hasAttr(checkedAttr)
       }
+
+      HavePropertyMatchResult(
+        matches = matchCondition,
+        propertyName = "accounting-period",
+        expectedValue = selectedRadioButton.fold("")(identity),
+        actualValue = {
+          val selected = radios.select("input[checked]")
+          selected.size() match {
+            case 0 =>
+              "no radio button is selected"
+            case 1 =>
+              val actualKey = selected.attr("value")
+              s"""The "$actualKey" selected"""
+          }
+        }
+      )
     }
 }

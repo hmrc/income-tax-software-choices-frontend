@@ -18,19 +18,10 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import org.scalatest.BeforeAndAfterEach
 import play.api.http.Status.{OK, SEE_OTHER}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.SessionId
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, DatabaseHelper}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{UserAnswers, UserFilters, VendorFilter}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
 
 class ZeroSoftwareResultsControllerISpec extends ComponentSpecBase with BeforeAndAfterEach with DatabaseHelper {
-
-  def testUserFilters(answers: UserAnswers, filters: Seq[VendorFilter]): UserFilters = UserFilters(SessionId, Some(answers), filters)
-
-  override def beforeEach(): Unit = {
-    userFiltersRepository.collection.drop().toFuture()
-    super.beforeEach()
-  }
 
   s"GET ${routes.ZeroSoftwareResultsController.show().url}" should {
     s"return $OK" in {

@@ -27,34 +27,23 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{UserAnswers, UserFil
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.{AccountingPeriodPage, AdditionalIncomeSourcesPage, BusinessIncomePage, OtherItemsPage}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
 
-import java.time.Instant
-
 class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAfterEach with DatabaseHelper {
 
-  lazy val controller = app.injector.instanceOf[CheckYourAnswersController]
-  private val testTime = Instant.now()
-
-  def testUserFilters(answers: Option[UserAnswers]): UserFilters = UserFilters(SessionId, answers, lastUpdated = testTime)
-
-  override def beforeEach(): Unit = {
-    await(userFiltersRepository.collection.drop().toFuture())
-    super.beforeEach()
-  }
-
-  "GET /check-your-answers" when {
+  s"GET ${routes.CheckYourAnswersController.show().url}" when {
     "there are no existing page answers" should {
-      "display the Technical difficulties page" in {
-
+      "redirect to the service index" in {
         val res = SoftwareChoicesFrontend.getCheckYourAnswers
 
-        res.status shouldBe INTERNAL_SERVER_ERROR
-        res.body.contains("Sorry, there is a problem with the service") shouldBe true
+        res should have(
+          httpStatus(SEE_OTHER),
+          redirectURI(routes.IndexController.index.url)
+        )
       }
     }
     "there is pre-filled data" should {
       "display the page with appropriate summary lists" in {
         val userAnswers = UserAnswers()
-          .set(BusinessIncomePage, Seq(SoleTrader,UkProperty,OverseasProperty)).get
+          .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
           .set(AdditionalIncomeSourcesPage, Seq(UkInterest, ConstructionIndustryScheme, Employment, UkDividends, StatePensionIncome,
             PrivatePensionIncome, ForeignDividends, ForeignInterest)).get
           .set(OtherItemsPage, Seq(PaymentsIntoAPrivatePension, CharitableGiving, CapitalGainsTax, StudentLoans,
@@ -67,7 +56,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
         res should have(
           httpStatus(OK),
           pageTitle(s"${messages("check-your-answers.heading")} - ${PageContentBase.title} - GOV.UK"),
-          summaryListRow("Income sources", Seq(SoleTrader,UkProperty,OverseasProperty)
+          summaryListRow("Income sources", Seq(SoleTrader, UkProperty, OverseasProperty)
             .map(vf => messages(s"check-your-answers.$vf")).mkString(" ")),
           summaryListRow("Other income", Seq(UkInterest, ConstructionIndustryScheme, Employment, UkDividends, StatePensionIncome,
             PrivatePensionIncome, ForeignDividends, ForeignInterest)
@@ -92,7 +81,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
         res should have(
           httpStatus(OK),
           pageTitle(s"${messages("check-your-answers.heading")} - ${PageContentBase.title} - GOV.UK"),
-          summaryListRow("Income sources", Seq(SoleTrader,UkProperty,OverseasProperty)
+          summaryListRow("Income sources", Seq(SoleTrader, UkProperty, OverseasProperty)
             .map(vf => messages(s"check-your-answers.$vf")).mkString(" ")),
           summaryListRow("Other income", messages(s"check-your-answers.none-selected")),
           summaryListRow("Other items", messages(s"check-your-answers.none-selected")),
@@ -194,10 +183,21 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
         )
 
         await(userFiltersRepository.get(SessionId)) match {
-            case Some(uf) => uf.finalFilters shouldBe Seq(SoleTrader, UkProperty, OverseasProperty)
-            case None => fail("No user filters found")
+          case Some(uf) => uf.finalFilters shouldBe Seq(SoleTrader, UkProperty, OverseasProperty)
+          case None => fail("No user filters found")
         }
       }
     }
   }
+
+  override def beforeEach(): Unit = {
+    super.beforeEach()
+
+    await(userFiltersRepository.collection.drop().toFuture())
+  }
+
+  lazy val controller: CheckYourAnswersController = app.injector.instanceOf[CheckYourAnswersController]
+
+  def testUserFilters(answers: Option[UserAnswers]): UserFilters = UserFilters(SessionId, answers)
+
 }
