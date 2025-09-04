@@ -4,6 +4,46 @@
 
 GET         /                                    uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.IndexController.index
 
+GET         /software-results                    uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SearchSoftwareController.show(zeroResults: Boolean ?= false)
+POST        /software-results                    uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SearchSoftwareController.search(zeroResults: Boolean ?= false)
+GET         /clear                               uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SearchSoftwareController.clear(zeroResults: Boolean ?= false)
+
+GET         /product-details/*software           uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.ProductDetailsController.show(software: String, zeroResults: Boolean ?= false)
+
+GET         /assets/*file                        controllers.Assets.versioned(path = "/public", file: Asset)
+
+GET         /session-expired/:timeout            uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SessionExpiredController.show(timeout: Boolean)
+POST        /session-expired                     uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SessionExpiredController.submit()
+
+GET         /keep-alive                          uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.KeepAliveController.keepAlive()
+
+# NEW
+
+GET         /how-will-you-use-it                uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.UserTypeController.show()
+POST        /how-will-you-use-it                uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.UserTypeController.submit()
+
+GET         /which-income-source                 uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.BusinessIncomeController.show(editMode: Boolean ?= false)
+POST        /which-income-source                 uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.BusinessIncomeController.submit(editMode: Boolean ?= false)
+
+GET         /which-additional-income-source      uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.AdditionalIncomeSourcesController.show(editMode: Boolean ?= false)
+POST        /which-additional-income-source      uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.AdditionalIncomeSourcesController.submit(editMode: Boolean ?= false)
+
+GET         /what-else-do-you-need-tell-us       uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.OtherItemsController.show(editMode: Boolean ?= false)
+POST        /what-else-do-you-need-tell-us       uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.OtherItemsController.submit(editMode: Boolean ?= false)
+
+GET         /accounting-period-check             uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.AccountingPeriodController.show(editMode: Boolean ?= false)
+POST        /accounting-period-check             uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.AccountingPeriodController.submit(editMode: Boolean ?= false)
+
+GET         /check-answers                       uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.CheckYourAnswersController.show()
+POST        /check-answers                       uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.CheckYourAnswersController.submit()
+
+GET         /no-all-in-one-product               uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.ZeroSoftwareResultsController.show()
+POST        /no-all-in-one-product               uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.ZeroSoftwareResultsController.submit()
+
+GET         /accounting-period-not-supported     uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.UnsupportedAccountingPeriodController.show
+
+# OLD
+
 GET         /type-of-user                       uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.UserTypeController.show()
 POST        /type-of-user                       uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.UserTypeController.submit()
 
@@ -26,16 +66,3 @@ GET         /zero-software-results               uk.gov.hmrc.incometaxsoftwarech
 POST        /zero-software-results               uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.ZeroSoftwareResultsController.submit()
 
 GET         /unsupported-accounting-period       uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.UnsupportedAccountingPeriodController.show
-
-GET         /software-results                    uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SearchSoftwareController.show(zeroResults: Boolean ?= false)
-POST        /software-results                    uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SearchSoftwareController.search(zeroResults: Boolean ?= false)
-GET         /clear                               uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SearchSoftwareController.clear(zeroResults: Boolean ?= false)
-
-GET         /product-details/*software           uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.ProductDetailsController.show(software: String, zeroResults: Boolean ?= false)
-
-GET         /assets/*file                        controllers.Assets.versioned(path = "/public", file: Asset)
-
-GET         /session-expired/:timeout            uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SessionExpiredController.show(timeout: Boolean)
-POST        /session-expired                     uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SessionExpiredController.submit()
-
-GET         /keep-alive                          uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.KeepAliveController.keepAlive()
