@@ -24,13 +24,22 @@
 
 @(viewModel: SoftwareChoicesResultsViewModel)(implicit messages: Messages)
 
-@tabHeading(text: String) = @{
-    s"""<h2 class="govuk-heading-l">$text</h2>"""
+@tabHeading(tabKey: String, count: Int) = @{
+  count match {
+      case 0 => s"""<h2 class="govuk-heading-l">${messages(tabKey + ".heading.none")}</h2>"""
+      case 1 => s"""<h2 class="govuk-heading-l">${messages(tabKey + ".heading.one")}</h2>"""
+      case _ => s"""<h2 class="govuk-heading-l">${messages(tabKey + ".heading.many", count)}</h2>"""
+  }
 }
 
-@tabSubHeading(text: String) = @{
-    s"""<h3 class="govuk-heading-m">$text</h3>"""
+@tabInsetText(tabKey: String, count: Int) = @{
+    count match {
+        case 0 => s"""<div class="govuk-inset-text">${messages(tabKey + ".inset.none")}</div>"""
+        case 1 => s"""<div class="govuk-inset-text">${messages(tabKey + ".inset.one")}</div>"""
+        case _ => s"""<div class="govuk-inset-text">${messages(tabKey + ".inset.many")}</div>"""
+    }
 }
+
 
 @allInOneTab = @{
   TabItem(
@@ -38,8 +47,8 @@
     label = messages("search-software.all-in-one-tab.title"),
     panel = TabPanel(
      content = HtmlContent(
-             tabHeading(messages("search-software.all-in-one-tab.heading")) +
-             tabSubHeading(messages("search-software.all-in-one-tab.results", viewModel.allInOneVendors.vendors.size)) +
+             tabHeading("search-software.all-in-one-tab", viewModel.allInOneVendors.vendors.size) +
+             tabInsetText("search-software.all-in-one-tab", viewModel.allInOneVendors.vendors.size) +
              softwareVendorsTemplate(viewModel.allInOneVendors, viewModel.zeroResults)
   )))
 }
@@ -50,8 +59,8 @@
     label = messages("search-software.other-software-tab.title"),
     panel = TabPanel(
         content = HtmlContent(
-             tabHeading(messages("search-software.other-software-tab.heading", viewModel.otherVendors.vendors.size)) +
-             tabSubHeading(messages("search-software.other-software-tab.results", viewModel.otherVendors.vendors.size)) +
+             tabHeading("search-software.other-software-tab", viewModel.otherVendors.vendors.size) +
+             tabInsetText("search-software.other-software-tab", viewModel.otherVendors.vendors.size) +
              softwareVendorsTemplate(viewModel.otherVendors, viewModel.zeroResults)
   )))
 }
