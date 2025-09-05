@@ -28,8 +28,8 @@ POST        /which-income-source                 uk.gov.hmrc.incometaxsoftwarech
 GET         /which-additional-income-source      uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.AdditionalIncomeSourcesController.show(editMode: Boolean ?= false)
 POST        /which-additional-income-source      uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.AdditionalIncomeSourcesController.submit(editMode: Boolean ?= false)
 
-GET         /what-else-do-you-need-tell-us       uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.OtherItemsController.show(editMode: Boolean ?= false)
-POST        /what-else-do-you-need-tell-us       uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.OtherItemsController.submit(editMode: Boolean ?= false)
+GET         /what-else-do-you-need-to-tell-us     uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.OtherItemsController.show(editMode: Boolean ?= false)
+POST        /what-else-do-you-need-to-tell-us     uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.OtherItemsController.submit(editMode: Boolean ?= false)
 
 GET         /accounting-period-check             uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.AccountingPeriodController.show(editMode: Boolean ?= false)
 POST        /accounting-period-check             uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.AccountingPeriodController.submit(editMode: Boolean ?= false)
