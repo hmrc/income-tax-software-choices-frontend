@@ -207,13 +207,13 @@ class SearchSoftwareViewSpec extends ViewSpec {
         tabsList.last.select("a").text() shouldBe SearchSoftwarePageContent.otherTabTitle
       }
 
-      "has the correct All-in-one section" which {
+      "has the correct All-in-one section for multiple results" which {
         "has correct All-in-one header" in {
-          allInOneTab.selectHead("h2").text shouldBe SearchSoftwarePageContent.allInOneTabHeading
+          allInOneTab.selectHead("h2").text shouldBe SearchSoftwarePageContent.allInOneTabHeadingMany
         }
 
-        "has a count of the number of software vendors on the page" in {
-          allInOneTab.selectHead("h3").text shouldBe SearchSoftwarePageContent.allInOneTabCount
+        "has correct inset text" in {
+          allInOneTab.selectHead(".govuk-inset-text").text shouldBe SearchSoftwarePageContent.allInOneInsetTextMany
         }
 
         "has a list of software vendors" which {
@@ -265,13 +265,13 @@ class SearchSoftwareViewSpec extends ViewSpec {
         }
       }
 
-      "has the correct Other tab section" which {
+      "has the correct Other tab section for multiple results" which {
         "has correct other tab header" in {
-          otherTab.selectHead("h2").text shouldBe SearchSoftwarePageContent.otherTabHeading
+          otherTab.selectHead("h2").text shouldBe SearchSoftwarePageContent.otherTabHeadingMany
         }
 
         "has a count of the number of software vendors on the page" in {
-          otherTab.selectHead("h3").text shouldBe SearchSoftwarePageContent.otherTabCount
+          otherTab.selectHead(".govuk-inset-text").text shouldBe SearchSoftwarePageContent.otherTabInsetTextMany
         }
 
         "has a list of software vendors" which {
@@ -320,6 +320,60 @@ class SearchSoftwareViewSpec extends ViewSpec {
               testCardTwo(secondVendor)
             }
           }
+        }
+      }
+
+      "has the correct All-in-one and Other tab section header for 1 result" which {
+        lazy val documentOneResult = {
+          val model = SoftwareChoicesResultsViewModel(
+            allInOneVendors = SearchSoftwarePageContent.softwareVendorsOneResult,
+            otherVendors = SearchSoftwarePageContent.softwareVendorsOneResult,
+            zeroResults = false
+          )
+          Jsoup.parse(page(model).body)
+        }
+
+        "has correct All-in-one header" in {
+          getAllInOneTabContent(documentOneResult).selectHead("h2").text shouldBe SearchSoftwarePageContent.allInOneTabHeadingOne
+        }
+
+        "has correct All-in-one inset text" in {
+          getAllInOneTabContent(documentOneResult).selectHead(".govuk-inset-text").text shouldBe SearchSoftwarePageContent.allInOneInsetTextOne
+        }
+
+        "has correct Other header" in {
+          getOtherTabContent(documentOneResult).selectHead("h2").text shouldBe SearchSoftwarePageContent.otherTabHeadingOne
+        }
+
+        "has correct Other inset text" in {
+          getOtherTabContent(documentOneResult).selectHead(".govuk-inset-text").text shouldBe SearchSoftwarePageContent.otherTabInsetTextOne
+        }
+      }
+
+      "has the correct All-in-one and Other tab section headers for 0 results (filtered out)" which {
+        lazy val documentOneResult = {
+          val model = SoftwareChoicesResultsViewModel(
+            allInOneVendors = SearchSoftwarePageContent.softwareVendorsNoResults,
+            otherVendors = SearchSoftwarePageContent.softwareVendorsNoResults,
+            zeroResults = false
+          )
+          Jsoup.parse(page(model).body)
+        }
+
+        "has correct All-in-one header" in {
+          getAllInOneTabContent(documentOneResult).selectHead("h2").text shouldBe SearchSoftwarePageContent.allInOneTabHeadingNone
+        }
+
+        "has correct All-in-one inset text" in {
+          getAllInOneTabContent(documentOneResult).selectHead(".govuk-inset-text").text shouldBe SearchSoftwarePageContent.allInOneInsetTextNone
+        }
+
+        "has correct Other header" in {
+          getOtherTabContent(documentOneResult).selectHead("h2").text shouldBe SearchSoftwarePageContent.otherTabHeadingNone
+        }
+
+        "has correct Other inset text" in {
+          getOtherTabContent(documentOneResult).selectHead(".govuk-inset-text").text shouldBe SearchSoftwarePageContent.otherTabInsetTextNone
         }
       }
 
@@ -527,11 +581,19 @@ private object SearchSoftwarePageContent {
   }
 
   val allInOneTabTitle = "All-in-one software"
-  val allInOneTabHeading = "Each of these software products can help you complete your quarterly updates and tax return in full"
-  val allInOneTabCount = "2 results found"
+  val allInOneTabHeadingMany = "Based on your answers we’ve found 2 results"
+  val allInOneInsetTextMany = "Each of these software products can help you complete your quarterly updates and tax return in full."
+  val allInOneTabHeadingOne = "Based on your answers we’ve found 1 result"
+  val allInOneInsetTextOne = "This software product can help you complete your quarterly updates and tax return in full."
+  val allInOneTabHeadingNone = "There are no matching results"
+  val allInOneInsetTextNone = "Improve your results by removing filters."
   val otherTabTitle: String = "Other software"
-  val otherTabHeading = "There are 2 software products that you can use together for Making Tax Digital"
-  val otherTabCount = "2 results found"
+  val otherTabHeadingMany = "Based on your answers we’ve found 2 results"
+  val otherTabInsetTextMany = "You may need to combine several pieces of software to fully complete your quarterly updates and tax return."
+  val otherTabHeadingOne = "Based on your answers we’ve found 1 result"
+  val otherTabInsetTextOne = "There are no software products you can combine to meet your tax obligations."
+  val otherTabHeadingNone = "There are no matching results"
+  val otherTabInsetTextNone = "There are no software products you can combine to meet your tax obligations."
 
   val vendorsHeading = "These single products are compatible software that meets all your needs"
   val numberOfVendors = "There are 2 software providers that can send quarterly updates, submit tax return and meet your selected requirements."
@@ -637,6 +699,33 @@ private object SearchSoftwarePageContent {
         phone = Some("22222 222 222"),
         website = "software-vendor-name-two.com",
         filters = Seq.empty[VendorFilter]
+      )
+    )
+  )
+
+  val softwareVendorsOneResult: SoftwareVendors = SoftwareVendors(
+    lastUpdated = lastUpdateTest,
+    vendors = Seq(
+      SoftwareVendorModel(
+        name = "test software vendor one",
+        email = Some("test@software-vendor-name-one.com"),
+        phone = Some("11111 111 111"),
+        website = "software-vendor-name-one.com",
+        filters = Seq(
+          VendorFilter.FreeVersion,
+          VendorFilter.FreeTrial,
+          VendorFilter.SoleTrader,
+          VendorFilter.UkProperty,
+          VendorFilter.OverseasProperty,
+          VendorFilter.RecordKeeping,
+          VendorFilter.Bridging,
+          VendorFilter.Vat,
+          VendorFilter.Visual,
+          VendorFilter.Hearing,
+          VendorFilter.Motor,
+          VendorFilter.Cognitive,
+          VendorFilter.TaxReturn
+        )
       )
     )
   )

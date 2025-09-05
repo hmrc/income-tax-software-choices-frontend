@@ -225,12 +225,20 @@ search-software.vendor-detail.user-type.agent = Agent
 search-software.vendor-detail.user-type.individual = Individual
 
 search-software.all-in-one-tab.title = All-in-one software
-search-software.all-in-one-tab.heading = Each of these software products can help you complete your quarterly updates and tax return in full
-search-software.all-in-one-tab.results = {0} results found
+search-software.all-in-one-tab.heading.many = Based on your answers we’ve found {0} results
+search-software.all-in-one-tab.heading.one = Based on your answers we’ve found 1 result
+search-software.all-in-one-tab.heading.none = There are no matching results
+search-software.all-in-one-tab.inset.many = Each of these software products can help you complete your quarterly updates and tax return in full.
+search-software.all-in-one-tab.inset.one = This software product can help you complete your quarterly updates and tax return in full.
+search-software.all-in-one-tab.inset.none = Improve your results by removing filters.
 
 search-software.other-software-tab.title = Other software
-search-software.other-software-tab.heading = There are {0} software products that you can use together for Making Tax Digital
-search-software.other-software-tab.results = {0} results found
+search-software.other-software-tab.heading.many = Based on your answers we’ve found {0} results
+search-software.other-software-tab.heading.one = Based on your answers we’ve found 1 result
+search-software.other-software-tab.heading.none = There are no matching results
+search-software.other-software-tab.inset.many = You may need to combine several pieces of software to fully complete your quarterly updates and tax return.
+search-software.other-software-tab.inset.one = There are no software products you can combine to meet your tax obligations.
+search-software.other-software-tab.inset.none = There are no software products you can combine to meet your tax obligations.
 
 # Product details page
 
