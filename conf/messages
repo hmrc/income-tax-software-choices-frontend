@@ -36,11 +36,19 @@ business-income.foreign-property = Renting out a foreign property
 business-income.error.non-empty          = Select if you get income from being sole trader, or renting out a UK or foreign property
 
 # Zero Results page
-zero-results.title = There is no all-in-one software product to meet your needs
-zero-results.heading = There is no all-in-one software product to meet your needs
-zero-results.para1 = You may be able to find more than one software product that works together.
-zero-results.para2 = You’ll need to make sure that the combined products let you send quarterly updates and your tax return.
-zero-results.para3 = If you use an agent or accountant, talk to them about what software you need.
+zero-results.title = Your results
+zero-results.heading = Your results
+zero-results.sub-heading1 = More software will be available soon
+zero-results.sub-heading2 = Get software now
+zero-results.para1 = Based on what you’ve told us, there is not currently an all-in-one software product that meets all of your needs.
+zero-results.para2 = Several all-in-one products are currently being developed.
+zero-results.para3 = We update this tool regularly to show what’s available. Please check back later for updates, which will include new software and changes to the features of existing software.
+zero-results.para4 = You can also:
+zero-results.bullet1 = visit software providers’ websites to find out more about what they’re developing
+zero-results.bullet2 = ask your agent or accountant about software, if you have one
+zero-results.results.part1 = If you’re familiar with Making Tax Digital for Income Tax and would like to use more than one software product at once, you can
+zero-results.results.link = browse software that’s currently available
+zero-results.button = Finish
 
 # Other Items page
 other-items.title = What else do you need to tell HMRC?

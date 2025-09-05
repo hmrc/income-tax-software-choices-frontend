@@ -18,6 +18,7 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import org.scalatest.BeforeAndAfterEach
 import play.api.http.Status.{OK, SEE_OTHER}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.SessionId
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, DatabaseHelper}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
 
@@ -25,6 +26,8 @@ class ZeroSoftwareResultsControllerISpec extends ComponentSpecBase with BeforeAn
 
   s"GET ${routes.ZeroSoftwareResultsController.show().url}" should {
     s"return $OK" in {
+      setupAnswers(SessionId, None)
+
       val result = SoftwareChoicesFrontend.getZeroSoftwareResults()
 
       result should have(

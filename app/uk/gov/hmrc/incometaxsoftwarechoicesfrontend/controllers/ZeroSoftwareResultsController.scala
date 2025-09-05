@@ -17,24 +17,28 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{RequireUserDataRefiner, SessionIdentifierAction}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.ZeroSoftwareResultsView
 
 import javax.inject.{Inject, Singleton}
 
 @Singleton
-class ZeroSoftwareResultsController @Inject()(view: ZeroSoftwareResultsView)
+class ZeroSoftwareResultsController @Inject()(view: ZeroSoftwareResultsView,
+                                              identify: SessionIdentifierAction,
+                                              requireData: RequireUserDataRefiner)
                                              (implicit mcc: MessagesControllerComponents) extends BaseFrontendController {
 
 
-  def show(): Action[AnyContent] = Action { implicit request =>
+  def show(): Action[AnyContent] = (identify andThen requireData) { implicit request =>
     Ok(view(
-      postAction = routes.ZeroSoftwareResultsController.submit(),
+      resultsLink = routes.SearchSoftwareController.show(zeroResults = true),
+      finishAction = routes.ZeroSoftwareResultsController.submit(),
       backLink = routes.CheckYourAnswersController.show()
     ))
   }
 
-  def submit(): Action[AnyContent] = Action { _ =>
-    Redirect(routes.SearchSoftwareController.show(zeroResults = true))
+  def submit(): Action[AnyContent] = (identify andThen requireData) { _ =>
+    Redirect(routes.SessionExpiredController.show(timeout = true))
   }
 
 }
