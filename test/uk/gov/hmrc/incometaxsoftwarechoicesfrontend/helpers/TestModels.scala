@@ -17,7 +17,7 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers
 
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareVendorModel, SoftwareVendors, VendorFilter}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{Intent, SoftwareVendorModel, SoftwareVendors, VendorFilter}
 
 import java.time.LocalDate
 
@@ -45,6 +45,10 @@ object TestModels {
     Some("11111 111 111"),
     "software-vendor-name-one.com",
     Seq(FreeVersion),
+    intent = Some(Intent(
+      dateDue = LocalDate.of(2026, 1, 1),
+      filters = Seq(Vat)
+    )),
     accessibilityStatementLink = Some("software-vendor-accessibility.com")
   )
 

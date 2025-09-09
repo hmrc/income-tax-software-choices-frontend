@@ -18,29 +18,47 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models
 
 import play.api.libs.json.{Json, Reads}
 
+import java.time.LocalDate
+
 case class SoftwareVendorModel(
   name: String,
   email: Option[String],
   phone: Option[String],
   website: String,
   filters: Seq[VendorFilter],
+  intent: Option[Intent] = None,
   accessibilityStatementLink: Option[String] = None
 ) {
+  def allFilters: Seq[VendorFilter] = intent match {
+    case Some(intent) => filters ++ intent.filters
+    case None => filters
+  }
+
+  def getDueDateForFilter(filter: VendorFilter): Option[LocalDate] = {
+    if (!allFilters.contains(filter))
+      throw new Exception(s"[SoftwareVendorModel][getDueDateForFilter] Invalid filter: $filter")
+    intent match {
+      case Some(intent) =>
+        if (intent.filters.contains(filter)) Some(intent.dateDue) else None
+      case None => None
+    }
+  }
+
   def orderedFilterSubset(subsetFilters: Set[VendorFilter]): Seq[VendorFilter] = {
-    val filtersFromVendor = filters.filter(filter => subsetFilters.contains(filter)).toSet
+    val filtersFromVendor = allFilters.filter(filter => subsetFilters.contains(filter)).toSet
     val alwaysDisplayedFilters = subsetFilters.filter(_.alwaysDisplay)
     (filtersFromVendor ++ alwaysDisplayedFilters).toSeq.sortBy(_.priority)
   }
 
   def mustHaveAll(list: Seq[VendorFilter]): Boolean = {
-    list.forall(filters.contains)
+    list.forall(allFilters.contains)
   }
 
   def mustHaveOption(optFilter: Option[VendorFilter]): Boolean =
     mustHaveAll(optFilter.toSeq)
 
   def mustHaveAtLeast(list: Seq[VendorFilter]): Boolean = {
-    val contains = list.map(filters.contains)
+    val contains = list.map(allFilters.contains)
     contains.fold(false)((a, b) => a || b)
   }
 }

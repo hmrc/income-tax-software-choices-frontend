@@ -16,7 +16,6 @@
         "overseas-property",
         "record-keeping",
         "bridging",
-        "vat",
         "visual",
         "hearing",
         "motor",
@@ -47,7 +46,13 @@
         "android",
         "apple-ios",
         "english"
-      ]
+      ],
+      "intent": {
+        "dateDue": "2026-01-01",
+        "filters": [
+          "vat"
+        ]
+      }
     },
     {
       "name": "test software vendor name two",

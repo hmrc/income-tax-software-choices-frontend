@@ -9,6 +9,12 @@
       "filters": [
         "free-version"
       ],
+      "intent": {
+        "dateDue": "2026-01-01",
+        "filters": [
+          "vat"
+        ]
+      },
       "accessibilityStatementLink": "software-vendor-accessibility.com"
     },
     {

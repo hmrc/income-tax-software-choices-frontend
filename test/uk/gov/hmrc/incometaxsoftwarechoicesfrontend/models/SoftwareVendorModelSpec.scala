@@ -19,7 +19,9 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models
 import org.scalatestplus.play.PlaySpec
 import play.api.libs.json._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.TestModels.fullSoftwareVendorModel
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{Agent, FreeTrial, FreeVersion, Individual, SoleTrader}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{Agent, FreeTrial, FreeVersion, Individual, SoleTrader, Vat}
+
+import java.time.LocalDate
 
 class SoftwareVendorModelSpec extends PlaySpec {
 
@@ -113,6 +115,8 @@ class SoftwareVendorModelSpec extends PlaySpec {
       }
     }
 
+    val date = LocalDate.now
+
     val model = SoftwareVendorModel(
       name = "",
       email = None,
@@ -123,6 +127,10 @@ class SoftwareVendorModelSpec extends PlaySpec {
         Agent,
         SoleTrader
       ),
+      intent = Some(Intent(
+        dateDue = date,
+        filters = Seq(Vat)
+      )),
       accessibilityStatementLink = None
     )
 
@@ -161,6 +169,23 @@ class SoftwareVendorModelSpec extends PlaySpec {
 
       "return false if model does not contain any filters" in {
         model.mustHaveAtLeast(Seq(FreeVersion, FreeTrial)) mustBe false
+      }
+    }
+
+    "allFilters" should {
+      "return included and planned filters" in {
+        model.allFilters mustBe Seq(
+          Individual,
+          Agent,
+          SoleTrader,
+          Vat
+        )
+      }
+    }
+
+    "getDueDateForFilter" should {
+      "return correct date if filter is planned" in {
+        model.getDueDateForFilter(Vat) mustBe Some(date)
       }
     }
   }

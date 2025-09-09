@@ -88,6 +88,6 @@ object SoftwareChoicesService {
     vendors.sortBy(vendor => vendor.name)
 
   private[services] def matchFilter(filters: Seq[VendorFilter])(vendors: Seq[SoftwareVendorModel]) =
-    vendors.filter(vendor => filters.forall(vendor.filters.contains(_)))
+    vendors.filter(vendor => filters.forall(vendor.allFilters.contains(_)))
 
 }
