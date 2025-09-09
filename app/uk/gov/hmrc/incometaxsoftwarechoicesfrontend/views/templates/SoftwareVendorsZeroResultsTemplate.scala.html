@@ -18,6 +18,7 @@
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.SoftwareVendorsTemplate
 
 @this(
+    govukInsetText: GovukInsetText,
     softwareVendorsTemplate: SoftwareVendorsTemplate
 )
 
@@ -35,13 +36,15 @@
             @messages("search-software.vendor-count.no-products.h.none")
         }
     </h2>
-    <h3 class="govuk-heading-m">
-        @if(count > 1) {
-            @messages("search-software.vendor-count.no-products.p.some")
-        } else {
-            @messages("search-software.vendor-count.no-products.p.none")
-        }
-    </h3>
+    @if(count > 1) {
+        @govukInsetText(InsetText(
+            content = Text(messages("search-software.vendor-count.no-products.p.some"))
+        ))
+    } else {
+        @govukInsetText(InsetText(
+            content = Text(messages("search-software.vendor-count.no-products.p.none"))
+        ))
+    }
 </div>
 
 <div id="software-vendor-list">

@@ -378,26 +378,34 @@ class SearchSoftwareViewSpec extends ViewSpec {
       }
 
       "when there are no all-in-one products" should {
-        lazy val documentZeroResults = {
-          val model = SoftwareChoicesResultsViewModel(
-            allInOneVendors = SearchSoftwarePageContent.softwareVendorsNoResults,
-            otherVendors = SearchSoftwarePageContent.softwareVendorsResults,
-            zeroResults = true
-          )
-          Jsoup.parse(page(model).body)
-        }
+        Map(
+          1 -> SearchSoftwarePageContent.softwareVendorsNoResults,
+          2 -> SearchSoftwarePageContent.softwareVendorsOneResult,
+          3 -> SearchSoftwarePageContent.softwareVendorsResults
+        ).foreach { entry =>
+          lazy val documentZeroResults = {
+            val model = SoftwareChoicesResultsViewModel(
+              allInOneVendors = SearchSoftwarePageContent.softwareVendorsNoResults,
+              otherVendors = entry._2,
+              zeroResults = true
+            )
+            Jsoup.parse(page(model).body)
+          }
 
-        "displays the zero-results header" in {
-          documentZeroResults.mainContent.selectHead("#vendor-count h2").text shouldBe SearchSoftwarePageContent.noProductsHeading
-        }
+          s"${entry._1}: displays the zero-results header" in {
+            documentZeroResults.mainContent.selectHead("#vendor-count h2").text shouldBe SearchSoftwarePageContent.noProductsHeading.get(entry._1).get
+          }
 
-        "displays the results count" in {
-          documentZeroResults.mainContent.selectHead("#vendor-count h3").text shouldBe SearchSoftwarePageContent.noProductsCount
-        }
+          s"${entry._1}: displays the results count" in {
+            documentZeroResults.mainContent.select("#vendor-count > div").text shouldBe SearchSoftwarePageContent.noProductsCount.get(entry._1).get
+          }
 
-        "renders all available software vendors" in {
-          val listings = documentZeroResults.mainContent.select("#software-vendor-list > div")
-          listings.size shouldBe SearchSoftwarePageContent.softwareVendorsResults.vendors.length
+          s"${entry._1}: renders all available software vendors" in {
+            if (entry._1 == 3) {
+              val listings = documentZeroResults.mainContent.select("#software-vendor-list > div")
+              listings.size shouldBe SearchSoftwarePageContent.softwareVendorsResults.vendors.length
+            }
+          }
         }
       }
     }
@@ -607,8 +615,17 @@ private object SearchSoftwarePageContent {
   val agentHeading = "We’ve found 2 results"
   val agentText = "You can use the filter options to narrow down your search."
 
-  val noProductsHeading = "Based on your answers we’ve found 2 results."
-  val noProductsCount = "You will need to combine several pieces of software to fully complete your quarterly updates and tax return."
+  val noProductsHeading = Map(
+    1 -> "There are no matching results.",
+    2 -> "There are no software products you can combine to meet your tax obligations.",
+    3 -> "Based on your answers we’ve found 2 results."
+  )
+
+  val noProductsCount = Map(
+    1 -> "You may be able to improve your results by removing filters.",
+    2 -> "You may be able to improve your results by removing filters.",
+    3 -> "You will need to combine several pieces of software to fully complete your quarterly updates and tax return."
+  )
 
   val pricing = "Price"
   val freeVersion = "Free version"
