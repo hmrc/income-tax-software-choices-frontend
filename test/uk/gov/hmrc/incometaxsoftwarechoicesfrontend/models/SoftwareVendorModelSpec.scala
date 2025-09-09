@@ -19,7 +19,7 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models
 import org.scalatestplus.play.PlaySpec
 import play.api.libs.json._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.TestModels.fullSoftwareVendorModel
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{Agent, FreeTrial, FreeVersion, Individual, SoleTrader, Vat}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{Agent, FreeTrial, FreeVersion, Individual, SoleTrader, UkProperty, Vat}
 
 import java.time.LocalDate
 
@@ -183,9 +183,17 @@ class SoftwareVendorModelSpec extends PlaySpec {
       }
     }
 
-    "getDueDateForFilter" should {
+    "getFilterState" should {
       "return correct date if filter is planned" in {
-        model.getDueDateForFilter(Vat) mustBe Some(date)
+        model.getFilterState(Vat) mustBe Planned(date)
+      }
+
+      "return no date if filter is supported" in {
+        model.getFilterState(SoleTrader) mustBe Supported
+      }
+
+      "return not supported if filter is not supported" in {
+        model.getFilterState(UkProperty) mustBe Unsupported
       }
     }
   }

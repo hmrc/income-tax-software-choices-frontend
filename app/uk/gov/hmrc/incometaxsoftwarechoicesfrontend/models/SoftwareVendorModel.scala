@@ -18,8 +18,6 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models
 
 import play.api.libs.json.{Json, Reads}
 
-import java.time.LocalDate
-
 case class SoftwareVendorModel(
   name: String,
   email: Option[String],
@@ -34,13 +32,13 @@ case class SoftwareVendorModel(
     case None => filters
   }
 
-  def getDueDateForFilter(filter: VendorFilter): Option[LocalDate] = {
-    if (!allFilters.contains(filter))
-      throw new Exception(s"[SoftwareVendorModel][getDueDateForFilter] Invalid filter: $filter")
-    intent match {
+  def getFilterState(filter: VendorFilter): FilterState = {
+    if (!allFilters.contains(filter)) {
+      Unsupported
+    } else intent match {
       case Some(intent) =>
-        if (intent.filters.contains(filter)) Some(intent.dateDue) else None
-      case None => None
+        if (intent.filters.contains(filter)) Planned(intent.dateDue) else Supported
+      case None => Supported
     }
   }
 
