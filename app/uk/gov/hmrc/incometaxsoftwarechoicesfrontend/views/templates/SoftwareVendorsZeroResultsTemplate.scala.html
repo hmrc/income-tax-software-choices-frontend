@@ -18,18 +18,34 @@
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.SoftwareVendorsTemplate
 
 @this(
-softwareVendorsTemplate: SoftwareVendorsTemplate
+    softwareVendorsTemplate: SoftwareVendorsTemplate
 )
 
 @(viewModel: SoftwareChoicesResultsViewModel)(implicit messages: Messages)
 
+@count = @{viewModel.otherVendors.vendors.length}
+
 <div id="vendor-count">
-    <h2 class="govuk-heading-l">@messages("search-software.vendor-count.no-products")</h2>
+    <h2 class="govuk-heading-l">
+        @if(count == 1) {
+            @messages("search-software.vendor-count.no-products.h.one")
+        } else if(count != 0) {
+            @messages("search-software.vendor-count.no-products.h.some", count)
+        } else {
+            @messages("search-software.vendor-count.no-products.h.none")
+        }
+    </h2>
     <h3 class="govuk-heading-m">
-        @messages( "search-software.vendor-count.no-products.count", viewModel.otherVendors.vendors.length)
+        @if(count > 1) {
+            @messages("search-software.vendor-count.no-products.p.some")
+        } else {
+            @messages("search-software.vendor-count.no-products.p.none")
+        }
     </h3>
 </div>
 
 <div id="software-vendor-list">
-    @softwareVendorsTemplate(viewModel.otherVendors, viewModel.zeroResults)
+    @if(count > 1) {
+        @softwareVendorsTemplate(viewModel.otherVendors, viewModel.zeroResults)
+    }
 </div>

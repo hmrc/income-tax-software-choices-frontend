@@ -607,8 +607,8 @@ private object SearchSoftwarePageContent {
   val agentHeading = "We’ve found 2 results"
   val agentText = "You can use the filter options to narrow down your search."
 
-  val noProductsHeading = "You’ll need to combine several of these pieces of software to fully complete your quarterly updates and tax return"
-  val noProductsCount = "2 results found"
+  val noProductsHeading = "Based on your answers we’ve found 2 results."
+  val noProductsCount = "You will need to combine several pieces of software to fully complete your quarterly updates and tax return."
 
   val pricing = "Price"
   val freeVersion = "Free version"
@@ -651,7 +651,6 @@ private object SearchSoftwarePageContent {
   val ukInterest = "UK Interest"
   val foreignDividends = "Foreign Dividends"
   val foreignInterest = "Foreign Interest"
-
 
   val Deductions = "Deductions"
   val charitableGiving = "Charitable giving"

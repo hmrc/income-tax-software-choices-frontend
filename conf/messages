@@ -139,8 +139,11 @@ search-software.vendor-count.heading = These single products are compatible soft
 search-software.vendor-count-single = Currently there is 1 software provider
 search-software.vendor-count        = There are {0} software providers that can send quarterly updates, submit tax return and meet your selected requirements.
 search-software.vendor-visit-link   = Find out more about {0}
-search-software.vendor-count.no-products = You’ll need to combine several of these pieces of software to fully complete your quarterly updates and tax return
-search-software.vendor-count.no-products.count = {0} results found
+search-software.vendor-count.no-products.h.one = There are no software products you can combine to meet your tax obligations.
+search-software.vendor-count.no-products.h.some = Based on your answers we’ve found {0} results.
+search-software.vendor-count.no-products.h.none = There are no matching results.
+search-software.vendor-count.no-products.p.some = You will need to combine several pieces of software to fully complete your quarterly updates and tax return.
+search-software.vendor-count.no-products.p.none = You may be able to improve your results by removing filters.
 
 search-software.vendor-count.agent.heading = We’ve found {0} results
 search-software.vendor-count.agent         = You can use the filter options to narrow down your search.
