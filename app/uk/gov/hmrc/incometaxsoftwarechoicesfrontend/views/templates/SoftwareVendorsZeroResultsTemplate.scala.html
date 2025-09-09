@@ -47,8 +47,8 @@
     }
 </div>
 
-<div id="software-vendor-list">
-    @if(count > 1) {
+@if(count > 1) {
+    <div id="software-vendor-list">
         @softwareVendorsTemplate(viewModel.otherVendors, viewModel.zeroResults)
-    }
-</div>
+    </div>
+}
