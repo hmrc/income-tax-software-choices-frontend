@@ -31,6 +31,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SearchSoftwarePag
 
 import java.net.URLEncoder
 import java.time.LocalDate
+import scala.util.Try
 
 class SearchSoftwareViewSpec extends ViewSpec {
 
@@ -377,27 +378,51 @@ class SearchSoftwareViewSpec extends ViewSpec {
         }
       }
 
+      val titles = Map(
+        1 -> "No products",
+        2 -> "One product",
+        3 -> "More than one product"
+      )
+
       "when there are no all-in-one products" should {
-        lazy val documentZeroResults = {
-          val model = SoftwareChoicesResultsViewModel(
-            allInOneVendors = SearchSoftwarePageContent.softwareVendorsNoResults,
-            otherVendors = SearchSoftwarePageContent.softwareVendorsResults,
-            zeroResults = true
-          )
-          Jsoup.parse(page(model).body)
-        }
+        Map(
+          1 -> SearchSoftwarePageContent.softwareVendorsNoResults,
+          2 -> SearchSoftwarePageContent.softwareVendorsOneResult,
+          3 -> SearchSoftwarePageContent.softwareVendorsResults
+        ).foreach { entry =>
+          val index = entry._1
+          val title = titles.getOrElse(index, "")
 
-        "displays the zero-results header" in {
-          documentZeroResults.mainContent.selectHead("#vendor-count h2").text shouldBe SearchSoftwarePageContent.noProductsHeading
-        }
+          lazy val documentZeroResults = {
+            val model = SoftwareChoicesResultsViewModel(
+              allInOneVendors = SearchSoftwarePageContent.softwareVendorsNoResults,
+              otherVendors = entry._2,
+              zeroResults = true
+            )
+            Jsoup.parse(page(model).body)
+          }
 
-        "displays the results count" in {
-          documentZeroResults.mainContent.selectHead("#vendor-count h3").text shouldBe SearchSoftwarePageContent.noProductsCount
-        }
+          s"$title: displays the zero-results header" in {
+            Some(documentZeroResults.mainContent.selectHead("#vendor-count h2").text) shouldBe
+              SearchSoftwarePageContent.noProductsHeading.get(index)
+          }
 
-        "renders all available software vendors" in {
-          val listings = documentZeroResults.mainContent.select("#software-vendor-list > div")
-          listings.size shouldBe SearchSoftwarePageContent.softwareVendorsResults.vendors.length
+          s"$title: displays inset text" in {
+            Some(documentZeroResults.mainContent.select("#vendor-count > div").text) shouldBe
+              SearchSoftwarePageContent.noProductsCount.get(index)
+          }
+
+          s"$title: renders all available software vendors if there are more than one" in {
+            if (index == 3) {
+              val listings = documentZeroResults.mainContent.select("#software-vendor-list > div")
+              listings.size shouldBe SearchSoftwarePageContent.softwareVendorsResults.vendors.length
+            } else {
+              Try {
+                documentZeroResults.mainContent.select("#software-vendor-list > div")
+                fail
+              }.getOrElse(succeed)
+            }
+          }
         }
       }
     }
@@ -607,8 +632,17 @@ private object SearchSoftwarePageContent {
   val agentHeading = "We’ve found 2 results"
   val agentText = "You can use the filter options to narrow down your search."
 
-  val noProductsHeading = "You’ll need to combine several of these pieces of software to fully complete your quarterly updates and tax return"
-  val noProductsCount = "2 results found"
+  val noProductsHeading = Map(
+    1 -> "There are no matching results.",
+    2 -> "There are no software products you can combine to meet your tax obligations.",
+    3 -> "Based on your answers we’ve found 2 results."
+  )
+
+  val noProductsCount = Map(
+    1 -> "You may be able to improve your results by removing filters.",
+    2 -> "You may be able to improve your results by removing filters.",
+    3 -> "You will need to combine several pieces of software to fully complete your quarterly updates and tax return."
+  )
 
   val pricing = "Price"
   val freeVersion = "Free version"
@@ -651,7 +685,6 @@ private object SearchSoftwarePageContent {
   val ukInterest = "UK Interest"
   val foreignDividends = "Foreign Dividends"
   val foreignInterest = "Foreign Interest"
-
 
   val Deductions = "Deductions"
   val charitableGiving = "Charitable giving"
