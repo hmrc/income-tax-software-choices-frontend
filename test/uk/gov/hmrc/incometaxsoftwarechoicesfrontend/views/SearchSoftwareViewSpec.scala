@@ -31,6 +31,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SearchSoftwarePag
 
 import java.net.URLEncoder
 import java.time.LocalDate
+import scala.util.Try
 
 class SearchSoftwareViewSpec extends ViewSpec {
 
@@ -377,12 +378,21 @@ class SearchSoftwareViewSpec extends ViewSpec {
         }
       }
 
+      val titles = Map(
+        1 -> "No products",
+        2 -> "One product",
+        3 -> "More than one product"
+      )
+
       "when there are no all-in-one products" should {
         Map(
           1 -> SearchSoftwarePageContent.softwareVendorsNoResults,
           2 -> SearchSoftwarePageContent.softwareVendorsOneResult,
           3 -> SearchSoftwarePageContent.softwareVendorsResults
         ).foreach { entry =>
+          val index = entry._1
+          val title = titles.getOrElse(index, "")
+
           lazy val documentZeroResults = {
             val model = SoftwareChoicesResultsViewModel(
               allInOneVendors = SearchSoftwarePageContent.softwareVendorsNoResults,
@@ -392,18 +402,25 @@ class SearchSoftwareViewSpec extends ViewSpec {
             Jsoup.parse(page(model).body)
           }
 
-          s"${entry._1}: displays the zero-results header" in {
-            documentZeroResults.mainContent.selectHead("#vendor-count h2").text shouldBe SearchSoftwarePageContent.noProductsHeading.get(entry._1).get
+          s"$title: displays the zero-results header" in {
+            Some(documentZeroResults.mainContent.selectHead("#vendor-count h2").text) shouldBe
+              SearchSoftwarePageContent.noProductsHeading.get(index)
           }
 
-          s"${entry._1}: displays the results count" in {
-            documentZeroResults.mainContent.select("#vendor-count > div").text shouldBe SearchSoftwarePageContent.noProductsCount.get(entry._1).get
+          s"$title: displays the results count" in {
+            Some(documentZeroResults.mainContent.select("#vendor-count > div").text) shouldBe
+              SearchSoftwarePageContent.noProductsCount.get(index)
           }
 
-          s"${entry._1}: renders all available software vendors" in {
-            if (entry._1 == 3) {
+          s"$title: renders all available software vendors if there are more than one" in {
+            if (index == 3) {
               val listings = documentZeroResults.mainContent.select("#software-vendor-list > div")
               listings.size shouldBe SearchSoftwarePageContent.softwareVendorsResults.vendors.length
+            } else {
+              Try {
+                documentZeroResults.mainContent.select("#software-vendor-list > div")
+                fail
+              }.getOrElse(succeed)
             }
           }
         }
