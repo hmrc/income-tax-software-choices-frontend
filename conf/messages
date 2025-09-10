@@ -29,9 +29,9 @@ business-income.title = Which of these do you get income from?
 business-income.legend = Which of these do you get income from?
 business-income.para = You’ll need to include this in your quarterly updates and tax return.
 business-income.hint = Select all that apply
-business-income.self-employment = Being a sole trader
+business-income.sole-trader = Being a sole trader
 business-income.uk-property = Renting out a UK property
-business-income.foreign-property = Renting out a foreign property
+business-income.overseas-property = Renting out a foreign property
 
 business-income.error.non-empty          = Select if you get income from being sole trader, or renting out a UK or foreign property
 
@@ -74,29 +74,6 @@ check-your-answers.additional-income    = Other income
 check-your-answers.other-items          = Other items
 check-your-answers.accounting-period    = Accounting period
 check-your-answers.none-selected        = None selected
-
-
-check-your-answers.sole-trader                              = Being a sole trader
-check-your-answers.uk-property                              = Renting out a UK property
-check-your-answers.overseas-property                        = Renting out a foreign property
-check-your-answers.payments-into-a-private-pension          = Private pension contributions
-check-your-answers.charitable-giving                        = Charitable giving
-check-your-answers.capital-gains-tax                        = Capital Gains
-check-your-answers.student-loans                            = Student loan
-check-your-answers.marriage-allowance                       = Marriage Allowance
-check-your-answers.voluntary-class-2-national-insurance     = Voluntary Class 2 National Insurance
-check-your-answers.high-income-child-benefit-charge         = High Income Child Benefit Charge
-check-your-answers.uk-interest                              = UK Interest
-check-your-answers.construction-industry-scheme             = Construction Industry Scheme
-check-your-answers.employment                               = Employment (PAYE)
-check-your-answers.uk-dividends                             = UK Dividends
-check-your-answers.state-pension-income                     = State Pension income
-check-your-answers.private-pension-income                   = Private pension income
-check-your-answers.foreign-dividends                        = Foreign dividends
-check-your-answers.foreign-interest                         = Foreign interest
-check-your-answers.sixth-april-to-fifth-april               = 6 April to 5 April
-check-your-answers.first-april-to-thirty-first-march        = 1 April to 31 March
-check-your-answers.other                                    = Neither of these
 
 # Search software page
 
@@ -377,8 +354,8 @@ additional.income.source-uk-interest                                = UK Interes
 additional.income.source-construction-industry-scheme               = Construction Industry Scheme
 additional.income.source-employment                                 = Employment (PAYE)
 additional.income.source-uk-dividends                               = UK Dividends
-additional.income.source-state-pension                              = State Pension income
-additional.income.source-private-pension                            = Private pension income
+additional.income.source-state-pension-income                       = State Pension income
+additional.income.source-private-pension-income                      = Private pension income
 additional.income.source-foreign-dividends                          = Foreign dividends
 additional.income.source-foreign-interest                           = Foreign interest
 additional.income.source-none                                       = None of these
