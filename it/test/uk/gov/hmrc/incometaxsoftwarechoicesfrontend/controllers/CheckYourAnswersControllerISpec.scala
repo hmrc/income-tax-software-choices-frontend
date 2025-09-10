@@ -57,15 +57,15 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
           httpStatus(OK),
           pageTitle(s"${messages("check-your-answers.heading")} - ${PageContentBase.title} - GOV.UK"),
           summaryListRow("Income sources", Seq(SoleTrader, UkProperty, OverseasProperty)
-            .map(vf => messages(s"check-your-answers.$vf")).mkString(" ")),
+            .map(vf => messages(s"business-income.$vf")).mkString(" ")),
           summaryListRow("Other income", Seq(UkInterest, ConstructionIndustryScheme, Employment, UkDividends, StatePensionIncome,
             PrivatePensionIncome, ForeignDividends, ForeignInterest)
-            .map(vf => messages(s"check-your-answers.$vf")).mkString(" ")),
+            .map(vf => messages(s"additional.income.source-$vf")).mkString(" ")),
           summaryListRow("Other items", Seq(PaymentsIntoAPrivatePension, CharitableGiving, CapitalGainsTax, StudentLoans,
             MarriageAllowance, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge)
-            .map(vf => messages(s"check-your-answers.$vf")).mkString(" ")),
+            .map(vf => messages(s"other-items.$vf")).mkString(" ")),
           summaryListRow("Accounting period", Set(OtherAccountingPeriod)
-            .map(vf => messages(s"check-your-answers.${vf.key}")).mkString(" "))
+            .map(vf => messages(s"accounting-period.${vf.key}")).mkString(" "))
         )
       }
       "'None of these' is selected for other income and other items sources" in {
@@ -82,11 +82,11 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
           httpStatus(OK),
           pageTitle(s"${messages("check-your-answers.heading")} - ${PageContentBase.title} - GOV.UK"),
           summaryListRow("Income sources", Seq(SoleTrader, UkProperty, OverseasProperty)
-            .map(vf => messages(s"check-your-answers.$vf")).mkString(" ")),
+            .map(vf => messages(s"business-income.$vf")).mkString(" ")),
           summaryListRow("Other income", messages(s"check-your-answers.none-selected")),
           summaryListRow("Other items", messages(s"check-your-answers.none-selected")),
           summaryListRow("Accounting period", Set(OtherAccountingPeriod)
-            .map(vf => messages(s"check-your-answers.${vf.key}")).mkString(" "))
+            .map(vf => messages(s"accounting-period.${vf.key}")).mkString(" "))
         )
       }
       "Business Incomes sources is not set" in {
