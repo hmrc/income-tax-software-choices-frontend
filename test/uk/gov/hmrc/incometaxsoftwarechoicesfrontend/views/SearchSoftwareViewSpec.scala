@@ -377,113 +377,126 @@ class SearchSoftwareViewSpec extends ViewSpec {
           getOtherTabContent(documentOneResult).selectHead(".govuk-inset-text").text shouldBe SearchSoftwarePageContent.otherTabInsetTextNone
         }
       }
+    }
 
+    "have a single software vendor section for zero all in one products" which {
       val titles = Map(
         1 -> "No products",
         2 -> "One product",
         3 -> "More than one product"
       )
 
-      "when there are no all-in-one products" should {
-        Map(
-          1 -> SearchSoftwarePageContent.softwareVendorsNoResults,
-          2 -> SearchSoftwarePageContent.softwareVendorsOneResult,
-          3 -> SearchSoftwarePageContent.softwareVendorsResults
-        ).foreach { entry =>
-          val index = entry._1
-          val title = titles.getOrElse(index, "")
+      Map(
+        1 -> SearchSoftwarePageContent.softwareVendorsNoResults,
+        2 -> SearchSoftwarePageContent.softwareVendorsOneResult,
+        3 -> SearchSoftwarePageContent.softwareVendorsResults
+      ).foreach { entry =>
+        val index = entry._1
+        val title = titles.getOrElse(index, "")
 
-          lazy val documentZeroResults = {
-            val model = SoftwareChoicesResultsViewModel(
-              allInOneVendors = SearchSoftwarePageContent.softwareVendorsNoResults,
-              otherVendors = entry._2,
-              zeroResults = true
-            )
-            Jsoup.parse(page(model).body)
-          }
+        lazy val documentZeroResults = {
+          val model = SoftwareChoicesResultsViewModel(
+            allInOneVendors = SearchSoftwarePageContent.softwareVendorsNoResults,
+            otherVendors = entry._2,
+            zeroResults = true
+          )
+          Jsoup.parse(page(model).body)
+        }
 
-          s"$title: displays the zero-results header" in {
-            Some(documentZeroResults.mainContent.selectHead("#vendor-count h2").text) shouldBe
-              SearchSoftwarePageContent.noProductsHeading.get(index)
-          }
+        s"$title: displays the zero-results header" in {
+          Some(documentZeroResults.mainContent.selectHead("#vendor-count h2").text) shouldBe
+            SearchSoftwarePageContent.noProductsHeading.get(index)
+        }
 
-          s"$title: displays inset text" in {
-            Some(documentZeroResults.mainContent.select("#vendor-count > div").text) shouldBe
-              SearchSoftwarePageContent.noProductsCount.get(index)
-          }
+        s"$title: displays inset text" in {
+          Some(documentZeroResults.mainContent.select("#vendor-count > div").text) shouldBe
+            SearchSoftwarePageContent.noProductsCount.get(index)
+        }
 
-          s"$title: renders all available software vendors if there are more than one" in {
-            if (index == 3) {
-              val listings = documentZeroResults.mainContent.select("#software-vendor-list > div")
-              listings.size shouldBe SearchSoftwarePageContent.softwareVendorsResults.vendors.length
-            } else {
-              Try {
-                documentZeroResults.mainContent.select("#software-vendor-list > div")
-                fail
-              }.getOrElse(succeed)
-            }
+        s"$title: renders all available software vendors if there are more than one" in {
+          if (index == 3) {
+            val listings = documentZeroResults.mainContent.select("#software-vendor-list > div")
+            listings.size shouldBe SearchSoftwarePageContent.softwareVendorsResults.vendors.length
+          } else {
+            Try {
+              documentZeroResults.mainContent.select("#software-vendor-list > div")
+              fail
+            }.getOrElse(succeed)
           }
         }
       }
     }
 
-    "have a single software vendor section for agents" which {
+    "have a single software vendor section for agents" which  {
       lazy val document = getDocument(hasResults = true, isAgent = true)
 
-      "has the correct Other tab section" which {
-        "has correct other tab header" in {
-          document.selectHead("#vendor-count h2").text shouldBe SearchSoftwarePageContent.agentHeading
+      "has the correct heading and inset text" when {
+        "there are multiple results" in {
+          document.selectHead("#vendor-count h2").text shouldBe SearchSoftwarePageContent.agentHeadingMany
+          document.selectHead("#vendor-count .govuk-inset-text").text shouldBe SearchSoftwarePageContent.agentInsetTextMany
         }
-
-        "has a count of the number of software vendors on the page" in {
-          document.selectHead("#vendor-count p").text shouldBe SearchSoftwarePageContent.agentText
+        "there is 1 result" in {
+          lazy val documentOneResult = {
+            val model = SoftwareChoicesResultsViewModel(
+              SearchSoftwarePageContent.softwareVendorsOneResult,
+              SearchSoftwarePageContent.softwareVendorsOneResult,
+              isAgent = true)
+            Jsoup.parse(page(model).body)
+          }
+          documentOneResult.selectHead("#vendor-count h2").text shouldBe SearchSoftwarePageContent.agentHeadingOne
+          documentOneResult.selectHead("#vendor-count .govuk-inset-text").text shouldBe SearchSoftwarePageContent.agentInsetTextOne
         }
+        "there are 0 results" in {
+          lazy val documentNoResults = getDocument(hasResults = false, isAgent = true)
+          documentNoResults.selectHead("#vendor-count h2").text shouldBe SearchSoftwarePageContent.agentHeadingNone
+          documentNoResults.selectHead("#vendor-count .govuk-inset-text").text shouldBe SearchSoftwarePageContent.agentInsetTextNone
+        }
+      }
 
-        "has a list of software vendors" which {
-          "has a software vendor with lots of detail" which {
-            def firstVendor: Element = document.selectHead("#software-vendor-0")
+      "has a list of software vendors" which {
+        "has a software vendor with lots of detail" which {
+          def firstVendor: Element = document.selectHead("#software-vendor-0")
 
-            val firstModel = SearchSoftwarePageContent.softwareVendorsResults.vendors.head
+          val firstModel = SearchSoftwarePageContent.softwareVendorsResults.vendors.head
 
-            "has a heading for the software vendor" in {
-              val heading: Element = firstVendor.selectHead("h3")
-              heading.text shouldBe firstModel.name
-            }
-
-            "has a link for the software vendor" in {
-              val link: Element = firstVendor.selectHead("a")
-              val expectedUrl = ProductDetailsController.show(URLEncoder.encode(firstModel.name, "UTF-8"), zeroResults = false).url
-
-              link.attr("href") shouldBe expectedUrl
-              link.text should include(firstModel.name)
-            }
-
-            "has a list of detail for the software vendor with full detail" in {
-              testCardOne(firstVendor)
-            }
+          "has a heading for the software vendor" in {
+            val heading: Element = firstVendor.selectHead("h3")
+            heading.text shouldBe firstModel.name
           }
 
-          "has a software vendor with minimal detail" which {
-            def secondVendor: Element = document.selectHead("#software-vendor-1")
+          "has a link for the software vendor" in {
+            val link: Element = firstVendor.selectHead("a")
+            val expectedUrl = ProductDetailsController.show(URLEncoder.encode(firstModel.name, "UTF-8"), zeroResults = false).url
 
-            val secondModel = SearchSoftwarePageContent.softwareVendorsResults.vendors(1)
+            link.attr("href") shouldBe expectedUrl
+            link.text should include(firstModel.name)
+          }
 
-            "has a heading for the software vendor" in {
-              val heading: Element = secondVendor.selectHead("h3")
-              heading.text shouldBe secondModel.name
-            }
+          "has a list of detail for the software vendor with full detail" in {
+            testCardOne(firstVendor)
+          }
+        }
 
-            "has a link for the software vendor" in {
-              val link: Element = secondVendor.selectHead("a")
-              val expectedUrl = ProductDetailsController.show(URLEncoder.encode(secondModel.name, "UTF-8"), zeroResults = false).url
+        "has a software vendor with minimal detail" which {
+          def secondVendor: Element = document.selectHead("#software-vendor-1")
 
-              link.attr("href") shouldBe expectedUrl
-              link.text should include(secondModel.name)
-            }
+          val secondModel = SearchSoftwarePageContent.softwareVendorsResults.vendors(1)
 
-            "has a list of detail for the software vendor with minimal detail" in {
-              testCardTwo(secondVendor)
-            }
+          "has a heading for the software vendor" in {
+            val heading: Element = secondVendor.selectHead("h3")
+            heading.text shouldBe secondModel.name
+          }
+
+          "has a link for the software vendor" in {
+            val link: Element = secondVendor.selectHead("a")
+            val expectedUrl = ProductDetailsController.show(URLEncoder.encode(secondModel.name, "UTF-8"), zeroResults = false).url
+
+            link.attr("href") shouldBe expectedUrl
+            link.text should include(secondModel.name)
+          }
+
+          "has a list of detail for the software vendor with minimal detail" in {
+            testCardTwo(secondVendor)
           }
         }
       }
@@ -629,8 +642,12 @@ private object SearchSoftwarePageContent {
   val emptyVendorListMessageBullet1 = "reduce the number of filters you apply"
   val emptyVendorListMessageBullet2 = "make sure the name you have entered into the search bar is correct"
 
-  val agentHeading = "We’ve found 2 results"
-  val agentText = "You can use the filter options to narrow down your search."
+  val agentHeadingMany = "We’ve found 2 results"
+  val agentHeadingOne = "We’ve found 1 result"
+  val agentHeadingNone = "There are no matching results."
+  val agentInsetTextMany = "You can use the filter options to narrow down your search."
+  val agentInsetTextOne = "You can improve your results by removing filters."
+  val agentInsetTextNone = "Improve your results by removing filters."
 
   val noProductsHeading = Map(
     1 -> "There are no matching results.",
