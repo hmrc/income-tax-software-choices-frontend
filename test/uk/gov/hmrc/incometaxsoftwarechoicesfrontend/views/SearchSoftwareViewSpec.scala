@@ -407,7 +407,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
               SearchSoftwarePageContent.noProductsHeading.get(index)
           }
 
-          s"$title: displays the results count" in {
+          s"$title: displays inset text" in {
             Some(documentZeroResults.mainContent.select("#vendor-count > div").text) shouldBe
               SearchSoftwarePageContent.noProductsCount.get(index)
           }
