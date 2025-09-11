@@ -18,16 +18,37 @@
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.SoftwareVendorsTemplate
 
 @this(
-softwareVendorsTemplate: SoftwareVendorsTemplate
+softwareVendorsTemplate: SoftwareVendorsTemplate,
+        govukInsetText : GovukInsetText
 )
 
 @(viewModel: SoftwareChoicesResultsViewModel)(implicit messages: Messages)
 
+@resultsHeading(count: Int) = @{
+    count match {
+        case 0 => <h2 class="govuk-heading-l">{messages("search-software.vendor-count.agent.heading.none")}</h2>
+        case 1 => <h2 class="govuk-heading-l">{messages("search-software.vendor-count.agent.heading.one")}</h2>
+        case _ => <h2 class="govuk-heading-l">{messages("search-software.vendor-count.agent.heading.many", count)}</h2>
+    }
+}
+
+@insetText(count: Int) = @{
+    count match {
+        case 0 => govukInsetText(InsetText(
+            content = Text(messages("search-software.vendor-count.agent.inset.none"))
+        ))
+        case 1 => govukInsetText(InsetText(
+            content = Text(messages("search-software.vendor-count.agent.inset.one"))
+        ))
+        case _ => govukInsetText(InsetText(
+            content = Text(messages("search-software.vendor-count.agent.inset.many"))
+        ))
+    }
+}
+
 <div id="vendor-count">
-    <h2 class="govuk-heading-l">@messages("search-software.vendor-count.agent.heading", viewModel.allInOneVendors.vendors.length)</h2>
-    <p class="govuk-body">
-        @messages("search-software.vendor-count.agent")
-    </p>
+    @resultsHeading(viewModel.allInOneVendors.vendors.size)
+    @insetText(viewModel.allInOneVendors.vendors.size)
 </div>
 
 <div id="software-vendor-list">

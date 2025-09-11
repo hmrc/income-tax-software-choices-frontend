@@ -122,8 +122,12 @@ search-software.vendor-count.no-products.h.none = There are no matching results.
 search-software.vendor-count.no-products.p.some = You will need to combine several pieces of software to fully complete your quarterly updates and tax return.
 search-software.vendor-count.no-products.p.none = You may be able to improve your results by removing filters.
 
-search-software.vendor-count.agent.heading = We’ve found {0} results
-search-software.vendor-count.agent         = You can use the filter options to narrow down your search.
+search-software.vendor-count.agent.heading.many     = We’ve found {0} results
+search-software.vendor-count.agent.heading.one      = We’ve found 1 result
+search-software.vendor-count.agent.heading.none     = There are no matching results.
+search-software.vendor-count.agent.inset.many       = You can use the filter options to narrow down your search.
+search-software.vendor-count.agent.inset.one        = You can improve your results by removing filters.
+search-software.vendor-count.agent.inset.none       = Improve your results by removing filters.
 
 search-software.empty-vendor-list           = Your search has returned no results. To increase the number of results, we suggest you:
 search-software.empty-vendor-list.heading   = Your search has returned no results.
