@@ -36,7 +36,7 @@ class UserTypeControllerISpec extends ComponentSpecBase with BeforeAndAfterEach 
     super.beforeEach()
   }
 
-  "GET /type-of-user" when {
+  "GET /how-will-you-use-it" when {
     "there are no existing page answers" should {
       "display the page with an empty form" in {
         val res = SoftwareChoicesFrontend.getUserType
@@ -66,7 +66,7 @@ class UserTypeControllerISpec extends ComponentSpecBase with BeforeAndAfterEach 
     }
   }
 
-  "POST /type-of-user" when {
+  "POST /how-will-you-use-it" when {
     "user selects sole trader and landlord" must {
       s"return $SEE_OTHER and save page answer" in {
         val res = SoftwareChoicesFrontend.submitUserType(Some(SoleTraderOrLandlord))
