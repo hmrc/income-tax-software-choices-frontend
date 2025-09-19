@@ -19,6 +19,7 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views
 import org.jsoup.Jsoup
 import org.jsoup.nodes.{Document, Element}
 import org.scalatest.Assertion
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.CurrentFeature
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareVendorModel
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.ProductDetailsPage
@@ -32,17 +33,17 @@ class ProductDetailsViewSpec extends ViewSpec {
     email = Some("test@software-vendor-name.com"),
     phone = Some("00000 000 000"),
     website = "software-vendor-name.com",
-    filters = Seq.empty,
+    filters = Map.empty,
     accessibilityStatementLink = None
   )
 
   private val softwareVendorModelFull = softwareVendorModelBase
     .copy(name = "abc full")
-    .copy(filters = filterKeyToFilter.values.toList) // All filters
+    .copy(filters = filterKeyToFilter.values.map(vf => vf -> CurrentFeature).toMap) // All filters
 
   private val softwareVendorModelMinimal = softwareVendorModelBase
     .copy(name = "abc minimal")
-    .copy(filters = Seq(SoleTrader))
+    .copy(filters = Map(SoleTrader -> CurrentFeature))
 
   "ProductDetailsPage" when {
 

@@ -24,6 +24,7 @@ import play.api.mvc.Call
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes.ProductDetailsController
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.CurrentFeature
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.viewmodels.SoftwareChoicesResultsViewModel
@@ -728,27 +729,27 @@ private object SearchSoftwarePageContent {
         phone = Some("11111 111 111"),
         website = "software-vendor-name-one.com",
         filters = Seq(
-          VendorFilter.FreeVersion,
-          VendorFilter.FreeTrial,
-          VendorFilter.SoleTrader,
-          VendorFilter.UkProperty,
-          VendorFilter.OverseasProperty,
-          VendorFilter.RecordKeeping,
-          VendorFilter.Bridging,
-          VendorFilter.Vat,
-          VendorFilter.Visual,
-          VendorFilter.Hearing,
-          VendorFilter.Motor,
-          VendorFilter.Cognitive,
-          VendorFilter.TaxReturn
-        )
+          FreeVersion,
+          FreeTrial,
+          SoleTrader,
+          UkProperty,
+          OverseasProperty,
+          RecordKeeping,
+          Bridging,
+          Vat,
+          Visual,
+          Hearing,
+          Motor,
+          Cognitive,
+          TaxReturn
+        ).map(vf => vf -> CurrentFeature).toMap
       ),
       SoftwareVendorModel(
         name = "test software vendor two",
         email = Some("test@software-vendor-name-two.com"),
         phone = Some("22222 222 222"),
         website = "software-vendor-name-two.com",
-        filters = Seq.empty[VendorFilter]
+        filters = Map.empty
       )
     )
   )
@@ -762,20 +763,20 @@ private object SearchSoftwarePageContent {
         phone = Some("11111 111 111"),
         website = "software-vendor-name-one.com",
         filters = Seq(
-          VendorFilter.FreeVersion,
-          VendorFilter.FreeTrial,
-          VendorFilter.SoleTrader,
-          VendorFilter.UkProperty,
-          VendorFilter.OverseasProperty,
-          VendorFilter.RecordKeeping,
-          VendorFilter.Bridging,
-          VendorFilter.Vat,
-          VendorFilter.Visual,
-          VendorFilter.Hearing,
-          VendorFilter.Motor,
-          VendorFilter.Cognitive,
-          VendorFilter.TaxReturn
-        )
+          FreeVersion,
+          FreeTrial,
+          SoleTrader,
+          UkProperty,
+          OverseasProperty,
+          RecordKeeping,
+          Bridging,
+          Vat,
+          Visual,
+          Hearing,
+          Motor,
+          Cognitive,
+          TaxReturn
+        ).map(vf => vf -> CurrentFeature).toMap
       )
     )
   )

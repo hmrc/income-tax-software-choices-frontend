@@ -23,13 +23,12 @@ case class SoftwareVendorModel(
   email: Option[String],
   phone: Option[String],
   website: String,
-  filters: Seq[VendorFilter],
+  filters: Map[VendorFilter, FeatureStatus],
   accessibilityStatementLink: Option[String] = None
 ) {
-  def orderedFilterSubset(subsetFilters: Set[VendorFilter]): Seq[VendorFilter] = {
-    val filtersFromVendor = filters.filter(filter => subsetFilters.contains(filter)).toSet
-    val alwaysDisplayedFilters = subsetFilters.filter(_.alwaysDisplay)
-    (filtersFromVendor ++ alwaysDisplayedFilters).toSeq.sortBy(_.priority)
+  def orderedFilterSubset(subsetFilters: Set[VendorFilter]): Map[VendorFilter, FeatureStatus] = {
+    val filtersFromVendor = filters.filter(filter => subsetFilters.contains(filter._1)).toSet
+    filtersFromVendor.toSeq.sortBy(_._1.priority).toMap
   }
 
   def mustHaveAll(list: Seq[VendorFilter]): Boolean = {

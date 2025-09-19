@@ -19,7 +19,8 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models
 import org.scalatestplus.play.PlaySpec
 import play.api.libs.json._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.TestModels.fullSoftwareVendorModel
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{Agent, FreeTrial, FreeVersion, Individual, SoleTrader}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus._
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
 
 class SoftwareVendorModelSpec extends PlaySpec {
 
@@ -28,12 +29,12 @@ class SoftwareVendorModelSpec extends PlaySpec {
     "email" -> "test@software-vendor-name.com",
     "phone" -> "00000 000 000",
     "website" -> "software-vendor-name.com",
-    "filters" -> Json.arr(
-      VendorFilter.FreeVersion.key,
-      VendorFilter.Visual.key,
-      VendorFilter.Hearing.key,
-      VendorFilter.Motor.key,
-      VendorFilter.Cognitive.key
+    "filters" -> Json.obj(
+      FreeVersion.key -> CurrentFeature.key,
+      Visual.key -> CurrentFeature.key,
+      Hearing.key -> CurrentFeature.key,
+      Motor.key -> CurrentFeature.key,
+      Cognitive.key -> CurrentFeature.key
     ),
     "accessibilityStatementLink" -> "software-vendor-accessibility.com"
   )
@@ -52,8 +53,8 @@ class SoftwareVendorModelSpec extends PlaySpec {
 
       "the json has no filter options" in {
         Json.fromJson[SoftwareVendorModel](
-          fullJson - "filters" ++ Json.obj("filters" -> Json.arr())
-        ) mustBe JsSuccess(fullSoftwareVendorModel.copy(filters = Seq.empty[VendorFilter]))
+          fullJson - "filters" ++ Json.obj("filters" -> Json.obj())
+        ) mustBe JsSuccess(fullSoftwareVendorModel.copy(filters = Map.empty))
       }
 
       "there is no accessibility statement link" in {
@@ -81,7 +82,7 @@ class SoftwareVendorModelSpec extends PlaySpec {
     }
 
     "search for filters and order the results correctly" should {
-      def getVendorModel(vendorFilters: Seq[VendorFilter]): SoftwareVendorModel = SoftwareVendorModel(
+      def getVendorModel(vendorFilters: Map[VendorFilter, FeatureStatus]): SoftwareVendorModel = SoftwareVendorModel(
         name = "name",
         email = None,
         phone = None,
@@ -91,24 +92,26 @@ class SoftwareVendorModelSpec extends PlaySpec {
       )
 
       "find no matches when a selection of elements is present in the list but not in the vendor" in {
-        val vendorFilters = Seq(VendorFilter.Visual, VendorFilter.Hearing)
-        val searchFilters: Set[VendorFilter] = Set(VendorFilter.Motor, VendorFilter.Cognitive)
+        val vendorFilters: Map[VendorFilter, FeatureStatus] = Map(Visual -> CurrentFeature, Hearing -> CurrentFeature)
+        val searchFilters: Set[VendorFilter] = Set(Motor, Cognitive)
         val model: SoftwareVendorModel = getVendorModel(vendorFilters)
-        model.orderedFilterSubset(searchFilters) mustBe Seq.empty
+        model.orderedFilterSubset(searchFilters) mustBe Map.empty
       }
 
       "find a match when a single element is present both in the vendor and in the list" in {
-        val vendorFilters = Seq(VendorFilter.Motor, VendorFilter.Cognitive, VendorFilter.Visual)
-        val searchFilters: Set[VendorFilter] = Set(VendorFilter.Visual, VendorFilter.Hearing)
+        val vendorFilters: Map[VendorFilter, FeatureStatus] = Map(Motor -> CurrentFeature, Cognitive -> CurrentFeature, Visual -> CurrentFeature)
+        val searchFilters: Set[VendorFilter] = Set(Visual, Hearing)
         val model: SoftwareVendorModel = getVendorModel(vendorFilters)
-        model.orderedFilterSubset(searchFilters) mustBe Seq(VendorFilter.Visual)
+        model.orderedFilterSubset(searchFilters) mustBe Map(Visual -> CurrentFeature)
       }
 
       "find and correctly order a selection of elements which are present in the vendor and  the list" in {
-        val vendorFilters = Seq(VendorFilter.Motor, VendorFilter.Cognitive, VendorFilter.Visual, VendorFilter.Hearing).sortBy(_ => Math.random())
-        val searchFilters: Set[VendorFilter] = Set(VendorFilter.Motor, VendorFilter.Cognitive, VendorFilter.Visual, VendorFilter.Hearing)
+        val vendorFilters: Map[VendorFilter, FeatureStatus] = Map(
+          Motor -> CurrentFeature, Cognitive -> CurrentFeature, Visual -> CurrentFeature, Hearing -> CurrentFeature
+        )
+        val searchFilters: Set[VendorFilter] = Set(Motor, Cognitive, Visual, Hearing)
         val model: SoftwareVendorModel = getVendorModel(vendorFilters)
-        val expectedResults = Seq(VendorFilter.Motor, VendorFilter.Cognitive, VendorFilter.Visual, VendorFilter.Hearing).sortBy(_.priority)
+        val expectedResults = Map(Motor -> CurrentFeature, Cognitive -> CurrentFeature, Visual -> CurrentFeature, Hearing -> CurrentFeature).toSeq.sortBy(_._1.priority).toMap
         model.orderedFilterSubset(searchFilters) mustBe expectedResults
       }
     }
@@ -118,10 +121,10 @@ class SoftwareVendorModelSpec extends PlaySpec {
       email = None,
       phone = None,
       website = "",
-      filters = Seq(
-        Individual,
-        Agent,
-        SoleTrader
+      filters = Map(
+        Individual -> CurrentFeature,
+        Agent -> CurrentFeature,
+        SoleTrader -> CurrentFeature
       ),
       accessibilityStatementLink = None
     )
