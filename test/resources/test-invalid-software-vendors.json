@@ -5,7 +5,7 @@
       "valid-name": "test software vendor one",
       "valid-website": "smtp:///test-website-one",
       "valid-filters": {
-        "free-version": "available"
+        "free-version": "Available"
       }
     },
     {

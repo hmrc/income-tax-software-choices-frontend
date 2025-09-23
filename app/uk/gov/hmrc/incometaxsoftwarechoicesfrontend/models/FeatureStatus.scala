@@ -24,16 +24,16 @@ sealed trait FeatureStatus {
 
 object FeatureStatus {
   case object Available extends FeatureStatus {
-    override val key: String = "available"
+    override val key: String = "Available"
   }
 
   case object Intended extends FeatureStatus {
-    override val key: String = "intended"
+    override val key: String = "Intended"
   }
 
-  implicit val reads: Reads[FeatureStatus] = __.read[String] map {
-    case "available" => Available
-    case "intended" => Intended
+  implicit val reads: Reads[FeatureStatus] = __.read[String] map[FeatureStatus] {
+    case "Available" => Available
+    case "Intended" => Intended
   }
 
 }

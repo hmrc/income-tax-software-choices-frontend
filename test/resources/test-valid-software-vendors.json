@@ -7,7 +7,7 @@
       "phone": "11111 111 111",
       "website": "software-vendor-name-one.com",
       "filters": {
-        "free-version": "available"
+        "free-version": "Available"
       },
       "accessibilityStatementLink": "software-vendor-accessibility.com"
     },
@@ -24,7 +24,7 @@
       "phone": "33333 333 333",
       "website": "software-vendor-name-three.com",
       "filters": {
-        "free-version": "intended"
+        "free-version": "Intended"
       }
     },
     {
@@ -33,10 +33,10 @@
       "phone": "44444 444 444",
       "website": "software-vendor-name-four.com",
       "filters": {
-        "sole-trader": "available",
-        "individual": "available",
-        "standard-update-periods": "available",
-        "construction-industry-scheme": "intended"
+        "sole-trader": "Available",
+        "individual": "Available",
+        "standard-update-periods": "Available",
+        "construction-industry-scheme": "Intended"
       }
     },
     {
@@ -45,10 +45,10 @@
       "phone": "55555 555 555",
       "website": "software-vendor-name-five.com",
       "filters": {
-        "sole-trader": "intended",
-        "individual": "available",
-        "agent": "available",
-        "motor": "intended"
+        "sole-trader": "Intended",
+        "individual": "Available",
+        "agent": "Available",
+        "motor": "Intended"
       }
     }
   ]
