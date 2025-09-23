@@ -24,7 +24,7 @@
       "phone": "33333 333 333",
       "website": "software-vendor-name-three.com",
       "filters": {
-        "free-version": "current"
+        "free-version": "future"
       }
     },
     {
@@ -35,7 +35,8 @@
       "filters": {
         "sole-trader": "current",
         "individual": "current",
-        "standard-update-periods": "current"
+        "standard-update-periods": "current",
+        "construction-industry-scheme": "future"
       }
     },
     {
@@ -44,10 +45,10 @@
       "phone": "55555 555 555",
       "website": "software-vendor-name-five.com",
       "filters": {
-        "sole-trader": "current",
+        "sole-trader": "future",
         "individual": "current",
         "agent": "current",
-        "motor": "current"
+        "motor": "future"
       }
     }
   ]

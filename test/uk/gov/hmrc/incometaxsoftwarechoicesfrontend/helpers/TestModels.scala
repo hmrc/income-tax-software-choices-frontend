@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers
 
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.CurrentFeature
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.{CurrentFeature, FutureFeature}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FeatureStatus, SoftwareVendorModel, SoftwareVendors, VendorFilter}
 
@@ -62,7 +62,7 @@ object TestModels {
     Some("test@software-vendor-name-three.com"),
     Some("33333 333 333"),
     "software-vendor-name-three.com",
-    Map(FreeVersion -> CurrentFeature),
+    Map(FreeVersion -> FutureFeature),
   )
 
   val testVendorFour: SoftwareVendorModel = SoftwareVendorModel(
@@ -73,7 +73,8 @@ object TestModels {
     Map(
       SoleTrader -> CurrentFeature,
       Individual -> CurrentFeature,
-      StandardUpdatePeriods -> CurrentFeature
+      StandardUpdatePeriods -> CurrentFeature,
+      ConstructionIndustryScheme -> FutureFeature
     )
   )
 
@@ -82,10 +83,10 @@ object TestModels {
     Some("test@software-vendor-name-five.com"),
     Some("55555 555 555"),
     "software-vendor-name-five.com",
-    Map(SoleTrader -> CurrentFeature,
+    Map(SoleTrader -> FutureFeature,
       Individual -> CurrentFeature,
       Agent -> CurrentFeature,
-      Motor -> CurrentFeature
+      Motor -> FutureFeature
     )
   )
 
