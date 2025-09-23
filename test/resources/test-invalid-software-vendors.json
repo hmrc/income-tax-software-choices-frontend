@@ -2,8 +2,15 @@
   "invalid-lastUpdated": "2022-12-02",
   "invalid-vendors": [
     {
-      "invalid-name": "test software vendor one",
-      "invalid-website": "smtp:///test-website",
+      "valid-name": "test software vendor one",
+      "valid-website": "smtp:///test-website-one",
+      "valid-filters": {
+        "free-version": "available"
+      }
+    },
+    {
+      "invalid-name": "test software vendor two",
+      "invalid-website": "smtp:///test-website-two",
       "invalid-filters": [
         "free-version"
       ]

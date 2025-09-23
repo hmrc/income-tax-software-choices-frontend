@@ -24,7 +24,7 @@ import play.api.mvc.Call
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes.ProductDetailsController
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.CurrentFeature
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.Available
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.viewmodels.SoftwareChoicesResultsViewModel
@@ -742,7 +742,7 @@ private object SearchSoftwarePageContent {
           Motor,
           Cognitive,
           TaxReturn
-        ).map(vf => vf -> CurrentFeature).toMap
+        ).map(vf => vf -> Available).toMap
       ),
       SoftwareVendorModel(
         name = "test software vendor two",
@@ -776,7 +776,7 @@ private object SearchSoftwarePageContent {
           Motor,
           Cognitive,
           TaxReturn
-        ).map(vf => vf -> CurrentFeature).toMap
+        ).map(vf => vf -> Available).toMap
       )
     )
   )

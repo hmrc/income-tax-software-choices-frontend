@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers
 
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.{CurrentFeature, FutureFeature}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.{Available, Intended}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FeatureStatus, SoftwareVendorModel, SoftwareVendors, VendorFilter}
 
@@ -24,11 +24,11 @@ import java.time.LocalDate
 
 object TestModels {
   private val allFilters: Map[VendorFilter, FeatureStatus] = Map(
-    FreeVersion -> CurrentFeature,
-    Visual -> CurrentFeature,
-    Hearing -> CurrentFeature,
-    Motor -> CurrentFeature,
-    Cognitive -> CurrentFeature
+    FreeVersion -> Available,
+    Visual -> Available,
+    Hearing -> Available,
+    Motor -> Available,
+    Cognitive -> Available
   )
 
   val fullSoftwareVendorModel: SoftwareVendorModel = SoftwareVendorModel(
@@ -45,7 +45,7 @@ object TestModels {
     Some("test@software-vendor-name-one.com"),
     Some("11111 111 111"),
     "software-vendor-name-one.com",
-    Map(FreeVersion -> CurrentFeature),
+    Map(FreeVersion -> Available),
     accessibilityStatementLink = Some("software-vendor-accessibility.com")
   )
 
@@ -62,7 +62,7 @@ object TestModels {
     Some("test@software-vendor-name-three.com"),
     Some("33333 333 333"),
     "software-vendor-name-three.com",
-    Map(FreeVersion -> FutureFeature),
+    Map(FreeVersion -> Intended),
   )
 
   val testVendorFour: SoftwareVendorModel = SoftwareVendorModel(
@@ -71,10 +71,10 @@ object TestModels {
     Some("44444 444 444"),
     "software-vendor-name-four.com",
     Map(
-      SoleTrader -> CurrentFeature,
-      Individual -> CurrentFeature,
-      StandardUpdatePeriods -> CurrentFeature,
-      ConstructionIndustryScheme -> FutureFeature
+      SoleTrader -> Available,
+      Individual -> Available,
+      StandardUpdatePeriods -> Available,
+      ConstructionIndustryScheme -> Intended
     )
   )
 
@@ -83,10 +83,10 @@ object TestModels {
     Some("test@software-vendor-name-five.com"),
     Some("55555 555 555"),
     "software-vendor-name-five.com",
-    Map(SoleTrader -> FutureFeature,
-      Individual -> CurrentFeature,
-      Agent -> CurrentFeature,
-      Motor -> FutureFeature
+    Map(SoleTrader -> Intended,
+      Individual -> Available,
+      Agent -> Available,
+      Motor -> Intended
     )
   )
 

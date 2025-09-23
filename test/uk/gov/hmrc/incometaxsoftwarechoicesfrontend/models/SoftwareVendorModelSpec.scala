@@ -30,11 +30,11 @@ class SoftwareVendorModelSpec extends PlaySpec {
     "phone" -> "00000 000 000",
     "website" -> "software-vendor-name.com",
     "filters" -> Json.obj(
-      FreeVersion.key -> CurrentFeature.key,
-      Visual.key -> CurrentFeature.key,
-      Hearing.key -> CurrentFeature.key,
-      Motor.key -> CurrentFeature.key,
-      Cognitive.key -> CurrentFeature.key
+      FreeVersion.key -> Available.key,
+      Visual.key -> Available.key,
+      Hearing.key -> Available.key,
+      Motor.key -> Available.key,
+      Cognitive.key -> Available.key
     ),
     "accessibilityStatementLink" -> "software-vendor-accessibility.com"
   )
@@ -92,26 +92,26 @@ class SoftwareVendorModelSpec extends PlaySpec {
       )
 
       "find no matches when a selection of elements is present in the list but not in the vendor" in {
-        val vendorFilters: Map[VendorFilter, FeatureStatus] = Map(Visual -> CurrentFeature, Hearing -> CurrentFeature)
+        val vendorFilters: Map[VendorFilter, FeatureStatus] = Map(Visual -> Available, Hearing -> Available)
         val searchFilters: Set[VendorFilter] = Set(Motor, Cognitive)
         val model: SoftwareVendorModel = getVendorModel(vendorFilters)
         model.orderedFilterSubset(searchFilters) mustBe Map.empty
       }
 
       "find a match when a single element is present both in the vendor and in the list" in {
-        val vendorFilters: Map[VendorFilter, FeatureStatus] = Map(Motor -> CurrentFeature, Cognitive -> CurrentFeature, Visual -> CurrentFeature)
+        val vendorFilters: Map[VendorFilter, FeatureStatus] = Map(Motor -> Available, Cognitive -> Available, Visual -> Available)
         val searchFilters: Set[VendorFilter] = Set(Visual, Hearing)
         val model: SoftwareVendorModel = getVendorModel(vendorFilters)
-        model.orderedFilterSubset(searchFilters) mustBe Map(Visual -> CurrentFeature)
+        model.orderedFilterSubset(searchFilters) mustBe Map(Visual -> Available)
       }
 
       "find and correctly order a selection of elements which are present in the vendor and  the list" in {
         val vendorFilters: Map[VendorFilter, FeatureStatus] = Map(
-          Motor -> CurrentFeature, Cognitive -> CurrentFeature, Visual -> CurrentFeature, Hearing -> CurrentFeature
+          Motor -> Available, Cognitive -> Available, Visual -> Available, Hearing -> Available
         )
         val searchFilters: Set[VendorFilter] = Set(Motor, Cognitive, Visual, Hearing)
         val model: SoftwareVendorModel = getVendorModel(vendorFilters)
-        val expectedResults = Map(Motor -> CurrentFeature, Cognitive -> CurrentFeature, Visual -> CurrentFeature, Hearing -> CurrentFeature).toSeq.sortBy(_._1.priority).toMap
+        val expectedResults = Map(Motor -> Available, Cognitive -> Available, Visual -> Available, Hearing -> Available).toSeq.sortBy(_._1.priority).toMap
         model.orderedFilterSubset(searchFilters) mustBe expectedResults
       }
     }
@@ -122,9 +122,9 @@ class SoftwareVendorModelSpec extends PlaySpec {
       phone = None,
       website = "",
       filters = Map(
-        Individual -> CurrentFeature,
-        Agent -> CurrentFeature,
-        SoleTrader -> CurrentFeature
+        Individual -> Available,
+        Agent -> Available,
+        SoleTrader -> Available
       ),
       accessibilityStatementLink = None
     )

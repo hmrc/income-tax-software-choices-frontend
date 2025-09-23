@@ -23,17 +23,17 @@ sealed trait FeatureStatus {
 }
 
 object FeatureStatus {
-  case object CurrentFeature extends FeatureStatus {
-    override val key: String = "current"
+  case object Available extends FeatureStatus {
+    override val key: String = "available"
   }
 
-  case object FutureFeature extends FeatureStatus {
-    override val key: String = "future"
+  case object Intended extends FeatureStatus {
+    override val key: String = "intended"
   }
 
   implicit val reads: Reads[FeatureStatus] = __.read[String] map {
-    case "current" => CurrentFeature
-    case "future" => FutureFeature
+    case "available" => Available
+    case "intended" => Intended
   }
 
 }

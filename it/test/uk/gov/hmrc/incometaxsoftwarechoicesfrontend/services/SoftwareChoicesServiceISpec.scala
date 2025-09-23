@@ -21,7 +21,7 @@ import org.scalatestplus.play.PlaySpec
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.Application
 import play.api.inject.guice.GuiceApplicationBuilder
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.CurrentFeature
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.Available
 
 import scala.util.Try
 
@@ -55,7 +55,7 @@ class SoftwareChoicesServiceISpec extends PlaySpec with GuiceOneServerPerSuite {
   "software-vendors.json must only include current features" in {
     val test = app("software-vendors.json").injector.instanceOf[SoftwareChoicesService].softwareVendors.vendors
     test.foreach { vendor =>
-      vendor.filters.foreach(filter => filter._2 shouldBe CurrentFeature)
+      vendor.filters.foreach(filter => filter._2 shouldBe Available)
       }
     }
 
