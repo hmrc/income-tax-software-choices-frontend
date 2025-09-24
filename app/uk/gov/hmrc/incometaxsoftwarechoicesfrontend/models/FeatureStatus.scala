@@ -31,7 +31,7 @@ object FeatureStatus {
     override val key: String = "Intended"
   }
 
-  implicit val reads: Reads[FeatureStatus] = __.read[String] map[FeatureStatus] {
+  implicit val reads: Reads[FeatureStatus] = __.read[String] map {
     case "Available" => Available
     case "Intended" => Intended
   }
