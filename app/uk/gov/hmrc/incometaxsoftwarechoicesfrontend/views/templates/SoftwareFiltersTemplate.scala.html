@@ -23,37 +23,29 @@
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.helpers.CheckboxGroupHelper
 
 @this(
-  checkboxGroup: CheckboxGroupHelper
+        checkboxGroup: CheckboxGroupHelper
 )
 
 @(checkboxField: Field, isAgent: Boolean)(implicit messages: Messages)
 
 @buildCheckBoxes(filters: Set[VendorFilter], label: String) = @{
-  filters.toSeq.sortBy(_.priority).map(item =>
-    if (item.alwaysDisplay)
-      CheckboxItem(
-      id = Some(s"$item-filter"),
-      content = Text(messages(s"search-software.vendor-detail.$label.$item")),
-      disabled = true,
-      checked = true
-      )
-    else
+    filters.toSeq.sortBy(_.priority).map(item =>
         CheckboxItem(
             id = Some(s"$item-filter"),
             content = Text(messages(s"search-software.vendor-detail.$label.$item")),
             value = item,
-            hint = if (item.showHint) Some(Hint(content = Text(messages(s"search-software.vendor-detail.$label.$item.hint")))) else None
-            )
-  )
+            hint = if(item.showHint) Some(Hint(content = Text(messages(s"search-software.vendor-detail.$label.$item.hint")))) else None
+        )
+    )
 }
 
 @{
-    VendorFilterGroups.allGroups(isAgent).map{ case (group, label) =>
+    VendorFilterGroups.allGroups(isAgent).map { case (group, label) =>
 
         checkboxGroup(
-          field = checkboxField,
-          fieldsetLegend = messages(s"search-software.filters.$label"),
-          checkboxes = buildCheckBoxes(group, label)
+            field = checkboxField,
+            fieldsetLegend = messages(s"search-software.filters.$label"),
+            checkboxes = buildCheckBoxes(group, label)
         )
 
     }

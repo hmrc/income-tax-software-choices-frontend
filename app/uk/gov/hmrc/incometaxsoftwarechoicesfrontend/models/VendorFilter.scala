@@ -23,7 +23,6 @@ import scala.language.implicitConversions
 sealed trait VendorFilter {
   val key: String
   val priority: Int
-  val alwaysDisplay: Boolean = false
   val showHint: Boolean = false
 
   override def toString: String = key

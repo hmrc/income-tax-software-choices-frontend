@@ -6,9 +6,9 @@
       "email": "test@software-vendor-name-one.com",
       "phone": "11111 111 111",
       "website": "software-vendor-name-one.com",
-      "filters": [
-        "free-version"
-      ],
+      "filters": {
+        "free-version": "Available"
+      },
       "accessibilityStatementLink": "software-vendor-accessibility.com"
     },
     {
@@ -16,39 +16,40 @@
       "email": "test@software-vendor-name-two.com",
       "phone": "22222 222 222",
       "website": "software-vendor-name-two.com",
-      "filters": []
+      "filters": {}
     },
     {
       "name": "test software vendor three",
       "email": "test@software-vendor-name-three.com",
       "phone": "33333 333 333",
       "website": "software-vendor-name-three.com",
-      "filters": [
-        "free-version"
-      ]
+      "filters": {
+        "free-version": "Intended"
+      }
     },
     {
       "name": "test software vendor four",
       "email": "test@software-vendor-name-four.com",
       "phone": "44444 444 444",
       "website": "software-vendor-name-four.com",
-      "filters": [
-        "sole-trader",
-        "individual",
-        "standard-update-periods"
-      ]
+      "filters": {
+        "sole-trader": "Available",
+        "individual": "Available",
+        "standard-update-periods": "Available",
+        "construction-industry-scheme": "Intended"
+      }
     },
     {
       "name": "test software vendor five",
       "email": "test@software-vendor-name-five.com",
       "phone": "55555 555 555",
       "website": "software-vendor-name-five.com",
-      "filters": [
-        "sole-trader",
-        "individual",
-        "agent",
-        "motor"
-      ]
+      "filters": {
+        "sole-trader": "Intended",
+        "individual": "Available",
+        "agent": "Available",
+        "motor": "Intended"
+      }
     }
   ]
 }

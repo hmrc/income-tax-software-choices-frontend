@@ -16,18 +16,19 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers
 
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.{Available, Intended}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareVendorModel, SoftwareVendors, VendorFilter}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FeatureStatus, SoftwareVendorModel, SoftwareVendors, VendorFilter}
 
 import java.time.LocalDate
 
 object TestModels {
-  private val allFilters = Seq(
-    VendorFilter.FreeVersion,
-    VendorFilter.Visual,
-    VendorFilter.Hearing,
-    VendorFilter.Motor,
-    VendorFilter.Cognitive
+  private val allFilters: Map[VendorFilter, FeatureStatus] = Map(
+    FreeVersion -> Available,
+    Visual -> Available,
+    Hearing -> Available,
+    Motor -> Available,
+    Cognitive -> Available
   )
 
   val fullSoftwareVendorModel: SoftwareVendorModel = SoftwareVendorModel(
@@ -44,7 +45,7 @@ object TestModels {
     Some("test@software-vendor-name-one.com"),
     Some("11111 111 111"),
     "software-vendor-name-one.com",
-    Seq(FreeVersion),
+    Map(FreeVersion -> Available),
     accessibilityStatementLink = Some("software-vendor-accessibility.com")
   )
 
@@ -53,7 +54,7 @@ object TestModels {
     Some("test@software-vendor-name-two.com"),
     Some("22222 222 222"),
     "software-vendor-name-two.com",
-    Seq.empty,
+    Map.empty[VendorFilter, FeatureStatus],
   )
 
   val testVendorThree: SoftwareVendorModel = SoftwareVendorModel(
@@ -61,7 +62,7 @@ object TestModels {
     Some("test@software-vendor-name-three.com"),
     Some("33333 333 333"),
     "software-vendor-name-three.com",
-    Seq(FreeVersion),
+    Map(FreeVersion -> Intended),
   )
 
   val testVendorFour: SoftwareVendorModel = SoftwareVendorModel(
@@ -69,7 +70,12 @@ object TestModels {
     Some("test@software-vendor-name-four.com"),
     Some("44444 444 444"),
     "software-vendor-name-four.com",
-    Seq(SoleTrader, Individual, StandardUpdatePeriods)
+    Map(
+      SoleTrader -> Available,
+      Individual -> Available,
+      StandardUpdatePeriods -> Available,
+      ConstructionIndustryScheme -> Intended
+    )
   )
 
   val testVendorFive: SoftwareVendorModel = SoftwareVendorModel(
@@ -77,14 +83,18 @@ object TestModels {
     Some("test@software-vendor-name-five.com"),
     Some("55555 555 555"),
     "software-vendor-name-five.com",
-    Seq(SoleTrader, Individual, Agent, Motor)
+    Map(SoleTrader -> Intended,
+      Individual -> Available,
+      Agent -> Available,
+      Motor -> Intended
+    )
   )
 
   val fullSoftwareVendorsModel: SoftwareVendors = SoftwareVendors(
     lastUpdated = LocalDate.of(2022,12,2),
     vendors = Seq(
       fullSoftwareVendorModel.copy(
-        filters = Seq.empty[VendorFilter]
+        filters = Map.empty[VendorFilter, FeatureStatus]
       )
     )
   )

@@ -75,7 +75,7 @@
 
   customSummaryListRow(
     key = "suitable-for",
-    filtersAvailable = vendor.orderedFilterSubset(VendorFilterGroups.suitableForFilters)
+    filtersAvailable = vendor.orderedFilterSubset(VendorFilterGroups.suitableForFilters).map(_._1).toSeq
   )
 
 }
@@ -84,7 +84,7 @@
 
   customSummaryListRow(
     key = "software-for",
-    filtersAvailable = vendor.orderedFilterSubset(VendorFilterGroups.softwareForFilters)
+    filtersAvailable = vendor.orderedFilterSubset(VendorFilterGroups.softwareForFilters).map(_._1).toSeq
   )
 
 }
@@ -93,7 +93,7 @@
 
   customSummaryListRow(
     key = "submission-type",
-    filtersAvailable = vendor.orderedFilterSubset(VendorFilterGroups.submissionTypeFilters)
+    filtersAvailable = vendor.orderedFilterSubset(VendorFilterGroups.submissionTypeFilters).map(_._1).toSeq
   )
 
 }

@@ -30,8 +30,7 @@ class SoftwareVendorsSpec extends PlaySpec {
         "email" -> "test@software-vendor-name.com",
         "phone" -> "00000 000 000",
         "website" -> "software-vendor-name.com",
-        "filters" -> Json.arr(),
-        "incomeAndDeductions" -> Json.arr(),
+        "filters" -> Json.obj(),
         "accessibilityStatementLink" -> "software-vendor-accessibility.com"
       )
     )
