@@ -24,22 +24,27 @@ import org.scalatest.wordspec.AnyWordSpecLike
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.libs.json.{JsPath, Reads}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{UserAnswers, UserFilters, VendorFilter}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.QuestionPage
+import uk.gov.hmrc.mongo.logging.ObservableFutureImplicits
 import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 
 import java.time.temporal.ChronoUnit
 import java.time.{Clock, Instant, ZoneId}
+import scala.concurrent.ExecutionContext
 
 class UserFiltersRepositoryISpec
   extends AnyWordSpecLike
     with Matchers
     with DefaultPlayMongoRepositorySupport[UserFilters]
+    with ObservableFutureImplicits
     with ScalaFutures
     with IntegrationPatience
     with OptionValues
     with MockitoSugar {
+
+  implicit val ec: ExecutionContext = scala.concurrent.ExecutionContext.global
 
   private case object DummyPage extends QuestionPage[String] {
     override def toString: String = "dummy"
@@ -109,6 +114,17 @@ class UserFiltersRepositoryISpec
       repository.keepAlive(testSessionIdOne).futureValue shouldBe true
       Thread.sleep(5)
       repository.get(testSessionIdOne).futureValue.get.lastUpdated.isAfter(startTime)
+    }
+  }
+
+  "delete" should {
+    "remove a single entry" in {
+      repository.set(oneUserFilters).futureValue
+      val resultBefore = repository.get(testSessionIdTwo).futureValue.get
+      resultBefore.answers shouldBe Some(dummyUserAnswers)
+      repository.delete(testSessionIdTwo).futureValue
+      val resultAfter = repository.get(testSessionIdTwo).futureValue
+      resultAfter shouldBe None
     }
   }
 

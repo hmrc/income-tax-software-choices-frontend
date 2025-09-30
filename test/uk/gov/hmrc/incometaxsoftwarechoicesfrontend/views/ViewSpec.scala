@@ -18,7 +18,7 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views
 
 import org.jsoup.nodes.Element
 import org.scalatest.Checkpoints.Checkpoint
-import org.scalatest.matchers.must.Matchers.convertToAnyMustWrapper
+import org.scalatest.matchers.must.Matchers._
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 import org.scalatest.{Assertion, Succeeded}

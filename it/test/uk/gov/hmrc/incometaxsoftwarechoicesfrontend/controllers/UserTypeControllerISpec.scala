@@ -26,6 +26,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{UserAnswers, UserFilters, VendorFilter}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
+import org.mongodb.scala.SingleObservableFuture
 
 class UserTypeControllerISpec extends ComponentSpecBase with BeforeAndAfterEach with DatabaseHelper {
 

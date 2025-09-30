@@ -21,11 +21,11 @@ import org.jsoup.nodes.{Document, Element}
 import play.api.data.FormError
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.OtherItemsForm
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.OtherItemsPage
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.OtherItemsView
 
 class OtherItemsViewSpec extends ViewSpec {
 
-  private val view = app.injector.instanceOf[OtherItemsPage]
+  private val view = app.injector.instanceOf[OtherItemsView]
 
   private val formError: FormError = FormError("otherItems", "other-items.error.nonEmpty")
 

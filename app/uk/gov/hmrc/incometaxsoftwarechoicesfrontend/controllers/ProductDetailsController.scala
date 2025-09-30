@@ -16,20 +16,21 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import uk.gov.hmrc.http.NotFoundException
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.SoftwareChoicesService
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.ProductDetailsPage
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.ProductDetailsView
 
 import java.net.URLDecoder
 import javax.inject.{Inject, Singleton}
 
 @Singleton
 class ProductDetailsController @Inject()(softwareChoicesService: SoftwareChoicesService,
-                                         productDetailsPage: ProductDetailsPage)
+                                         productDetailsPage: ProductDetailsView)
                                         (implicit mcc: MessagesControllerComponents) extends BaseFrontendController {
 
-  def show(software: String, zeroResults: Boolean): Action[AnyContent] = Action { implicit request =>
+  def show(software: String, zeroResults: Boolean): Action[AnyContent] = Action { request =>
+    given Request[AnyContent] = request
     val softwareName = URLDecoder.decode(software, "UTF-8")
     softwareChoicesService.getSoftwareVendor(softwareName) match {
       case None => throw new NotFoundException(ProductDetailsController.NotFound)

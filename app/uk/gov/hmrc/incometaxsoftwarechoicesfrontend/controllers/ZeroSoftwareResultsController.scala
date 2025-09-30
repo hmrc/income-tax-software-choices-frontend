@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{RequireUserDataRefiner, SessionIdentifierAction}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.ZeroSoftwareResultsView
 
@@ -29,7 +29,8 @@ class ZeroSoftwareResultsController @Inject()(view: ZeroSoftwareResultsView,
                                              (implicit mcc: MessagesControllerComponents) extends BaseFrontendController {
 
 
-  def show(): Action[AnyContent] = (identify andThen requireData) { implicit request =>
+  def show(): Action[AnyContent] = (identify andThen requireData) { request =>
+    given Request[AnyContent] = request
     Ok(view(
       resultsLink = routes.SearchSoftwareController.show(zeroResults = true),
       finishAction = routes.ZeroSoftwareResultsController.submit(),

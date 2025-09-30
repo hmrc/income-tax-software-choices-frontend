@@ -26,6 +26,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.OtherItemsPage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
+import org.mongodb.scala.SingleObservableFuture
 
 class OtherItemsControllerISpec extends ComponentSpecBase with BeforeAndAfterEach with DatabaseHelper {
 

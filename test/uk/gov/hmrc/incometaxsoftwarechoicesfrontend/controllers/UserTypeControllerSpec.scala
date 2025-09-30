@@ -27,11 +27,11 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.mocks.Mo
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.UserTypeForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.SoleTraderOrLandlord
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.Agent
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{Agent, Individual}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.UserTypePage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.PageAnswersService
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.UserTypePage
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.UserTypeView
 
 import scala.concurrent.Future
 
@@ -112,7 +112,7 @@ class UserTypeControllerSpec extends ControllerBaseSpec with MockSessionIdentifi
 
           intercept[InternalServerException](await(result)).message shouldBe "[UserTypeController][submit] - Could not save agent user type"
         }
-        "failed to set page answers" in new Setup {
+        "failed to set page answers Agent" in new Setup {
           when(mockPageAnswersService.resetUserAnswers(eqTo(sessionId)))
             .thenReturn(Future.successful(true))
           when(mockPageAnswersService.setPageAnswers(eqTo(sessionId), eqTo(UserTypePage), eqTo(UserType.Agent))(any()))
@@ -123,6 +123,18 @@ class UserTypeControllerSpec extends ControllerBaseSpec with MockSessionIdentifi
           val result: Future[Result] = controller.submit()(fakeRequest.post(UserTypeForm.userTypeForm, UserType.Agent))
 
           intercept[InternalServerException](await(result)).message shouldBe "[UserTypeController][submit] - Could not save agent user type"
+        }
+        "failed to set page answers Individual" in new Setup {
+          when(mockPageAnswersService.resetUserAnswers(eqTo(sessionId)))
+            .thenReturn(Future.successful(true))
+          when(mockPageAnswersService.setPageAnswers(eqTo(sessionId), eqTo(UserTypePage), eqTo(UserType.SoleTraderOrLandlord))(any()))
+            .thenReturn(Future.successful(false))
+          when(mockPageAnswersService.saveFiltersFromAnswers(eqTo(sessionId)))
+            .thenReturn(Future.successful(Seq(Individual)))
+
+          val result: Future[Result] = controller.submit()(fakeRequest.post(UserTypeForm.userTypeForm, UserType.SoleTraderOrLandlord))
+
+          intercept[InternalServerException](await(result)).message shouldBe "[UserTypeController][submit] - Could not save sole trader or landlord user type"
         }
 
         "failed to save answers to Filters" in new Setup {
@@ -144,7 +156,7 @@ class UserTypeControllerSpec extends ControllerBaseSpec with MockSessionIdentifi
 
   trait Setup {
     lazy val mockPageAnswersService: PageAnswersService = mock[PageAnswersService]
-    lazy val mockUserTypeView: UserTypePage = mock[UserTypePage]
+    lazy val mockUserTypeView: UserTypeView = mock[UserTypeView]
 
     val controller: UserTypeController = new UserTypeController(
       mockUserTypeView,

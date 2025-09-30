@@ -30,7 +30,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserFilters
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{Individual, SoleTrader, StandardUpdatePeriods}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.{DataService, PageAnswersService, SoftwareChoicesService}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SearchSoftwarePage
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SearchSoftwareView
 
 import java.io.FileInputStream
 import java.time.Instant
@@ -41,7 +41,7 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec
   with MockSessionIdentifierAction
   with MockRequireUserDataRefiner {
 
-  val searchSoftwarePage: SearchSoftwarePage = app.injector.instanceOf[SearchSoftwarePage]
+  val searchSoftwarePage: SearchSoftwareView = app.injector.instanceOf[SearchSoftwareView]
 
   "Show" should {
     "return OK status with the search software page" in withController { controller =>

@@ -21,13 +21,13 @@ import play.api.http.Status
 import play.api.test.Helpers._
 import uk.gov.hmrc.http.NotFoundException
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.SoftwareChoicesService
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.ProductDetailsPage
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.ProductDetailsView
 
 import java.net.URLEncoder
 
 class ProductDetailsControllerSpec extends ControllerBaseSpec with BeforeAndAfterEach {
 
-  private val productDetailsPage = app.injector.instanceOf[ProductDetailsPage]
+  private val productDetailsPage = app.injector.instanceOf[ProductDetailsView]
   private val softwareChoicesService = app.injector.instanceOf[SoftwareChoicesService]
 
   "Show" when {

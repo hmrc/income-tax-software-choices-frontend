@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{RequireUserDataRefiner, SessionIdentifierAction}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.{PageAnswersService, SoftwareChoicesService}
@@ -36,7 +36,8 @@ class CheckYourAnswersController @Inject()(view: CheckYourAnswersView,
                                            mcc: MessagesControllerComponents,
                                            pageAnswersService: PageAnswersService) extends BaseFrontendController with SummaryListBuilder {
 
-  def show(): Action[AnyContent] = (identify andThen requireData).async { implicit request =>
+  def show(): Action[AnyContent] = (identify andThen requireData).async { request =>
+    given Request[AnyContent] = request
     for {
       userFilters <- userFiltersRepository.get(request.sessionId)
       summaryList = buildSummaryList(userFilters.flatMap(_.answers))
@@ -49,7 +50,8 @@ class CheckYourAnswersController @Inject()(view: CheckYourAnswersView,
     }
   }
 
-  def submit(): Action[AnyContent] = (identify andThen requireData).async { implicit request =>
+  def submit(): Action[AnyContent] = (identify andThen requireData).async { request =>
+    given Request[AnyContent] = request
     for {
       vendorFilters <- pageAnswersService.saveFiltersFromAnswers(request.sessionId)
       vendors = softwareChoicesService.getAllInOneVendors(vendorFilters).vendors

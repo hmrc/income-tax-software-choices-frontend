@@ -24,6 +24,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, 
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{OverseasProperty, SoleTrader, UkProperty}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.BusinessIncomePage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
+import org.mongodb.scala.SingleObservableFuture
 
 class BusinessIncomeControllerISpec extends ComponentSpecBase with BeforeAndAfterEach with DatabaseHelper {
 

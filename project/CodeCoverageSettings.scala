@@ -22,7 +22,8 @@ object CodeCoverageSettings {
   private val excludedPackages: Seq[String] = Seq(
     "<empty>",
     "Reverse.*",
-    ".*testonly.*"
+    ".*testonly.*",
+    ".*FeatureSwitch.*"
   )
 
   private val excludedFiles: Seq[String] = Seq(
@@ -32,8 +33,8 @@ object CodeCoverageSettings {
   )
 
   val settings: Seq[Setting[_]] = Seq(
-    ScoverageKeys.coverageExcludedPackages := excludedPackages.mkString(";"),
-    ScoverageKeys.coverageExcludedFiles := excludedFiles.mkString(";"),
+    ScoverageKeys.coverageExcludedPackages := excludedPackages.mkString(","),
+    ScoverageKeys.coverageExcludedFiles := excludedFiles.mkString(","),
     ScoverageKeys.coverageMinimumStmtTotal := 95,
     ScoverageKeys.coverageFailOnMinimum := true,
     ScoverageKeys.coverageHighlighting := true

@@ -22,11 +22,11 @@ import org.scalatest.Assertion
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.Available
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareVendorModel
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.ProductDetailsPage
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.ProductDetailsView
 
 class ProductDetailsViewSpec extends ViewSpec {
 
-  private val productDetailsPage = app.injector.instanceOf[ProductDetailsPage]
+  private val productDetailsPage = app.injector.instanceOf[ProductDetailsView]
 
   val softwareVendorModelBase: SoftwareVendorModel = SoftwareVendorModel(
     name = "abc",

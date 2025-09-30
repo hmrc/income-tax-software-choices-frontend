@@ -26,7 +26,7 @@ import java.net.URLEncoder
 trait SessionCookieBaker {
   private val cookieKey = "gvBoGdgzqG1AarzF1LY0zQ=="
 
-  val cookieSigner: CookieSigner
+  lazy val cookieSigner: CookieSigner
 
   private def cookieValue(sessionData: Map[String, String]) = {
     def encode(data: Map[String, String]): PlainText = {

@@ -18,17 +18,17 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views
 
 import org.jsoup.Jsoup
 import org.jsoup.nodes.{Document, Element}
-import org.scalatest.matchers.must.Matchers.convertToAnyMustWrapper
+import org.scalatest.matchers.must.Matchers._
 import play.api.data.FormError
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.govukfrontend.views.Aliases.{RadioItem, Text}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.UserTypeForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.UserTypePage
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.UserTypeView
 
 class UserTypeViewSpec extends ViewSpec {
 
-  private val view = app.injector.instanceOf[UserTypePage]
+  private val view = app.injector.instanceOf[UserTypeView]
   private val formError = FormError(UserTypeForm.fieldName, "type-of-user.error")
 
   def page(hasError: Boolean = false): HtmlFormat.Appendable = {
