@@ -3,7 +3,7 @@ import uk.gov.hmrc.DefaultBuildSettings
 val appName = "income-tax-software-choices-frontend"
 
 ThisBuild / majorVersion := 0
-ThisBuild / scalaVersion := "3.6.4"
+ThisBuild / scalaVersion := "3.3.6"
 
 lazy val microservice = Project(appName, file("."))
   .enablePlugins(play.sbt.PlayScala, SbtDistributablesPlugin)
