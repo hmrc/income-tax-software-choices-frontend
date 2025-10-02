@@ -16,16 +16,17 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services
 
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.{Available, Intended}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{OverseasProperty, SoleTrader, UkProperty}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilterGroups._
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareVendorModel, SoftwareVendors, VendorFilter}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilterGroups.*
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FeatureStatus, SoftwareVendorModel, SoftwareVendors, VendorFilter}
 
 import javax.inject.{Inject, Singleton}
 
 @Singleton
 class SoftwareChoicesService @Inject()(
-  dataService: DataService
-) {
+                                        dataService: DataService
+                                      ) {
 
   def softwareVendors: SoftwareVendors =
     dataService.getSoftwareVendors()
@@ -40,11 +41,14 @@ class SoftwareChoicesService @Inject()(
 
   def getAllInOneVendors(filters: Seq[VendorFilter]): SoftwareVendors = {
     val vendors = softwareVendors
+    val userMandatedIncomes = filters.filter(quarterlyReturnsGroup.contains)
+
     vendors.copy(
       vendors = (
         SoftwareChoicesService.matchFilter(filters) _
+          andThen SoftwareChoicesService.allAvailable(userMandatedIncomes)
           andThen SoftwareChoicesService.sortVendors
-        ) (vendors.vendors)
+        )(vendors.vendors)
     )
   }
 
@@ -55,7 +59,7 @@ class SoftwareChoicesService @Inject()(
     val otherVendors = if (userTypes.isEmpty) {
       (SoftwareChoicesService.matchFilter(filters.filterNot(userPageFilters.contains)) _
         andThen SoftwareChoicesService.sortVendors
-      )(vendors.vendors)
+        )(vendors.vendors)
     } else {
       val accountingPeriod = filters.find(accountingPeriodFilters.contains)
       val mandatedIncomeSources = filters.filter(Seq(SoleTrader, UkProperty, OverseasProperty).contains)
@@ -74,12 +78,13 @@ class SoftwareChoicesService @Inject()(
         .filterNot(mandatoryFiltersForIndividuals.contains)
       (SoftwareChoicesService.matchFilter(preferencesFilters) _
         andThen SoftwareChoicesService.sortVendors
-      )(matchingVendors)
+        )(matchingVendors)
     }
     vendors.copy(
       vendors = otherVendors.filterNot(allInOne.contains)
     )
   }
+  
 }
 
 object SoftwareChoicesService {
@@ -89,5 +94,10 @@ object SoftwareChoicesService {
 
   private[services] def matchFilter(filters: Seq[VendorFilter])(vendors: Seq[SoftwareVendorModel]) =
     vendors.filter(vendor => filters.forall(vendor.filters.contains(_)))
+
+  private[services] def allAvailable(filters: Seq[VendorFilter])(vendors: Seq[SoftwareVendorModel]) = {
+    vendors.filter(vendor => filters.forall(filter => vendor.getFeatureStatus(filter).contains(Available)))
+  }
+
 
 }

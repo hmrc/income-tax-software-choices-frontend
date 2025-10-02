@@ -359,8 +359,7 @@ object VendorFilterGroups {
     MarriageAllowance
   )
 
-
-
+  
   val compatibleWith: Set[VendorFilter] = Set(
     MicrosoftWindows,
     MacOS,
@@ -397,6 +396,16 @@ object VendorFilterGroups {
     HighIncomeChildBenefitCharge,
     StandardUpdatePeriods,
     CalendarUpdatePeriods
+  )
+
+  // quarterly vs. end of year //
+  val quarterlyReturnsGroup: List[VendorFilter] = List(
+    SoleTrader, UkProperty, OverseasProperty
+  )
+  
+  val endOfYearGroup: List[VendorFilter] = List(
+    ConstructionIndustryScheme, Employment, ForeignInterest, ForeignDividends, UkDividends, UkInterest, StatePensionIncome, PrivatePensionIncome,
+    CapitalGainsTax, CharitableGiving, StudentLoans, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge, PaymentsIntoAPrivatePension, MarriageAllowance
   )
 
   // product details page groups //

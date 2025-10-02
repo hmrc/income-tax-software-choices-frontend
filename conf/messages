@@ -216,6 +216,9 @@ search-software.vendor-detail.allowances.marriage-allowance = Marriage Allowance
 search-software.vendor-detail.user-type.agent = Agent
 search-software.vendor-detail.user-type.individual = Individual
 
+search-software.vendor-detail.quarterly-status = Quarterly returns
+search-software.vendor-detail.end-of-year-status = Tax return
+
 search-software.all-in-one-tab.title = All-in-one software
 search-software.all-in-one-tab.heading.many = Based on your answers we’ve found {0} results
 search-software.all-in-one-tab.heading.one = Based on your answers we’ve found 1 result

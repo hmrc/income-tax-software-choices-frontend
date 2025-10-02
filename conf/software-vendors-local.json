@@ -104,6 +104,52 @@
         "state-pension-income": "Available",
         "payments-into-a-private-pension": "Available"
       }
+    },
+    {
+      "name": "test software: vendor name five",
+      "email": "test@software-vendor-name-five.com",
+      "phone": "44444 444 444",
+      "website": "software-vendor-name-five.com",
+      "filters": {
+        "individual": "Available",
+        "agent": "Available",
+        "free-version": "Available",
+        "sole-trader": "Intended",
+        "uk-property": "Available",
+        "overseas-property": "Available",
+        "record-keeping": "Available",
+        "bridging": "Available",
+        "visual": "Intended",
+        "hearing": "Intended",
+        "motor": "Intended",
+        "cognitive": "Intended",
+        "quarterly-updates": "Available",
+        "tax-return": "Available",
+        "standard-update-periods": "Available",
+        "calendar-update-periods": "Available",
+        "construction-industry-scheme": "Intended",
+        "capital-gains-tax": "Intended",
+        "employment": "Available",
+        "foreign-income": "Available",
+        "uk-dividends": "Available",
+        "uk-interest": "Available",
+        "charitable-giving": "Available",
+        "high-income-child-benefit-charge": "Available",
+        "student-loans": "Available",
+        "voluntary-class-2-national-insurance": "Available",
+        "state-pension-income": "Available",
+        "private-pension-income": "Available",
+        "payments-into-a-private-pension": "Available",
+        "marriage-allowance": "Available",
+        "desktop-based": "Available",
+        "web-browser": "Available",
+        "microsoft-windows": "Available",
+        "mac-os": "Available",
+        "linux": "Available",
+        "android": "Available",
+        "apple-ios": "Available",
+        "english": "Available"
+      }
     }
   ]
 }

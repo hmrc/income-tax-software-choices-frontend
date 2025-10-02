@@ -54,7 +54,8 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
         allInOneVendors = softwareChoicesService.getAllInOneVendors(filters = filters),
         otherVendors = softwareChoicesService.getOtherVendors(filters = filters, isAgent || zeroResults),
         zeroResults = zeroResults,
-        isAgent = isAgent
+        isAgent = isAgent,
+        searchFilters = filters
       )
     } yield {
       Ok(view(model, FiltersForm.form.fill(FiltersFormModel(filters = filters))))

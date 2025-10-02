@@ -49,7 +49,7 @@
      content = HtmlContent(
              tabHeading("search-software.all-in-one-tab", viewModel.allInOneVendors.vendors.size) +
              tabInsetText("search-software.all-in-one-tab", viewModel.allInOneVendors.vendors.size) +
-             softwareVendorsTemplate(viewModel.allInOneVendors, viewModel.zeroResults)
+             softwareVendorsTemplate(viewModel.allInOneVendors, viewModel.zeroResults, viewModel.searchFilters)
   )))
 }
 

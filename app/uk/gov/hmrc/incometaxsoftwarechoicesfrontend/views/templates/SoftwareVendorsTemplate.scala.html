@@ -26,10 +26,36 @@
 @this(
   softwareSearchStatusTemplate: SoftwareSearchStatusTemplate,
   hmrcNewTabLinkHelper: HmrcNewTabLinkHelper,
-  govukSummaryList : GovukSummaryList
+  govukSummaryList : GovukSummaryList,
+        govukTag: GovukTag
 )
 
-@(softwareVendors: SoftwareVendors, zeroResults: Boolean)(implicit messages: Messages)
+@(softwareVendors: SoftwareVendors, zeroResults: Boolean, searchFilters: Seq[VendorFilter] = Seq.empty)(implicit messages: Messages)
+
+@customSummaryListRowStatus(key: String, ready: Boolean) = @{
+
+    val statusTag = if(ready) {
+        govukTag(Tag(
+            content = Text("Ready now"),
+            classes = "govuk-tag--green"
+        ))
+    } else {
+        govukTag(Tag(
+            content = Text("In development"),
+            classes = "govuk-tag--yellow"
+        ))
+    }
+
+        Some(SummaryListRow(
+            key = Key(
+                content = Text(messages(s"search-software.vendor-detail.$key"))
+            ),
+            value = Value(
+                content = HtmlContent(statusTag)
+            )
+        ))
+
+}
 
 @customSummaryListRow(key: String, filtersAvailable: Seq[VendorFilter]) = @{
 
@@ -98,13 +124,23 @@
 
 }
 
+@quarterlyReturnsStatus(vendor: SoftwareVendorModel) = @{
+    customSummaryListRowStatus("quarterly-status", vendor.quarterlyReady(searchFilters))
+}
+
+@eoyReturnsStatus(vendor: SoftwareVendorModel) = @{
+    customSummaryListRowStatus("end-of-year-status", vendor.eoyReady(searchFilters))
+}
+
 @softwareVendorDetail(vendor: SoftwareVendorModel) = @{
 
   Seq(
     softwareVendorPricing(vendor),
     softwareVendorSoftwareFor(vendor),
     softwareSubmissionType(vendor),
-    softwareVendorSuitableFor(vendor)
+    softwareVendorSuitableFor(vendor),
+    quarterlyReturnsStatus(vendor),
+    eoyReturnsStatus(vendor)
   ).flatten
 
 }

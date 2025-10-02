@@ -17,6 +17,8 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models
 
 import play.api.libs.json.{Json, Reads}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.Available
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilterGroups.{endOfYearGroup, quarterlyReturnsGroup}
 
 case class SoftwareVendorModel(
   name: String,
@@ -35,6 +37,10 @@ case class SoftwareVendorModel(
     list.forall(filters.contains)
   }
 
+  def getFeatureStatus(vf: VendorFilter): Option[FeatureStatus] = {
+    filters.get(vf)
+  }
+
   def mustHaveOption(optFilter: Option[VendorFilter]): Boolean =
     mustHaveAll(optFilter.toSeq)
 
@@ -42,6 +48,17 @@ case class SoftwareVendorModel(
     val contains = list.map(filters.contains)
     contains.fold(false)((a, b) => a || b)
   }
+
+  def quarterlyReady(searchFilters: Seq[VendorFilter]): Boolean = {
+    val userMandatedIncomes = searchFilters.filter(quarterlyReturnsGroup.contains)
+    userMandatedIncomes.forall(filter => filters.get(filter).contains(Available))
+  }
+
+  def eoyReady(searchFilters: Seq[VendorFilter]): Boolean = {
+    def eoyIncomes = searchFilters.filter(endOfYearGroup.contains)
+    eoyIncomes.forall(filter => filters.get(filter) == Some(Available))
+  }
+
 }
 
 object SoftwareVendorModel {
