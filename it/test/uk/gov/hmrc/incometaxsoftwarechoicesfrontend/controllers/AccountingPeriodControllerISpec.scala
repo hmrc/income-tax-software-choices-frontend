@@ -24,7 +24,6 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, 
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.AccountingPeriod.{FirstAprilToThirtyFirstMarch, OtherAccountingPeriod, SixthAprilToFifthApril}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.AccountingPeriodPage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
-import org.mongodb.scala.SingleObservableFuture
 
 class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAfterEach with DatabaseHelper {
 

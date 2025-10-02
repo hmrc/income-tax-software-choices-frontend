@@ -26,7 +26,6 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{ConstructionIndustryScheme, Employment, ForeignDividends, ForeignInterest, PrivatePensionIncome, StatePensionIncome, UkDividends, UkInterest}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.AdditionalIncomeSourcesPage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
-import org.mongodb.scala.SingleObservableFuture
 
 class AdditionalIncomeSourcesControllerISpec extends ComponentSpecBase with BeforeAndAfterEach with DatabaseHelper {
 

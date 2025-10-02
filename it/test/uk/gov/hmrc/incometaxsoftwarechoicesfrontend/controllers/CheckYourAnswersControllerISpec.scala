@@ -26,7 +26,6 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{UserAnswers, UserFilters}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.{AccountingPeriodPage, AdditionalIncomeSourcesPage, BusinessIncomePage, OtherItemsPage}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
-import org.mongodb.scala.SingleObservableFuture
 
 class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAfterEach with DatabaseHelper {
 

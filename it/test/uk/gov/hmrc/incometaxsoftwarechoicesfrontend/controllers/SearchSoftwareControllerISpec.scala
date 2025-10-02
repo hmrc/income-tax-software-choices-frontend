@@ -27,7 +27,6 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
-import org.mongodb.scala.SingleObservableFuture
 
 import java.time.Instant
 
