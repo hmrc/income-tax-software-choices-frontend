@@ -21,10 +21,11 @@ import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{UserAnswers, UserFilters, VendorFilter}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.QuestionPage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
+import org.mongodb.scala.ObservableImplicits
 
 import scala.concurrent.Future
 
-trait DatabaseHelper extends ComponentSpecBase {
+trait DatabaseHelper extends ComponentSpecBase with ObservableImplicits {
 
   lazy val userFiltersRepository: UserFiltersRepository = app.injector.instanceOf[UserFiltersRepository]
 

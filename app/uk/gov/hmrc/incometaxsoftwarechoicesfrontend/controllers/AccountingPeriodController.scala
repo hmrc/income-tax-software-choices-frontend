@@ -17,28 +17,29 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import play.api.i18n.I18nSupport
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{RequireUserDataRefiner, SessionIdentifierAction}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.AccountingPeriodForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.AccountingPeriodForm.accountingPeriodForm
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.AccountingPeriod._
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.AccountingPeriod.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.AccountingPeriodPage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.PageAnswersService
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.AccountingPeriodPage
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.AccountingPeriodView
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class AccountingPeriodController @Inject()(view: AccountingPeriodPage,
+class AccountingPeriodController @Inject()(view: AccountingPeriodView,
                                            pageAnswersService: PageAnswersService,
                                            identify: SessionIdentifierAction,
                                            requireData: RequireUserDataRefiner)
                                           (implicit ec: ExecutionContext,
                                            mcc: MessagesControllerComponents) extends BaseFrontendController with I18nSupport {
 
-  def show(editMode: Boolean): Action[AnyContent] = (identify andThen requireData).async { implicit request =>
+  def show(editMode: Boolean): Action[AnyContent] = (identify andThen requireData).async { request =>
+    given Request[AnyContent] = request
     for {
       pageAnswers <- pageAnswersService.getPageAnswers(request.sessionId, AccountingPeriodPage)
     } yield {
@@ -50,7 +51,8 @@ class AccountingPeriodController @Inject()(view: AccountingPeriodPage,
     }
   }
 
-  def submit(editMode: Boolean): Action[AnyContent] = (identify andThen requireData).async { implicit request =>
+  def submit(editMode: Boolean): Action[AnyContent] = (identify andThen requireData).async { request =>
+    given Request[AnyContent] = request
     accountingPeriodForm.bindFromRequest().fold(
       formWithErrors => {
         Future.successful(

@@ -16,19 +16,19 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{RequireUserDataRefiner, SessionIdentifierAction}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.BusinessIncomeForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.BusinessIncomePage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.PageAnswersService
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.BusinessIncomePage
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.BusinessIncomeView
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class BusinessIncomeController @Inject()(view: BusinessIncomePage,
+class BusinessIncomeController @Inject()(view: BusinessIncomeView,
                                          pageAnswersService: PageAnswersService,
                                          identify: SessionIdentifierAction,
                                          requireData: RequireUserDataRefiner)
@@ -36,7 +36,8 @@ class BusinessIncomeController @Inject()(view: BusinessIncomePage,
                                          mcc: MessagesControllerComponents) extends BaseFrontendController {
 
 
-  def show(editMode: Boolean): Action[AnyContent] = (identify andThen requireData).async { implicit request =>
+  def show(editMode: Boolean): Action[AnyContent] = (identify andThen requireData).async { request =>
+    given Request[AnyContent] = request
     for {
       pageAnswers <- pageAnswersService.getPageAnswers(request.sessionId, BusinessIncomePage)
     } yield {
@@ -48,7 +49,8 @@ class BusinessIncomeController @Inject()(view: BusinessIncomePage,
     }
   }
 
-  def submit(editMode: Boolean): Action[AnyContent] = (identify andThen requireData).async { implicit request =>
+  def submit(editMode: Boolean): Action[AnyContent] = (identify andThen requireData).async { request =>
+    given Request[AnyContent] = request
     BusinessIncomeForm.form.bindFromRequest().fold(
       formWithErrors => {
         Future.successful(

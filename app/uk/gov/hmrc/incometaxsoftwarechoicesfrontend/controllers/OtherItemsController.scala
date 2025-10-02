@@ -16,26 +16,27 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{RequireUserDataRefiner, SessionIdentifierAction}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.OtherItemsForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.OtherItemsPage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.PageAnswersService
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.OtherItemsPage
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.OtherItemsView
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class OtherItemsController @Inject()(view: OtherItemsPage,
+class OtherItemsController @Inject()(view: OtherItemsView,
                                      pageAnswersService: PageAnswersService,
                                      identify: SessionIdentifierAction,
                                      requireData: RequireUserDataRefiner)
                                     (implicit ec: ExecutionContext,
                                      mcc: MessagesControllerComponents) extends BaseFrontendController {
 
-  def show(editMode: Boolean): Action[AnyContent] = (identify andThen requireData).async { implicit request =>
+  def show(editMode: Boolean): Action[AnyContent] = (identify andThen requireData).async { request =>
+    given Request[AnyContent] = request
     for {
       pageAnswers <- pageAnswersService.getPageAnswers(request.sessionId, OtherItemsPage)
     } yield {
@@ -47,7 +48,8 @@ class OtherItemsController @Inject()(view: OtherItemsPage,
     }
   }
 
-  def submit(editMode: Boolean): Action[AnyContent] = (identify andThen requireData).async { implicit request =>
+  def submit(editMode: Boolean): Action[AnyContent] = (identify andThen requireData).async { request =>
+    given Request[AnyContent] = request
     OtherItemsForm.form.bindFromRequest().fold(
       formWithErrors => {
         Future.successful(

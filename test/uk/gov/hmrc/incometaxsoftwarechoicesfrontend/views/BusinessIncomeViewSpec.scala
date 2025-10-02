@@ -21,11 +21,11 @@ import org.jsoup.nodes.{Document, Element}
 import play.api.data.FormError
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.BusinessIncomeForm
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.BusinessIncomePage
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.BusinessIncomeView
 
 class BusinessIncomeSourcesViewSpec extends ViewSpec {
 
-  private val view = app.injector.instanceOf[BusinessIncomePage]
+  private val view = app.injector.instanceOf[BusinessIncomeView]
 
   private val formError: FormError = FormError("businessIncome", "business-income.error.nonEmpty")
 

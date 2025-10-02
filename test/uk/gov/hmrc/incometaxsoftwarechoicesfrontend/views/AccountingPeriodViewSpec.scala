@@ -18,17 +18,17 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views
 
 import org.jsoup.Jsoup
 import org.jsoup.nodes.{Document, Element}
-import org.scalatest.matchers.must.Matchers.convertToAnyMustWrapper
+import org.scalatest.matchers.must.Matchers._
 import play.api.data.FormError
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.govukfrontend.views.Aliases.{RadioItem, Text}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.AccountingPeriodForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.AccountingPeriod
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.AccountingPeriodPage
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.AccountingPeriodView
 
 class AccountingPeriodViewSpec extends ViewSpec {
 
-  private val view = app.injector.instanceOf[AccountingPeriodPage]
+  private val view = app.injector.instanceOf[AccountingPeriodView]
   private val formError = FormError(AccountingPeriodForm.fieldName, "accounting-period.error")
 
   def page(hasError: Boolean = false): HtmlFormat.Appendable = {

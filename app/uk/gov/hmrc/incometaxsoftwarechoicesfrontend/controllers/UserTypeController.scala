@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.SessionIdentifierAction
@@ -25,20 +25,21 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.UserTypeForm.userTypeF
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.{Agent, SoleTraderOrLandlord}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.UserTypePage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.PageAnswersService
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.UserTypePage
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.UserTypeView
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class UserTypeController @Inject()(view: UserTypePage,
+class UserTypeController @Inject()(view: UserTypeView,
                                    pageAnswersService: PageAnswersService,
                                    appConfig: AppConfig,
                                    identify: SessionIdentifierAction)
                                   (implicit ec: ExecutionContext,
                                    mcc: MessagesControllerComponents) extends BaseFrontendController {
 
-  def show(): Action[AnyContent] = identify.async { implicit request =>
+  def show(): Action[AnyContent] = identify.async { request =>
+    given Request[AnyContent] = request
     for {
       pageAnswers <- pageAnswersService.getPageAnswers(request.sessionId, UserTypePage)
     } yield {
@@ -50,7 +51,8 @@ class UserTypeController @Inject()(view: UserTypePage,
     }
   }
 
-  def submit(): Action[AnyContent] = identify.async { implicit request =>
+  def submit(): Action[AnyContent] = identify.async { request =>
+    given Request[AnyContent] = request
     userTypeForm.bindFromRequest().fold(
       formWithErrors => {
         Future.successful(

@@ -23,10 +23,10 @@ import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.govukfrontend.views.Aliases.ExclusiveCheckbox
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.AdditionalIncomeForm
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.AdditionalIncomeSourcePage
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.AdditionalIncomeSourceView
 
 class AdditionalIncomeSourceViewSpec extends ViewSpec {
-  private val view = app.injector.instanceOf[AdditionalIncomeSourcePage]
+  private val view = app.injector.instanceOf[AdditionalIncomeSourceView]
 
   private val formEmpty: FormError = FormError("additionalIncome", "additional.income.source.error-non-empty")
   private val formNoneOnly: FormError = FormError("additionalIncome", "additional.income.source.error-none-only")

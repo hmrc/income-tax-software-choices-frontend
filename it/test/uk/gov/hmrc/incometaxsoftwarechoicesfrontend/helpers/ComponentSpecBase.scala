@@ -32,6 +32,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.{AccountingPeriodForm, AdditionalIncomeForm, BusinessIncomeForm, FiltersForm, OtherItemsForm, UserTypeForm}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.baseURI
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{AccountingPeriod, FiltersFormModel, UserType, VendorFilter}
+import play.api.libs.ws.WSBodyWritables.writeableOf_urlEncodedForm
 
 trait ComponentSpecBase extends AnyWordSpec
   with GivenWhenThen

@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.SessionIdentifierAction
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 
@@ -29,7 +29,8 @@ class KeepAliveController @Inject()(repo: UserFiltersRepository,
                                    (implicit ec: ExecutionContext,
                                     mcc: MessagesControllerComponents) extends BaseFrontendController {
 
-  def keepAlive(): Action[AnyContent] = identify.async { implicit request =>
+  def keepAlive(): Action[AnyContent] = identify.async { request =>
+    given Request[AnyContent] = request
     for {
       _ <- repo.keepAlive(request.sessionId)
     } yield {

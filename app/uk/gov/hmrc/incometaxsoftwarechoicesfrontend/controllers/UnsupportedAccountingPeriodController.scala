@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.UnsupportedAccountingPeriod
 
 import javax.inject.{Inject, Singleton}
@@ -26,7 +26,8 @@ class UnsupportedAccountingPeriodController @Inject()(view: UnsupportedAccountin
                                                      (implicit mcc: MessagesControllerComponents) extends BaseFrontendController {
 
 
-  def show: Action[AnyContent] = Action { implicit request =>
+  def show: Action[AnyContent] = Action { request =>
+    given Request[AnyContent] = request
     Ok(view(
       backLink = routes.AccountingPeriodController.show().url
     ))

@@ -17,7 +17,7 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views
 
 import org.jsoup.Jsoup
-import org.scalatest.matchers.must.Matchers.convertToAnyMustWrapper
+import org.scalatest.matchers.must.Matchers._
 import play.api.mvc.Call
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SessionExpiredView
 

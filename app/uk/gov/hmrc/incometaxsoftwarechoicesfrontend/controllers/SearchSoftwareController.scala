@@ -28,13 +28,13 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.UserTypePage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.{PageAnswersService, SoftwareChoicesService}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.viewmodels.SoftwareChoicesResultsViewModel
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SearchSoftwarePage
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SearchSoftwareView
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class SearchSoftwareController @Inject()(searchSoftwarePage: SearchSoftwarePage,
+class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
                                          softwareChoicesService: SoftwareChoicesService,
                                          pageAnswersService: PageAnswersService,
                                          userFiltersRepository: UserFiltersRepository,
@@ -43,7 +43,8 @@ class SearchSoftwareController @Inject()(searchSoftwarePage: SearchSoftwarePage,
                                         (implicit ec: ExecutionContext,
                                          mcc: MessagesControllerComponents) extends BaseFrontendController {
 
-  def show(zeroResults: Boolean): Action[AnyContent] = (identify andThen requireData).async { implicit request =>
+  def show(zeroResults: Boolean): Action[AnyContent] = (identify andThen requireData).async { request =>
+    given Request[AnyContent] = request
     for {
       userFilters <- userFiltersRepository.get(request.sessionId)
       filters = userFilters.map(_.finalFilters).getOrElse(Seq.empty)
@@ -60,11 +61,12 @@ class SearchSoftwareController @Inject()(searchSoftwarePage: SearchSoftwarePage,
     }
   }
 
-  def search(zeroResults: Boolean): Action[AnyContent] = (identify andThen requireData).async { implicit request =>
+  def search(zeroResults: Boolean): Action[AnyContent] = (identify andThen requireData).async { request =>
+    given Request[AnyContent] = request
     val filters = FiltersForm.form.bindFromRequest().get
     for {
       userType <- pageAnswersService.getPageAnswers(request.sessionId, UserTypePage)
-      userFilters <- update(filters, zeroResults).flatMap(_ => userFiltersRepository.get(request.sessionId))
+      userFilters <- update(filters)(request).flatMap(_ => userFiltersRepository.get(request.sessionId))
     } yield {
       val isAgent = userType.contains(Agent)
       val model = SoftwareChoicesResultsViewModel(
@@ -77,13 +79,14 @@ class SearchSoftwareController @Inject()(searchSoftwarePage: SearchSoftwarePage,
     }
   }
 
-  def clear(zeroResults: Boolean): Action[AnyContent] = (identify andThen requireData).async { implicit request =>
-    update(FiltersFormModel(), zeroResults) map { _ =>
+  def clear(zeroResults: Boolean): Action[AnyContent] = (identify andThen requireData).async { request =>
+    given Request[AnyContent] = request
+    update(FiltersFormModel())(request) map { _ =>
       Redirect(routes.SearchSoftwareController.show(zeroResults))
     }
   }
 
-  private def update(search: FiltersFormModel, zeroResults: Boolean)(implicit request: SessionDataRequest[_]): Future[Boolean] = {
+  private def update(search: FiltersFormModel)(implicit request: SessionDataRequest[_]): Future[Boolean] = {
     for {
       userFilters <- userFiltersRepository.get(request.sessionId)
       result <- userFilters match {
@@ -102,7 +105,7 @@ class SearchSoftwareController @Inject()(searchSoftwarePage: SearchSoftwarePage,
   private def view(model: SoftwareChoicesResultsViewModel, form: Form[FiltersFormModel])
                   (implicit request: Request[_]): Html = {
 
-    searchSoftwarePage(
+    searchSoftwareView(
       viewModel = model,
       searchForm = form,
       postAction = routes.SearchSoftwareController.search(model.zeroResults),

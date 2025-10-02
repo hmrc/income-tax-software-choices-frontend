@@ -16,26 +16,27 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{RequireUserDataRefiner, SessionIdentifierAction}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.AdditionalIncomeForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.AdditionalIncomeSourcesPage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.PageAnswersService
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.AdditionalIncomeSourcePage
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.AdditionalIncomeSourceView
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class AdditionalIncomeSourcesController @Inject()(view: AdditionalIncomeSourcePage,
+class AdditionalIncomeSourcesController @Inject()(view: AdditionalIncomeSourceView,
                                                   pageAnswersService: PageAnswersService,
                                                   identify: SessionIdentifierAction,
                                                   requireData: RequireUserDataRefiner)
                                                  (implicit ec: ExecutionContext,
                                                   mcc: MessagesControllerComponents) extends BaseFrontendController {
 
-  def show(editMode: Boolean): Action[AnyContent] = (identify andThen requireData).async { implicit request =>
+  def show(editMode: Boolean): Action[AnyContent] = (identify andThen requireData).async { request =>
+    given Request[AnyContent] = request
     pageAnswersService.getPageAnswers(request.sessionId, AdditionalIncomeSourcesPage)
       .map { maybeAnswers =>
         Ok(view(
@@ -46,7 +47,8 @@ class AdditionalIncomeSourcesController @Inject()(view: AdditionalIncomeSourcePa
       }
   }
 
-  def submit(editMode: Boolean): Action[AnyContent] = (identify andThen requireData).async { implicit request =>
+  def submit(editMode: Boolean): Action[AnyContent] = (identify andThen requireData).async { request =>
+    given Request[AnyContent] = request
     AdditionalIncomeForm.form.bindFromRequest().fold(
       formWithErrors =>
         Future.successful(

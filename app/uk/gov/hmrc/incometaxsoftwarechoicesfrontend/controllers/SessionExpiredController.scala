@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.SessionIdentifierAction
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SessionExpiredView
@@ -31,7 +31,8 @@ class SessionExpiredController @Inject()(repo: UserFiltersRepository,
                                         (implicit ec: ExecutionContext,
                                          mcc: MessagesControllerComponents) extends BaseFrontendController {
 
-  def show(timeout: Boolean = false): Action[AnyContent] = identify.async { implicit request =>
+  def show(timeout: Boolean = false): Action[AnyContent] = identify.async { request =>
+    given Request[AnyContent] = request
     for {
       _ <- repo.delete(request.sessionId)
     } yield {

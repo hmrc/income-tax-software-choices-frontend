@@ -28,7 +28,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.Availab
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.viewmodels.SoftwareChoicesResultsViewModel
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SearchSoftwarePage
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SearchSoftwareView
 
 import java.net.URLEncoder
 import java.time.LocalDate
@@ -421,7 +421,7 @@ class SearchSoftwareViewSpec extends ViewSpec {
           } else {
             Try {
               documentZeroResults.mainContent.select("#software-vendor-list > div")
-              fail
+              fail()
             }.getOrElse(succeed)
           }
         }
@@ -586,7 +586,7 @@ object SearchSoftwareViewSpec extends ViewSpec {
 
   def getFilterSection(document: Document): Element = document.mainContent.selectHead("#software-section").selectNth(".filters-section", 1)
 
-  private val searchSoftwarePage = app.injector.instanceOf[SearchSoftwarePage]
+  private val searchSoftwarePage = app.injector.instanceOf[SearchSoftwareView]
 
 }
 

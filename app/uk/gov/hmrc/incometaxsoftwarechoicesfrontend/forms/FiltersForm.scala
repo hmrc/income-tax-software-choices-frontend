@@ -35,7 +35,7 @@ object FiltersForm {
   val form: Form[FiltersFormModel] = Form(
     mapping(
       filters -> list(text).transform[Seq[VendorFilter]](toVendorFilter, fromVendorFilter)
-    )(FiltersFormModel.apply)(FiltersFormModel.unapply)
+    )(FiltersFormModel.apply)(f => Some(f.filters))
   )
 }
 
