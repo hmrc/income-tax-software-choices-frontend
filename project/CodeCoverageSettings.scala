@@ -22,8 +22,7 @@ object CodeCoverageSettings {
   private val excludedPackages: Seq[String] = Seq(
     "<empty>",
     "Reverse.*",
-    ".*testonly.*",
-    ".*FeatureSwitch.*"
+    ".*testonly.*"
   )
 
   private val excludedFiles: Seq[String] = Seq(

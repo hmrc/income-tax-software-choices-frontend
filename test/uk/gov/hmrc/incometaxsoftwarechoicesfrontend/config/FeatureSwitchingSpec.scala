@@ -16,33 +16,25 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config
 
+import org.mockito.Mockito.{when, reset}
 import org.scalatest.BeforeAndAfterEach
+import org.scalatestplus.mockito.MockitoSugar.mock
 import org.scalatestplus.play.PlaySpec
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.inject.guice.GuiceApplicationBuilder
-import play.api.{Environment, Mode}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch._
+import play.api.{Configuration, Environment, Mode}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.*
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.IntentFeature
 
 class FeatureSwitchingSpec extends PlaySpec with FeatureSwitching with BeforeAndAfterEach with GuiceOneAppPerSuite {
 
-  override val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
-
-  class Setup() {
-
-    def config: Map[String, String] = Map(
-      "metrics.enabled" -> "false"
-    )
-
-    val featureSwitching: FeatureSwitchingImpl = new GuiceApplicationBuilder()
-      .in(Environment.simple(mode = Mode.Dev))
-      .configure(config)
-      .build()
-      .injector
-      .instanceOf[FeatureSwitchingImpl]
-  }
+  val mockConfig: Configuration = mock[Configuration]
+  override val appConfig: AppConfig = mock[AppConfig]
+  when(appConfig.config).thenReturn(mockConfig)
 
   override def beforeEach(): Unit = {
     super.beforeEach()
+    reset(mockConfig)
     FeatureSwitch.switches foreach { switch =>
       sys.props -= switch.name
     }
@@ -52,6 +44,32 @@ class FeatureSwitchingSpec extends PlaySpec with FeatureSwitching with BeforeAnd
     "be true and false" in {
       FEATURE_SWITCH_ON mustBe "true"
       FEATURE_SWITCH_OFF mustBe "false"
+    }
+  }
+
+  "Intent" should {
+    "return true if Intent feature switch is enabled in sys.props" in {
+      enable(IntentFeature)
+      isEnabled(IntentFeature) mustBe true
+    }
+    "return false if Intent feature switch is disabled in sys.props" in {
+      disable(IntentFeature)
+      isEnabled(IntentFeature) mustBe false
+    }
+
+    "return false if Intent feature switch does not exist" in {
+      when(mockConfig.getOptional[String]("feature-switch.intent")).thenReturn(None)
+      isEnabled(IntentFeature) mustBe false
+    }
+
+    "return false if Intent feature switch is not in sys.props but is set to off in config" in {
+      when(mockConfig.getOptional[String]("feature-switch.intent")).thenReturn(Some(FEATURE_SWITCH_OFF))
+      isEnabled(IntentFeature) mustBe false
+    }
+
+    "return true if Intent feature switch is not in sys.props but is set to on in config" in {
+      when(mockConfig.getOptional[String]("feature-switch.intent")).thenReturn(Some(FEATURE_SWITCH_ON))
+      isEnabled(IntentFeature) mustBe true
     }
   }
 }
