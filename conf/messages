@@ -29,11 +29,11 @@ business-income.title = Which of these do you get income from?
 business-income.legend = Which of these do you get income from?
 business-income.para = You’ll need to include this in your quarterly updates and tax return.
 business-income.hint = Select all that apply
-business-income.sole-trader = Being a sole trader
+business-income.sole-trader = Being self-employed as a sole trader
 business-income.uk-property = Renting out a UK property
 business-income.overseas-property = Renting out a foreign property
 
-business-income.error.non-empty          = Select if you get income from being sole trader, or renting out a UK or foreign property
+business-income.error.non-empty          = Select if you get income from being self-employed as a sole trader, or renting out a UK or foreign property
 
 # Zero Results page
 zero-results.title = Your results
