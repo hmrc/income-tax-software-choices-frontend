@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services
 
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.{Available, Intended}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.Available
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{OverseasProperty, SoleTrader, UkProperty}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilterGroups.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FeatureStatus, SoftwareVendorModel, SoftwareVendors, VendorFilter}
@@ -56,14 +56,13 @@ class SoftwareChoicesService @Inject()(
   }
 
   def getAllInOneVendorsWithIntent(filters: Seq[VendorFilter]): Seq[SoftwareVendorViewModel] = {
-    val vendors = softwareVendors
+    val vendors = getAllInOneVendors(filters)
     val userMandatedIncomes = filters.filter(quarterlyReturnsGroup.contains)
 
     val filteredVendors = (
-      SoftwareChoicesService.matchFilter(filters) _
-        andThen SoftwareChoicesService.allAvailable(userMandatedIncomes)
+      SoftwareChoicesService.allAvailable(userMandatedIncomes)
         andThen SoftwareChoicesService.sortVendors
-      )(vendors.vendors)
+      )(vendors.map(_.vendor))
 
       filteredVendors.map(vendor => vendor).map(vendor => SoftwareVendorViewModel(
       vendor = vendor,
