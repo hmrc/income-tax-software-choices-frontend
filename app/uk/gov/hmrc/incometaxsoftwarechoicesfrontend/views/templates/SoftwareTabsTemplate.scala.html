@@ -47,9 +47,9 @@
     label = messages("search-software.all-in-one-tab.title"),
     panel = TabPanel(
      content = HtmlContent(
-             tabHeading("search-software.all-in-one-tab", viewModel.allInOneVendors.vendors.size) +
-             tabInsetText("search-software.all-in-one-tab", viewModel.allInOneVendors.vendors.size) +
-             softwareVendorsTemplate(viewModel.allInOneVendors, viewModel.zeroResults, viewModel.searchFilters)
+             tabHeading("search-software.all-in-one-tab", viewModel.allInOneVendors.size) +
+             tabInsetText("search-software.all-in-one-tab", viewModel.allInOneVendors.size) +
+             softwareVendorsTemplate(viewModel.allInOneVendors, viewModel.zeroResults)
   )))
 }
 
@@ -59,8 +59,8 @@
     label = messages("search-software.other-software-tab.title"),
     panel = TabPanel(
         content = HtmlContent(
-             tabHeading("search-software.other-software-tab", viewModel.otherVendors.vendors.size) +
-             tabInsetText("search-software.other-software-tab", viewModel.otherVendors.vendors.size) +
+             tabHeading("search-software.other-software-tab", viewModel.otherVendors.size) +
+             tabInsetText("search-software.other-software-tab", viewModel.otherVendors.size) +
              softwareVendorsTemplate(viewModel.otherVendors, viewModel.zeroResults)
   )))
 }

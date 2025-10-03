@@ -20,6 +20,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.{Availa
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{OverseasProperty, SoleTrader, UkProperty}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilterGroups.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FeatureStatus, SoftwareVendorModel, SoftwareVendors, VendorFilter}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.viewmodels.SoftwareVendorViewModel
 
 import javax.inject.{Inject, Singleton}
 
@@ -39,21 +40,41 @@ class SoftwareChoicesService @Inject()(
       }
   }
 
-  def getAllInOneVendors(filters: Seq[VendorFilter]): SoftwareVendors = {
+  def getAllInOneVendors(filters: Seq[VendorFilter]): Seq[SoftwareVendorViewModel] = {
+    val vendors = softwareVendors
+    val filteredVendors: Seq[SoftwareVendorModel] = (
+        SoftwareChoicesService.matchFilter(filters) _
+          andThen SoftwareChoicesService.sortVendors
+        ) (vendors.vendors)
+
+    filteredVendors.map(vendor => SoftwareVendorViewModel(
+      vendor = vendor,
+      quarterlyReady = None,
+      eoyReady = None
+    ))
+
+  }
+
+  def getAllInOneVendorsWithIntent(filters: Seq[VendorFilter]): Seq[SoftwareVendorViewModel] = {
     val vendors = softwareVendors
     val userMandatedIncomes = filters.filter(quarterlyReturnsGroup.contains)
 
-    vendors.copy(
-      vendors = (
-        SoftwareChoicesService.matchFilter(filters) _
-          andThen SoftwareChoicesService.allAvailable(userMandatedIncomes)
-          andThen SoftwareChoicesService.sortVendors
-        )(vendors.vendors)
-    )
+    val filteredVendors = (
+      SoftwareChoicesService.matchFilter(filters) _
+        andThen SoftwareChoicesService.allAvailable(userMandatedIncomes)
+        andThen SoftwareChoicesService.sortVendors
+      )(vendors.vendors)
+
+      filteredVendors.map(vendor => vendor).map(vendor => SoftwareVendorViewModel(
+      vendor = vendor,
+      quarterlyReady = Some(vendor.isQuarterlyReady(filters)),
+      eoyReady = Some(vendor.isEoyReady(filters))
+    ))
+
   }
 
-  def getOtherVendors(filters: Seq[VendorFilter], isAgentOrZeroResults: Boolean = false): SoftwareVendors = {
-    val allInOne = if (isAgentOrZeroResults) Seq.empty else getAllInOneVendors(filters).vendors
+  def getOtherVendors(filters: Seq[VendorFilter], isAgentOrZeroResults: Boolean = false): Seq[SoftwareVendorViewModel] = {
+    val allInOne = if (isAgentOrZeroResults) Seq.empty else getAllInOneVendors(filters).map(_.vendor)
     val vendors = softwareVendors
     val userTypes = filters.filter(userTypeFilters.contains)
     val otherVendors = if (userTypes.isEmpty) {
@@ -80,9 +101,12 @@ class SoftwareChoicesService @Inject()(
         andThen SoftwareChoicesService.sortVendors
         )(matchingVendors)
     }
-    vendors.copy(
-      vendors = otherVendors.filterNot(allInOne.contains)
-    )
+
+    otherVendors.filterNot(allInOne.contains).map(vendor => SoftwareVendorViewModel(
+      vendor = vendor, None, None
+
+    ))
+
   }
   
 }
@@ -96,7 +120,7 @@ object SoftwareChoicesService {
     vendors.filter(vendor => filters.forall(vendor.filters.contains(_)))
 
   private[services] def allAvailable(filters: Seq[VendorFilter])(vendors: Seq[SoftwareVendorModel]) = {
-    vendors.filter(vendor => filters.forall(filter => vendor.getFeatureStatus(filter).contains(Available)))
+    vendors.filter(vendor => filters.forall(filter => vendor.getFeatureStatus(filter).eq(Available)))
   }
 
 

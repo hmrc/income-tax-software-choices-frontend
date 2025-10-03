@@ -54,7 +54,7 @@ class CheckYourAnswersController @Inject()(view: CheckYourAnswersView,
     given Request[AnyContent] = request
     for {
       vendorFilters <- pageAnswersService.saveFiltersFromAnswers(request.sessionId)
-      vendors = softwareChoicesService.getAllInOneVendors(vendorFilters).vendors
+      vendors = softwareChoicesService.getAllInOneVendorsWithIntent(vendorFilters)
     } yield {
       if (vendors.isEmpty) {
         Redirect(routes.ZeroSoftwareResultsController.show())

@@ -17,8 +17,10 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models
 
 import play.api.libs.json.{Json, Reads}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.Available
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.{Available, NotApplicable}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilterGroups.{endOfYearGroup, quarterlyReturnsGroup}
+
+
 
 case class SoftwareVendorModel(
   name: String,
@@ -26,7 +28,9 @@ case class SoftwareVendorModel(
   phone: Option[String],
   website: String,
   filters: Map[VendorFilter, FeatureStatus],
-  accessibilityStatementLink: Option[String] = None
+  accessibilityStatementLink: Option[String] = None,
+  quarterlyReady: Option[Boolean] = None,
+  eoyReady: Option[Boolean] = None
 ) {
   def orderedFilterSubset(subsetFilters: Set[VendorFilter]): Map[VendorFilter, FeatureStatus] = {
     val filtersFromVendor = filters.filter(filter => subsetFilters.contains(filter._1)).toSet
@@ -37,8 +41,8 @@ case class SoftwareVendorModel(
     list.forall(filters.contains)
   }
 
-  def getFeatureStatus(vf: VendorFilter): Option[FeatureStatus] = {
-    filters.get(vf)
+  def getFeatureStatus(vf: VendorFilter): FeatureStatus = {
+    filters.getOrElse(vf, NotApplicable)
   }
 
   def mustHaveOption(optFilter: Option[VendorFilter]): Boolean =
@@ -49,14 +53,14 @@ case class SoftwareVendorModel(
     contains.fold(false)((a, b) => a || b)
   }
 
-  def quarterlyReady(searchFilters: Seq[VendorFilter]): Boolean = {
+  def isQuarterlyReady(searchFilters: Seq[VendorFilter]): Boolean = {
     val userMandatedIncomes = searchFilters.filter(quarterlyReturnsGroup.contains)
-    userMandatedIncomes.forall(filter => filters.get(filter).contains(Available))
+    userMandatedIncomes.forall(filter => getFeatureStatus(filter).eq(Available))
   }
 
-  def eoyReady(searchFilters: Seq[VendorFilter]): Boolean = {
+  def isEoyReady(searchFilters: Seq[VendorFilter]): Boolean = {
     def eoyIncomes = searchFilters.filter(endOfYearGroup.contains)
-    eoyIncomes.forall(filter => filters.get(filter) == Some(Available))
+    eoyIncomes.forall(filter => getFeatureStatus(filter).eq(Available))
   }
 
 }

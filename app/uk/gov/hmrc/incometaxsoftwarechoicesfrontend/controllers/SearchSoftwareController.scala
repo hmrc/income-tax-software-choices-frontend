@@ -51,11 +51,10 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
       userType <- pageAnswersService.getPageAnswers(request.sessionId, UserTypePage)
       isAgent = userType.contains(Agent)
       model = SoftwareChoicesResultsViewModel(
-        allInOneVendors = softwareChoicesService.getAllInOneVendors(filters = filters),
-        otherVendors = softwareChoicesService.getOtherVendors(filters = filters, isAgent || zeroResults),
+        allInOneVendors = if(isAgent) softwareChoicesService.getAllInOneVendors(filters = filters) else softwareChoicesService.getAllInOneVendorsWithIntent(filters = filters),
+//        otherVendors = softwareChoicesService.getOtherVendors(filters = filters, isAgent || zeroResults),
         zeroResults = zeroResults,
-        isAgent = isAgent,
-        searchFilters = filters
+        isAgent = isAgent
       )
     } yield {
       Ok(view(model, FiltersForm.form.fill(FiltersFormModel(filters = filters))))
@@ -72,7 +71,7 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
       val isAgent = userType.contains(Agent)
       val model = SoftwareChoicesResultsViewModel(
         allInOneVendors = softwareChoicesService.getAllInOneVendors(userFilters.getOrElse(UserFilters(request.sessionId, None, filters.filters)).finalFilters),
-        otherVendors = softwareChoicesService.getOtherVendors(userFilters.getOrElse(UserFilters(request.sessionId, None, filters.filters)).finalFilters, isAgent || zeroResults),
+//        otherVendors = softwareChoicesService.getOtherVendors(userFilters.getOrElse(UserFilters(request.sessionId, None, filters.filters)).finalFilters, isAgent || zeroResults),
         zeroResults = zeroResults,
         isAgent = isAgent
       )

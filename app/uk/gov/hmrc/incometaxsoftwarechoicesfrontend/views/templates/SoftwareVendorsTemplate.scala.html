@@ -22,6 +22,8 @@
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.SoftwareSearchStatusTemplate
 @import java.net.URLEncoder
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes.ProductDetailsController
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.viewmodels.SoftwareVendorViewModel
+
 
 @this(
   softwareSearchStatusTemplate: SoftwareSearchStatusTemplate,
@@ -30,11 +32,11 @@
         govukTag: GovukTag
 )
 
-@(softwareVendors: SoftwareVendors, zeroResults: Boolean, searchFilters: Seq[VendorFilter] = Seq.empty)(implicit messages: Messages)
+@(softwareVendors: Seq[SoftwareVendorViewModel], zeroResults: Boolean)(implicit messages: Messages)
 
-@customSummaryListRowStatus(key: String, ready: Boolean) = @{
+@customSummaryListRowStatus(key: String, ready: Option[Boolean]) = @{
 
-    val statusTag = if(ready) {
+    val statusTag = if(ready.contains(true)) {
         govukTag(Tag(
             content = Text("Ready now"),
             classes = "govuk-tag--green"
@@ -46,6 +48,7 @@
         ))
     }
 
+    if(ready.nonEmpty) {
         Some(SummaryListRow(
             key = Key(
                 content = Text(messages(s"search-software.vendor-detail.$key"))
@@ -54,6 +57,9 @@
                 content = HtmlContent(statusTag)
             )
         ))
+    } else {
+        None
+    }
 
 }
 
@@ -124,45 +130,46 @@
 
 }
 
-@quarterlyReturnsStatus(vendor: SoftwareVendorModel) = @{
-    customSummaryListRowStatus("quarterly-status", vendor.quarterlyReady(searchFilters))
+@quarterlyReturnsStatus(quarterlyReady: Option[Boolean]): Option[SummaryListRow] = @{
+    customSummaryListRowStatus("quarterly-status", quarterlyReady)
+
 }
 
-@eoyReturnsStatus(vendor: SoftwareVendorModel) = @{
-    customSummaryListRowStatus("end-of-year-status", vendor.eoyReady(searchFilters))
+@eoyReturnsStatus(eoyReady: Option[Boolean]) = @{
+    customSummaryListRowStatus("end-of-year-status", eoyReady)
 }
 
-@softwareVendorDetail(vendor: SoftwareVendorModel) = @{
+@softwareVendorDetail(vendor: SoftwareVendorViewModel) = @{
 
   Seq(
-    softwareVendorPricing(vendor),
-    softwareVendorSoftwareFor(vendor),
-    softwareSubmissionType(vendor),
-    softwareVendorSuitableFor(vendor),
-    quarterlyReturnsStatus(vendor),
-    eoyReturnsStatus(vendor)
+    softwareVendorPricing(vendor.vendor),
+    softwareVendorSoftwareFor(vendor.vendor),
+    softwareSubmissionType(vendor.vendor),
+    softwareVendorSuitableFor(vendor.vendor),
+    quarterlyReturnsStatus(vendor.quarterlyReady),
+    eoyReturnsStatus(vendor.eoyReady)
   ).flatten
 
 }
 
-@softwareVendorListing(vendor: SoftwareVendorModel, index: Int) = {
+@softwareVendorListing(vendor: SoftwareVendorViewModel, index: Int) = {
     <hr class="govuk-section-break govuk-section-break--visible">
     <div id="software-vendor-@index">
     <h3 class="govuk-heading-m software-vendor-list-heading-override">
-      @vendor.name
+      @vendor.vendor.name
     </h3>
     @govukSummaryList(SummaryList(
       rows = softwareVendorDetail(vendor),
       classes = "govuk-summary-list--no-border"
     ))
     <p class="govuk-body">
-      <a href="@{ProductDetailsController.show(URLEncoder.encode(vendor.name, "UTF-8"), zeroResults)}" class="govuk-link">
-        @messages("search-software.vendor-visit-link", vendor.name)
+      <a href="@{ProductDetailsController.show(URLEncoder.encode(vendor.vendor.name, "UTF-8"), zeroResults)}" class="govuk-link">
+        @messages("search-software.vendor-visit-link", vendor.vendor.name)
       </a>
     </p>
   </div>
 }
 
-@softwareVendors.vendors.zipWithIndex.map { case (vendor, index) =>
+@softwareVendors.zipWithIndex.map { case (vendor, index) =>
   @softwareVendorListing(vendor, index)
 }
