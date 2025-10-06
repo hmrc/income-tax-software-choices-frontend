@@ -124,7 +124,7 @@ private object BusinessIncomePageContent {
   val legend = "Which of these do you get income from?"
   val para = "You’ll need to include this in your quarterly updates and tax return."
   val hint = "Select all that apply"
-  val selfEmployment = "Being a sole trader"
+  val selfEmployment = "Being self-employed as a sole trader"
   val ukProperty = "Renting out a UK property"
   val foreignProperty = "Renting out a foreign property"
   val continue = "Continue"
