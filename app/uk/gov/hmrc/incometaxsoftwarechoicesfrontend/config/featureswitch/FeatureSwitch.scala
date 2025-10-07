@@ -28,7 +28,13 @@ object FeatureSwitch {
 
   val prefix = "feature-switch"
 
-  val switches: Set[FeatureSwitch] = Set()
+  val switches: Set[FeatureSwitch] = Set(
+    IntentFeature
+  )
   def get(str: String): Option[FeatureSwitch] = switches find (_.key == str)
 
+  case object IntentFeature extends FeatureSwitch {
+    override val key = "intent"
+    override val displayText = "Intent Functionality"
+  }
 }
