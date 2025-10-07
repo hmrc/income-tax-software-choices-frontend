@@ -123,6 +123,8 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
   def backLinkUrl(isAgent: Boolean, zeroResults: Boolean): String = {
     if (isAgent) {
       routes.UserTypeController.show().url
+    } else if (isEnabled(IntentFeature)) {
+      routes.ChoosingSoftwareController.show().url
     } else if (zeroResults) {
       routes.ZeroSoftwareResultsController.show().url
     } else {

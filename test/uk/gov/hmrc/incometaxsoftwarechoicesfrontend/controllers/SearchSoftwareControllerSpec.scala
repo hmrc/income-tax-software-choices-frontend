@@ -101,12 +101,20 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec
   }
 
   "backLinkUrl" when {
-    "user type is Individual" should {
-      "return to the zero software results page when there are no all in one software" in withController { controller =>
-        controller.backLinkUrl(zeroResults = true, isAgent = false) shouldBe routes.ZeroSoftwareResultsController.show().url
+    "user type is sole trader or landlord" when {
+      "intent feature switch is enabled" should {
+        "redirect to the choosing software page" in withController { controller =>
+          enable(IntentFeature)
+          controller.backLinkUrl(zeroResults = false, isAgent = false) shouldBe routes.ChoosingSoftwareController.show().url
+        }
       }
-      "return to the check your answers page when there are all in one software" in withController { controller =>
-        controller.backLinkUrl(zeroResults = false, isAgent = false) shouldBe routes.CheckYourAnswersController.show().url
+      "intent feature switch is disabled" should {
+        "return to the zero software results page when there are no all in one software" in withController { controller =>
+          controller.backLinkUrl(zeroResults = true, isAgent = false) shouldBe routes.ZeroSoftwareResultsController.show().url
+        }
+        "return to the check your answers page when there are all in one software" in withController { controller =>
+          controller.backLinkUrl(zeroResults = false, isAgent = false) shouldBe routes.CheckYourAnswersController.show().url
+        }
       }
     }
     "user type is Agent" should {

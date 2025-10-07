@@ -17,6 +17,9 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.IntentFeature
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{RequireUserDataRefiner, SessionIdentifierAction}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.{PageAnswersService, SoftwareChoicesService}
@@ -32,9 +35,11 @@ class CheckYourAnswersController @Inject()(view: CheckYourAnswersView,
                                            userFiltersRepository: UserFiltersRepository,
                                            identify: SessionIdentifierAction,
                                            requireData: RequireUserDataRefiner)
+                                          (val appConfig: AppConfig)
                                           (implicit ec: ExecutionContext,
                                            mcc: MessagesControllerComponents,
-                                           pageAnswersService: PageAnswersService) extends BaseFrontendController with SummaryListBuilder {
+                                           pageAnswersService: PageAnswersService)
+  extends BaseFrontendController with SummaryListBuilder with FeatureSwitching {
 
   def show(): Action[AnyContent] = (identify andThen requireData).async { request =>
     given Request[AnyContent] = request
@@ -56,10 +61,14 @@ class CheckYourAnswersController @Inject()(view: CheckYourAnswersView,
       vendorFilters <- pageAnswersService.saveFiltersFromAnswers(request.sessionId)
       vendors = softwareChoicesService.getAllInOneVendors(vendorFilters).vendors
     } yield {
-      if (vendors.isEmpty) {
-        Redirect(routes.ZeroSoftwareResultsController.show())
+      if (isEnabled(IntentFeature)) {
+        Redirect(routes.ChoosingSoftwareController.show())
       } else {
-        Redirect(routes.SearchSoftwareController.show())
+        if (vendors.isEmpty) {
+          Redirect(routes.ZeroSoftwareResultsController.show())
+        } else {
+          Redirect(routes.SearchSoftwareController.show())
+        }
       }
     }
   }

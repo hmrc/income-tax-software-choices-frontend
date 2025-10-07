@@ -121,6 +121,10 @@ trait ComponentSpecBase extends AnyWordSpec
       )
     }
 
+    def getChoosingSoftware: WSResponse = get("/choosing-software-from-your-results")
+    
+    def postChoosingSoftware: WSResponse = post("/choosing-software-from-your-results")(Map.empty)
+    
     def getCheckYourAnswers: WSResponse = get("/check-answers")
 
     def postCheckYourAnswers(): WSResponse = post("/check-answers")(Map.empty)
