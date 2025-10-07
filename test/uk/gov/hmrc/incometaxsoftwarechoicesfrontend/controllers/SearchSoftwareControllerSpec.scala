@@ -17,13 +17,15 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import org.mockito.ArgumentMatchers
-import org.mockito.ArgumentMatchers.{eq => eqTo}
+import org.mockito.ArgumentMatchers.eq as eqTo
 import org.mockito.Mockito.when
 import play.api.Environment
 import play.api.http.Status
 import play.api.mvc.Codec
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.IntentFeature
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.mocks.{MockRequireUserDataRefiner, MockSessionIdentifierAction}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserFilters
@@ -39,7 +41,13 @@ import scala.concurrent.Future
 
 class SearchSoftwareControllerSpec extends ControllerBaseSpec
   with MockSessionIdentifierAction
-  with MockRequireUserDataRefiner {
+  with MockRequireUserDataRefiner
+  with FeatureSwitching {
+
+  override def beforeEach(): Unit = {
+    super.beforeEach()
+    disable(IntentFeature)
+  }
 
   val searchSoftwarePage: SearchSoftwareView = app.injector.instanceOf[SearchSoftwareView]
 
@@ -65,12 +73,20 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec
   }
 
   "backLinkUrl" when {
-    "user type is Individual" should {
-      "return to the zero software results page when there are no all in one software" in withController { controller =>
-        controller.backLinkUrl(zeroResults = true, isAgent = false) shouldBe routes.ZeroSoftwareResultsController.show().url
+    "user type is sole trader or landlord" when {
+      "intent feature switch is enabled" should {
+        "redirect to the choosing software page" in withController { controller =>
+          enable(IntentFeature)
+          controller.backLinkUrl(zeroResults = false, isAgent = false) shouldBe routes.ChoosingSoftwareController.show().url
+        }
       }
-      "return to the check your answers page when there are all in one software" in withController { controller =>
-        controller.backLinkUrl(zeroResults = false, isAgent = false) shouldBe routes.CheckYourAnswersController.show().url
+      "intent feature switch is disabled" should {
+        "return to the zero software results page when there are no all in one software" in withController { controller =>
+          controller.backLinkUrl(zeroResults = true, isAgent = false) shouldBe routes.ZeroSoftwareResultsController.show().url
+        }
+        "return to the check your answers page when there are all in one software" in withController { controller =>
+          controller.backLinkUrl(zeroResults = false, isAgent = false) shouldBe routes.CheckYourAnswersController.show().url
+        }
       }
     }
     "user type is Agent" should {
@@ -106,7 +122,7 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec
       mockUserFiltersRepo,
       fakeSessionIdentifierAction,
       fakeRequireUserDataRefiner
-    )
+    )(appConfig)
 
     testCode(controller)
   }
