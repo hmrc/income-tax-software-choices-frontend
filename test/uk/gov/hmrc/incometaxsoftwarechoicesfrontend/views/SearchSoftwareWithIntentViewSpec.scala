@@ -29,16 +29,16 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.Available
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.*
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.viewmodels.SoftwareChoicesResultsViewModel
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.viewmodels.{SoftwareChoicesResultsViewModel, VendorSuitabilityViewModel}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SearchSoftwareView
 
 import java.net.URLEncoder
 import java.time.LocalDate
 import scala.util.Try
 
-class SearchSoftwareViewSpec extends ViewSpec with BeforeAndAfterEach with FeatureSwitching {
+class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach with FeatureSwitching {
 
-  import SearchSoftwareViewSpec._
+  import SearchSoftwareWithIntentViewSpec._
 
   private def testRow(summaryList: Element, index: Int, key: String, value: String) = {
     val row = summaryList.selectNth("div", index)
@@ -48,57 +48,49 @@ class SearchSoftwareViewSpec extends ViewSpec with BeforeAndAfterEach with Featu
 
   private def testCardOne(vendor: Element) = {
     val summaryList = vendor.selectHead("dl")
-    testRow(summaryList, 1, SearchSoftwarePageContent.pricing, SearchSoftwarePageContent.freeVersion)
-    testRow(summaryList, 2, SearchSoftwarePageContent.softwareFor, s"${SearchSoftwarePageContent.recordKeeping}, ${SearchSoftwarePageContent.bridging}")
-    testRow(summaryList, 3, SearchSoftwarePageContent.submissionType, s"${SearchSoftwarePageContent.taxReturn}")
-    testRow(summaryList, 4, SearchSoftwarePageContent.suitableFor, s"${SearchSoftwarePageContent.soleTrader}, ${SearchSoftwarePageContent.ukProperty}, ${SearchSoftwarePageContent.overseasProperty}")
+    testRow(summaryList, 1, SearchSoftwareWithIntentPageContent.pricing, SearchSoftwareWithIntentPageContent.freeVersion)
+    testRow(summaryList, 2, SearchSoftwareWithIntentPageContent.softwareFor, s"${SearchSoftwareWithIntentPageContent.recordKeeping}, ${SearchSoftwareWithIntentPageContent.bridging}")
+    testRow(summaryList, 3, SearchSoftwareWithIntentPageContent.submissionType, s"${SearchSoftwareWithIntentPageContent.taxReturn}")
+    testRow(summaryList, 4, SearchSoftwareWithIntentPageContent.suitableFor, s"${SearchSoftwareWithIntentPageContent.soleTrader}, ${SearchSoftwareWithIntentPageContent.ukProperty}, ${SearchSoftwareWithIntentPageContent.overseasProperty}")
   }
 
   private def testCardTwo(vendor: Element) = {
     val summaryList = vendor.selectHead("dl")
-    testRow(summaryList, 1, SearchSoftwarePageContent.pricing, SearchSoftwarePageContent.noFreeVersion)
+    testRow(summaryList, 1, SearchSoftwareWithIntentPageContent.pricing, SearchSoftwareWithIntentPageContent.noFreeVersion)
     summaryList.selectOptionally("div:nth-of-type(2)") shouldBe None
   }
 
   override def beforeEach(): Unit = {
+    enable(IntentFeature)
     super.beforeEach()
-    disable(IntentFeature)
   }
 
-    "Search software page" when {
-    disable(IntentFeature)
-    lazy val document = getDocument(hasResults = false)
-
+    "Search software page" must {
+    lazy val document = {
+        val model = SoftwareChoicesResultsViewModel(
+          allInOneVendors = SearchSoftwareWithIntentPageContent.softwareVendorsNoResults,
+          otherVendors = SearchSoftwareWithIntentPageContent.softwareVendorsNoResults,
+          vendorsWithIntent = SearchSoftwareWithIntentPageContent.multipleVendorsWithIntent(quarterlyReady = true, eoyReady = true),
+          zeroResults = false
+        )
+        Jsoup.parse(page(model).body)
+      }
     "have a title" in {
-      document.title shouldBe s"""${SearchSoftwarePageContent.title} - ${PageContentBase.title} - GOV.UK"""
+      document.title shouldBe s"""${SearchSoftwareWithIntentPageContent.title} - ${PageContentBase.title} - GOV.UK"""
     }
 
     "have a heading" in {
-      document.mainContent.selectHead("h1").text shouldBe SearchSoftwarePageContent.heading
+      document.mainContent.selectHead("h1").text shouldBe SearchSoftwareWithIntentPageContent.heading
     }
 
     "have paragraph" in {
-      document.mainContent.selectNth("p", 1).text shouldBe SearchSoftwarePageContent.paragraph
+      document.mainContent.selectNth("p", 1).text shouldBe SearchSoftwareWithIntentPageContent.paragraph
     }
 
     "have a second paragraph" in {
-      document.mainContent.selectNth("p", 2).text shouldBe SearchSoftwarePageContent.paragraphTwo
+      document.mainContent.selectNth("p", 2).text shouldBe SearchSoftwareWithIntentPageContent.paragraphTwo
     }
 
-    "have a third paragraph" when {
-      "there are zero all in one products" in {
-        document.mainContent.selectNth("p", 3).text shouldBe SearchSoftwarePageContent.paragraphThree
-      }
-    }
-
-    "not have a third paragraph" when {
-      "there are all in one products" in {
-        getDocument(hasResults = true).mainContent.selectNthOptionally("p", 3) shouldBe None
-      }
-      "it is an agent page" in {
-        getDocument(hasResults = false, isAgent = true).selectNthOptionally("p", 3) shouldBe None
-      }
-    }
 
     "have a filter section" which {
       val filterSection = getFilterSection(document)
@@ -108,38 +100,38 @@ class SearchSoftwareViewSpec extends ViewSpec with BeforeAndAfterEach with Featu
       }
 
       "has a heading" in {
-        filterSection.selectHead("h2").text shouldBe SearchSoftwarePageContent.Filters.filterHeading
+        filterSection.selectHead("h2").text shouldBe SearchSoftwareWithIntentPageContent.Filters.filterHeading
       }
 
       "has a paragraph" in {
-        filterSection.selectHead("p").text shouldBe SearchSoftwarePageContent.Filters.filterParagraph
+        filterSection.selectHead("p").text shouldBe SearchSoftwareWithIntentPageContent.Filters.filterParagraph
       }
 
       "has a clear filters link" in {
-        filterSection.selectHead("a").text shouldBe SearchSoftwarePageContent.Filters.clearFilters
+        filterSection.selectHead("a").text shouldBe SearchSoftwareWithIntentPageContent.Filters.clearFilters
       }
 
       "has an accessibility features section" that {
         val checkboxGroup = getCheckboxGroup(document, 4)
 
         "contains a fieldset legend" in {
-          checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwarePageContent.Filters.accessibilityFeatures
+          checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwareWithIntentPageContent.Filters.accessibilityFeatures
         }
 
         "contains an Visual checkbox" in {
-          validateCheckboxInGroup(checkboxGroup, 1, Visual.key, SearchSoftwarePageContent.visual)
+          validateCheckboxInGroup(checkboxGroup, 1, Visual.key, SearchSoftwareWithIntentPageContent.visual)
         }
 
         "contains an Hearing checkbox" in {
-          validateCheckboxInGroup(checkboxGroup, 2, Hearing.key, SearchSoftwarePageContent.hearing)
+          validateCheckboxInGroup(checkboxGroup, 2, Hearing.key, SearchSoftwareWithIntentPageContent.hearing)
         }
 
         "contains an Motor checkbox" in {
-          validateCheckboxInGroup(checkboxGroup, 3, Motor.key, SearchSoftwarePageContent.motor)
+          validateCheckboxInGroup(checkboxGroup, 3, Motor.key, SearchSoftwareWithIntentPageContent.motor)
         }
 
         "contains an Cognitive checkbox" in {
-          validateCheckboxInGroup(checkboxGroup, 4, Cognitive.key, SearchSoftwarePageContent.cognitive)
+          validateCheckboxInGroup(checkboxGroup, 4, Cognitive.key, SearchSoftwareWithIntentPageContent.cognitive)
         }
       }
 
@@ -147,7 +139,7 @@ class SearchSoftwareViewSpec extends ViewSpec with BeforeAndAfterEach with Featu
         val checkboxGroup = getCheckboxGroup(document, 1)
 
         "contains a fieldset legend" in {
-          checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwarePageContent.Filters.pricing
+          checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwareWithIntentPageContent.Filters.pricing
         }
 
         "contains a Free version checkbox" in {
@@ -155,8 +147,8 @@ class SearchSoftwareViewSpec extends ViewSpec with BeforeAndAfterEach with Featu
             checkboxGroup,
             1,
             FreeVersion.key,
-            SearchSoftwarePageContent.freeVersion,
-            Some(SearchSoftwarePageContent.freeVersionHint)
+            SearchSoftwareWithIntentPageContent.freeVersion,
+            Some(SearchSoftwareWithIntentPageContent.freeVersionHint)
           )
         }
       }
@@ -165,7 +157,7 @@ class SearchSoftwareViewSpec extends ViewSpec with BeforeAndAfterEach with Featu
         val checkboxGroup = getCheckboxGroup(document, 2)
 
         "contains a fieldset legend" in {
-          checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwarePageContent.Filters.softwareFor
+          checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwareWithIntentPageContent.Filters.softwareFor
         }
 
         "contains a Bridging checkbox" in {
@@ -173,7 +165,7 @@ class SearchSoftwareViewSpec extends ViewSpec with BeforeAndAfterEach with Featu
             checkboxGroup,
             1,
             Bridging.key,
-            SearchSoftwarePageContent.bridging
+            SearchSoftwareWithIntentPageContent.bridging
           )
         }
       }
@@ -182,7 +174,7 @@ class SearchSoftwareViewSpec extends ViewSpec with BeforeAndAfterEach with Featu
         val checkboxGroup = getCheckboxGroup(document, 3)
 
         "contains a fieldset legend" in {
-          checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwarePageContent.Filters.softwareCompatibility
+          checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwareWithIntentPageContent.Filters.softwareCompatibility
         }
 
         "contains an VAT checkbox" in {
@@ -190,7 +182,7 @@ class SearchSoftwareViewSpec extends ViewSpec with BeforeAndAfterEach with Featu
             checkboxGroup,
             1,
             Vat.key,
-            SearchSoftwarePageContent.vat,
+            SearchSoftwareWithIntentPageContent.vat,
             None
           )
         }
@@ -198,196 +190,11 @@ class SearchSoftwareViewSpec extends ViewSpec with BeforeAndAfterEach with Featu
 
       "has a apply button section" that {
         "contains an apply filters button" in {
-          filterSection.selectHead(".apply-filters-button").text shouldBe SearchSoftwarePageContent.Filters.applyFilters
+          filterSection.selectHead(".apply-filters-button").text shouldBe SearchSoftwareWithIntentPageContent.Filters.applyFilters
         }
       }
     }
-
-    "have a tabbed software vendor section" which {
-      lazy val documentWithVendors = getDocument(hasResults = true)
-      lazy val tabsList = getTabsList(documentWithVendors)
-      lazy val allInOneTab = getAllInOneTabContent(documentWithVendors)
-      lazy val otherTab = getOtherTabContent(documentWithVendors)
-
-      "has correctly named All-in-one tab" in {
-        tabsList.first.select("a").text() shouldBe SearchSoftwarePageContent.allInOneTabTitle
-      }
-
-      "has correctly named Other tab" in {
-        tabsList.last.select("a").text() shouldBe SearchSoftwarePageContent.otherTabTitle
-      }
-
-      "has the correct All-in-one section for multiple results" which {
-        "has correct All-in-one header" in {
-          allInOneTab.selectHead("h2").text shouldBe SearchSoftwarePageContent.allInOneTabHeadingMany
-        }
-
-        "has correct inset text" in {
-          allInOneTab.selectHead(".govuk-inset-text").text shouldBe SearchSoftwarePageContent.allInOneInsetTextMany
-        }
-
-        "has a list of software vendors" which {
-          "has a software vendor with lots of detail" which {
-            def firstVendor: Element = allInOneTab.selectHead("#software-vendor-0")
-
-            val firstModel = SearchSoftwarePageContent.softwareVendorsResults.vendors.head
-
-            "has a heading for the software vendor" in {
-              val heading: Element = firstVendor.selectHead("h3")
-              heading.text shouldBe firstModel.name
-            }
-
-            "has a link for the software vendor" in {
-              val link: Element = firstVendor.selectHead("a")
-              val expectedUrl = ProductDetailsController.show(URLEncoder.encode(firstModel.name, "UTF-8"), zeroResults = false).url
-
-              link.attr("href") shouldBe expectedUrl
-              link.text should include(firstModel.name)
-            }
-
-            "has a list of detail for the software vendor with full detail" in {
-              testCardOne(firstVendor)
-            }
-          }
-
-          "has a software vendor with minimal detail" which {
-            def secondVendor: Element = allInOneTab.selectHead("#software-vendor-1")
-
-            val secondModel = SearchSoftwarePageContent.softwareVendorsResults.vendors(1)
-
-            "has a heading for the software vendor" in {
-              val heading: Element = secondVendor.selectHead("h3")
-              heading.text shouldBe secondModel.name
-            }
-
-            "has a link for the software vendor" in {
-              val link: Element = secondVendor.selectHead("a")
-              val expectedUrl = ProductDetailsController.show(URLEncoder.encode(secondModel.name, "UTF-8"), zeroResults = false).url
-
-              link.attr("href") shouldBe expectedUrl
-              link.text should include(secondModel.name)
-            }
-
-            "has a list of detail for the software vendor with minimal detail" in {
-              testCardTwo(secondVendor)
-            }
-          }
-        }
-      }
-
-      "has the correct Other tab section for multiple results" which {
-        "has correct other tab header" in {
-          otherTab.selectHead("h2").text shouldBe SearchSoftwarePageContent.otherTabHeadingMany
-        }
-
-        "has a count of the number of software vendors on the page" in {
-          otherTab.selectHead(".govuk-inset-text").text shouldBe SearchSoftwarePageContent.otherTabInsetTextMany
-        }
-
-        "has a list of software vendors" which {
-          "has a software vendor with lots of detail" which {
-            def firstVendor: Element = otherTab.selectHead("#software-vendor-0")
-
-            val firstModel = SearchSoftwarePageContent.softwareVendorsResults.vendors.head
-
-            "has a heading for the software vendor" in {
-              val heading: Element = firstVendor.selectHead("h3")
-              heading.text shouldBe firstModel.name
-            }
-
-            "has a link for the software vendor" in {
-              val link: Element = firstVendor.selectHead("a")
-              val expectedUrl = ProductDetailsController.show(URLEncoder.encode(firstModel.name, "UTF-8"), zeroResults = false).url
-
-              link.attr("href") shouldBe expectedUrl
-              link.text should include(firstModel.name)
-            }
-
-            "has a list of detail for the software vendor with full detail" in {
-              testCardOne(firstVendor)
-            }
-          }
-
-          "has a software vendor with minimal detail" which {
-            def secondVendor: Element = otherTab.selectHead("#software-vendor-1")
-
-            val secondModel = SearchSoftwarePageContent.softwareVendorsResults.vendors(1)
-
-            "has a heading for the software vendor" in {
-              val heading: Element = secondVendor.selectHead("h3")
-              heading.text shouldBe secondModel.name
-            }
-
-            "has a link for the software vendor" in {
-              val link: Element = secondVendor.selectHead("a")
-              val expectedUrl = ProductDetailsController.show(URLEncoder.encode(secondModel.name, "UTF-8"), zeroResults = false).url
-
-              link.attr("href") shouldBe expectedUrl
-              link.text should include(secondModel.name)
-            }
-
-            "has a list of detail for the software vendor with minimal detail" in {
-              testCardTwo(secondVendor)
-            }
-          }
-        }
-      }
-
-      "has the correct All-in-one and Other tab section header for 1 result" which {
-        lazy val documentOneResult = {
-          val model = SoftwareChoicesResultsViewModel(
-            allInOneVendors = SearchSoftwarePageContent.softwareVendorsOneResult,
-            otherVendors = SearchSoftwarePageContent.softwareVendorsOneResult,
-            zeroResults = false
-          )
-          Jsoup.parse(page(model).body)
-        }
-
-        "has correct All-in-one header" in {
-          getAllInOneTabContent(documentOneResult).selectHead("h2").text shouldBe SearchSoftwarePageContent.allInOneTabHeadingOne
-        }
-
-        "has correct All-in-one inset text" in {
-          getAllInOneTabContent(documentOneResult).selectHead(".govuk-inset-text").text shouldBe SearchSoftwarePageContent.allInOneInsetTextOne
-        }
-
-        "has correct Other header" in {
-          getOtherTabContent(documentOneResult).selectHead("h2").text shouldBe SearchSoftwarePageContent.otherTabHeadingOne
-        }
-
-        "has correct Other inset text" in {
-          getOtherTabContent(documentOneResult).selectHead(".govuk-inset-text").text shouldBe SearchSoftwarePageContent.otherTabInsetTextOne
-        }
-      }
-
-      "has the correct All-in-one and Other tab section headers for 0 results (filtered out)" which {
-        lazy val documentOneResult = {
-          val model = SoftwareChoicesResultsViewModel(
-            allInOneVendors = SearchSoftwarePageContent.softwareVendorsNoResults,
-            otherVendors = SearchSoftwarePageContent.softwareVendorsNoResults,
-            zeroResults = false
-          )
-          Jsoup.parse(page(model).body)
-        }
-
-        "has correct All-in-one header" in {
-          getAllInOneTabContent(documentOneResult).selectHead("h2").text shouldBe SearchSoftwarePageContent.allInOneTabHeadingNone
-        }
-
-        "has correct All-in-one inset text" in {
-          getAllInOneTabContent(documentOneResult).selectHead(".govuk-inset-text").text shouldBe SearchSoftwarePageContent.allInOneInsetTextNone
-        }
-
-        "has correct Other header" in {
-          getOtherTabContent(documentOneResult).selectHead("h2").text shouldBe SearchSoftwarePageContent.otherTabHeadingNone
-        }
-
-        "has correct Other inset text" in {
-          getOtherTabContent(documentOneResult).selectHead(".govuk-inset-text").text shouldBe SearchSoftwarePageContent.otherTabInsetTextNone
-        }
-      }
-    }
-
+/*
     "have a single software vendor section for zero all in one products" which {
       val titles = Map(
         1 -> "No products",
@@ -396,16 +203,16 @@ class SearchSoftwareViewSpec extends ViewSpec with BeforeAndAfterEach with Featu
       )
 
       Map(
-        1 -> SearchSoftwarePageContent.softwareVendorsNoResults,
-        2 -> SearchSoftwarePageContent.softwareVendorsOneResult,
-        3 -> SearchSoftwarePageContent.softwareVendorsResults
+        1 -> SearchSoftwareWithIntentPageContent.softwareVendorsNoResults,
+        2 -> SearchSoftwareWithIntentPageContent.softwareVendorsOneResult,
+        3 -> SearchSoftwareWithIntentPageContent.softwareVendorsResults
       ).foreach { entry =>
         val index = entry._1
         val title = titles.getOrElse(index, "")
 
         lazy val documentZeroResults = {
           val model = SoftwareChoicesResultsViewModel(
-            allInOneVendors = SearchSoftwarePageContent.softwareVendorsNoResults,
+            allInOneVendors = SearchSoftwareWithIntentPageContent.softwareVendorsNoResults,
             otherVendors = entry._2,
             zeroResults = true
           )
@@ -414,18 +221,18 @@ class SearchSoftwareViewSpec extends ViewSpec with BeforeAndAfterEach with Featu
 
         s"$title: displays the zero-results header" in {
           Some(documentZeroResults.mainContent.selectHead("#vendor-count h2").text) shouldBe
-            SearchSoftwarePageContent.noProductsHeading.get(index)
+            SearchSoftwareWithIntentPageContent.noProductsHeading.get(index)
         }
 
         s"$title: displays inset text" in {
           Some(documentZeroResults.mainContent.select("#vendor-count > div").text) shouldBe
-            SearchSoftwarePageContent.noProductsCount.get(index)
+            SearchSoftwareWithIntentPageContent.noProductsCount.get(index)
         }
 
         s"$title: renders all available software vendors if there are more than one" in {
           if (index == 3) {
             val listings = documentZeroResults.mainContent.select("#software-vendor-list > div")
-            listings.size shouldBe SearchSoftwarePageContent.softwareVendorsResults.vendors.length
+            listings.size shouldBe SearchSoftwareWithIntentPageContent.softwareVendorsResults.vendors.length
           } else {
             Try {
               documentZeroResults.mainContent.select("#software-vendor-list > div")
@@ -435,30 +242,31 @@ class SearchSoftwareViewSpec extends ViewSpec with BeforeAndAfterEach with Featu
         }
       }
     }
-
+*/
+      /*
     "have a single software vendor section for agents" which  {
       lazy val document = getDocument(hasResults = true, isAgent = true)
 
       "has the correct heading and inset text" when {
         "there are multiple results" in {
-          document.selectHead("#vendor-count h2").text shouldBe SearchSoftwarePageContent.agentHeadingMany
-          document.selectHead("#vendor-count .govuk-inset-text").text shouldBe SearchSoftwarePageContent.agentInsetTextMany
+          document.selectHead("#vendor-count h2").text shouldBe SearchSoftwareWithIntentPageContent.agentHeadingMany
+          document.selectHead("#vendor-count .govuk-inset-text").text shouldBe SearchSoftwareWithIntentPageContent.agentInsetTextMany
         }
         "there is 1 result" in {
           lazy val documentOneResult = {
             val model = SoftwareChoicesResultsViewModel(
-              SearchSoftwarePageContent.softwareVendorsOneResult,
-              SearchSoftwarePageContent.softwareVendorsOneResult,
+              SearchSoftwareWithIntentPageContent.softwareVendorsOneResult,
+              SearchSoftwareWithIntentPageContent.softwareVendorsOneResult,
               isAgent = true)
             Jsoup.parse(page(model).body)
           }
-          documentOneResult.selectHead("#vendor-count h2").text shouldBe SearchSoftwarePageContent.agentHeadingOne
-          documentOneResult.selectHead("#vendor-count .govuk-inset-text").text shouldBe SearchSoftwarePageContent.agentInsetTextOne
+          documentOneResult.selectHead("#vendor-count h2").text shouldBe SearchSoftwareWithIntentPageContent.agentHeadingOne
+          documentOneResult.selectHead("#vendor-count .govuk-inset-text").text shouldBe SearchSoftwareWithIntentPageContent.agentInsetTextOne
         }
         "there are 0 results" in {
           lazy val documentNoResults = getDocument(hasResults = false, isAgent = true)
-          documentNoResults.selectHead("#vendor-count h2").text shouldBe SearchSoftwarePageContent.agentHeadingNone
-          documentNoResults.selectHead("#vendor-count .govuk-inset-text").text shouldBe SearchSoftwarePageContent.agentInsetTextNone
+          documentNoResults.selectHead("#vendor-count h2").text shouldBe SearchSoftwareWithIntentPageContent.agentHeadingNone
+          documentNoResults.selectHead("#vendor-count .govuk-inset-text").text shouldBe SearchSoftwareWithIntentPageContent.agentInsetTextNone
         }
       }
 
@@ -466,7 +274,7 @@ class SearchSoftwareViewSpec extends ViewSpec with BeforeAndAfterEach with Featu
         "has a software vendor with lots of detail" which {
           def firstVendor: Element = document.selectHead("#software-vendor-0")
 
-          val firstModel = SearchSoftwarePageContent.softwareVendorsResults.vendors.head
+          val firstModel = SearchSoftwareWithIntentPageContent.softwareVendorsResults.vendors.head
 
           "has a heading for the software vendor" in {
             val heading: Element = firstVendor.selectHead("h3")
@@ -489,7 +297,7 @@ class SearchSoftwareViewSpec extends ViewSpec with BeforeAndAfterEach with Featu
         "has a software vendor with minimal detail" which {
           def secondVendor: Element = document.selectHead("#software-vendor-1")
 
-          val secondModel = SearchSoftwarePageContent.softwareVendorsResults.vendors(1)
+          val secondModel = SearchSoftwareWithIntentPageContent.softwareVendorsResults.vendors(1)
 
           "has a heading for the software vendor" in {
             val heading: Element = secondVendor.selectHead("h3")
@@ -510,10 +318,12 @@ class SearchSoftwareViewSpec extends ViewSpec with BeforeAndAfterEach with Featu
         }
       }
     }
+
+ */
   }
 }
 
-object SearchSoftwareViewSpec extends ViewSpec {
+object SearchSoftwareWithIntentViewSpec extends ViewSpec {
 
   def page(model: SoftwareChoicesResultsViewModel): HtmlFormat.Appendable =
     searchSoftwarePage(
@@ -524,9 +334,17 @@ object SearchSoftwareViewSpec extends ViewSpec {
       "/test-back-url"
     )
 
-  def getDocument(hasResults: Boolean, isAgent: Boolean = false): Document = {
-    val results = if (hasResults) SearchSoftwarePageContent.softwareVendorsResults else SearchSoftwarePageContent.softwareVendorsNoResults
-    val model = SoftwareChoicesResultsViewModel(allInOneVendors = results, otherVendors = results, vendorsWithIntent = Seq.empty, zeroResults = results.vendors.isEmpty, isAgent = isAgent)
+  def getDocument(numResults: Int,
+                  isAgent: Boolean = false,
+                  isQuarterlyReady: Boolean = true,
+                  isEoyReady: Boolean = true): Document = {
+    val results = SearchSoftwareWithIntentPageContent.getVendorResultsWithIntent(numResults)
+    val model = SoftwareChoicesResultsViewModel(
+      allInOneVendors = SearchSoftwareWithIntentPageContent.softwareVendorsNoResults,
+      otherVendors = SearchSoftwareWithIntentPageContent.softwareVendorsNoResults,
+      vendorsWithIntent = results,
+      zeroResults = false,
+      isAgent = isAgent)
     Jsoup.parse(page(model).body)
   }
 
@@ -598,7 +416,7 @@ object SearchSoftwareViewSpec extends ViewSpec {
 
 }
 
-private object SearchSoftwarePageContent {
+private object SearchSoftwareWithIntentPageContent {
   val title = "Software for Making Tax Digital for Income Tax"
   val lastUpdate = "This page was last updated: 2 Dec 2022"
   val heading = "Software for Making Tax Digital for Income Tax"
@@ -728,6 +546,10 @@ private object SearchSoftwarePageContent {
 
   private val lastUpdateTest = LocalDate.of(2022, 12, 2)
 
+  def getVendorResultsWithIntent(numResults: Int): Seq[VendorSuitabilityViewModel] = {
+    Seq.empty
+  }
+
   val softwareVendorsResults: SoftwareVendors = SoftwareVendors(
     lastUpdated = lastUpdateTest,
     vendors = Seq(
@@ -790,4 +612,44 @@ private object SearchSoftwarePageContent {
   )
 
   val softwareVendorsNoResults: SoftwareVendors = SoftwareVendors(lastUpdated = lastUpdateTest, vendors = Seq.empty[SoftwareVendorModel])
+
+  def multipleVendorsWithIntent(quarterlyReady: Boolean, eoyReady: Boolean): Seq[VendorSuitabilityViewModel] = Seq(
+    VendorSuitabilityViewModel(
+      vendor = SoftwareVendorModel(
+        name = "test software vendor one",
+        email = Some("test@software-vendor-name-one.com"),
+        phone = Some("11111 111 111"),
+        website = "software-vendor-name-one.com",
+        filters = Seq(
+          FreeVersion,
+          FreeTrial,
+          SoleTrader,
+          UkProperty,
+          OverseasProperty,
+          RecordKeeping,
+          Bridging,
+          Vat,
+          Visual,
+          Hearing,
+          Motor,
+          Cognitive,
+          TaxReturn
+        ).map(vf => vf -> Available).toMap
+      ),
+      quarterlyReady = Some(quarterlyReady),
+      eoyReady = Some(eoyReady)
+    ),
+    VendorSuitabilityViewModel(
+      vendor = SoftwareVendorModel(
+        name = "test software vendor two",
+        email = Some("test@software-vendor-two.com"),
+        phone = Some("22222 222 222"),
+        website = "software-vendor-name-two.com",
+        filters = Seq(SoleTrader
+        ).map(vf => vf -> Available).toMap
+      ),
+      quarterlyReady = Some(quarterlyReady),
+      eoyReady = Some(eoyReady)
+    )
+  )
 }

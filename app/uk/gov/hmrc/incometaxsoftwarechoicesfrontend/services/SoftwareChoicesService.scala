@@ -17,8 +17,9 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services
 
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{OverseasProperty, SoleTrader, UkProperty}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilterGroups._
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilterGroups.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareVendorModel, SoftwareVendors, VendorFilter}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.viewmodels.VendorSuitabilityViewModel
 
 import javax.inject.{Inject, Singleton}
 
@@ -36,6 +37,10 @@ class SoftwareChoicesService @Inject()(
       .collectFirst {
         case vendor if vendor.name == software => vendor
       }
+  }
+
+  def getVendorsWithIntent(filters: Seq[VendorFilter]): Seq[VendorSuitabilityViewModel] = {
+    Seq.empty
   }
 
   def getAllInOneVendors(filters: Seq[VendorFilter]): SoftwareVendors = {

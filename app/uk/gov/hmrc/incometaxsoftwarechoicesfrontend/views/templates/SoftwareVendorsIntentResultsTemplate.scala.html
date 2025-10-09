@@ -1,0 +1,53 @@
+@*
+ * Copyright 2023 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.viewmodels.SoftwareChoicesResultsViewModel
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.SoftwareVendorsIntentTemplate
+
+@this(
+    govukInsetText: GovukInsetText,
+        softwareVendorsIntentTemplate: SoftwareVendorsIntentTemplate
+)
+
+@(viewModel: SoftwareChoicesResultsViewModel)(implicit messages: Messages)
+
+@count = @{viewModel.vendorsWithIntent.length}
+
+<div id="vendor-count">
+    @{
+        count match {
+            case 0 => {
+                    <h2 class="govuk-heading-l">{messages("search-software.vendor-count.intent.heading.none")}</h2>
+                    <div class="govuk-inset-text">{messages("search-software.vendor-count.intent.inset.none")}</div>
+            }
+            case 1 => {
+                    <h2 class="govuk-heading-l">{messages("search-software.vendor-count.intent.heading.one")}</h2>
+                    <div class="govuk-inset-text">{messages("search-software.vendor-count.intent.inset.one")}</div>
+            }
+            case _ => {
+                    <h2 class="govuk-heading-l">{messages("search-software.vendor-count.intent.heading.many", count)}</h2>
+                    <div class="govuk-inset-text">{messages("search-software.vendor-count.intent.inset.many")}</div>
+            }
+        }
+    }
+
+</div>
+
+@if(count > 1) {
+    <div id="software-vendor-list">
+        @softwareVendorsIntentTemplate(viewModel.vendorsWithIntent)
+    </div>
+}

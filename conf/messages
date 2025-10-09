@@ -85,6 +85,10 @@ search-software.p2                                        = You’ll need to pay
 search-software.p3                                        = Software is in development, and more options will be available over time. This may include an all-in-one software product.
 search-software.skip-to-results                           = Skip to results.
 
+search-software.intent.h2                                 = Some software may be listed as in development
+search-software.intent.p1                                 = All the products showing in the filter list will allow you to submit your quarterly updates.
+search-software.intent.p2                                 = In development means one or more features you need to complete your tax return are still being built. We expect these features will be ready for you to do your 2026 to 2027 return.
+
 search-software.filters.heading = Filter options
 search-software.filters.paragraph = You can use filters to find specific software. All fields are optional.
 search-software.filters.pricing = Price
@@ -135,6 +139,13 @@ search-software.empty-vendor-list.paragraph = To increase the number of results,
 search-software.empty-vendor-list.bullet1   = reduce the number of filters you apply
 search-software.empty-vendor-list.bullet2   = make sure the name you have entered into the search bar is correct
 
+search-software.vendor-count.intent.heading.many     = Based on your answers we’ve found {0} results
+search-software.vendor-count.intent.heading.one      = Based on your answers we’ve found 1 result
+search-software.vendor-count.intent.heading.none     = There are no matching results
+search-software.vendor-count.intent.inset.many = Each of these software products can help you complete your quarterly updates and tax return in full.
+search-software.vendor-count.intent.inset.one = This software product can help you complete your quarterly updates and tax return in full.
+search-software.vendor-count.intent.inset.none = Improve your results by removing filters.
+
 search-software.vendor-detail.pricing = Price
 search-software.vendor-detail.pricing.free-trial = Free trial
 search-software.vendor-detail.pricing.no-free-trial = No free trial
@@ -169,6 +180,13 @@ search-software.vendor-detail.software-type.application-based.hint = Software in
 search-software.vendor-detail.software-for = Type of software
 search-software.vendor-detail.software-for.record-keeping = Software that creates digital records
 search-software.vendor-detail.software-for.bridging = Software that connects to your records (bridging software)
+
+search-software.vendor-detail.quarterly-ready = Quarterly updates
+search-software.vendor-detail.quarterly-ready.ready = Ready now
+
+search-software.vendor-detail.eoy-tax-return = Tax return
+search-software.vendor-detail.eoy-tax-return.ready = Ready now
+search-software.vendor-detail.eoy-tax-return.development = In development
 
 search-software.vendor-detail.business-type                 = Business type:
 search-software.vendor-detail.business-type.individual      = Individual

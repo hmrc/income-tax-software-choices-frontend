@@ -32,6 +32,10 @@ class SoftwareChoicesResultsViewModelSpec extends PlaySpec {
         model.otherVendors.vendors mustBe Seq.empty
       }
 
+      "has empty vendors with Intent list" in {
+        model.vendorsWithIntent mustBe Seq.empty
+      }
+
       "has zeroResult set false" in {
         model.zeroResults mustBe false
       }
