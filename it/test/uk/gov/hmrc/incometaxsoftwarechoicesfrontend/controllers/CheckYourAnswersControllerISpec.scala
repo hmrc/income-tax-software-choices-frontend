@@ -141,13 +141,13 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
   "POST /check-your-answers" must {
     s"return $SEE_OTHER" when {
       "intent feature switch is enabled" should {
-        "redirect to the choosing software page" in {
+        "redirect to the choosing software page when there are all-in-one vendors" in {
           enable(IntentFeature)
           val userAnswers = UserAnswers()
             .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
             .set(AdditionalIncomeSourcesPage, Seq.empty).get
             .set(OtherItemsPage, Seq.empty).get
-            .set(AccountingPeriodPage, OtherAccountingPeriod).get
+            .set(AccountingPeriodPage, SixthAprilToFifthApril).get
           await(userFiltersRepository.set(testUserFilters(Some(userAnswers))))
 
           val res = SoftwareChoicesFrontend.postCheckYourAnswers()
@@ -158,7 +158,28 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
           )
 
           await(userFiltersRepository.get(SessionId)) match {
-            case Some(uf) => uf.finalFilters shouldBe Seq(SoleTrader, UkProperty, OverseasProperty)
+            case Some(uf) => uf.finalFilters shouldBe Seq(SoleTrader, UkProperty, OverseasProperty, StandardUpdatePeriods)
+            case None => fail("No user filters found")
+          }
+        }
+        "redirect to the zero results page when there are no all-in-one vendors" in {
+          enable(IntentFeature)
+          val userAnswers = UserAnswers()
+            .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
+            .set(AdditionalIncomeSourcesPage, Seq(ForeignInterest)).get
+            .set(OtherItemsPage, Seq.empty).get
+            .set(AccountingPeriodPage, SixthAprilToFifthApril).get
+          await(userFiltersRepository.set(testUserFilters(Some(userAnswers))))
+
+          val res = SoftwareChoicesFrontend.postCheckYourAnswers()
+
+          res should have(
+            httpStatus(SEE_OTHER),
+            redirectURI(routes.ZeroSoftwareResultsController.show().url)
+          )
+
+          await(userFiltersRepository.get(SessionId)) match {
+            case Some(uf) => uf.finalFilters shouldBe Seq(SoleTrader, UkProperty, OverseasProperty, ForeignInterest, StandardUpdatePeriods)
             case None => fail("No user filters found")
           }
         }

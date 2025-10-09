@@ -61,14 +61,10 @@ class CheckYourAnswersController @Inject()(view: CheckYourAnswersView,
       vendorFilters <- pageAnswersService.saveFiltersFromAnswers(request.sessionId)
       vendors = softwareChoicesService.getAllInOneVendors(vendorFilters).vendors
     } yield {
-      if (isEnabled(IntentFeature)) {
-        Redirect(routes.ChoosingSoftwareController.show())
-      } else {
-        if (vendors.isEmpty) {
-          Redirect(routes.ZeroSoftwareResultsController.show())
-        } else {
-          Redirect(routes.SearchSoftwareController.show())
-        }
+      (vendors.isEmpty, isEnabled(IntentFeature)) match {
+        case (true, _) => Redirect(routes.ZeroSoftwareResultsController.show())
+        case (false, false) => Redirect(routes.SearchSoftwareController.show())
+        case (false, true) => Redirect(routes.ChoosingSoftwareController.show())
       }
     }
   }
