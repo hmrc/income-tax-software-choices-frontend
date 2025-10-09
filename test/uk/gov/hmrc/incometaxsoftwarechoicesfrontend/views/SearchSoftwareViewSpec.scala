@@ -19,14 +19,16 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views
 import org.jsoup.Jsoup
 import org.jsoup.nodes.{Document, Element}
 import org.jsoup.select.Elements
-import org.scalatest.Assertion
+import org.scalatest.{Assertion, BeforeAndAfterEach}
 import play.api.mvc.Call
 import play.twirl.api.HtmlFormat
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.IntentFeature
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes.ProductDetailsController
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.Available
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.*
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.viewmodels.SoftwareChoicesResultsViewModel
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SearchSoftwareView
 
@@ -34,7 +36,7 @@ import java.net.URLEncoder
 import java.time.LocalDate
 import scala.util.Try
 
-class SearchSoftwareViewSpec extends ViewSpec {
+class SearchSoftwareViewSpec extends ViewSpec with BeforeAndAfterEach with FeatureSwitching {
 
   import SearchSoftwareViewSpec._
 
@@ -58,7 +60,13 @@ class SearchSoftwareViewSpec extends ViewSpec {
     summaryList.selectOptionally("div:nth-of-type(2)") shouldBe None
   }
 
-  "Search software page" must {
+  override def beforeEach(): Unit = {
+    super.beforeEach()
+    disable(IntentFeature)
+  }
+
+    "Search software page" when {
+    disable(IntentFeature)
     lazy val document = getDocument(hasResults = false)
 
     "have a title" in {
@@ -518,7 +526,7 @@ object SearchSoftwareViewSpec extends ViewSpec {
 
   def getDocument(hasResults: Boolean, isAgent: Boolean = false): Document = {
     val results = if (hasResults) SearchSoftwarePageContent.softwareVendorsResults else SearchSoftwarePageContent.softwareVendorsNoResults
-    val model = SoftwareChoicesResultsViewModel(allInOneVendors = results, otherVendors = results, zeroResults = results.vendors.isEmpty, isAgent = isAgent)
+    val model = SoftwareChoicesResultsViewModel(allInOneVendors = results, otherVendors = results, vendorsWithIntent = Seq.empty, zeroResults = results.vendors.isEmpty, isAgent = isAgent)
     Jsoup.parse(page(model).body)
   }
 

@@ -17,13 +17,16 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import org.mockito.ArgumentMatchers
-import org.mockito.ArgumentMatchers.{eq => eqTo}
+import org.mockito.ArgumentMatchers.eq as eqTo
 import org.mockito.Mockito.when
+import org.scalatest.BeforeAndAfterEach
 import play.api.Environment
 import play.api.http.Status
 import play.api.mvc.Codec
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.IntentFeature
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.mocks.{MockRequireUserDataRefiner, MockSessionIdentifierAction}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserFilters
@@ -39,28 +42,61 @@ import scala.concurrent.Future
 
 class SearchSoftwareControllerSpec extends ControllerBaseSpec
   with MockSessionIdentifierAction
-  with MockRequireUserDataRefiner {
+  with MockRequireUserDataRefiner
+  with FeatureSwitching
+  with BeforeAndAfterEach {
 
+  override def beforeEach(): Unit = {
+    super.beforeEach()
+    disable(IntentFeature)
+  }
   val searchSoftwarePage: SearchSoftwareView = app.injector.instanceOf[SearchSoftwareView]
 
-  "Show" should {
-    "return OK status with the search software page" in withController { controller =>
-      val result = controller.show(zeroResults = false)(fakeRequest)
+  "Show" when {
+    "Intent feature is off" should {
+      "return OK status with the search software page" in withController { controller =>
+        val result = controller.show(zeroResults = false)(fakeRequest)
 
-      status(result) shouldBe Status.OK
-      contentType(result) shouldBe Some(HTML)
-      charset(result) shouldBe Some(Codec.utf_8.charset)
+        status(result) shouldBe Status.OK
+        contentType(result) shouldBe Some(HTML)
+        charset(result) shouldBe Some(Codec.utf_8.charset)
+      }
+    }
+
+    "Intent feature is on" should {
+      enable(IntentFeature)
+      "return OK status with the search software page" in withController { controller =>
+        val result = controller.show(zeroResults = false)(fakeRequest)
+
+        status(result) shouldBe Status.OK
+        contentType(result) shouldBe Some(HTML)
+        charset(result) shouldBe Some(Codec.utf_8.charset)
+      }
     }
   }
 
-  "search" should {
-    "return OK status with the search software page" in withController { controller =>
-      val result = controller.search(zeroResults = false)(FakeRequest("POST", "/")
-        .withFormUrlEncodedBody(s"${FiltersForm.filters}[0]" -> "free-version"))
+  "search" when {
+    "Intent feature is off" should {
+      "return OK status with the search software page" in withController { controller =>
+        val result = controller.search(zeroResults = false)(FakeRequest("POST", "/")
+          .withFormUrlEncodedBody(s"${FiltersForm.filters}[0]" -> "free-version"))
 
-      status(result) shouldBe Status.OK
-      contentType(result) shouldBe Some(HTML)
-      charset(result) shouldBe Some(Codec.utf_8.charset)
+        status(result) shouldBe Status.OK
+        contentType(result) shouldBe Some(HTML)
+        charset(result) shouldBe Some(Codec.utf_8.charset)
+      }
+    }
+
+    "Intent feature is on" should {
+      enable(IntentFeature)
+      "return OK status with the search software page" in withController { controller =>
+        val result = controller.search(zeroResults = false)(FakeRequest("POST", "/")
+          .withFormUrlEncodedBody(s"${FiltersForm.filters}[0]" -> "free-version"))
+
+        status(result) shouldBe Status.OK
+        contentType(result) shouldBe Some(HTML)
+        charset(result) shouldBe Some(Codec.utf_8.charset)
+      }
     }
   }
 
@@ -106,7 +142,7 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec
       mockUserFiltersRepo,
       fakeSessionIdentifierAction,
       fakeRequireUserDataRefiner
-    )
+    )(ec, appConfig, mcc)
 
     testCode(controller)
   }

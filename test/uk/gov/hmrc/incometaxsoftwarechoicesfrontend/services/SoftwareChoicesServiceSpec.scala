@@ -20,10 +20,10 @@ import org.mockito.Mockito.when
 import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.mockito.MockitoSugar.mock
 import org.scalatestplus.play.PlaySpec
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.Available
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.{Available, Intended}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilterGroups.userTypeFilters
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareVendorModel, SoftwareVendors, VendorFilter}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.*
 
 import java.time.LocalDate
 
@@ -51,6 +51,14 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
     )
   )
 
+  private def intentVendor(name: String, filters: Map[VendorFilter, FeatureStatus]): SoftwareVendorModel = SoftwareVendorModel(
+    name = name,
+    email = None,
+    phone = None,
+    website = "",
+    filters = filters
+  )
+ 
   val mockDataService = mock[DataService]
 
   override def beforeEach(): Unit = {
@@ -131,6 +139,106 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
     "returns vendors that have all user type filters" in {
       val result = service.getOtherVendors(userTypeFilters.toSeq, true)
       result.vendors.size mustBe 1
+    }
+  }
+  
+  "getVendorsWithIntent" should {
+    "return 1 vendors if everything available and selected" in {
+      when(mockDataService.getSoftwareVendors()).thenReturn(
+        SoftwareVendors(
+          lastUpdated = LocalDate.now,
+          vendors = Seq(
+            intentVendor("Vendor 01", Map(Individual->Available, QuarterlyUpdates->Available, TaxReturn->Available, UkProperty->Available, StudentLoans->Available, StandardUpdatePeriods->Available, Visual->Available)),
+            intentVendor("Vendor 02", Map(
+              Individual->Available, Agent->Available, QuarterlyUpdates->Available, TaxReturn->Available,
+              SoleTrader->Available, UkProperty->Available, OverseasProperty->Available,
+              UkInterest->Available, ConstructionIndustryScheme->Available, Employment->Available, UkDividends->Available,
+              StatePensionIncome->Available, PrivatePensionIncome->Available, ForeignDividends->Available, ForeignInterest->Available,
+              PaymentsIntoAPrivatePension->Available, CharitableGiving->Available, CapitalGainsTax->Available, StudentLoans->Available,
+              MarriageAllowance->Available, VoluntaryClass2NationalInsurance->Available, HighIncomeChildBenefitCharge->Available,
+              StandardUpdatePeriods->Available, CalendarUpdatePeriods->Available,
+              FreeVersion->Available, Bridging->Available, Vat->Available,
+              Visual->Available, Hearing->Available, Motor->Available, Cognitive->Available))
+          )
+        )
+      )
+      val result = service.getVendorsWithIntent(
+        Seq(Individual, Agent, QuarterlyUpdates, TaxReturn, SoleTrader, UkProperty, OverseasProperty,
+          UkInterest, ConstructionIndustryScheme, Employment, UkDividends,
+          StatePensionIncome, PrivatePensionIncome, ForeignDividends, ForeignInterest,
+          PaymentsIntoAPrivatePension, CharitableGiving, CapitalGainsTax, StudentLoans,
+          MarriageAllowance, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge,
+          StandardUpdatePeriods, CalendarUpdatePeriods,
+          FreeVersion, Bridging, Vat,
+          Visual, Hearing, Motor, Cognitive
+        ))
+      result.size mustBe 1
+      result(0).vendor.name mustBe "Vendor 02"
+      result(0).quarterlyReady mustBe Some(true)
+      result(0).eoyReady mustBe Some(true)
+    }
+    
+    "return vendors with Ready and In Development statuses" in {
+      when(mockDataService.getSoftwareVendors()).thenReturn(
+        SoftwareVendors(
+          lastUpdated = LocalDate.now,
+          vendors = Seq(
+            intentVendor("Vendor 01", Map(Individual->Available, QuarterlyUpdates->Available, TaxReturn->Available, UkProperty->Available, StudentLoans->Available, StandardUpdatePeriods->Available, Visual->Available)),
+            intentVendor("Vendor 02", Map(Individual->Available, QuarterlyUpdates->Available, TaxReturn->Available, UkProperty->Available, StudentLoans->Intended, StandardUpdatePeriods->Available, Visual->Available)),
+            intentVendor("Vendor 03", Map(Individual->Available, QuarterlyUpdates->Available, TaxReturn->Intended, UkProperty->Available, StudentLoans->Available, StandardUpdatePeriods->Available, Visual->Available))
+          )
+        )
+      )
+      val result = service.getVendorsWithIntent(Seq(Individual, TaxReturn, UkProperty, StudentLoans, StandardUpdatePeriods, Visual))
+      result.size mustBe 3
+      result(0).vendor.name mustBe "Vendor 01"
+      result(0).quarterlyReady mustBe Some(true)
+      result(0).eoyReady mustBe Some(true)
+      result(1).vendor.name mustBe "Vendor 02"
+      result(1).quarterlyReady mustBe Some(true)
+      result(1).eoyReady mustBe Some(false)
+      result(2).vendor.name mustBe "Vendor 03"
+      result(2).quarterlyReady mustBe Some(true)
+      result(2).eoyReady mustBe Some(false)
+    }
+    
+    "return vendors with Ready and Not included statuses" in {
+      when(mockDataService.getSoftwareVendors()).thenReturn(
+        SoftwareVendors(
+          lastUpdated = LocalDate.now,
+          vendors = Seq(
+            intentVendor("Vendor 01", Map(Individual->Available, QuarterlyUpdates->Available, UkProperty->Available, StudentLoans->Available, StandardUpdatePeriods->Available, Visual->Available))
+          )
+        )
+      )
+      val result = service.getVendorsWithIntent(Seq(Individual, TaxReturn, UkProperty, StandardUpdatePeriods, Visual))
+      result.size mustBe 1
+      result(0).vendor.name mustBe "Vendor 01"
+      result(0).quarterlyReady mustBe Some(true)
+      result(0).eoyReady mustBe None
+
+    }
+    
+    "return empty Sequence when mandatory filters not done or are intended" in {
+      when(mockDataService.getSoftwareVendors()).thenReturn(
+        SoftwareVendors(
+          lastUpdated = LocalDate.now,
+          vendors = Seq(
+            intentVendor("Vendor 01", Map(Individual->Intended, QuarterlyUpdates->Available, TaxReturn->Available, UkProperty->Available, StudentLoans->Available, StandardUpdatePeriods->Available, Visual->Available)),
+            intentVendor("Vendor 02", Map(QuarterlyUpdates->Available, TaxReturn->Available, UkProperty->Available, StudentLoans->Available, StandardUpdatePeriods->Available, Visual->Available)),
+            intentVendor("Vendor 03", Map(Individual->Available, QuarterlyUpdates->Intended, TaxReturn->Available, UkProperty->Available, StudentLoans->Available, StandardUpdatePeriods->Available, Visual->Available)),
+            intentVendor("Vendor 04", Map(Individual->Available, TaxReturn->Available, UkProperty->Available, StudentLoans->Available, StandardUpdatePeriods->Available, Visual->Available)),
+            intentVendor("Vendor 05", Map(Individual->Available, QuarterlyUpdates->Available, TaxReturn->Available, UkProperty->Intended, StudentLoans->Available, StandardUpdatePeriods->Available, Visual->Available)),
+            intentVendor("Vendor 06", Map(Individual->Available, QuarterlyUpdates->Available, TaxReturn->Available, StudentLoans->Available, StandardUpdatePeriods->Available, Visual->Available)),
+            intentVendor("Vendor 07", Map(Individual->Available, QuarterlyUpdates->Available, TaxReturn->Available, UkProperty->Available, StudentLoans->Available, StandardUpdatePeriods->Intended, Visual->Available)),
+            intentVendor("Vendor 08", Map(Individual->Available, QuarterlyUpdates->Available, TaxReturn->Available, UkProperty->Available, StudentLoans->Available, Visual->Available)),
+            intentVendor("Vendor 09", Map(Individual->Available, QuarterlyUpdates->Available, TaxReturn->Available, UkProperty->Available, StudentLoans->Available, StandardUpdatePeriods->Available, Visual->Intended)),
+            intentVendor("Vendor 10", Map(Individual->Available, QuarterlyUpdates->Available, TaxReturn->Available, UkProperty->Available, StudentLoans->Available, StandardUpdatePeriods->Available))
+          )
+        )
+      )
+      val result = service.getVendorsWithIntent(Seq(Individual, UkProperty, StandardUpdatePeriods, Visual))
+      result mustBe Seq.empty
     }
   }
 }
