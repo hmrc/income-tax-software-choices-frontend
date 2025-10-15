@@ -1,0 +1,146 @@
+{
+  "lastUpdated": "2022-12-02",
+  "vendors": [
+    {
+      "name": "vendor 01",
+      "website": "software-vendor-01.com",
+      "filters": {
+        "individual": "Available",
+        "agent": "Available",
+        "free-version": "Available",
+        "sole-trader": "Available",
+        "uk-property": "Available",
+        "overseas-property": "Available",
+        "cognitive": "Available",
+        "quarterly-updates": "Available",
+        "tax-return": "Available",
+        "standard-update-periods": "Available",
+        "construction-industry-scheme": "Available",
+        "student-loans": "Available"
+      }
+    },
+    {
+      "name": "vendor 02",
+      "website": "software-vendor-02.com",
+      "filters": {
+        "individual": "Available",
+        "agent": "Available",
+        "free-version": "Available",
+        "sole-trader": "Intended",
+        "uk-property": "Available",
+        "overseas-property": "Available",
+        "cognitive": "Available",
+        "quarterly-updates": "Available",
+        "tax-return": "Available",
+        "standard-update-periods": "Available",
+        "construction-industry-scheme": "Available",
+        "student-loans": "Available"
+      }
+    },
+    {
+      "name": "vendor 03",
+      "website": "software-vendor-03.com",
+      "filters": {
+        "individual": "Available",
+        "agent": "Available",
+        "free-version": "Available",
+        "sole-trader": "Available",
+        "uk-property": "Available",
+        "overseas-property": "Available",
+        "cognitive": "Available",
+        "quarterly-updates": "Intended",
+        "tax-return": "Available",
+        "standard-update-periods": "Available",
+        "construction-industry-scheme": "Available",
+        "student-loans": "Available"
+      }
+    },
+    {
+      "name": "vendor 04",
+      "website": "software-vendor-04.com",
+      "filters": {
+        "individual": "Available",
+        "agent": "Available",
+        "free-version": "Available",
+        "uk-property": "Available",
+        "overseas-property": "Available",
+        "cognitive": "Available",
+        "quarterly-updates": "Available",
+        "tax-return": "Available",
+        "standard-update-periods": "Available",
+        "construction-industry-scheme": "Available",
+        "student-loans": "Available"
+      }
+    },
+    {
+      "name": "vendor 05",
+      "website": "software-vendor-05.com",
+      "filters": {
+        "individual": "Available",
+        "agent": "Available",
+        "free-version": "Available",
+        "sole-trader": "Available",
+        "uk-property": "Available",
+        "overseas-property": "Available",
+        "cognitive": "Available",
+        "quarterly-updates": "Available",
+        "tax-return": "Available",
+        "standard-update-periods": "Available",
+        "construction-industry-scheme": "Intended",
+        "student-loans": "Available"
+      }
+    },
+    {
+      "name": "vendor 06",
+      "website": "software-vendor-06.com",
+      "filters": {
+        "individual": "Available",
+        "agent": "Available",
+        "free-version": "Available",
+        "sole-trader": "Available",
+        "uk-property": "Available",
+        "overseas-property": "Available",
+        "cognitive": "Available",
+        "quarterly-updates": "Available",
+        "tax-return": "Intended",
+        "standard-update-periods": "Available",
+        "construction-industry-scheme": "Intended",
+        "student-loans": "Available"
+      }
+    },
+    {
+      "name": "vendor 07",
+      "website": "software-vendor-07.com",
+      "filters": {
+        "individual": "Available",
+        "agent": "Available",
+        "free-version": "Available",
+        "sole-trader": "Available",
+        "uk-property": "Available",
+        "overseas-property": "Available",
+        "cognitive": "Available",
+        "quarterly-updates": "Available",
+        "standard-update-periods": "Available",
+        "construction-industry-scheme": "Intended",
+        "student-loans": "Available"
+      }
+    },
+    {
+      "name": "vendor 08",
+      "website": "software-vendor-08.com",
+      "filters": {
+        "individual": "Available",
+        "agent": "Available",
+        "free-version": "Available",
+        "sole-trader": "Available",
+        "uk-property": "Available",
+        "overseas-property": "Available",
+        "cognitive": "Available",
+        "quarterly-updates": "Available",
+        "standard-update-periods": "Available",
+        "construction-industry-scheme": "Available",
+        "student-loans": "Available"
+      }
+    }
+  ]
+}

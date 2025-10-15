@@ -16,9 +16,10 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services
 
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{OverseasProperty, SoleTrader, UkProperty}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.{Available, Intended, NotApplicable}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilterGroups.*
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareVendorModel, SoftwareVendors, VendorFilter}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareVendorModel, SoftwareVendors, VendorFilter, VendorFilterGroups}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.viewmodels.VendorSuitabilityViewModel
 
 import javax.inject.{Inject, Singleton}
@@ -40,7 +41,58 @@ class SoftwareChoicesService @Inject()(
   }
 
   def getVendorsWithIntent(filters: Seq[VendorFilter]): Seq[VendorSuitabilityViewModel] = {
-    Seq.empty
+    println(Console.RED + s"Filters: $filters" + Console.RESET)
+    // user selected features including preference filters but ignoring eoy and quarterly returns
+    val userFilters = filters.filterNot(_.eq(TaxReturn)).filterNot(_.eq(QuarterlyUpdates))
+    println(Console.RED + s"userFilters: $userFilters" + Console.RESET)
+
+    // All candidate vendors i.e. that have selected features in some state
+    val allPotentialVendors = getAllInOneVendors(userFilters)
+    println(Console.YELLOW + s"All potential vendors: ${allPotentialVendors.vendors.map(_.name).mkString(",")}" + Console.RESET)
+
+    val mandatoryFilters = filters.filter(mandatoryFilterGroup.contains)
+    val qualifyingVendors = (
+      SoftwareChoicesService.matchAvailableFilter(mandatoryFilters)
+        andThen SoftwareChoicesService.sortVendors
+      )(allPotentialVendors.vendors)
+
+    println(Console.RED + s"mandatoryFilters: $mandatoryFilters" + Console.RESET)
+    println(Console.YELLOW + s"Qualifying vendors with mandatory stuff available: ${qualifyingVendors.map(_.name).mkString(",")}" + Console.RESET)
+
+    // Vendors that can handle quarterly submission
+    val desiredQuarterlyFilters = filters.filter(quarterlyReturnsGroup.contains)
+    val vendorsForQuarterly = (
+      SoftwareChoicesService.matchAvailableFilter(desiredQuarterlyFilters)
+        andThen SoftwareChoicesService.sortVendors
+      )(qualifyingVendors)
+
+    println(Console.RED + s"desiredQuarterlyFilters: $desiredQuarterlyFilters" + Console.RESET)
+    println(Console.YELLOW + s"Quarterly vendors: ${vendorsForQuarterly.map(_.name).mkString(",")}" + Console.RESET)
+
+    // Now filter for Vendors that meet the desired eoy filters if they are selected
+    val nonMandatoryFilters = filters.filter(nonMandatedIncomeGroup.contains)
+    val desiredEoyFilters = filters.filter(endOfYearGroup.contains)
+    val vendorsToDisplay = if (nonMandatoryFilters.isEmpty) {
+      // No EOY filters selected so all vendors suitable for quarterly are shown
+      vendorsForQuarterly
+    } else {
+      (SoftwareChoicesService.matchAvailableOrIntendedFilter(desiredEoyFilters)
+      andThen SoftwareChoicesService.sortVendors
+      ) (vendorsForQuarterly)
+    }
+
+    println(Console.RED + s"nonMandatoryFilters: $nonMandatoryFilters" + Console.RESET)
+    println(Console.RED + s"desiredEoyFilters: $desiredEoyFilters" + Console.RESET)
+
+//    val vendorsToDisplay = vendorsForQuarterly
+    vendorsToDisplay.map(vendor =>
+      println(Console.BLUE + s"${vendor.name} ${vendor.filters} ${vendor.filters.contains(TaxReturn)}" + Console.RESET)
+      println(Console.MAGENTA + s"${vendor.name} ${vendor.filters.contains(TaxReturn)} ${vendor.getFeatureStatus(TaxReturn).ne(NotApplicable)}" + Console.RESET)
+      VendorSuitabilityViewModel(
+        vendor = vendor,
+        quarterlyReady = Some(vendor.isQuarterlyReady(filters)),
+        eoyReady = if (nonMandatoryFilters.isEmpty && vendor.getFeatureStatus(TaxReturn).eq(NotApplicable)) None else Some(vendor.isEoyReady(filters))
+      ))
   }
 
   def getAllInOneVendors(filters: Seq[VendorFilter]): SoftwareVendors = {
@@ -95,4 +147,11 @@ object SoftwareChoicesService {
   private[services] def matchFilter(filters: Seq[VendorFilter])(vendors: Seq[SoftwareVendorModel]) =
     vendors.filter(vendor => filters.forall(vendor.filters.contains(_)))
 
+  private[services] def matchAvailableFilter(filters: Seq[VendorFilter])(vendors: Seq[SoftwareVendorModel]) = {
+    vendors.filter(vendor => filters.forall(filter => vendor.getFeatureStatus(filter).eq(Available)))
+  }
+
+  private[services] def matchAvailableOrIntendedFilter(filters: Seq[VendorFilter])(vendors: Seq[SoftwareVendorModel]) = {
+    vendors.filter(vendor => filters.forall(filter => vendor.getFeatureStatus(filter).eq(Available) || vendor.getFeatureStatus(filter).eq(Intended)))
+  }
 }

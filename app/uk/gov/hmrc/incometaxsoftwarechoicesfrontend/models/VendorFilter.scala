@@ -445,4 +445,15 @@ object VendorFilterGroups {
   val mobileGroup: List[VendorFilter] = List(Android, Apple)
   val languageGroup: List[VendorFilter] = List(English)
 
+  val quarterlyReturnsGroup: List[VendorFilter] = List(QuarterlyUpdates) ++ incomeSourcesGroup
+  val nonMandatedIncomeGroup = List(
+    ConstructionIndustryScheme, Employment, ForeignInterest, ForeignDividends, UkDividends, UkInterest, StatePensionIncome, PrivatePensionIncome,
+    CapitalGainsTax, CharitableGiving, StudentLoans, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge, PaymentsIntoAPrivatePension, MarriageAllowance
+  )
+  val endOfYearGroup: List[VendorFilter] = List(TaxReturn) ++ nonMandatedIncomeGroup ++ quarterlyReturnsGroup
+  
+  val mandatoryFilterGroup: List[VendorFilter] =
+    userTypeFilters.toList ++
+      accountingPeriodFilters ++
+      groups.flatMap(_._1.toList)
 }

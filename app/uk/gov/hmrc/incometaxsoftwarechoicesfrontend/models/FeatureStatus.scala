@@ -31,9 +31,14 @@ object FeatureStatus {
     override val key: String = "Intended"
   }
 
+  case object NotApplicable extends FeatureStatus {
+    override val key: String = "N/A"
+  }
+
   implicit val reads: Reads[FeatureStatus] = __.read[String] map {
     case "Available" => Available
     case "Intended" => Intended
+    case "N/A" => NotApplicable
   }
 
 }

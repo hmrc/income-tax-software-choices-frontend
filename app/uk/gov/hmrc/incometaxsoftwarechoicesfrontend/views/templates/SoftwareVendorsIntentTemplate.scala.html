@@ -95,18 +95,24 @@
 }
 
 @softwareEoyTaxReturnReady(vendorSuitability: VendorSuitabilityViewModel) = @{
-    vendorSuitability.eoyReady.flatMap {
-        case true => Some(summaryListRow(
+    vendorSuitability.eoyReady match {
+        case Some(true) => Some(summaryListRow(
             key = messages(s"search-software.vendor-detail.eoy-tax-return"),
             value = tag(
                 content = messages(s"search-software.vendor-detail.eoy-tax-return.ready"),
                 colour = "govuk-tag--green")
         ))
-        case false => Some(summaryListRow(
+        case Some(false) => Some(summaryListRow(
             key = messages(s"search-software.vendor-detail.eoy-tax-return"),
             value = tag(
                 content = messages(s"search-software.vendor-detail.eoy-tax-return.development"),
                 colour = "govuk-tag--yellow")
+        ))
+        case None => Some(summaryListRow(
+            key = messages(s"search-software.vendor-detail.eoy-tax-return"),
+            value = tag(
+                content = messages(s"search-software.vendor-detail.eoy-tax-return.not-included"),
+                colour = "govuk-tag--red")
         ))
     }
 }

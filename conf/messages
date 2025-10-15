@@ -187,6 +187,7 @@ search-software.vendor-detail.quarterly-ready.ready = Ready now
 search-software.vendor-detail.eoy-tax-return = Tax return
 search-software.vendor-detail.eoy-tax-return.ready = Ready now
 search-software.vendor-detail.eoy-tax-return.development = In development
+search-software.vendor-detail.eoy-tax-return.not-included = Not included
 
 search-software.vendor-detail.business-type                 = Business type:
 search-software.vendor-detail.business-type.individual      = Individual
