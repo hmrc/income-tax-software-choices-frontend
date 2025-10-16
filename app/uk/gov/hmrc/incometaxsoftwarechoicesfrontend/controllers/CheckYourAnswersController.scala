@@ -61,7 +61,7 @@ class CheckYourAnswersController @Inject()(view: CheckYourAnswersView,
       vendorFilters <- pageAnswersService.saveFiltersFromAnswers(request.sessionId)
       vendors = {
         if (isEnabled(IntentFeature)) softwareChoicesService.getVendorsWithIntent(vendorFilters)
-        softwareChoicesService.getAllInOneVendors(vendorFilters).vendors
+        else softwareChoicesService.getAllInOneVendors(vendorFilters).vendors
       }
     } yield {
       (vendors.isEmpty, isEnabled(IntentFeature)) match {
