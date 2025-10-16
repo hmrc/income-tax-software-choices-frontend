@@ -89,42 +89,47 @@ class ProductDetailsViewSpec extends ViewSpec {
         document.selectNth("h2", 1).text shouldBe ProductDetailsPage.softwareFeaturesHeading
       }
 
+      "have the correct quarterly updates title" in {
+        document.selectNth("h2", 2).text shouldBe ProductDetailsPage.quarterlyUpdatessHeading
+      }
+
+      "have the correct tax return title" in {
+        document.selectNth("h2", 3).text shouldBe ProductDetailsPage.taxReturnHeading
+      }
+
       "display all tables with correct details" which {
         "has the correct table headings" in {
           checkTableHeader(table(1), "Features provided", "Status")
-          checkTableHeader(table(2), "Income sources", "Status")
-          checkTableHeader(table(3), "Other income sources", "Status")
-          checkTableHeader(table(4), "Other items", "Status")
+          checkTableHeader(table(2), "Business Income sources", "Status")
+          checkTableHeader(table(3), "Other income sources and items", "Status")
         }
 
         "displays all the rows" in {
           checkRow(table(1), 1, ProductDetailsPage.freeVersion, included = true)
           checkRow(table(1), 2, ProductDetailsPage.recordKeeping, included = true)
           checkRow(table(1), 3, ProductDetailsPage.bridging, included = true)
-          checkRow(table(1), 4, ProductDetailsPage.quarterlyUpdates, included = true)
-          checkRow(table(1), 5, ProductDetailsPage.saTaxReturn, included = true)
-          checkRow(table(1), 6, ProductDetailsPage.agent, included = true)
-          checkRow(table(1), 7, ProductDetailsPage.individual, included = true)
-          checkRow(table(1), 8, ProductDetailsPage.standardUpdatePeriods, included = true)
-          checkRow(table(1), 9, ProductDetailsPage.calendarUpdatePeriods, included = true)
+          checkRow(table(1), 4, ProductDetailsPage.agent, included = true)
+          checkRow(table(1), 5, ProductDetailsPage.individual, included = true)
+          checkRow(table(1), 6, ProductDetailsPage.standardUpdatePeriods, included = true)
+          checkRow(table(1), 7, ProductDetailsPage.calendarUpdatePeriods, included = true)
           checkRow(table(2), 1, ProductDetailsPage.soleTrader, included = true)
           checkRow(table(2), 2, ProductDetailsPage.ukProperty, included = true)
           checkRow(table(2), 3, ProductDetailsPage.foreignProperty, included = true)
-          checkRow(table(3), 1, ProductDetailsPage.cis, included = true)
-          checkRow(table(3), 2, ProductDetailsPage.employment, included = true)
-          checkRow(table(3), 3, ProductDetailsPage.foreignInterest, included = true)
-          checkRow(table(3), 4, ProductDetailsPage.foreignDividend, included = true)
-          checkRow(table(3), 5, ProductDetailsPage.ukDividends, included = true)
-          checkRow(table(3), 6, ProductDetailsPage.ukInterest, included = true)
-          checkRow(table(3), 7, ProductDetailsPage.statePension, included = true)
-          checkRow(table(3), 8, ProductDetailsPage.privatePensionIncome, included = true)
-          checkRow(table(4), 1, ProductDetailsPage.cgt, included = true)
-          checkRow(table(4), 2, ProductDetailsPage.charitableGiving, included = true)
-          checkRow(table(4), 3, ProductDetailsPage.student, included = true)
-          checkRow(table(4), 4, ProductDetailsPage.class2NIC, included = true)
-          checkRow(table(4), 5, ProductDetailsPage.childBenefitCharge, included = true)
-          checkRow(table(4), 6, ProductDetailsPage.privatePensionContribution, included = true)
-          checkRow(table(4), 7, ProductDetailsPage.marriage, included = true)
+          checkRow(table(3), 1, ProductDetailsPage.ukInterest, included = true)
+          checkRow(table(3), 2, ProductDetailsPage.cis, included = true)
+          checkRow(table(3), 3, ProductDetailsPage.employment, included = true)
+          checkRow(table(3), 4, ProductDetailsPage.ukDividends, included = true)
+          checkRow(table(3), 5, ProductDetailsPage.statePension, included = true)
+          checkRow(table(3), 6, ProductDetailsPage.privatePensionIncome, included = true)
+          checkRow(table(3), 7, ProductDetailsPage.foreignDividend, included = true)
+          checkRow(table(3), 8, ProductDetailsPage.foreignInterest, included = true)
+          checkRow(table(3), 9, ProductDetailsPage.privatePensionContribution, included = true)
+          checkRow(table(3), 10, ProductDetailsPage.charitableGiving, included = true)
+          checkRow(table(3), 11, ProductDetailsPage.cgt, included = true)
+          checkRow(table(3), 12, ProductDetailsPage.student, included = true)
+          checkRow(table(3), 13, ProductDetailsPage.marriage, included = true)
+          checkRow(table(3), 14, ProductDetailsPage.class2NIC, included = true)
+          checkRow(table(3), 15, ProductDetailsPage.childBenefitCharge, included = true)
         }
       }
     }
@@ -159,43 +164,48 @@ class ProductDetailsViewSpec extends ViewSpec {
         document.selectNth("h2", 1).text shouldBe ProductDetailsPage.softwareFeaturesHeading
       }
 
+      "have the correct quarterly updates title" in {
+        document.selectNth("h2", 2).text shouldBe ProductDetailsPage.quarterlyUpdatessHeading
+      }
+
+      "have the correct tax return title" in {
+        document.selectNth("h2", 3).text shouldBe ProductDetailsPage.taxReturnHeading
+      }
+
       "display all tables with correct details" which {
 
         "has the correct table headings" in {
           checkTableHeader(table(1), "Features provided", "Status")
-          checkTableHeader(table(2), "Income sources", "Status")
-          checkTableHeader(table(3), "Other income sources", "Status")
-          checkTableHeader(table(4), "Other items", "Status")
+          checkTableHeader(table(2), "Business Income sources", "Status")
+          checkTableHeader(table(3), "Other income sources and items", "Status")
         }
 
         "displays all the rows" in {
           checkRow(table(1), 1, ProductDetailsPage.freeVersion, included = false)
           checkRow(table(1), 2, ProductDetailsPage.recordKeeping, included = false)
           checkRow(table(1), 3, ProductDetailsPage.bridging, included = false)
-          checkRow(table(1), 4, ProductDetailsPage.quarterlyUpdates, included = false)
-          checkRow(table(1), 5, ProductDetailsPage.saTaxReturn, included = false)
-          checkRow(table(1), 6, ProductDetailsPage.agent, included = false)
-          checkRow(table(1), 7, ProductDetailsPage.individual, included = false)
-          checkRow(table(1), 8, ProductDetailsPage.standardUpdatePeriods, included = false)
-          checkRow(table(1), 9, ProductDetailsPage.calendarUpdatePeriods, included = false)
+          checkRow(table(1), 4, ProductDetailsPage.agent, included = false)
+          checkRow(table(1), 5, ProductDetailsPage.individual, included = false)
+          checkRow(table(1), 6, ProductDetailsPage.standardUpdatePeriods, included = false)
+          checkRow(table(1), 7, ProductDetailsPage.calendarUpdatePeriods, included = false)
           checkRow(table(2), 1, ProductDetailsPage.soleTrader, included = true)
           checkRow(table(2), 2, ProductDetailsPage.ukProperty, included = false)
           checkRow(table(2), 3, ProductDetailsPage.foreignProperty, included = false)
-          checkRow(table(3), 1, ProductDetailsPage.cis, included = false)
-          checkRow(table(3), 2, ProductDetailsPage.employment, included = false)
-          checkRow(table(3), 3, ProductDetailsPage.foreignInterest, included = false)
-          checkRow(table(3), 4, ProductDetailsPage.foreignDividend, included = false)
-          checkRow(table(3), 5, ProductDetailsPage.ukDividends, included = false)
-          checkRow(table(3), 6, ProductDetailsPage.ukInterest, included = false)
-          checkRow(table(3), 7, ProductDetailsPage.statePension, included = false)
-          checkRow(table(3), 8, ProductDetailsPage.privatePensionIncome, included = false)
-          checkRow(table(4), 1, ProductDetailsPage.cgt, included = false)
-          checkRow(table(4), 2, ProductDetailsPage.charitableGiving, included = false)
-          checkRow(table(4), 3, ProductDetailsPage.student, included = false)
-          checkRow(table(4), 4, ProductDetailsPage.class2NIC, included = false)
-          checkRow(table(4), 5, ProductDetailsPage.childBenefitCharge, included = false)
-          checkRow(table(4), 6, ProductDetailsPage.privatePensionContribution, included = false)
-          checkRow(table(4), 7, ProductDetailsPage.marriage, included = false)
+          checkRow(table(3), 1, ProductDetailsPage.ukInterest, included = false)
+          checkRow(table(3), 2, ProductDetailsPage.cis, included = false)
+          checkRow(table(3), 3, ProductDetailsPage.employment, included = false)
+          checkRow(table(3), 4, ProductDetailsPage.ukDividends, included = false)
+          checkRow(table(3), 5, ProductDetailsPage.statePension, included = false)
+          checkRow(table(3), 6, ProductDetailsPage.privatePensionIncome, included = false)
+          checkRow(table(3), 7, ProductDetailsPage.foreignDividend, included = false)
+          checkRow(table(3), 8, ProductDetailsPage.foreignInterest, included = false)
+          checkRow(table(3), 9, ProductDetailsPage.privatePensionContribution, included = false)
+          checkRow(table(3), 10, ProductDetailsPage.charitableGiving, included = false)
+          checkRow(table(3), 11, ProductDetailsPage.cgt, included = false)
+          checkRow(table(3), 12, ProductDetailsPage.student, included = false)
+          checkRow(table(3), 13, ProductDetailsPage.marriage, included = false)
+          checkRow(table(3), 14, ProductDetailsPage.class2NIC, included = false)
+          checkRow(table(3), 15, ProductDetailsPage.childBenefitCharge, included = false)
         }
       }
     }
@@ -229,43 +239,48 @@ class ProductDetailsViewSpec extends ViewSpec {
         document.selectNth("h2", 1).text shouldBe ProductDetailsPage.softwareFeaturesHeading
       }
 
+      "have the correct quarterly updates title" in {
+        document.selectNth("h2", 2).text shouldBe ProductDetailsPage.quarterlyUpdatessHeading
+      }
+
+      "have the correct tax return title" in {
+        document.selectNth("h2", 3).text shouldBe ProductDetailsPage.taxReturnHeading
+      }
+
       "display all tables with correct details" which {
 
         "has the correct table headings" in {
           checkTableHeader(table(1), "Features provided", "Status")
-          checkTableHeader(table(2), "Income sources", "Status")
-          checkTableHeader(table(3), "Other income sources", "Status")
-          checkTableHeader(table(4), "Other items", "Status")
+          checkTableHeader(table(2), "Business Income sources", "Status")
+          checkTableHeader(table(3), "Other income sources and items", "Status")
         }
 
         "displays all the rows" in {
           checkRow(table(1), 1, ProductDetailsPage.freeVersion, included = false)
           checkRow(table(1), 2, ProductDetailsPage.recordKeeping, included = false)
           checkRow(table(1), 3, ProductDetailsPage.bridging, included = false)
-          checkRow(table(1), 4, ProductDetailsPage.quarterlyUpdates, included = false)
-          checkRow(table(1), 5, ProductDetailsPage.saTaxReturn, included = false)
-          checkRow(table(1), 6, ProductDetailsPage.agent, included = false)
-          checkRow(table(1), 7, ProductDetailsPage.individual, included = false)
-          checkRow(table(1), 8, ProductDetailsPage.standardUpdatePeriods, included = false)
-          checkRow(table(1), 9, ProductDetailsPage.calendarUpdatePeriods, included = false)
+          checkRow(table(1), 4, ProductDetailsPage.agent, included = false)
+          checkRow(table(1), 5, ProductDetailsPage.individual, included = false)
+          checkRow(table(1), 6, ProductDetailsPage.standardUpdatePeriods, included = false)
+          checkRow(table(1), 7, ProductDetailsPage.calendarUpdatePeriods, included = false)
           checkRow(table(2), 1, ProductDetailsPage.soleTrader, included = false)
           checkRow(table(2), 2, ProductDetailsPage.ukProperty, included = false)
           checkRow(table(2), 3, ProductDetailsPage.foreignProperty, included = false)
-          checkRow(table(3), 1, ProductDetailsPage.cis, included = false)
-          checkRow(table(3), 2, ProductDetailsPage.employment, included = false)
-          checkRow(table(3), 3, ProductDetailsPage.foreignInterest, included = false)
-          checkRow(table(3), 4, ProductDetailsPage.foreignDividend, included = false)
-          checkRow(table(3), 5, ProductDetailsPage.ukDividends, included = false)
-          checkRow(table(3), 6, ProductDetailsPage.ukInterest, included = false)
-          checkRow(table(3), 7, ProductDetailsPage.statePension, included = false)
-          checkRow(table(3), 8, ProductDetailsPage.privatePensionIncome, included = false)
-          checkRow(table(4), 1, ProductDetailsPage.cgt, included = false)
-          checkRow(table(4), 2, ProductDetailsPage.charitableGiving, included = false)
-          checkRow(table(4), 3, ProductDetailsPage.student, included = false)
-          checkRow(table(4), 4, ProductDetailsPage.class2NIC, included = false)
-          checkRow(table(4), 5, ProductDetailsPage.childBenefitCharge, included = false)
-          checkRow(table(4), 6, ProductDetailsPage.privatePensionContribution, included = false)
-          checkRow(table(4), 7, ProductDetailsPage.marriage, included = false)
+          checkRow(table(3), 1, ProductDetailsPage.ukInterest, included = false)
+          checkRow(table(3), 2, ProductDetailsPage.cis, included = false)
+          checkRow(table(3), 3, ProductDetailsPage.employment, included = false)
+          checkRow(table(3), 4, ProductDetailsPage.ukDividends, included = false)
+          checkRow(table(3), 5, ProductDetailsPage.statePension, included = false)
+          checkRow(table(3), 6, ProductDetailsPage.privatePensionIncome, included = false)
+          checkRow(table(3), 7, ProductDetailsPage.foreignDividend, included = false)
+          checkRow(table(3), 8, ProductDetailsPage.foreignInterest, included = false)
+          checkRow(table(3), 9, ProductDetailsPage.privatePensionContribution, included = false)
+          checkRow(table(3), 10, ProductDetailsPage.charitableGiving, included = false)
+          checkRow(table(3), 11, ProductDetailsPage.cgt, included = false)
+          checkRow(table(3), 12, ProductDetailsPage.student, included = false)
+          checkRow(table(3), 13, ProductDetailsPage.marriage, included = false)
+          checkRow(table(3), 14, ProductDetailsPage.class2NIC, included = false)
+          checkRow(table(3), 15, ProductDetailsPage.childBenefitCharge, included = false)
         }
       }
     }
@@ -274,7 +289,7 @@ class ProductDetailsViewSpec extends ViewSpec {
       val document: Document = createAndParseDocument(softwareVendorModelFull)
 
       "have a software spec heading" in {
-        document.select("h2").get(1).text shouldBe ProductDetailsPage.softwareSpecHeading
+        document.select("h2").get(3).text shouldBe ProductDetailsPage.softwareSpecHeading
       }
 
       "render the correct rows when every spec is present" in {
@@ -330,6 +345,8 @@ class ProductDetailsViewSpec extends ViewSpec {
     val contactDetailsWebsite = "Website"
 
     val softwareFeaturesHeading = "Software features"
+    val quarterlyUpdatessHeading = "What you need for your quarterly updates"
+    val taxReturnHeading = "What you need for your tax return"
 
     val freeVersion = "Free version"
     val recordKeeping = "Software that creates digital records"
