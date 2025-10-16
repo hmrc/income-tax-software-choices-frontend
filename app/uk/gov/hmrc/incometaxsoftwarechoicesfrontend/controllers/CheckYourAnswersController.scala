@@ -59,7 +59,10 @@ class CheckYourAnswersController @Inject()(view: CheckYourAnswersView,
     given Request[AnyContent] = request
     for {
       vendorFilters <- pageAnswersService.saveFiltersFromAnswers(request.sessionId)
-      vendors = softwareChoicesService.getAllInOneVendors(vendorFilters).vendors
+      vendors = {
+        if (isEnabled(IntentFeature)) softwareChoicesService.getVendorsWithIntent(vendorFilters)
+        softwareChoicesService.getAllInOneVendors(vendorFilters).vendors
+      }
     } yield {
       (vendors.isEmpty, isEnabled(IntentFeature)) match {
         case (true, _) => Redirect(routes.ZeroSoftwareResultsController.show())

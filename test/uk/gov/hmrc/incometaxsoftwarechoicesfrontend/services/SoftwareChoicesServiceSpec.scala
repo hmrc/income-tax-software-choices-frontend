@@ -140,6 +140,13 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
       val result = service.getOtherVendors(userTypeFilters.toSeq, true)
       result.vendors.size mustBe 1
     }
+
+    "getVendorsWithIntent" should {
+      "return empty Sequence" in {
+        val result = service.getVendorsWithIntent(userTypeFilters.toSeq)
+        result mustBe Seq.empty
+      }
+    }
   }
   
   "getVendorsWithIntent" should {
