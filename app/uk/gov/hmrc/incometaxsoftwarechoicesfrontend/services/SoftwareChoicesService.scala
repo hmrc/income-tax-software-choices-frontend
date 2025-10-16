@@ -50,7 +50,7 @@ class SoftwareChoicesService @Inject()(
     val allPotentialVendors = getAllInOneVendors(userFilters)
     println(Console.YELLOW + s"All potential vendors: ${allPotentialVendors.vendors.map(_.name).mkString(",")}" + Console.RESET)
 
-    val mandatoryFilters = filters.filter(mandatoryFilterGroup.contains)
+    val mandatoryFilters = filters.filter((mandatoryFilterGroup++quarterlyReturnsGroup).contains)
     val qualifyingVendors = (
       SoftwareChoicesService.matchAvailableFilter(mandatoryFilters)
         andThen SoftwareChoicesService.sortVendors
@@ -58,27 +58,17 @@ class SoftwareChoicesService @Inject()(
 
     println(Console.RED + s"mandatoryFilters: $mandatoryFilters" + Console.RESET)
     println(Console.YELLOW + s"Qualifying vendors with mandatory stuff available: ${qualifyingVendors.map(_.name).mkString(",")}" + Console.RESET)
-
-    // Vendors that can handle quarterly submission
-    val desiredQuarterlyFilters = filters.filter(quarterlyReturnsGroup.contains)
-    val vendorsForQuarterly = (
-      SoftwareChoicesService.matchAvailableFilter(desiredQuarterlyFilters)
-        andThen SoftwareChoicesService.sortVendors
-      )(qualifyingVendors)
-
-    println(Console.RED + s"desiredQuarterlyFilters: $desiredQuarterlyFilters" + Console.RESET)
-    println(Console.YELLOW + s"Quarterly vendors: ${vendorsForQuarterly.map(_.name).mkString(",")}" + Console.RESET)
-
+    
     // Now filter for Vendors that meet the desired eoy filters if they are selected
     val nonMandatoryFilters = filters.filter(nonMandatedIncomeGroup.contains)
     val desiredEoyFilters = filters.filter(endOfYearGroup.contains)
     val vendorsToDisplay = if (nonMandatoryFilters.isEmpty) {
       // No EOY filters selected so all vendors suitable for quarterly are shown
-      vendorsForQuarterly
+      qualifyingVendors
     } else {
       (SoftwareChoicesService.matchAvailableOrIntendedFilter(desiredEoyFilters)
       andThen SoftwareChoicesService.sortVendors
-      ) (vendorsForQuarterly)
+      ) (qualifyingVendors)
     }
 
     println(Console.RED + s"nonMandatoryFilters: $nonMandatoryFilters" + Console.RESET)
@@ -86,12 +76,12 @@ class SoftwareChoicesService @Inject()(
 
 //    val vendorsToDisplay = vendorsForQuarterly
     vendorsToDisplay.map(vendor =>
-      println(Console.BLUE + s"${vendor.name} ${vendor.filters} ${vendor.filters.contains(TaxReturn)}" + Console.RESET)
-      println(Console.MAGENTA + s"${vendor.name} ${vendor.filters.contains(TaxReturn)} ${vendor.getFeatureStatus(TaxReturn).ne(NotApplicable)}" + Console.RESET)
+//      println(Console.BLUE + s"${vendor.name} ${vendor.filters} ${vendor.filters.contains(TaxReturn)}" + Console.RESET)
+//      println(Console.MAGENTA + s"${vendor.name} ${vendor.filters.contains(TaxReturn)} ${vendor.getFeatureStatus(TaxReturn).ne(NotApplicable)}" + Console.RESET)
       VendorSuitabilityViewModel(
         vendor = vendor,
         quarterlyReady = Some(vendor.isQuarterlyReady(filters)),
-        eoyReady = if (nonMandatoryFilters.isEmpty && vendor.getFeatureStatus(TaxReturn).eq(NotApplicable)) None else Some(vendor.isEoyReady(filters))
+        eoyReady = vendor.isEoyReady(filters)
       ))
   }
 
