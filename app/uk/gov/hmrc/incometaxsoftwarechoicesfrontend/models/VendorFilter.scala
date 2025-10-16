@@ -32,6 +32,11 @@ object VendorFilter {
 
   implicit def magicToString(vendorFilter: VendorFilter): String = vendorFilter.toString
 
+  case object QuarterlyUpdatesNeeds extends VendorFilter {
+    override val key: String = "what-you-need"
+    override val priority: Int = 3
+  }
+
   case object FreeTrial extends VendorFilter {
     override val key: String = "free-trial"
     override val priority: Int = 1
@@ -401,7 +406,11 @@ object VendorFilterGroups {
 
   // product details page groups //
   val featuresProvidedGroup: List[VendorFilter] = List(
-    FreeVersion, RecordKeeping, Bridging, QuarterlyUpdates, TaxReturn, Agent, Individual, StandardUpdatePeriods, CalendarUpdatePeriods
+    FreeVersion, RecordKeeping, Bridging, Agent, Individual, StandardUpdatePeriods, CalendarUpdatePeriods
+  )
+
+  val quarterlyUpdateNeedsGroup: List[VendorFilter] = List(
+    QuarterlyUpdatesNeeds
   )
 
   val incomeSourcesGroup: List[VendorFilter] = List(
@@ -435,10 +444,8 @@ object VendorFilterGroups {
   )
 
   val personalIncomeSourcesGroup: List[VendorFilter] = List(
-    ConstructionIndustryScheme, Employment, ForeignInterest, ForeignDividends, UkDividends, UkInterest, StatePensionIncome, PrivatePensionIncome)
-
-  val deductionsGroup: List[VendorFilter] = List(
-    CapitalGainsTax, CharitableGiving, StudentLoans, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge, PaymentsIntoAPrivatePension, MarriageAllowance)
+    UkInterest, ConstructionIndustryScheme, Employment, UkDividends, StatePensionIncome, PrivatePensionIncome, ForeignDividends, ForeignInterest, PaymentsIntoAPrivatePension, CharitableGiving, CapitalGainsTax, StudentLoans, MarriageAllowance, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge
+  )
 
   val softwareTypeGroup: List[VendorFilter] = List(DesktopApplication, WebBrowser)
   val compatibleWithGroup: List[VendorFilter] = List(MicrosoftWindows, MacOS, Linux)

@@ -46,11 +46,14 @@
     <div class="govuk-!-width-two-thirds govuk-!-padding-0">
         @contactDetailsList
 
-        <h2 class="govuk-heading-l">@messages("product-details.details.heading")</h2>
+        <h2 class="govuk-heading-m">@messages("product-details.details.heading")</h2>
         @table(featuresProvidedGroup, "features-provided")
+
+        @quarterlyUpdatesTable(quarterlyUpdateNeedsGroup, "quarterly-updates")
+
         @table(incomeSourcesGroup, "business-income")
+        <h2 class="govuk-heading-m">@messages("product-details.tax-return.heading")</h2>
         @table(personalIncomeSourcesGroup, "other-income")
-        @table(deductionsGroup, "other-items")
     </div>
 
     @defining({
@@ -153,4 +156,28 @@
     ))
 }
 
+@quarterlyUpdatesTable(filterGroup: List[VendorFilter], tableHeaderKey: String) = @{
+    govukTable(Table(
+        rows = quarterlyUpdatesRow(filterGroup, tableHeaderKey),
+        head = Some(Seq(
+            HeadCell(
+                content = Text(messages(s"product-details.$tableHeaderKey.heading")),
+                classes="govuk-heading-m"
+            )
+        )),
+        firstCellIsHeader = false,
+        caption = Some(messages(s"product-details.$tableHeaderKey.heading")),
+        captionClasses = "govuk-visually-hidden"
+    ))
+}
+
+@quarterlyUpdatesRow(filterGroup: List[VendorFilter], section: String) = @{
+    filterGroup map { filter =>
+        Seq(
+            TableRow(
+                content = Text(messages(s"product-details.$section.${filter.key}"))
+            )
+        )
+    }
+}
 
