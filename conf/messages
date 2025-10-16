@@ -75,6 +75,17 @@ check-your-answers.other-items          = Other items
 check-your-answers.accounting-period    = Accounting period
 check-your-answers.none-selected        = None selected
 
+# Choosing Software from Your Results view
+choosing-software.heading               = Before you continue
+choosing-software.para1                 = Software products may have free trials or free versions, but you’ll have to pay for most of the software listed.
+choosing-software.para2                 = All the products listed will allow you to submit your quarterly updates. Some will show additional features that are either:
+choosing-software.bullet1               = ready now
+choosing-software.bullet2               = in development
+choosing-software.para3                 = In development means one or more features you need to complete your end-of-year tax return are still being built. We expect these features will be ready for you to do your 2026 to 2027 return.
+choosing-software.para4                 = We recommend that you look at software providers’ websites to check if the product is right for you.
+choosing-software.para5                 = All of this software has been through a recognition process where HMRC check how ready it is for you to submit your taxes. HMRC does not endorse or recommend any one product or software provider.
+
+
 # Search software page
 
 search-software.title                                     = Software for Making Tax Digital for Income Tax

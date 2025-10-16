@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
+import org.scalatest.BeforeAndAfterEach
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
@@ -27,7 +28,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 
 import scala.concurrent.ExecutionContext
 
-trait ControllerBaseSpec extends AnyWordSpecLike with Matchers with GuiceOneAppPerSuite {
+trait ControllerBaseSpec extends AnyWordSpecLike with Matchers with GuiceOneAppPerSuite with BeforeAndAfterEach {
 
   val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
 

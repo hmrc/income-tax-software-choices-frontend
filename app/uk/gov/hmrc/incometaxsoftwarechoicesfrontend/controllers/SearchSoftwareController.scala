@@ -19,6 +19,9 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 import play.api.data.Form
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import play.twirl.api.Html
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.IntentFeature
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{RequireUserDataRefiner, SessionIdentifierAction}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.Agent
@@ -40,8 +43,9 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
                                          userFiltersRepository: UserFiltersRepository,
                                          identify: SessionIdentifierAction,
                                          requireData: RequireUserDataRefiner)
+                                        (val appConfig: AppConfig)
                                         (implicit ec: ExecutionContext,
-                                         mcc: MessagesControllerComponents) extends BaseFrontendController {
+                                         mcc: MessagesControllerComponents) extends BaseFrontendController with FeatureSwitching{
 
   def show(zeroResults: Boolean): Action[AnyContent] = (identify andThen requireData).async { request =>
     given Request[AnyContent] = request
@@ -115,12 +119,11 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
   }
 
   def backLinkUrl(isAgent: Boolean, zeroResults: Boolean): String = {
-    if (isAgent) {
-      routes.UserTypeController.show().url
-    } else if (zeroResults) {
-      routes.ZeroSoftwareResultsController.show().url
-    } else {
-      routes.CheckYourAnswersController.show().url
+    (isAgent, isEnabled(IntentFeature), zeroResults) match {
+      case (true, _, _) => routes.UserTypeController.show().url
+      case (false, true, _) => routes.ChoosingSoftwareController.show().url
+      case (false, false, true) => routes.ZeroSoftwareResultsController.show().url
+      case (false, false, false) => routes.CheckYourAnswersController.show().url
     }
   }
 }

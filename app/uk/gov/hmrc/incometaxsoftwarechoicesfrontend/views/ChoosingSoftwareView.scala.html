@@ -1,0 +1,56 @@
+@*
+ * Copyright 2025 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import uk.gov.hmrc.govukfrontend.views.html.components._
+@import uk.gov.hmrc.govukfrontend.views.html.components.implicits._
+@import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.OtherItemsForm
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTemplate
+
+@this(
+        mainTemplate: MainTemplate,
+        govukButton: GovukButton,
+        form: FormWithCSRF
+)(implicit appConfig: AppConfig)
+
+@(postAction: Call, backLink: String)(implicit request: Request[_], messages: Messages)
+
+@mainTemplate(title = messages("choosing-software.heading"), backLink = Some(backLink)) {
+
+    <h1 class="govuk-heading-l">@messages("choosing-software.heading")</h1>
+
+    <p class ="govuk-body">@messages("choosing-software.para1")</p>
+    <p class ="govuk-body">@messages("choosing-software.para2")</p>
+    
+    <ul class="govuk-list govuk-list--bullet">
+        <li>@messages("choosing-software.bullet1")</li>
+        <li>@messages("choosing-software.bullet2")</li>
+    </ul>
+    
+    <p class ="govuk-body">@messages("choosing-software.para3")</p>
+    <p class ="govuk-body">@messages("choosing-software.para4")</p>
+    <p class ="govuk-body">@messages("choosing-software.para5")</p>
+
+    @form(action = postAction) {
+        @govukButton(Button(
+            content = Text(messages("base.continue"))
+        ))
+    }
+
+}
