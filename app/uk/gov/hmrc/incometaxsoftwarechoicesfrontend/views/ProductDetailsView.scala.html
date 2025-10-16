@@ -49,7 +49,10 @@
         <h2 class="govuk-heading-m">@messages("product-details.details.heading")</h2>
         @table(featuresProvidedGroup, "features-provided")
 
-        @quarterlyUpdatesTable(quarterlyUpdateNeedsGroup, "quarterly-updates")
+        <h2 class="govuk-heading-m">@messages("product-details.quarterly-updates.heading")</h2>
+        <div>
+            <p class="govuk-body-m">@messages("product-details.quarterly-updates.what-you-need")</p>
+        </div>
 
         @table(incomeSourcesGroup, "business-income")
         <h2 class="govuk-heading-m">@messages("product-details.tax-return.heading")</h2>
