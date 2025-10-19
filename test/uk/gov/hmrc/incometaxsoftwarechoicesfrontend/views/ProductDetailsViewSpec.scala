@@ -100,7 +100,7 @@ class ProductDetailsViewSpec extends ViewSpec {
       "display all tables with correct details" which {
         "has the correct table headings" in {
           checkTableHeader(table(1), "Features provided", "Status")
-          checkTableHeader(table(2), "Business Income sources", "Status")
+          checkTableHeader(table(2), "Business income sources", "Status")
           checkTableHeader(table(3), "Other income sources and items", "Status")
         }
 
@@ -176,7 +176,7 @@ class ProductDetailsViewSpec extends ViewSpec {
 
         "has the correct table headings" in {
           checkTableHeader(table(1), "Features provided", "Status")
-          checkTableHeader(table(2), "Business Income sources", "Status")
+          checkTableHeader(table(2), "Business income sources", "Status")
           checkTableHeader(table(3), "Other income sources and items", "Status")
         }
 
@@ -251,7 +251,7 @@ class ProductDetailsViewSpec extends ViewSpec {
 
         "has the correct table headings" in {
           checkTableHeader(table(1), "Features provided", "Status")
-          checkTableHeader(table(2), "Business Income sources", "Status")
+          checkTableHeader(table(2), "Business income sources", "Status")
           checkTableHeader(table(3), "Other income sources and items", "Status")
         }
 

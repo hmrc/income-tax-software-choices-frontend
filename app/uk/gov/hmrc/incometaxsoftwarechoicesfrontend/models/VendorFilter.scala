@@ -32,11 +32,6 @@ object VendorFilter {
 
   implicit def magicToString(vendorFilter: VendorFilter): String = vendorFilter.toString
 
-  case object QuarterlyUpdatesNeeds extends VendorFilter {
-    override val key: String = "what-you-need"
-    override val priority: Int = 3
-  }
-
   case object FreeTrial extends VendorFilter {
     override val key: String = "free-trial"
     override val priority: Int = 1
@@ -409,10 +404,6 @@ object VendorFilterGroups {
     FreeVersion, RecordKeeping, Bridging, Agent, Individual, StandardUpdatePeriods, CalendarUpdatePeriods
   )
 
-  val quarterlyUpdateNeedsGroup: List[VendorFilter] = List(
-    QuarterlyUpdatesNeeds
-  )
-
   val incomeSourcesGroup: List[VendorFilter] = List(
     SoleTrader,
     UkProperty,
@@ -443,7 +434,7 @@ object VendorFilterGroups {
     (accessibilityFilters, "accessibility")
   )
 
-  val personalIncomeSourcesGroup: List[VendorFilter] = List(
+  val nonMandatedIncomeSourcesGroup: List[VendorFilter] = List(
     UkInterest, ConstructionIndustryScheme, Employment, UkDividends, StatePensionIncome, PrivatePensionIncome, ForeignDividends, ForeignInterest, PaymentsIntoAPrivatePension, CharitableGiving, CapitalGainsTax, StudentLoans, MarriageAllowance, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge
   )
 
