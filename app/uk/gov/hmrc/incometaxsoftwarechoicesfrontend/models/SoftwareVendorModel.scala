@@ -17,6 +17,9 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models
 
 import play.api.libs.json.{Json, Reads}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.{Available, NotApplicable}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilterGroups.{nonMandatedIncomeGroup, quarterlyReturnsGroup}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{TaxReturn, QuarterlyUpdates}
 
 case class SoftwareVendorModel(
   name: String,
@@ -41,6 +44,24 @@ case class SoftwareVendorModel(
   def mustHaveAtLeast(list: Seq[VendorFilter]): Boolean = {
     val contains = list.map(filters.contains)
     contains.fold(false)((a, b) => a || b)
+  }
+
+  def getFeatureStatus(vf: VendorFilter): FeatureStatus = {
+    filters.getOrElse(vf, NotApplicable)
+  }
+
+  def isQuarterlyReady(searchFilters: Seq[VendorFilter]): Boolean = {
+    val userMandatedIncomes = searchFilters.filter(quarterlyReturnsGroup.contains) ++ Seq(QuarterlyUpdates)
+    userMandatedIncomes.forall(filter => getFeatureStatus(filter).eq(Available))
+  }
+
+  def isEoyReady(searchFilters: Seq[VendorFilter]): Option[Boolean] = {
+    val nonMandatoryFilters = searchFilters.filter(nonMandatedIncomeGroup.contains)
+    
+    if (nonMandatoryFilters.isEmpty && getFeatureStatus(TaxReturn).eq(NotApplicable)) 
+      None
+    else 
+      Some((nonMandatoryFilters ++ Seq(TaxReturn)).forall(filter => getFeatureStatus(filter).eq(Available)))
   }
 }
 

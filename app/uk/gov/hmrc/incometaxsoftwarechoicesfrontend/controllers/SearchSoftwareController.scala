@@ -19,6 +19,9 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 import play.api.data.Form
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import play.twirl.api.Html
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.IntentFeature
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{RequireUserDataRefiner, SessionIdentifierAction}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.Agent
@@ -41,7 +44,8 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
                                          identify: SessionIdentifierAction,
                                          requireData: RequireUserDataRefiner)
                                         (implicit ec: ExecutionContext,
-                                         mcc: MessagesControllerComponents) extends BaseFrontendController {
+                                         val appConfig: AppConfig,
+                                         mcc: MessagesControllerComponents) extends BaseFrontendController with FeatureSwitching {
 
   def show(zeroResults: Boolean): Action[AnyContent] = (identify andThen requireData).async { request =>
     given Request[AnyContent] = request
@@ -53,6 +57,7 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
       model = SoftwareChoicesResultsViewModel(
         allInOneVendors = softwareChoicesService.getAllInOneVendors(filters = filters),
         otherVendors = softwareChoicesService.getOtherVendors(filters = filters, isAgent || zeroResults),
+        vendorsWithIntent = if (isEnabled(IntentFeature)) softwareChoicesService.getVendorsWithIntent(filters = filters) else Seq.empty,
         zeroResults = zeroResults,
         isAgent = isAgent
       )
@@ -72,6 +77,7 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
       val model = SoftwareChoicesResultsViewModel(
         allInOneVendors = softwareChoicesService.getAllInOneVendors(userFilters.getOrElse(UserFilters(request.sessionId, None, filters.filters)).finalFilters),
         otherVendors = softwareChoicesService.getOtherVendors(userFilters.getOrElse(UserFilters(request.sessionId, None, filters.filters)).finalFilters, isAgent || zeroResults),
+        vendorsWithIntent = if (isEnabled(IntentFeature)) softwareChoicesService.getVendorsWithIntent(userFilters.getOrElse(UserFilters(request.sessionId, None, filters.filters)).finalFilters) else Seq.empty,
         zeroResults = zeroResults,
         isAgent = isAgent
       )
