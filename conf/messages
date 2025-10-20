@@ -143,9 +143,6 @@ search-software.empty-vendor-list.bullet2   = make sure the name you have entere
 search-software.vendor-count.intent.heading.many     = Based on your answers we’ve found {0} results
 search-software.vendor-count.intent.heading.one      = Based on your answers we’ve found 1 result
 search-software.vendor-count.intent.heading.none     = There are no matching results
-search-software.vendor-count.intent.inset.many = Each of these software products can help you complete your quarterly updates and tax return in full.
-search-software.vendor-count.intent.inset.one = This software product can help you complete your quarterly updates and tax return in full.
-search-software.vendor-count.intent.inset.none = Improve your results by removing filters.
 
 search-software.vendor-detail.pricing = Price
 search-software.vendor-detail.pricing.free-trial = Free trial

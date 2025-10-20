@@ -51,11 +51,10 @@ class SoftwareChoicesService @Inject()(
       )(allPotentialVendors.vendors)
 
     val nonMandatoryFilters = filters.filter(nonMandatedIncomeGroup.contains)
-    val desiredEoyFilters = filters.filter(endOfYearGroup.contains) ++ Seq(TaxReturn)
     val vendorsToDisplay = if (nonMandatoryFilters.isEmpty) {
       qualifyingVendors
     } else {
-      (SoftwareChoicesService.matchAvailableOrIntendedFilter(desiredEoyFilters)
+      (SoftwareChoicesService.matchAvailableOrIntendedFilter(nonMandatoryFilters ++ Seq(TaxReturn))
       andThen SoftwareChoicesService.sortVendors
       ) (qualifyingVendors)
     }

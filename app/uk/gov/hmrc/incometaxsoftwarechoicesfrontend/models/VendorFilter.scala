@@ -450,8 +450,7 @@ object VendorFilterGroups {
     ConstructionIndustryScheme, Employment, ForeignInterest, ForeignDividends, UkDividends, UkInterest, StatePensionIncome, PrivatePensionIncome,
     CapitalGainsTax, CharitableGiving, StudentLoans, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge, PaymentsIntoAPrivatePension, MarriageAllowance
   )
-  val endOfYearGroup: List[VendorFilter] = List(TaxReturn) ++ nonMandatedIncomeGroup ++ quarterlyReturnsGroup
-  
+
   val mandatoryFilterGroup: List[VendorFilter] =
     userTypeFilters.toList ++
       accountingPeriodFilters ++

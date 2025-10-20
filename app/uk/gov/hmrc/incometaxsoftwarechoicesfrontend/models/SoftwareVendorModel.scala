@@ -18,7 +18,7 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models
 
 import play.api.libs.json.{Json, Reads}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.{Available, NotApplicable}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilterGroups.{endOfYearGroup, nonMandatedIncomeGroup, quarterlyReturnsGroup}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilterGroups.{nonMandatedIncomeGroup, quarterlyReturnsGroup}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{TaxReturn, QuarterlyUpdates}
 
 case class SoftwareVendorModel(
@@ -56,13 +56,12 @@ case class SoftwareVendorModel(
   }
 
   def isEoyReady(searchFilters: Seq[VendorFilter]): Option[Boolean] = {
-    val eoyFilters = searchFilters.filter(endOfYearGroup.contains) ++ Seq(TaxReturn)
     val nonMandatoryFilters = searchFilters.filter(nonMandatedIncomeGroup.contains)
-
+    
     if (nonMandatoryFilters.isEmpty && getFeatureStatus(TaxReturn).eq(NotApplicable)) 
       None
     else 
-      Some(eoyFilters.forall(filter => getFeatureStatus(filter).eq(Available)))
+      Some((nonMandatoryFilters ++ Seq(TaxReturn)).forall(filter => getFeatureStatus(filter).eq(Available)))
   }
 }
 
