@@ -79,6 +79,8 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
   }
 
     "Search software page" must {
+      enable(IntentFeature)
+
     lazy val document = {
         val model = SoftwareChoicesResultsViewModel(
           allInOneVendors = SearchSoftwareWithIntentPageContent.softwareVendorsNoResults,
