@@ -43,7 +43,7 @@ class ProductDetailsViewSpec extends ViewSpec {
 
   private val softwareVendorModelMinimal = softwareVendorModelBase
     .copy(name = "abc minimal")
-    .copy(filters = Map(SoleTrader -> Available, UkDividends -> Intended, UkProperty -> Intended))
+    .copy(filters = Map(SoleTrader -> Available, UkDividends -> Intended, UkProperty -> Intended, UkInterest -> Intended))
 
   "ProductDetailsPage" when {
 
@@ -190,7 +190,7 @@ class ProductDetailsViewSpec extends ViewSpec {
           checkRow(table(2), 1, ProductDetailsPage.soleTrader, status = s"${ProductDetailsPage.readyNow}")
           checkRow(table(2), 2, ProductDetailsPage.ukProperty, status = s"${ProductDetailsPage.inDevelopment}")
           checkRow(table(2), 3, ProductDetailsPage.foreignProperty, status = s"${ProductDetailsPage.notIncluded}")
-          checkRow(table(3), 1, ProductDetailsPage.ukInterest, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(3), 1, ProductDetailsPage.ukInterest, status = s"${ProductDetailsPage.inDevelopment}")
           checkRow(table(3), 2, ProductDetailsPage.cis, status = s"${ProductDetailsPage.notIncluded}")
           checkRow(table(3), 3, ProductDetailsPage.employment, status = s"${ProductDetailsPage.notIncluded}")
           checkRow(table(3), 4, ProductDetailsPage.ukDividends, status = s"${ProductDetailsPage.inDevelopment}")
@@ -364,10 +364,10 @@ class ProductDetailsViewSpec extends ViewSpec {
     val employment = "Employment (PAYE)"
     val foreignInterest = "Foreign interest"
     val foreignDividend = "Foreign dividends"
-    val ukDividends = "UK Dividends"
-    val ukInterest = "UK Interest"
+    val ukDividends = "UK dividends"
+    val ukInterest = "UK interest"
     val charitableGiving = "Charitable giving"
-    val student = "Student loan"
+    val student = "Student Loan"
     val class2NIC = "Voluntary Class 2 National Insurance"
     val childBenefitCharge = "High Income Child Benefit Charge"
     val statePension = "State Pension income"
