@@ -121,12 +121,11 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
   }
 
   def backLinkUrl(isAgent: Boolean, zeroResults: Boolean): String = {
-    if (isAgent) {
-      routes.UserTypeController.show().url
-    } else if (zeroResults) {
-      routes.ZeroSoftwareResultsController.show().url
-    } else {
-      routes.CheckYourAnswersController.show().url
+    (isAgent, isEnabled(IntentFeature), zeroResults) match {
+      case (true, _, _) => routes.UserTypeController.show().url
+      case (false, true, _) => routes.ChoosingSoftwareController.show().url
+      case (false, false, true) => routes.ZeroSoftwareResultsController.show().url
+      case (false, false, false) => routes.CheckYourAnswersController.show().url
     }
   }
 }
