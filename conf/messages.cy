@@ -297,7 +297,9 @@ product-details.other-items.marriage-allowance = Marriage Allowance
 
 product-details.status.heading = Status
 product-details.status.included = Included
-product-details.status.not-included = Not Included
+product-details.status.ready = Ready now
+product-details.status.development = In development
+product-details.status.not-included = Not included
 
 product-details.software-spec.heading = Software specifications
 

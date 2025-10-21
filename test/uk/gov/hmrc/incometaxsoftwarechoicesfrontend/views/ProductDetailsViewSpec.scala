@@ -19,7 +19,7 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views
 import org.jsoup.Jsoup
 import org.jsoup.nodes.{Document, Element}
 import org.scalatest.Assertion
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.Available
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.{Available, Intended}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareVendorModel
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.ProductDetailsView
@@ -43,7 +43,7 @@ class ProductDetailsViewSpec extends ViewSpec {
 
   private val softwareVendorModelMinimal = softwareVendorModelBase
     .copy(name = "abc minimal")
-    .copy(filters = Map(SoleTrader -> Available))
+    .copy(filters = Map(SoleTrader -> Available, UkDividends -> Intended, UkProperty -> Intended))
 
   "ProductDetailsPage" when {
 
@@ -53,9 +53,8 @@ class ProductDetailsViewSpec extends ViewSpec {
       getTableHeader(table, 1).text shouldBe col1
       getTableHeader(table, 2).text shouldBe col2
     }
-
-    def checkRow(table: Element, row: Int, field: String, included: Boolean): Assertion = {
-      val status = if (included) "Included" else "Not Included"
+    
+    def checkRow(table: Element, row: Int, field: String, status: String): Assertion = {
       table.selectHead(s"tbody > tr:nth-child($row) > td:nth-child(1)").text shouldBe field
       table.selectHead(s"tbody > tr:nth-child($row) > td:nth-child(2)").text shouldBe status
     }
@@ -105,31 +104,31 @@ class ProductDetailsViewSpec extends ViewSpec {
         }
 
         "displays all the rows" in {
-          checkRow(table(1), 1, ProductDetailsPage.freeVersion, included = true)
-          checkRow(table(1), 2, ProductDetailsPage.recordKeeping, included = true)
-          checkRow(table(1), 3, ProductDetailsPage.bridging, included = true)
-          checkRow(table(1), 4, ProductDetailsPage.agent, included = true)
-          checkRow(table(1), 5, ProductDetailsPage.individual, included = true)
-          checkRow(table(1), 6, ProductDetailsPage.standardUpdatePeriods, included = true)
-          checkRow(table(1), 7, ProductDetailsPage.calendarUpdatePeriods, included = true)
-          checkRow(table(2), 1, ProductDetailsPage.soleTrader, included = true)
-          checkRow(table(2), 2, ProductDetailsPage.ukProperty, included = true)
-          checkRow(table(2), 3, ProductDetailsPage.foreignProperty, included = true)
-          checkRow(table(3), 1, ProductDetailsPage.ukInterest, included = true)
-          checkRow(table(3), 2, ProductDetailsPage.cis, included = true)
-          checkRow(table(3), 3, ProductDetailsPage.employment, included = true)
-          checkRow(table(3), 4, ProductDetailsPage.ukDividends, included = true)
-          checkRow(table(3), 5, ProductDetailsPage.statePension, included = true)
-          checkRow(table(3), 6, ProductDetailsPage.privatePensionIncome, included = true)
-          checkRow(table(3), 7, ProductDetailsPage.foreignDividend, included = true)
-          checkRow(table(3), 8, ProductDetailsPage.foreignInterest, included = true)
-          checkRow(table(3), 9, ProductDetailsPage.privatePensionContribution, included = true)
-          checkRow(table(3), 10, ProductDetailsPage.charitableGiving, included = true)
-          checkRow(table(3), 11, ProductDetailsPage.cgt, included = true)
-          checkRow(table(3), 12, ProductDetailsPage.student, included = true)
-          checkRow(table(3), 13, ProductDetailsPage.marriage, included = true)
-          checkRow(table(3), 14, ProductDetailsPage.class2NIC, included = true)
-          checkRow(table(3), 15, ProductDetailsPage.childBenefitCharge, included = true)
+          checkRow(table(1), 1, ProductDetailsPage.freeVersion, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(1), 2, ProductDetailsPage.recordKeeping, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(1), 3, ProductDetailsPage.bridging, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(1), 4, ProductDetailsPage.agent, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(1), 5, ProductDetailsPage.individual, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(1), 6, ProductDetailsPage.standardUpdatePeriods, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(1), 7, ProductDetailsPage.calendarUpdatePeriods, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(2), 1, ProductDetailsPage.soleTrader, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(2), 2, ProductDetailsPage.ukProperty, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(2), 3, ProductDetailsPage.foreignProperty, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(3), 1, ProductDetailsPage.ukInterest, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(3), 2, ProductDetailsPage.cis, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(3), 3, ProductDetailsPage.employment, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(3), 4, ProductDetailsPage.ukDividends, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(3), 5, ProductDetailsPage.statePension, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(3), 6, ProductDetailsPage.privatePensionIncome, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(3), 7, ProductDetailsPage.foreignDividend, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(3), 8, ProductDetailsPage.foreignInterest, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(3), 9, ProductDetailsPage.privatePensionContribution, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(3), 10, ProductDetailsPage.charitableGiving, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(3), 11, ProductDetailsPage.cgt, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(3), 12, ProductDetailsPage.student, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(3), 13, ProductDetailsPage.marriage, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(3), 14, ProductDetailsPage.class2NIC, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(3), 15, ProductDetailsPage.childBenefitCharge, status = s"${ProductDetailsPage.readyNow}")
         }
       }
     }
@@ -181,31 +180,31 @@ class ProductDetailsViewSpec extends ViewSpec {
         }
 
         "displays all the rows" in {
-          checkRow(table(1), 1, ProductDetailsPage.freeVersion, included = false)
-          checkRow(table(1), 2, ProductDetailsPage.recordKeeping, included = false)
-          checkRow(table(1), 3, ProductDetailsPage.bridging, included = false)
-          checkRow(table(1), 4, ProductDetailsPage.agent, included = false)
-          checkRow(table(1), 5, ProductDetailsPage.individual, included = false)
-          checkRow(table(1), 6, ProductDetailsPage.standardUpdatePeriods, included = false)
-          checkRow(table(1), 7, ProductDetailsPage.calendarUpdatePeriods, included = false)
-          checkRow(table(2), 1, ProductDetailsPage.soleTrader, included = true)
-          checkRow(table(2), 2, ProductDetailsPage.ukProperty, included = false)
-          checkRow(table(2), 3, ProductDetailsPage.foreignProperty, included = false)
-          checkRow(table(3), 1, ProductDetailsPage.ukInterest, included = false)
-          checkRow(table(3), 2, ProductDetailsPage.cis, included = false)
-          checkRow(table(3), 3, ProductDetailsPage.employment, included = false)
-          checkRow(table(3), 4, ProductDetailsPage.ukDividends, included = false)
-          checkRow(table(3), 5, ProductDetailsPage.statePension, included = false)
-          checkRow(table(3), 6, ProductDetailsPage.privatePensionIncome, included = false)
-          checkRow(table(3), 7, ProductDetailsPage.foreignDividend, included = false)
-          checkRow(table(3), 8, ProductDetailsPage.foreignInterest, included = false)
-          checkRow(table(3), 9, ProductDetailsPage.privatePensionContribution, included = false)
-          checkRow(table(3), 10, ProductDetailsPage.charitableGiving, included = false)
-          checkRow(table(3), 11, ProductDetailsPage.cgt, included = false)
-          checkRow(table(3), 12, ProductDetailsPage.student, included = false)
-          checkRow(table(3), 13, ProductDetailsPage.marriage, included = false)
-          checkRow(table(3), 14, ProductDetailsPage.class2NIC, included = false)
-          checkRow(table(3), 15, ProductDetailsPage.childBenefitCharge, included = false)
+          checkRow(table(1), 1, ProductDetailsPage.freeVersion, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(1), 2, ProductDetailsPage.recordKeeping, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(1), 3, ProductDetailsPage.bridging, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(1), 4, ProductDetailsPage.agent, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(1), 5, ProductDetailsPage.individual, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(1), 6, ProductDetailsPage.standardUpdatePeriods, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(1), 7, ProductDetailsPage.calendarUpdatePeriods, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(2), 1, ProductDetailsPage.soleTrader, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(2), 2, ProductDetailsPage.ukProperty, status = s"${ProductDetailsPage.inDevelopment}")
+          checkRow(table(2), 3, ProductDetailsPage.foreignProperty, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(3), 1, ProductDetailsPage.ukInterest, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(3), 2, ProductDetailsPage.cis, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(3), 3, ProductDetailsPage.employment, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(3), 4, ProductDetailsPage.ukDividends, status = s"${ProductDetailsPage.inDevelopment}")
+          checkRow(table(3), 5, ProductDetailsPage.statePension, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(3), 6, ProductDetailsPage.privatePensionIncome, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(3), 7, ProductDetailsPage.foreignDividend, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(3), 8, ProductDetailsPage.foreignInterest, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(3), 9, ProductDetailsPage.privatePensionContribution, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(3), 10, ProductDetailsPage.charitableGiving, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(3), 11, ProductDetailsPage.cgt, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(3), 12, ProductDetailsPage.student, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(3), 13, ProductDetailsPage.marriage, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(3), 14, ProductDetailsPage.class2NIC, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(3), 15, ProductDetailsPage.childBenefitCharge, status = s"${ProductDetailsPage.notIncluded}")
         }
       }
     }
@@ -256,31 +255,31 @@ class ProductDetailsViewSpec extends ViewSpec {
         }
 
         "displays all the rows" in {
-          checkRow(table(1), 1, ProductDetailsPage.freeVersion, included = false)
-          checkRow(table(1), 2, ProductDetailsPage.recordKeeping, included = false)
-          checkRow(table(1), 3, ProductDetailsPage.bridging, included = false)
-          checkRow(table(1), 4, ProductDetailsPage.agent, included = false)
-          checkRow(table(1), 5, ProductDetailsPage.individual, included = false)
-          checkRow(table(1), 6, ProductDetailsPage.standardUpdatePeriods, included = false)
-          checkRow(table(1), 7, ProductDetailsPage.calendarUpdatePeriods, included = false)
-          checkRow(table(2), 1, ProductDetailsPage.soleTrader, included = false)
-          checkRow(table(2), 2, ProductDetailsPage.ukProperty, included = false)
-          checkRow(table(2), 3, ProductDetailsPage.foreignProperty, included = false)
-          checkRow(table(3), 1, ProductDetailsPage.ukInterest, included = false)
-          checkRow(table(3), 2, ProductDetailsPage.cis, included = false)
-          checkRow(table(3), 3, ProductDetailsPage.employment, included = false)
-          checkRow(table(3), 4, ProductDetailsPage.ukDividends, included = false)
-          checkRow(table(3), 5, ProductDetailsPage.statePension, included = false)
-          checkRow(table(3), 6, ProductDetailsPage.privatePensionIncome, included = false)
-          checkRow(table(3), 7, ProductDetailsPage.foreignDividend, included = false)
-          checkRow(table(3), 8, ProductDetailsPage.foreignInterest, included = false)
-          checkRow(table(3), 9, ProductDetailsPage.privatePensionContribution, included = false)
-          checkRow(table(3), 10, ProductDetailsPage.charitableGiving, included = false)
-          checkRow(table(3), 11, ProductDetailsPage.cgt, included = false)
-          checkRow(table(3), 12, ProductDetailsPage.student, included = false)
-          checkRow(table(3), 13, ProductDetailsPage.marriage, included = false)
-          checkRow(table(3), 14, ProductDetailsPage.class2NIC, included = false)
-          checkRow(table(3), 15, ProductDetailsPage.childBenefitCharge, included = false)
+          checkRow(table(1), 1, ProductDetailsPage.freeVersion, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(1), 2, ProductDetailsPage.recordKeeping, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(1), 3, ProductDetailsPage.bridging, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(1), 4, ProductDetailsPage.agent, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(1), 5, ProductDetailsPage.individual, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(1), 6, ProductDetailsPage.standardUpdatePeriods, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(1), 7, ProductDetailsPage.calendarUpdatePeriods, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(2), 1, ProductDetailsPage.soleTrader, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(2), 2, ProductDetailsPage.ukProperty, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(2), 3, ProductDetailsPage.foreignProperty, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(3), 1, ProductDetailsPage.ukInterest, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(3), 2, ProductDetailsPage.cis, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(3), 3, ProductDetailsPage.employment, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(3), 4, ProductDetailsPage.ukDividends, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(3), 5, ProductDetailsPage.statePension, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(3), 6, ProductDetailsPage.privatePensionIncome, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(3), 7, ProductDetailsPage.foreignDividend, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(3), 8, ProductDetailsPage.foreignInterest, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(3), 9, ProductDetailsPage.privatePensionContribution, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(3), 10, ProductDetailsPage.charitableGiving, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(3), 11, ProductDetailsPage.cgt, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(3), 12, ProductDetailsPage.student, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(3), 13, ProductDetailsPage.marriage, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(3), 14, ProductDetailsPage.class2NIC, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(3), 15, ProductDetailsPage.childBenefitCharge, status = s"${ProductDetailsPage.notIncluded}")
         }
       }
     }
@@ -389,6 +388,10 @@ class ProductDetailsViewSpec extends ViewSpec {
     val android = "Android"
     val appleIOS = "Apple iOS"
     val english = "English"
+
+    val readyNow = "Ready now"
+    val inDevelopment = "In development"
+    val notIncluded = "Not included"
   }
 
 }

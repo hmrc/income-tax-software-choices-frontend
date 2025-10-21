@@ -25,6 +25,7 @@
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilterGroups._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTemplate
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.{Available, Intended, NotApplicable}
 
 @this(
         mainTemplate: MainTemplate,
@@ -126,14 +127,22 @@
                 classes="govuk-!-width-three-quarters"
             ),
             TableRow(
-                content = if(softwareVendor.filters.contains(filter)) {
-                    Text(messages("product-details.status.included"))
-                } else {
-                    HtmlContent(govukTag(Tag(
-                        content = Text(messages("product-details.status.not-included")),
+                content = softwareVendor.getFeatureStatus(filter) match {
+                 case (Available) => {
+                    Text(messages("search-software.vendor-detail.eoy-tax-return.ready"))
+                 }
+                 case (Intended) => {
+                   HtmlContent(govukTag(Tag(
+                       content = Text(messages("search-software.vendor-detail.eoy-tax-return.development")),
+                       classes = "govuk-tag--yellow"
+                   )))
+                } case _ => {
+                   HtmlContent(govukTag(Tag(
+                        content = Text(messages("search-software.vendor-detail.eoy-tax-return.not-included")),
                         classes = "govuk-tag--red"
-                    )))
-                },
+                   )))
+               }
+             },
                 classes="govuk-!-width-one-quarter"
             )
         )
