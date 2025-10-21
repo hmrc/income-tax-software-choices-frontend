@@ -271,6 +271,9 @@ product-details.features-provided.agent = Agent software
 product-details.features-provided.individual = Individual software
 product-details.features-provided.free-version = Free version
 
+product-details.quarterly-updates.heading = What you need for your quarterly updates
+product-details.quarterly-updates.what-you-need = You’ll still need to send these income sources in your tax return.
+
 product-details.business-income.heading = Income sources
 product-details.business-income.sole-trader = Sole trader
 product-details.business-income.uk-property = UK property

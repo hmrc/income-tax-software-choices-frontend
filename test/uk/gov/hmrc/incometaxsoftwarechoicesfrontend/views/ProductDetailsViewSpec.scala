@@ -73,6 +73,10 @@ class ProductDetailsViewSpec extends ViewSpec {
         document.selectNth("h1", 1).text() shouldBe softwareVendorModelFull.name
       }
 
+      "display the vendor name heading paragraph" in {
+        document.mainContent.selectNth("p", 1).text() shouldBe s"${ProductDetailsPage.paragraph}"
+      }
+
       "display the vendor website" in {
         val vendorInformationSection = document.selectNth("dl", 1)
         val row: Element = vendorInformationSection.selectNth(".govuk-summary-list__row", 1)
@@ -90,6 +94,10 @@ class ProductDetailsViewSpec extends ViewSpec {
 
       "have the correct quarterly updates title" in {
         document.selectNth("h2", 2).text shouldBe ProductDetailsPage.quarterlyUpdatessHeading
+      }
+
+      "have the correct quarterly updates description" in {
+        document.mainContent.selectNth(".govuk-body-m", 1).text() shouldBe ProductDetailsPage.quarterlyUpdatessDetails
       }
 
       "have the correct tax return title" in {
@@ -147,7 +155,10 @@ class ProductDetailsViewSpec extends ViewSpec {
         document.selectNth("h1", 1).text() shouldBe softwareVendorModelMinimal.name
       }
 
-
+      "display the vendor name heading paragraph" in {
+        document.mainContent.selectNth("p", 1).text() shouldBe s"${ProductDetailsPage.paragraph}"
+      }
+      
       "display the vendor website" in {
         val vendorInformationSection = document.selectNth("dl", 1)
         val row: Element = vendorInformationSection.selectNth(".govuk-summary-list__row", 1)
@@ -165,6 +176,10 @@ class ProductDetailsViewSpec extends ViewSpec {
 
       "have the correct quarterly updates title" in {
         document.selectNth("h2", 2).text shouldBe ProductDetailsPage.quarterlyUpdatessHeading
+      }
+
+      "have the correct quarterly updates description" in {
+        document.mainContent.selectNth(".govuk-body-m", 1).text() shouldBe ProductDetailsPage.quarterlyUpdatessDetails
       }
 
       "have the correct tax return title" in {
@@ -223,6 +238,10 @@ class ProductDetailsViewSpec extends ViewSpec {
         document.selectNth("h1", 1).text() shouldBe softwareVendorModelBase.name
       }
 
+      "display the vendor name heading paragraph" in {
+        document.mainContent.selectNth("p", 1).text() shouldBe s"${ProductDetailsPage.paragraph}"
+      }
+      
       "display the vendor website" in {
         val vendorInformationSection = document.selectNth("dl", 1)
         val row: Element = vendorInformationSection.selectNth(".govuk-summary-list__row", 1)
@@ -242,6 +261,10 @@ class ProductDetailsViewSpec extends ViewSpec {
         document.selectNth("h2", 2).text shouldBe ProductDetailsPage.quarterlyUpdatessHeading
       }
 
+      "have the correct quarterly updates description" in {
+        document.mainContent.selectNth(".govuk-body-m", 1).text() shouldBe ProductDetailsPage.quarterlyUpdatessDetails
+      }
+      
       "have the correct tax return title" in {
         document.selectNth("h2", 3).text shouldBe ProductDetailsPage.taxReturnHeading
       }
@@ -346,6 +369,8 @@ class ProductDetailsViewSpec extends ViewSpec {
     val softwareFeaturesHeading = "Software features"
     val quarterlyUpdatessHeading = "What you need for your quarterly updates"
     val taxReturnHeading = "What you need for your tax return"
+
+    val quarterlyUpdatessDetails = "You’ll still need to send these income sources in your tax return."
 
     val freeVersion = "Free version"
     val recordKeeping = "Software that creates digital records"
