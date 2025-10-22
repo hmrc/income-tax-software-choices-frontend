@@ -401,7 +401,7 @@ object VendorFilterGroups {
 
   // product details page groups //
   val featuresProvidedGroup: List[VendorFilter] = List(
-    FreeVersion, RecordKeeping, Bridging, QuarterlyUpdates, TaxReturn, Agent, Individual, StandardUpdatePeriods, CalendarUpdatePeriods
+    FreeVersion, RecordKeeping, Bridging, Agent, Individual, StandardUpdatePeriods, CalendarUpdatePeriods
   )
 
   val incomeSourcesGroup: List[VendorFilter] = List(
@@ -434,11 +434,9 @@ object VendorFilterGroups {
     (accessibilityFilters, "accessibility")
   )
 
-  val personalIncomeSourcesGroup: List[VendorFilter] = List(
-    ConstructionIndustryScheme, Employment, ForeignInterest, ForeignDividends, UkDividends, UkInterest, StatePensionIncome, PrivatePensionIncome)
-
-  val deductionsGroup: List[VendorFilter] = List(
-    CapitalGainsTax, CharitableGiving, StudentLoans, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge, PaymentsIntoAPrivatePension, MarriageAllowance)
+  val nonMandatedIncomeGroup: List[VendorFilter] = List(
+    UkInterest, ConstructionIndustryScheme, Employment, UkDividends, StatePensionIncome, PrivatePensionIncome, ForeignDividends, ForeignInterest, PaymentsIntoAPrivatePension, CharitableGiving, CapitalGainsTax, StudentLoans, MarriageAllowance, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge
+  )
 
   val softwareTypeGroup: List[VendorFilter] = List(DesktopApplication, WebBrowser)
   val compatibleWithGroup: List[VendorFilter] = List(MicrosoftWindows, MacOS, Linux)
@@ -446,10 +444,6 @@ object VendorFilterGroups {
   val languageGroup: List[VendorFilter] = List(English)
 
   val quarterlyReturnsGroup: List[VendorFilter] = List(QuarterlyUpdates) ++ incomeSourcesGroup
-  val nonMandatedIncomeGroup = List(
-    ConstructionIndustryScheme, Employment, ForeignInterest, ForeignDividends, UkDividends, UkInterest, StatePensionIncome, PrivatePensionIncome,
-    CapitalGainsTax, CharitableGiving, StudentLoans, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge, PaymentsIntoAPrivatePension, MarriageAllowance
-  )
 
   val mandatoryFilterGroup: List[VendorFilter] =
     userTypeFilters.toList ++

@@ -271,6 +271,9 @@ product-details.features-provided.agent = Agent software
 product-details.features-provided.individual = Individual software
 product-details.features-provided.free-version = Free version
 
+product-details.quarterly-updates.heading = What you need for your quarterly updates
+product-details.quarterly-updates.what-you-need = You’ll still need to send these income sources in your tax return.
+
 product-details.business-income.heading = Income sources
 product-details.business-income.sole-trader = Sole trader
 product-details.business-income.uk-property = UK property
@@ -289,7 +292,7 @@ product-details.other-income.private-pension-income = Private pension incomes
 product-details.other-items.heading = Other items
 product-details.other-items.capital-gains-tax = Capital Gains
 product-details.other-items.charitable-giving = Charitable giving
-product-details.other-items.student-loans = Student loan
+product-details.other-items.student-loans = Student Loan
 product-details.other-items.voluntary-class-2-national-insurance = Voluntary Class 2 National Insurance
 product-details.other-items.high-income-child-benefit-charge = High Income Child Benefit Charge
 product-details.other-items.payments-into-a-private-pension = Private pension contributions
@@ -297,7 +300,9 @@ product-details.other-items.marriage-allowance = Marriage Allowance
 
 product-details.status.heading = Status
 product-details.status.included = Included
-product-details.status.not-included = Not Included
+product-details.status.ready = Ready now
+product-details.status.development = In development
+product-details.status.not-included = Not included
 
 product-details.software-spec.heading = Software specifications
 

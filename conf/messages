@@ -287,33 +287,38 @@ product-details.features-provided.agent = Agent software
 product-details.features-provided.individual = Individual software
 product-details.features-provided.free-version = Free version
 
-product-details.business-income.heading = Income sources
+product-details.quarterly-updates.heading = What you need for your quarterly updates
+product-details.quarterly-updates.what-you-need = You’ll still need to send these income sources in your tax return.
+
+product-details.business-income.heading = Business income sources
 product-details.business-income.sole-trader = Sole trader
 product-details.business-income.uk-property = UK property
 product-details.business-income.overseas-property = Foreign property
 
-product-details.other-income.heading = Other income sources
+product-details.tax-return.heading = What you need for your tax return
+
+product-details.other-income.heading = Other income sources and items
 product-details.other-income.construction-industry-scheme = Construction Industry Scheme
 product-details.other-income.employment = Employment (PAYE)
 product-details.other-income.foreign-interest = Foreign interest
 product-details.other-income.foreign-dividends = Foreign dividends
-product-details.other-income.uk-dividends = UK Dividends
-product-details.other-income.uk-interest = UK Interest
+product-details.other-income.uk-dividends = UK dividends
+product-details.other-income.uk-interest = UK interest
 product-details.other-income.state-pension-income = State Pension income
 product-details.other-income.private-pension-income = Private pension income
-
-product-details.other-items.heading = Other items
-product-details.other-items.capital-gains-tax = Capital Gains
-product-details.other-items.charitable-giving = Charitable giving
-product-details.other-items.student-loans = Student loan
-product-details.other-items.voluntary-class-2-national-insurance = Voluntary Class 2 National Insurance
-product-details.other-items.high-income-child-benefit-charge = High Income Child Benefit Charge
-product-details.other-items.payments-into-a-private-pension = Private pension contributions
-product-details.other-items.marriage-allowance = Marriage Allowance
+product-details.other-income.capital-gains-tax = Capital Gains
+product-details.other-income.charitable-giving = Charitable giving
+product-details.other-income.student-loans = Student Loan
+product-details.other-income.voluntary-class-2-national-insurance = Voluntary Class 2 National Insurance
+product-details.other-income.high-income-child-benefit-charge = High Income Child Benefit Charge
+product-details.other-income.payments-into-a-private-pension = Private pension contributions
+product-details.other-income.marriage-allowance = Marriage Allowance
 
 product-details.status.heading = Status
 product-details.status.included = Included
-product-details.status.not-included = Not Included
+product-details.status.ready = Ready now
+product-details.status.development = In development
+product-details.status.not-included = Not included
 
 
 product-details.software-spec.heading = Software specifications
