@@ -434,7 +434,7 @@ object VendorFilterGroups {
     (accessibilityFilters, "accessibility")
   )
 
-  val nonMandatedIncomeSourcesGroup: List[VendorFilter] = List(
+  val nonMandatedIncomeGroup: List[VendorFilter] = List(
     UkInterest, ConstructionIndustryScheme, Employment, UkDividends, StatePensionIncome, PrivatePensionIncome, ForeignDividends, ForeignInterest, PaymentsIntoAPrivatePension, CharitableGiving, CapitalGainsTax, StudentLoans, MarriageAllowance, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge
   )
 
@@ -444,10 +444,6 @@ object VendorFilterGroups {
   val languageGroup: List[VendorFilter] = List(English)
 
   val quarterlyReturnsGroup: List[VendorFilter] = List(QuarterlyUpdates) ++ incomeSourcesGroup
-  val nonMandatedIncomeGroup = List(
-    ConstructionIndustryScheme, Employment, ForeignInterest, ForeignDividends, UkDividends, UkInterest, StatePensionIncome, PrivatePensionIncome,
-    CapitalGainsTax, CharitableGiving, StudentLoans, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge, PaymentsIntoAPrivatePension, MarriageAllowance
-  )
 
   val mandatoryFilterGroup: List[VendorFilter] =
     userTypeFilters.toList ++
