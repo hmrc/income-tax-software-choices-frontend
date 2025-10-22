@@ -11,7 +11,9 @@
         "quarterly-updates": "Available",
         "tax-return": "Available",
         "standard-update-periods": "Available",
-        "calendar-update-periods": "Available"
+        "calendar-update-periods": "Available",
+        "web-browser": "Available",
+        "english": "Available"
       }
     },
     {
@@ -32,7 +34,12 @@
         "overseas-property": "Available",
         "quarterly-updates": "Available",
         "standard-update-periods": "Available",
-        "calendar-update-periods": "Available"
+        "calendar-update-periods": "Available",
+        "desktop-based": "Available",
+        "microsoft-windows": "Available",
+        "mac-os": "Available",
+        "linux": "Available",
+        "english": "Available"
       }
     },
     {
@@ -54,7 +61,10 @@
         "standard-update-periods": "Available",
         "calendar-update-periods": "Available",
         "uk-interest": "Available",
-        "student-loans": "Available"
+        "student-loans": "Available",
+        "android": "Available",
+        "apple-ios": "Available",
+        "english": "Available"
       }
     },
     {
@@ -72,7 +82,12 @@
         "standard-update-periods": "Available",
         "calendar-update-periods": "Available",
         "uk-interest": "Available",
-        "student-loans": "Available"
+        "student-loans": "Available",
+        "desktop-based": "Available",
+        "web-browser": "Available",
+        "mac-os": "Available",
+        "linux": "Available",
+        "apple-ios": "Available"
       }
     },
     {
@@ -95,7 +110,10 @@
         "payments-into-a-private-pension": "Available",
         "charitable-giving": "Available",
         "capital-gains-tax": "Available",
-        "student-loans": "Intended"
+        "student-loans": "Intended",
+        "desktop-based": "Available",
+        "web-browser": "Available",
+        "microsoft-windows": "Available"
       }
     },
     {
@@ -121,7 +139,15 @@
         "payments-into-a-private-pension": "Available",
         "charitable-giving": "Available",
         "capital-gains-tax": "Available",
-        "student-loans": "Intended"
+        "student-loans": "Intended",
+        "desktop-based": "Available",
+        "web-browser": "Available",
+        "microsoft-windows": "Available",
+        "mac-os": "Available",
+        "linux": "Available",
+        "android": "Available",
+        "apple-ios": "Available",
+        "english": "Available"
       }
     },
     {
@@ -144,7 +170,9 @@
         "payments-into-a-private-pension": "Available",
         "charitable-giving": "Available",
         "capital-gains-tax": "Available",
-        "student-loans": "Available"
+        "student-loans": "Available",
+        "web-browser": "Available",
+        "english": "Available"
       }
     },
     {
@@ -167,7 +195,10 @@
         "standard-update-periods": "Available",
         "calendar-update-periods": "Available",
         "construction-industry-scheme": "Available",
-        "student-loans": "Available"
+        "student-loans": "Available",
+        "android": "Available",
+        "apple-ios": "Available",
+        "english": "Available"
       }
     },
     {
@@ -190,7 +221,15 @@
         "standard-update-periods": "Available",
         "calendar-update-periods": "Available",
         "construction-industry-scheme": "Available",
-        "student-loans": "Available"
+        "student-loans": "Available",
+        "desktop-based": "Available",
+        "web-browser": "Available",
+        "microsoft-windows": "Available",
+        "mac-os": "Available",
+        "linux": "Available",
+        "android": "Available",
+        "apple-ios": "Available",
+        "english": "Available"
       }
     }
   ]
