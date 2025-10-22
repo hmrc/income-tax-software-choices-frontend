@@ -27,7 +27,7 @@ class ProductDetailsControllerISpec extends ComponentSpecBase with BeforeAndAfte
   val address = "/product-details"
 
   s"GET /find-making-tax-digital-income-tax-software${address}" when {
-    val vendorOneName = "test software vendor name one"
+    val vendorOneName = "vendor 01"
 
     "respond with 200 status for a real software name" in {
       When(s"GET $address is called")

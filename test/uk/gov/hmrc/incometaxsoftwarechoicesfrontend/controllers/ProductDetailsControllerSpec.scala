@@ -33,7 +33,7 @@ class ProductDetailsControllerSpec extends ControllerBaseSpec with BeforeAndAfte
   "Show" when {
     "a valid param has been passed" should {
       "return OK status with the product details page" in withController { controller =>
-        val result = controller.show(URLEncoder.encode("test software vendor name one", "UTF-8"), zeroResults = false)(fakeRequest)
+        val result = controller.show(URLEncoder.encode("vendor 01", "UTF-8"), zeroResults = false)(fakeRequest)
 
         status(result) shouldBe Status.OK
       }
