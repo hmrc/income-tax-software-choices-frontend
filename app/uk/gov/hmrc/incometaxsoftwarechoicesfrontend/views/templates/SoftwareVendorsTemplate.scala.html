@@ -22,11 +22,14 @@
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.SoftwareSearchStatusTemplate
 @import java.net.URLEncoder
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes.ProductDetailsController
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.IntentFeature
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitchingImpl
 
 @this(
   softwareSearchStatusTemplate: SoftwareSearchStatusTemplate,
   hmrcNewTabLinkHelper: HmrcNewTabLinkHelper,
-  govukSummaryList : GovukSummaryList
+  govukSummaryList : GovukSummaryList,
+  featureSwitching: FeatureSwitchingImpl
 )
 
 @(softwareVendors: SoftwareVendors, zeroResults: Boolean)(implicit messages: Messages)
@@ -121,7 +124,11 @@
     ))
     <p class="govuk-body">
       <a href="@{ProductDetailsController.show(URLEncoder.encode(vendor.name, "UTF-8"), zeroResults)}" class="govuk-link">
-        @messages("search-software.vendor-visit-link", vendor.name)
+          @if(featureSwitching.isEnabled(IntentFeature)) {
+              @messages("search-software.intent.vendor-visit-link", vendor.name)
+          } else {
+              @messages("search-software.vendor-visit-link", vendor.name)
+          }
       </a>
     </p>
   </div>

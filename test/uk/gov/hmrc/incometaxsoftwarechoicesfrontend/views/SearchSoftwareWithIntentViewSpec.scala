@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views
 
+import org.apache.pekko.util.ccompat.JavaConverters.ListHasAsScala
 import org.jsoup.Jsoup
 import org.jsoup.nodes.{Document, Element}
 import org.jsoup.select.Elements
@@ -105,8 +106,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
     "have a second paragraph" in {
       document.mainContent.selectNth("p", 2).text shouldBe SearchSoftwareWithIntentPageContent.paragraphTwo
     }
-
-
+      
     "have a filter section" which {
       val filterSection = getFilterSection(document)
 
@@ -209,9 +209,6 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
         }
       }
     }
-
-      
-      
       
     "have a single software vendor section for result" which  {
       "has the correct heading" when {
@@ -311,6 +308,98 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
 
           "has a list of detail for the software vendor with minimal detail" in {
             testCardThree(thirdVendor)
+          }
+        }
+      }
+    }
+
+    "have a single software vendor section for agents" which {
+      lazy val document = {
+        val model = SoftwareChoicesResultsViewModel(
+          allInOneVendors = SearchSoftwareWithIntentPageContent.softwareVendorsNoResults,
+          otherVendors = SearchSoftwareWithIntentPageContent.softwareVendorsNoResults,
+          vendorsWithIntent = SearchSoftwareWithIntentPageContent.multipleVendorsWithIntent,
+          zeroResults = false, isAgent = true
+        )
+        Jsoup.parse(page(model).body)
+      }
+      "has the correct heading and no inset text" when {
+        "there are multiple results" in {
+          document.selectHead("#vendor-count h2").text shouldBe SearchSoftwarePageContent.agentHeadingMany
+          document.select("#vendor-count .govuk-inset-text").asScala.headOption shouldBe None
+        }
+        "there is 1 result" in {
+          lazy val documentOneResult = {
+            val model = SoftwareChoicesResultsViewModel(
+              allInOneVendors = SearchSoftwareWithIntentPageContent.softwareVendorsNoResults,
+              otherVendors = SearchSoftwareWithIntentPageContent.softwareVendorsNoResults,
+              vendorsWithIntent = SearchSoftwareWithIntentPageContent.singleVendorWithIntent(quarterlyReady = true, eoyReady = true),
+              zeroResults = false, isAgent = true
+            )
+            Jsoup.parse(page(model).body)
+          }
+          documentOneResult.selectHead("#vendor-count h2").text shouldBe SearchSoftwarePageContent.agentHeadingOne
+          document.select("#vendor-count .govuk-inset-text").asScala.headOption shouldBe None
+        }
+        "there are 0 results" in {
+          lazy val documentNoResults = {
+            val model = SoftwareChoicesResultsViewModel(
+              allInOneVendors = SearchSoftwareWithIntentPageContent.softwareVendorsNoResults,
+              otherVendors = SearchSoftwareWithIntentPageContent.softwareVendorsNoResults,
+              vendorsWithIntent = Seq.empty,
+              zeroResults = false, isAgent = true
+            )
+            Jsoup.parse(page(model).body)
+          }
+          documentNoResults.selectHead("#vendor-count h2").text shouldBe SearchSoftwarePageContent.agentHeadingNone
+          document.select("#vendor-count .govuk-inset-text").asScala.headOption shouldBe None
+        }
+      }
+
+      "has a list of software vendors" which {
+        "has a software vendor with lots of detail" which {
+          def firstVendor: Element = document.selectHead("#software-vendor-0")
+
+          val firstModel = SearchSoftwarePageContent.softwareVendorsResults.vendors.head
+
+          "has a heading for the software vendor" in {
+            val heading: Element = firstVendor.selectHead("h3")
+            heading.text shouldBe firstModel.name
+          }
+
+          "has a link for the software vendor" in {
+            val link: Element = firstVendor.selectHead("a")
+            val expectedUrl = ProductDetailsController.show(URLEncoder.encode(firstModel.name, "UTF-8"), zeroResults = false).url
+
+            link.attr("href") shouldBe expectedUrl
+            link.text should include(firstModel.name)
+          }
+
+          "has a list of detail for the software vendor with full detail" in {
+            testCardOne(firstVendor)
+          }
+        }
+
+        "has a software vendor with minimal detail" which {
+          def secondVendor: Element = document.selectHead("#software-vendor-1")
+
+          val secondModel = SearchSoftwarePageContent.softwareVendorsResults.vendors(1)
+
+          "has a heading for the software vendor" in {
+            val heading: Element = secondVendor.selectHead("h3")
+            heading.text shouldBe secondModel.name
+          }
+
+          "has a link for the software vendor" in {
+            val link: Element = secondVendor.selectHead("a")
+            val expectedUrl = ProductDetailsController.show(URLEncoder.encode(secondModel.name, "UTF-8"), zeroResults = false).url
+
+            link.attr("href") shouldBe expectedUrl
+            link.text should include(secondModel.name)
+          }
+
+          "has a list of detail for the software vendor with minimal detail" in {
+            testCardTwo(secondVendor)
           }
         }
       }
