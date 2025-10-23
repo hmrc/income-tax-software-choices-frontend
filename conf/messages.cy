@@ -89,6 +89,24 @@ check-your-answers.sixth-april-to-fifth-april               = 6 April to 5 April
 check-your-answers.first-april-to-thirty-first-march        = 1 April to 31 March
 check-your-answers.other                                    = Neither of these
 
+# Choosing Software from Your Results view
+choosing-software.heading                   = Choosing software from your results
+choosing-software.para1                     = All software listed has been through HMRC’s recognition process. HMRC does not endorse or recommend any one product or software provider.
+choosing-software.h2.future-software        = Future software updates
+choosing-software.para2                     = Some software features are either:
+choosing-software.bullet1                   = ready now
+choosing-software.bullet2                   = in development
+choosing-software.para3                     = All the software products in your results will let you or your agent:
+choosing-software.bullet3                   = create, store and correct digital records
+choosing-software.bullet4                   = send your quarterly updates to HMRC
+choosing-software.h3                        = Submitting your 2026 to 2027 tax return
+choosing-software.para4                     = The features you will need to submit your tax return are still being developed by some software providers. They are shown as ‘in development’.
+choosing-software.para5                     = These are features that software providers have either built or committed to build ready for when you need to submit your 2026 to 2027 tax return.
+choosing-software.h2.making-sure            = Making sure you get the right product
+choosing-software.para6                     = Some of the listed products may have free trials or free versions, but you’ll have to pay for most of them.
+choosing-software.para7                     = HMRC is not responsible for the availability of products or making sure that the product you chose meets your current and future needs.
+choosing-software.para8                     = We recommend that you visit software providers’ websites to do more research before choosing a product.
+choosing-software.button.view-your-results  = View your results
 
 # Search software page
 

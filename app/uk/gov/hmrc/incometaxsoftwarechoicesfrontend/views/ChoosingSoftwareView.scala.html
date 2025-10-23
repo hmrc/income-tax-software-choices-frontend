@@ -36,20 +36,35 @@
     <h1 class="govuk-heading-l">@messages("choosing-software.heading")</h1>
 
     <p class ="govuk-body">@messages("choosing-software.para1")</p>
+
+    <h2 class="govuk-heading-m">@messages("choosing-software.h2.future-software")</h2>
+
     <p class ="govuk-body">@messages("choosing-software.para2")</p>
-    
     <ul class="govuk-list govuk-list--bullet">
         <li>@messages("choosing-software.bullet1")</li>
         <li>@messages("choosing-software.bullet2")</li>
     </ul>
-    
-    <p class ="govuk-body">@messages("choosing-software.para3")</p>
-    <p class ="govuk-body">@messages("choosing-software.para4")</p>
-    <p class ="govuk-body">@messages("choosing-software.para5")</p>
+
+    <p class="govuk-body">@messages("choosing-software.para3")</p>
+    <ul class="govuk-list govuk-list--bullet">
+        <li>@messages("choosing-software.bullet3")</li>
+        <li>@messages("choosing-software.bullet4")</li>
+    </ul>
+
+    <h3 class="govuk-heading-s">@messages("choosing-software.h3")</h3>
+
+    <p class="govuk-body">@messages("choosing-software.para4")</p>
+    <p class="govuk-body">@messages("choosing-software.para5")</p>
+
+    <h2 class="govuk-heading-m">@messages("choosing-software.h2.making-sure")</h2>
+
+    <p class="govuk-body">@messages("choosing-software.para6")</p>
+    <p class="govuk-body">@messages("choosing-software.para7")</p>
+    <p class="govuk-body">@messages("choosing-software.para8")</p>
 
     @form(action = postAction) {
         @govukButton(Button(
-            content = Text(messages("base.continue"))
+            content = Text(messages("choosing-software.button.view-your-results"))
         ))
     }
 

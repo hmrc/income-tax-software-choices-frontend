@@ -40,18 +40,29 @@ class ChoosingSoftwareViewSpec extends ViewSpec {
       document.selectHead(".govuk-back-link").attr("href") shouldBe routes.CheckYourAnswersController.show().url
     }
 
+    "have the correct sub headings" in {
+      document.mainContent.selectNth("h2", 1).text() shouldBe ChoosingSoftwareContent.h2one
+      document.mainContent.selectNth("h3", 1).text() shouldBe ChoosingSoftwareContent.h3
+      document.mainContent.selectNth("h2", 2).text() shouldBe ChoosingSoftwareContent.h2two
+    }
+
     "have the correct paragraphs" in {
       document.mainContent.selectNth("p", 1).text() shouldBe ChoosingSoftwareContent.para1
       document.mainContent.selectNth("p", 2).text() shouldBe ChoosingSoftwareContent.para2
       document.mainContent.selectNth("p", 3).text() shouldBe ChoosingSoftwareContent.para3
       document.mainContent.selectNth("p", 4).text() shouldBe ChoosingSoftwareContent.para4
       document.mainContent.selectNth("p", 5).text() shouldBe ChoosingSoftwareContent.para5
+      document.mainContent.selectNth("p", 6).text() shouldBe ChoosingSoftwareContent.para6
+      document.mainContent.selectNth("p", 7).text() shouldBe ChoosingSoftwareContent.para7
+      document.mainContent.selectNth("p", 8).text() shouldBe ChoosingSoftwareContent.para8
     }
 
     "have the correct bullet points" in {
       val bulletPoints: Seq[Element] = document.mainContent.selectSeq(".govuk-list.govuk-list--bullet li")
       bulletPoints(0).text() shouldBe ChoosingSoftwareContent.bullet1
       bulletPoints(1).text() shouldBe ChoosingSoftwareContent.bullet2
+      bulletPoints(2).text() shouldBe ChoosingSoftwareContent.bullet3
+      bulletPoints(3).text() shouldBe ChoosingSoftwareContent.bullet4
     }
 
     "have a form" which {
@@ -63,7 +74,7 @@ class ChoosingSoftwareViewSpec extends ViewSpec {
       }
 
       "has a continue button" in {
-        form.selectHead(".govuk-button").text() shouldBe ChoosingSoftwareContent.continue
+        form.selectHead(".govuk-button").text() shouldBe ChoosingSoftwareContent.button
       }
     }
   }
@@ -77,16 +88,23 @@ class ChoosingSoftwareViewSpec extends ViewSpec {
 }
 
 private object ChoosingSoftwareContent {
-  val title = s"Before you continue - ${PageContentBase.title} - GOV.UK"
-  val heading = "Before you continue"
-  val para1 = "Software products may have free trials or free versions, but you’ll have to pay for most of the software listed."
-  val para2 = "All the products listed will allow you to submit your quarterly updates. Some will show additional features that are either:"
+  val heading = "Choosing software from your results"
+  val title = s"$heading - ${PageContentBase.title} - GOV.UK"
+  val para1 = "All software listed has been through HMRC’s recognition process. HMRC does not endorse or recommend any one product or software provider."
+  val h2one = "Future software updates"
+  val para2 = "Some software features are either:"
   val bullet1 = "ready now"
   val bullet2 = "in development"
-  val para3 = "In development means one or more features you need to complete your end-of-year tax return are still being built. " +
-    "We expect these features will be ready for you to do your 2026 to 2027 return."
-  val para4 = "We recommend that you look at software providers’ websites to check if the product is right for you."
-  val para5 = "All of this software has been through a recognition process where HMRC check how ready it is for you to submit your taxes. " +
-    "HMRC does not endorse or recommend any one product or software provider."
-  val continue = "Continue"
+  val para3 = "All the software products in your results will let you or your agent:"
+  val bullet3 = "create, store and correct digital records"
+  val bullet4 = "send your quarterly updates to HMRC"
+  val h3 = "Submitting your 2026 to 2027 tax return"
+  val para4 = "The features you will need to submit your tax return are still being developed by some software providers. They are shown as ‘in development’."
+  val para5 = "These are features that software providers have either built " +
+    "or committed to build ready for when you need to submit your 2026 to 2027 tax return."
+  val h2two = "Making sure you get the right product"
+  val para6 = "Some of the listed products may have free trials or free versions, but you’ll have to pay for most of them."
+  val para7 = "HMRC is not responsible for the availability of products or making sure that the product you chose meets your current and future needs."
+  val para8 = "We recommend that you visit software providers’ websites to do more research before choosing a product."
+  val button = "View your results"
 }
