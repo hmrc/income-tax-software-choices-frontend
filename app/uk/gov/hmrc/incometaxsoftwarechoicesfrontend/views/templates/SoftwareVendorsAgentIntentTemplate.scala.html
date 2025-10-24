@@ -18,7 +18,9 @@
 @import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 @import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcNewTabLinkHelper
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{VendorFilterGroups, _}
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus._
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.viewmodels.VendorSuitabilityViewModel
 @import java.net.URLEncoder
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes.ProductDetailsController
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.IntentFeature
@@ -30,7 +32,7 @@
   featureSwitching: FeatureSwitchingImpl
 )
 
-@(softwareVendors: SoftwareVendors, zeroResults: Boolean)(implicit messages: Messages)
+@(softwareVendors: Seq[VendorSuitabilityViewModel])(implicit messages: Messages)
 
 @customSummaryListRow(key: String, filtersAvailable: Seq[VendorFilter]) = @{
 
@@ -56,7 +58,7 @@
 @softwareVendorPricing(vendor: SoftwareVendorModel) = @{
 
   val key: String = {messages("search-software.vendor-detail.pricing")}
-  val freeVersion = if(vendor.filters.contains(FreeVersion)) Some(messages("search-software.vendor-detail.pricing.free-version")) else Some(messages("search-software.vendor-detail.pricing.no-free-version"))
+  val freeVersion = if(vendor.getFeatureStatus(FreeVersion).eq(Available)) Some(messages("search-software.vendor-detail.pricing.free-version")) else Some(messages("search-software.vendor-detail.pricing.no-free-version"))
   val value = Seq(
     freeVersion
   ).flatten.mkString("/")
@@ -76,7 +78,10 @@
 
   customSummaryListRow(
     key = "suitable-for",
-    filtersAvailable = vendor.orderedFilterSubset(VendorFilterGroups.suitableForFilters).map(_._1).toSeq
+    filtersAvailable =
+        vendor.orderedFilterSubset(VendorFilterGroups.suitableForFilters)
+            .filter(_._2.eq(Available))
+            .map(_._1).toSeq
   )
 
 }
@@ -85,7 +90,9 @@
 
   customSummaryListRow(
     key = "software-for",
-    filtersAvailable = vendor.orderedFilterSubset(VendorFilterGroups.softwareForFilters).map(_._1).toSeq
+    filtersAvailable = vendor.orderedFilterSubset(VendorFilterGroups.softwareForFilters)
+        .filter(_._2.eq(Available))
+        .map(_._1).toSeq
   )
 
 }
@@ -94,7 +101,9 @@
 
   customSummaryListRow(
     key = "submission-type",
-    filtersAvailable = vendor.orderedFilterSubset(VendorFilterGroups.submissionTypeFilters).map(_._1).toSeq
+    filtersAvailable = vendor.orderedFilterSubset(VendorFilterGroups.submissionTypeFilters)
+    .filter(_._2.eq(Available))
+    .map(_._1).toSeq
   )
 
 }
@@ -121,17 +130,13 @@
       classes = "govuk-summary-list--no-border"
     ))
     <p class="govuk-body">
-      <a href="@{ProductDetailsController.show(URLEncoder.encode(vendor.name, "UTF-8"), zeroResults)}" class="govuk-link">
-          @if(featureSwitching.isEnabled(IntentFeature)) {
+      <a href="@{ProductDetailsController.show(URLEncoder.encode(vendor.name, "UTF-8"), false)}" class="govuk-link">
               @messages("search-software.intent.vendor-visit-link", vendor.name)
-          } else {
-              @messages("search-software.vendor-visit-link", vendor.name)
-          }
       </a>
     </p>
   </div>
 }
 
-@softwareVendors.vendors.zipWithIndex.map { case (vendor, index) =>
-  @softwareVendorListing(vendor, index)
+@softwareVendors.zipWithIndex.map { case (vendorSuitability, index) =>
+  @softwareVendorListing(vendorSuitability.vendor, index)
 }
