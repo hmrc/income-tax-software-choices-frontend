@@ -122,11 +122,7 @@
     ))
     <p class="govuk-body">
       <a href="@{ProductDetailsController.show(URLEncoder.encode(vendor.name, "UTF-8"), zeroResults)}" class="govuk-link">
-          @if(featureSwitching.isEnabled(IntentFeature)) {
-              @messages("search-software.intent.vendor-visit-link", vendor.name)
-          } else {
-              @messages("search-software.vendor-visit-link", vendor.name)
-          }
+          @messages("search-software.vendor-visit-link", vendor.name)
       </a>
     </p>
   </div>
