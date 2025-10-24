@@ -27,8 +27,7 @@ object CodeCoverageSettings {
 
   private val excludedFiles: Seq[String] = Seq(
     ".*Routes.*",
-    ".*RoutesPrefix.*",
-    ".*template.*"
+    ".*RoutesPrefix.*"
   )
 
   val settings: Seq[Setting[_]] = Seq(

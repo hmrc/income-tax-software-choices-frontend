@@ -15,11 +15,16 @@
  *@
 
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.viewmodels.SoftwareChoicesResultsViewModel
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.SoftwareVendorsTemplate
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.{SoftwareVendorsTemplate, SoftwareVendorsAgentIntentTemplate}
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.IntentFeature
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitchingImpl
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareVendors
 
 @this(
-softwareVendorsTemplate: SoftwareVendorsTemplate,
-        govukInsetText : GovukInsetText
+        softwareVendorsTemplate: SoftwareVendorsTemplate,
+        softwareVendorsAgentIntentTemplate: SoftwareVendorsAgentIntentTemplate,
+        govukInsetText : GovukInsetText,
+        featureSwitching: FeatureSwitchingImpl
 )
 
 @(viewModel: SoftwareChoicesResultsViewModel)(implicit messages: Messages)
@@ -47,10 +52,18 @@ softwareVendorsTemplate: SoftwareVendorsTemplate,
 }
 
 <div id="vendor-count">
-    @resultsHeading(viewModel.allInOneVendors.vendors.size)
-    @insetText(viewModel.allInOneVendors.vendors.size)
+    @if(featureSwitching.isEnabled(IntentFeature)) {
+        @resultsHeading(viewModel.vendorsWithIntent.size)
+    } else {
+        @resultsHeading(viewModel.allInOneVendors.vendors.size)
+        @insetText(viewModel.allInOneVendors.vendors.size)
+    }
 </div>
 
 <div id="software-vendor-list">
-    @softwareVendorsTemplate(viewModel.allInOneVendors, viewModel.zeroResults)
+    @if(featureSwitching.isEnabled(IntentFeature)) {
+        @softwareVendorsAgentIntentTemplate(viewModel.vendorsWithIntent)
+    } else {
+        @softwareVendorsTemplate(viewModel.allInOneVendors, viewModel.zeroResults)
+    }
 </div>
