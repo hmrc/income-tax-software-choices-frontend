@@ -21,13 +21,10 @@
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{VendorFilterGroups, _}
 @import java.net.URLEncoder
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes.ProductDetailsController
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.IntentFeature
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitchingImpl
 
 @this(
   hmrcNewTabLinkHelper: HmrcNewTabLinkHelper,
-  govukSummaryList : GovukSummaryList,
-  featureSwitching: FeatureSwitchingImpl
+  govukSummaryList : GovukSummaryList
 )
 
 @(softwareVendors: SoftwareVendors, zeroResults: Boolean)(implicit messages: Messages)
