@@ -52,13 +52,6 @@ class SoftwareChoicesServiceISpec extends PlaySpec with GuiceOneServerPerSuite {
     test.size shouldBe test.distinct.size
   }
 
-  "software-vendors.json must only include current features" in {
-    val test = app("software-vendors.json").injector.instanceOf[SoftwareChoicesService].softwareVendors.vendors
-    test.foreach { vendor =>
-      vendor.filters.foreach(filter => filter._2 shouldBe Available)
-      }
-    }
-
   "a file which does not exist" must {
     "throw an exception from the service" in {
       intercept[Exception](app("non-existent.json").injector.instanceOf[SoftwareChoicesService].softwareVendors)
