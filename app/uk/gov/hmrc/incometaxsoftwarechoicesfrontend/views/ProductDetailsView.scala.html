@@ -48,19 +48,19 @@
         @contactDetailsList
 
         <h2 class="govuk-heading-m">@messages("product-details.details.heading")</h2>
-        @table(featuresProvidedGroup, "features-provided")
+        @table(featuresProvidedGroup, "features-provided", displayIntent = false)
 
         <h2 class="govuk-heading-m">@messages("product-details.quarterly-updates.heading")</h2>
         <p class="govuk-body-m">@messages("product-details.quarterly-updates.what-you-need")</p>
+        @table(incomeSourcesGroup, "business-income", displayIntent = false)
 
-        @table(incomeSourcesGroup, "business-income")
         <h2 class="govuk-heading-m">@messages("product-details.tax-return.heading")</h2>
-        @table(nonMandatedIncomeGroup, "other-income")
+        @table(nonMandatedIncomeGroup, "other-income", displayIntent = true)
     </div>
 
     @defining({
         val rows = Seq.newBuilder[SummaryListRow]
-        val softwareTypes = softwareTypeGroup.filter(softwareVendor.filters.contains)
+        val softwareTypes = softwareTypeGroup.filter(f => softwareVendor.filters.contains(f) && softwareVendor.getFeatureStatus(f).eq(Available))
         if (softwareTypes.nonEmpty) {
             rows += SummaryListRow(
                 key = Key(content = Text(messages("product-details.software-spec.software-type"))),
@@ -69,7 +69,7 @@
                 ))
             )
         }
-        val compatible = compatibleWithGroup.filter(softwareVendor.filters.contains)
+        val compatible = compatibleWithGroup.filter(f => softwareVendor.filters.contains(f) && softwareVendor.getFeatureStatus(f).eq(Available))
         if (compatible.nonEmpty) {
             rows += SummaryListRow(
                 key = Key(content = Text(messages("product-details.software-spec.compatible-with"))),
@@ -78,7 +78,7 @@
                 ))
             )
         }
-        val mobiles = mobileGroup.filter(softwareVendor.filters.contains)
+        val mobiles = mobileGroup.filter(f => softwareVendor.filters.contains(f) && softwareVendor.getFeatureStatus(f).eq(Available))
         if (mobiles.nonEmpty) {
             rows += SummaryListRow(
                 key = Key(content = Text(messages("product-details.software-spec.mobile-app"))),
@@ -87,7 +87,7 @@
                 ))
             )
         }
-        val languages = languageGroup.filter(softwareVendor.filters.contains)
+        val languages = languageGroup.filter(f => softwareVendor.filters.contains(f) && softwareVendor.getFeatureStatus(f).eq(Available))
         if (languages.nonEmpty) {
             rows += SummaryListRow(
                 key = Key(content = Text(messages("product-details.software-spec.language"))),
@@ -119,7 +119,7 @@
     ))
 }
 
-@featuresRow(filterGroup: List[VendorFilter], section: String) = @{
+@featuresRow(filterGroup: List[VendorFilter], section: String, displayIntent: Boolean) = @{
     filterGroup map { filter =>
         Seq(
             TableRow(
@@ -127,11 +127,11 @@
                 classes="govuk-!-width-three-quarters"
             ),
             TableRow(
-                content = softwareVendor.getFeatureStatus(filter) match {
-                 case (Available) => {
+                content = (softwareVendor.getFeatureStatus(filter), displayIntent) match {
+                 case (Available, _) => {
                     Text(messages("search-software.vendor-detail.eoy-tax-return.ready"))
                  }
-                 case (Intended) => {
+                 case (Intended, true) => {
                    HtmlContent(govukTag(Tag(
                        content = Text(messages("search-software.vendor-detail.eoy-tax-return.development")),
                        classes = "govuk-tag--yellow"
@@ -149,9 +149,9 @@
     }
 }
 
-@table(filterGroup: List[VendorFilter], tableHeaderKey: String) = @{
+@table(filterGroup: List[VendorFilter], tableHeaderKey: String, displayIntent: Boolean) = @{
     govukTable(Table(
-        rows = featuresRow(filterGroup, tableHeaderKey),
+        rows = featuresRow(filterGroup, tableHeaderKey, displayIntent),
         head = Some(Seq(
             HeadCell(
                 content = Text(messages(s"product-details.$tableHeaderKey.heading"))
