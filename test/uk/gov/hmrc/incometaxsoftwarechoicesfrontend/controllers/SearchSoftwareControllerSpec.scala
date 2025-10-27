@@ -64,8 +64,8 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec
     }
 
     "Intent feature is on" should {
-      enable(IntentFeature)
       "return OK status with the search software page" in withController { controller =>
+        enable(IntentFeature)
         val result = controller.show(zeroResults = false)(fakeRequest)
 
         status(result) shouldBe Status.OK
@@ -88,8 +88,8 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec
     }
 
     "Intent feature is on" should {
-      enable(IntentFeature)
       "return OK status with the search software page" in withController { controller =>
+        enable(IntentFeature)
         val result = controller.search(zeroResults = false)(FakeRequest("POST", "/")
           .withFormUrlEncodedBody(s"${FiltersForm.filters}[0]" -> "free-version"))
 

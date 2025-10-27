@@ -29,7 +29,6 @@
 
 @this(
   mainTemplate: MainTemplate,
-  softwareSearchStatusTemplate: SoftwareSearchStatusTemplate,
   softwareVendorsTemplate: SoftwareVendorsTemplate,
   softwareFiltersTemplate: SoftwareFiltersTemplate,
   softwareVendorsZeroResultsTemplate: SoftwareVendorsZeroResultsTemplate,
@@ -52,9 +51,17 @@
     <div class="govuk-grid-column-two-thirds">
       <h1 class="govuk-heading-xl">@messages("search-software.heading")</h1>
       @if(featureSwitching.isEnabled(IntentFeature)) {
-          <h2 class="govuk-heading-m">@messages("search-software.intent.h2")</h2>
-          <p class="govuk-body">@messages("search-software.intent.p1")</p>
-          <p class="govuk-body">@messages("search-software.intent.p2")</p>
+          @if(viewModel.isAgent) {
+              <p class="govuk-body">@messages("search-software.p1")</p>
+              <p class="govuk-body">@messages("search-software.p2")</p>
+              <p class="govuk-body">@messages("search-software.p3.agent.intent")</p>
+              <p class="govuk-inset-text">@messages("search-software.inset.agent.intent")</p>
+
+          } else {
+              <h2 class="govuk-heading-m">@messages("search-software.intent.h2")</h2>
+              <p class="govuk-body">@messages("search-software.intent.p1")</p>
+              <p class="govuk-body">@messages("search-software.intent.p2")</p>
+          }
       } else {
           <p class="govuk-body">@messages("search-software.p1")</p>
           <p class="govuk-body">@messages("search-software.p2")</p>
