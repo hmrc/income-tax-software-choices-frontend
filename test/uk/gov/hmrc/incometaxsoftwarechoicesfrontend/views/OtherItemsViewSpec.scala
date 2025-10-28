@@ -61,9 +61,6 @@ class OtherItemsViewSpec extends ViewSpec {
       "have a back link" in {
         document().selectHead(".govuk-back-link").attr("href") shouldBe testBackUrl
       }
-      "have a paragraph" in {
-        document().mainContent.selectNth("p", 1).text shouldBe OtherItemsPageContent.para
-      }
       "have a form" which {
         def form: Element = document().mainContent.selectHead("form")
 
@@ -179,9 +176,8 @@ class OtherItemsViewSpec extends ViewSpec {
 }
 
 private object OtherItemsPageContent {
-  val title = s"What else do you need to tell HMRC? - ${PageContentBase.title} - GOV.UK"
-  val legend = "What else do you need to tell HMRC?"
-  val para = "These are other items you’ll need to include in your tax return if you have them."
+  val title = s"Which of these other items do you need to submit in your tax return? - ${PageContentBase.title} - GOV.UK"
+  val legend = "Which of these other items do you need to submit in your tax return?"
   val hint = "Select all that apply"
   val privatePensionContributions = "Private pension contributions"
   val charitableGiving = "Charitable giving"

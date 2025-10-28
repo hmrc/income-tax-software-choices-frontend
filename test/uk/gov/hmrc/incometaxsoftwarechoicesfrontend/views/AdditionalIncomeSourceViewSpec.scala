@@ -64,9 +64,7 @@ class AdditionalIncomeSourceViewSpec extends ViewSpec {
       "have a title" in {
         document().title() shouldBe AdditionalIncomeSourcesPageContent.title
       }
-      "have a paragraph" in {
-        document().mainContent.selectNth("p", 1).text shouldBe AdditionalIncomeSourcesPageContent.para
-      }
+
       "have a form" which {
         def form: Element = document().mainContent.selectHead("form")
 
@@ -190,16 +188,15 @@ class AdditionalIncomeSourceViewSpec extends ViewSpec {
 }
 
 private object AdditionalIncomeSourcesPageContent {
-  val title = s"Which other income do you have? - ${PageContentBase.title} - GOV.UK"
-  val legend = "Which other income do you have?"
-  val para = "This is additional income you’ll need to include in your tax return."
+  val title = s"Which of these other incomes do you need to submit in your tax return? - ${PageContentBase.title} - GOV.UK"
+  val legend = "Which of these other incomes do you need to submit in your tax return?"
   val hint = "Select all that apply"
-  val ukInterest = "UK Interest"
+  val ukInterest = "UK interest"
   val constructionIndustryScheme = "Construction Industry Scheme"
   val employment = "Employment (PAYE)"
-  val ukDividends = "UK Dividends"
+  val ukDividends = "UK dividends"
   val statePension = "State Pension income"
-  val privatePension = "Private pension income"
+  val privatePension = "Private pension incomes"
   val foreignDividends = "Foreign dividends"
   val foreignInterest = "Foreign interest"
   val none = "None of these"

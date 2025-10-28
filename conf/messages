@@ -51,9 +51,8 @@ zero-results.results.link = browse software that’s currently available
 zero-results.button = Finish
 
 # Other Items page
-other-items.title = What else do you need to tell HMRC?
-other-items.legend = What else do you need to tell HMRC?
-other-items.para = These are other items you’ll need to include in your tax return if you have them.
+other-items.title = Which of these other items do you need to submit in your tax return?
+other-items.legend = Which of these other items do you need to submit in your tax return?
 other-items.hint = Select all that apply
 other-items.payments-into-a-private-pension = Private pension contributions
 other-items.charitable-giving = Charitable giving
@@ -317,7 +316,7 @@ product-details.other-income.foreign-dividends = Foreign dividends
 product-details.other-income.uk-dividends = UK dividends
 product-details.other-income.uk-interest = UK interest
 product-details.other-income.state-pension-income = State Pension income
-product-details.other-income.private-pension-income = Private pension income
+product-details.other-income.private-pension-income = Private pension incomes
 product-details.other-income.capital-gains-tax = Capital Gains
 product-details.other-income.charitable-giving = Charitable giving
 product-details.other-income.student-loans = Student Loan
@@ -395,16 +394,15 @@ product-details.explanation-link.text = If you are not sure what any of these te
 product-details.explanation-link.link = explanations
 
 # Other Income Sources Page
-additional.income.source-heading                                    = Which other income do you have?
-additional.income.source-legend                                     = Which other income do you have?
-additional.income.source-paragraph                                  = This is additional income you’ll need to include in your tax return.
+additional.income.source-heading                                    = Which of these other incomes do you need to submit in your tax return?
+additional.income.source-legend                                     = Which of these other incomes do you need to submit in your tax return?
 additional.income.source-hint                                       = Select all that apply
-additional.income.source-uk-interest                                = UK Interest
+additional.income.source-uk-interest                                = UK interest
 additional.income.source-construction-industry-scheme               = Construction Industry Scheme
 additional.income.source-employment                                 = Employment (PAYE)
-additional.income.source-uk-dividends                               = UK Dividends
+additional.income.source-uk-dividends                               = UK dividends
 additional.income.source-state-pension-income                       = State Pension income
-additional.income.source-private-pension-income                      = Private pension income
+additional.income.source-private-pension-income                     = Private pension incomes
 additional.income.source-foreign-dividends                          = Foreign dividends
 additional.income.source-foreign-interest                           = Foreign interest
 additional.income.source-none                                       = None of these

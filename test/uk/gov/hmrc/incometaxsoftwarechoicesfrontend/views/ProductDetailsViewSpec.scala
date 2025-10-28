@@ -398,7 +398,7 @@ class ProductDetailsViewSpec extends ViewSpec {
     val class2NIC = "Voluntary Class 2 National Insurance"
     val childBenefitCharge = "High Income Child Benefit Charge"
     val statePension = "State Pension income"
-    val privatePensionIncome = "Private pension income"
+    val privatePensionIncome = "Private pension incomes"
     val privatePensionContribution = "Private pension contributions"
     val marriage = "Marriage Allowance"
 
