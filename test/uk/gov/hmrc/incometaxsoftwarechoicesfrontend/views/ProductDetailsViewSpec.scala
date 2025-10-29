@@ -41,9 +41,13 @@ class ProductDetailsViewSpec extends ViewSpec {
     .copy(name = "abc full")
     .copy(filters = filterKeyToFilter.values.map(vf => vf -> Available).toMap) // All filters
 
-  private val softwareVendorModelMinimal = softwareVendorModelBase
+  private val softwareVendorWithIntent = softwareVendorModelBase
     .copy(name = "abc minimal")
-    .copy(filters = Map(SoleTrader -> Available, UkDividends -> Intended, UkProperty -> Intended, UkInterest -> Intended))
+    .copy(filters = Map(
+      SoleTrader -> Available, UkProperty -> Intended,
+      UkDividends -> Intended, ForeignDividends -> Available, UkInterest -> Intended,
+      StandardUpdatePeriods -> Available, CalendarUpdatePeriods -> Intended, FreeVersion -> Intended
+    ))
 
   "ProductDetailsPage" when {
 
@@ -59,7 +63,7 @@ class ProductDetailsViewSpec extends ViewSpec {
       table.selectHead(s"tbody > tr:nth-child($row) > td:nth-child(2)").text shouldBe status
     }
 
-    "the vendor has everything" which {
+    "the vendor has everything ready now" which {
 
       val document: Document = createAndParseDocument(softwareVendorModelFull)
 
@@ -141,18 +145,14 @@ class ProductDetailsViewSpec extends ViewSpec {
       }
     }
 
-    "the vendor has minimal features" which {
+    "the vendor has features in development" which {
 
-      val document: Document = createAndParseDocument(softwareVendorModelMinimal)
+      val document: Document = createAndParseDocument(softwareVendorWithIntent)
 
       def table(index: Int): Element = document.getTable(index)
 
-      "have a title" in {
-        document.title shouldBe s"""${softwareVendorModelMinimal.name} - ${PageContentBase.title} - GOV.UK"""
-      }
-
       "display the vendor name heading" in {
-        document.selectNth("h1", 1).text() shouldBe softwareVendorModelMinimal.name
+        document.selectNth("h1", 1).text() shouldBe softwareVendorWithIntent.name
       }
 
       "display the vendor name heading paragraph" in {
@@ -165,8 +165,8 @@ class ProductDetailsViewSpec extends ViewSpec {
         val link = row.selectHead("dd").selectHead("a")
 
         row.selectHead("dt").text shouldBe s"${ProductDetailsPage.contactDetailsWebsite}:"
-        link.text shouldBe s"${softwareVendorModelMinimal.website} (opens in new tab)"
-        link.attr("href") shouldBe softwareVendorModelMinimal.website
+        link.text shouldBe s"${softwareVendorWithIntent.website} (opens in new tab)"
+        link.attr("href") shouldBe softwareVendorWithIntent.website
         link.attr("target") shouldBe "_blank"
       }
 
@@ -194,16 +194,16 @@ class ProductDetailsViewSpec extends ViewSpec {
           checkTableHeader(table(3), "Other income sources and items", "Status")
         }
 
-        "displays all the rows" in {
+        "displays the correct statuses" in {
           checkRow(table(1), 1, ProductDetailsPage.freeVersion, status = s"${ProductDetailsPage.notIncluded}")
           checkRow(table(1), 2, ProductDetailsPage.recordKeeping, status = s"${ProductDetailsPage.notIncluded}")
           checkRow(table(1), 3, ProductDetailsPage.bridging, status = s"${ProductDetailsPage.notIncluded}")
           checkRow(table(1), 4, ProductDetailsPage.agent, status = s"${ProductDetailsPage.notIncluded}")
           checkRow(table(1), 5, ProductDetailsPage.individual, status = s"${ProductDetailsPage.notIncluded}")
-          checkRow(table(1), 6, ProductDetailsPage.standardUpdatePeriods, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(1), 6, ProductDetailsPage.standardUpdatePeriods, status = s"${ProductDetailsPage.readyNow}")
           checkRow(table(1), 7, ProductDetailsPage.calendarUpdatePeriods, status = s"${ProductDetailsPage.notIncluded}")
           checkRow(table(2), 1, ProductDetailsPage.soleTrader, status = s"${ProductDetailsPage.readyNow}")
-          checkRow(table(2), 2, ProductDetailsPage.ukProperty, status = s"${ProductDetailsPage.inDevelopment}")
+          checkRow(table(2), 2, ProductDetailsPage.ukProperty, status = s"${ProductDetailsPage.notIncluded}")
           checkRow(table(2), 3, ProductDetailsPage.foreignProperty, status = s"${ProductDetailsPage.notIncluded}")
           checkRow(table(3), 1, ProductDetailsPage.ukInterest, status = s"${ProductDetailsPage.inDevelopment}")
           checkRow(table(3), 2, ProductDetailsPage.cis, status = s"${ProductDetailsPage.notIncluded}")
@@ -211,7 +211,7 @@ class ProductDetailsViewSpec extends ViewSpec {
           checkRow(table(3), 4, ProductDetailsPage.ukDividends, status = s"${ProductDetailsPage.inDevelopment}")
           checkRow(table(3), 5, ProductDetailsPage.statePension, status = s"${ProductDetailsPage.notIncluded}")
           checkRow(table(3), 6, ProductDetailsPage.privatePensionIncome, status = s"${ProductDetailsPage.notIncluded}")
-          checkRow(table(3), 7, ProductDetailsPage.foreignDividend, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(3), 7, ProductDetailsPage.foreignDividend, status = s"${ProductDetailsPage.readyNow}")
           checkRow(table(3), 8, ProductDetailsPage.foreignInterest, status = s"${ProductDetailsPage.notIncluded}")
           checkRow(table(3), 9, ProductDetailsPage.privatePensionContribution, status = s"${ProductDetailsPage.notIncluded}")
           checkRow(table(3), 10, ProductDetailsPage.charitableGiving, status = s"${ProductDetailsPage.notIncluded}")
@@ -345,8 +345,10 @@ class ProductDetailsViewSpec extends ViewSpec {
         rows.get(3).select("dd").text() shouldBe ProductDetailsPage.english
       }
 
-      "not render the specs section when no specs are present" in {
-        val docEmpty: Document = createAndParseDocument(softwareVendorModelBase)
+      "not render the specs section when no specs are present or are intended" in {
+        val docEmpty: Document = createAndParseDocument(softwareVendorModelBase.copy(filters = Map(
+          DesktopApplication -> Intended, WebBrowser -> Intended, MacOS -> Intended, Apple -> Intended, English -> Intended
+        )))
         val allSummaryLists = docEmpty.select("dl.govuk-summary-list")
         allSummaryLists.size shouldBe 1
 
