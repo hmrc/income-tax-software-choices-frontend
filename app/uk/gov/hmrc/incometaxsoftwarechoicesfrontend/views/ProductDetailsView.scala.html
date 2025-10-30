@@ -124,26 +124,27 @@
         Seq(
             TableRow(
                 content = Text(messages(s"product-details.$section.${filter.key}")),
-                classes="govuk-!-width-three-quarters"
+                classes = "govuk-!-width-three-quarters"
             ),
             TableRow(
                 content = (softwareVendor.getFeatureStatus(filter), displayIntent) match {
-                 case (Available, _) => {
-                    Text(messages("search-software.vendor-detail.eoy-tax-return.ready"))
-                 }
-                 case (Intended, true) => {
-                   HtmlContent(govukTag(Tag(
-                       content = Text(messages("search-software.vendor-detail.eoy-tax-return.development")),
-                       classes = "govuk-tag--yellow"
-                   )))
-                } case _ => {
-                   HtmlContent(govukTag(Tag(
-                        content = Text(messages("search-software.vendor-detail.eoy-tax-return.not-included")),
-                        classes = "govuk-tag--red"
-                   )))
-               }
-             },
-                classes="govuk-!-width-one-quarter"
+                    case (Available, _) => {
+                        Text(messages("search-software.vendor-detail.eoy-tax-return.ready"))
+                    }
+                    case (Intended, true) => {
+                        HtmlContent(govukTag(Tag(
+                            content = Text(messages("search-software.vendor-detail.eoy-tax-return.development")),
+                            classes = "govuk-tag--yellow"
+                        )))
+                    }
+                    case _ => {
+                        HtmlContent(govukTag(Tag(
+                            content = Text(messages("search-software.vendor-detail.eoy-tax-return.not-included")),
+                            classes = "govuk-tag--red"
+                        )))
+                    }
+                },
+                classes = "govuk-!-width-one-quarter"
             )
         )
     }

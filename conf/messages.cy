@@ -97,15 +97,16 @@ choosing-software.para2                     = Some software features are either:
 choosing-software.bullet1                   = ready now
 choosing-software.bullet2                   = in development
 choosing-software.para3                     = All the software products in your results will let you or your agent:
-choosing-software.bullet3                   = create, store and correct digital records
+choosing-software.bullet3                   = create, store and correct digital records of your self-employment and property income and expenses
 choosing-software.bullet4                   = send your quarterly updates to HMRC
+choosing-software.para4                     = This is everything you need to start using Making Tax Digital for Income Tax from 6 April 2026.
 choosing-software.h3                        = Submitting your 2026 to 2027 tax return
-choosing-software.para4                     = The features you will need to submit your tax return are still being developed by some software providers. They are shown as ‘in development’.
-choosing-software.para5                     = These are features that software providers have either built or committed to build ready for when you need to submit your 2026 to 2027 tax return.
+choosing-software.para5                     = The features you will need to submit your tax return are still being developed by some software providers. They are shown as ‘in development’.
+choosing-software.para6                     = These are features that software providers have either built or committed to build ready for when you need to submit your 2026 to 2027 tax return.
 choosing-software.h2.making-sure            = Making sure you get the right product
-choosing-software.para6                     = Some of the listed products may have free trials or free versions, but you’ll have to pay for most of them.
-choosing-software.para7                     = HMRC is not responsible for the availability of products or making sure that the product you chose meets your current and future needs.
-choosing-software.para8                     = We recommend that you visit software providers’ websites to do more research before choosing a product.
+choosing-software.para7                     = Some of the listed products may have free trials or free versions, but you’ll have to pay for others.
+choosing-software.para8                     = HMRC is not responsible for the availability of products or making sure that the product you chose meets your current and future needs.
+choosing-software.para9                     = We recommend that you visit software providers’ websites to do more research before choosing a product.
 choosing-software.button.view-your-results  = View your results
 
 # Search software page
