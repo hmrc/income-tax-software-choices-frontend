@@ -19,6 +19,7 @@
 @import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcNewTabLinkHelper
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{VendorFilterGroups, _}
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus._
 @import java.net.URLEncoder
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes.ProductDetailsController
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.viewmodels.VendorSuitabilityViewModel
@@ -50,7 +51,7 @@
 @softwareVendorPricing(vendor: SoftwareVendorModel) = @{
 
   val key: String = {messages("search-software.vendor-detail.pricing")}
-  val freeVersion = if(vendor.filters.contains(FreeVersion)) Some(messages("search-software.vendor-detail.pricing.free-version")) else Some(messages("search-software.vendor-detail.pricing.no-free-version"))
+  val freeVersion = if(vendor.getFeatureStatus(FreeVersion).eq(Available)) Some(messages("search-software.vendor-detail.pricing.free-version")) else Some(messages("search-software.vendor-detail.pricing.no-free-version"))
   val value = Seq(
     freeVersion
   ).flatten.mkString("/")
@@ -66,7 +67,9 @@
 
   customSummaryListRow(
     key = "suitable-for",
-    filtersAvailable = vendor.orderedFilterSubset(VendorFilterGroups.suitableForFilters).map(_._1).toSeq
+    filtersAvailable = vendor.orderedFilterSubset(VendorFilterGroups.suitableForFilters)
+    .filter(_._2.eq(Available))
+    .map(_._1).toSeq
   )
 
 }
@@ -75,7 +78,9 @@
 
   customSummaryListRow(
     key = "software-for",
-    filtersAvailable = vendor.orderedFilterSubset(VendorFilterGroups.softwareForFilters).map(_._1).toSeq
+    filtersAvailable = vendor.orderedFilterSubset(VendorFilterGroups.softwareForFilters)
+    .filter(_._2.eq(Available))
+    .map(_._1).toSeq
   )
 
 }
