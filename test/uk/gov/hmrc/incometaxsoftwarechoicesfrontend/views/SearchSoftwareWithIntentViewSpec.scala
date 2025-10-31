@@ -27,7 +27,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.Feature
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes.ProductDetailsController
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.Available
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.{Available, Intended}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.viewmodels.{SoftwareChoicesResultsViewModel, VendorSuitabilityViewModel}
@@ -60,6 +60,13 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
     testRow(summaryList, 1, SearchSoftwareWithIntentPageContent.pricing, SearchSoftwareWithIntentPageContent.noFreeVersion)
   }
 
+  private def agentTestCardFour(vendor: Element) = {
+    val summaryList = vendor.selectHead("dl")
+    testRow(summaryList, 1, SearchSoftwareWithIntentPageContent.pricing, SearchSoftwareWithIntentPageContent.noFreeVersion)
+    testRow(summaryList, 2, SearchSoftwareWithIntentPageContent.submissionType, SearchSoftwareWithIntentPageContent.quarterlyUpdates)
+    testRow(summaryList, 3, SearchSoftwareWithIntentPageContent.incomeSources, SearchSoftwareWithIntentPageContent.soleTrader)
+  }
+
   private def testCardOne(vendor: Element) = {
     val summaryList = vendor.selectHead("dl")
     testRow(summaryList, 1, SearchSoftwareWithIntentPageContent.pricing, SearchSoftwareWithIntentPageContent.freeVersion)
@@ -87,23 +94,31 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
     testRow(summaryList, 5, SearchSoftwareWithIntentPageContent.taxReturn, s"${SearchSoftwareWithIntentPageContent.notIncluded}")
   }
 
+  private def testCardFour(vendor: Element) = {
+    val summaryList = vendor.selectHead("dl")
+    testRow(summaryList, 1, SearchSoftwareWithIntentPageContent.pricing, SearchSoftwareWithIntentPageContent.noFreeVersion)
+    testRow(summaryList, 2, SearchSoftwareWithIntentPageContent.incomeSources, SearchSoftwareWithIntentPageContent.soleTrader)
+    testRow(summaryList, 3, SearchSoftwareWithIntentPageContent.quarterlyUpdates, s"${SearchSoftwareWithIntentPageContent.readyNow}")
+    testRow(summaryList, 4, SearchSoftwareWithIntentPageContent.taxReturn, s"${SearchSoftwareWithIntentPageContent.notIncluded}")
+  }
+
   override def beforeEach(): Unit = {
     enable(IntentFeature)
     super.beforeEach()
   }
 
-    "Search software page" must {
-      enable(IntentFeature)
+  "Search software page" must {
+    enable(IntentFeature)
 
-    lazy val document = {
-        val model = SoftwareChoicesResultsViewModel(
-          allInOneVendors = SearchSoftwareWithIntentPageContent.softwareVendorsNoResults,
-          otherVendors = SearchSoftwareWithIntentPageContent.softwareVendorsNoResults,
-          vendorsWithIntent = SearchSoftwareWithIntentPageContent.multipleVendorsWithIntent,
-          zeroResults = false
-        )
-        Jsoup.parse(page(model).body)
-      }
+  lazy val document = {
+      val model = SoftwareChoicesResultsViewModel(
+        allInOneVendors = SearchSoftwareWithIntentPageContent.softwareVendorsNoResults,
+        otherVendors = SearchSoftwareWithIntentPageContent.softwareVendorsNoResults,
+        vendorsWithIntent = SearchSoftwareWithIntentPageContent.multipleVendorsWithIntent,
+        zeroResults = false
+      )
+      Jsoup.parse(page(model).body)
+    }
     "have a title" in {
       document.title shouldBe s"""${SearchSoftwareWithIntentPageContent.title} - ${PageContentBase.title} - GOV.UK"""
     }
@@ -323,6 +338,11 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
             testCardThree(thirdVendor)
           }
         }
+
+        "pricing, type of software and income sources in card detail only display features available now" in {
+          def fourthVendor: Element = document.selectHead("#software-vendor-3")
+          testCardFour(fourthVendor)
+        }
       }
     }
 
@@ -450,6 +470,11 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
             agentTestCardTwo(secondVendor)
           }
         }
+
+        "only displays features that are available now in card detail" in {
+          def fourthVendor: Element = document.selectHead("#software-vendor-3")
+          agentTestCardFour(fourthVendor)
+        }
       }
     }
   }
@@ -539,11 +564,6 @@ private object SearchSoftwareWithIntentPageContent {
     val softwareFor = "Type of software"
     val softwareCompatibility = "Making Tax Digital Compatibility"
     val accessibilityFeatures = "Accessibility features"
-    val accountingPeriod = "Accounting period"
-    val personalIncomeSources = "Personal income sources"
-    val deductions = "Deductions"
-    val pensions = "Pensions"
-    val allowances = "Allowances"
     val applyFilters = "Apply filters"
   }
 
@@ -556,11 +576,11 @@ private object SearchSoftwareWithIntentPageContent {
   val emptyVendorListMessageBullet1 = "reduce the number of filters you apply"
   val emptyVendorListMessageBullet2 = "make sure the name you have entered into the search bar is correct"
 
-  val intentHeadingMany = "Based on your answers we’ve found 3 results"
+  val intentHeadingMany = "Based on your answers we’ve found 4 results"
   val intentHeadingOne = "Based on your answers we’ve found 1 result"
   val intentHeadingNone = "There are no matching results"
 
-  val agentHeadingMany = "We’ve found 3 results"
+  val agentHeadingMany = "We’ve found 4 results"
   val agentHeadingOne = "We’ve found 1 result"
   val agentHeadingNone = "There are no matching results."
 
@@ -599,48 +619,17 @@ private object SearchSoftwareWithIntentPageContent {
   val incomeSources = "Income sources"
   val quarterlyUpdates = "Quarterly updates"
   val taxReturn = "Tax return"
-  
+
   val readyNow = "Ready now"
   val inDevelopment = "In development"
   val notIncluded = "Not included"
 
-  val softwareCompatibility = "Making Tax Digital Compatibility:"
   val vat = "VAT"
 
-  val accessibility = "Accessibility:"
   val visual = "Blindness or impaired vision"
   val hearing = "Deafness or impaired hearing"
   val motor = "Motor or physical difficulties"
   val cognitive = "Cognitive impairments"
-
-  val accountingPeriod = "Accounting period"
-  val apr6 = "6th April to 5th April"
-  val apr1 = "1st April to 31st March"
-  val apr1Hint = "This supports calendar update periods"
-
-  val personalIncomeSources = "Personal income sources"
-  val constructionIndustryScheme = "Construction Industry Scheme (CIS)"
-  val capitalGainsTax = "Capital Gains Tax"
-  val employment = "Employment"
-  val foreignIncome = "Foreign Income"
-  val ukDividends = "UK Dividends"
-  val ukInterest = "UK Interest"
-  val foreignDividends = "Foreign Dividends"
-  val foreignInterest = "Foreign Interest"
-
-  val Deductions = "Deductions"
-  val charitableGiving = "Charitable giving"
-  val highIncomeChildBenefit = "High Income Child Benefit Charge"
-  val studentLoans = "Student loans"
-  val volunteer = "Voluntary Class 2 National Insurance"
-
-  val pensions = "Pensions"
-  val statePension = "State pension income"
-  val privatePension = "Private pension income"
-  val payments = "Payments into a private pension"
-
-  val allowances = "Allowances"
-  val marriageAllowace = "Marriage Allowance"
 
   private val lastUpdateTest = LocalDate.of(2022, 12, 2)
 
@@ -766,6 +755,25 @@ private object SearchSoftwareWithIntentPageContent {
           RecordKeeping,
           QuarterlyUpdates
         ).map(vf => vf -> Available).toMap
+      ),
+      quarterlyReady = Some(true),
+      eoyReady = None
+    ),
+    VendorSuitabilityViewModel(
+      vendor = SoftwareVendorModel(
+        name = "test software vendor four",
+        email = Some("test@software-vendor-name-four.com"),
+        phone = Some("44444 444 444"),
+        website = "software-vendor-name-four.com",
+        filters = Map(
+          FreeVersion -> Intended,
+          SoleTrader -> Available,
+          UkProperty -> Intended,
+          OverseasProperty -> Intended,
+          RecordKeeping -> Intended,
+          QuarterlyUpdates -> Available,
+          TaxReturn -> Intended
+        )
       ),
       quarterlyReady = Some(true),
       eoyReady = None
