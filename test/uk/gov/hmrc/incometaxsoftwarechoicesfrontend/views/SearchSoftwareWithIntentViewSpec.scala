@@ -585,7 +585,7 @@ private object SearchSoftwareWithIntentPageContent {
   val agentHeadingNone = "There are no matching results."
 
   val agentPara1 = "All of this software has been through a recognition process where HMRC checks it’s capable of filing your taxes. HMRC does not endorse or recommend any one product or software provider."
-  val agentPara2 = "You’ll need to pay for most of the software listed, though some versions are free or have a free trial."
+  val agentPara2 = "Some of the listed products may have free trials or free versions, but you’ll have to pay for others."
   val agentPara3 = "Some of the features you’ll need to submit your client’s tax returns are still being developed."
   val agentInset = "HMRC is not responsible for the availability of products or making sure that the product you chose meets the current and future needs of your clients. We recommend that you visit software providers’ websites to do more research before choosing a product."
 
