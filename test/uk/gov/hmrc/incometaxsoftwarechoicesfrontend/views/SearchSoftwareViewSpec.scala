@@ -603,7 +603,7 @@ private object SearchSoftwarePageContent {
   val lastUpdate = "This page was last updated: 2 Dec 2022"
   val heading = "Software for Making Tax Digital for Income Tax"
   val paragraph = "All of this software has been through a recognition process where HMRC checks it’s capable of filing your taxes. HMRC does not endorse or recommend any one product or software provider."
-  val paragraphTwo = "You’ll need to pay for most of the software listed, though some versions are free or have a free trial."
+  val paragraphTwo = "Some of the listed products may have free trials or free versions, but you’ll have to pay for others."
   val paragraphThree = "Software is in development, and more options will be available over time. This may include an all-in-one software product."
 
   object SearchSoftwareSection {
