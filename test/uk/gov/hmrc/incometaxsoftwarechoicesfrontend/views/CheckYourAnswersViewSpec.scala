@@ -59,7 +59,7 @@ class CheckYourAnswersViewSpec extends ViewSpec {
       }
     }
     "have a continue button" in {
-      document.select("form").select(".govuk-button").text() shouldBe CheckYourAnswersViewContent.continue
+      document.select("form").select(".govuk-button").text() shouldBe CheckYourAnswersViewContent.confirmContinue
     }
   }
 
@@ -94,7 +94,7 @@ class CheckYourAnswersViewSpec extends ViewSpec {
   object CheckYourAnswersViewContent {
     val title = s"Check your answers before viewing compatible software - ${PageContentBase.title} - GOV.UK"
     val heading = "Check your answers before viewing compatible software"
-    val continue = "Continue"
+    val confirmContinue = "Confirm and continue"
   }
 
 }

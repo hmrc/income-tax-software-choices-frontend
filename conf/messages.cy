@@ -4,6 +4,7 @@ base.title.error            = Gwall: {0} - Find software that works with Making 
 base.error-heading          = Mae problem wedi codi
 base.opens-in-new-tab       = (yn agor tab newydd)
 base.continue               = Yn eich blaen
+base.confirm-continue       = Confirm and continue
 base.or                     = or
 base.change                 = Change
 

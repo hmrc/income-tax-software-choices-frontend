@@ -77,7 +77,7 @@ trait ComponentSpecBase extends AnyWordSpec
       BusinessIncomeForm.form.fill(pageAnswers).data.map { case (k, v) => (k, Seq(v)) }
     )
 
-    def getAdditionalIncome: WSResponse = get("/which-additional-income-source")
+    def getAdditionalIncome: WSResponse = get("/which-other-income-source-tax-return")
 
     def submitAdditionalIncome(maybeKeys: Option[Seq[String]], editMode: Boolean = false): WSResponse = {
       val body: Map[String, Seq[String]] = maybeKeys match {
@@ -85,10 +85,10 @@ trait ComponentSpecBase extends AnyWordSpec
         case Some(_) => Map("additionalIncome[]" -> Seq(AdditionalIncomeForm.noneKey))
         case None => Map.empty
       }
-      post(s"/which-additional-income-source?editMode=$editMode")(body)
+      post(s"/which-other-income-source-tax-return?editMode=$editMode")(body)
     }
 
-    def getOtherItems: WSResponse = get("/what-else-do-you-need-to-tell-us")
+    def getOtherItems: WSResponse = get("/which-other-items-tax-return")
 
     def postOtherItems(maybeKeys: Option[Seq[String]], editMode: Boolean = false): WSResponse = {
       val body: Map[String, Seq[String]] = maybeKeys match {
@@ -96,7 +96,7 @@ trait ComponentSpecBase extends AnyWordSpec
         case Some(_) => Map("otherItems[]" -> Seq(OtherItemsForm.noneKey))
         case None => Map.empty
       }
-      post(s"/what-else-do-you-need-to-tell-us?editMode=$editMode")(body)
+      post(s"/which-other-items-tax-return?editMode=$editMode")(body)
     }
 
     def getUnsupportedAccountingPeriod: WSResponse = get("/accounting-period-not-supported")

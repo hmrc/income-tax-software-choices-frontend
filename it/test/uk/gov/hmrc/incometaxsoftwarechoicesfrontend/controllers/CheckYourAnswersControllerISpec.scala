@@ -58,15 +58,15 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
         res should have(
           httpStatus(OK),
           pageTitle(s"${messages("check-your-answers.heading")} - ${PageContentBase.title} - GOV.UK"),
-          summaryListRow("Income sources", Seq(SoleTrader, UkProperty, OverseasProperty)
+          summaryListRow(SummaryListKeys.incomeSources, Seq(SoleTrader, UkProperty, OverseasProperty)
             .map(vf => messages(s"business-income.$vf")).mkString(" ")),
-          summaryListRow("Other income", Seq(UkInterest, ConstructionIndustryScheme, Employment, UkDividends, StatePensionIncome,
+          summaryListRow(SummaryListKeys.otherIncome, Seq(UkInterest, ConstructionIndustryScheme, Employment, UkDividends, StatePensionIncome,
             PrivatePensionIncome, ForeignDividends, ForeignInterest)
             .map(vf => messages(s"additional.income.source-$vf")).mkString(" ")),
-          summaryListRow("Other items", Seq(PaymentsIntoAPrivatePension, CharitableGiving, CapitalGainsTax, StudentLoans,
+          summaryListRow(SummaryListKeys.otherItems, Seq(PaymentsIntoAPrivatePension, CharitableGiving, CapitalGainsTax, StudentLoans,
             MarriageAllowance, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge)
             .map(vf => messages(s"other-items.$vf")).mkString(" ")),
-          summaryListRow("Accounting period", Set(OtherAccountingPeriod)
+          summaryListRow(SummaryListKeys.accountingPeriod, Set(OtherAccountingPeriod)
             .map(vf => messages(s"accounting-period.${vf.key}")).mkString(" "))
         )
       }
@@ -83,11 +83,11 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
         res should have(
           httpStatus(OK),
           pageTitle(s"${messages("check-your-answers.heading")} - ${PageContentBase.title} - GOV.UK"),
-          summaryListRow("Income sources", Seq(SoleTrader, UkProperty, OverseasProperty)
+          summaryListRow(SummaryListKeys.incomeSources, Seq(SoleTrader, UkProperty, OverseasProperty)
             .map(vf => messages(s"business-income.$vf")).mkString(" ")),
-          summaryListRow("Other income", messages(s"check-your-answers.none-selected")),
-          summaryListRow("Other items", messages(s"check-your-answers.none-selected")),
-          summaryListRow("Accounting period", Set(OtherAccountingPeriod)
+          summaryListRow(SummaryListKeys.otherIncome, messages(s"check-your-answers.none-selected")),
+          summaryListRow(SummaryListKeys.otherItems, messages(s"check-your-answers.none-selected")),
+          summaryListRow(SummaryListKeys.accountingPeriod, Set(OtherAccountingPeriod)
             .map(vf => messages(s"accounting-period.${vf.key}")).mkString(" "))
         )
       }
@@ -248,4 +248,12 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
 
   def testUserFilters(answers: Option[UserAnswers]): UserFilters = UserFilters(SessionId, answers)
 
+
+  object SummaryListKeys {
+    val incomeSources = "Income sources (quarterly updates and tax return)"
+    val otherIncome = "Other incomes (tax return only)"
+    val otherItems = "Other items (tax return only)"
+    val accountingPeriod = "Accounting period"
+  }
 }
+
