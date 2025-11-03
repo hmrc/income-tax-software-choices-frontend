@@ -41,7 +41,7 @@
 
 @hmrcStandardPage(HmrcStandardPageParams(
     serviceURLs = ServiceURLs(
-        serviceUrl = None
+        serviceUrl = Some(routes.IndexController.index.url)
     ),
     banners = Banners(
         phaseBanner = Some(standardAlphaBanner(url = appConfig.feedbackUrl))
