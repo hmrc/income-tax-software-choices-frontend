@@ -20,8 +20,8 @@ GET         /keep-alive                          uk.gov.hmrc.incometaxsoftwarech
 GET         /how-will-you-use-it                 uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.UserTypeController.show()
 POST        /how-will-you-use-it                 uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.UserTypeController.submit()
 
-GET         /which-income-source                 uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.BusinessIncomeController.show(editMode: Boolean ?= false)
-POST        /which-income-source                 uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.BusinessIncomeController.submit(editMode: Boolean ?= false)
+GET         /which-income-source-quarterly-updates  uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.BusinessIncomeController.show(editMode: Boolean ?= false)
+POST        /which-income-source-quarterly-updates  uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.BusinessIncomeController.submit(editMode: Boolean ?= false)
 
 GET         /which-other-income-source-tax-return         uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.AdditionalIncomeSourcesController.show(editMode: Boolean ?= false)
 POST        /which-other-income-source-tax-return         uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.AdditionalIncomeSourcesController.submit(editMode: Boolean ?= false)

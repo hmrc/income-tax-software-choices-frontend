@@ -71,9 +71,9 @@ trait ComponentSpecBase extends AnyWordSpec
 
     def productDetails(name: String): WSResponse = get(s"/product-details/$name")
 
-    def getBusinessIncome: WSResponse = get("/which-income-source")
+    def getBusinessIncome: WSResponse = get("/which-income-source-quarterly-updates")
 
-    def postBusinessIncome(pageAnswers: Seq[VendorFilter], editMode: Boolean = false): WSResponse = post(s"/which-income-source?editMode=$editMode")(
+    def postBusinessIncome(pageAnswers: Seq[VendorFilter], editMode: Boolean = false): WSResponse = post(s"/which-income-source-quarterly-updates?editMode=$editMode")(
       BusinessIncomeForm.form.fill(pageAnswers).data.map { case (k, v) => (k, Seq(v)) }
     )
 
