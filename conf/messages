@@ -4,6 +4,7 @@ base.title.error            = Error: {0} - Find software that works with Making 
 base.error-heading          = There is a problem
 base.opens-in-new-tab       = (opens in new tab)
 base.continue               = Continue
+base.confirm-continue       = Confirm and continue
 base.or                     = or
 base.change                 = Change
 
@@ -68,9 +69,9 @@ other-items.error.invalid-selection = Select one other item, other items, or ‘
 
 # Check Your Answers view
 check-your-answers.heading              = Check your answers before viewing compatible software
-check-your-answers.business-income      = Income sources
-check-your-answers.additional-income    = Other income
-check-your-answers.other-items          = Other items
+check-your-answers.business-income      = Income sources (quarterly updates and tax return)
+check-your-answers.additional-income    = Other incomes (tax return only)
+check-your-answers.other-items          = Other items (tax return only)
 check-your-answers.accounting-period    = Accounting period
 check-your-answers.none-selected        = None selected
 
