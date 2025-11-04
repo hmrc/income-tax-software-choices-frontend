@@ -24,6 +24,11 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTem
 class MainTemplateViewSpec extends ViewSpec {
   "Main Template" should {
 
+    "have link to Index page" in {
+      document.getServiceLink shouldBe "/find-making-tax-digital-income-tax-software"
+      document.getServiceName shouldBe "Find software that works with Making Tax Digital for Income Tax"
+    }
+
     "have the report technical issues link" in {
       document.getTechnicalHelpLink shouldBe "http://localhost:9250/contact/report-technical-problem?service=ITSC&referrerUrl=%2F"
       document.getTechnicalHelpLinkText shouldBe "Is this page not working properly? (opens in new tab)"
