@@ -27,12 +27,13 @@ accounting-period.error                                           = Select eithe
 
 # Business Income page
 business-income.title = Which business income do you have?
-business-income.legend = Which business income do you have?
-business-income.para = You’ll need to include this in your quarterly updates and tax return.
+business-income.legend = Which of these incomes do you need to include in your quarterly updates?
+business-income.para = You’ll also need to send these in your tax return.
 business-income.hint = Select all that apply.
 business-income.self-employment = Sole trader
-business-income.uk-property = UK property
-business-income.foreign-property = Foreign property
+business-income.sole-trader = Being self-employed as a sole trader
+business-income.uk-property = Renting out a UK property
+business-income.foreign-property = Renting out a foreign property
 
 business-income.error.non-empty         = Select business income or business incomes
 
