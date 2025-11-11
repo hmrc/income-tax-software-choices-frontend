@@ -35,17 +35,15 @@ class OtherItemsController @Inject()(view: OtherItemsView,
                                     (implicit ec: ExecutionContext,
                                      mcc: MessagesControllerComponents) extends BaseFrontendController {
 
-  def show(editMode: Boolean): Action[AnyContent] = (identify andThen requireData).async { request =>
+  def show(editMode: Boolean): Action[AnyContent] = (identify andThen requireData) { request =>
     given Request[AnyContent] = request
-    for {
-      pageAnswers <- pageAnswersService.getPageAnswers(request.sessionId, OtherItemsPage)
-    } yield {
-      Ok(view(
-        otherItemsForm = OtherItemsForm.form.fill(pageAnswers),
-        postAction = routes.OtherItemsController.submit(editMode),
-        backLink = backUrl(editMode)
-      ))
-    }
+
+    val pageAnswers = pageAnswersService.getPageAnswers(request.userFilters, OtherItemsPage)
+    Ok(view(
+      otherItemsForm = OtherItemsForm.form.fill(pageAnswers),
+      postAction = routes.OtherItemsController.submit(editMode),
+      backLink = backUrl(editMode)
+    ))
   }
 
   def submit(editMode: Boolean): Action[AnyContent] = (identify andThen requireData).async { request =>

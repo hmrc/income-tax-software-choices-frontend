@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
-import org.mockito.ArgumentMatchers.{any, eq => eqTo}
+import org.mockito.ArgumentMatchers.{any, eq as eqTo}
 import org.mockito.Mockito.when
 import play.api.http.Status.{OK, SEE_OTHER}
 import play.api.mvc.Result
@@ -25,7 +25,7 @@ import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.mocks.MockSessionIdentifierAction
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.UserTypeForm
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{UserAnswers, UserFilters, UserType}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.SoleTraderOrLandlord
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{Agent, Individual}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.UserTypePage
@@ -46,8 +46,12 @@ class UserTypeControllerSpec extends ControllerBaseSpec with MockSessionIdentifi
         )(any(), any()))
           .thenReturn(HtmlFormat.empty)
 
-        when(mockPageAnswersService.getPageAnswers(eqTo(sessionId), eqTo(UserTypePage))(any()))
-          .thenReturn(Future.successful(Some(SoleTraderOrLandlord)))
+        val testUserFilters = UserFilters(sessionId, Some(UserAnswers().set(UserTypePage, SoleTraderOrLandlord).get))
+
+        when(mockPageAnswersService.getUserFilters(eqTo(sessionId)))
+          .thenReturn(Future.successful(Some(testUserFilters)))
+        when(mockPageAnswersService.getPageAnswers(eqTo(testUserFilters), eqTo(UserTypePage))(any()))
+          .thenReturn(Some(SoleTraderOrLandlord))
 
         val result: Future[Result] = controller.show()(fakeRequest)
 
@@ -60,8 +64,11 @@ class UserTypeControllerSpec extends ControllerBaseSpec with MockSessionIdentifi
           any(), any()
         )(any(), any()))
           .thenReturn(HtmlFormat.empty)
-        when(mockPageAnswersService.getPageAnswers(eqTo(sessionId), eqTo(UserTypePage))(any()))
-          .thenReturn(Future.successful(None))
+
+        when(mockPageAnswersService.getUserFilters(eqTo(sessionId)))
+          .thenReturn(Future.successful(Some(UserFilters(sessionId, None))))
+        when(mockPageAnswersService.getPageAnswers(any(), eqTo(UserTypePage))(any()))
+          .thenReturn(None)
 
         val result: Future[Result] = controller.show()(fakeRequest)
 

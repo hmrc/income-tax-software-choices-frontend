@@ -47,65 +47,57 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
                                          val appConfig: AppConfig,
                                          mcc: MessagesControllerComponents) extends BaseFrontendController with FeatureSwitching {
 
-  def show(zeroResults: Boolean): Action[AnyContent] = (identify andThen requireData).async { request =>
+  def show(zeroResults: Boolean): Action[AnyContent] = (identify andThen requireData) { request =>
     given Request[AnyContent] = request
-    for {
-      userFilters <- userFiltersRepository.get(request.sessionId)
-      filters = userFilters.map(_.finalFilters).getOrElse(Seq.empty)
-      userType <- pageAnswersService.getPageAnswers(request.sessionId, UserTypePage)
-      isAgent = userType.contains(Agent)
+
+    val finalFilters = request.userFilters.finalFilters
+    val isAgent = pageAnswersService.getPageAnswers(request.userFilters, UserTypePage).eq(Agent)
+
+    Ok(view(
       model = SoftwareChoicesResultsViewModel(
-        allInOneVendors = softwareChoicesService.getAllInOneVendors(filters = filters),
-        otherVendors = softwareChoicesService.getOtherVendors(filters = filters, isAgent || zeroResults),
-        vendorsWithIntent = if (isEnabled(IntentFeature)) softwareChoicesService.getVendorsWithIntent(filters = filters) else Seq.empty,
+        allInOneVendors = softwareChoicesService.getAllInOneVendors(filters = finalFilters),
+        otherVendors = softwareChoicesService.getOtherVendors(filters = finalFilters, isAgent || zeroResults),
+        vendorsWithIntent = if (isEnabled(IntentFeature)) softwareChoicesService.getVendorsWithIntent(filters = finalFilters) else Seq.empty,
         zeroResults = zeroResults,
         isAgent = isAgent
-      )
-    } yield {
-      Ok(view(model, FiltersForm.form.fill(FiltersFormModel(filters = filters))))
-    }
+      ),
+      form = FiltersForm.form.fill(FiltersFormModel(filters = finalFilters))
+    ))
   }
 
   def search(zeroResults: Boolean): Action[AnyContent] = (identify andThen requireData).async { request =>
     given Request[AnyContent] = request
     val filters = FiltersForm.form.bindFromRequest().get
     for {
-      userType <- pageAnswersService.getPageAnswers(request.sessionId, UserTypePage)
-      userFilters <- update(filters)(request).flatMap(_ => userFiltersRepository.get(request.sessionId))
+      userFilters <- update(filters)(request).map(_ => request.userFilters)
     } yield {
-      val isAgent = userType.contains(Agent)
+      val isAgent = pageAnswersService.getPageAnswers(request.userFilters, UserTypePage).eq(Agent)
       val model = SoftwareChoicesResultsViewModel(
-        allInOneVendors = softwareChoicesService.getAllInOneVendors(userFilters.getOrElse(UserFilters(request.sessionId, None, filters.filters)).finalFilters),
-        otherVendors = softwareChoicesService.getOtherVendors(userFilters.getOrElse(UserFilters(request.sessionId, None, filters.filters)).finalFilters, isAgent || zeroResults),
-        vendorsWithIntent = if (isEnabled(IntentFeature)) softwareChoicesService.getVendorsWithIntent(userFilters.getOrElse(UserFilters(request.sessionId, None, filters.filters)).finalFilters) else Seq.empty,
+        allInOneVendors = softwareChoicesService.getAllInOneVendors(userFilters.finalFilters),
+        otherVendors = softwareChoicesService.getOtherVendors(userFilters.finalFilters, isAgent || zeroResults),
+        vendorsWithIntent = if (isEnabled(IntentFeature)) softwareChoicesService.getVendorsWithIntent(userFilters.finalFilters) else Seq.empty,
         zeroResults = zeroResults,
         isAgent = isAgent
       )
       Ok(view(model, FiltersForm.form.fill(filters)))
     }
   }
+  
 
   def clear(zeroResults: Boolean): Action[AnyContent] = (identify andThen requireData).async { request =>
     given Request[AnyContent] = request
+
     update(FiltersFormModel())(request) map { _ =>
       Redirect(routes.SearchSoftwareController.show(zeroResults))
     }
   }
 
   private def update(search: FiltersFormModel)(implicit request: SessionDataRequest[_]): Future[Boolean] = {
-    for {
-      userFilters <- userFiltersRepository.get(request.sessionId)
-      result <- userFilters match {
-        case Some(userFilters) =>
-          val filtersFromAnswers = pageAnswersService
-            .getFiltersFromAnswers(userFilters.answers)
-            .filterNot(_ == VendorFilter.Agent)
-          userFiltersRepository.set(userFilters.copy(finalFilters = filtersFromAnswers ++ search.filters))
-        case None => userFiltersRepository.set(UserFilters(request.sessionId, None, search.filters))
-      }
-    } yield {
-      result
-    }
+    val filtersFromAnswers = pageAnswersService
+      .getFiltersFromAnswers(request.userFilters.answers)
+      .filterNot(_ == VendorFilter.Agent)
+
+    userFiltersRepository.set(request.userFilters.copy(finalFilters = filtersFromAnswers ++ search.filters))
   }
 
   private def view(model: SoftwareChoicesResultsViewModel, form: Form[FiltersFormModel])

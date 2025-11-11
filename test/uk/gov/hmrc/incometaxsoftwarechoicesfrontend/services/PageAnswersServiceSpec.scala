@@ -75,18 +75,12 @@ class PageAnswersServiceSpec extends PlaySpec with BeforeAndAfterEach {
 
   "getPageAnswers" when {
     "the page has not been visited previously" must {
-      "return None if no user filters exists for this session" in new Setup {
-        when(mockUserFiltersRepository.get(eqTo(sessionId)))
-          .thenReturn(Future.successful(None))
-
-        await(service.getPageAnswers(sessionId, DummyPage)) mustBe None
-      }
 
       "return None if user filters exists for this session but the page does not" in new Setup {
         when(mockUserFiltersRepository.get(eqTo(sessionId)))
           .thenReturn(Future.successful(Some(emptyUserFilter)))
 
-        await(service.getPageAnswers(sessionId, DummyPage)) mustBe None
+        service.getPageAnswers(emptyUserFilter, DummyPage) mustBe None
       }
     }
     "the page has been visited previously" must {
@@ -94,7 +88,7 @@ class PageAnswersServiceSpec extends PlaySpec with BeforeAndAfterEach {
         when(mockUserFiltersRepository.get(eqTo(sessionId)))
           .thenReturn(Future.successful(Some(userFilterWithAnswerForPage)))
 
-        await(service.getPageAnswers(sessionId, DummyPage)) mustBe Some("Test")
+        service.getPageAnswers(userFilterWithAnswerForPage, DummyPage) mustBe Some("Test")
       }
     }
   }

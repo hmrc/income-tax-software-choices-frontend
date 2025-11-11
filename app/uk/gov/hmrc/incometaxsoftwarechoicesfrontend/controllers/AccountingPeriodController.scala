@@ -38,18 +38,17 @@ class AccountingPeriodController @Inject()(view: AccountingPeriodView,
                                           (implicit ec: ExecutionContext,
                                            mcc: MessagesControllerComponents) extends BaseFrontendController with I18nSupport {
 
-  def show(editMode: Boolean): Action[AnyContent] = (identify andThen requireData).async { request =>
+  def show(editMode: Boolean): Action[AnyContent] = (identify andThen requireData) { request =>
     given Request[AnyContent] = request
-    for {
-      pageAnswers <- pageAnswersService.getPageAnswers(request.sessionId, AccountingPeriodPage)
-    } yield {
-      Ok(view(
-        accountingPeriodForm = AccountingPeriodForm.accountingPeriodForm.fill(pageAnswers),
-        postAction = routes.AccountingPeriodController.submit(editMode),
-        backUrl = backUrl(editMode)
-      ))
-    }
+
+    val pageAnswers = pageAnswersService.getPageAnswers(request.userFilters, AccountingPeriodPage)
+    Ok(view(
+      accountingPeriodForm = AccountingPeriodForm.accountingPeriodForm.fill(pageAnswers),
+      postAction = routes.AccountingPeriodController.submit(editMode),
+      backUrl = backUrl(editMode)
+    ))
   }
+
 
   def submit(editMode: Boolean): Action[AnyContent] = (identify andThen requireData).async { request =>
     given Request[AnyContent] = request

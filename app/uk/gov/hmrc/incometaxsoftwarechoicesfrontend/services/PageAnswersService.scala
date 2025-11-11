@@ -19,8 +19,8 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services
 import play.api.libs.json.{Reads, Writes}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.Individual
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{UserAnswers, UserFilters, VendorFilter}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages._
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.queries._
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.*
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.queries.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 
 import javax.inject.{Inject, Singleton}
@@ -37,10 +37,14 @@ class PageAnswersService @Inject()(userFiltersRepository: UserFiltersRepository,
     AccountingPeriodPage
   )
 
-  def getPageAnswers[A](id: String, page: Gettable[A])(implicit rds: Reads[A]): Future[Option[A]] = {
-    userFiltersRepository.get(id).map {
-      case Some(uf) => uf.answers.flatMap(_.get(page))
-      case None => None
+  def getUserFilters(id: String): Future[Option[UserFilters]] = {
+    userFiltersRepository.get(id)
+  }
+
+  def getPageAnswers[A](userFilters: UserFilters, page: Gettable[A])(implicit rds: Reads[A]): Option[A] = {
+    userFilters.answers match {
+      case Some(userAnswers) => userAnswers.get(page)
+      case _ => None
     }
   }
 

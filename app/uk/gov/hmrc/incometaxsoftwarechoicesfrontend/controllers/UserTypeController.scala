@@ -40,9 +40,9 @@ class UserTypeController @Inject()(view: UserTypeView,
 
   def show(): Action[AnyContent] = identify.async { request =>
     given Request[AnyContent] = request
-    for {
-      pageAnswers <- pageAnswersService.getPageAnswers(request.sessionId, UserTypePage)
-    } yield {
+
+    pageAnswersService.getUserFilters(request.sessionId).map { maybeUserFilters =>
+      val pageAnswers = maybeUserFilters.flatMap(uf => pageAnswersService.getPageAnswers(uf, UserTypePage))
       Ok(view(
         userTypeForm = UserTypeForm.userTypeForm.fill(pageAnswers),
         postAction = routes.UserTypeController.submit(),
@@ -51,8 +51,10 @@ class UserTypeController @Inject()(view: UserTypeView,
     }
   }
 
+
   def submit(): Action[AnyContent] = identify.async { request =>
     given Request[AnyContent] = request
+
     userTypeForm.bindFromRequest().fold(
       formWithErrors => {
         Future.successful(
