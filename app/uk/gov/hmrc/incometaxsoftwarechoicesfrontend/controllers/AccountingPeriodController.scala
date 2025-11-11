@@ -63,7 +63,7 @@ class AccountingPeriodController @Inject()(view: AccountingPeriodView,
         )
       },
       selectedPeriod => {
-        pageAnswersService.setPageAnswers(request.sessionId, AccountingPeriodPage, selectedPeriod).flatMap {
+        pageAnswersService.setPageAnswers(request.userFilters, AccountingPeriodPage, selectedPeriod).flatMap {
           case true =>
             selectedPeriod match {
               case SixthAprilToFifthApril | FirstAprilToThirtyFirstMarch =>

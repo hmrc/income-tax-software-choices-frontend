@@ -22,7 +22,9 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.SessionIdentifierAction
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.UserTypeForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.UserTypeForm.userTypeForm
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{UserFilters, UserType}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.{Agent, SoleTraderOrLandlord}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.requests.SessionRequest
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.UserTypePage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.PageAnswersService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.UserTypeView
@@ -64,26 +66,39 @@ class UserTypeController @Inject()(view: UserTypeView,
             backUrl = appConfig.guidance
           ))
         )
-      }, {
-        case typeOfUser@SoleTraderOrLandlord =>
-          pageAnswersService.setPageAnswers(request.sessionId, UserTypePage, typeOfUser).flatMap {
-            case true => Future.successful(Redirect(routes.BusinessIncomeController.show()))
-            case false => throw new InternalServerException("[UserTypeController][submit] - Could not save sole trader or landlord user type")
+      }, { answer =>
+
+        pageAnswersService.getUserFilters(request.sessionId).flatMap { maybeUserFilters =>
+          answer match {
+            case typeOfUser@SoleTraderOrLandlord =>
+              setAnswers(maybeUserFilters, typeOfUser)(request).flatMap {
+                case true => Future.successful(Redirect(routes.BusinessIncomeController.show()))
+                case false => throw new InternalServerException("[UserTypeController][submit] - Could not save sole trader or landlord user type")
+              }
+            case typeOfUser@Agent =>
+              for {
+                resetUserAnswers <- pageAnswersService.resetUserAnswers(request.sessionId)
+                setPageAnswers <- setAnswers(None, typeOfUser)(request)
+                saveFiltersFromAnswers <- pageAnswersService.saveFiltersFromAnswers(request.sessionId)
+              } yield {
+                if (resetUserAnswers && setPageAnswers && saveFiltersFromAnswers.nonEmpty) {
+                  Redirect(routes.SearchSoftwareController.show())
+                } else {
+                  throw new InternalServerException("[UserTypeController][submit] - Could not save agent user type")
+                }
+              }
           }
-        case typeOfUser@Agent =>
-          for {
-            resetUserAnswers <- pageAnswersService.resetUserAnswers(request.sessionId)
-            setPageAnswers <- pageAnswersService.setPageAnswers(request.sessionId, UserTypePage, typeOfUser)
-            saveFiltersFromAnswers <- pageAnswersService.saveFiltersFromAnswers(request.sessionId)
-          } yield {
-            if (resetUserAnswers && setPageAnswers && saveFiltersFromAnswers.nonEmpty) {
-              Redirect(routes.SearchSoftwareController.show())
-            } else {
-              throw new InternalServerException("[UserTypeController][submit] - Could not save agent user type")
-            }
-          }
+        }
       }
     )
+  }
+
+  private def setAnswers(maybeUserFilters: Option[UserFilters], answer: UserType)(implicit request: SessionRequest[_]): Future[Boolean] = {
+    maybeUserFilters match {
+      case Some(userFilters) => pageAnswersService.setPageAnswers(userFilters, UserTypePage, answer)
+      case None => pageAnswersService.setNewUserFilters(request.sessionId, UserTypePage, answer)
+    }
+
   }
 
 }

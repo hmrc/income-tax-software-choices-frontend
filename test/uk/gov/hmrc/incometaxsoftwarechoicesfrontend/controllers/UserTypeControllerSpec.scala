@@ -27,8 +27,8 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.mocks.Mo
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.UserTypeForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{UserAnswers, UserFilters, UserType}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.SoleTraderOrLandlord
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{Agent, Individual}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.UserTypePage
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{Agent, Individual, SoleTrader}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.{BusinessIncomePage, UserTypePage}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.PageAnswersService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.UserTypeView
@@ -36,6 +36,8 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.UserTypeView
 import scala.concurrent.Future
 
 class UserTypeControllerSpec extends ControllerBaseSpec with MockSessionIdentifierAction {
+
+  val testUserFilters = UserFilters(sessionId, Some(UserAnswers().set(UserTypePage, SoleTraderOrLandlord).get))
 
   "show" must {
     "return OK and display the user type page" when {
@@ -79,87 +81,151 @@ class UserTypeControllerSpec extends ControllerBaseSpec with MockSessionIdentifi
   }
 
   "submit" when {
-    "user selects Sole Trader or Landlord" must {
-      "save page answers and redirect to Business Income page" in new Setup {
-        when(mockPageAnswersService.setPageAnswers(eqTo(sessionId), eqTo(UserTypePage), eqTo(SoleTraderOrLandlord))(any()))
-          .thenReturn(Future.successful(true))
+    "there are existing user filters" when {
+      "user selects Sole Trader or Landlord" must {
+        "save page answers and redirect to Business Income page" in new Setup {
+          when(mockPageAnswersService.getUserFilters(eqTo(sessionId)))
+            .thenReturn(Future.successful(Some(testUserFilters)))
 
-        val result: Future[Result] = controller.submit()(fakeRequest.post(UserTypeForm.userTypeForm, SoleTraderOrLandlord))
-
-        status(result) shouldBe SEE_OTHER
-        redirectLocation(result) shouldBe Some(routes.BusinessIncomeController.show().url)
-      }
-    }
-    "user selects As an agent" must {
-      "redirect to the Search Software page" when {
-        "user filters are reset, page answer is set and saved to filters" in new Setup {
-          when(mockPageAnswersService.resetUserAnswers(eqTo(sessionId)))
+          when(mockPageAnswersService.setPageAnswers(eqTo(testUserFilters), eqTo(UserTypePage), eqTo(SoleTraderOrLandlord))(any()))
             .thenReturn(Future.successful(true))
-          when(mockPageAnswersService.setPageAnswers(eqTo(sessionId), eqTo(UserTypePage), eqTo(UserType.Agent))(any()))
-            .thenReturn(Future.successful(true))
-          when(mockPageAnswersService.saveFiltersFromAnswers(sessionId))
-            .thenReturn(Future(Seq(Agent)))
 
-          val result: Future[Result] = controller.submit()(fakeRequest.post(UserTypeForm.userTypeForm, UserType.Agent))
+          val result: Future[Result] = controller.submit()(fakeRequest.post(UserTypeForm.userTypeForm, SoleTraderOrLandlord))
 
           status(result) shouldBe SEE_OTHER
+          redirectLocation(result) shouldBe Some(routes.BusinessIncomeController.show().url)
         }
-
       }
-      "throw an exception" when {
-        "failed to reset user filters" in new Setup {
-          when(mockPageAnswersService.resetUserAnswers(eqTo(sessionId)))
-            .thenReturn(Future.successful(false))
-          when(mockPageAnswersService.setPageAnswers(eqTo(sessionId), eqTo(UserTypePage), eqTo(UserType.Agent))(any()))
-            .thenReturn(Future.successful(true))
-          when(mockPageAnswersService.saveFiltersFromAnswers(eqTo(sessionId)))
-            .thenReturn(Future.successful(Seq(Agent)))
+      "user selects As an agent" must {
+        "redirect to the Search Software page" when {
+          "user filters are reset, page answer is set and saved to filters" in new Setup {
+            when(mockPageAnswersService.getUserFilters(eqTo(sessionId)))
+              .thenReturn(Future.successful(Some(testUserFilters)))
+            when(mockPageAnswersService.resetUserAnswers(eqTo(sessionId)))
+              .thenReturn(Future.successful(true))
+            when(mockPageAnswersService.setNewUserFilters(eqTo(sessionId), eqTo(UserTypePage), eqTo(UserType.Agent))(any()))
+              .thenReturn(Future.successful(true))
+            when(mockPageAnswersService.saveFiltersFromAnswers(sessionId))
+              .thenReturn(Future(Seq(Agent)))
 
-          val result: Future[Result] = controller.submit()(fakeRequest.post(UserTypeForm.userTypeForm, UserType.Agent))
+            val result: Future[Result] = controller.submit()(fakeRequest.post(UserTypeForm.userTypeForm, UserType.Agent))
 
-          intercept[InternalServerException](await(result)).message shouldBe "[UserTypeController][submit] - Could not save agent user type"
+            status(result) shouldBe SEE_OTHER
+          }
+
         }
-        "failed to set page answers Agent" in new Setup {
-          when(mockPageAnswersService.resetUserAnswers(eqTo(sessionId)))
-            .thenReturn(Future.successful(true))
-          when(mockPageAnswersService.setPageAnswers(eqTo(sessionId), eqTo(UserTypePage), eqTo(UserType.Agent))(any()))
-            .thenReturn(Future.successful(false))
-          when(mockPageAnswersService.saveFiltersFromAnswers(eqTo(sessionId)))
-            .thenReturn(Future.successful(Seq(Agent)))
-
-          val result: Future[Result] = controller.submit()(fakeRequest.post(UserTypeForm.userTypeForm, UserType.Agent))
-
-          intercept[InternalServerException](await(result)).message shouldBe "[UserTypeController][submit] - Could not save agent user type"
-        }
-        "failed to set page answers Individual" in new Setup {
-          when(mockPageAnswersService.resetUserAnswers(eqTo(sessionId)))
-            .thenReturn(Future.successful(true))
-          when(mockPageAnswersService.setPageAnswers(eqTo(sessionId), eqTo(UserTypePage), eqTo(UserType.SoleTraderOrLandlord))(any()))
-            .thenReturn(Future.successful(false))
-          when(mockPageAnswersService.saveFiltersFromAnswers(eqTo(sessionId)))
-            .thenReturn(Future.successful(Seq(Individual)))
-
-          val result: Future[Result] = controller.submit()(fakeRequest.post(UserTypeForm.userTypeForm, UserType.SoleTraderOrLandlord))
-
-          intercept[InternalServerException](await(result)).message shouldBe "[UserTypeController][submit] - Could not save sole trader or landlord user type"
-        }
-
-        "failed to save answers to Filters" in new Setup {
-          when(mockPageAnswersService.resetUserAnswers(eqTo(sessionId)))
-            .thenReturn(Future.successful(true))
-          when(mockPageAnswersService.setPageAnswers(eqTo(sessionId), eqTo(UserTypePage), eqTo(UserType.Agent))(any()))
-            .thenReturn(Future.successful(true))
-          when(mockPageAnswersService.saveFiltersFromAnswers(eqTo(sessionId)))
-            .thenReturn(Future.successful(Seq.empty))
-
-          val result: Future[Result] = controller.submit()(fakeRequest.post(UserTypeForm.userTypeForm, UserType.Agent))
-
-          intercept[InternalServerException](await(result)).message shouldBe "[UserTypeController][submit] - Could not save agent user type"
-        }
-
       }
     }
+    "there are no existing user filters" when {
+      "user selects Sole Trader or Landlord" must {
+        "save page answers and redirect to Business Income page" in new Setup {
+          when(mockPageAnswersService.getUserFilters(eqTo(sessionId)))
+            .thenReturn(Future.successful(None))
+          when(mockPageAnswersService.setNewUserFilters(eqTo(sessionId), eqTo(UserTypePage), eqTo(SoleTraderOrLandlord))(any()))
+            .thenReturn(Future.successful(true))
+
+          val result: Future[Result] = controller.submit()(fakeRequest.post(UserTypeForm.userTypeForm, SoleTraderOrLandlord))
+
+          status(result) shouldBe SEE_OTHER
+          redirectLocation(result) shouldBe Some(routes.BusinessIncomeController.show().url)
+        }
+      }
+      "user selects As an agent" must {
+        "redirect to the Search Software page" when {
+          "user filters are reset, page answer is set and saved to filters" in new Setup {
+            when(mockPageAnswersService.getUserFilters(eqTo(sessionId)))
+              .thenReturn(Future.successful(None))
+            when(mockPageAnswersService.resetUserAnswers(eqTo(sessionId)))
+              .thenReturn(Future.successful(true))
+            when(mockPageAnswersService.setNewUserFilters(eqTo(sessionId), eqTo(UserTypePage), eqTo(UserType.Agent))(any()))
+              .thenReturn(Future.successful(true))
+            when(mockPageAnswersService.saveFiltersFromAnswers(sessionId))
+              .thenReturn(Future(Seq(Agent)))
+
+            val result: Future[Result] = controller.submit()(fakeRequest.post(UserTypeForm.userTypeForm, UserType.Agent))
+
+            status(result) shouldBe SEE_OTHER
+          }
+
+        }
+      }
+    }
+
+    "throw an exception" when {
+      "failed to reset user filters" in new Setup {
+        when(mockPageAnswersService.getUserFilters(eqTo(sessionId)))
+          .thenReturn(Future.successful(Some(testUserFilters)))
+        when(mockPageAnswersService.resetUserAnswers(eqTo(sessionId)))
+          .thenReturn(Future.successful(false))
+        when(mockPageAnswersService.setNewUserFilters(eqTo(sessionId), eqTo(UserTypePage), eqTo(UserType.Agent))(any()))
+          .thenReturn(Future.successful(true))
+        when(mockPageAnswersService.saveFiltersFromAnswers(eqTo(sessionId)))
+          .thenReturn(Future.successful(Seq(Agent)))
+
+        val result: Future[Result] = controller.submit()(fakeRequest.post(UserTypeForm.userTypeForm, UserType.Agent))
+
+        intercept[InternalServerException](await(result)).message shouldBe "[UserTypeController][submit] - Could not save agent user type"
+      }
+      "failed to set page answers Agent" in new Setup {
+        when(mockPageAnswersService.getUserFilters(eqTo(sessionId)))
+          .thenReturn(Future.successful(Some(testUserFilters)))
+        when(mockPageAnswersService.resetUserAnswers(eqTo(sessionId)))
+          .thenReturn(Future.successful(true))
+        when(mockPageAnswersService.setNewUserFilters(eqTo(sessionId), eqTo(UserTypePage), eqTo(UserType.Agent))(any()))
+          .thenReturn(Future.successful(false))
+        when(mockPageAnswersService.saveFiltersFromAnswers(eqTo(sessionId)))
+          .thenReturn(Future.successful(Seq(Agent)))
+
+        val result: Future[Result] = controller.submit()(fakeRequest.post(UserTypeForm.userTypeForm, UserType.Agent))
+
+        intercept[InternalServerException](await(result)).message shouldBe "[UserTypeController][submit] - Could not save agent user type"
+      }
+      "failed to set page answers Individual" in new Setup {
+        when(mockPageAnswersService.getUserFilters(eqTo(sessionId)))
+          .thenReturn(Future.successful(Some(testUserFilters)))
+        when(mockPageAnswersService.resetUserAnswers(eqTo(sessionId)))
+          .thenReturn(Future.successful(true))
+        when(mockPageAnswersService.setPageAnswers(eqTo(testUserFilters), eqTo(UserTypePage), eqTo(UserType.SoleTraderOrLandlord))(any()))
+          .thenReturn(Future.successful(false))
+        when(mockPageAnswersService.saveFiltersFromAnswers(eqTo(sessionId)))
+          .thenReturn(Future.successful(Seq(Individual)))
+
+        val result: Future[Result] = controller.submit()(fakeRequest.post(UserTypeForm.userTypeForm, UserType.SoleTraderOrLandlord))
+
+        intercept[InternalServerException](await(result)).message shouldBe "[UserTypeController][submit] - Could not save sole trader or landlord user type"
+      }
+      "failed to save answers to Filters" in new Setup {
+        when(mockPageAnswersService.getUserFilters(eqTo(sessionId)))
+          .thenReturn(Future.successful(Some(testUserFilters)))
+        when(mockPageAnswersService.resetUserAnswers(eqTo(sessionId)))
+          .thenReturn(Future.successful(true))
+        when(mockPageAnswersService.setNewUserFilters(eqTo(sessionId), eqTo(UserTypePage), eqTo(UserType.Agent))(any()))
+          .thenReturn(Future.successful(true))
+        when(mockPageAnswersService.saveFiltersFromAnswers(eqTo(sessionId)))
+          .thenReturn(Future.successful(Seq.empty))
+
+        val result: Future[Result] = controller.submit()(fakeRequest.post(UserTypeForm.userTypeForm, UserType.Agent))
+
+        intercept[InternalServerException](await(result)).message shouldBe "[UserTypeController][submit] - Could not save agent user type"
+      }
+      "failed to set new user answers" in new Setup {
+        when(mockPageAnswersService.getUserFilters(eqTo(sessionId)))
+          .thenReturn(Future.successful(None))
+        when(mockPageAnswersService.resetUserAnswers(eqTo(sessionId)))
+          .thenReturn(Future.successful(true))
+        when(mockPageAnswersService.setNewUserFilters(eqTo(sessionId), eqTo(UserTypePage), eqTo(UserType.Agent))(any()))
+          .thenReturn(Future.successful(false))
+        when(mockPageAnswersService.saveFiltersFromAnswers(eqTo(sessionId)))
+          .thenReturn(Future.successful(Seq(Agent)))
+
+        val result: Future[Result] = controller.submit()(fakeRequest.post(UserTypeForm.userTypeForm, UserType.Agent))
+
+        intercept[InternalServerException](await(result)).message shouldBe "[UserTypeController][submit] - Could not save agent user type"
+      }
+
+    }
   }
+
 
   trait Setup {
     lazy val mockPageAnswersService: PageAnswersService = mock[PageAnswersService]

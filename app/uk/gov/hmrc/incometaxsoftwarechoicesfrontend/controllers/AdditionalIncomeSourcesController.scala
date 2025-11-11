@@ -59,7 +59,7 @@ class AdditionalIncomeSourcesController @Inject()(view: AdditionalIncomeSourceVi
           ))
         ),
       answers => {
-        pageAnswersService.setPageAnswers(request.sessionId, AdditionalIncomeSourcesPage, answers).flatMap {
+        pageAnswersService.setPageAnswers(request.userFilters, AdditionalIncomeSourcesPage, answers).flatMap {
           case true =>
             if (editMode) Future.successful(Redirect(routes.CheckYourAnswersController.show()))
             else Future.successful(Redirect(routes.OtherItemsController.show()))

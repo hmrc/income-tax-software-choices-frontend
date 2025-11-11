@@ -48,19 +48,31 @@ class PageAnswersService @Inject()(userFiltersRepository: UserFiltersRepository,
     }
   }
 
-  def setPageAnswers[A](id: String, page: Settable[A], value: A)(implicit writes: Writes[A]): Future[Boolean] = {
-    userFiltersRepository.get(id).flatMap {
-      case Some(userFilters) =>
-        val newAnswers = userFilters.answers match {
-          case Some(userAnswers) => userAnswers.set(page, value).toOption
-          case None => UserAnswers().set(page, value).toOption
-        }
-        userFiltersRepository.set(userFilters.copy(answers = newAnswers))
-      case None =>
-        userFiltersRepository.set(UserFilters(id, UserAnswers().set(page, value).toOption, Seq.empty))
+  def setPageAnswers[A](userFilters: UserFilters, page: Settable[A], value: A)(implicit writes: Writes[A]): Future[Boolean] = {
+    val newAnswers = userFilters.answers match {
+      case Some(userAnswers) => userAnswers.set(page, value).toOption
+      case None => UserAnswers().set(page, value).toOption
     }
+    userFiltersRepository.set(userFilters.copy(answers = newAnswers))
+  }
+  
+  def setNewUserFilters[A](id: String, page: Settable[A], value: A)(implicit writes: Writes[A]): Future[Boolean] = {
+    userFiltersRepository.set(UserFilters(id, UserAnswers().set(page, value).toOption, Seq.empty))
   }
 
+//  def setPageAnswersOld[A](id: String, page: Settable[A], value: A)(implicit writes: Writes[A]): Future[Boolean] = {
+//    userFiltersRepository.get(id).flatMap {
+//      case Some(userFilters) =>
+//        val newAnswers = userFilters.answers match {
+//          case Some(userAnswers) => userAnswers.set(page, value).toOption
+//          case None => UserAnswers().set(page, value).toOption
+//        }
+//        userFiltersRepository.set(userFilters.copy(answers = newAnswers))
+//      case None =>
+//        userFiltersRepository.set(UserFilters(id, UserAnswers().set(page, value).toOption, Seq.empty))
+//    }
+//  }
+  
   def saveFiltersFromAnswers(id: String): Future[Seq[VendorFilter]] = {
     userFiltersRepository.get(id).flatMap {
       case Some(userFilters) =>

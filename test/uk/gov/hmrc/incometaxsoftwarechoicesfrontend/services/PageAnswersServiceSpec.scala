@@ -101,7 +101,7 @@ class PageAnswersServiceSpec extends PlaySpec with BeforeAndAfterEach {
         when(mockUserFiltersRepository.set(any()))
           .thenReturn(Future.successful(true))
 
-        await(service.setPageAnswers(sessionId, DummyPage, "Another Test String")) mustBe true
+        await(service.setPageAnswers(userFilterWithAnswerForPage, DummyPage, "Another Test String")) mustBe true
       }
     }
     "the userFilters do not exist" must {
@@ -111,7 +111,7 @@ class PageAnswersServiceSpec extends PlaySpec with BeforeAndAfterEach {
         when(mockUserFiltersRepository.set(any()))
           .thenReturn(Future.successful(true))
 
-        await(service.setPageAnswers(sessionId, DummyPage, "Third Test String")) mustBe true
+        await(service.setPageAnswers(userFilterWithAnswerForPage, DummyPage, "Third Test String")) mustBe true
       }
     }
   }

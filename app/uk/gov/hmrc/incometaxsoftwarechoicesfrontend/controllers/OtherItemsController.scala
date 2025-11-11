@@ -59,7 +59,7 @@ class OtherItemsController @Inject()(view: OtherItemsView,
         )
       },
       answers => {
-        pageAnswersService.setPageAnswers(request.sessionId, OtherItemsPage, answers).flatMap {
+        pageAnswersService.setPageAnswers(request.userFilters, OtherItemsPage, answers).flatMap {
           case true =>
             if (editMode) Future.successful(Redirect(routes.CheckYourAnswersController.show()))
             else Future.successful(Redirect(routes.AccountingPeriodController.show(editMode)))
