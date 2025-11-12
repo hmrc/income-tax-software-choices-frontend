@@ -20,8 +20,6 @@ import play.api.data.Form
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import play.twirl.api.Html
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.IntentFeature
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{RequireUserDataRefiner, SessionIdentifierAction}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.Agent
@@ -45,7 +43,7 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
                                          requireData: RequireUserDataRefiner)
                                         (implicit ec: ExecutionContext,
                                          val appConfig: AppConfig,
-                                         mcc: MessagesControllerComponents) extends BaseFrontendController with FeatureSwitching {
+                                         mcc: MessagesControllerComponents) extends BaseFrontendController {
 
   def show(zeroResults: Boolean): Action[AnyContent] = (identify andThen requireData).async { request =>
     given Request[AnyContent] = request
@@ -57,7 +55,7 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
       model = SoftwareChoicesResultsViewModel(
         allInOneVendors = softwareChoicesService.getAllInOneVendors(filters = filters),
         otherVendors = softwareChoicesService.getOtherVendors(filters = filters, isAgent || zeroResults),
-        vendorsWithIntent = if (isEnabled(IntentFeature)) softwareChoicesService.getVendorsWithIntent(filters = filters) else Seq.empty,
+        vendorsWithIntent = softwareChoicesService.getVendorsWithIntent(filters = filters),
         zeroResults = zeroResults,
         isAgent = isAgent
       )
@@ -77,7 +75,7 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
       val model = SoftwareChoicesResultsViewModel(
         allInOneVendors = softwareChoicesService.getAllInOneVendors(userFilters.getOrElse(UserFilters(request.sessionId, None, filters.filters)).finalFilters),
         otherVendors = softwareChoicesService.getOtherVendors(userFilters.getOrElse(UserFilters(request.sessionId, None, filters.filters)).finalFilters, isAgent || zeroResults),
-        vendorsWithIntent = if (isEnabled(IntentFeature)) softwareChoicesService.getVendorsWithIntent(userFilters.getOrElse(UserFilters(request.sessionId, None, filters.filters)).finalFilters) else Seq.empty,
+        vendorsWithIntent = softwareChoicesService.getVendorsWithIntent(userFilters.getOrElse(UserFilters(request.sessionId, None, filters.filters)).finalFilters),
         zeroResults = zeroResults,
         isAgent = isAgent
       )
@@ -121,11 +119,11 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
   }
 
   def backLinkUrl(isAgent: Boolean, zeroResults: Boolean): String = {
-    (isAgent, isEnabled(IntentFeature), zeroResults) match {
-      case (true, _, _) => routes.UserTypeController.show().url
-      case (false, true, _) => routes.ChoosingSoftwareController.show().url
-      case (false, false, true) => routes.ZeroSoftwareResultsController.show().url
-      case (false, false, false) => routes.CheckYourAnswersController.show().url
+    (isAgent, zeroResults) match {
+      case (true, _) => routes.UserTypeController.show().url
+      case (false, _) => routes.ChoosingSoftwareController.show().url
+      case (false, true) => routes.ZeroSoftwareResultsController.show().url
+      case (false, false) => routes.CheckYourAnswersController.show().url
     }
   }
 }

@@ -18,8 +18,6 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.IntentFeature
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{RequireUserDataRefiner, SessionIdentifierAction}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.{PageAnswersService, SoftwareChoicesService}
@@ -39,7 +37,7 @@ class CheckYourAnswersController @Inject()(view: CheckYourAnswersView,
                                           (implicit ec: ExecutionContext,
                                            mcc: MessagesControllerComponents,
                                            pageAnswersService: PageAnswersService)
-  extends BaseFrontendController with SummaryListBuilder with FeatureSwitching {
+  extends BaseFrontendController with SummaryListBuilder {
 
   def show(): Action[AnyContent] = (identify andThen requireData).async { request =>
     given Request[AnyContent] = request
@@ -60,14 +58,12 @@ class CheckYourAnswersController @Inject()(view: CheckYourAnswersView,
     for {
       vendorFilters <- pageAnswersService.saveFiltersFromAnswers(request.sessionId)
       vendors = {
-        if (isEnabled(IntentFeature)) softwareChoicesService.getVendorsWithIntent(vendorFilters)
-        else softwareChoicesService.getAllInOneVendors(vendorFilters).vendors
+        softwareChoicesService.getVendorsWithIntent(vendorFilters)
       }
     } yield {
-      (vendors.isEmpty, isEnabled(IntentFeature)) match {
-        case (true, _) => Redirect(routes.ZeroSoftwareResultsController.show())
-        case (false, false) => Redirect(routes.SearchSoftwareController.show())
-        case (false, true) => Redirect(routes.ChoosingSoftwareController.show())
+      (vendors.isEmpty) match {
+        case (true) => Redirect(routes.ZeroSoftwareResultsController.show())
+        case (false) => Redirect(routes.ChoosingSoftwareController.show())
       }
     }
   }

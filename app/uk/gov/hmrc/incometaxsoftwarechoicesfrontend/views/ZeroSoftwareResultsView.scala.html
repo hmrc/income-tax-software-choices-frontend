@@ -18,15 +18,12 @@
 @import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTemplate
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitchingImpl
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.IntentFeature
 
 @this(
         mainTemplate: MainTemplate,
         govukCheckboxes: GovukCheckboxes,
         govukButton: GovukButton,
-        form: FormWithCSRF,
-        featureSwitching: FeatureSwitchingImpl
+        form: FormWithCSRF
 )(implicit appConfig: AppConfig)
 
 @(resultsLink: Call, finishAction: Call, backLink: Call)(implicit request: Request[_], messages: Messages)
@@ -43,11 +40,6 @@
         <li>@messages("zero-results.bullet1")</li>
         <li>@messages("zero-results.bullet2")</li>
     </ul>
-
-    @if(!featureSwitching.isEnabled(IntentFeature)) {
-        <h2 class="govuk-heading-m">@messages("zero-results.sub-heading2")</h2>
-        <p class ="govuk-body">@messages("zero-results.results.part1") <a href=@{resultsLink.url}>@messages("zero-results.results.link")</a>.</p>
-    }
 
     @form(action = finishAction) {
 
