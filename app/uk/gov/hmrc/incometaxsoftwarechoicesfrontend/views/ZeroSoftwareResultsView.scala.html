@@ -26,7 +26,7 @@
         form: FormWithCSRF
 )(implicit appConfig: AppConfig)
 
-@(resultsLink: Call, finishAction: Call, backLink: Call)(implicit request: Request[_], messages: Messages)
+@(finishAction: Call, backLink: Call)(implicit request: Request[_], messages: Messages)
 
 @mainTemplate(title = messages("zero-results.title"), backLink = Some(backLink.url)) {
 

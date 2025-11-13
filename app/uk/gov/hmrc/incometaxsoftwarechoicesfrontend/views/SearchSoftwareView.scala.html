@@ -24,7 +24,6 @@
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates._
 @import views.html.helper.CSPNonce
 @import uk.gov.hmrc.play.language.LanguageUtils
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitchingImpl
 
 @this(
   mainTemplate: MainTemplate,
@@ -39,8 +38,7 @@
   govukAccordion: GovukAccordion,
   govukButton: GovukButton,
   govukDetails: GovukDetails,
-  languageUtils: LanguageUtils,
-  featureSwitching: FeatureSwitchingImpl
+  languageUtils: LanguageUtils
 )(implicit appConfig: AppConfig)
 @(viewModel: SoftwareChoicesResultsViewModel, searchForm: Form[FiltersFormModel], postAction: Call, clearAction: Call, backUrl: String)(implicit request: Request[_], messages: Messages)
 
@@ -93,13 +91,10 @@
       </div>
 
     <div class="govuk-grid-column-two-thirds">
-        @(viewModel.isAgent, viewModel.zeroResults) match {
-            case (false, _) => {
-                @softwareVendorsIntentResultsTemplate(viewModel)
-            }
-            case _ => {
-              @softwareVendorsAgentTemplate(viewModel)
-            }
+        if(viewModel.isAgent) {
+            @softwareVendorsAgentTemplate(viewModel)
+        } else {
+            @softwareVendorsIntentResultsTemplate(viewModel)
         }
     </div>
     }

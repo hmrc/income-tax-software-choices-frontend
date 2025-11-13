@@ -22,8 +22,6 @@ import org.jsoup.select.Elements
 import org.scalatest.{Assertion, BeforeAndAfterEach}
 import play.api.mvc.Call
 import play.twirl.api.HtmlFormat
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.IntentFeature
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes.ProductDetailsController
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.Available
@@ -36,7 +34,7 @@ import java.net.URLEncoder
 import java.time.LocalDate
 import scala.util.Try
 
-class SearchSoftwareViewSpec extends ViewSpec with BeforeAndAfterEach with FeatureSwitching {
+class SearchSoftwareViewSpec extends ViewSpec with BeforeAndAfterEach {
 
   import SearchSoftwareViewSpec._
 
@@ -62,11 +60,9 @@ class SearchSoftwareViewSpec extends ViewSpec with BeforeAndAfterEach with Featu
 
   override def beforeEach(): Unit = {
     super.beforeEach()
-    disable(IntentFeature)
   }
 
     "Search software page" when {
-    disable(IntentFeature)
     lazy val document = getDocument(hasResults = false)
 
     "have a title" in {

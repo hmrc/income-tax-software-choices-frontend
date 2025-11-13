@@ -70,10 +70,8 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec
 
   "backLinkUrl" when {
     "user type is sole trader or landlord" when {
-      "intent feature switch is enabled" should {
-        "redirect to the choosing software page" in withController { controller =>
-          controller.backLinkUrl(zeroResults = false, isAgent = false) shouldBe routes.ChoosingSoftwareController.show().url
-        }
+      "redirect to the choosing software page" in withController { controller =>
+        controller.backLinkUrl(zeroResults = false, isAgent = false) shouldBe routes.ChoosingSoftwareController.show().url
       }
     }
     "user type is Agent" should {

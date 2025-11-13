@@ -27,12 +27,11 @@ class ZeroSoftwareResultsViewSpec extends ViewSpec {
 
   private val view = app.injector.instanceOf[ZeroSoftwareResultsView]
 
-  val resultsLink: Call = Call("GET", "/zero-results-test-url")
   val finishActionUrl: Call = Call("POST", "/zero-results-finish-action-test-url")
   val testBackLink: Call = Call("GET", "/zero-results-back-link-test-url")
 
   def page(): HtmlFormat.Appendable = {
-    view(resultsLink = resultsLink, finishAction = finishActionUrl, backLink = testBackLink)
+    view(finishAction = finishActionUrl, backLink = testBackLink)
   }
 
   def document(): Document = Jsoup.parse(page().body)

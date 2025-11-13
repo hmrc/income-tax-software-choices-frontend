@@ -122,8 +122,6 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
     (isAgent, zeroResults) match {
       case (true, _) => routes.UserTypeController.show().url
       case (false, _) => routes.ChoosingSoftwareController.show().url
-      case (false, true) => routes.ZeroSoftwareResultsController.show().url
-      case (false, false) => routes.CheckYourAnswersController.show().url
     }
   }
 }
