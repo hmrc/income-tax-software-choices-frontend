@@ -88,8 +88,5 @@ private object ZeroSoftwareResultsViewContent {
   val paragraph4 = "You can also:"
   val bulletPoint1 = "visit software providers’ websites to find out more about what they’re developing"
   val bulletPoint2 = "ask your agent or accountant about software, if you have one"
-  val heading3 = "Get software now"
-  val paragraph5 = "If you’re familiar with Making Tax Digital for Income Tax and would like to use more than one software product at once, you can browse software that’s currently available."
-  val linkText = "browse software that’s currently available"
   val finish = "Finish"
 }

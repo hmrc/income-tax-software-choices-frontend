@@ -88,7 +88,7 @@
       </div>
 
     <div class="govuk-grid-column-two-thirds">
-        if(viewModel.isAgent) {
+        @if(viewModel.isAgent) {
             @softwareVendorsAgentTemplate(viewModel)
         } else {
             @softwareVendorsIntentResultsTemplate(viewModel)

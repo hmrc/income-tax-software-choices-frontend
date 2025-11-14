@@ -50,7 +50,7 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec
 
   "Show" when {
     "return OK status with the search software page" in withController { controller =>
-      val result = controller.show(zeroResults = false)(fakeRequest)
+      val result = controller.show()(fakeRequest)
       status(result) shouldBe Status.OK
       contentType(result) shouldBe Some(HTML)
       charset(result) shouldBe Some(Codec.utf_8.charset)
@@ -59,7 +59,7 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec
 
   "search" when {
     "return OK status with the search software page" in withController { controller =>
-      val result = controller.search(zeroResults = false)(FakeRequest("POST", "/")
+      val result = controller.search()(FakeRequest("POST", "/")
         .withFormUrlEncodedBody(s"${FiltersForm.filters}[0]" -> "free-version"))
 
       status(result) shouldBe Status.OK
@@ -71,12 +71,12 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec
   "backLinkUrl" when {
     "user type is sole trader or landlord" when {
       "redirect to the choosing software page" in withController { controller =>
-        controller.backLinkUrl(zeroResults = false, isAgent = false) shouldBe routes.ChoosingSoftwareController.show().url
+        controller.backLinkUrl(isAgent = false) shouldBe routes.ChoosingSoftwareController.show().url
       }
     }
     "user type is Agent" should {
       "return to the user type page" in withController { controller =>
-        controller.backLinkUrl(zeroResults = false, isAgent = true) shouldBe routes.UserTypeController.show().url
+        controller.backLinkUrl(isAgent = true) shouldBe routes.UserTypeController.show().url
       }
     }
   }

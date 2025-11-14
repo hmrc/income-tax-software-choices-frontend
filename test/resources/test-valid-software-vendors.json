@@ -7,7 +7,8 @@
       "phone": "11111 111 111",
       "website": "software-vendor-name-one.com",
       "filters": {
-        "free-version": "Available"
+        "free-version": "Available",
+        "sole-trader": "N/A"
       },
       "accessibilityStatementLink": "software-vendor-accessibility.com"
     },

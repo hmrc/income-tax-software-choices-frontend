@@ -33,20 +33,6 @@
     }
 }
 
-@insetText(count: Int) = @{
-    count match {
-        case 0 => govukInsetText(InsetText(
-            content = Text(messages("search-software.vendor-count.agent.inset.none"))
-        ))
-        case 1 => govukInsetText(InsetText(
-            content = Text(messages("search-software.vendor-count.agent.inset.one"))
-        ))
-        case _ => govukInsetText(InsetText(
-            content = Text(messages("search-software.vendor-count.agent.inset.many"))
-        ))
-    }
-}
-
 <div id="vendor-count">
     @resultsHeading(viewModel.vendorsWithIntent.size)
 </div>

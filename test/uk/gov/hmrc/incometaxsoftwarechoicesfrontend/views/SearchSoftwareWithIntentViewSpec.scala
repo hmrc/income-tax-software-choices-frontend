@@ -106,12 +106,9 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
 
   "Search software page" must {
 
-  lazy val document = {
+    lazy val document = {
       val model = SoftwareChoicesResultsViewModel(
-        allInOneVendors = SearchSoftwareWithIntentPageContent.softwareVendorsNoResults,
-        otherVendors = SearchSoftwareWithIntentPageContent.softwareVendorsNoResults,
-        vendorsWithIntent = SearchSoftwareWithIntentPageContent.multipleVendorsWithIntent,
-        zeroResults = false
+        vendorsWithIntent = SearchSoftwareWithIntentPageContent.multipleVendorsWithIntent
       )
       Jsoup.parse(page(model).body)
     }
@@ -242,10 +239,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
         "there is 1 result" in {
           lazy val documentOneResult = {
             val model = SoftwareChoicesResultsViewModel(
-              allInOneVendors = SearchSoftwareWithIntentPageContent.softwareVendorsOneResult,
-              otherVendors = SearchSoftwareWithIntentPageContent.softwareVendorsOneResult,
-              vendorsWithIntent = SearchSoftwareWithIntentPageContent.singleVendorWithIntent(quarterlyReady = true, eoyReady = true),
-              zeroResults = false
+              vendorsWithIntent = SearchSoftwareWithIntentPageContent.singleVendorWithIntent(quarterlyReady = true, eoyReady = true)
             )
             Jsoup.parse(page(model).body)
           }
@@ -254,10 +248,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
         "there are 0 results" in {
           lazy val documentNoResults = {
             val model = SoftwareChoicesResultsViewModel(
-              allInOneVendors = SearchSoftwareWithIntentPageContent.softwareVendorsOneResult,
-              otherVendors = SearchSoftwareWithIntentPageContent.softwareVendorsOneResult,
-              vendorsWithIntent = Seq.empty,
-              zeroResults = false
+              vendorsWithIntent = Seq.empty
             )
             Jsoup.parse(page(model).body)
           }
@@ -278,7 +269,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
 
           "has a link for the software vendor" in {
             val link: Element = firstVendor.selectHead("a")
-            val expectedUrl = ProductDetailsController.show(URLEncoder.encode(firstModel.name, "UTF-8"), zeroResults = false).url
+            val expectedUrl = ProductDetailsController.show(URLEncoder.encode(firstModel.name, "UTF-8")).url
 
             link.attr("href") shouldBe expectedUrl
             link.text should include(firstModel.name)
@@ -301,7 +292,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
 
           "has a link for the software vendor" in {
             val link: Element = secondVendor.selectHead("a")
-            val expectedUrl = ProductDetailsController.show(URLEncoder.encode(secondModel.name, "UTF-8"), zeroResults = false).url
+            val expectedUrl = ProductDetailsController.show(URLEncoder.encode(secondModel.name, "UTF-8")).url
 
             link.attr("href") shouldBe expectedUrl
             link.text should include(secondModel.name)
@@ -324,7 +315,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
 
           "has a link for the software vendor" in {
             val link: Element = thirdVendor.selectHead("a")
-            val expectedUrl = ProductDetailsController.show(URLEncoder.encode(thirdModel.name, "UTF-8"), zeroResults = false).url
+            val expectedUrl = ProductDetailsController.show(URLEncoder.encode(thirdModel.name, "UTF-8")).url
 
             link.attr("href") shouldBe expectedUrl
             link.text should include(thirdModel.name)
@@ -345,10 +336,8 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
     "have introductory text for agents" which {
       lazy val document = {
         val model = SoftwareChoicesResultsViewModel(
-          allInOneVendors = SearchSoftwareWithIntentPageContent.softwareVendorsNoResults,
-          otherVendors = SearchSoftwareWithIntentPageContent.softwareVendorsNoResults,
           vendorsWithIntent = SearchSoftwareWithIntentPageContent.multipleVendorsWithIntent,
-          zeroResults = false, isAgent = true
+          isAgent = true
         )
         Jsoup.parse(page(model).body)
       }
@@ -380,10 +369,8 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
     "have a single software vendor section for agents" which {
       lazy val document = {
         val model = SoftwareChoicesResultsViewModel(
-          allInOneVendors = SearchSoftwareWithIntentPageContent.softwareVendorsNoResults,
-          otherVendors = SearchSoftwareWithIntentPageContent.softwareVendorsNoResults,
           vendorsWithIntent = SearchSoftwareWithIntentPageContent.multipleVendorsWithIntent,
-          zeroResults = false, isAgent = true
+          isAgent = true
         )
         Jsoup.parse(page(model).body)
       }
@@ -395,10 +382,8 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
         "there is 1 result" in {
           lazy val documentOneResult = {
             val model = SoftwareChoicesResultsViewModel(
-              allInOneVendors = SearchSoftwareWithIntentPageContent.softwareVendorsNoResults,
-              otherVendors = SearchSoftwareWithIntentPageContent.softwareVendorsNoResults,
               vendorsWithIntent = SearchSoftwareWithIntentPageContent.singleVendorWithIntent(quarterlyReady = true, eoyReady = true),
-              zeroResults = false, isAgent = true
+              isAgent = true
             )
             Jsoup.parse(page(model).body)
           }
@@ -408,10 +393,8 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
         "there are 0 results" in {
           lazy val documentNoResults = {
             val model = SoftwareChoicesResultsViewModel(
-              allInOneVendors = SearchSoftwareWithIntentPageContent.softwareVendorsNoResults,
-              otherVendors = SearchSoftwareWithIntentPageContent.softwareVendorsNoResults,
               vendorsWithIntent = Seq.empty,
-              zeroResults = false, isAgent = true
+              isAgent = true
             )
             Jsoup.parse(page(model).body)
           }
@@ -433,7 +416,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
 
           "has a link for the software vendor" in {
             val link: Element = firstVendor.selectHead("a")
-            val expectedUrl = ProductDetailsController.show(URLEncoder.encode(firstModel.name, "UTF-8"), zeroResults = false).url
+            val expectedUrl = ProductDetailsController.show(URLEncoder.encode(firstModel.name, "UTF-8")).url
 
             link.attr("href") shouldBe expectedUrl
             link.text should include(firstModel.name)
@@ -456,7 +439,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
 
           "has a link for the software vendor" in {
             val link: Element = secondVendor.selectHead("a")
-            val expectedUrl = ProductDetailsController.show(URLEncoder.encode(secondModel.name, "UTF-8"), zeroResults = false).url
+            val expectedUrl = ProductDetailsController.show(URLEncoder.encode(secondModel.name, "UTF-8")).url
 
             link.attr("href") shouldBe expectedUrl
             link.text should include(secondModel.name)

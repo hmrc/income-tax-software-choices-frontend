@@ -33,22 +33,40 @@ class SessionExpiredViewSpec extends ViewSpec {
     document.mainContent.selectHead("form")
 
   "SessionExpiredView" when {
-    "have the correct title" in {
-      document.title() mustBe SessionExpiredContent.title
-    }
+    "user timed out" should {
+      val document = Jsoup.parse(view(postAction = Call("", "")).body)
+      "have the correct title" in {
+        document.title() mustBe SessionExpiredContent.title
+      }
 
-    "have the correct heading" in {
-      document.selectHead("h1").text mustBe SessionExpiredContent.heading
-    }
+      "have the correct heading" in {
+        document.selectHead("h1").text mustBe SessionExpiredContent.userHeading
+      }
 
-    "have a continue button" in {
-      form.selectNth(".govuk-button", 1).text mustBe SessionExpiredContent.continue
+      "have a continue button" in {
+        form.selectNth(".govuk-button", 1).text mustBe SessionExpiredContent.continue
+      }
+    }
+    "user deletes answers" should {
+      val document = Jsoup.parse(view(postAction = Call("", ""), true).body)
+      "have the correct title" in {
+        document.title() mustBe SessionExpiredContent.title
+      }
+
+      "have the correct heading" in {
+        document.selectHead("h1").text mustBe SessionExpiredContent.timeoutHeading
+      }
+
+      "have a continue button" in {
+        form.selectNth(".govuk-button", 1).text mustBe SessionExpiredContent.continue
+      }
     }
   }
 }
 
 private object SessionExpiredContent {
   val title = s"Answers Deleted - ${PageContentBase.title} - GOV.UK"
-  val heading = "You deleted your answers"
+  val userHeading = "You deleted your answers"
+  val timeoutHeading = "For security, we deleted your answers"
   val continue = "Start again"
 }
