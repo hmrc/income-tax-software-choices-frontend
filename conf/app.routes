@@ -4,11 +4,11 @@
 
 GET         /                                    uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.IndexController.index
 
-GET         /software-results                    uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SearchSoftwareController.show(zeroResults: Boolean ?= false)
-POST        /software-results                    uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SearchSoftwareController.search(zeroResults: Boolean ?= false)
-GET         /clear                               uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SearchSoftwareController.clear(zeroResults: Boolean ?= false)
+GET         /software-results                    uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SearchSoftwareController.show()
+POST        /software-results                    uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SearchSoftwareController.search()
+GET         /clear                               uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SearchSoftwareController.clear()
 
-GET         /product-details/*software           uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.ProductDetailsController.show(software: String, zeroResults: Boolean ?= false)
+GET         /product-details/*software           uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.ProductDetailsController.show(software: String)
 
 GET         /assets/*file                        controllers.Assets.versioned(path = "/public", file: Asset)
 

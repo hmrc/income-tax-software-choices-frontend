@@ -24,20 +24,8 @@ class SoftwareChoicesResultsViewModelSpec extends PlaySpec {
     "create an empty default model" which {
       val model = SoftwareChoicesResultsViewModel()
 
-      "has empty all in one vendors" in {
-        model.allInOneVendors.vendors mustBe Seq.empty
-      }
-
-      "has empty other vendors list" in {
-        model.otherVendors.vendors mustBe Seq.empty
-      }
-
       "has empty vendors with Intent list" in {
         model.vendorsWithIntent mustBe Seq.empty
-      }
-
-      "has zeroResult set false" in {
-        model.zeroResults mustBe false
       }
 
       "has agent set false" in {

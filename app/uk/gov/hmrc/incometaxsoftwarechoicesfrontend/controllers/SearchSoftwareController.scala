@@ -20,8 +20,6 @@ import play.api.data.Form
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import play.twirl.api.Html
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.IntentFeature
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{RequireUserDataRefiner, SessionIdentifierAction}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.Agent
@@ -45,9 +43,9 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
                                          requireData: RequireUserDataRefiner)
                                         (implicit ec: ExecutionContext,
                                          val appConfig: AppConfig,
-                                         mcc: MessagesControllerComponents) extends BaseFrontendController with FeatureSwitching {
+                                         mcc: MessagesControllerComponents) extends BaseFrontendController {
 
-  def show(zeroResults: Boolean): Action[AnyContent] = (identify andThen requireData).async { request =>
+  def show(): Action[AnyContent] = (identify andThen requireData).async { request =>
     given Request[AnyContent] = request
     for {
       userFilters <- userFiltersRepository.get(request.sessionId)
@@ -55,10 +53,7 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
       userType <- pageAnswersService.getPageAnswers(request.sessionId, UserTypePage)
       isAgent = userType.contains(Agent)
       model = SoftwareChoicesResultsViewModel(
-        allInOneVendors = softwareChoicesService.getAllInOneVendors(filters = filters),
-        otherVendors = softwareChoicesService.getOtherVendors(filters = filters, isAgent || zeroResults),
-        vendorsWithIntent = if (isEnabled(IntentFeature)) softwareChoicesService.getVendorsWithIntent(filters = filters) else Seq.empty,
-        zeroResults = zeroResults,
+        vendorsWithIntent = softwareChoicesService.getVendorsWithIntent(filters = filters),
         isAgent = isAgent
       )
     } yield {
@@ -66,7 +61,7 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
     }
   }
 
-  def search(zeroResults: Boolean): Action[AnyContent] = (identify andThen requireData).async { request =>
+  def search(): Action[AnyContent] = (identify andThen requireData).async { request =>
     given Request[AnyContent] = request
     val filters = FiltersForm.form.bindFromRequest().get
     for {
@@ -75,20 +70,17 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
     } yield {
       val isAgent = userType.contains(Agent)
       val model = SoftwareChoicesResultsViewModel(
-        allInOneVendors = softwareChoicesService.getAllInOneVendors(userFilters.getOrElse(UserFilters(request.sessionId, None, filters.filters)).finalFilters),
-        otherVendors = softwareChoicesService.getOtherVendors(userFilters.getOrElse(UserFilters(request.sessionId, None, filters.filters)).finalFilters, isAgent || zeroResults),
-        vendorsWithIntent = if (isEnabled(IntentFeature)) softwareChoicesService.getVendorsWithIntent(userFilters.getOrElse(UserFilters(request.sessionId, None, filters.filters)).finalFilters) else Seq.empty,
-        zeroResults = zeroResults,
+        vendorsWithIntent = softwareChoicesService.getVendorsWithIntent(userFilters.getOrElse(UserFilters(request.sessionId, None, filters.filters)).finalFilters),
         isAgent = isAgent
       )
       Ok(view(model, FiltersForm.form.fill(filters)))
     }
   }
 
-  def clear(zeroResults: Boolean): Action[AnyContent] = (identify andThen requireData).async { request =>
+  def clear(): Action[AnyContent] = (identify andThen requireData).async { request =>
     given Request[AnyContent] = request
     update(FiltersFormModel())(request) map { _ =>
-      Redirect(routes.SearchSoftwareController.show(zeroResults))
+      Redirect(routes.SearchSoftwareController.show())
     }
   }
 
@@ -114,18 +106,14 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
     searchSoftwareView(
       viewModel = model,
       searchForm = form,
-      postAction = routes.SearchSoftwareController.search(model.zeroResults),
-      clearAction = routes.SearchSoftwareController.clear(model.zeroResults),
-      backUrl = backLinkUrl(model.isAgent, model.zeroResults)
+      postAction = routes.SearchSoftwareController.search(),
+      clearAction = routes.SearchSoftwareController.clear(),
+      backUrl = backLinkUrl(model.isAgent)
     )
   }
 
-  def backLinkUrl(isAgent: Boolean, zeroResults: Boolean): String = {
-    (isAgent, isEnabled(IntentFeature), zeroResults) match {
-      case (true, _, _) => routes.UserTypeController.show().url
-      case (false, true, _) => routes.ChoosingSoftwareController.show().url
-      case (false, false, true) => routes.ZeroSoftwareResultsController.show().url
-      case (false, false, false) => routes.CheckYourAnswersController.show().url
-    }
+  def backLinkUrl(isAgent: Boolean): String = {
+    if (isAgent) routes.UserTypeController.show().url
+    else routes.ChoosingSoftwareController.show().url
   }
 }

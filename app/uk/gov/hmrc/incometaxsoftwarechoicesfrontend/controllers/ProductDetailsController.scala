@@ -29,12 +29,12 @@ class ProductDetailsController @Inject()(softwareChoicesService: SoftwareChoices
                                          productDetailsPage: ProductDetailsView)
                                         (implicit mcc: MessagesControllerComponents) extends BaseFrontendController {
 
-  def show(software: String, zeroResults: Boolean): Action[AnyContent] = Action { request =>
+  def show(software: String): Action[AnyContent] = Action { request =>
     given Request[AnyContent] = request
     val softwareName = URLDecoder.decode(software, "UTF-8")
     softwareChoicesService.getSoftwareVendor(softwareName) match {
       case None => throw new NotFoundException(ProductDetailsController.NotFound)
-      case Some(softwareVendor) => Ok(productDetailsPage(softwareVendor, zeroResults = zeroResults))
+      case Some(softwareVendor) => Ok(productDetailsPage(softwareVendor))
     }
   }
 }

@@ -20,7 +20,7 @@ import org.mockito.Mockito.when
 import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.mockito.MockitoSugar.mock
 import org.scalatestplus.play.PlaySpec
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.{Available, Intended}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.{Available, Intended, NotApplicable}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilterGroups.userTypeFilters
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.*
@@ -89,66 +89,6 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
     }
   }
 
-  "getOtherVendors" should {
-    "exclude vendors that are not for requested user type" in {
-      Seq(Individual, Agent).foreach { userType =>
-        val result = service.getOtherVendors(Seq(userType, SoleTrader, StandardUpdatePeriods), true)
-        result.vendors.size mustBe 3
-        result.vendors.head.name mustBe userType.toString
-      }
-    }
-
-    "returns all vendors so mandatory filters are covered" in {
-      Seq(Individual, Agent).foreach { userType =>
-        val result = service.getOtherVendors(Seq(userType, SoleTrader, UkProperty, StandardUpdatePeriods), true)
-        result.vendors.size mustBe 4
-        result.vendors.head.name mustBe userType.toString
-      }
-    }
-
-    "ignore question filters and excludes all-in-one vendors" in {
-      Seq(false, true).foreach { isAgent =>
-        val result = service.getOtherVendors(Seq(Agent, SoleTrader, StandardUpdatePeriods), isAgent)
-        val expected = if (isAgent) 3 else 0
-        result.vendors.size mustBe expected
-      }
-    }
-
-    "ignores accounting period and mandatory income sources for agent" in {
-      val result = service.getOtherVendors(Seq(Agent), true)
-      result.vendors.size mustBe 7
-    }
-
-    "retain preferences filters" in {
-      Seq(false, true).foreach { isAgent =>
-        val result = service.getOtherVendors(Seq(Agent, SoleTrader, StandardUpdatePeriods, FreeVersion), isAgent)
-        result.vendors.size mustBe 0
-      }
-    }
-
-    "does not show duplicates" in {
-      val result = service.getOtherVendors(Seq(Agent, SoleTrader, UkProperty, StandardUpdatePeriods), true)
-      result.vendors.size mustBe 4
-    }
-
-    "returns all vendors when no user types are specified" in {
-      val result = service.getOtherVendors(Seq(SoleTrader, UkProperty, StandardUpdatePeriods), true)
-      result.vendors.size mustBe 13
-    }
-
-    "returns vendors that have all user type filters" in {
-      val result = service.getOtherVendors(userTypeFilters.toSeq, true)
-      result.vendors.size mustBe 1
-    }
-
-    "getVendorsWithIntent" should {
-      "return empty Sequence" in {
-        val result = service.getVendorsWithIntent(userTypeFilters.toSeq)
-        result mustBe Seq.empty
-      }
-    }
-  }
-  
   "getVendorsWithIntent" should {
     "return 1 vendors if everything available and selected" in {
       when(mockDataService.getSoftwareVendors()).thenReturn(
@@ -240,7 +180,8 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
             intentVendor("Vendor 07", Map(Individual->Available, QuarterlyUpdates->Available, TaxReturn->Available, UkProperty->Available, StudentLoans->Available, StandardUpdatePeriods->Intended, Visual->Available)),
             intentVendor("Vendor 08", Map(Individual->Available, QuarterlyUpdates->Available, TaxReturn->Available, UkProperty->Available, StudentLoans->Available, Visual->Available)),
             intentVendor("Vendor 09", Map(Individual->Available, QuarterlyUpdates->Available, TaxReturn->Available, UkProperty->Available, StudentLoans->Available, StandardUpdatePeriods->Available, Visual->Intended)),
-            intentVendor("Vendor 10", Map(Individual->Available, QuarterlyUpdates->Available, TaxReturn->Available, UkProperty->Available, StudentLoans->Available, StandardUpdatePeriods->Available))
+            intentVendor("Vendor 10", Map(Individual->Available, QuarterlyUpdates->Available, TaxReturn->Available, UkProperty->Available, StudentLoans->Available, StandardUpdatePeriods->Available)),
+            intentVendor("Vendor 11", Map(Individual->NotApplicable, QuarterlyUpdates->Available, TaxReturn->Available, UkProperty->Available, StudentLoans->Available, StandardUpdatePeriods->Available, Visual->Available))
           )
         )
       )
