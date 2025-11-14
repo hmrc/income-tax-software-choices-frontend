@@ -127,7 +127,7 @@
       classes = "govuk-summary-list--no-border"
     ))
     <p class="govuk-body">
-      <a href="@{ProductDetailsController.show(URLEncoder.encode(vendor.name, "UTF-8"), false)}" class="govuk-link">
+      <a href="@{ProductDetailsController.show(URLEncoder.encode(vendor.name, "UTF-8"))}" class="govuk-link">
               @messages("search-software.intent.vendor-visit-link", vendor.name)
       </a>
     </p>

@@ -45,7 +45,7 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
                                          val appConfig: AppConfig,
                                          mcc: MessagesControllerComponents) extends BaseFrontendController {
 
-  def show(zeroResults: Boolean): Action[AnyContent] = (identify andThen requireData).async { request =>
+  def show(): Action[AnyContent] = (identify andThen requireData).async { request =>
     given Request[AnyContent] = request
     for {
       userFilters <- userFiltersRepository.get(request.sessionId)
@@ -53,10 +53,7 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
       userType <- pageAnswersService.getPageAnswers(request.sessionId, UserTypePage)
       isAgent = userType.contains(Agent)
       model = SoftwareChoicesResultsViewModel(
-        allInOneVendors = softwareChoicesService.getAllInOneVendors(filters = filters),
-        otherVendors = softwareChoicesService.getOtherVendors(filters = filters, isAgent || zeroResults),
         vendorsWithIntent = softwareChoicesService.getVendorsWithIntent(filters = filters),
-        zeroResults = zeroResults,
         isAgent = isAgent
       )
     } yield {
@@ -64,7 +61,7 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
     }
   }
 
-  def search(zeroResults: Boolean): Action[AnyContent] = (identify andThen requireData).async { request =>
+  def search(): Action[AnyContent] = (identify andThen requireData).async { request =>
     given Request[AnyContent] = request
     val filters = FiltersForm.form.bindFromRequest().get
     for {
@@ -73,20 +70,17 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
     } yield {
       val isAgent = userType.contains(Agent)
       val model = SoftwareChoicesResultsViewModel(
-        allInOneVendors = softwareChoicesService.getAllInOneVendors(userFilters.getOrElse(UserFilters(request.sessionId, None, filters.filters)).finalFilters),
-        otherVendors = softwareChoicesService.getOtherVendors(userFilters.getOrElse(UserFilters(request.sessionId, None, filters.filters)).finalFilters, isAgent || zeroResults),
         vendorsWithIntent = softwareChoicesService.getVendorsWithIntent(userFilters.getOrElse(UserFilters(request.sessionId, None, filters.filters)).finalFilters),
-        zeroResults = zeroResults,
         isAgent = isAgent
       )
       Ok(view(model, FiltersForm.form.fill(filters)))
     }
   }
 
-  def clear(zeroResults: Boolean): Action[AnyContent] = (identify andThen requireData).async { request =>
+  def clear(): Action[AnyContent] = (identify andThen requireData).async { request =>
     given Request[AnyContent] = request
     update(FiltersFormModel())(request) map { _ =>
-      Redirect(routes.SearchSoftwareController.show(zeroResults))
+      Redirect(routes.SearchSoftwareController.show())
     }
   }
 
@@ -112,16 +106,14 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
     searchSoftwareView(
       viewModel = model,
       searchForm = form,
-      postAction = routes.SearchSoftwareController.search(model.zeroResults),
-      clearAction = routes.SearchSoftwareController.clear(model.zeroResults),
-      backUrl = backLinkUrl(model.isAgent, model.zeroResults)
+      postAction = routes.SearchSoftwareController.search(),
+      clearAction = routes.SearchSoftwareController.clear(),
+      backUrl = backLinkUrl(model.isAgent)
     )
   }
 
-  def backLinkUrl(isAgent: Boolean, zeroResults: Boolean): String = {
-    (isAgent, zeroResults) match {
-      case (true, _) => routes.UserTypeController.show().url
-      case (false, _) => routes.ChoosingSoftwareController.show().url
-    }
+  def backLinkUrl(isAgent: Boolean): String = {
+    if (isAgent) routes.UserTypeController.show().url
+    else routes.ChoosingSoftwareController.show().url
   }
 }

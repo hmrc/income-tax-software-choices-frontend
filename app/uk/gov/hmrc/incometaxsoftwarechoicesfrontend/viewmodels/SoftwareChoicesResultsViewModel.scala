@@ -16,12 +16,7 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.viewmodels
 
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareVendors
-
 case class SoftwareChoicesResultsViewModel (
-                                             allInOneVendors: SoftwareVendors = SoftwareVendors.empty,
-                                             otherVendors: SoftwareVendors = SoftwareVendors.empty,
                                              vendorsWithIntent: Seq[VendorSuitabilityViewModel] = Seq.empty,
-                                             zeroResults: Boolean = false,
                                              isAgent: Boolean = false
                                            )
