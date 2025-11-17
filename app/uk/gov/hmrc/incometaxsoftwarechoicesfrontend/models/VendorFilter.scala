@@ -206,6 +206,26 @@ object VendorFilter {
     override val priority: Int = 1
   }
 
+  case object PartnerIncome extends VendorFilter {
+    override val key: String = "partner-income"
+    override val priority: Int = 1
+  }
+
+  case object AverageAdjustment extends VendorFilter {
+    override val key: String = "averaging-adjustment"
+    override val priority: Int = 1
+  }
+
+  case object FosterCare extends VendorFilter {
+    override val key: String = "foster-carer"
+    override val priority: Int = 1
+  }
+
+  case object TrustIncome extends VendorFilter {
+    override val key: String = "trust-income"
+    override val priority: Int = 1
+  }
+
   case object DesktopApplication extends VendorFilter {
     override val key: String = "desktop-based"
     override val priority: Int = 1
@@ -280,6 +300,10 @@ object VendorFilter {
     MarriageAllowance,
     Agent,
     Individual,
+    PartnerIncome,
+    AverageAdjustment,
+    FosterCare,
+    TrustIncome,
     DesktopApplication,
     WebBrowser,
     MicrosoftWindows,
