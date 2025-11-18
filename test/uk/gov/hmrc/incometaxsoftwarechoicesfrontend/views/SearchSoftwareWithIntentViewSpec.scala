@@ -100,10 +100,6 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
     testRow(summaryList, 4, SearchSoftwareWithIntentPageContent.taxReturn, s"${SearchSoftwareWithIntentPageContent.notIncluded}")
   }
 
-  override def beforeEach(): Unit = {
-    super.beforeEach()
-  }
-
   "Search software page" must {
 
     lazy val document = {

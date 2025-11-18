@@ -33,7 +33,7 @@ class SessionExpiredViewSpec extends ViewSpec {
     document.mainContent.selectHead("form")
 
   "SessionExpiredView" when {
-    "user timed out" should {
+    "user deletes answers" should {
       val document = Jsoup.parse(view(postAction = Call("", "")).body)
       "have the correct title" in {
         document.title() mustBe SessionExpiredContent.title
@@ -47,7 +47,7 @@ class SessionExpiredViewSpec extends ViewSpec {
         form.selectNth(".govuk-button", 1).text mustBe SessionExpiredContent.continue
       }
     }
-    "user deletes answers" should {
+    "user timed out" should {
       val document = Jsoup.parse(view(postAction = Call("", ""), true).body)
       "have the correct title" in {
         document.title() mustBe SessionExpiredContent.title

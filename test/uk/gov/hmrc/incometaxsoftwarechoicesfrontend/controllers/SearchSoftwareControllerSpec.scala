@@ -43,9 +43,6 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec
   with MockRequireUserDataRefiner
   with BeforeAndAfterEach {
 
-  override def beforeEach(): Unit = {
-    super.beforeEach()
-  }
   val searchSoftwarePage: SearchSoftwareView = app.injector.instanceOf[SearchSoftwareView]
 
   "Show" when {

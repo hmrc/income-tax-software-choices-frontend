@@ -31,10 +31,7 @@
   softwareVendorsIntentResultsTemplate: SoftwareVendorsIntentResultsTemplate,
   softwareVendorsAgentTemplate: SoftwareVendorsAgentTemplate,
   form: FormWithCSRF,
-  govukCheckboxes: GovukCheckboxes,
-  govukAccordion: GovukAccordion,
   govukButton: GovukButton,
-  govukDetails: GovukDetails,
   languageUtils: LanguageUtils
 )(implicit appConfig: AppConfig)
 @(viewModel: SoftwareChoicesResultsViewModel, searchForm: Form[FiltersFormModel], postAction: Call, clearAction: Call, backUrl: String)(implicit request: Request[_], messages: Messages)
