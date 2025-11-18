@@ -36,8 +36,11 @@ class PageAnswersServiceSpec extends PlaySpec with BeforeAndAfterEach {
 
   private case object DummyPage extends QuestionPage[String] {
     override def toString: String = "dummy"
+
     override def path: JsPath = JsPath \ toString
+
     override def toVendorFilter(value: String): Seq[VendorFilter] = Seq.empty
+
     override def reads: Reads[String] = implicitly
   }
 
@@ -104,7 +107,6 @@ class PageAnswersServiceSpec extends PlaySpec with BeforeAndAfterEach {
       "return None if user filters exists for this session but the page does not" in new Setup {
         service.getPageAnswers(None, DummyPage) mustBe None
       }
-
       "return answers if user filters exists for this session and the page has answers" in new Setup {
         service.getPageAnswers(Some(dummyUserAnswers), DummyPage) mustBe Some("Test")
       }
@@ -112,9 +114,9 @@ class PageAnswersServiceSpec extends PlaySpec with BeforeAndAfterEach {
   }
 
   "setPageAnswers" when {
-    "provided with a session id" when {
-      "the userFilters exist" must {
-        "return true to show the answers have been saved" in new Setup {
+    "provided with a session id" must {
+      "return true to show the answers have been saved" when {
+        "the userFilters exist with user answers" in new Setup {
           when(mockUserFiltersRepository.get(eqTo(sessionId)))
             .thenReturn(Future.successful(Some(userFilterWithAnswerForPage)))
           when(mockUserFiltersRepository.set(any()))
@@ -122,9 +124,15 @@ class PageAnswersServiceSpec extends PlaySpec with BeforeAndAfterEach {
 
           await(service.setPageAnswers(sessionId, DummyPage, "Another Test String")) mustBe true
         }
-      }
-      "the userFilters do not exist" must {
-        "return true to show the answers have been saved once the user filters created" in new Setup {
+        "the userFilters exist with no user answers" in new Setup {
+          when(mockUserFiltersRepository.get(eqTo(sessionId)))
+            .thenReturn(Future.successful(Some(emptyUserFilter)))
+          when(mockUserFiltersRepository.set(any()))
+            .thenReturn(Future.successful(true))
+
+          await(service.setPageAnswers(sessionId, DummyPage, "Another Test String")) mustBe true
+        }
+        "the userFilters do not exist" in new Setup {
           when(mockUserFiltersRepository.get(eqTo(sessionId)))
             .thenReturn(Future.successful(None))
           when(mockUserFiltersRepository.set(any()))
@@ -134,21 +142,20 @@ class PageAnswersServiceSpec extends PlaySpec with BeforeAndAfterEach {
         }
       }
     }
-    "provided with user filters" when {
-      "the userFilters exist" must {
-        "return true to show the answers have been saved" in new Setup {
+
+    "provided with user filters" must {
+      "return true to show the answers have been saved" when {
+        "the user answers exist" in new Setup {
           when(mockUserFiltersRepository.set(any()))
             .thenReturn(Future.successful(true))
 
           await(service.setPageAnswers(userFilterWithAnswerForPage, DummyPage, "Another Test String")) mustBe true
         }
-      }
-      "the userFilters do not exist" must {
-        "return true to show the answers have been saved once the user filters created" in new Setup {
+        "the user answers do not exist" in new Setup {
           when(mockUserFiltersRepository.set(any()))
             .thenReturn(Future.successful(true))
 
-          await(service.setPageAnswers(userFilterWithAnswerForPage, DummyPage, "Third Test String")) mustBe true
+          await(service.setPageAnswers(emptyUserFilter, DummyPage, "Third Test String")) mustBe true
         }
       }
     }

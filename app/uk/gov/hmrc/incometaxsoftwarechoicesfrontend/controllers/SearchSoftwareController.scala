@@ -45,7 +45,7 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
                                          val appConfig: AppConfig,
                                          mcc: MessagesControllerComponents) extends BaseFrontendController {
 
-  def show(): Action[AnyContent] = (identify andThen requireData).async { request =>
+  def show(): Action[AnyContent] = (identify andThen requireData) { request =>
     given Request[AnyContent] = request
 
     val finalFilters = request.userFilters.finalFilters
@@ -53,7 +53,7 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
 
     Ok(view(
       model = SoftwareChoicesResultsViewModel(
-        vendorsWithIntent = softwareChoicesService.getVendorsWithIntent(filters = filters),
+        vendorsWithIntent = softwareChoicesService.getVendorsWithIntent(filters = finalFilters),
         isAgent = isAgent
       ),
       form = FiltersForm.form.fill(FiltersFormModel(filters = finalFilters))
