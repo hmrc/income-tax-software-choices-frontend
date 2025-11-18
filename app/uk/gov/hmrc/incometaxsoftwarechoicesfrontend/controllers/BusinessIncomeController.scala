@@ -36,17 +36,15 @@ class BusinessIncomeController @Inject()(view: BusinessIncomeView,
                                          mcc: MessagesControllerComponents) extends BaseFrontendController {
 
 
-  def show(editMode: Boolean): Action[AnyContent] = (identify andThen requireData).async { request =>
+  def show(editMode: Boolean): Action[AnyContent] = (identify andThen requireData) { request =>
     given Request[AnyContent] = request
-    for {
-      pageAnswers <- pageAnswersService.getPageAnswers(request.sessionId, BusinessIncomePage)
-    } yield {
-      Ok(view(
-        businessIncomeForm = BusinessIncomeForm.form.fill(pageAnswers),
-        postAction = routes.BusinessIncomeController.submit(editMode),
-        backUrl = backUrl(editMode)
-      ))
-    }
+
+    val pageAnswers = pageAnswersService.getPageAnswers(request.userFilters, BusinessIncomePage)
+    Ok(view(
+      businessIncomeForm = BusinessIncomeForm.form.fill(pageAnswers),
+      postAction = routes.BusinessIncomeController.submit(editMode),
+      backUrl = backUrl(editMode)
+    ))
   }
 
   def submit(editMode: Boolean): Action[AnyContent] = (identify andThen requireData).async { request =>
@@ -62,7 +60,7 @@ class BusinessIncomeController @Inject()(view: BusinessIncomeView,
         )
       },
       answers => {
-        pageAnswersService.setPageAnswers(request.sessionId, BusinessIncomePage, answers).flatMap {
+        pageAnswersService.setPageAnswers(request.userFilters, BusinessIncomePage, answers).flatMap {
           case true =>
             if (editMode) Future.successful(Redirect(routes.CheckYourAnswersController.show()))
             else Future.successful(Redirect(routes.AdditionalIncomeSourcesController.show()))

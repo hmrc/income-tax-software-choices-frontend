@@ -39,18 +39,14 @@ class CheckYourAnswersController @Inject()(view: CheckYourAnswersView,
                                            pageAnswersService: PageAnswersService)
   extends BaseFrontendController with SummaryListBuilder {
 
-  def show(): Action[AnyContent] = (identify andThen requireData).async { request =>
+  def show(): Action[AnyContent] = (identify andThen requireData) { request =>
     given Request[AnyContent] = request
-    for {
-      userFilters <- userFiltersRepository.get(request.sessionId)
-      summaryList = buildSummaryList(userFilters.flatMap(_.answers))
-    } yield {
-      Ok(view(
-        summaryList = summaryList,
-        postAction = routes.CheckYourAnswersController.submit(),
-        backLink = routes.AccountingPeriodController.show().url
-      ))
-    }
+
+    Ok(view(
+      summaryList = buildSummaryList(request.userFilters.answers),
+      postAction = routes.CheckYourAnswersController.submit(),
+      backLink = routes.AccountingPeriodController.show().url
+    ))
   }
 
   def submit(): Action[AnyContent] = (identify andThen requireData).async { request =>

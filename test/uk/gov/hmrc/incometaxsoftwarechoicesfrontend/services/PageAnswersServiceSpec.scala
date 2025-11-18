@@ -74,50 +74,82 @@ class PageAnswersServiceSpec extends PlaySpec with BeforeAndAfterEach {
   }
 
   "getPageAnswers" when {
-    "the page has not been visited previously" must {
-      "return None if no user filters exists for this session" in new Setup {
-        when(mockUserFiltersRepository.get(eqTo(sessionId)))
-          .thenReturn(Future.successful(None))
+    "provided with a session id" when {
+      "the page has not been visited previously" must {
+        "return None if no user filters exists for this session" in new Setup {
+          when(mockUserFiltersRepository.get(eqTo(sessionId)))
+            .thenReturn(Future.successful(None))
 
-        await(service.getPageAnswers(sessionId, DummyPage)) mustBe None
+          await(service.getPageAnswers(sessionId, DummyPage)) mustBe None
+        }
+
+        "return None if user filters exists for this session but the page does not" in new Setup {
+          when(mockUserFiltersRepository.get(eqTo(sessionId)))
+            .thenReturn(Future.successful(Some(emptyUserFilter)))
+
+          await(service.getPageAnswers(sessionId, DummyPage)) mustBe None
+        }
       }
+      "the page has been visited previously" must {
+        "return answers if user filters exists for this session and the page has answers" in new Setup {
+          when(mockUserFiltersRepository.get(eqTo(sessionId)))
+            .thenReturn(Future.successful(Some(userFilterWithAnswerForPage)))
 
-      "return None if user filters exists for this session but the page does not" in new Setup {
-        when(mockUserFiltersRepository.get(eqTo(sessionId)))
-          .thenReturn(Future.successful(Some(emptyUserFilter)))
-
-        await(service.getPageAnswers(sessionId, DummyPage)) mustBe None
+          await(service.getPageAnswers(sessionId, DummyPage)) mustBe Some("Test")
+        }
       }
     }
-    "the page has been visited previously" must {
-      "return answers if user filters exists for this session and the page has answers" in new Setup {
-        when(mockUserFiltersRepository.get(eqTo(sessionId)))
-          .thenReturn(Future.successful(Some(userFilterWithAnswerForPage)))
 
-        await(service.getPageAnswers(sessionId, DummyPage)) mustBe Some("Test")
+    "provided with user filters" must {
+      "return None if user filters exists for this session but the page does not" in new Setup {
+        service.getPageAnswers(emptyUserFilter, DummyPage) mustBe None
+      }
+
+      "return answers if user filters exists for this session and the page has answers" in new Setup {
+        service.getPageAnswers(userFilterWithAnswerForPage, DummyPage) mustBe Some("Test")
       }
     }
   }
 
   "setPageAnswers" when {
-    "the userFilters exist" must {
-      "return true to show the answers have been saved" in new Setup {
-        when(mockUserFiltersRepository.get(eqTo(sessionId)))
-          .thenReturn(Future.successful(Some(userFilterWithAnswerForPage)))
-        when(mockUserFiltersRepository.set(any()))
-          .thenReturn(Future.successful(true))
+    "provided with a session id" when {
+      "the userFilters exist" must {
+        "return true to show the answers have been saved" in new Setup {
+          when(mockUserFiltersRepository.get(eqTo(sessionId)))
+            .thenReturn(Future.successful(Some(userFilterWithAnswerForPage)))
+          when(mockUserFiltersRepository.set(any()))
+            .thenReturn(Future.successful(true))
 
-        await(service.setPageAnswers(sessionId, DummyPage, "Another Test String")) mustBe true
+          await(service.setPageAnswers(sessionId, DummyPage, "Another Test String")) mustBe true
+        }
+      }
+      "the userFilters do not exist" must {
+        "return true to show the answers have been saved once the user filters created" in new Setup {
+          when(mockUserFiltersRepository.get(eqTo(sessionId)))
+            .thenReturn(Future.successful(None))
+          when(mockUserFiltersRepository.set(any()))
+            .thenReturn(Future.successful(true))
+
+          await(service.setPageAnswers(sessionId, DummyPage, "Third Test String")) mustBe true
+        }
       }
     }
-    "the userFilters do not exist" must {
-      "return true to show the answers have been saved once the user filters created" in new Setup {
-        when(mockUserFiltersRepository.get(eqTo(sessionId)))
-          .thenReturn(Future.successful(None))
-        when(mockUserFiltersRepository.set(any()))
-          .thenReturn(Future.successful(true))
+    "provided with user filters" when {
+      "the userFilters exist" must {
+        "return true to show the answers have been saved" in new Setup {
+          when(mockUserFiltersRepository.set(any()))
+            .thenReturn(Future.successful(true))
 
-        await(service.setPageAnswers(sessionId, DummyPage, "Third Test String")) mustBe true
+          await(service.setPageAnswers(userFilterWithAnswerForPage, DummyPage, "Another Test String")) mustBe true
+        }
+      }
+      "the userFilters do not exist" must {
+        "return true to show the answers have been saved once the user filters created" in new Setup {
+          when(mockUserFiltersRepository.set(any()))
+            .thenReturn(Future.successful(true))
+
+          await(service.setPageAnswers(userFilterWithAnswerForPage, DummyPage, "Third Test String")) mustBe true
+        }
       }
     }
   }
