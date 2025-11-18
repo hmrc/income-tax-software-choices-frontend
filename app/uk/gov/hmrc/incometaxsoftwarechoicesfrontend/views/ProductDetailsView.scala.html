@@ -34,9 +34,9 @@
         govukTable: GovukTable,
         govukTag: GovukTag
 )(implicit appConfig: AppConfig)
-@(softwareVendor: SoftwareVendorModel, zeroResults: Boolean)(implicit request: Request[_], messages: Messages)
+@(softwareVendor: SoftwareVendorModel)(implicit request: Request[_], messages: Messages)
 
-@mainTemplate(title = softwareVendor.name, backLink = Some(routes.SearchSoftwareController.show(zeroResults).url), isFullWidth = true) {
+@mainTemplate(title = softwareVendor.name, backLink = Some(routes.SearchSoftwareController.show().url), isFullWidth = true) {
 
     <h1 class="govuk-heading-l">@{
         softwareVendor.name

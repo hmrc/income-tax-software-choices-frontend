@@ -23,8 +23,6 @@ import org.jsoup.select.Elements
 import org.scalatest.{Assertion, BeforeAndAfterEach}
 import play.api.mvc.Call
 import play.twirl.api.HtmlFormat
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.IntentFeature
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes.ProductDetailsController
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.{Available, Intended}
@@ -37,7 +35,7 @@ import java.net.URLEncoder
 import java.time.LocalDate
 import scala.util.Try
 
-class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach with FeatureSwitching {
+class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach {
 
   import SearchSoftwareWithIntentViewSpec._
 
@@ -102,20 +100,11 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
     testRow(summaryList, 4, SearchSoftwareWithIntentPageContent.taxReturn, s"${SearchSoftwareWithIntentPageContent.notIncluded}")
   }
 
-  override def beforeEach(): Unit = {
-    enable(IntentFeature)
-    super.beforeEach()
-  }
-
   "Search software page" must {
-    enable(IntentFeature)
 
-  lazy val document = {
+    lazy val document = {
       val model = SoftwareChoicesResultsViewModel(
-        allInOneVendors = SearchSoftwareWithIntentPageContent.softwareVendorsNoResults,
-        otherVendors = SearchSoftwareWithIntentPageContent.softwareVendorsNoResults,
-        vendorsWithIntent = SearchSoftwareWithIntentPageContent.multipleVendorsWithIntent,
-        zeroResults = false
+        vendorsWithIntent = SearchSoftwareWithIntentPageContent.multipleVendorsWithIntent
       )
       Jsoup.parse(page(model).body)
     }
@@ -246,10 +235,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
         "there is 1 result" in {
           lazy val documentOneResult = {
             val model = SoftwareChoicesResultsViewModel(
-              allInOneVendors = SearchSoftwareWithIntentPageContent.softwareVendorsOneResult,
-              otherVendors = SearchSoftwareWithIntentPageContent.softwareVendorsOneResult,
-              vendorsWithIntent = SearchSoftwareWithIntentPageContent.singleVendorWithIntent(quarterlyReady = true, eoyReady = true),
-              zeroResults = false
+              vendorsWithIntent = SearchSoftwareWithIntentPageContent.singleVendorWithIntent(quarterlyReady = true, eoyReady = true)
             )
             Jsoup.parse(page(model).body)
           }
@@ -258,10 +244,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
         "there are 0 results" in {
           lazy val documentNoResults = {
             val model = SoftwareChoicesResultsViewModel(
-              allInOneVendors = SearchSoftwareWithIntentPageContent.softwareVendorsOneResult,
-              otherVendors = SearchSoftwareWithIntentPageContent.softwareVendorsOneResult,
-              vendorsWithIntent = Seq.empty,
-              zeroResults = false
+              vendorsWithIntent = Seq.empty
             )
             Jsoup.parse(page(model).body)
           }
@@ -282,7 +265,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
 
           "has a link for the software vendor" in {
             val link: Element = firstVendor.selectHead("a")
-            val expectedUrl = ProductDetailsController.show(URLEncoder.encode(firstModel.name, "UTF-8"), zeroResults = false).url
+            val expectedUrl = ProductDetailsController.show(URLEncoder.encode(firstModel.name, "UTF-8")).url
 
             link.attr("href") shouldBe expectedUrl
             link.text should include(firstModel.name)
@@ -305,7 +288,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
 
           "has a link for the software vendor" in {
             val link: Element = secondVendor.selectHead("a")
-            val expectedUrl = ProductDetailsController.show(URLEncoder.encode(secondModel.name, "UTF-8"), zeroResults = false).url
+            val expectedUrl = ProductDetailsController.show(URLEncoder.encode(secondModel.name, "UTF-8")).url
 
             link.attr("href") shouldBe expectedUrl
             link.text should include(secondModel.name)
@@ -328,7 +311,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
 
           "has a link for the software vendor" in {
             val link: Element = thirdVendor.selectHead("a")
-            val expectedUrl = ProductDetailsController.show(URLEncoder.encode(thirdModel.name, "UTF-8"), zeroResults = false).url
+            val expectedUrl = ProductDetailsController.show(URLEncoder.encode(thirdModel.name, "UTF-8")).url
 
             link.attr("href") shouldBe expectedUrl
             link.text should include(thirdModel.name)
@@ -349,10 +332,8 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
     "have introductory text for agents" which {
       lazy val document = {
         val model = SoftwareChoicesResultsViewModel(
-          allInOneVendors = SearchSoftwareWithIntentPageContent.softwareVendorsNoResults,
-          otherVendors = SearchSoftwareWithIntentPageContent.softwareVendorsNoResults,
           vendorsWithIntent = SearchSoftwareWithIntentPageContent.multipleVendorsWithIntent,
-          zeroResults = false, isAgent = true
+          isAgent = true
         )
         Jsoup.parse(page(model).body)
       }
@@ -384,10 +365,8 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
     "have a single software vendor section for agents" which {
       lazy val document = {
         val model = SoftwareChoicesResultsViewModel(
-          allInOneVendors = SearchSoftwareWithIntentPageContent.softwareVendorsNoResults,
-          otherVendors = SearchSoftwareWithIntentPageContent.softwareVendorsNoResults,
           vendorsWithIntent = SearchSoftwareWithIntentPageContent.multipleVendorsWithIntent,
-          zeroResults = false, isAgent = true
+          isAgent = true
         )
         Jsoup.parse(page(model).body)
       }
@@ -399,10 +378,8 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
         "there is 1 result" in {
           lazy val documentOneResult = {
             val model = SoftwareChoicesResultsViewModel(
-              allInOneVendors = SearchSoftwareWithIntentPageContent.softwareVendorsNoResults,
-              otherVendors = SearchSoftwareWithIntentPageContent.softwareVendorsNoResults,
               vendorsWithIntent = SearchSoftwareWithIntentPageContent.singleVendorWithIntent(quarterlyReady = true, eoyReady = true),
-              zeroResults = false, isAgent = true
+              isAgent = true
             )
             Jsoup.parse(page(model).body)
           }
@@ -412,10 +389,8 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
         "there are 0 results" in {
           lazy val documentNoResults = {
             val model = SoftwareChoicesResultsViewModel(
-              allInOneVendors = SearchSoftwareWithIntentPageContent.softwareVendorsNoResults,
-              otherVendors = SearchSoftwareWithIntentPageContent.softwareVendorsNoResults,
               vendorsWithIntent = Seq.empty,
-              zeroResults = false, isAgent = true
+              isAgent = true
             )
             Jsoup.parse(page(model).body)
           }
@@ -437,7 +412,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
 
           "has a link for the software vendor" in {
             val link: Element = firstVendor.selectHead("a")
-            val expectedUrl = ProductDetailsController.show(URLEncoder.encode(firstModel.name, "UTF-8"), zeroResults = false).url
+            val expectedUrl = ProductDetailsController.show(URLEncoder.encode(firstModel.name, "UTF-8")).url
 
             link.attr("href") shouldBe expectedUrl
             link.text should include(firstModel.name)
@@ -460,7 +435,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
 
           "has a link for the software vendor" in {
             val link: Element = secondVendor.selectHead("a")
-            val expectedUrl = ProductDetailsController.show(URLEncoder.encode(secondModel.name, "UTF-8"), zeroResults = false).url
+            val expectedUrl = ProductDetailsController.show(URLEncoder.encode(secondModel.name, "UTF-8")).url
 
             link.attr("href") shouldBe expectedUrl
             link.text should include(secondModel.name)

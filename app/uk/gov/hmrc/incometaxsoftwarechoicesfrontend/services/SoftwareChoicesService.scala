@@ -77,38 +77,6 @@ class SoftwareChoicesService @Inject()(
     )
   }
 
-  def getOtherVendors(filters: Seq[VendorFilter], isAgentOrZeroResults: Boolean = false): SoftwareVendors = {
-    val allInOne = if (isAgentOrZeroResults) Seq.empty else getAllInOneVendors(filters).vendors
-    val vendors = softwareVendors
-    val userTypes = filters.filter(userTypeFilters.contains)
-    val otherVendors = if (userTypes.isEmpty) {
-      (SoftwareChoicesService.matchFilter(filters.filterNot(userPageFilters.contains)) _
-        andThen SoftwareChoicesService.sortVendors
-      )(vendors.vendors)
-    } else {
-      val accountingPeriod = filters.find(accountingPeriodFilters.contains)
-      val mandatedIncomeSources = filters.filter(Seq(SoleTrader, UkProperty, OverseasProperty).contains)
-      val vendorsForUser = vendors.vendors.filter { vendor =>
-        vendor.mustHaveAll(userTypes) &&
-          vendor.mustHaveOption(accountingPeriod)
-      }
-      val matchingVendors = if (mandatedIncomeSources.isEmpty) {
-        vendorsForUser
-      } else {
-        vendorsForUser.filter(_.mustHaveAtLeast(mandatedIncomeSources))
-      }
-      val preferencesFilters = filters
-        .filterNot(userTypes.contains)
-        .filterNot(userPageFilters.contains)
-        .filterNot(mandatoryFiltersForIndividuals.contains)
-      (SoftwareChoicesService.matchFilter(preferencesFilters) _
-        andThen SoftwareChoicesService.sortVendors
-      )(matchingVendors)
-    }
-    vendors.copy(
-      vendors = otherVendors.filterNot(allInOne.contains)
-    )
-  }
 }
 
 object SoftwareChoicesService {

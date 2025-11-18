@@ -24,24 +24,15 @@
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates._
 @import views.html.helper.CSPNonce
 @import uk.gov.hmrc.play.language.LanguageUtils
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.IntentFeature
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitchingImpl
 
 @this(
   mainTemplate: MainTemplate,
-  softwareVendorsTemplate: SoftwareVendorsTemplate,
   softwareFiltersTemplate: SoftwareFiltersTemplate,
-  softwareVendorsZeroResultsTemplate: SoftwareVendorsZeroResultsTemplate,
   softwareVendorsIntentResultsTemplate: SoftwareVendorsIntentResultsTemplate,
   softwareVendorsAgentTemplate: SoftwareVendorsAgentTemplate,
-  softwareTabsTemplate: SoftwareTabsTemplate,
   form: FormWithCSRF,
-  govukCheckboxes: GovukCheckboxes,
-  govukAccordion: GovukAccordion,
   govukButton: GovukButton,
-  govukDetails: GovukDetails,
-  languageUtils: LanguageUtils,
-  featureSwitching: FeatureSwitchingImpl
+  languageUtils: LanguageUtils
 )(implicit appConfig: AppConfig)
 @(viewModel: SoftwareChoicesResultsViewModel, searchForm: Form[FiltersFormModel], postAction: Call, clearAction: Call, backUrl: String)(implicit request: Request[_], messages: Messages)
 
@@ -50,25 +41,17 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <h1 class="govuk-heading-xl">@messages("search-software.heading")</h1>
-      @if(featureSwitching.isEnabled(IntentFeature)) {
-          @if(viewModel.isAgent) {
-              <p class="govuk-body">@messages("search-software.p1")</p>
-              <p class="govuk-body">@messages("search-software.p2")</p>
-              <p class="govuk-body">@messages("search-software.p3.agent.intent")</p>
-              <p class="govuk-inset-text">@messages("search-software.inset.agent.intent")</p>
+        @if(viewModel.isAgent) {
+           <p class="govuk-body">@messages("search-software.p1")</p>
+           <p class="govuk-body">@messages("search-software.p2")</p>
+           <p class="govuk-body">@messages("search-software.p3.agent.intent")</p>
+           <p class="govuk-inset-text">@messages("search-software.inset.agent.intent")</p>
 
-          } else {
-              <h2 class="govuk-heading-m">@messages("search-software.intent.h2")</h2>
-              <p class="govuk-body">@messages("search-software.intent.p1")</p>
-              <p class="govuk-body">@messages("search-software.intent.p2")</p>
-          }
-      } else {
-          <p class="govuk-body">@messages("search-software.p1")</p>
-          <p class="govuk-body">@messages("search-software.p2")</p>
-          @if(!viewModel.isAgent && viewModel.zeroResults) {
-              <p class="govuk-body">@messages("search-software.p3")</p>
-          }
-      }
+        } else {
+           <h2 class="govuk-heading-m">@messages("search-software.intent.h2")</h2>
+           <p class="govuk-body">@messages("search-software.intent.p1")</p>
+           <p class="govuk-body">@messages("search-software.intent.p2")</p>
+        }
     </div>
   </div>
 
@@ -102,22 +85,10 @@
       </div>
 
     <div class="govuk-grid-column-two-thirds">
-        @(featureSwitching.isEnabled(IntentFeature), viewModel.isAgent, viewModel.zeroResults) match {
-            case (false, false, false) => {
-                @softwareTabsTemplate(viewModel)
-            }
-            case (false, false, true) => {
-                @softwareVendorsZeroResultsTemplate(viewModel)
-            }
-            case (false, true, _) => {
-                @softwareVendorsAgentTemplate(viewModel)
-            }
-            case (true, false, _) => {
-                @softwareVendorsIntentResultsTemplate(viewModel)
-            }
-            case _ => {
-              @softwareVendorsAgentTemplate(viewModel)
-            }
+        @if(viewModel.isAgent) {
+            @softwareVendorsAgentTemplate(viewModel)
+        } else {
+            @softwareVendorsIntentResultsTemplate(viewModel)
         }
     </div>
     }

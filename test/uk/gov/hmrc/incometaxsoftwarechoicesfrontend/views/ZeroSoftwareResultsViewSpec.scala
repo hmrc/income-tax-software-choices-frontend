@@ -21,27 +21,22 @@ import org.jsoup.nodes.Document
 import org.scalatest.matchers.must.Matchers.*
 import play.api.mvc.Call
 import play.twirl.api.HtmlFormat
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.IntentFeature
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.ZeroSoftwareResultsView
 
-class ZeroSoftwareResultsViewSpec extends ViewSpec with FeatureSwitching {
+class ZeroSoftwareResultsViewSpec extends ViewSpec {
 
   private val view = app.injector.instanceOf[ZeroSoftwareResultsView]
 
-  val resultsLink: Call = Call("GET", "/zero-results-test-url")
   val finishActionUrl: Call = Call("POST", "/zero-results-finish-action-test-url")
   val testBackLink: Call = Call("GET", "/zero-results-back-link-test-url")
 
   def page(): HtmlFormat.Appendable = {
-    view(resultsLink = resultsLink, finishAction = finishActionUrl, backLink = testBackLink)
+    view(finishAction = finishActionUrl, backLink = testBackLink)
   }
 
   def document(): Document = Jsoup.parse(page().body)
 
   "ZeroResultsView" when {
-    "intent feature is on" should {
-      enable(IntentFeature)
 
       "have the correct first heading" in {
         document().title() mustBe ZeroSoftwareResultsViewContent.heading1
@@ -80,61 +75,6 @@ class ZeroSoftwareResultsViewSpec extends ViewSpec with FeatureSwitching {
       "have a finish button" in {
         document().select("form").select(".govuk-button").text() shouldBe ZeroSoftwareResultsViewContent.finish
       }
-    }
-
-    "intent feature is off" should {
-      disable(IntentFeature)
-
-      "have the correct first heading" in {
-        document().title() mustBe ZeroSoftwareResultsViewContent.heading1
-      }
-
-      "have the correct first paragraph text" in {
-        document().mainContent.select("p").get(0).text mustBe ZeroSoftwareResultsViewContent.paragraph1
-      }
-
-      "have the correct second section heading" in {
-        document().selectHead("h2").text() mustBe ZeroSoftwareResultsViewContent.heading2
-      }
-
-      "have the correct second section first paragraph text" in {
-        document().mainContent.select("p").get(1).text mustBe ZeroSoftwareResultsViewContent.paragraph2
-      }
-
-      "have the correct second section second paragraph text" in {
-        document().mainContent.select("p").get(2).text mustBe ZeroSoftwareResultsViewContent.paragraph3
-      }
-
-      "have the correct second section third paragraph text" in {
-        document().mainContent.select("p").get(3).text mustBe ZeroSoftwareResultsViewContent.paragraph4
-      }
-
-      "have a bullet list" which {
-        lazy val bulletList = document().mainContent.selectHead("ul.govuk-list.govuk-list--bullet")
-
-        "has a first point" in {
-          bulletList.selectNth("li", 1).text mustBe ZeroSoftwareResultsViewContent.bulletPoint1
-        }
-        "has a second point" in {
-          bulletList.selectNth("li", 2).text mustBe ZeroSoftwareResultsViewContent.bulletPoint2
-        }
-      }
-
-      "have the correct third section heading" in {
-        document().mainContent.select("h2").get(1).text mustBe ZeroSoftwareResultsViewContent.heading3
-      }
-
-      "have the correct third section paragraph text with a link" in {
-        document().mainContent.select("p").get(4).text mustBe ZeroSoftwareResultsViewContent.paragraph5
-        val link = document().mainContent.select("a").get(0)
-        link.text mustBe ZeroSoftwareResultsViewContent.linkText
-        link.attr("href") mustBe resultsLink.url
-      }
-
-      "have a finish button" in {
-        document().select("form").select(".govuk-button").text() shouldBe ZeroSoftwareResultsViewContent.finish
-      }
-    }
   }
 }
 
@@ -148,8 +88,5 @@ private object ZeroSoftwareResultsViewContent {
   val paragraph4 = "You can also:"
   val bulletPoint1 = "visit software providers’ websites to find out more about what they’re developing"
   val bulletPoint2 = "ask your agent or accountant about software, if you have one"
-  val heading3 = "Get software now"
-  val paragraph5 = "If you’re familiar with Making Tax Digital for Income Tax and would like to use more than one software product at once, you can browse software that’s currently available."
-  val linkText = "browse software that’s currently available"
   val finish = "Finish"
 }

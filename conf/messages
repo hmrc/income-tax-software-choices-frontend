@@ -47,8 +47,6 @@ zero-results.para3 = We update this tool regularly to show what’s available. P
 zero-results.para4 = You can also:
 zero-results.bullet1 = visit software providers’ websites to find out more about what they’re developing
 zero-results.bullet2 = ask your agent or accountant about software, if you have one
-zero-results.results.part1 = If you’re familiar with Making Tax Digital for Income Tax and would like to use more than one software product at once, you can
-zero-results.results.link = browse software that’s currently available
 zero-results.button = Finish
 
 # Other Items page
@@ -256,22 +254,6 @@ search-software.vendor-detail.allowances.marriage-allowance = Marriage Allowance
 search-software.vendor-detail.user-type.agent = Agent
 search-software.vendor-detail.user-type.individual = Individual
 
-search-software.all-in-one-tab.title = All-in-one software
-search-software.all-in-one-tab.heading.many = Based on your answers we’ve found {0} results
-search-software.all-in-one-tab.heading.one = Based on your answers we’ve found 1 result
-search-software.all-in-one-tab.heading.none = There are no matching results
-search-software.all-in-one-tab.inset.many = Each of these software products can help you complete your quarterly updates and tax return in full.
-search-software.all-in-one-tab.inset.one = This software product can help you complete your quarterly updates and tax return in full.
-search-software.all-in-one-tab.inset.none = Improve your results by removing filters.
-
-search-software.other-software-tab.title = Other software
-search-software.other-software-tab.heading.many = Based on your answers we’ve found {0} results
-search-software.other-software-tab.heading.one = Based on your answers we’ve found 1 result
-search-software.other-software-tab.heading.none = There are no matching results
-search-software.other-software-tab.inset.many = You may need to combine several pieces of software to fully complete your quarterly updates and tax return.
-search-software.other-software-tab.inset.one = There are no software products you can combine to meet your tax obligations.
-search-software.other-software-tab.inset.none = There are no software products you can combine to meet your tax obligations.
-
 # Product details page
 
 product-details.details.before-you-choose-header = Before you choose
@@ -390,9 +372,6 @@ product-details.details.english = English
 
 product-details.accessibility-statement.heading = Accessibility
 product-details.accessibility-statement.key = Accessibility Statement
-
-product-details.explanation-link.text = If you are not sure what any of these terms mean, take a look at the {0} we have created to help you.
-product-details.explanation-link.link = explanations
 
 # Other Income Sources Page
 additional.income.source-heading                                    = Which of these other incomes do you need to submit in your tax return?

@@ -16,8 +16,8 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers
 
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.{Available, Intended}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.{Available, Intended, NotApplicable}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FeatureStatus, SoftwareVendorModel, SoftwareVendors, VendorFilter}
 
 import java.time.LocalDate
@@ -45,7 +45,10 @@ object TestModels {
     Some("test@software-vendor-name-one.com"),
     Some("11111 111 111"),
     "software-vendor-name-one.com",
-    Map(FreeVersion -> Available),
+    Map(
+      FreeVersion -> Available,
+      SoleTrader -> NotApplicable
+    ),
     accessibilityStatementLink = Some("software-vendor-accessibility.com")
   )
 

@@ -32,7 +32,6 @@ class ZeroSoftwareResultsController @Inject()(view: ZeroSoftwareResultsView,
   def show(): Action[AnyContent] = (identify andThen requireData) { request =>
     given Request[AnyContent] = request
     Ok(view(
-      resultsLink = routes.SearchSoftwareController.show(zeroResults = true),
       finishAction = routes.ZeroSoftwareResultsController.submit(),
       backLink = routes.CheckYourAnswersController.show()
     ))

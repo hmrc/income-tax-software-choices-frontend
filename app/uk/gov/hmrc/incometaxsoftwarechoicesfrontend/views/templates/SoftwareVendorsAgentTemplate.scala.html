@@ -15,16 +15,10 @@
  *@
 
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.viewmodels.SoftwareChoicesResultsViewModel
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.{SoftwareVendorsTemplate, SoftwareVendorsAgentIntentTemplate}
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.IntentFeature
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitchingImpl
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareVendors
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.SoftwareVendorsAgentIntentTemplate
 
 @this(
-        softwareVendorsTemplate: SoftwareVendorsTemplate,
-        softwareVendorsAgentIntentTemplate: SoftwareVendorsAgentIntentTemplate,
-        govukInsetText : GovukInsetText,
-        featureSwitching: FeatureSwitchingImpl
+        softwareVendorsAgentIntentTemplate: SoftwareVendorsAgentIntentTemplate
 )
 
 @(viewModel: SoftwareChoicesResultsViewModel)(implicit messages: Messages)
@@ -37,33 +31,10 @@
     }
 }
 
-@insetText(count: Int) = @{
-    count match {
-        case 0 => govukInsetText(InsetText(
-            content = Text(messages("search-software.vendor-count.agent.inset.none"))
-        ))
-        case 1 => govukInsetText(InsetText(
-            content = Text(messages("search-software.vendor-count.agent.inset.one"))
-        ))
-        case _ => govukInsetText(InsetText(
-            content = Text(messages("search-software.vendor-count.agent.inset.many"))
-        ))
-    }
-}
-
 <div id="vendor-count">
-    @if(featureSwitching.isEnabled(IntentFeature)) {
-        @resultsHeading(viewModel.vendorsWithIntent.size)
-    } else {
-        @resultsHeading(viewModel.allInOneVendors.vendors.size)
-        @insetText(viewModel.allInOneVendors.vendors.size)
-    }
+    @resultsHeading(viewModel.vendorsWithIntent.size)
 </div>
 
 <div id="software-vendor-list">
-    @if(featureSwitching.isEnabled(IntentFeature)) {
-        @softwareVendorsAgentIntentTemplate(viewModel.vendorsWithIntent)
-    } else {
-        @softwareVendorsTemplate(viewModel.allInOneVendors, viewModel.zeroResults)
-    }
+    @softwareVendorsAgentIntentTemplate(viewModel.vendorsWithIntent)
 </div>

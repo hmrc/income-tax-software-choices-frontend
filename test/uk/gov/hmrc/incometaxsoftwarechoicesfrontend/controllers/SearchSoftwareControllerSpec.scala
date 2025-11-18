@@ -25,8 +25,6 @@ import play.api.http.Status
 import play.api.mvc.Codec
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.IntentFeature
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.mocks.{MockRequireUserDataRefiner, MockSessionIdentifierAction}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserFilters
@@ -43,83 +41,39 @@ import scala.concurrent.Future
 class SearchSoftwareControllerSpec extends ControllerBaseSpec
   with MockSessionIdentifierAction
   with MockRequireUserDataRefiner
-  with FeatureSwitching
   with BeforeAndAfterEach {
 
-  override def beforeEach(): Unit = {
-    super.beforeEach()
-    disable(IntentFeature)
-  }
   val searchSoftwarePage: SearchSoftwareView = app.injector.instanceOf[SearchSoftwareView]
 
   "Show" when {
-    "Intent feature is off" should {
-      "return OK status with the search software page" in withController { controller =>
-        val result = controller.show(zeroResults = false)(fakeRequest)
-
-        status(result) shouldBe Status.OK
-        contentType(result) shouldBe Some(HTML)
-        charset(result) shouldBe Some(Codec.utf_8.charset)
-      }
-    }
-
-    "Intent feature is on" should {
-      "return OK status with the search software page" in withController { controller =>
-        enable(IntentFeature)
-        val result = controller.show(zeroResults = false)(fakeRequest)
-
-        status(result) shouldBe Status.OK
-        contentType(result) shouldBe Some(HTML)
-        charset(result) shouldBe Some(Codec.utf_8.charset)
-      }
+    "return OK status with the search software page" in withController { controller =>
+      val result = controller.show()(fakeRequest)
+      status(result) shouldBe Status.OK
+      contentType(result) shouldBe Some(HTML)
+      charset(result) shouldBe Some(Codec.utf_8.charset)
     }
   }
 
   "search" when {
-    "Intent feature is off" should {
-      "return OK status with the search software page" in withController { controller =>
-        val result = controller.search(zeroResults = false)(FakeRequest("POST", "/")
-          .withFormUrlEncodedBody(s"${FiltersForm.filters}[0]" -> "free-version"))
+    "return OK status with the search software page" in withController { controller =>
+      val result = controller.search()(FakeRequest("POST", "/")
+        .withFormUrlEncodedBody(s"${FiltersForm.filters}[0]" -> "free-version"))
 
-        status(result) shouldBe Status.OK
-        contentType(result) shouldBe Some(HTML)
-        charset(result) shouldBe Some(Codec.utf_8.charset)
-      }
-    }
-
-    "Intent feature is on" should {
-      "return OK status with the search software page" in withController { controller =>
-        enable(IntentFeature)
-        val result = controller.search(zeroResults = false)(FakeRequest("POST", "/")
-          .withFormUrlEncodedBody(s"${FiltersForm.filters}[0]" -> "free-version"))
-
-        status(result) shouldBe Status.OK
-        contentType(result) shouldBe Some(HTML)
-        charset(result) shouldBe Some(Codec.utf_8.charset)
-      }
+      status(result) shouldBe Status.OK
+      contentType(result) shouldBe Some(HTML)
+      charset(result) shouldBe Some(Codec.utf_8.charset)
     }
   }
 
   "backLinkUrl" when {
     "user type is sole trader or landlord" when {
-      "intent feature switch is enabled" should {
-        "redirect to the choosing software page" in withController { controller =>
-          enable(IntentFeature)
-          controller.backLinkUrl(zeroResults = false, isAgent = false) shouldBe routes.ChoosingSoftwareController.show().url
-        }
-      }
-      "intent feature switch is disabled" should {
-        "return to the zero software results page when there are no all in one software" in withController { controller =>
-          controller.backLinkUrl(zeroResults = true, isAgent = false) shouldBe routes.ZeroSoftwareResultsController.show().url
-        }
-        "return to the check your answers page when there are all in one software" in withController { controller =>
-          controller.backLinkUrl(zeroResults = false, isAgent = false) shouldBe routes.CheckYourAnswersController.show().url
-        }
+      "redirect to the choosing software page" in withController { controller =>
+        controller.backLinkUrl(isAgent = false) shouldBe routes.ChoosingSoftwareController.show().url
       }
     }
     "user type is Agent" should {
       "return to the user type page" in withController { controller =>
-        controller.backLinkUrl(zeroResults = false, isAgent = true) shouldBe routes.UserTypeController.show().url
+        controller.backLinkUrl(isAgent = true) shouldBe routes.UserTypeController.show().url
       }
     }
   }
