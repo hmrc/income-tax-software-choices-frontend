@@ -44,8 +44,8 @@ class PageAnswersService @Inject()(userFiltersRepository: UserFiltersRepository,
     }
   }
 
-  def getPageAnswers[A](userFilters: UserFilters, page: Gettable[A])(implicit rds: Reads[A]): Option[A] = {
-    userFilters.answers match {
+  def getPageAnswers[A](userAnswers: Option[UserAnswers], page: Gettable[A])(implicit rds: Reads[A]): Option[A] = {
+    userAnswers match {
       case Some(userAnswers) => userAnswers.get(page)
       case _ => None
     }
@@ -71,7 +71,7 @@ class PageAnswersService @Inject()(userFiltersRepository: UserFiltersRepository,
         userFiltersRepository.set(UserFilters(id, UserAnswers().set(page, value).toOption, Seq.empty))
     }
   }
-  
+
   def saveFiltersFromAnswers(id: String): Future[Seq[VendorFilter]] = {
     userFiltersRepository.get(id).flatMap {
       case Some(userFilters) =>
@@ -81,18 +81,6 @@ class PageAnswersService @Inject()(userFiltersRepository: UserFiltersRepository,
         }
       case None =>
         Future.successful(Seq.empty[VendorFilter])
-    }
-  }
-
-  def removePageFilters(id: String): Future[Boolean] = {
-    userFiltersRepository.get(id).flatMap {
-      case Some(userFilters) => {
-        val filtersFromAnswers = getFiltersFromAnswers(userFilters.answers).filterNot(_ == Individual)
-        userFiltersRepository.set(userFilters.copy(finalFilters = userFilters.finalFilters.filterNot(x => filtersFromAnswers.contains(x))))
-      }
-      case None => {
-        Future.successful(false)
-      }
     }
   }
 

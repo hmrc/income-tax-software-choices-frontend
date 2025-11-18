@@ -102,11 +102,11 @@ class PageAnswersServiceSpec extends PlaySpec with BeforeAndAfterEach {
 
     "provided with user filters" must {
       "return None if user filters exists for this session but the page does not" in new Setup {
-        service.getPageAnswers(emptyUserFilter, DummyPage) mustBe None
+        service.getPageAnswers(None, DummyPage) mustBe None
       }
 
       "return answers if user filters exists for this session and the page has answers" in new Setup {
-        service.getPageAnswers(userFilterWithAnswerForPage, DummyPage) mustBe Some("Test")
+        service.getPageAnswers(Some(dummyUserAnswers), DummyPage) mustBe Some("Test")
       }
     }
   }
@@ -195,27 +195,6 @@ class PageAnswersServiceSpec extends PlaySpec with BeforeAndAfterEach {
       }
     }
 
-  }
-
-  "removePageFilters" when {
-    "the userFilters exists" must {
-      "return true to show the filters have been removed except Individual" in new Setup {
-        when(mockUserFiltersRepository.get(eqTo(sessionId)))
-          .thenReturn(Future.successful(Some(userFilterWithFullFinalFilters)))
-        when(mockUserFiltersRepository.set(userFilterWithFullFinalFilters.copy(finalFilters = Seq(Individual))))
-          .thenReturn(Future.successful(true))
-
-        await(service.removePageFilters(sessionId)) mustBe true
-      }
-    }
-    "the userFilters do not exist" must {
-      "return false to show no filters were removed" in new Setup {
-        when(mockUserFiltersRepository.get(eqTo(sessionId)))
-          .thenReturn(Future.successful(None))
-
-        await(service.removePageFilters(sessionId)) mustBe false
-      }
-    }
   }
 
 }

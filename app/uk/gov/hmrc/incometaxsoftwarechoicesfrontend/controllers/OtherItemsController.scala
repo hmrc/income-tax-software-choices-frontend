@@ -38,7 +38,7 @@ class OtherItemsController @Inject()(view: OtherItemsView,
   def show(editMode: Boolean): Action[AnyContent] = (identify andThen requireData) { request =>
     given Request[AnyContent] = request
 
-    val pageAnswers = pageAnswersService.getPageAnswers(request.userFilters, OtherItemsPage)
+    val pageAnswers = pageAnswersService.getPageAnswers(request.userFilters.answers, OtherItemsPage)
     Ok(view(
       otherItemsForm = OtherItemsForm.form.fill(pageAnswers),
       postAction = routes.OtherItemsController.submit(editMode),

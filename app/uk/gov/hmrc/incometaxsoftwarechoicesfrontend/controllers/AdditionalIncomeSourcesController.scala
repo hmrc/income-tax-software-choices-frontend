@@ -38,7 +38,7 @@ class AdditionalIncomeSourcesController @Inject()(view: AdditionalIncomeSourceVi
   def show(editMode: Boolean): Action[AnyContent] = (identify andThen requireData) { request =>
     given Request[AnyContent] = request
 
-    val pageAnswers = pageAnswersService.getPageAnswers(request.userFilters, AdditionalIncomeSourcesPage)
+    val pageAnswers = pageAnswersService.getPageAnswers(request.userFilters.answers, AdditionalIncomeSourcesPage)
     Ok(view(
       AdditionalIncomeForm.form.fill(pageAnswers),
       postAction = routes.AdditionalIncomeSourcesController.submit(editMode),

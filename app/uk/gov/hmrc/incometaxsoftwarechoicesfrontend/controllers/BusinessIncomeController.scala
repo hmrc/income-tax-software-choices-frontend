@@ -39,7 +39,7 @@ class BusinessIncomeController @Inject()(view: BusinessIncomeView,
   def show(editMode: Boolean): Action[AnyContent] = (identify andThen requireData) { request =>
     given Request[AnyContent] = request
 
-    val pageAnswers = pageAnswersService.getPageAnswers(request.userFilters, BusinessIncomePage)
+    val pageAnswers = pageAnswersService.getPageAnswers(request.userFilters.answers, BusinessIncomePage)
     Ok(view(
       businessIncomeForm = BusinessIncomeForm.form.fill(pageAnswers),
       postAction = routes.BusinessIncomeController.submit(editMode),

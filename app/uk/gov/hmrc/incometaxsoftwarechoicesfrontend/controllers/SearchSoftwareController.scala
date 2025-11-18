@@ -49,7 +49,7 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
     given Request[AnyContent] = request
 
     val finalFilters = request.userFilters.finalFilters
-    val isAgent = pageAnswersService.getPageAnswers(request.userFilters, UserTypePage).eq(Agent)
+    val isAgent = pageAnswersService.getPageAnswers(request.userFilters.answers, UserTypePage).eq(Agent)
 
     Ok(view(
       model = SoftwareChoicesResultsViewModel(
@@ -66,7 +66,7 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
     for {
       userFilters <- update(filters)(request).map(_ => request.userFilters)
     } yield {
-      val isAgent = pageAnswersService.getPageAnswers(request.userFilters, UserTypePage).eq(Agent)
+      val isAgent = pageAnswersService.getPageAnswers(request.userFilters.answers, UserTypePage).eq(Agent)
       val model = SoftwareChoicesResultsViewModel(
         vendorsWithIntent = softwareChoicesService.getVendorsWithIntent(userFilters.finalFilters),
         isAgent = isAgent

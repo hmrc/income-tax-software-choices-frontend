@@ -41,7 +41,7 @@ class AccountingPeriodController @Inject()(view: AccountingPeriodView,
   def show(editMode: Boolean): Action[AnyContent] = (identify andThen requireData) { request =>
     given Request[AnyContent] = request
 
-    val pageAnswers = pageAnswersService.getPageAnswers(request.userFilters, AccountingPeriodPage)
+    val pageAnswers = pageAnswersService.getPageAnswers(request.userFilters.answers, AccountingPeriodPage)
     Ok(view(
       accountingPeriodForm = AccountingPeriodForm.accountingPeriodForm.fill(pageAnswers),
       postAction = routes.AccountingPeriodController.submit(editMode),
