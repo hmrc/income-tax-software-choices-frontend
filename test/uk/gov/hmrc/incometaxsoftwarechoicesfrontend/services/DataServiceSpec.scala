@@ -60,7 +60,7 @@ class DataServiceSpec extends PlaySpec {
 
   "getSoftwareVendors" when {
 
-    "the software vendor production config file has valid filters" in new Setup {
+    "the software vendor production config file exists and is valid" in new Setup {
       when(mockEnvironment.resourceAsStream(eqTo(testFileName)))
         .thenReturn(Some(new FileInputStream(productionVendors)))
 
