@@ -86,7 +86,11 @@ object TestModels {
     Map(SoleTrader -> Intended,
       Individual -> Available,
       Agent -> Available,
-      Motor -> Intended
+      Motor -> Intended,
+      PartnerIncome -> Available,
+      TrustIncome -> Available,
+      AverageAdjustment -> Available,
+      FosterCare -> Available
     )
   )
 

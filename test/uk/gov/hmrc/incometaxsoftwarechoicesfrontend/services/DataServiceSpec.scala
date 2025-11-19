@@ -16,14 +16,14 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services
 
-import org.mockito.ArgumentMatchers.{eq => eqTo}
+import org.mockito.ArgumentMatchers.eq as eqTo
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar.mock
 import org.scalatestplus.play.PlaySpec
 import play.api.Environment
 import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.TestModels._
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.TestModels.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareVendors
 
 import java.io.FileInputStream
@@ -33,6 +33,7 @@ class DataServiceSpec extends PlaySpec {
   private val testFileName: String = "test-software-vendors.json"
   private val validVendors = "test/resources/test-valid-software-vendors.json"
   private val invalidVendors = "test/resources/test-invalid-software-vendors.json"
+  private val productionVendors = "conf/software-vendors.json"
 
   class Setup {
     val mockConfig: AppConfig = mock[AppConfig]
@@ -58,6 +59,14 @@ class DataServiceSpec extends PlaySpec {
   )
 
   "getSoftwareVendors" when {
+
+    "the software vendor production config file has valid filters" in new Setup {
+      when(mockEnvironment.resourceAsStream(eqTo(testFileName)))
+        .thenReturn(Some(new FileInputStream(productionVendors)))
+
+      noException shouldBe thrownBy(service.getSoftwareVendors())
+    }
+
     "the software vendor config file exists and is valid" in new Setup {
       when(mockEnvironment.resourceAsStream(eqTo(testFileName)))
         .thenReturn(Some(new FileInputStream(validVendors)))
