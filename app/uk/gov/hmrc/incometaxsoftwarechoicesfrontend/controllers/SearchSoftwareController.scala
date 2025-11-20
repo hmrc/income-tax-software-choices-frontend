@@ -49,7 +49,7 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
     given Request[AnyContent] = request
 
     val finalFilters = request.userFilters.finalFilters
-    val isAgent = pageAnswersService.getPageAnswers(request.userFilters.answers, UserTypePage).eq(Agent)
+    val isAgent = pageAnswersService.getPageAnswers(request.userFilters.answers, UserTypePage).contains(Agent)
 
     Ok(view(
       model = SoftwareChoicesResultsViewModel(
@@ -64,11 +64,11 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
     given Request[AnyContent] = request
     val filters = FiltersForm.form.bindFromRequest().get
     for {
-      userFilters <- update(filters)(request).map(_ => request.userFilters)
+      userFilters <- update(filters)(request).flatMap(_ => userFiltersRepository.get(request.sessionId))
     } yield {
-      val isAgent = pageAnswersService.getPageAnswers(request.userFilters.answers, UserTypePage).eq(Agent)
+      val isAgent = pageAnswersService.getPageAnswers(request.userFilters.answers, UserTypePage).contains(Agent)
       val model = SoftwareChoicesResultsViewModel(
-        vendorsWithIntent = softwareChoicesService.getVendorsWithIntent(userFilters.finalFilters),
+        vendorsWithIntent = softwareChoicesService.getVendorsWithIntent(userFilters.getOrElse(UserFilters(request.sessionId, None, filters.filters)).finalFilters),
         isAgent = isAgent
       )
       Ok(view(model, FiltersForm.form.fill(filters)))
