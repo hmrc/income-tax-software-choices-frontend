@@ -29,12 +29,18 @@ object FeatureSwitch {
   val prefix = "feature-switch"
 
   val switches: Set[FeatureSwitch] = Set(
-    TestFeature
+    TestFeature,
+    MandatedIncomeFeature
   )
   def get(str: String): Option[FeatureSwitch] = switches find (_.key == str)
 
   case object TestFeature extends FeatureSwitch {
     override val key = "test"
     override val displayText = "Test Feature"
+  }
+
+  case object MandatedIncomeFeature extends FeatureSwitch {
+    override val key = "mandatedIncome"
+    override val displayText = "4 New Mandated Income"
   }
 }
