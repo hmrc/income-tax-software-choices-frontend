@@ -40,7 +40,7 @@ object FeatureSwitch {
   }
 
   case object MandatedIncomeFeature extends FeatureSwitch {
-    override val key = "mandatedIncome"
-    override val displayText = "4 New Mandated Income"
+    override val key = "mandated-income"
+    override val displayText = "New Mandated Income"
   }
 }

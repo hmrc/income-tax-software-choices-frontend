@@ -83,17 +83,17 @@ class FeatureSwitchingSpec extends PlaySpec with FeatureSwitching with BeforeAnd
     }
 
     "return false if Mandated Income feature switch does not exist" in {
-      when(mockConfig.getOptional[String]("feature-switch.mandatedIncome")).thenReturn(None)
+      when(mockConfig.getOptional[String]("feature-switch.mandated-income")).thenReturn(None)
       isEnabled(MandatedIncomeFeature) mustBe false
     }
 
     "return false if Mandated Income feature switch is not in sys.props but is set to off in config" in {
-      when(mockConfig.getOptional[String]("feature-switch.mandatedIncome")).thenReturn(Some(FEATURE_SWITCH_OFF))
+      when(mockConfig.getOptional[String]("feature-switch.mandated-income")).thenReturn(Some(FEATURE_SWITCH_OFF))
       isEnabled(MandatedIncomeFeature) mustBe false
     }
 
     "return true if Test feature switch is not in sys.props but is set to on in config" in {
-      when(mockConfig.getOptional[String]("feature-switch.mandatedIncome")).thenReturn(Some(FEATURE_SWITCH_ON))
+      when(mockConfig.getOptional[String]("feature-switch.mandated-income")).thenReturn(Some(FEATURE_SWITCH_ON))
       isEnabled(MandatedIncomeFeature) mustBe true
     }
   }
