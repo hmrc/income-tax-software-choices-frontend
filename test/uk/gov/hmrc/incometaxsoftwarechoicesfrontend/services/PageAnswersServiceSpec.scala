@@ -63,11 +63,6 @@ class PageAnswersServiceSpec extends PlaySpec with BeforeAndAfterEach {
   private val userFilterWithVendorFilterAnswerForPage = UserFilters(sessionId, Some(vendorFilterUserAnswers), Seq.empty)
   private val userFilterWithMixedAnswersForPage = UserFilters(sessionId, Some(mixedUserAnswers), Seq.empty)
   private val userFilterWithFullAnswersForPage = UserFilters(sessionId, Some(fullUserAnswers), Seq.empty)
-  private val userFilterWithFullFinalFilters = UserFilters(sessionId, Some(fullUserAnswers),
-    finalFilters = Seq(Individual, SoleTrader, UkProperty, OverseasProperty, UkInterest,
-      ConstructionIndustryScheme, Employment, UkDividends, StatePensionIncome, PrivatePensionIncome, ForeignDividends,
-      ForeignInterest, PaymentsIntoAPrivatePension, CharitableGiving, CapitalGainsTax, StudentLoans, MarriageAllowance,
-      VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge, CalendarUpdatePeriods))
 
   class Setup {
     implicit val ec: ExecutionContext = scala.concurrent.ExecutionContext.global
