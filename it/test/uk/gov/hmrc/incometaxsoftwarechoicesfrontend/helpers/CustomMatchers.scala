@@ -139,4 +139,16 @@ trait CustomMatchers {
         }
       )
     }
+
+  def elementExists(selector: String, expectedResult: Boolean): HavePropertyMatcher[WSResponse, Boolean] =
+    (response: WSResponse) => {
+      val body = Jsoup.parse(response.body)
+      val elementExists = !body.select(selector).isEmpty
+      HavePropertyMatchResult(
+        elementExists == expectedResult,
+        "elementExists",
+        expectedResult,
+        elementExists
+      )
+    }
 }

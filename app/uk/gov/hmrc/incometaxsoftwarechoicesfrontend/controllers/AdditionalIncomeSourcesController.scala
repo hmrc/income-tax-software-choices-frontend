@@ -35,17 +35,17 @@ class AdditionalIncomeSourcesController @Inject()(view: AdditionalIncomeSourceVi
                                                  (implicit ec: ExecutionContext,
                                                   mcc: MessagesControllerComponents) extends BaseFrontendController {
 
-  def show(editMode: Boolean): Action[AnyContent] = (identify andThen requireData).async { request =>
+  def show(editMode: Boolean): Action[AnyContent] = (identify andThen requireData) { request =>
     given Request[AnyContent] = request
-    pageAnswersService.getPageAnswers(request.sessionId, AdditionalIncomeSourcesPage)
-      .map { maybeAnswers =>
-        Ok(view(
-          AdditionalIncomeForm.form.fill(maybeAnswers),
-          postAction = routes.AdditionalIncomeSourcesController.submit(editMode),
-          backUrl = backUrl(editMode)
-        ))
-      }
+
+    val pageAnswers = pageAnswersService.getPageAnswers(request.userFilters.answers, AdditionalIncomeSourcesPage)
+    Ok(view(
+      AdditionalIncomeForm.form.fill(pageAnswers),
+      postAction = routes.AdditionalIncomeSourcesController.submit(editMode),
+      backUrl = backUrl(editMode)
+    ))
   }
+
 
   def submit(editMode: Boolean): Action[AnyContent] = (identify andThen requireData).async { request =>
     given Request[AnyContent] = request
@@ -59,7 +59,7 @@ class AdditionalIncomeSourcesController @Inject()(view: AdditionalIncomeSourceVi
           ))
         ),
       answers => {
-        pageAnswersService.setPageAnswers(request.sessionId, AdditionalIncomeSourcesPage, answers).flatMap {
+        pageAnswersService.setPageAnswers(request.userFilters, AdditionalIncomeSourcesPage, answers).flatMap {
           case true =>
             if (editMode) Future.successful(Redirect(routes.CheckYourAnswersController.show()))
             else Future.successful(Redirect(routes.OtherItemsController.show()))

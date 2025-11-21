@@ -23,9 +23,9 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConst
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, DatabaseHelper}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.AccountingPeriod.SixthAprilToFifthApril
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.{Agent, SoleTraderOrLandlord}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages._
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.*
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{VendorFilter, *}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
 
 import java.time.Instant
@@ -60,7 +60,21 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
 
         response should have(
           httpStatus(OK),
-          pageTitle(s"""${messages("search-software.title")} - ${PageContentBase.title} - GOV.UK""")
+          pageTitle(s"""${messages("search-software.title")} - ${PageContentBase.title} - GOV.UK"""),
+          elementExists("#agent-filter", false)
+        )
+      }
+      "user type is agent in the database for this user" in {
+        val userAnswers = UserAnswers()
+          .set(UserTypePage, Agent).get
+        setupAnswers(SessionId, Some(userAnswers), Seq(VendorFilter.Agent))
+
+        val response = SoftwareChoicesFrontend.getSoftwareResults
+
+        response should have(
+          httpStatus(OK),
+          pageTitle(s"""${messages("search-software.title")} - ${PageContentBase.title} - GOV.UK"""),
+          elementExists("#agent-filter", true)
         )
       }
     }
@@ -149,7 +163,8 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
       val response = SoftwareChoicesFrontend.submitSoftwareSearch(FiltersFormModel(Seq(FreeVersion)))
 
       response should have(
-        httpStatus(OK)
+        httpStatus(OK),
+        elementExists("#agent-filter", false)
       )
 
       await(userFiltersRepository.get(SessionId)) match {
@@ -164,17 +179,39 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
       val userAnswers = UserAnswers()
         .set(UserTypePage, Agent).get
 
-      val initialFilter = Seq()
-      await(userFiltersRepository.set(testUserFilters(Some(userAnswers), initialFilter)))
+      await(userFiltersRepository.set(testUserFilters(Some(userAnswers), Seq(VendorFilter.Agent))))
 
       val response = SoftwareChoicesFrontend.submitSoftwareSearch(FiltersFormModel(Seq(FreeVersion, Bridging)))
 
       response should have(
-        httpStatus(OK)
+        httpStatus(OK),
+        elementExists("#agent-filter", true),
+        checkboxSelected("agent-filter", None)
       )
 
       await(userFiltersRepository.get(SessionId)) match {
         case Some(uf) => uf.finalFilters shouldBe Seq(FreeVersion, Bridging)
+        case None => fail("No user filters found")
+      }
+    }
+
+    "add preference filters for Agent including User Type" in {
+      val userAnswers = UserAnswers()
+        .set(UserTypePage, Agent).get
+
+      val initialFilter = Seq()
+      setupAnswers(SessionId, Some(userAnswers), initialFilter)
+
+      val response = SoftwareChoicesFrontend.submitSoftwareSearch(FiltersFormModel(Seq(VendorFilter.Agent, FreeVersion)))
+
+      response should have(
+        httpStatus(OK),
+        elementExists("#agent-filter", true),
+        checkboxSelected("agent-filter", Some("agent"))
+      )
+
+      await(userFiltersRepository.get(SessionId)) match {
+        case Some(uf) => uf.finalFilters shouldBe Seq(VendorFilter.Agent, FreeVersion)
         case None => fail("No user filters found")
       }
     }

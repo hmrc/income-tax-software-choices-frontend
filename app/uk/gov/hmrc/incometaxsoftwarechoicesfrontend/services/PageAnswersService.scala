@@ -17,10 +17,9 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services
 
 import play.api.libs.json.{Reads, Writes}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.Individual
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{UserAnswers, UserFilters, VendorFilter}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages._
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.queries._
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.*
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.queries.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 
 import javax.inject.{Inject, Singleton}
@@ -42,6 +41,21 @@ class PageAnswersService @Inject()(userFiltersRepository: UserFiltersRepository,
       case Some(uf) => uf.answers.flatMap(_.get(page))
       case None => None
     }
+  }
+
+  def getPageAnswers[A](userAnswers: Option[UserAnswers], page: Gettable[A])(implicit rds: Reads[A]): Option[A] = {
+    userAnswers match {
+      case Some(userAnswers) => userAnswers.get(page)
+      case _ => None
+    }
+  }
+
+  def setPageAnswers[A](userFilters: UserFilters, page: Settable[A], value: A)(implicit writes: Writes[A]): Future[Boolean] = {
+    val newAnswers = userFilters.answers match {
+      case Some(userAnswers) => userAnswers.set(page, value).toOption
+      case None => UserAnswers().set(page, value).toOption
+    }
+    userFiltersRepository.set(userFilters.copy(answers = newAnswers))
   }
 
   def setPageAnswers[A](id: String, page: Settable[A], value: A)(implicit writes: Writes[A]): Future[Boolean] = {
@@ -66,18 +80,6 @@ class PageAnswersService @Inject()(userFiltersRepository: UserFiltersRepository,
         }
       case None =>
         Future.successful(Seq.empty[VendorFilter])
-    }
-  }
-
-  def removePageFilters(id: String): Future[Boolean] = {
-    userFiltersRepository.get(id).flatMap {
-      case Some(userFilters) => {
-        val filtersFromAnswers = getFiltersFromAnswers(userFilters.answers).filterNot(_ == Individual)
-        userFiltersRepository.set(userFilters.copy(finalFilters = userFilters.finalFilters.filterNot(x => filtersFromAnswers.contains(x))))
-      }
-      case None => {
-        Future.successful(false)
-      }
     }
   }
 

@@ -19,7 +19,6 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{RequireUserDataRefiner, SessionIdentifierAction}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.{PageAnswersService, SoftwareChoicesService}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.helpers.SummaryListBuilder
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.CheckYourAnswersView
@@ -30,7 +29,6 @@ import scala.concurrent.ExecutionContext
 @Singleton
 class CheckYourAnswersController @Inject()(view: CheckYourAnswersView,
                                            softwareChoicesService: SoftwareChoicesService,
-                                           userFiltersRepository: UserFiltersRepository,
                                            identify: SessionIdentifierAction,
                                            requireData: RequireUserDataRefiner)
                                           (val appConfig: AppConfig)
@@ -39,18 +37,14 @@ class CheckYourAnswersController @Inject()(view: CheckYourAnswersView,
                                            pageAnswersService: PageAnswersService)
   extends BaseFrontendController with SummaryListBuilder {
 
-  def show(): Action[AnyContent] = (identify andThen requireData).async { request =>
+  def show(): Action[AnyContent] = (identify andThen requireData) { request =>
     given Request[AnyContent] = request
-    for {
-      userFilters <- userFiltersRepository.get(request.sessionId)
-      summaryList = buildSummaryList(userFilters.flatMap(_.answers))
-    } yield {
-      Ok(view(
-        summaryList = summaryList,
-        postAction = routes.CheckYourAnswersController.submit(),
-        backLink = routes.AccountingPeriodController.show().url
-      ))
-    }
+
+    Ok(view(
+      summaryList = buildSummaryList(request.userFilters.answers),
+      postAction = routes.CheckYourAnswersController.submit(),
+      backLink = routes.AccountingPeriodController.show().url
+    ))
   }
 
   def submit(): Action[AnyContent] = (identify andThen requireData).async { request =>
