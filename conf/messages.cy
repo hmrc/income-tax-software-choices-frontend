@@ -382,6 +382,7 @@ additional.income.source-employment                                 = Employment
 additional.income.source-uk-dividends                               = UK dividends
 additional.income.source-state-pension                              = State pension income
 additional.income.source-private-pension                            = Private pension incomes
+additional.income.source-partner-income-partnership                 = Partner income from a partnership
 additional.income.source-foreign-dividends                          = Foreign dividends
 additional.income.source-foreign-interest                           = Foreign interest
 additional.income.source-none                                       = None of these
