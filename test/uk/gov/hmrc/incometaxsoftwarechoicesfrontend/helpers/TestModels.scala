@@ -92,7 +92,7 @@ object TestModels {
       Motor -> Intended,
       PartnerIncome -> Available,
       TrustIncome -> Available,
-      AverageAdjustment -> Available,
+      AveragingAdjustment -> Available,
       FosterCare -> Available
     )
   )
