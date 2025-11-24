@@ -23,7 +23,7 @@ import org.scalatestplus.play.PlaySpec
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.Configuration
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.*
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.{TestFeature, MandatedIncomeFeature}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.TestFeature
 
 class FeatureSwitchingSpec extends PlaySpec with FeatureSwitching with BeforeAndAfterEach with GuiceOneAppPerSuite {
 
@@ -72,29 +72,4 @@ class FeatureSwitchingSpec extends PlaySpec with FeatureSwitching with BeforeAnd
     }
   }
 
-  "Mandated Income feature" should {
-    "return true if Mandated Income feature switch is enabled in sys.props" in {
-      enable(MandatedIncomeFeature)
-      isEnabled(MandatedIncomeFeature) mustBe true
-    }
-    "return false if Mandated Income feature switch is disabled in sys.props" in {
-      disable(MandatedIncomeFeature)
-      isEnabled(MandatedIncomeFeature) mustBe false
-    }
-
-    "return false if Mandated Income feature switch does not exist" in {
-      when(mockConfig.getOptional[String]("feature-switch.mandated-income")).thenReturn(None)
-      isEnabled(MandatedIncomeFeature) mustBe false
-    }
-
-    "return false if Mandated Income feature switch is not in sys.props but is set to off in config" in {
-      when(mockConfig.getOptional[String]("feature-switch.mandated-income")).thenReturn(Some(FEATURE_SWITCH_OFF))
-      isEnabled(MandatedIncomeFeature) mustBe false
-    }
-
-    "return true if Test feature switch is not in sys.props but is set to on in config" in {
-      when(mockConfig.getOptional[String]("feature-switch.mandated-income")).thenReturn(Some(FEATURE_SWITCH_ON))
-      isEnabled(MandatedIncomeFeature) mustBe true
-    }
-  }
 }
