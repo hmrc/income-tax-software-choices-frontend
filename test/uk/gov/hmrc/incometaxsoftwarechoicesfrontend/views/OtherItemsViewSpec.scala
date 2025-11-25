@@ -20,10 +20,12 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.{Document, Element}
 import play.api.data.FormError
 import play.twirl.api.HtmlFormat
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.AveragingAdjustmentFeature
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.OtherItemsForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.OtherItemsView
 
-class OtherItemsViewSpec extends ViewSpec {
+class OtherItemsViewSpec extends ViewSpec with FeatureSwitching {
 
   private val view = app.injector.instanceOf[OtherItemsView]
 
@@ -39,30 +41,31 @@ class OtherItemsViewSpec extends ViewSpec {
     backLink = testBackUrl
   )
 
-  def document(hasError: Boolean = false): Document = Jsoup.parse(page(hasError).body)
-
-
   "OtherItemsPage" when {
     "there is an error" must {
+      val document: Document = Jsoup.parse(page(hasError = true).body)
       "have an error title" in {
-        document(hasError = true).title() shouldBe s"Error: ${OtherItemsPageContent.title}"
+        document.title() shouldBe s"Error: ${OtherItemsPageContent.title}"
       }
       "have an error summary" in {
-        document(hasError = true).selectSeq(".govuk-error-summary").size shouldBe 1
-        document(hasError = true).selectHead(".govuk-error-summary").text() should include("There is a problem")
-        document(hasError = true).select(".govuk-error-summary__body > ul > li > a").attr("href") shouldBe "#otherItems"
+        document.selectSeq(".govuk-error-summary").size shouldBe 1
+        document.selectHead(".govuk-error-summary").text() should include("There is a problem")
+        document.select(".govuk-error-summary__body > ul > li > a").attr("href") shouldBe "#otherItems"
       }
     }
 
-    "there is no error" must {
+    "there is no error (without Averaging Adjustment feature OFF)" must {
+      disable(AveragingAdjustmentFeature)
+      val document: Document = Jsoup.parse(page().body)
+
       "have a title" in {
-        document().title() shouldBe OtherItemsPageContent.title
+        document.title() shouldBe OtherItemsPageContent.title
       }
       "have a back link" in {
-        document().selectHead(".govuk-back-link").attr("href") shouldBe testBackUrl
+        document.selectHead(".govuk-back-link").attr("href") shouldBe testBackUrl
       }
       "have a form" which {
-        def form: Element = document().mainContent.selectHead("form")
+        def form: Element = document.mainContent.selectHead("form")
 
         "has the correct method and action" in {
           form.attr("method") shouldBe testCall.method
@@ -172,6 +175,32 @@ class OtherItemsViewSpec extends ViewSpec {
         }
       }
     }
+
+    "Averaging Adjustment checkbox is feature switched" must {
+      "have the averaging adjustment checkbox when feature switch is ON" in {
+        enable(AveragingAdjustmentFeature)
+        val document: Document = Jsoup.parse(page().body)
+        val form: Element = document.mainContent.selectHead("form")
+
+        form.mustHaveCheckbox("fieldSet")(
+          checkbox = 8,
+          legend = OtherItemsPageContent.legend,
+          isHeading = false,
+          isLegendHidden = true,
+          name = "otherItems[]",
+          label = OtherItemsPageContent.averagingAdjustment,
+          value = "averaging-adjustment",
+        )
+      }
+
+      "not have averaging adjustment checkbox with feature switch OFF" in {
+        disable(AveragingAdjustmentFeature)
+        val document: Document = Jsoup.parse(page().body)
+        val form: Element = document.mainContent.selectHead("form")
+
+        form.text.contains(OtherItemsPageContent.averagingAdjustment) shouldBe false
+      }
+    }
   }
 }
 
@@ -186,6 +215,7 @@ private object OtherItemsPageContent {
   val marriageAllowance = "Marriage Allowance"
   val voluntaryClass2Nic = "Voluntary Class 2 National Insurance"
   val highIncomeChildBenefitCharge = "High Income Child Benefit Charge"
+  val averagingAdjustment = "Averaging adjustments"
   val noneOfThese = "None of these"
   val continue = "Continue"
 }

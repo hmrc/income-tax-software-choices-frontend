@@ -82,17 +82,17 @@
                     value = HighIncomeChildBenefitCharge.key
                 )
             ) ++
-                    averagingAdjustmentCheckbox ++
-                    Seq(
-                        CheckboxItem(
-                            divider = Some(messages("base.or"))
-                        ),
-                        CheckboxItem(
-                            content = Text(messages("other-items.none-of-these")),
-                            value = "none",
-                            behaviour = Some(ExclusiveCheckbox)
-                        )
-                    )
+            averagingAdjustmentCheckbox ++
+            Seq(
+                CheckboxItem(
+                    divider = Some(messages("base.or"))
+                ),
+                CheckboxItem(
+                    content = Text(messages("other-items.none-of-these")),
+                    value = "none",
+                    behaviour = Some(ExclusiveCheckbox)
+                )
+            )
         ).withFormField(otherItemsForm(OtherItemsForm.formKey)))
 
         @govukButton(Button(
