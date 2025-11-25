@@ -23,9 +23,12 @@ import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.govukfrontend.views.Aliases.ExclusiveCheckbox
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.AdditionalIncomeForm
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.PartnerIncomeFromPartnership
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.AdditionalIncomeSourceView
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.{FosterCarerFeature, PartnerIncomeFeature, TrustIncomeFeature}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 
-class AdditionalIncomeSourceViewSpec extends ViewSpec {
+class AdditionalIncomeSourceViewSpec extends ViewSpec with FeatureSwitching {
   private val view = app.injector.instanceOf[AdditionalIncomeSourceView]
 
   private val formEmpty: FormError = FormError("additionalIncome", "additional.income.source.error-non-empty")
@@ -182,6 +185,43 @@ class AdditionalIncomeSourceViewSpec extends ViewSpec {
         "has a continue button" in {
           form.selectNth(".govuk-button", 1).text() shouldBe AdditionalIncomeSourcesPageContent.continue
         }
+
+        "has a checkbox for partner-income-from-partnership when feature switch is on" in {
+          enable(PartnerIncomeFeature)
+          form.mustHaveCheckbox("fieldSet")(
+            checkbox = 7,
+            legend = AdditionalIncomeSourcesPageContent.legend,
+            isHeading = false,
+            isLegendHidden = true,
+            name = "additionalIncome[]",
+            label = AdditionalIncomeSourcesPageContent.partnerIncomeFromPartnership,
+            value = "partner-income",
+          )
+        }
+        "has a checkbox for trustee when feature switch is on" in {
+          enable(TrustIncomeFeature)
+          form.mustHaveCheckbox("fieldSet")(
+            checkbox = 10,
+            legend = AdditionalIncomeSourcesPageContent.legend,
+            isHeading = false,
+            isLegendHidden = true,
+            name = "additionalIncome[]",
+            label = AdditionalIncomeSourcesPageContent.trustee,
+            value = "trust-income",
+          )
+        }
+        "has a checkbox for foster carer when feature switch is on" in {
+          enable(FosterCarerFeature)
+          form.mustHaveCheckbox("fieldSet")(
+            checkbox = 11,
+            legend = AdditionalIncomeSourcesPageContent.legend,
+            isHeading = false,
+            isLegendHidden = true,
+            name = "additionalIncome[]",
+            label = AdditionalIncomeSourcesPageContent.fosterCarer,
+            value = "foster-carer",
+          )
+        }
       }
     }
   }
@@ -197,8 +237,11 @@ private object AdditionalIncomeSourcesPageContent {
   val ukDividends = "UK dividends"
   val statePension = "State Pension income"
   val privatePension = "Private pension incomes"
+  val partnerIncomeFromPartnership = "Partner income from a partnership"
   val foreignDividends = "Foreign dividends"
   val foreignInterest = "Foreign interest"
+  val trustee = "Trustee"
+  val fosterCarer = "Foster carer"
   val none = "None of these"
   val continue = "Continue"
 }
