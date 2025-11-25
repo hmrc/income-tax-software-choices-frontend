@@ -22,12 +22,15 @@
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTemplate
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitchingImpl
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch._
 
 @this(
         mainTemplate: MainTemplate,
         govukCheckboxes: GovukCheckboxes,
         govukButton: GovukButton,
-        form: FormWithCSRF
+        form: FormWithCSRF,
+        featureSwitchingImpl: FeatureSwitchingImpl
 )(implicit appConfig: AppConfig)
 
 @(otherItemsForm: Form[Seq[VendorFilter]], postAction: Call, backLink: String)(implicit request: Request[_], messages: Messages)
@@ -77,16 +80,19 @@
                 CheckboxItem(
                     content = Text(messages("other-items.high-income-child-benefit-charge")),
                     value = HighIncomeChildBenefitCharge.key
-                ),
-                CheckboxItem(
-                    divider = Some(messages("base.or"))
-                ),
-                CheckboxItem(
-                    content = Text(messages("other-items.none-of-these")),
-                    value = "none",
-                    behaviour = Some(ExclusiveCheckbox)
                 )
-            )
+            ) ++
+                    averagingAdjustmentCheckbox ++
+                    Seq(
+                        CheckboxItem(
+                            divider = Some(messages("base.or"))
+                        ),
+                        CheckboxItem(
+                            content = Text(messages("other-items.none-of-these")),
+                            value = "none",
+                            behaviour = Some(ExclusiveCheckbox)
+                        )
+                    )
         ).withFormField(otherItemsForm(OtherItemsForm.formKey)))
 
         @govukButton(Button(
@@ -94,3 +100,13 @@
         ))
     }
 }
+
+@averagingAdjustmentCheckbox = @{
+    if(featureSwitchingImpl.isEnabled(AveragingAdjustmentFeature)) {
+        Seq(CheckboxItem(
+            content = Text(messages("other-items.averaging-adjustment")),
+            value = AveragingAdjustment.key
+        ))
+    } else Seq.empty
+}
+
