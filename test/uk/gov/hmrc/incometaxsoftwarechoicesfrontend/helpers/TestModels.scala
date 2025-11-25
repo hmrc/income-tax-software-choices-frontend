@@ -93,7 +93,7 @@ object TestModels {
       PartnerIncome -> Available,
       TrustIncome -> Available,
       AveragingAdjustment -> Available,
-      FosterCare -> Available
+      FosterCarer -> Available
     )
   )
 

@@ -221,7 +221,7 @@ object VendorFilter {
     override val priority: Int = 1
   }
 
-  case object FosterCare extends VendorFilter {
+  case object FosterCarer extends VendorFilter {
     override val key: String = "foster-carer"
     override val priority: Int = 1
   }
@@ -307,7 +307,7 @@ object VendorFilter {
     Individual,
     PartnerIncome,
     AveragingAdjustment,
-    FosterCare,
+    FosterCarer,
     TrustIncome,
     DesktopApplication,
     WebBrowser,

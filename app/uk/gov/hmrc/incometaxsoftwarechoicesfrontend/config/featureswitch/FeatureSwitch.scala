@@ -32,7 +32,7 @@ object FeatureSwitch {
     TestFeature,
     PartnerIncomeFeature,
     AveragingAdjustmentFeature,
-    FosterCareFeature,
+    FosterCarerFeature,
     TrustIncomeFeature
   )
   def get(str: String): Option[FeatureSwitch] = switches find (_.key == str)
@@ -52,7 +52,7 @@ object FeatureSwitch {
     override val displayText = "Averaging adjustment feature"
   }
 
-  case object FosterCareFeature extends FeatureSwitch {
+  case object FosterCarerFeature extends FeatureSwitch {
     override val key = "foster-care"
     override val displayText = "Foster Care feature"
   }
