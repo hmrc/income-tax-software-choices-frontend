@@ -186,11 +186,6 @@ object VendorFilter {
     override val priority: Int = 2
   }
 
-  case object PartnerIncomeFromPartnership extends VendorFilter {
-    override val key: String = "partner-income-from-partnership"
-    override val priority: Int = 2
-  }
-
   case object PaymentsIntoAPrivatePension extends VendorFilter {
     override val key: String = "payments-into-a-private-pension"
     override val priority: Int = 3
