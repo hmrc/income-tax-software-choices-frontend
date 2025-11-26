@@ -60,6 +60,7 @@ other-items.student-loans = Student loan
 other-items.marriage-allowance = Marriage Allowance
 other-items.voluntary-class-2-national-insurance = Voluntary Class 2 National Insurance
 other-items.high-income-child-benefit-charge = High Income Child Benefit Charge
+other-items.averaging-adjustment = Averaging adjustments
 other-items.none-of-these = None of these
 
 other-items.error.non-empty = Select one other item or other items
