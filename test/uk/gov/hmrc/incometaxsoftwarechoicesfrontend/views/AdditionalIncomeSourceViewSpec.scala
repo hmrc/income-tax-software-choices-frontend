@@ -18,14 +18,15 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views
 
 import org.jsoup.Jsoup
 import org.jsoup.nodes.{Document, Element}
+import org.scalatest.BeforeAndAfterEach
 import play.api.data.FormError
 import play.twirl.api.HtmlFormat
-import uk.gov.hmrc.govukfrontend.views.Aliases.ExclusiveCheckbox
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.AdditionalIncomeForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.AdditionalIncomeSourceView
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.{FosterCarerFeature, PartnerIncomeFeature, TrustIncomeFeature}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 
-class AdditionalIncomeSourceViewSpec extends ViewSpec {
+class AdditionalIncomeSourceViewSpec extends ViewSpec with FeatureSwitching  with BeforeAndAfterEach {
   private val view = app.injector.instanceOf[AdditionalIncomeSourceView]
 
   private val formEmpty: FormError = FormError("additionalIncome", "additional.income.source.error-non-empty")
@@ -48,6 +49,13 @@ class AdditionalIncomeSourceViewSpec extends ViewSpec {
 
   def document(hasError: Boolean = false): Document = Jsoup.parse(page(hasError).body)
 
+  override def beforeEach(): Unit = {
+    super.beforeEach()
+    disable(PartnerIncomeFeature)
+    disable(TrustIncomeFeature)
+    disable(FosterCarerFeature)
+  }
+
   "AdditionalIncomePage" when {
     "there is an error" must {
       "have an error title" in {
@@ -60,7 +68,8 @@ class AdditionalIncomeSourceViewSpec extends ViewSpec {
       }
     }
 
-    "there is no error" must {
+    "there is no error (partner income, trust income and foster care feature switch is OFF)" must {
+
       "have a title" in {
         document().title() shouldBe AdditionalIncomeSourcesPageContent.title
       }
@@ -183,6 +192,48 @@ class AdditionalIncomeSourceViewSpec extends ViewSpec {
           form.selectNth(".govuk-button", 1).text() shouldBe AdditionalIncomeSourcesPageContent.continue
         }
       }
+
+      "partner-income, trust-income and foster-carer are feature switched" must {
+        enable(PartnerIncomeFeature)
+        enable(TrustIncomeFeature)
+        enable(FosterCarerFeature)
+        val document: Document = Jsoup.parse(page().body)
+        val form: Element = document.mainContent.selectHead("form")
+
+        "has a checkbox for partner-income when feature switch is ON" in {
+          form.mustHaveCheckbox("fieldSet")(
+            checkbox = 7,
+            legend = AdditionalIncomeSourcesPageContent.legend,
+            isHeading = false,
+            isLegendHidden = true,
+            name = "additionalIncome[]",
+            label = AdditionalIncomeSourcesPageContent.partnerIncomeFromPartnership,
+            value = "partner-income",
+          )
+        }
+        "has a checkbox for trust income when feature switch is on" in {
+          form.mustHaveCheckbox("fieldSet")(
+            checkbox = 10,
+            legend = AdditionalIncomeSourcesPageContent.legend,
+            isHeading = false,
+            isLegendHidden = true,
+            name = "additionalIncome[]",
+            label = AdditionalIncomeSourcesPageContent.trustee,
+            value = "trust-income",
+          )
+        }
+        "has a checkbox for foster carer when feature switch is on" in {
+          form.mustHaveCheckbox("fieldSet")(
+            checkbox = 11,
+            legend = AdditionalIncomeSourcesPageContent.legend,
+            isHeading = false,
+            isLegendHidden = true,
+            name = "additionalIncome[]",
+            label = AdditionalIncomeSourcesPageContent.fosterCarer,
+            value = "foster-carer",
+          )
+        }
+      }
     }
   }
 }
@@ -197,8 +248,11 @@ private object AdditionalIncomeSourcesPageContent {
   val ukDividends = "UK dividends"
   val statePension = "State Pension income"
   val privatePension = "Private pension incomes"
+  val partnerIncomeFromPartnership = "Partner income from a partnership"
   val foreignDividends = "Foreign dividends"
   val foreignInterest = "Foreign interest"
+  val trustee = "Trustee"
+  val fosterCarer = "Foster carer"
   val none = "None of these"
   val continue = "Continue"
 }
