@@ -106,7 +106,7 @@
    if(featureSwitchingImpl.isEnabled(PartnerIncomeFeature)) {
       Seq(
           CheckboxItem(
-            content = Text(messages("additional.income.source-partner-income-partnership")),
+            content = Text(messages("additional.income.source-partner-income")),
             value = PartnerIncome.key
          )
       )
@@ -117,7 +117,7 @@
    if(featureSwitchingImpl.isEnabled(TrustIncomeFeature)) {
      Seq(
        CheckboxItem(
-          content = Text(messages("additional.income.source-trustee")),
+          content = Text(messages("additional.income.source-trust-income")),
           value = TrustIncome.key
         )
      )
