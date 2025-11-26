@@ -19,15 +19,19 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 import play.api.data.Form
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import play.twirl.api.Html
+import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.ExplicitAudits
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{RequireUserDataRefiner, SessionIdentifierAction}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.Agent
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.{Agent, reads}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.audit.SearchResultsEvent
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.requests.SessionDataRequest
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FiltersFormModel, UserFilters, VendorFilter}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FiltersFormModel, UserAnswers, UserFilters, VendorFilter}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.UserTypePage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.{PageAnswersService, SoftwareChoicesService}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.{AuditService, PageAnswersService, SoftwareChoicesService}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.viewmodels.SoftwareChoicesResultsViewModel
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SearchSoftwareView
 
@@ -40,37 +44,41 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
                                          pageAnswersService: PageAnswersService,
                                          userFiltersRepository: UserFiltersRepository,
                                          identify: SessionIdentifierAction,
-                                         requireData: RequireUserDataRefiner)
+                                         requireData: RequireUserDataRefiner,
+                                         auditService: AuditService)
                                         (implicit ec: ExecutionContext,
                                          val appConfig: AppConfig,
-                                         mcc: MessagesControllerComponents) extends BaseFrontendController {
+                                         mcc: MessagesControllerComponents) extends BaseFrontendController with FeatureSwitching {
 
-  def show(): Action[AnyContent] = (identify andThen requireData) { request =>
+  def show(): Action[AnyContent] = (identify andThen requireData) { implicit request =>
     given Request[AnyContent] = request
 
     val finalFilters = request.userFilters.finalFilters
     val isAgent = pageAnswersService.getPageAnswers(request.userFilters.answers, UserTypePage).contains(Agent)
+    val model = SoftwareChoicesResultsViewModel(
+      vendorsWithIntent = softwareChoicesService.getVendorsWithIntent(filters = finalFilters),
+      isAgent = isAgent
+    )
 
-    Ok(view(
-      model = SoftwareChoicesResultsViewModel(
-        vendorsWithIntent = softwareChoicesService.getVendorsWithIntent(filters = finalFilters),
-        isAgent = isAgent
-      ),
-      form = FiltersForm.form.fill(FiltersFormModel(filters = finalFilters))
-    ))
+    if (isEnabled(ExplicitAudits)) sendAudit(request.userFilters, model.vendorsWithIntent.map(_.vendor.name))
+    Ok(view(model = model, form = FiltersForm.form.fill(FiltersFormModel(filters = finalFilters))))
+
   }
 
-  def search(): Action[AnyContent] = (identify andThen requireData).async { request =>
+  def search(): Action[AnyContent] = (identify andThen requireData).async { implicit request =>
     given Request[AnyContent] = request
     val filters = FiltersForm.form.bindFromRequest().get
     for {
-      userFilters <- update(filters)(request).flatMap(_ => userFiltersRepository.get(request.sessionId))
+      updatedUserFilters <- update(filters)(request).flatMap(_ => userFiltersRepository.get(request.sessionId))
     } yield {
       val isAgent = pageAnswersService.getPageAnswers(request.userFilters.answers, UserTypePage).contains(Agent)
+      val userFilters = updatedUserFilters.getOrElse(UserFilters(request.sessionId, None, filters.filters))
       val model = SoftwareChoicesResultsViewModel(
-        vendorsWithIntent = softwareChoicesService.getVendorsWithIntent(userFilters.getOrElse(UserFilters(request.sessionId, None, filters.filters)).finalFilters),
+        vendorsWithIntent = softwareChoicesService.getVendorsWithIntent(userFilters.finalFilters),
         isAgent = isAgent
       )
+
+      if (isEnabled(ExplicitAudits)) sendAudit(userFilters, model.vendorsWithIntent.map(_.vendor.name))
       Ok(view(model, FiltersForm.form.fill(filters)))
     }
   }
@@ -106,4 +114,12 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
     if (isAgent) routes.UserTypeController.show().url
     else routes.ChoosingSoftwareController.show().url
   }
+
+  private def sendAudit(userFilters: UserFilters, vendors: Seq[String])(implicit hc: HeaderCarrier): Unit = {
+    auditService.audit(SearchResultsEvent(
+      userFilters = userFilters,
+      vendorsList = vendors
+    ))
+  }
+
 }

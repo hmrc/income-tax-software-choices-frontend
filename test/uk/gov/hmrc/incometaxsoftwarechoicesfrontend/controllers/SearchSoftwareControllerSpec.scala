@@ -17,20 +17,23 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import org.mockito.ArgumentMatchers
-import org.mockito.ArgumentMatchers.eq as eqTo
-import org.mockito.Mockito.when
+import org.mockito.ArgumentMatchers.{any, eq as eqTo}
+import org.mockito.Mockito.*
 import org.scalatest.BeforeAndAfterEach
 import play.api.Environment
 import play.api.http.Status
 import play.api.mvc.Codec
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.ExplicitAudits
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.mocks.{MockRequireUserDataRefiner, MockSessionIdentifierAction}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserFilters
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{Individual, SoleTrader, StandardUpdatePeriods}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.audit.{AuditEvent, SearchResultsEvent}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.{DataService, PageAnswersService, SoftwareChoicesService}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.{AuditService, DataService, PageAnswersService, SoftwareChoicesService}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SearchSoftwareView
 
 import java.io.FileInputStream
@@ -41,20 +44,41 @@ import scala.concurrent.Future
 class SearchSoftwareControllerSpec extends ControllerBaseSpec
   with MockSessionIdentifierAction
   with MockRequireUserDataRefiner
-  with BeforeAndAfterEach {
+  with BeforeAndAfterEach
+  with FeatureSwitching {
+
+  override def beforeEach(): Unit = {
+    super.beforeEach()
+    reset(auditService)
+    disable(ExplicitAudits)
+  }
 
   val searchSoftwarePage: SearchSoftwareView = app.injector.instanceOf[SearchSoftwareView]
+  val auditService: AuditService = mock[AuditService]
 
-  "Show" when {
+  "Show" must {
     "return OK status with the search software page" in withController { controller =>
       val result = controller.show()(fakeRequest)
       status(result) shouldBe Status.OK
       contentType(result) shouldBe Some(HTML)
       charset(result) shouldBe Some(Codec.utf_8.charset)
+      verify(auditService, times(0)).audit(any[SearchResultsEvent]())(any(), any())
+    }
+
+    "send audit when ExplicitAudits feature switch is enabled" in withController { controller =>
+      enable(ExplicitAudits)
+
+      doNothing().when(auditService).audit(any[AuditEvent]())(any(), any())
+
+      val result = controller.show()(fakeRequest)
+      status(result) shouldBe Status.OK
+      contentType(result) shouldBe Some(HTML)
+      charset(result) shouldBe Some(Codec.utf_8.charset)
+      verify(auditService, times(1)).audit(any[SearchResultsEvent]())(any(), any())
     }
   }
 
-  "search" when {
+  "search" must {
     "return OK status with the search software page" in withController { controller =>
       val result = controller.search()(FakeRequest("POST", "/")
         .withFormUrlEncodedBody(s"${FiltersForm.filters}[0]" -> "free-version"))
@@ -62,6 +86,21 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec
       status(result) shouldBe Status.OK
       contentType(result) shouldBe Some(HTML)
       charset(result) shouldBe Some(Codec.utf_8.charset)
+      verify(auditService, times(0)).audit(any[SearchResultsEvent]())(any(), any())
+
+    }
+
+    "send audit when ExplicitAudits feature switch is enabled" in withController { controller =>
+      enable(ExplicitAudits)
+
+      doNothing().when(auditService).audit(any[AuditEvent]())(any(), any())
+
+      val result = controller.search()(FakeRequest("POST", "/")
+        .withFormUrlEncodedBody(s"${FiltersForm.filters}[0]" -> "free-version"))
+
+      status(result) shouldBe Status.OK
+      contentType(result) shouldBe Some(HTML)
+      verify(auditService, times(1)).audit(any[SearchResultsEvent]())(any(), any())
     }
   }
 
@@ -103,7 +142,8 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec
       pageAnswerService,
       mockUserFiltersRepo,
       fakeSessionIdentifierAction,
-      fakeRequireUserDataRefiner
+      fakeRequireUserDataRefiner,
+      auditService
     )(ec, appConfig, mcc)
 
     testCode(controller)

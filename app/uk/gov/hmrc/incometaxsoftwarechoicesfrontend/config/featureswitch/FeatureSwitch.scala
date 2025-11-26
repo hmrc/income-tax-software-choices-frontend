@@ -30,6 +30,7 @@ object FeatureSwitch {
 
   val switches: Set[FeatureSwitch] = Set(
     TestFeature,
+    ExplicitAudits,
     PartnerIncomeFeature,
     AveragingAdjustmentFeature,
     FosterCarerFeature,
@@ -40,6 +41,11 @@ object FeatureSwitch {
   case object TestFeature extends FeatureSwitch {
     override val key = "test"
     override val displayText = "Test Feature"
+  }
+
+  case object ExplicitAudits extends FeatureSwitch {
+    override val key = "explicit-audits"
+    override val displayText = "Explicit audits"
   }
 
   case object PartnerIncomeFeature extends FeatureSwitch {
