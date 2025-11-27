@@ -18,7 +18,8 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services
 
 import play.api.libs.json.OWrites
 import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.audit.AuditEvent
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserFilters
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.audit.{AuditEvent, SearchResultsEvent}
 import uk.gov.hmrc.play.audit.http.connector.AuditConnector
 
 import javax.inject.Inject
@@ -27,11 +28,15 @@ import scala.concurrent.ExecutionContext
 class AuditService @Inject() (auditConnector: AuditConnector)
                              (implicit ec: ExecutionContext) {
 
-  def audit[A <: AuditEvent](event: A)(implicit hc: HeaderCarrier, writes: OWrites[A]): Unit = {
+  private def audit[A <: AuditEvent](event: A)(implicit hc: HeaderCarrier, writes: OWrites[A]): Unit = {
     auditConnector.sendExplicitAudit(
       auditType = event.auditType,
       detail = event
     )
+  }
+
+   def auditSearchResults(userFilters: UserFilters, vendors: Seq[String])(implicit hc: HeaderCarrier): Unit = {
+    audit(SearchResultsEvent(userFilters = userFilters, vendorsList = vendors))
   }
   
 }

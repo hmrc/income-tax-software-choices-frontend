@@ -19,19 +19,17 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 import play.api.data.Form
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import play.twirl.api.Html
-import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.ExplicitAudits
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{RequireUserDataRefiner, SessionIdentifierAction}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.{Agent, reads}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.audit.SearchResultsEvent
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.*
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.Agent
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.requests.SessionDataRequest
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FiltersFormModel, UserAnswers, UserFilters, VendorFilter}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.UserTypePage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.{AuditService, PageAnswersService, SoftwareChoicesService}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.viewmodels.SoftwareChoicesResultsViewModel
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SearchSoftwareView
 
@@ -60,7 +58,7 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
       isAgent = isAgent
     )
 
-    if (isEnabled(ExplicitAudits)) sendAudit(request.userFilters, model.vendorsWithIntent.map(_.vendor.name))
+    if (isEnabled(ExplicitAudits)) auditService.auditSearchResults(request.userFilters, model.vendorsWithIntent.map(_.vendor.name))
     Ok(view(model = model, form = FiltersForm.form.fill(FiltersFormModel(filters = finalFilters))))
 
   }
@@ -78,7 +76,7 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
         isAgent = isAgent
       )
 
-      if (isEnabled(ExplicitAudits)) sendAudit(userFilters, model.vendorsWithIntent.map(_.vendor.name))
+      if (isEnabled(ExplicitAudits)) auditService.auditSearchResults(userFilters, model.vendorsWithIntent.map(_.vendor.name))
       Ok(view(model, FiltersForm.form.fill(filters)))
     }
   }
@@ -113,13 +111,6 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
   def backLinkUrl(isAgent: Boolean): String = {
     if (isAgent) routes.UserTypeController.show().url
     else routes.ChoosingSoftwareController.show().url
-  }
-
-  private def sendAudit(userFilters: UserFilters, vendors: Seq[String])(implicit hc: HeaderCarrier): Unit = {
-    auditService.audit(SearchResultsEvent(
-      userFilters = userFilters,
-      vendorsList = vendors
-    ))
   }
 
 }

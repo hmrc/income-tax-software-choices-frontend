@@ -19,7 +19,7 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.audit
 import play.api.libs.json.{JsObject, Json, OWrites}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{UserAnswers, UserFilters, VendorFilter}
 
-trait AuditEvent {
+sealed trait AuditEvent {
   val auditType: String
 }
 

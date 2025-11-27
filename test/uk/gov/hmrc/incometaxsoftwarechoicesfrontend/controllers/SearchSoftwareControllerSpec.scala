@@ -31,7 +31,6 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.mocks.{M
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserFilters
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{Individual, SoleTrader, StandardUpdatePeriods}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.audit.{AuditEvent, SearchResultsEvent}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.{AuditService, DataService, PageAnswersService, SoftwareChoicesService}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SearchSoftwareView
@@ -62,19 +61,19 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec
       status(result) shouldBe Status.OK
       contentType(result) shouldBe Some(HTML)
       charset(result) shouldBe Some(Codec.utf_8.charset)
-      verify(auditService, times(0)).audit(any[SearchResultsEvent]())(any(), any())
+      verify(auditService, times(0)).auditSearchResults(any(), any())(any())
     }
 
     "send audit when ExplicitAudits feature switch is enabled" in withController { controller =>
       enable(ExplicitAudits)
 
-      doNothing().when(auditService).audit(any[AuditEvent]())(any(), any())
+      doNothing().when(auditService).auditSearchResults(any(), any())(any())
 
       val result = controller.show()(fakeRequest)
       status(result) shouldBe Status.OK
       contentType(result) shouldBe Some(HTML)
       charset(result) shouldBe Some(Codec.utf_8.charset)
-      verify(auditService, times(1)).audit(any[SearchResultsEvent]())(any(), any())
+      verify(auditService, times(1)).auditSearchResults(any(), any())(any())
     }
   }
 
@@ -86,21 +85,19 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec
       status(result) shouldBe Status.OK
       contentType(result) shouldBe Some(HTML)
       charset(result) shouldBe Some(Codec.utf_8.charset)
-      verify(auditService, times(0)).audit(any[SearchResultsEvent]())(any(), any())
+      verify(auditService, times(0)).auditSearchResults(any(), any())(any())
 
     }
 
     "send audit when ExplicitAudits feature switch is enabled" in withController { controller =>
       enable(ExplicitAudits)
 
-      doNothing().when(auditService).audit(any[AuditEvent]())(any(), any())
-
       val result = controller.search()(FakeRequest("POST", "/")
         .withFormUrlEncodedBody(s"${FiltersForm.filters}[0]" -> "free-version"))
 
       status(result) shouldBe Status.OK
       contentType(result) shouldBe Some(HTML)
-      verify(auditService, times(1)).audit(any[SearchResultsEvent]())(any(), any())
+      verify(auditService, times(1)).auditSearchResults(any(), any())(any())
     }
   }
 
