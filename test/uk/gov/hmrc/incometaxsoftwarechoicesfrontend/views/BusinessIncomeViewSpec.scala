@@ -120,7 +120,7 @@ class BusinessIncomeSourcesViewSpec extends ViewSpec {
 }
 
 private object BusinessIncomePageContent {
-  val title = s"Which of these do you get income from? - ${PageContentBase.title} - GOV.UK"
+  val title = s"Which of these incomes do you need to include in your quarterly updates? - ${PageContentBase.title} - GOV.UK"
   val legend = "Which of these incomes do you need to include in your quarterly updates?"
   val para = "You’ll also need to send these in your tax return."
   val hint = "Select all that apply"
