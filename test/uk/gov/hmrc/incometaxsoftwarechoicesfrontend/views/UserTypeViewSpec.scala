@@ -73,7 +73,7 @@ class UserTypeViewSpec extends ViewSpec {
             name = UserTypeForm.fieldName,
             legend = UserTypeContent.legend,
             isHeading = false,
-            isLegendHidden = true,
+            isLegendHidden = false,
             hint = None,
             errorMessage = None,
             Seq(

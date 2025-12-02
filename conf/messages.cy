@@ -61,6 +61,7 @@ other-items.high-income-child-benefit-charge = Tâl Treth Budd-dal Plant Incwm U
 other-items.averaging-adjustment = ***** MISSING WELSH TRANSLATION *****
 other-items.none-of-these = Dim un o’r rhain
 
+
 other-items.error.non-empty = ***** MISSING WELSH TRANSLATION *****
 other-items.error.invalid-selection = Dewiswch un eitem arall, eitemau eraill, neu ‘dim un o’r rhain’
 
@@ -256,6 +257,7 @@ additional.income.source-foster-carer                               = ***** MISS
 additional.income.source-none                                       = Dim un o’r rhain
 additional.income.source.error-non-empty                            = Dewiswch fath o incwm, mathau o incwm, neu ‘dim un o’r rhain’
 additional.income.source.error-none-only                            = Dewiswch naill ai math o incwm, mathau o incwm, neu ‘dim un o’r rhain’
+
 
 unsupported-accounting-period.heading                               = ***** MISSING WELSH TRANSLATION *****
 unsupported-accounting-period.para-one                              = ***** MISSING WELSH TRANSLATION *****

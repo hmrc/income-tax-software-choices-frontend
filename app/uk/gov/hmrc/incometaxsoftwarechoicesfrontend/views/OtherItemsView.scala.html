@@ -37,16 +37,14 @@
 
 @mainTemplate(title = messages("other-items.title"), backLink = Some(backLink), optForm = Some(otherItemsForm)) {
 
-    <h1 class="govuk-heading-l">@messages("other-items.legend")</h1>
-
     @form(action = postAction) {
 
         @govukCheckboxes(Checkboxes(
             fieldset = Some(Fieldset(
                 legend = Some(Legend(
-                    content = Text(messages("other-items.legend")),
-                    classes = "govuk-visually-hidden",
-                    isPageHeading = false,
+                    content = Text(messages("other-items.title")),
+                    classes = "govuk-fieldset__legend--l",
+                    isPageHeading = true
                 ))
             )),
             hint = Some(Hint(

@@ -37,13 +37,11 @@
 
 @mainTemplate(title = messages("type-of-user.heading"), optForm = Some(userTypeForm), backLink = Some(backUrl)) {
 
-    <h1 class="govuk-heading-l">@messages("type-of-user.heading")</h1>
-
     @form(action = postAction) {
         @radioHelper(
             field = userTypeForm(fieldName),
             legend = messages("type-of-user.heading"),
-            isPageHeading = false,
+            isPageHeading = true,
             radioItems = Seq(
                 RadioItem(
                     content = Text(messages(s"type-of-user.${SoleTraderOrLandlord.key}")),
