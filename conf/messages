@@ -212,6 +212,9 @@ product-details.other-income.voluntary-class-2-national-insurance = Voluntary Cl
 product-details.other-income.high-income-child-benefit-charge = High Income Child Benefit Charge
 product-details.other-income.payments-into-a-private-pension = Private pension contributions
 product-details.other-income.marriage-allowance = Marriage Allowance
+product-details.other-income.partner-income = Partner income from a partnership
+product-details.other-income.foster-carer = Foster carer
+product-details.other-income.trust-income = Trustee
 
 product-details.status.heading = Status
 product-details.status.ready = Ready now

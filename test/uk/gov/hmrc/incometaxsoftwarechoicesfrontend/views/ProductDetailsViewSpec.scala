@@ -18,13 +18,15 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views
 
 import org.jsoup.Jsoup
 import org.jsoup.nodes.{Document, Element}
-import org.scalatest.Assertion
+import org.scalatest.{Assertion, BeforeAndAfterEach}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.{Available, Intended}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareVendorModel
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.ProductDetailsView
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.{FosterCarerFeature, PartnerIncomeFeature, TrustIncomeFeature}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 
-class ProductDetailsViewSpec extends ViewSpec {
+class ProductDetailsViewSpec extends ViewSpec with FeatureSwitching with BeforeAndAfterEach {
 
   private val productDetailsPage = app.injector.instanceOf[ProductDetailsView]
 
@@ -48,6 +50,13 @@ class ProductDetailsViewSpec extends ViewSpec {
       UkDividends -> Intended, ForeignDividends -> Available, UkInterest -> Intended,
       StandardUpdatePeriods -> Available, CalendarUpdatePeriods -> Intended, FreeVersion -> Intended
     ))
+
+  override def beforeEach(): Unit = {
+    super.beforeEach()
+    disable(PartnerIncomeFeature)
+    disable(TrustIncomeFeature)
+    disable(FosterCarerFeature)
+  }
 
   "ProductDetailsPage" when {
 
@@ -307,6 +316,21 @@ class ProductDetailsViewSpec extends ViewSpec {
       }
     }
 
+    "the vendor has everything ready now(Feature switch is ON)" which {
+      enable(PartnerIncomeFeature)
+      enable(TrustIncomeFeature)
+      enable(FosterCarerFeature)
+
+      val document: Document = createAndParseDocument(softwareVendorModelFull)
+      def table(index: Int): Element = document.getTable(index)
+
+      "displays all the rows (partner income, trust income and foster care feature switch is ON)" in {
+        checkRow(table(3), 7, ProductDetailsPage.partnerIncome, status = s"${ProductDetailsPage.readyNow}")
+        checkRow(table(3), 10, ProductDetailsPage.fosterCarerIncome, status = s"${ProductDetailsPage.readyNow}")
+        checkRow(table(3), 11, ProductDetailsPage.trustIncome, status = s"${ProductDetailsPage.readyNow}")
+      }
+    }
+
     "display software specifications of the vendor" which {
       val document: Document = createAndParseDocument(softwareVendorModelFull)
 
@@ -401,6 +425,9 @@ class ProductDetailsViewSpec extends ViewSpec {
     val privatePensionIncome = "Private pension incomes"
     val privatePensionContribution = "Private pension contributions"
     val marriage = "Marriage Allowance"
+    val partnerIncome = "Partner income from a partnership"
+    val trustIncome = "Trustee"
+    val fosterCarerIncome = "Foster carer"
 
     val softwareSpecHeading = "Software specifications"
     val softwareType = "Software type"
