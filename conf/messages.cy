@@ -1,6 +1,6 @@
 base.service-name           = ***** MISSING WELSH TRANSLATION *****
-base.title                  = ***** MISSING WELSH TRANSLATION *****
-base.title.error            = Gwall: {0} - ***** MISSING WELSH TRANSLATION *****
+base.title                  = {0} - ***** MISSING WELSH TRANSLATION ***** - GOV.UK
+base.title.error            = Gwall: {0} - ***** MISSING WELSH TRANSLATION ***** - GOV.UK
 base.error-heading          = Mae problem
 base.continue               = Parhau
 base.confirm-continue       = Cadarnhau a pharhau
