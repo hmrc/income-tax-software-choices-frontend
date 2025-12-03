@@ -541,16 +541,7 @@ private object SearchSoftwareWithIntentPageContent {
     val accessibilityFeatures = "Accessibility features"
     val applyFilters = "Apply filters"
   }
-
-  val vendorsHeading = "These single products are compatible software that meets all your needs"
-  val numberOfVendors = "There are 2 software providers that can send quarterly updates, submit tax return and meet your selected requirements."
-
-  val emptyVendorListMessage = "Your search has returned no results. To increase the number of results, we suggest you:"
-  val emptyVendorListMessageHeading = "Your search has returned no results."
-  val emptyVendorListMessageParagraph = "To increase the number of results, we suggest you:"
-  val emptyVendorListMessageBullet1 = "reduce the number of filters you apply"
-  val emptyVendorListMessageBullet2 = "make sure the name you have entered into the search bar is correct"
-
+  
   val intentHeadingMany = "Based on your answers we’ve found 4 results"
   val intentHeadingOne = "Based on your answers we’ve found 1 result"
   val intentHeadingNone = "There are no matching results"
@@ -581,7 +572,6 @@ private object SearchSoftwareWithIntentPageContent {
   val noFreeVersion = "Paid version"
   val freeVersionHint = "Check the company’s website for information on their pricing structure."
 
-  val suitableFor = "Income sources"
   val soleTrader = "Sole trader"
   val ukProperty = "UK property"
   val overseasProperty = "Foreign property"

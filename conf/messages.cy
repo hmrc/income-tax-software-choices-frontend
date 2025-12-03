@@ -1,325 +1,233 @@
-base.service-name           = Find software that works with Making Tax Digital for Income Tax
-base.title                  = {0} - Find software that works with Making Tax Digital for Income Tax - GOV.UK
-base.title.error            = Gwall: {0} - Find software that works with Making Tax Digital for Income Tax - GOV.UK
-base.error-heading          = Mae problem wedi codi
-base.opens-in-new-tab       = (yn agor tab newydd)
-base.continue               = Yn eich blaen
-base.confirm-continue       = Confirm and continue
-base.or                     = or
-base.change                 = Change
+base.service-name           = ***** MISSING WELSH TRANSLATION *****
+base.title                  = {0} - ***** MISSING WELSH TRANSLATION ***** - GOV.UK
+base.title.error            = Gwall: {0} - ***** MISSING WELSH TRANSLATION ***** - GOV.UK
+base.error-heading          = Mae problem
+base.continue               = Parhau
+base.confirm-continue       = Cadarnhau a pharhau
+base.or                     = neu
+base.change                 = Newid
 
 ## User type page
-type-of-user.heading                                              = How will you use this tool to choose software?
-type-of-user.sole-trader-or-landlord                              = As a sole trader or landlord doing my taxes
-type-of-user.agent                                                = As an agent working on behalf of a client
-type-of-user.error                                                = Select if you’re a sole trader, landlord, or an agent
+type-of-user.heading                                              = Sut y byddwch yn defnyddio Meddalwedd ar gyfer y cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm?
+type-of-user.sole-trader-or-landlord                              = Fel unig fasnachwr neu landlord sy’n gwneud fy nhrethi
+type-of-user.agent                                                = Fel asiant sy’n gweithio ar ran cleient
+type-of-user.error                                                = Dewiswch a ydych yn unig fasnachwr neu’n landlord, neu’n asiant
 
 ## Accounting period page
-accounting-period.heading                                         = What accounting period do you use?
-accounting-period.para-one                                        = If your accounting period ends on 31 March, you’ll need software that supports {0}.
-accounting-period.para-one-ending                                 = This will make keeping records simpler.
-accounting-period.para-one.link-text                              = calendar update periods
-accounting-period.para-one.link-href                              = https://www.gov.uk/guidance/use-making-tax-digital-for-income-tax/send-quarterly-updates#using-calendar-update-periods
-accounting-period.sixth-april-to-fifth-april                      = 6 April to 5 April
-accounting-period.first-april-to-thirty-first-march               = 1 April to 31 March
-accounting-period.other                                           = Neither of these
-accounting-period.error                                           = Select either 6 April to 5 April, 1 April to 31 March, or neither of these
+accounting-period.heading                                         = Pa gyfnod cyfrifyddu ydych chi’n ei ddefnyddio?
+accounting-period.para-one                                        = Os yw’ch cyfnod cyfrifyddu yn dod i ben ar 31 Mawrth, bydd angen i chi gael meddalwedd sy’n cefnogi {0}.
+accounting-period.para-one-ending                                 = Bydd hyn yn ei gwneud hi’n haws i chi gadw cofnodion.
+accounting-period.para-one.link-text                              = cyfnodau diweddaru calendr
+accounting-period.para-one.link-href                              = https://www.gov.uk/guidance/defnyddio-r-cynllun-troi-treth-yn-ddigidol-ar-gyfer-treth-incwm/anfon-diweddariadau-chwarterol#defnyddio-cyfnodau-diweddaru-calendr
+accounting-period.sixth-april-to-fifth-april                      = 6 Ebrill i 5 Ebrill
+accounting-period.first-april-to-thirty-first-march               = 1 Ebrill i 31 Mawrth
+accounting-period.other                                           = Dim un o’r rhain
+accounting-period.error                                           = Dewiswch naill ai 6 Ebrill i 5 Ebrill, 1 Ebrill i 31 Mawrth, neu ‘dim un o’r rhain’
 
 # Business Income page
-business-income.title = Which business income do you have?
-business-income.legend = Which of these incomes do you need to include in your quarterly updates?
-business-income.para = You’ll also need to send these in your tax return.
-business-income.hint = Select all that apply.
-business-income.self-employment = Sole trader
-business-income.sole-trader = Being self-employed as a sole trader
-business-income.uk-property = Renting out a UK property
-business-income.foreign-property = Renting out a foreign property
+business-income.title               = Pa rai o’r ffynonellau incwm hyn y mae angen i chi eu cynnwys yn eich diweddariadau chwarterol?
+business-income.legend              = Pa rai o’r ffynonellau incwm hyn y mae angen i chi eu cynnwys yn eich diweddariadau chwarterol?
+business-income.para                = Bydd angen i chi gynnwys y rhain yn eich Ffurflen Dreth hefyd.
+business-income.hint                = Dewiswch bob un sy’n berthnasol
+business-income.sole-trader         = Hunangyflogedig fel unig fasnachwr
+business-income.uk-property         = Rhoi eiddo yn y DU ar osod
+business-income.overseas-property   = Rhoi eiddo tramor ar osod
 
-business-income.error.non-empty         = Select business income or business incomes
+business-income.error.non-empty     = Dewiswch a ydych yn cael incwm o fod yn hunangyflogedig fel unig fasnachwr, neu o roi eiddo tramor neu eiddo yn y DU ar osod
 
 # Zero Results page
-zero-results.title = There is no all-in-one software product to meet your needs
-zero-results.heading = There is no all-in-one software product to meet your needs
-zero-results.para1 = You may be able to find more than one software product that works together.
-zero-results.para2 = You’ll need to make sure that the combined products let you send quarterly updates and your tax return.
-zero-results.para3 = If you use an agent or accountant, talk to them about what software you need.
+zero-results.title = Eich canlyniadau
+zero-results.heading = Eich canlyniadau
+zero-results.sub-heading1 = Bydd rhagor o feddalwedd ar gael yn fuan
+zero-results.para1 = Yn seiliedig ar yr hyn rydych wedi rhoi gwybod i ni amdano, nid oes meddalwedd hollgynhwysol sy’n cynnwys eich holl anghenion mewn un gwasanaeth.
+zero-results.para2 = Mae sawl cynnyrch hollgynhwysol o dan ddatblygiad ar hyn o bryd.
+zero-results.para3 = Rydym yn diweddaru’r offeryn hwn yn aml er mwyn dangos yr hyn sydd ar gael. Dewch yn ôl yn nes ymlaen i wirio am ddiweddariadau. Bydd y diweddariadau yn cynnwys meddalwedd newydd a newidiadau i nodweddion meddalwedd sy’n bodoli eisoes.
+zero-results.para4 = Gallwch hefyd wneud y canlynol:
+zero-results.bullet1 = ymweld â gwefannau darparwyr meddalwedd er mwyn dysgu rhagor am yr hyn sydd o dan ddatblygiad ganddynt
+zero-results.bullet2 = gofyn wrth eich asiant neu’ch cyfrifydd (os oes un gennych) ynghylch meddalwedd
+zero-results.button = Gorffen
 
 # Other Items page
-other-items.title = What else do you need to tell HMRC?
-other-items.legend = What else do you need to tell HMRC?
-other-items.para = These are other items you’ll need to include in your tax return if you have them.
-other-items.hint = Select all that apply.
-other-items.payments-into-a-private-pension = Private pension contributions
-other-items.charitable-giving = Charitable giving
-other-items.capital-gains-tax = Capital Gains
-other-items.student-loans = Student loan
-other-items.marriage-allowance = Marriage Allowance
-other-items.voluntary-class-2-national-insurance = Voluntary Class 2 National Insurance
-other-items.high-income-child-benefit-charge = High Income Child Benefit Charge
-other-items.averaging-adjustment = Averaging adjustments
-other-items.none-of-these = None of these
+other-items.title = Pa rai o’r eitemau hyn y mae angen i chi eu cyflwyno yn eich Ffurflen Dreth?
+other-items.legend = Pa rai o’r eitemau hyn y mae angen i chi eu cyflwyno yn eich Ffurflen Dreth?
+other-items.hint = Dewiswch bob un sy’n berthnasol
+other-items.payments-into-a-private-pension = Cyfraniadau pensiwn preifat
+other-items.charitable-giving = Cyfrannu at elusennau
+other-items.capital-gains-tax = Enillion Cyfalaf
+other-items.student-loans = Benthyciad myfyriwr
+other-items.marriage-allowance = Lwfans Priodasol
+other-items.voluntary-class-2-national-insurance = Yswiriant Gwladol Dosbarth 2 Gwirfoddol
+other-items.high-income-child-benefit-charge = Tâl Treth Budd-dal Plant Incwm Uchel
+other-items.averaging-adjustment = ***** MISSING WELSH TRANSLATION *****
+other-items.none-of-these = Dim un o’r rhain
 
-other-items.error.non-empty = Select one other item or other items
-other-items.error.invalid-selection = Select one other item, other items, or ‘none of these’
+other-items.error.non-empty = ***** MISSING WELSH TRANSLATION *****
+other-items.error.invalid-selection = Dewiswch un eitem arall, eitemau eraill, neu ‘dim un o’r rhain’
 
 # Check Your Answers view
-check-your-answers.heading              = Check your answers before viewing compatible software
-check-your-answers.business-income      = Business income
-check-your-answers.additional-income    = Other income
-check-your-answers.other-items          = Other items
-check-your-answers.accounting-period    = Accounting period
-check-your-answers.none-selected        = None selected
-
-check-your-answers.sole-trader                              = Sole trader
-check-your-answers.uk-property                              = UK property
-check-your-answers.overseas-property                        = Foreign property
-check-your-answers.payments-into-a-private-pension          = Private pension contributions
-check-your-answers.charitable-giving                        = Charitable giving
-check-your-answers.capital-gains-tax                        = Capital Gains
-check-your-answers.student-loans                            = Student loan
-check-your-answers.marriage-allowance                       = Marriage Allowance
-check-your-answers.voluntary-class-2-national-insurance     = Voluntary Class 2 National Insurance
-check-your-answers.high-income-child-benefit-charge         = High Income Child Benefit Charge
-check-your-answers.uk-interest                              = UK interest
-check-your-answers.construction-industry-scheme             = Construction Industry Scheme
-check-your-answers.employment                               = Employment (PAYE)
-check-your-answers.uk-dividends                             = UK dividends
-check-your-answers.state-pension-income                     = State pension income
-check-your-answers.private-pension-income                   = Private pension incomes
-check-your-answers.foreign-dividends                        = Foreign dividends
-check-your-answers.foreign-interest                         = Foreign interest
-check-your-answers.sixth-april-to-fifth-april               = 6 April to 5 April
-check-your-answers.first-april-to-thirty-first-march        = 1 April to 31 March
-check-your-answers.other                                    = Neither of these
+check-your-answers.heading              = Gwiriwch eich atebion cyn edrych ar feddalwedd sy’n cydweddu
+check-your-answers.business-income      = Ffynonellau incwm (diweddariadau chwarterol a Ffurflen Dreth)
+check-your-answers.additional-income    = Ffynonellau eraill o incwm (Ffurflen Dreth yn unig)
+check-your-answers.other-items          = Eitemau eraill (Ffurflen Dreth yn unig)
+check-your-answers.accounting-period    = Cyfnod cyfrifyddu
+check-your-answers.none-selected        = ***** MISSING WELSH TRANSLATION *****
 
 # Choosing Software from Your Results view
-choosing-software.heading                   = Choosing software from your results
-choosing-software.para1                     = All software listed has been through HMRC’s recognition process. HMRC does not endorse or recommend any one product or software provider.
-choosing-software.h2.future-software        = Future software updates
-choosing-software.para2                     = Some software features are either:
-choosing-software.bullet1                   = ready now
-choosing-software.bullet2                   = in development
-choosing-software.para3                     = All the software products in your results will let you or your agent:
-choosing-software.bullet3                   = create, store and correct digital records of your self-employment and property income and expenses
-choosing-software.bullet4                   = send your quarterly updates to HMRC
-choosing-software.para4                     = This is everything you need to start using Making Tax Digital for Income Tax from 6 April 2026.
-choosing-software.h3                        = Submitting your 2026 to 2027 tax return
-choosing-software.para5                     = The features you will need to submit your tax return are still being developed by some software providers. They are shown as ‘in development’.
-choosing-software.para6                     = These are features that software providers have either built or committed to build ready for when you need to submit your 2026 to 2027 tax return.
-choosing-software.h2.making-sure            = Making sure you get the right product
-choosing-software.para7                     = Some of the listed products may have free trials or free versions, but you’ll have to pay for others.
-choosing-software.para8                     = HMRC is not responsible for the availability of products or making sure that the product you chose meets your current and future needs.
-choosing-software.para9                     = We recommend that you visit software providers’ websites to do more research before choosing a product.
-choosing-software.button.view-your-results  = View your results
+choosing-software.heading                   = Dewis meddalwedd o’ch canlyniadau
+choosing-software.para1                     = Mae’r holl feddalwedd a restrir wedi bod drwy broses gydnabod CThEF. Nid yw CThEF yn argymell nac yn cymeradwyo unrhyw gynnyrch neu ddarparwr meddalwedd penodol.
+choosing-software.h2.future-software        = Diweddariadau i feddalwedd yn y dyfodol
+choosing-software.para2                     = Mae rhai o nodweddion meddalwedd naill ai:
+choosing-software.bullet1                   = yn barod nawr
+choosing-software.bullet2                   = o dan ddatblygiad
+choosing-software.para3                     = Bydd pob un o’r cynhyrchion meddalwedd sy’n ymddangos yn eich canlyniadau yn eich caniatáu chi, neu’ch asiant, i wneud y canlynol:
+choosing-software.bullet3                   = creu, cadw, a chywiro cofnodion digidol o’ch hunangyflogaeth ynghyd ag incwm a threuliau eiddo
+choosing-software.bullet4                   = anfon eich diweddariadau chwarterol at CThEF
+choosing-software.para4                     = Dyma’r cyfan sydd eu hangen arnoch i ddechrau defnyddio’r cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm o 6 Ebrill 2026 ymlaen.
+choosing-software.h3                        = Cyflwyno eich Ffurflen Dreth 2026 i 2027
+choosing-software.para5                     = Mae’r nodweddion y bydd eu hangen arnoch er mwyn cyflwyno’ch Ffurflen Dreth yn parhau o dan ddatblygiad gan rai darparwyr meddalwedd. Maent yn cael eu dangos fel eu bod ‘o dan ddatblygiad’.
+choosing-software.para6                     = Mae’r rhain yn nodweddion y mae darparwyr meddalwedd wedi eu hadeiladu, neu wedi ymrwymo i’w hadeiladu, erbyn y bydd angen i chi gyflwyno eich Ffurflen Dreth 2026 i 2027.
+choosing-software.h2.making-sure            = Gwneud yn siŵr eich bod yn cael y cynnyrch cywir
+choosing-software.para7                     = Efallai y bydd rhai o’r cynhyrchion sy’n cael eu rhestru yn cynnig cyfnod prawf am ddim, neu fersiynau am ddim, ond bydd yn rhaid i chi dalu am rhai eraill.
+choosing-software.para8                     = Nid yw CThEF yn gyfrifol am argaeledd cynhyrchion nag am sicrhau bod y cynnyrch yr ydych yn ei ddewis yn bodloni eich anghenion presennol, ac eich anghenion yn y dyfodol.
+choosing-software.para9                     = Rydym yn argymell eich bod yn ymweld â gwefannau darparwyr meddalwedd i wneud ymchwil cyn dewis cynnyrch.
+choosing-software.button.view-your-results  = Gweld eich canlyniadau
+
 
 # Search software page
 
-search-software.title                                     = Find software for Making Tax Digital for Income Tax ... but in Welsh
-search-software.last-update                               = Diweddarwyd y dudalen hon ddiwethaf
-search-software.heading                                   = Find software for Making Tax Digital for Income Tax ...in Welsh
-search-software.p1                                        = HMRC does not make recommendations for software. However, all software on this page has passed our recognition criteria. ...in Welsh
-search-software.p2                                        = Some of the listed products may have free trials or free versions, but you’ll have to pay for others.
-search-software.p3                                        = Software is in development, and more options will be available over time. This may include an all-in-one software product.
-search-software.skip-to-results                           = Skip to results.
+search-software.title                                     = Meddalwedd ar gyfer y cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm
+search-software.heading                                   = Meddalwedd ar gyfer y cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm
+search-software.p1                                        = Mae pob meddalwedd yma wedi bod drwy broses gydnabod ble mae CThEF yn gwirio ayw’n gallu cyflwyno eich trethi. Nid yw CThEF yn argymell nac yn cymeradwyo unrhyw gynnyrch neu ddarparwr meddalwedd penodol.
+search-software.p2                                        = Efallai bydd rhai o’r cynhyrchion sy’n cael eu rhestru yn cynnig cyfnod prawf am ddim, neu fersiynau am ddim, ond bydd yn rhaid i chi dalu am rhai eraill.
+search-software.p3.agent.intent                           = Mae rhai o’r nodweddion y bydd eu hangen arnoch er mwyn cyflwyno Ffurflen Dreth eich cleient yn parhau o dan ddatblygiad.
+search-software.inset.agent.intent                        = Nid yw CThEF yn gyfrifol am argaeledd cynnyrch nag am sicrhau bod y cynnyrch yr ydych yn ei ddewis yn bodloni anghenion presennol eich cleient, a’i anghenion yn y dyfodol. Rydym yn argymell eich bod yn ymweld â gwefan darparwyr meddalwedd i wneud ymchwil cyn dewis cynnyrch.
+search-software.skip-to-results                           = ***** MISSING WELSH TRANSLATION *****
 
-search-software.filters.heading                = Hidlwyr
-search-software.filters.paragraph              = You can use filters to find specific software. All fields are optional.
-search-software.filters.pricing                = Prisio
-search-software.filters.user-type              = User type
-search-software.filters.suitable-for           = Addas i
-search-software.filters.operating-system       = System weithredu
-search-software.filters.mobile-app             = Ap Ffon Symudol
-search-software.filters.software-type          = Math o feddalwedd
-search-software.filters.software-for           = Type of software
-search-software.filters.business-type          = Math o fusnes
-search-software.filters.software-compatibility = Cydnawsedd y cynllun Troi Treth yn Ddigidol
-search-software.filters.language               = Iaith
-search-software.filters.accessibility          = Nodweddion hygyrchedd
-search-software.filters.accounting-period = Accounting period
-search-software.filters.personal-income-sources = Personal income sources
-search-software.filters.deductions = Deductions
-search-software.filters.pensions = Pensions
-search-software.filters.allowances = Allowances
+search-software.intent.h2                                 = Bydd rhai meddalwedd yn cael eu rhestru fel eu bod ‘o dan ddatblygiad’
+search-software.intent.p1                                 = Bydd pob cynnyrch sy’n ymddangos yn y rhestr hidlo yn eich caniatáu chi i gyflwyno eich diweddariadau chwarterol.
+search-software.intent.p2                                 = Mae ‘o dan ddatblygiad’ yn golygu bod un neu fwy o’r nodweddion sydd eu hangen arnoch er mwyn llenwi eich Ffurflen Dreth yn cael eu hadeiladu o hyd. Rydym yn disgwyl y bydd y nodweddion hyn yn barod ar eich cyfer erbyn y bydd angen i chi lenwi eich Ffurflen Dreth 2026 i 2027.
 
-search-software.filters.apply-filters = Gweithredu hidlyddion
+search-software.filters.heading = Opsiynau hidlo
+search-software.filters.paragraph = Gallwch ddefnyddio hidlyddion er mwyn dod o hyd i feddalwedd benodol. Mae pob maes yn ddewisol.
+search-software.filters.pricing = Pris
+search-software.filters.user-type = Math o ddefnyddiwr
+search-software.filters.software-for = Math o feddalwedd
+search-software.filters.software-compatibility = Cydweddoldeb â’r cynllun Troi Treth yn Ddigidol
+search-software.filters.accessibility = Nodweddion hygyrchedd
+
+search-software.filters.apply-filters = Rhoi hidlyddion ar waith
 search-software.filters.clear-filters = Clirio hidlyddion
 
-search-software.search-form.heading = Chwilio yn ôl enw meddalwedd
-search-software.search-form.paragraph = Mae pob cysylltiad i wefannau darparwyr meddalwedd yn agor mewn tab newydd.
-search-software.search-form.button  = Chwilio yn ôl enw meddalwedd
-search-software.search-form.error   = Nodwch lai na {0} o gymeriadau
+search-software.intent.vendor-visit-link        = Dysgwch beth mae {0} yn ei ddarparu ar hyn o bryd, a’r hyn sy’n cael ei ddatblygu ganddynt
 
-search-software.vendor-count.heading    = These single products are compatible software that meets all your needs
-search-software.vendor-count-single     = Currently there is 1 software provider
-search-software.vendor-count            = There are {0} software providers that can send quarterly updates, submit tax return and meet your selected requirements.
-search-software.vendor-visit-link       = Find out more about {0}
-search-software.vendor-count.no-products = You’ll need to combine several of these pieces of software to fully complete your quarterly updates and tax return
-search-software.vendor-count.no-products.count = {0} results found
+search-software.vendor-count.agent.heading.many     = Rydym wedi canfod {0} p o ganlyniadau
+search-software.vendor-count.agent.heading.one      = Rydym wedi canfod 1 canlyniad
+search-software.vendor-count.agent.heading.none     = Does dim canlyniadau cyfatebol
 
-search-software.vendor-count.agent.heading.many     = We’ve found {0} results
-search-software.vendor-count.agent.heading.one      = We’ve found 1 result
-search-software.vendor-count.agent.heading.none     = There are no matching results.
-search-software.vendor-count.agent.inset.many       = You can use the filter options to narrow down your search.
-search-software.vendor-count.agent.inset.one        = You can improve your results by removing filters.
-search-software.vendor-count.agent.inset.none       = Improve your results by removing filters.
+search-software.vendor-count.intent.heading.many     = Yn seiliedig ar eich atebion, rydym wedi dod o hyd i {0} o ganlyniadau
+search-software.vendor-count.intent.heading.one      = Yn seiliedig ar eich atebion, rydym wedi dod o hyd i 1 canlyniad
+search-software.vendor-count.intent.heading.none     = Does dim canlyniadau cyfatebol
 
-search-software.empty-vendor-list           = Nid yw eich chwiliad wedi dangos unrhyw ganlyniadau. Er mwyn cynyddu nifer y canlyniadau awgrymwn ei bod yn gwneud y canlynol:
-search-software.empty-vendor-list.heading   = Er mwyn cynyddu nifer y canlyniadau awgrymwn ei bod yn gwneud y canlynol:
-search-software.empty-vendor-list.paragraph = To increase the number of results, we suggest you:
-search-software.empty-vendor-list.bullet1   = lleihau nifer yr hidlwyr yr ydych eu defnyddio
-search-software.empty-vendor-list.bullet2   = gwneud yn siŵr bod yr enw yr ydych wedi’i nodi yn y bar chwilio yn gywir
+search-software.vendor-detail.pricing = Pris
+search-software.vendor-detail.pricing.free-version = Fersiwn am ddim
+search-software.vendor-detail.pricing.free-version.hint = Gwiriwch wefan y cwmni er mwyn gweld gwybodaeth ynghylch eu strwythur prisio.
+search-software.vendor-detail.pricing.no-free-version = Fersiwn taledig
 
-search-software.vendor-detail.pricing                 = Prisio
-search-software.vendor-detail.pricing.free-trial      = Cyfnod prawf am ddim
-search-software.vendor-detail.pricing.no-free-trial   = Dim cyfnod prawf rhad ac am ddim ar gael
-search-software.vendor-detail.pricing.free-version    = Fersiwn rhad ac am ddim
-search-software.vendor-detail.pricing.free-version.hint = Fel arfer, dim ond am gyfnod cyfyngedig y mae’r rhain yn rhad ac am ddim, neu fod ganddynt nodweddion cyfyngedig
-search-software.vendor-detail.pricing.no-free-version = Dim fersiwn sy’n rhad ac am ddim ar gael
-search-software.vendor-detail.pricing.paid-for        = Wedi’i dalu
+search-software.vendor-detail.suitable-for = Ffynonellau incwm
+search-software.vendor-detail.suitable-for.sole-trader = Unig fasnachwr
+search-software.vendor-detail.suitable-for.uk-property = Eiddo yn y DU
+search-software.vendor-detail.suitable-for.overseas-property = Eiddo dramor
 
-search-software.vendor-detail.suitable-for                   = Addas i
-search-software.vendor-detail.suitable-for.sole-trader       = Unig fasnachwr
-search-software.vendor-detail.suitable-for.uk-property       = Eiddo yn y DU
-search-software.vendor-detail.suitable-for.overseas-property = Eiddo tramor
+search-software.vendor-detail.submission-type = Math o gyflwyniad
+search-software.vendor-detail.submission-type.quarterly-updates = Diweddariadau chwarterol
+search-software.vendor-detail.submission-type.tax-return = Ffurfleni Treth
 
-search-software.vendor-detail.submission-type = Submission type
-search-software.vendor-detail.submission-type.quarterly-updates = Quarterly updates
-search-software.vendor-detail.submission-type.tax-return = Self Assessment tax return
+search-software.vendor-detail.software-for = Math o feddalwedd
+search-software.vendor-detail.software-for.record-keeping = Meddalwedd sy’n creu cofnodion digidol
+search-software.vendor-detail.software-for.bridging = Meddalwedd sy’n cysylltu â’ch cofnodion (meddalwedd pontio)
 
-search-software.vendor-detail.operating-system                   = System weithredu
-search-software.vendor-detail.operating-system.microsoft-windows = Microsoft Windows
-search-software.vendor-detail.operating-system.mac-os            = Mac OS
+search-software.vendor-detail.quarterly-ready = Diweddariadau chwarterol
+search-software.vendor-detail.quarterly-ready.ready = Yn barod nawr
 
-search-software.vendor-detail.mobile-app           = Ap Ffon Symudol:
-search-software.vendor-detail.mobile-app.android   = Android
-search-software.vendor-detail.mobile-app.apple-ios = Apple iOS
+search-software.vendor-detail.eoy-tax-return = Ffurflen Dreth
+search-software.vendor-detail.eoy-tax-return.ready = Yn barod nawr
+search-software.vendor-detail.eoy-tax-return.development = O dan ddatblygiad
+search-software.vendor-detail.eoy-tax-return.not-included = Ddim ar gael
 
-search-software.vendor-detail.software-type                   = Math o feddalwedd:
-search-software.vendor-detail.software-type.browser-based     = I’w ddefnyddio drwy borwr
-search-software.vendor-detail.software-type.browser-based.hint = Meddalwedd sy’n cael ei chyrchu ar-lein gan ddefnyddio’ch porwr rhyngrwyd
-search-software.vendor-detail.software-type.application-based = I’w ddefnyddio drwy raglen
-search-software.vendor-detail.software-type.application-based.hint = Meddalwedd sydd wedi’i gosod ar eich dyfais
+search-software.vendor-detail.software-compatibility.vat = TAW
 
-search-software.vendor-detail.software-for                = Meddalwedd ar gyfer
-search-software.vendor-detail.software-for.record-keeping = Software that creates digital records
-search-software.vendor-detail.software-for.bridging       = Software that connects to your records (bridging software)
+search-software.vendor-detail.accessibility.visual = Dallineb neu amhariad golwg
+search-software.vendor-detail.accessibility.hearing = Byddardod neu amhariad clyw
+search-software.vendor-detail.accessibility.motor = Amhariad echddygol neu gorfforol
+search-software.vendor-detail.accessibility.cognitive = Amhariad gwybyddol
 
-search-software.vendor-detail.business-type                 = Math o fusnes:
-search-software.vendor-detail.business-type.individual      = Unigolyn
-search-software.vendor-detail.business-type.individual.hint = Addas i bobl sy’n cyflwyno eu cofnodion eu hunain
-search-software.vendor-detail.business-type.agent           = Asiant
-search-software.vendor-detail.business-type.agent.hint      = Meddalwedd i gyfrifwyr a llyfrifwyr
-
-search-software.vendor-detail.software-compatibility            = Cydnawsedd y cynllun Troi Treth yn Ddigidol:
-search-software.vendor-detail.software-compatibility.vat        = TAW
-
-search-software.vendor-detail.language         = Iaith
-search-software.vendor-detail.language.welsh   = Cymraeg
-search-software.vendor-detail.language.english = Saesneg
-
-search-software.vendor-detail.accessibility           = Anghenion Hygyrchedd:
-search-software.vendor-detail.accessibility.visual    = Blindness or impaired vision
-search-software.vendor-detail.accessibility.hearing   = Deafness or impaired hearing
-search-software.vendor-detail.accessibility.motor     = Motor or physical difficulties
-search-software.vendor-detail.accessibility.cognitive = Cognitive impairments
-
-search-software.vendor-detail.accounting-period.standard-update-periods = 6th April to 5th April
-search-software.vendor-detail.accounting-period.calendar-update-periods = 1st April to 31st March
-search-software.vendor-detail.accounting-period.calendar-update-periods.hint = This supports calendar update periods
-
-search-software.vendor-detail.personal-income-sources.construction-industry-scheme = Construction Industry Scheme (CIS)
-search-software.vendor-detail.personal-income-sources.capital-gains-tax = Capital Gains Tax
-search-software.vendor-detail.personal-income-sources.employment = Employment
-search-software.vendor-detail.personal-income-sources.foreign-income = Foreign Income
-search-software.vendor-detail.personal-income-sources.uk-dividends = UK Dividends
-search-software.vendor-detail.personal-income-sources.uk-interest = UK Interest
-search-software.vendor-detail.personal-income-sources.foreign-interest = Foreign Interest
-search-software.vendor-detail.personal-income-sources.foreign-dividends = Foreign Dividends
-
-search-software.vendor-detail.deductions.charitable-giving = Charitable giving
-search-software.vendor-detail.deductions.high-income-child-benefit-charge = High Income Child Benefit Charge
-search-software.vendor-detail.deductions.student-loans = Student loans
-search-software.vendor-detail.deductions.voluntary-class-2-national-insurance = Voluntary Class 2 National Insurance
-
-search-software.vendor-detail.pensions.state-pension-income = State pension income
-search-software.vendor-detail.pensions.private-pension-income = Private pension income
-search-software.vendor-detail.pensions.payments-into-a-private-pension = Payments into a private pension
-
-search-software.vendor-detail.allowances.marriage-allowance = Marriage Allowance
-
-search-software.vendor-detail.user-type.agent = Agent
-search-software.vendor-detail.user-type.individual = Individual
+search-software.vendor-detail.user-type.agent = Asiant
+search-software.vendor-detail.user-type.individual = Unigolyn
 
 # Product details page
 
-product-details.details.before-you-choose-header = Cyn i chi ddewis
-product-details.details.before-you-choose        = Mae’n bosibl y bydd gwahanol nodweddion ar gael, neu gyfyngiadau ar ddefnydd, wrth gymharu opsiynau meddalwedd sy’n rhad ac am ddim â meddalwedd y gallwch ei phrynu. Ewch i wefan y cwmni meddalwedd i sicrhau bod ei gynnyrch yn addas ar eich cyfer chi.
-
 # Contact details section
 
-product-details.contact-details.heading    = Visit the company’s website to check if the software is right for you...but in welsh
-product-details.contact-details.email      = E-bost
-product-details.contact-details.phone      = Phone... in welsh
-product-details.contact-details.website    = Website...in welsh
+product-details.contact-details.heading    = Ewch i wefan y cwmni i wirio a yw’r feddalwedd yn addas ar eich cyfer chi.
+product-details.contact-details.website    = Gwefan
 
 # Product details section
 
-product-details.details.heading                = Software details...but in welsh
+product-details.details.heading = Nodweddion meddalwedd
 
-product-details.features-provided.heading = Features provided
-product-details.features-provided.quarterly-updates = Quarterly updates
-product-details.features-provided.calendar-update-periods = Calendar update period (1 April to 31 March)
-product-details.features-provided.bridging = Software that connects to your records (bridging software)
-product-details.features-provided.record-keeping = Software that creates digital records
-product-details.features-provided.standard-update-periods = Standard update period (6 April to 5 April)
-product-details.features-provided.tax-return = Self Assessment tax return
-product-details.features-provided.agent = Agent software
-product-details.features-provided.individual = Individual software
-product-details.features-provided.free-version = Free version
+product-details.features-provided.heading = Nodweddion sydd ar gael
+product-details.features-provided.quarterly-updates = Diweddariadau chwarterol
+product-details.features-provided.calendar-update-periods = Cyfnod diweddaru calendr (1 Ebrill i 31 Mawrth)
+product-details.features-provided.bridging = Meddalwedd sy’n cysylltu â’ch cofnodion (meddalwedd pontio)
+product-details.features-provided.record-keeping = Meddalwedd sy’n creu cofnodion digidol
+product-details.features-provided.standard-update-periods = Cyfnod diweddaru safonol (6 Ebrill i 5 Ebrill)
+product-details.features-provided.tax-return = Ffurfleni Treth
+product-details.features-provided.agent = Meddalwedd asiant
+product-details.features-provided.individual = Meddalwedd unigolyn
+product-details.features-provided.free-version = Fersiwn am ddim
 
-product-details.quarterly-updates.heading = What you need for your quarterly updates
-product-details.quarterly-updates.what-you-need = You’ll still need to send these income sources in your tax return.
+product-details.quarterly-updates.heading = Yr hyn sydd ei angen arnoch ar gyfer eich diweddariadau chwarterol
+product-details.quarterly-updates.what-you-need = Bydd angen i chi gynnwys y ffynonellau incwm hyn yn eich Ffurflen Dreth o hyd.
 
-product-details.business-income.heading = Income sources
-product-details.business-income.sole-trader = Sole trader
-product-details.business-income.uk-property = UK property
-product-details.business-income.overseas-property = Foreign property
+product-details.business-income.heading = Ffynonellau incwm busnes
+product-details.business-income.sole-trader = Unig fasnachwr
+product-details.business-income.uk-property = Eiddo yn y DU
+product-details.business-income.overseas-property = Eiddo tramor
 
-product-details.other-income.heading = Other income sources
-product-details.other-income.construction-industry-scheme = Construction Industry Scheme
-product-details.other-income.employment = Employment (PAYE)
-product-details.other-income.foreign-interest = Foreign interest
-product-details.other-income.foreign-dividends = Foreign dividends
-product-details.other-income.uk-dividends = UK dividends
-product-details.other-income.uk-interest = UK interest
-product-details.other-income.state-pension-income = State pension
-product-details.other-income.private-pension-income = Private pension incomes
+product-details.tax-return.heading = Yr hyn sydd ei angen arnoch ar gyfer eich Ffurflen Dreth
 
-product-details.other-items.heading = Other items
-product-details.other-items.capital-gains-tax = Capital Gains
-product-details.other-items.charitable-giving = Charitable giving
-product-details.other-items.student-loans = Student Loan
-product-details.other-items.voluntary-class-2-national-insurance = Voluntary Class 2 National Insurance
-product-details.other-items.high-income-child-benefit-charge = High Income Child Benefit Charge
-product-details.other-items.payments-into-a-private-pension = Private pension contributions
-product-details.other-items.marriage-allowance = Marriage Allowance
+product-details.other-income.heading = Eitemau eraill a ffynonellau eraill o incwm
+product-details.other-income.construction-industry-scheme = Cynllun y Diwydiant Adeiladu
+product-details.other-income.employment = Cyflogaeth (TWE)
+product-details.other-income.foreign-interest = FLlog tramor
+product-details.other-income.foreign-dividends = Difidendau tramor
+product-details.other-income.uk-dividends = Difidendau’r DU
+product-details.other-income.uk-interest = Llog yn y DU
+product-details.other-income.state-pension-income = Incwm o Bensiwn y Wladwriaeth
+product-details.other-income.private-pension-income = Incwm o bensiwn preifat
+product-details.other-income.capital-gains-tax = Enillion Cyfalaf
+product-details.other-income.charitable-giving = Cyfrannu at elusennau
+product-details.other-income.student-loans = Benthyciad myfyriwr
+product-details.other-income.voluntary-class-2-national-insurance = Yswiriant Gwladol Dosbarth 2 Gwirfoddol
+product-details.other-income.high-income-child-benefit-charge = Tâl Treth Budd-dal Plant Incwm Uchel
+product-details.other-income.payments-into-a-private-pension = Cyfraniadau pensiwn preifat
+product-details.other-income.marriage-allowance = Lwfans Priodasol
 
-product-details.status.heading = Status
-product-details.status.included = Included
-product-details.status.ready = Ready now
-product-details.status.development = In development
-product-details.status.not-included = Not included
+product-details.status.heading = Statws
+product-details.status.ready = Yn barod nawr
+product-details.status.development = O dan ddatblygiad
+product-details.status.not-included = Ddim ar gael
 
-product-details.software-spec.heading = Software specifications
+
+product-details.software-spec.heading = Manylebau’r feddalwedd
 
 product-details.software-spec.software-type = Math o feddalwedd
-product-details.software-spec.compatible-with = Compatible with
+product-details.software-spec.compatible-with = Yn cydweddu â
 product-details.software-spec.mobile-app = Ap Ffon Symudol
-product-details.software-spec.language = Language
+product-details.software-spec.language = Iaith
 
-product-details.software-type.desktop-based = Desktop application
-product-details.software-type.web-browser = Web browser
-
+product-details.software-type.desktop-based = Rhaglen bwrdd gwaith
+product-details.software-type.web-browser = Porwr gwe
 
 product-details.compatible-with.microsoft-windows = Microsoft Windows
 product-details.compatible-with.mac-os = Mac OS
@@ -330,71 +238,39 @@ product-details.mobile-app.apple-ios = Apple iOS
 
 product-details.language.english = Saesneg
 
-product-details.details.pricing                = Prisio
-product-details.details.suitable-for           = Addas i
-product-details.details.operating-system       = System weithredu
-product-details.details.mobile-app             = Ap Ffon Symudol
-product-details.details.software-type          = Math o feddalwedd
-product-details.details.software-for           = Meddalwedd ar gyfer
-product-details.details.business-type          = Math o fusnes
-product-details.details.software-compatibility = Cydnawsedd y cynllun Troi Treth yn Ddigidol
-product-details.details.language               = Iaith
-product-details.details.accessibility          = Nodweddion hygyrchedd
-
-product-details.details.free-version           = Fersiwn rhad ac am ddim
-product-details.details.free-trial             = Cyfnod prawf am ddim
-product-details.details.paid-for               = Wedi’i dalu
-product-details.details.sole-trader            = Unig fasnachwr
-product-details.details.uk-property            = Eiddo yn y DU
-product-details.details.overseas-property      = Eiddo tramor
-product-details.details.microsoft-windows      = Microsoft Windows
-product-details.details.mac-os                 = Mac OS
-product-details.details.android                = Android
-product-details.details.apple-ios              = Apple iOS
-product-details.details.browser-based          = I’w ddefnyddio drwy borwr
-product-details.details.application-based      = I’w ddefnyddio drwy raglen
-product-details.details.record-keeping         = Cadw cofnodion
-product-details.details.bridging               = Pontio
-product-details.details.individual             = Unigolyn
-product-details.details.agent                  = Asiant
-product-details.details.income-tax             = Treth Incwm
-product-details.details.vat                    = TAW
-product-details.details.visual                 = Nam ar eu golwg a dallineb
-product-details.details.hearing                = Trymder clyw a nam ar eu clyw
-product-details.details.motor                  = Anawsterau echddygol
-product-details.details.cognitive              = Anawsterau gwybyddol
-product-details.details.welsh                  = Cymraeg
-product-details.details.english                = Saesneg
-
-# Accessibility statement section
-
-product-details.accessibility-statement.heading = Hygyrchedd
-product-details.accessibility-statement.key     = Datganiad hygyrchedd
-
 # Other Income Sources Page
-additional.income.source-heading                                    = Which other income do you have?
-additional.income.source-legend                                     = Which other income do you have?
-additional.income.source-paragraph                                  = This is other income you’ll need to include in your tax return.
-additional.income.source-hint                                       = Select all that apply
-additional.income.source-uk-interest                                = UK interest
-additional.income.source-construction-industry-scheme               = Construction Industry Scheme
-additional.income.source-employment                                 = Employment (PAYE)
-additional.income.source-uk-dividends                               = UK dividends
-additional.income.source-state-pension                              = State pension income
-additional.income.source-private-pension                            = Private pension incomes
-additional.income.source-partner-income                             = Partner income from a partnership
-additional.income.source-foreign-dividends                          = Foreign dividends
-additional.income.source-foreign-interest                           = Foreign interest
-additional.income.source-trustee                                    = Trustee
-additional.income.source-foster-carer                               = Foster carer
-additional.income.source-none                                       = None of these
-additional.income.source.error-non-empty                            = Select an income type or income types
-additional.income.source.error-none-only                            = Select an income type, income types, or ‘none of these’
+additional.income.source-heading                                    = Pa rai o’r ffynonellau incwm hyn y mae angen i chi eu cyflwyno yn eich Ffurflen Dreth?
+additional.income.source-legend                                     = Pa rai o’r ffynonellau incwm hyn y mae angen i chi eu cyflwyno yn eich Ffurflen Dreth?
+additional.income.source-hint                                       = Dewiswch bob un sy’n berthnasol
+additional.income.source-uk-interest                                = Llog yn y DU
+additional.income.source-construction-industry-scheme               = Cynllun y Diwydiant Adeiladu
+additional.income.source-employment                                 = Cyflogaeth (TWE)
+additional.income.source-uk-dividends                               = Difidendau’r DU
+additional.income.source-state-pension-income                       = Incwm o Bensiwn y Wladwriaeth
+additional.income.source-private-pension-income                     = Incwm o bensiwn preifat
+additional.income.source-partner-income                             = ***** MISSING WELSH TRANSLATION *****
+additional.income.source-foreign-dividends                          = Difidendau tramor
+additional.income.source-foreign-interest                           = Llog tramor
+additional.income.source-trust-income                               = ***** MISSING WELSH TRANSLATION *****
+additional.income.source-foster-carer                               = ***** MISSING WELSH TRANSLATION *****
+additional.income.source-none                                       = Dim un o’r rhain
+additional.income.source.error-non-empty                            = Dewiswch fath o incwm, mathau o incwm, neu ‘dim un o’r rhain’
+additional.income.source.error-none-only                            = Dewiswch naill ai math o incwm, mathau o incwm, neu ‘dim un o’r rhain’
 
-unsupported-accounting-period.heading                               = There is no software product or products that support your accounting period
-unsupported-accounting-period.para-one                              = Making Tax Digital is only available to people who use the business accounting periods:
-unsupported-accounting-period.bullet-one                            = 6 April to 5 April
-unsupported-accounting-period.bullet-two                            = 1 April to 31 March
-unsupported-accounting-period.para-two                              = We may extend this service to people with other accounting periods in the future. You’ll need to continue to submit your {0} as normal.
-unsupported-accounting-period.self-assessment-tax-return.link-text  = Self Assessment tax return
-unsupported-accounting-period.self-assessment-tax-return.link-url   = https://www.gov.uk/ffurflenni-treth-hunanasesiad/anfon-ffurflen-dreth
+unsupported-accounting-period.heading                               = ***** MISSING WELSH TRANSLATION *****
+unsupported-accounting-period.para-one                              = ***** MISSING WELSH TRANSLATION *****
+unsupported-accounting-period.bullet-one                            = 6 Ebrill i 5 Ebrill
+unsupported-accounting-period.bullet-two                            = 1 Ebrill i 31 Mawrth
+unsupported-accounting-period.para-two                              = ***** MISSING WELSH TRANSLATION *****
+unsupported-accounting-period.self-assessment-tax-return.link-text  = ***** MISSING WELSH TRANSLATION *****
+unsupported-accounting-period.self-assessment-tax-return.link-url   = ***** MISSING WELSH TRANSLATION *****
+
+timeout.title = Er eich diogelwch
+timeout.message = Byddwn yn dileu’ch atebion mewn
+timeout.continue = Dod o hyd i feddalwedd am y cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm
+timeout.reset = Dileu’ch atebion
+
+session-expired.title = ***** MISSING WELSH TRANSLATION *****
+session-expired.user = Rydych wedi dileu’ch atebion
+session-expired.timeout = Er diogelwch, gwnaethom ddileu’ch atebion.
+session-expired.button = Dechrau eto
