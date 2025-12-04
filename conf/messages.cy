@@ -49,7 +49,6 @@ zero-results.button = Gorffen
 
 # Other Items page
 other-items.title = Pa rai o’r eitemau hyn y mae angen i chi eu cyflwyno yn eich Ffurflen Dreth?
-other-items.legend = Pa rai o’r eitemau hyn y mae angen i chi eu cyflwyno yn eich Ffurflen Dreth?
 other-items.hint = Dewiswch bob un sy’n berthnasol
 other-items.payments-into-a-private-pension = Cyfraniadau pensiwn preifat
 other-items.charitable-giving = Cyfrannu at elusennau
@@ -241,7 +240,6 @@ product-details.language.english = Saesneg
 
 # Other Income Sources Page
 additional.income.source-heading                                    = Pa rai o’r ffynonellau incwm hyn y mae angen i chi eu cyflwyno yn eich Ffurflen Dreth?
-additional.income.source-legend                                     = Pa rai o’r ffynonellau incwm hyn y mae angen i chi eu cyflwyno yn eich Ffurflen Dreth?
 additional.income.source-hint                                       = Dewiswch bob un sy’n berthnasol
 additional.income.source-uk-interest                                = Llog yn y DU
 additional.income.source-construction-industry-scheme               = Cynllun y Diwydiant Adeiladu
