@@ -26,16 +26,14 @@
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTemplate
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.{Available, Intended, NotApplicable}
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitchingImpl
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch._
+
 
 @this(
         mainTemplate: MainTemplate,
         hmrcNewTabLinkHelper: HmrcNewTabLinkHelper,
         govukSummaryList: GovukSummaryList,
         govukTable: GovukTable,
-        govukTag: GovukTag,
-        featureSwitchingImpl: FeatureSwitchingImpl
+        govukTag: GovukTag
 )(implicit appConfig: AppConfig)
 @(softwareVendor: SoftwareVendorModel)(implicit request: Request[_], messages: Messages)
 
@@ -58,7 +56,7 @@
         @table(incomeSourcesGroup, "business-income", displayIntent = false)
 
         <h2 class="govuk-heading-m">@messages("product-details.tax-return.heading")</h2>
-        @table(nonMandatedIncomeGroupFiltered(featureSwitchingImpl.isEnabled(PartnerIncomeFeature), featureSwitchingImpl.isEnabled(FosterCarerFeature), featureSwitchingImpl.isEnabled(TrustIncomeFeature)), "other-income", displayIntent = true)
+        @table(nonMandatedIncomeGroup(), "other-income", displayIntent = true)
     </div>
 
     @defining({

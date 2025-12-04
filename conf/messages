@@ -215,6 +215,7 @@ product-details.other-income.marriage-allowance = Marriage Allowance
 product-details.other-income.partner-income = Partner income from a partnership
 product-details.other-income.foster-carer = Foster carer
 product-details.other-income.trust-income = Trustee
+product-details.other-income.averaging-adjustment = Averaging adjustments
 
 product-details.status.heading = Status
 product-details.status.ready = Ready now
