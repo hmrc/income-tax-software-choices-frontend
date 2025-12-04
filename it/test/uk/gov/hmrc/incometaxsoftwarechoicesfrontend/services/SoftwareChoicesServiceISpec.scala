@@ -21,7 +21,6 @@ import org.scalatestplus.play.PlaySpec
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.Application
 import play.api.inject.guice.GuiceApplicationBuilder
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.Available
 
 import scala.util.Try
 

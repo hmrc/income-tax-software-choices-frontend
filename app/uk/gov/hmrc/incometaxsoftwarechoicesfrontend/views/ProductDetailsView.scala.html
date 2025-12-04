@@ -100,7 +100,7 @@
     }) { specsRows =>
         @if(specsRows.nonEmpty) {
             <div class="govuk-!-width-two-thirds govuk-!-padding-0">
-                <h2 class="govuk-heading-l">@messages("product-details.software-spec.heading")</h2>
+                <h2 class="govuk-heading-m">@messages("product-details.software-spec.heading")</h2>
                 @govukSummaryList(SummaryList(rows = specsRows))
             </div>
         }
