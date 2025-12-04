@@ -49,7 +49,6 @@ zero-results.button = Finish
 
 # Other Items page
 other-items.title = Which of these other items do you need to submit in your tax return?
-other-items.legend = Which of these other items do you need to submit in your tax return?
 other-items.hint = Select all that apply
 other-items.payments-into-a-private-pension = Private pension contributions
 other-items.charitable-giving = Charitable giving
@@ -240,7 +239,6 @@ product-details.language.english = English
 
 # Other Income Sources Page
 additional.income.source-heading                                    = Which of these other incomes do you need to submit in your tax return?
-additional.income.source-legend                                     = Which of these other incomes do you need to submit in your tax return?
 additional.income.source-hint                                       = Select all that apply
 additional.income.source-uk-interest                                = UK interest
 additional.income.source-construction-industry-scheme               = Construction Industry Scheme

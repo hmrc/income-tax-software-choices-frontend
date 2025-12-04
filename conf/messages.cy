@@ -49,7 +49,6 @@ zero-results.button = Gorffen
 
 # Other Items page
 other-items.title = Pa rai o’r eitemau hyn y mae angen i chi eu cyflwyno yn eich Ffurflen Dreth?
-other-items.legend = Pa rai o’r eitemau hyn y mae angen i chi eu cyflwyno yn eich Ffurflen Dreth?
 other-items.hint = Dewiswch bob un sy’n berthnasol
 other-items.payments-into-a-private-pension = Cyfraniadau pensiwn preifat
 other-items.charitable-giving = Cyfrannu at elusennau
@@ -60,6 +59,7 @@ other-items.voluntary-class-2-national-insurance = Yswiriant Gwladol Dosbarth 2 
 other-items.high-income-child-benefit-charge = Tâl Treth Budd-dal Plant Incwm Uchel
 other-items.averaging-adjustment = ***** MISSING WELSH TRANSLATION *****
 other-items.none-of-these = Dim un o’r rhain
+
 
 other-items.error.non-empty = ***** MISSING WELSH TRANSLATION *****
 other-items.error.invalid-selection = Dewiswch un eitem arall, eitemau eraill, neu ‘dim un o’r rhain’
@@ -240,7 +240,6 @@ product-details.language.english = Saesneg
 
 # Other Income Sources Page
 additional.income.source-heading                                    = Pa rai o’r ffynonellau incwm hyn y mae angen i chi eu cyflwyno yn eich Ffurflen Dreth?
-additional.income.source-legend                                     = Pa rai o’r ffynonellau incwm hyn y mae angen i chi eu cyflwyno yn eich Ffurflen Dreth?
 additional.income.source-hint                                       = Dewiswch bob un sy’n berthnasol
 additional.income.source-uk-interest                                = Llog yn y DU
 additional.income.source-construction-industry-scheme               = Cynllun y Diwydiant Adeiladu
@@ -256,6 +255,7 @@ additional.income.source-foster-carer                               = ***** MISS
 additional.income.source-none                                       = Dim un o’r rhain
 additional.income.source.error-non-empty                            = Dewiswch fath o incwm, mathau o incwm, neu ‘dim un o’r rhain’
 additional.income.source.error-none-only                            = Dewiswch naill ai math o incwm, mathau o incwm, neu ‘dim un o’r rhain’
+
 
 unsupported-accounting-period.heading                               = ***** MISSING WELSH TRANSLATION *****
 unsupported-accounting-period.para-one                              = ***** MISSING WELSH TRANSLATION *****

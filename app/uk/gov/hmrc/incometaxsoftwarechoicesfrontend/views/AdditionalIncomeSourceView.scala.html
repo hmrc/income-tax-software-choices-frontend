@@ -36,18 +36,16 @@
 
 @mainTemplate(messages("additional.income.source-heading"), optForm = Some(additionalIncomeForm), backLink = Some(backUrl)) {
 
-<h1 class="govuk-heading-l">@messages("additional.income.source-heading")</h1>
-
 @form(action = postAction) {
 
         @govukCheckboxes(Checkboxes(
             fieldset = Some(Fieldset(
-            legend = Some(Legend(
-                content = Text(messages("additional.income.source-legend")),
-                classes = "govuk-visually-hidden",
-                isPageHeading = false
-            ))
-        )),
+                legend = Some(Legend(
+                    content = Text(messages("additional.income.source-heading")),
+                    classes = "govuk-fieldset__legend--l",
+                    isPageHeading = true
+                ))
+            )),
             hint = Some(Hint(content = Text(messages("additional.income.source-hint")))),
             items = Seq(
                 CheckboxItem(
