@@ -82,7 +82,7 @@ class OtherItemsViewSpec extends ViewSpec with FeatureSwitching {
           form.mustHaveCheckbox("fieldSet")(
             checkbox = 1,
             legend = OtherItemsPageContent.legend,
-            isHeading = false,
+            isHeading = true,
             isLegendHidden = false,
             name = "otherItems[]",
             label = OtherItemsPageContent.privatePensionContributions,
@@ -93,7 +93,7 @@ class OtherItemsViewSpec extends ViewSpec with FeatureSwitching {
           form.mustHaveCheckbox("fieldSet")(
             checkbox = 2,
             legend = OtherItemsPageContent.legend,
-            isHeading = false,
+            isHeading = true,
             isLegendHidden = false,
             name = "otherItems[]",
             label = OtherItemsPageContent.charitableGiving,
@@ -104,7 +104,7 @@ class OtherItemsViewSpec extends ViewSpec with FeatureSwitching {
           form.mustHaveCheckbox("fieldSet")(
             checkbox = 3,
             legend = OtherItemsPageContent.legend,
-            isHeading = false,
+            isHeading = true,
             isLegendHidden = false,
             name = "otherItems[]",
             label = OtherItemsPageContent.capitalGainsTax,
@@ -115,7 +115,7 @@ class OtherItemsViewSpec extends ViewSpec with FeatureSwitching {
           form.mustHaveCheckbox("fieldSet")(
             checkbox = 4,
             legend = OtherItemsPageContent.legend,
-            isHeading = false,
+            isHeading = true,
             isLegendHidden = false,
             name = "otherItems[]",
             label = OtherItemsPageContent.studentLoan,
@@ -126,7 +126,7 @@ class OtherItemsViewSpec extends ViewSpec with FeatureSwitching {
           form.mustHaveCheckbox("fieldSet")(
             checkbox = 5,
             legend = OtherItemsPageContent.legend,
-            isHeading = false,
+            isHeading = true,
             isLegendHidden = false,
             name = "otherItems[]",
             label = OtherItemsPageContent.marriageAllowance,
@@ -137,7 +137,7 @@ class OtherItemsViewSpec extends ViewSpec with FeatureSwitching {
           form.mustHaveCheckbox("fieldSet")(
             checkbox = 6,
             legend = OtherItemsPageContent.legend,
-            isHeading = false,
+            isHeading = true,
             isLegendHidden = false,
             name = "otherItems[]",
             label = OtherItemsPageContent.voluntaryClass2Nic,
@@ -148,7 +148,7 @@ class OtherItemsViewSpec extends ViewSpec with FeatureSwitching {
           form.mustHaveCheckbox("fieldSet")(
             checkbox = 7,
             legend = OtherItemsPageContent.legend,
-            isHeading = false,
+            isHeading = true,
             isLegendHidden = false,
             name = "otherItems[]",
             label = OtherItemsPageContent.highIncomeChildBenefitCharge,
@@ -162,7 +162,7 @@ class OtherItemsViewSpec extends ViewSpec with FeatureSwitching {
           form.mustHaveCheckbox("fieldSet")(
             checkbox = 9,
             legend = OtherItemsPageContent.legend,
-            isHeading = false,
+            isHeading = true,
             isLegendHidden = false,
             name = "otherItems[]",
             label = OtherItemsPageContent.noneOfThese,
@@ -185,7 +185,7 @@ class OtherItemsViewSpec extends ViewSpec with FeatureSwitching {
         form.mustHaveCheckbox("fieldSet")(
           checkbox = 8,
           legend = OtherItemsPageContent.legend,
-          isHeading = false,
+          isHeading = true,
           isLegendHidden = false,
           name = "otherItems[]",
           label = OtherItemsPageContent.averagingAdjustment,

@@ -92,7 +92,7 @@ class AdditionalIncomeSourceViewSpec extends ViewSpec with FeatureSwitching  wit
           form.mustHaveCheckbox("fieldSet")(
             checkbox = 1,
             legend = AdditionalIncomeSourcesPageContent.legend,
-            isHeading = false,
+            isHeading = true,
             isLegendHidden = false,
             name = "additionalIncome[]",
             label = AdditionalIncomeSourcesPageContent.ukInterest,
@@ -103,7 +103,7 @@ class AdditionalIncomeSourceViewSpec extends ViewSpec with FeatureSwitching  wit
           form.mustHaveCheckbox("fieldSet")(
             checkbox = 2,
             legend = AdditionalIncomeSourcesPageContent.legend,
-            isHeading = false,
+            isHeading = true,
             isLegendHidden = false,
             name = "additionalIncome[]",
             label = AdditionalIncomeSourcesPageContent.constructionIndustryScheme,
@@ -114,7 +114,7 @@ class AdditionalIncomeSourceViewSpec extends ViewSpec with FeatureSwitching  wit
           form.mustHaveCheckbox("fieldSet")(
             checkbox = 3,
             legend = AdditionalIncomeSourcesPageContent.legend,
-            isHeading = false,
+            isHeading = true,
             isLegendHidden = false,
             name = "additionalIncome[]",
             label = AdditionalIncomeSourcesPageContent.employment,
@@ -125,7 +125,7 @@ class AdditionalIncomeSourceViewSpec extends ViewSpec with FeatureSwitching  wit
           form.mustHaveCheckbox("fieldSet")(
             checkbox = 4,
             legend = AdditionalIncomeSourcesPageContent.legend,
-            isHeading = false,
+            isHeading = true,
             isLegendHidden = false,
             name = "additionalIncome[]",
             label = AdditionalIncomeSourcesPageContent.ukDividends,
@@ -136,7 +136,7 @@ class AdditionalIncomeSourceViewSpec extends ViewSpec with FeatureSwitching  wit
           form.mustHaveCheckbox("fieldSet")(
             checkbox = 5,
             legend = AdditionalIncomeSourcesPageContent.legend,
-            isHeading = false,
+            isHeading = true,
             isLegendHidden = false,
             name = "additionalIncome[]",
             label = AdditionalIncomeSourcesPageContent.statePension,
@@ -147,7 +147,7 @@ class AdditionalIncomeSourceViewSpec extends ViewSpec with FeatureSwitching  wit
           form.mustHaveCheckbox("fieldSet")(
             checkbox = 6,
             legend = AdditionalIncomeSourcesPageContent.legend,
-            isHeading = false,
+            isHeading = true,
             isLegendHidden = false,
             name = "additionalIncome[]",
             label = AdditionalIncomeSourcesPageContent.privatePension,
@@ -158,7 +158,7 @@ class AdditionalIncomeSourceViewSpec extends ViewSpec with FeatureSwitching  wit
           form.mustHaveCheckbox("fieldSet")(
             checkbox = 7,
             legend = AdditionalIncomeSourcesPageContent.legend,
-            isHeading = false,
+            isHeading = true,
             isLegendHidden = false,
             name = "additionalIncome[]",
             label = AdditionalIncomeSourcesPageContent.foreignDividends,
@@ -169,7 +169,7 @@ class AdditionalIncomeSourceViewSpec extends ViewSpec with FeatureSwitching  wit
           form.mustHaveCheckbox("fieldSet")(
             checkbox = 8,
             legend = AdditionalIncomeSourcesPageContent.legend,
-            isHeading = false,
+            isHeading = true,
             isLegendHidden = false,
             name = "additionalIncome[]",
             label = AdditionalIncomeSourcesPageContent.foreignInterest,
@@ -180,7 +180,7 @@ class AdditionalIncomeSourceViewSpec extends ViewSpec with FeatureSwitching  wit
           form.mustHaveCheckbox("fieldSet")(
             checkbox = 10,
             legend = AdditionalIncomeSourcesPageContent.legend,
-            isHeading = false,
+            isHeading = true,
             isLegendHidden = false,
             name = "additionalIncome[]",
             label = AdditionalIncomeSourcesPageContent.none,
@@ -204,7 +204,7 @@ class AdditionalIncomeSourceViewSpec extends ViewSpec with FeatureSwitching  wit
           form.mustHaveCheckbox("fieldSet")(
             checkbox = 7,
             legend = AdditionalIncomeSourcesPageContent.legend,
-            isHeading = false,
+            isHeading = true,
             isLegendHidden = false,
             name = "additionalIncome[]",
             label = AdditionalIncomeSourcesPageContent.partnerIncomeFromPartnership,
@@ -215,7 +215,7 @@ class AdditionalIncomeSourceViewSpec extends ViewSpec with FeatureSwitching  wit
           form.mustHaveCheckbox("fieldSet")(
             checkbox = 10,
             legend = AdditionalIncomeSourcesPageContent.legend,
-            isHeading = false,
+            isHeading = true,
             isLegendHidden = false,
             name = "additionalIncome[]",
             label = AdditionalIncomeSourcesPageContent.trustee,
@@ -226,7 +226,7 @@ class AdditionalIncomeSourceViewSpec extends ViewSpec with FeatureSwitching  wit
           form.mustHaveCheckbox("fieldSet")(
             checkbox = 11,
             legend = AdditionalIncomeSourcesPageContent.legend,
-            isHeading = false,
+            isHeading = true,
             isLegendHidden = false,
             name = "additionalIncome[]",
             label = AdditionalIncomeSourcesPageContent.fosterCarer,
