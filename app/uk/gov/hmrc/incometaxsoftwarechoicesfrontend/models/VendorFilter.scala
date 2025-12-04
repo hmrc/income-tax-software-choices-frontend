@@ -474,33 +474,9 @@ object VendorFilterGroups {
     List(ForeignDividends, ForeignInterest) ++
     fosterCareFilter ++
     trustIncomeFilter ++
-    List(ForeignDividends, ForeignInterest, PaymentsIntoAPrivatePension, CharitableGiving, CapitalGainsTax, StudentLoans, MarriageAllowance, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge) ++
+    List(PaymentsIntoAPrivatePension, CharitableGiving, CapitalGainsTax, StudentLoans, MarriageAllowance, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge) ++
     averagingAdjustmentFilter
   }
-
-//  def nonMandatedIncomeGroupFiltered(partnerIncomeAllowed: Boolean, fosterCarerAllowed: Boolean, trustAllowed: Boolean): List[VendorFilter] = {
-//    var result = List(
-//      UkInterest, ConstructionIndustryScheme, Employment, UkDividends, StatePensionIncome, PrivatePensionIncome
-//    )
-//    if (partnerIncomeAllowed) {
-//      result = result ++ List(PartnerIncome)
-//    }
-//    result = result ++
-//      List(
-//        ForeignDividends, ForeignInterest
-//      )
-//    if (fosterCarerAllowed) {
-//      result = result ++ List(FosterCarer)
-//    }
-//    if (trustAllowed) {
-//      result = result ++ List(TrustIncome)
-//    }
-//    result = result ++
-//      List(
-//         PaymentsIntoAPrivatePension, CharitableGiving, CapitalGainsTax, StudentLoans, MarriageAllowance, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge
-//      )
-//    result
-//  }
 
   val softwareTypeGroup: List[VendorFilter] = List(DesktopApplication, WebBrowser)
   val compatibleWithGroup: List[VendorFilter] = List(MicrosoftWindows, MacOS, Linux)
