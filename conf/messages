@@ -24,6 +24,12 @@ accounting-period.first-april-to-thirty-first-march               = 1 April to 3
 accounting-period.other                                           = Neither of these
 accounting-period.error                                           = Select either 6 April to 5 April, 1 April to 31 March, or neither of these
 
+# Accounting period not aligned view
+accounting-period-not-aligned.heading                               = Your accounting period is not aligned
+accounting-period-not-aligned.para-one                              = You’ve selected an accounting period that does not end on the 5th April or 31st March.
+accounting-period-not-aligned.para-two                              = You’ll need to use compatible software to submit additional adjustments after the end of the tax year.
+accounting-period-not-aligned.para-three                            = HMRC will publish guidance on how to do this in due course.
+
 # Business Income page
 business-income.title               = Which of these incomes do you need to include in your quarterly updates?
 business-income.legend              = Which of these incomes do you need to include in your quarterly updates?
@@ -258,14 +264,6 @@ additional.income.source-foster-carer                               = Foster car
 additional.income.source-none                                       = None of these
 additional.income.source.error-non-empty                            = Select an income type, income types, or ‘none of these’
 additional.income.source.error-none-only                            = Select either an income type, income types, or ‘none of these’
-
-unsupported-accounting-period.heading                               = There is no software product or products that support your accounting period
-unsupported-accounting-period.para-one                              = Making Tax Digital is only available to people who use the business accounting periods:
-unsupported-accounting-period.bullet-one                            = 6 April to 5 April
-unsupported-accounting-period.bullet-two                            = 1 April to 31 March
-unsupported-accounting-period.para-two                              = We may extend this service to people with other accounting periods in the future. You’ll need to continue to submit your {0} as normal.
-unsupported-accounting-period.self-assessment-tax-return.link-text  = Self Assessment tax return
-unsupported-accounting-period.self-assessment-tax-return.link-url   = https://www.gov.uk/self-assessment-tax-returns/sending-return
 
 timeout.title = For your security
 timeout.message = We will delete your answers in

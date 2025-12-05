@@ -17,20 +17,28 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.UnsupportedAccountingPeriod
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{RequireUserDataRefiner, SessionIdentifierAction}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.AccountingPeriodNotAlignedView
 
 import javax.inject.{Inject, Singleton}
 
 @Singleton
-class UnsupportedAccountingPeriodController @Inject()(view: UnsupportedAccountingPeriod)
-                                                     (implicit mcc: MessagesControllerComponents) extends BaseFrontendController {
+class AccountingPeriodNotAlignedController @Inject()(view: AccountingPeriodNotAlignedView,
+                                                     identify: SessionIdentifierAction,
+                                                     requireData: RequireUserDataRefiner)
+                                                    (implicit mcc: MessagesControllerComponents)extends BaseFrontendController {
 
 
-  def show: Action[AnyContent] = Action { request =>
+  def show(): Action[AnyContent] = (identify andThen requireData) { request =>
     given Request[AnyContent] = request
     Ok(view(
+      postAction = routes.AccountingPeriodNotAlignedController.submit(),
       backLink = routes.AccountingPeriodController.show().url
     ))
+  }
+
+  def submit(): Action[AnyContent] = (identify andThen requireData) { _ =>
+    Redirect(routes.CheckYourAnswersController.show())
   }
 
 }
