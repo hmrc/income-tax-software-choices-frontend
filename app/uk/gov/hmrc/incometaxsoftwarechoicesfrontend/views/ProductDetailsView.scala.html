@@ -27,6 +27,7 @@
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTemplate
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.{Available, Intended, NotApplicable}
 
+
 @this(
         mainTemplate: MainTemplate,
         hmrcNewTabLinkHelper: HmrcNewTabLinkHelper,
@@ -55,7 +56,7 @@
         @table(incomeSourcesGroup, "business-income", displayIntent = false)
 
         <h2 class="govuk-heading-m">@messages("product-details.tax-return.heading")</h2>
-        @table(nonMandatedIncomeGroup, "other-income", displayIntent = true)
+        @table(nonMandatedIncomeGroup(), "other-income", displayIntent = true)
     </div>
 
     @defining({
