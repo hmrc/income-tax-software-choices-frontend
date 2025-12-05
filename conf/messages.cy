@@ -24,6 +24,12 @@ accounting-period.first-april-to-thirty-first-march               = 1 Ebrill i 3
 accounting-period.other                                           = Dim un o’r rhain
 accounting-period.error                                           = Dewiswch naill ai 6 Ebrill i 5 Ebrill, 1 Ebrill i 31 Mawrth, neu ‘dim un o’r rhain’
 
+# Accounting period not aligned view
+accounting-period-not-aligned.heading                               = Nid yw’ch cyfnod cyfrifyddu wedi’i alinio
+accounting-period-not-aligned.para-one                              = Rydych wedi dewis cyfnod cyfrifyddu nad yw’n dod i ben ar 5 Ebrill na 31 Mawrth.
+accounting-period-not-aligned.para-two                              = Bydd angen i chi ddefnyddio meddalwedd sy’n cydweddu i gyflwyno addasiadau ychwanegol ar ôl diwedd y flwyddyn dreth.
+accounting-period-not-aligned.para-three                            = Bydd CThEF yn cyhoeddi arweiniad ar sut i wneud hyn maes o law.
+
 # Business Income page
 business-income.title               = Pa rai o’r ffynonellau incwm hyn y mae angen i chi eu cynnwys yn eich diweddariadau chwarterol?
 business-income.legend              = Pa rai o’r ffynonellau incwm hyn y mae angen i chi eu cynnwys yn eich diweddariadau chwarterol?
@@ -258,15 +264,6 @@ additional.income.source-foster-carer                               = Gofalwr ma
 additional.income.source-none                                       = Dim un o’r rhain
 additional.income.source.error-non-empty                            = Dewiswch fath o incwm, mathau o incwm, neu ‘dim un o’r rhain’
 additional.income.source.error-none-only                            = Dewiswch naill ai math o incwm, mathau o incwm, neu ‘dim un o’r rhain’
-
-
-unsupported-accounting-period.heading                               = Nid oes unrhyw gynnyrch neu gynhyrchion meddalwedd sy’n cefnogi’ch cyfnod cyfrifyddu
-unsupported-accounting-period.para-one                              = Dim ond i bobl sy’n defnyddio’r cyfnodau cyfrifyddu busnes y mae’r cynllun Troi Treth yn Ddigidol ar gael:
-unsupported-accounting-period.bullet-one                            = 6 Ebrill i 5 Ebrill
-unsupported-accounting-period.bullet-two                            = 1 Ebrill i 31 Mawrth
-unsupported-accounting-period.para-two                              = Mae’n bosibl y byddwn yn ymestyn y gwasanaeth hwn i bobl sydd â chyfnodau cyfrifyddu eraill yn y dyfodol. Bydd angen i chi barhau i gyflwyno’ch Ffurflen {0} fel arfer.
-unsupported-accounting-period.self-assessment-tax-return.link-text  = Ffurflen Dreth Hunanasesiad
-unsupported-accounting-period.self-assessment-tax-return.link-url   = https://www.gov.uk/ffurflenni-treth-hunanasesiad/anfon-ffurflen-dreth
 
 timeout.title = Er eich diogelwch
 timeout.message = Byddwn yn dileu’ch atebion mewn
