@@ -212,6 +212,10 @@ product-details.other-income.voluntary-class-2-national-insurance = Yswiriant Gw
 product-details.other-income.high-income-child-benefit-charge = Tâl Treth Budd-dal Plant Incwm Uchel
 product-details.other-income.payments-into-a-private-pension = Cyfraniadau pensiwn preifat
 product-details.other-income.marriage-allowance = Lwfans Priodasol
+product-details.other-income.partner-income = ***** MISSING WELSH TRANSLATION *****
+product-details.other-income.foster-carer = ***** MISSING WELSH TRANSLATION *****
+product-details.other-income.trust-income = ***** MISSING WELSH TRANSLATION *****
+product-details.other-income.averaging-adjustment = ***** MISSING WELSH TRANSLATION *****
 
 product-details.status.heading = Statws
 product-details.status.ready = Yn barod nawr

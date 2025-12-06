@@ -23,7 +23,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.{Availa
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareVendorModel
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.ProductDetailsView
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.{FosterCarerFeature, PartnerIncomeFeature, TrustIncomeFeature}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.{AveragingAdjustmentFeature, FosterCarerFeature, PartnerIncomeFeature, TrustIncomeFeature}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 
 class ProductDetailsViewSpec extends ViewSpec with FeatureSwitching with BeforeAndAfterEach {
@@ -56,6 +56,7 @@ class ProductDetailsViewSpec extends ViewSpec with FeatureSwitching with BeforeA
     disable(PartnerIncomeFeature)
     disable(TrustIncomeFeature)
     disable(FosterCarerFeature)
+    disable(AveragingAdjustmentFeature)
   }
 
   "ProductDetailsPage" when {
@@ -320,6 +321,7 @@ class ProductDetailsViewSpec extends ViewSpec with FeatureSwitching with BeforeA
       enable(PartnerIncomeFeature)
       enable(TrustIncomeFeature)
       enable(FosterCarerFeature)
+      enable(AveragingAdjustmentFeature)
 
       val document: Document = createAndParseDocument(softwareVendorModelFull)
       def table(index: Int): Element = document.getTable(index)
@@ -328,6 +330,7 @@ class ProductDetailsViewSpec extends ViewSpec with FeatureSwitching with BeforeA
         checkRow(table(3), 7, ProductDetailsPage.partnerIncome, status = s"${ProductDetailsPage.readyNow}")
         checkRow(table(3), 10, ProductDetailsPage.fosterCarerIncome, status = s"${ProductDetailsPage.readyNow}")
         checkRow(table(3), 11, ProductDetailsPage.trustIncome, status = s"${ProductDetailsPage.readyNow}")
+        checkRow(table(3), 19, ProductDetailsPage.averagingAdjustment, status = s"${ProductDetailsPage.readyNow}")
       }
     }
 
@@ -428,6 +431,7 @@ class ProductDetailsViewSpec extends ViewSpec with FeatureSwitching with BeforeA
     val partnerIncome = "Partner income from a partnership"
     val trustIncome = "Trustee"
     val fosterCarerIncome = "Foster carer"
+    val averagingAdjustment = "Averaging adjustments"
 
     val softwareSpecHeading = "Software specifications"
     val softwareType = "Software type"
