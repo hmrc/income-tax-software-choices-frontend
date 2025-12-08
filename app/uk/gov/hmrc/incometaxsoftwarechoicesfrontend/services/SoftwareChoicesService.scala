@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services
 
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.{Available, Intended}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilterGroups.*
@@ -40,7 +41,7 @@ class SoftwareChoicesService @Inject()(
       }
   }
 
-  def getVendorsWithIntent(filters: Seq[VendorFilter]): Seq[VendorSuitabilityViewModel] = {
+  def getVendorsWithIntent(filters: Seq[VendorFilter])(implicit appConfig: AppConfig): Seq[VendorSuitabilityViewModel] = {
     val userFilters = filters.filterNot(_.eq(TaxReturn)).filterNot(_.eq(QuarterlyUpdates))
     val allPotentialVendors = getAllInOneVendors(userFilters)
 
@@ -50,7 +51,7 @@ class SoftwareChoicesService @Inject()(
         andThen SoftwareChoicesService.sortVendors
       )(allPotentialVendors.vendors)
 
-    val nonMandatoryFilters = filters.filter(nonMandatedIncomeGroup.contains)
+    val nonMandatoryFilters = filters.filter(nonMandatedIncomeGroup().contains)
     val vendorsToDisplay = if (nonMandatoryFilters.isEmpty) {
       qualifyingVendors
     } else {

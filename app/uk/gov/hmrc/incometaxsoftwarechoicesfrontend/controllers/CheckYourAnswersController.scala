@@ -52,7 +52,7 @@ class CheckYourAnswersController @Inject()(view: CheckYourAnswersView,
     for {
       vendorFilters <- pageAnswersService.saveFiltersFromAnswers(request.sessionId)
       vendors = {
-        softwareChoicesService.getVendorsWithIntent(vendorFilters)
+        softwareChoicesService.getVendorsWithIntent(vendorFilters)(appConfig)
       }
     } yield {
       (vendors.isEmpty) match {

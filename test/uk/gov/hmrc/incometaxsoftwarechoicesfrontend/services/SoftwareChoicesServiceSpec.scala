@@ -20,6 +20,8 @@ import org.mockito.Mockito.when
 import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.mockito.MockitoSugar.mock
 import org.scalatestplus.play.PlaySpec
+import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.{Available, Intended, NotApplicable}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilterGroups.userTypeFilters
@@ -27,7 +29,9 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.*
 
 import java.time.LocalDate
 
-class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
+class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with BeforeAndAfterEach {
+
+  implicit val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
 
   private def vendor(filters: Seq[VendorFilter]): SoftwareVendorModel = SoftwareVendorModel(
     name = filters.head.toString,
@@ -118,7 +122,7 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
           StandardUpdatePeriods, CalendarUpdatePeriods,
           FreeVersion, Bridging, Vat,
           Visual, Hearing, Motor, Cognitive
-        ))
+        ))(appConfig)
       result.size mustBe 1
       result(0).vendor.name mustBe "Vendor 02"
       result(0).quarterlyReady mustBe Some(true)
@@ -187,6 +191,195 @@ class SoftwareChoicesServiceSpec extends PlaySpec with BeforeAndAfterEach {
       )
       val result = service.getVendorsWithIntent(Seq(Individual, UkProperty, StandardUpdatePeriods, Visual))
       result mustBe Seq.empty
+    }
+
+    "return 1 vendor if Partner Income is also selected" in {
+      when(mockDataService.getSoftwareVendors()).thenReturn(
+        SoftwareVendors(
+          lastUpdated = LocalDate.now,
+          vendors = Seq(
+            intentVendor("Vendor 01", Map(Individual -> Available, QuarterlyUpdates -> Available, TaxReturn -> Available, UkProperty -> Available, StudentLoans -> Available, StandardUpdatePeriods -> Available, Visual -> Available)),
+            intentVendor("Vendor 02", Map(
+              Individual -> Available, Agent -> Available, QuarterlyUpdates -> Available, TaxReturn -> Available,
+              SoleTrader -> Available, UkProperty -> Available, OverseasProperty -> Available,
+              UkInterest -> Available, ConstructionIndustryScheme -> Available, Employment -> Available, UkDividends -> Available,
+              StatePensionIncome -> Available, PrivatePensionIncome -> Available, ForeignDividends -> Available, ForeignInterest -> Available,
+              PaymentsIntoAPrivatePension -> Available, CharitableGiving -> Available, CapitalGainsTax -> Available, StudentLoans -> Available,
+              MarriageAllowance -> Available, VoluntaryClass2NationalInsurance -> Available, HighIncomeChildBenefitCharge -> Available,
+              StandardUpdatePeriods -> Available, CalendarUpdatePeriods -> Available,
+              FreeVersion -> Available, Bridging -> Available, Vat -> Available,
+              Visual -> Available, Hearing -> Available, Motor -> Available, Cognitive -> Available)),
+            intentVendor("Vendor 03", Map(
+              Individual -> Available, Agent -> Available, QuarterlyUpdates -> Available, TaxReturn -> Available,
+              SoleTrader -> Available, UkProperty -> Available, OverseasProperty -> Available,
+              UkInterest -> Available, ConstructionIndustryScheme -> Available, Employment -> Available, UkDividends -> Available,
+              StatePensionIncome -> Available, PrivatePensionIncome -> Available, ForeignDividends -> Available, ForeignInterest -> Available,
+              PaymentsIntoAPrivatePension -> Available, CharitableGiving -> Available, CapitalGainsTax -> Available, StudentLoans -> Available,
+              MarriageAllowance -> Available, VoluntaryClass2NationalInsurance -> Available, HighIncomeChildBenefitCharge -> Available,
+              StandardUpdatePeriods -> Available, CalendarUpdatePeriods -> Available,
+              PartnerIncome -> Available, TrustIncome -> Available, FosterCarer -> Available, AveragingAdjustment -> Available,
+              FreeVersion -> Available, Bridging -> Available, Vat -> Available,
+              Visual -> Available, Hearing -> Available, Motor -> Available, Cognitive -> Available))
+          )
+        )
+      )
+      val result = service.getVendorsWithIntent(
+        Seq(Individual, Agent, QuarterlyUpdates, TaxReturn, SoleTrader, UkProperty, OverseasProperty,
+          UkInterest, ConstructionIndustryScheme, Employment, UkDividends,
+          StatePensionIncome, PrivatePensionIncome, ForeignDividends, ForeignInterest,
+          PaymentsIntoAPrivatePension, CharitableGiving, CapitalGainsTax, StudentLoans,
+          MarriageAllowance, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge,
+          StandardUpdatePeriods, CalendarUpdatePeriods, 
+          PartnerIncome, 
+          FreeVersion, Bridging, Vat,
+          Visual, Hearing, Motor, Cognitive
+        ))
+      result.size mustBe 1
+      result(0).vendor.name mustBe "Vendor 03"
+      result(0).quarterlyReady mustBe Some(true)
+      result(0).eoyReady mustBe Some(true)
+    }
+
+    "return 1 vendor if Foster Carer is also selected" in {
+      when(mockDataService.getSoftwareVendors()).thenReturn(
+        SoftwareVendors(
+          lastUpdated = LocalDate.now,
+          vendors = Seq(
+            intentVendor("Vendor 01", Map(Individual -> Available, QuarterlyUpdates -> Available, TaxReturn -> Available, UkProperty -> Available, StudentLoans -> Available, StandardUpdatePeriods -> Available, Visual -> Available)),
+            intentVendor("Vendor 02", Map(
+              Individual -> Available, Agent -> Available, QuarterlyUpdates -> Available, TaxReturn -> Available,
+              SoleTrader -> Available, UkProperty -> Available, OverseasProperty -> Available,
+              UkInterest -> Available, ConstructionIndustryScheme -> Available, Employment -> Available, UkDividends -> Available,
+              StatePensionIncome -> Available, PrivatePensionIncome -> Available, ForeignDividends -> Available, ForeignInterest -> Available,
+              PaymentsIntoAPrivatePension -> Available, CharitableGiving -> Available, CapitalGainsTax -> Available, StudentLoans -> Available,
+              MarriageAllowance -> Available, VoluntaryClass2NationalInsurance -> Available, HighIncomeChildBenefitCharge -> Available,
+              StandardUpdatePeriods -> Available, CalendarUpdatePeriods -> Available,
+              FreeVersion -> Available, Bridging -> Available, Vat -> Available,
+              Visual -> Available, Hearing -> Available, Motor -> Available, Cognitive -> Available)),
+            intentVendor("Vendor 03", Map(
+              Individual -> Available, Agent -> Available, QuarterlyUpdates -> Available, TaxReturn -> Available,
+              SoleTrader -> Available, UkProperty -> Available, OverseasProperty -> Available,
+              UkInterest -> Available, ConstructionIndustryScheme -> Available, Employment -> Available, UkDividends -> Available,
+              StatePensionIncome -> Available, PrivatePensionIncome -> Available, ForeignDividends -> Available, ForeignInterest -> Available,
+              PaymentsIntoAPrivatePension -> Available, CharitableGiving -> Available, CapitalGainsTax -> Available, StudentLoans -> Available,
+              MarriageAllowance -> Available, VoluntaryClass2NationalInsurance -> Available, HighIncomeChildBenefitCharge -> Available,
+              StandardUpdatePeriods -> Available, CalendarUpdatePeriods -> Available,
+              PartnerIncome -> Available, TrustIncome -> Available, FosterCarer -> Available, AveragingAdjustment -> Available,
+              FreeVersion -> Available, Bridging -> Available, Vat -> Available,
+              Visual -> Available, Hearing -> Available, Motor -> Available, Cognitive -> Available))
+          )
+        )
+      )
+      val result = service.getVendorsWithIntent(
+        Seq(Individual, Agent, QuarterlyUpdates, TaxReturn, SoleTrader, UkProperty, OverseasProperty,
+          UkInterest, ConstructionIndustryScheme, Employment, UkDividends,
+          StatePensionIncome, PrivatePensionIncome, ForeignDividends, ForeignInterest,
+          PaymentsIntoAPrivatePension, CharitableGiving, CapitalGainsTax, StudentLoans,
+          MarriageAllowance, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge,
+          StandardUpdatePeriods, CalendarUpdatePeriods,
+          FosterCarer,
+          FreeVersion, Bridging, Vat,
+          Visual, Hearing, Motor, Cognitive
+        ))
+      result.size mustBe 1
+      result(0).vendor.name mustBe "Vendor 03"
+      result(0).quarterlyReady mustBe Some(true)
+      result(0).eoyReady mustBe Some(true)
+    }
+
+    "return 1 vendor if Trustee Income is also selected" in {
+      when(mockDataService.getSoftwareVendors()).thenReturn(
+        SoftwareVendors(
+          lastUpdated = LocalDate.now,
+          vendors = Seq(
+            intentVendor("Vendor 01", Map(Individual -> Available, QuarterlyUpdates -> Available, TaxReturn -> Available, UkProperty -> Available, StudentLoans -> Available, StandardUpdatePeriods -> Available, Visual -> Available)),
+            intentVendor("Vendor 02", Map(
+              Individual -> Available, Agent -> Available, QuarterlyUpdates -> Available, TaxReturn -> Available,
+              SoleTrader -> Available, UkProperty -> Available, OverseasProperty -> Available,
+              UkInterest -> Available, ConstructionIndustryScheme -> Available, Employment -> Available, UkDividends -> Available,
+              StatePensionIncome -> Available, PrivatePensionIncome -> Available, ForeignDividends -> Available, ForeignInterest -> Available,
+              PaymentsIntoAPrivatePension -> Available, CharitableGiving -> Available, CapitalGainsTax -> Available, StudentLoans -> Available,
+              MarriageAllowance -> Available, VoluntaryClass2NationalInsurance -> Available, HighIncomeChildBenefitCharge -> Available,
+              StandardUpdatePeriods -> Available, CalendarUpdatePeriods -> Available,
+              FreeVersion -> Available, Bridging -> Available, Vat -> Available,
+              Visual -> Available, Hearing -> Available, Motor -> Available, Cognitive -> Available)),
+            intentVendor("Vendor 03", Map(
+              Individual -> Available, Agent -> Available, QuarterlyUpdates -> Available, TaxReturn -> Available,
+              SoleTrader -> Available, UkProperty -> Available, OverseasProperty -> Available,
+              UkInterest -> Available, ConstructionIndustryScheme -> Available, Employment -> Available, UkDividends -> Available,
+              StatePensionIncome -> Available, PrivatePensionIncome -> Available, ForeignDividends -> Available, ForeignInterest -> Available,
+              PaymentsIntoAPrivatePension -> Available, CharitableGiving -> Available, CapitalGainsTax -> Available, StudentLoans -> Available,
+              MarriageAllowance -> Available, VoluntaryClass2NationalInsurance -> Available, HighIncomeChildBenefitCharge -> Available,
+              StandardUpdatePeriods -> Available, CalendarUpdatePeriods -> Available,
+              PartnerIncome -> Available, TrustIncome -> Available, FosterCarer -> Available, AveragingAdjustment -> Available,
+              FreeVersion -> Available, Bridging -> Available, Vat -> Available,
+              Visual -> Available, Hearing -> Available, Motor -> Available, Cognitive -> Available))
+          )
+        )
+      )
+      val result = service.getVendorsWithIntent(
+        Seq(Individual, Agent, QuarterlyUpdates, TaxReturn, SoleTrader, UkProperty, OverseasProperty,
+          UkInterest, ConstructionIndustryScheme, Employment, UkDividends,
+          StatePensionIncome, PrivatePensionIncome, ForeignDividends, ForeignInterest,
+          PaymentsIntoAPrivatePension, CharitableGiving, CapitalGainsTax, StudentLoans,
+          MarriageAllowance, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge,
+          StandardUpdatePeriods, CalendarUpdatePeriods,
+          TrustIncome,
+          FreeVersion, Bridging, Vat,
+          Visual, Hearing, Motor, Cognitive
+        ))
+      result.size mustBe 1
+      result(0).vendor.name mustBe "Vendor 03"
+      result(0).quarterlyReady mustBe Some(true)
+      result(0).eoyReady mustBe Some(true)
+    }
+
+    "return 2 vendors if Averaging Adjustment is selected" in {
+      when(mockDataService.getSoftwareVendors()).thenReturn(
+        SoftwareVendors(
+          lastUpdated = LocalDate.now,
+          vendors = Seq(
+            intentVendor("Vendor 01", Map(Individual -> Available, QuarterlyUpdates -> Available, TaxReturn -> Available, UkProperty -> Available, StudentLoans -> Available, StandardUpdatePeriods -> Available, Visual -> Available)),
+            intentVendor("Vendor 02", Map(
+              Individual -> Available, Agent -> Available, QuarterlyUpdates -> Available, TaxReturn -> Available,
+              SoleTrader -> Available, UkProperty -> Available, OverseasProperty -> Available,
+              UkInterest -> Available, ConstructionIndustryScheme -> Available, Employment -> Available, UkDividends -> Available,
+              StatePensionIncome -> Available, PrivatePensionIncome -> Available, ForeignDividends -> Available, ForeignInterest -> Available,
+              PaymentsIntoAPrivatePension -> Available, CharitableGiving -> Available, CapitalGainsTax -> Available, StudentLoans -> Available,
+              MarriageAllowance -> Available, VoluntaryClass2NationalInsurance -> Available, HighIncomeChildBenefitCharge -> Available,
+              StandardUpdatePeriods -> Available, CalendarUpdatePeriods -> Available,
+              AveragingAdjustment -> Available,
+              FreeVersion -> Available, Bridging -> Available, Vat -> Available,
+              Visual -> Available, Hearing -> Available, Motor -> Available, Cognitive -> Available)),
+            intentVendor("Vendor 03", Map(
+              Individual -> Available, Agent -> Available, QuarterlyUpdates -> Available, TaxReturn -> Available,
+              SoleTrader -> Available, UkProperty -> Available, OverseasProperty -> Available,
+              UkInterest -> Available, ConstructionIndustryScheme -> Available, Employment -> Available, UkDividends -> Available,
+              StatePensionIncome -> Available, PrivatePensionIncome -> Available, ForeignDividends -> Available, ForeignInterest -> Available,
+              PaymentsIntoAPrivatePension -> Available, CharitableGiving -> Available, CapitalGainsTax -> Available, StudentLoans -> Available,
+              MarriageAllowance -> Available, VoluntaryClass2NationalInsurance -> Available, HighIncomeChildBenefitCharge -> Available,
+              StandardUpdatePeriods -> Available, CalendarUpdatePeriods -> Available,
+              PartnerIncome -> Available, TrustIncome -> Available, FosterCarer -> Available, AveragingAdjustment -> Available,
+              FreeVersion -> Available, Bridging -> Available, Vat -> Available,
+              Visual -> Available, Hearing -> Available, Motor -> Available, Cognitive -> Available))
+          )
+        )
+      )
+      val result = service.getVendorsWithIntent(
+        Seq(Individual, Agent, QuarterlyUpdates, TaxReturn, SoleTrader, UkProperty, OverseasProperty,
+          UkInterest, ConstructionIndustryScheme, Employment, UkDividends,
+          StatePensionIncome, PrivatePensionIncome, ForeignDividends, ForeignInterest,
+          PaymentsIntoAPrivatePension, CharitableGiving, CapitalGainsTax, StudentLoans,
+          MarriageAllowance, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge,
+          StandardUpdatePeriods, CalendarUpdatePeriods,
+          AveragingAdjustment,
+          FreeVersion, Bridging, Vat,
+          Visual, Hearing, Motor, Cognitive
+        ))
+      result.size mustBe 2
+      result(0).vendor.name mustBe "Vendor 02"
+      result(0).quarterlyReady mustBe Some(true)
+      result(0).eoyReady mustBe Some(true)
     }
   }
 }
