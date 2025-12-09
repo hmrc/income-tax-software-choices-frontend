@@ -20,16 +20,19 @@ import play.api.libs.json.{JsString, Reads, Writes, __}
 
 sealed trait UserType {
   def key: String
+  val auditDescription: String
 }
 
 object UserType {
 
   case object SoleTraderOrLandlord extends UserType {
     val key: String = "sole-trader-or-landlord"
+    override val auditDescription: String = "soleTraderOrLandlord"
   }
 
   case object Agent extends UserType {
     val key: String = "agent"
+    override val auditDescription: String = "agent"
   }
 
   private val userKey: Map[String, UserType] = Seq(

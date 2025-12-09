@@ -17,14 +17,15 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.audit
 
 import play.api.libs.json.{JsObject, Json, OWrites}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{UserAnswers, UserFilters, VendorFilter}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.*
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.*
 
 sealed trait AuditEvent {
   val auditType: String
 }
 
 case class SearchResultsEvent(userAnswers: JsObject,
-                              finalFilters: Seq[VendorFilter],
+                              filtersApplied: Seq[String],
                               vendorsList: Seq[String],
                               vendorsListCount: Int
                              ) extends AuditEvent {
@@ -35,10 +36,22 @@ object SearchResultsEvent {
 
   def apply(userFilters: UserFilters,
             vendorsList: Seq[String]): SearchResultsEvent = {
+
+    val userAnswers = userFilters.answers.getOrElse(UserAnswers())
+    val userAnswersFormatted = Json.obj(
+      "userType" -> userAnswers.get(UserTypePage).map(_.auditDescription),
+      "businessIncome" -> userAnswers.get(BusinessIncomePage).getOrElse(Seq.empty).map(_.auditDescription),
+      "additionalIncome" -> userAnswers.get(AdditionalIncomeSourcesPage).getOrElse(Seq.empty).map(_.auditDescription),
+      "otherItems" -> userAnswers.get(OtherItemsPage).getOrElse(Seq.empty).map(_.auditDescription),
+      "accountingPeriod" -> userAnswers.get(AccountingPeriodPage).map(_.auditDescription).getOrElse("")
+    )
     
     SearchResultsEvent(
-      userFilters.answers.getOrElse(UserAnswers()).data,
-      userFilters.finalFilters, vendorsList, vendorsList.size)
+      userAnswersFormatted,
+      userFilters.finalFilters.map(_.auditDescription),
+      vendorsList,
+      vendorsList.size
+    )
 
   }
 
