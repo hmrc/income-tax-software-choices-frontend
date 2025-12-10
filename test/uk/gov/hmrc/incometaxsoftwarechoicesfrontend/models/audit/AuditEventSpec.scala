@@ -47,9 +47,13 @@ class AuditEventSpec extends PlaySpec {
 
         val expectedDetail = Json.obj(
           "userAnswers" -> Json.obj(
-            "userType" -> "agent"
+            "userType" -> "agent",
+            "businessIncome" -> Json.arr(),
+            "additionalIncome" -> Json.arr(),
+            "otherItems" -> Json.arr(),
+            "accountingPeriod" -> ""
           ),
-          "finalFilters" -> Json.arr("agent"),
+          "filtersApplied" -> Json.arr("agent"),
           "vendorsList" -> Json.arr(),
           "vendorsListCount" -> 0
         )
@@ -80,31 +84,31 @@ class AuditEventSpec extends PlaySpec {
 
         val expectedDetail = Json.obj(
           "userAnswers" -> Json.obj(
-            "userType" -> "sole-trader-or-landlord",
-            "businessIncome" -> Json.arr("sole-trader", "uk-property", "overseas-property"),
-            "additionalIncome" -> Json.arr("uk-interest", "construction-industry-scheme", "employment", "uk-dividends", "state-pension-income"),
-            "otherItems" -> Json.arr("charitable-giving", "capital-gains-tax", "student-loans", "marriage-allowance", "high-income-child-benefit-charge"),
-            "accountingPeriod" -> "first-april-to-thirty-first-march"
+            "userType" -> "soleTraderOrLandlord",
+            "businessIncome" -> Json.arr("soleTrader", "ukProperty", "overseasProperty"),
+            "additionalIncome" -> Json.arr("ukInterest", "constructionIndustryScheme", "employment(PAYE)", "ukDividends", "statePensionIncome"),
+            "otherItems" -> Json.arr("charitableGiving", "capitalGains", "studentLoans", "marriageAllowance", "highIncomeChildBenefitCharge"),
+            "accountingPeriod" -> "1st April to 31st March"
           ),
-          "finalFilters" -> Json.arr(
+          "filtersApplied" -> Json.arr(
             "individual",
-            "quarterly-updates",
-            "tax-return",
-            "sole-trader",
-            "uk-property",
-            "overseas-property",
-            "uk-interest",
-            "construction-industry-scheme",
-            "employment",
-            "uk-dividends",
-            "state-pension-income",
-            "charitable-giving",
-            "capital-gains-tax",
-            "student-loans",
-            "marriage-allowance",
-            "high-income-child-benefit-charge",
-            "calendar-update-periods",
-            "free-version",
+            "quarterlyUpdates",
+            "taxReturn",
+            "soleTrader",
+            "ukProperty",
+            "overseasProperty",
+            "ukInterest",
+            "constructionIndustryScheme",
+            "employment(PAYE)",
+            "ukDividends",
+            "statePensionIncome",
+            "charitableGiving",
+            "capitalGains",
+            "studentLoans",
+            "marriageAllowance",
+            "highIncomeChildBenefitCharge",
+            "calendarUpdatePeriods",
+            "freeVersion",
             "visual",
             "cognitive"
           ),

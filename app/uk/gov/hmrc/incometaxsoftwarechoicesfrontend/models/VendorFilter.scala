@@ -27,6 +27,7 @@ sealed trait VendorFilter {
   val key: String
   val priority: Int
   val showHint: Boolean = false
+  val auditDescription: String
 
   override def toString: String = key
 }
@@ -38,235 +39,281 @@ object VendorFilter {
   case object FreeTrial extends VendorFilter {
     override val key: String = "free-trial"
     override val priority: Int = 1
+    override val auditDescription: String = "freeTrial"
   }
 
   case object FreeVersion extends VendorFilter {
     override val key: String = "free-version"
     override val priority: Int = 2
     override val showHint: Boolean = true
+    override val auditDescription: String = "freeVersion"
   }
 
   case object SoleTrader extends VendorFilter {
     override val key: String = "sole-trader"
     override val priority: Int = 1
+    override val auditDescription: String = "soleTrader"
   }
 
   case object UkProperty extends VendorFilter {
     override val key: String = "uk-property"
     override val priority: Int = 2
+    override val auditDescription: String = "ukProperty"
   }
 
   case object OverseasProperty extends VendorFilter {
     override val key: String = "overseas-property"
     override val priority: Int = 3
+    override val auditDescription: String = "overseasProperty"
   }
 
   case object RecordKeeping extends VendorFilter {
     override val key: String = "record-keeping"
     override val priority: Int = 1
     override val showHint: Boolean = true
+    override val auditDescription: String = "recordKeeping"
   }
 
   case object Bridging extends VendorFilter {
     override val key: String = "bridging"
     override val priority: Int = 2
     override val showHint: Boolean = false
+    override val auditDescription: String = "bridging"
   }
 
   case object Vat extends VendorFilter {
     override val key: String = "vat"
     override val priority: Int = 1
+    override val auditDescription: String = "vat"
   }
 
   case object Visual extends VendorFilter {
     override val key: String = "visual"
     override val priority: Int = 1
+    override val auditDescription: String = "visual"
   }
 
   case object Hearing extends VendorFilter {
     override val key: String = "hearing"
     override val priority: Int = 2
+    override val auditDescription: String = "hearing"
   }
 
   case object Motor extends VendorFilter {
     override val key: String = "motor"
     override val priority: Int = 3
+    override val auditDescription: String = "motor"
   }
 
   case object Cognitive extends VendorFilter {
     override val key: String = "cognitive"
     override val priority: Int = 4
+    override val auditDescription: String = "cognitive"
   }
 
   case object QuarterlyUpdates extends VendorFilter {
     override val key: String = "quarterly-updates"
     override val priority: Int = 3
+    override val auditDescription: String = "quarterlyUpdates"
   }
 
   case object TaxReturn extends VendorFilter {
     override val key: String = "tax-return"
     override val priority: Int = 3
+    override val auditDescription: String = "taxReturn"
   }
 
   case object StandardUpdatePeriods extends VendorFilter {
     override val key: String = "standard-update-periods"
     override val priority: Int = 3
+    override val auditDescription: String = "standardUpdatePeriods"
   }
 
   case object CalendarUpdatePeriods extends VendorFilter {
     override val key: String = "calendar-update-periods"
     override val priority: Int = 4
     override val showHint: Boolean = true
+    override val auditDescription: String = "calendarUpdatePeriods"
   }
 
   case object ConstructionIndustryScheme extends VendorFilter {
     override val key: String = "construction-industry-scheme"
     override val priority: Int = 1
+    override val auditDescription: String = "constructionIndustryScheme"
   }
 
   case object CapitalGainsTax extends VendorFilter {
     override val key: String = "capital-gains-tax"
     override val priority: Int = 2
+    override val auditDescription: String = "capitalGains"
   }
 
   case object Employment extends VendorFilter {
     override val key: String = "employment"
     override val priority: Int = 3
+    override val auditDescription: String = "employment(PAYE)"
   }
 
   case object ForeignIncome extends VendorFilter {
     override val key: String = "foreign-income"
     override val priority: Int = 4
+    override val auditDescription: String = "foreignIncome"
   }
 
   case object UkDividends extends VendorFilter {
     override val key: String = "uk-dividends"
     override val priority: Int = 5
+    override val auditDescription: String = "ukDividends"
   }
 
   case object UkInterest extends VendorFilter {
     override val key: String = "uk-interest"
     override val priority: Int = 6
+    override val auditDescription: String = "ukInterest"
   }
 
   case object ForeignDividends extends VendorFilter {
     override val key: String = "foreign-dividends"
     override val priority: Int = 7
+    override val auditDescription: String = "foreignDividends"
   }
 
   case object ForeignInterest extends VendorFilter {
     override val key: String = "foreign-interest"
     override val priority: Int = 8
+    override val auditDescription: String = "foreignInterest"
   }
 
   case object CharitableGiving extends VendorFilter {
     override val key: String = "charitable-giving"
     override val priority: Int = 1
+    override val auditDescription: String = "charitableGiving"
   }
 
   case object HighIncomeChildBenefitCharge extends VendorFilter {
     override val key: String = "high-income-child-benefit-charge"
     override val priority: Int = 2
+    override val auditDescription: String = "highIncomeChildBenefitCharge"
   }
 
   case object StudentLoans extends VendorFilter {
     override val key: String = "student-loans"
     override val priority: Int = 3
+    override val auditDescription: String = "studentLoans"
   }
 
   case object VoluntaryClass2NationalInsurance extends VendorFilter {
     override val key: String = "voluntary-class-2-national-insurance"
     override val priority: Int = 4
+    override val auditDescription: String = "voluntaryClass2NationalInsurance"
   }
 
   case object StatePensionIncome extends VendorFilter {
     override val key: String = "state-pension-income"
     override val priority: Int = 1
+    override val auditDescription: String = "statePensionIncome"
   }
 
   case object PrivatePensionIncome extends VendorFilter {
     override val key: String = "private-pension-income"
     override val priority: Int = 2
+    override val auditDescription: String = "privatePensionIncome"
   }
 
   case object PaymentsIntoAPrivatePension extends VendorFilter {
     override val key: String = "payments-into-a-private-pension"
     override val priority: Int = 3
+    override val auditDescription: String = "paymentsIntoPrivatePension"
   }
 
   case object MarriageAllowance extends VendorFilter {
     override val key: String = "marriage-allowance"
     override val priority: Int = 1
+    override val auditDescription: String = "marriageAllowance"
   }
 
   case object Agent extends VendorFilter {
     override val key: String = "agent"
     override val priority: Int = 1
+    override val auditDescription: String = "agent"
   }
 
   case object Individual extends VendorFilter {
     override val key: String = "individual"
     override val priority: Int = 1
+    override val auditDescription: String = "individual"
   }
 
   case object PartnerIncome extends VendorFilter {
     override val key: String = "partner-income"
     override val priority: Int = 1
+    override val auditDescription: String = "partnerIncome"
   }
 
   case object AveragingAdjustment extends VendorFilter {
     override val key: String = "averaging-adjustment"
     override val priority: Int = 1
+    override val auditDescription: String = "averagingAdjustment"
   }
 
   case object FosterCarer extends VendorFilter {
     override val key: String = "foster-carer"
     override val priority: Int = 1
+    override val auditDescription: String = "fosterCarer"
   }
 
   case object TrustIncome extends VendorFilter {
     override val key: String = "trust-income"
     override val priority: Int = 1
+    override val auditDescription: String = "trustIncome"
   }
 
   case object DesktopApplication extends VendorFilter {
     override val key: String = "desktop-based"
     override val priority: Int = 1
+    override val auditDescription: String = "desktopApplication"
   }
 
   case object WebBrowser extends VendorFilter {
     override val key: String = "web-browser"
     override val priority: Int = 1
+    override val auditDescription: String = "webBrowser"
   }
 
   case object MicrosoftWindows extends VendorFilter {
     override val key: String = "microsoft-windows"
     override val priority: Int = 1
+    override val auditDescription: String = "microsoftWindows"
   }
 
   case object MacOS extends VendorFilter {
     override val key: String = "mac-os"
     override val priority: Int = 2
+    override val auditDescription: String = "macOS"
   }
 
   case object Linux extends VendorFilter {
     override val key: String = "linux"
     override val priority: Int = 3
+    override val auditDescription: String = "linux"
   }
 
   case object Android extends VendorFilter {
     override val key: String = "android"
     override val priority: Int = 1
+    override val auditDescription: String = "android"
   }
 
   case object Apple extends VendorFilter {
     override val key: String = "apple-ios"
     override val priority: Int = 2
+    override val auditDescription: String = "apple"
   }
 
   case object English extends VendorFilter {
     override val key: String = "english"
     override val priority: Int = 1
+    override val auditDescription: String = "english"
   }
 
   val filterKeyToFilter: Map[String, VendorFilter] = Seq(
@@ -357,37 +404,7 @@ object VendorFilterGroups {
     QuarterlyUpdates,
     TaxReturn
   )
-
-  val personalIncomeSources: Set[VendorFilter] = Set(
-    ConstructionIndustryScheme,
-    CapitalGainsTax,
-    Employment,
-    ForeignIncome,
-    UkDividends,
-    UkInterest,
-    ForeignDividends,
-    ForeignInterest
-  )
-
-  val deductions: Set[VendorFilter] = Set(
-    CharitableGiving,
-    HighIncomeChildBenefitCharge,
-    StudentLoans,
-    VoluntaryClass2NationalInsurance
-  )
-
-  val pensions: Set[VendorFilter] = Set(
-    StatePensionIncome,
-    PrivatePensionIncome,
-    PaymentsIntoAPrivatePension
-  )
-
-  val allowances: Set[VendorFilter] = Set(
-    MarriageAllowance
-  )
-
-
-
+  
   val compatibleWith: Set[VendorFilter] = Set(
     MicrosoftWindows,
     MacOS,
