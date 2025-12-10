@@ -41,7 +41,7 @@ POST        /choosing-software-from-your-results    uk.gov.hmrc.incometaxsoftwar
 GET         /no-all-in-one-product                  uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.ZeroSoftwareResultsController.show()
 POST        /no-all-in-one-product                  uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.ZeroSoftwareResultsController.submit()
 
-GET         /accounting-period-not-aligned          uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.AccountingPeriodNotAlignedController.show()
-POST        /accounting-period-not-aligned          uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.AccountingPeriodNotAlignedController.submit()
+GET         /accounting-period-not-aligned          uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.AccountingPeriodNotAlignedController.show(editMode: Boolean ?= false)
+POST        /accounting-period-not-aligned          uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.AccountingPeriodNotAlignedController.submit(editMode: Boolean ?= false)
 
-GET         /accounting-period-not-supported        uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.AccountingPeriodNotAlignedController.show()
+GET         /accounting-period-not-supported        uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.AccountingPeriodNotAlignedController.show(editMode: Boolean ?= false)
