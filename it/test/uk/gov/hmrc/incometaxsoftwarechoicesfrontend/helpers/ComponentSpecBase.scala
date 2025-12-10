@@ -100,6 +100,7 @@ trait ComponentSpecBase extends AnyWordSpec
     }
 
     def getAccountingPeriodNotAligned: WSResponse = get("/accounting-period-not-aligned")
+    def getAccountingPeriodNotAlignedEditMode: WSResponse = get("/accounting-period-not-aligned?editMode=true")
 
     def postAccountingPeriodNotAligned: WSResponse = post("/accounting-period-not-aligned")(Map.empty)
 

@@ -48,6 +48,20 @@ class AccountingPeriodNotAlignedControllerISpec
         pageTitle(s"${messages("accounting-period-not-aligned.heading")} - ${PageContentBase.title} - GOV.UK"),
       )
     }
+    "have correct back link when not in edit mode" in {
+      setupAnswers(SessionId, Some(UserAnswers()))
+
+      val res = SoftwareChoicesFrontend.getAccountingPeriodNotAligned
+
+      res.body.contains("/accounting-period-check?editMode=true") shouldBe false
+    }
+    "have correct back link in edit mode" in {
+      setupAnswers(SessionId, Some(UserAnswers()))
+
+      val res = SoftwareChoicesFrontend.getAccountingPeriodNotAlignedEditMode
+
+      res.body.contains("/accounting-period-check?editMode=true") shouldBe true
+    }
   }
 
   s"POST ${routes.AccountingPeriodNotAlignedController.submit().url}" should {

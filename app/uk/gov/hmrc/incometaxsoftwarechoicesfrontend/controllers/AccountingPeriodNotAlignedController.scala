@@ -29,15 +29,15 @@ class AccountingPeriodNotAlignedController @Inject()(view: AccountingPeriodNotAl
                                                     (implicit mcc: MessagesControllerComponents)extends BaseFrontendController {
 
 
-  def show(): Action[AnyContent] = (identify andThen requireData) { request =>
+  def show(editMode: Boolean): Action[AnyContent] = (identify andThen requireData) { request =>
     given Request[AnyContent] = request
     Ok(view(
-      postAction = routes.AccountingPeriodNotAlignedController.submit(),
-      backLink = routes.AccountingPeriodController.show().url
+      postAction = routes.AccountingPeriodNotAlignedController.submit(editMode),
+      backLink = routes.AccountingPeriodController.show(editMode).url
     ))
   }
 
-  def submit(): Action[AnyContent] = (identify andThen requireData) { _ =>
+  def submit(editMode: Boolean): Action[AnyContent] = (identify andThen requireData) { _ =>
     Redirect(routes.CheckYourAnswersController.show())
   }
 
