@@ -69,7 +69,7 @@ class AccountingPeriodController @Inject()(view: AccountingPeriodView,
               case SixthAprilToFifthApril | FirstAprilToThirtyFirstMarch =>
                 Future.successful(Redirect(routes.CheckYourAnswersController.show()))
               case OtherAccountingPeriod =>
-                Future.successful(Redirect(routes.UnsupportedAccountingPeriodController.show))
+                Future.successful(Redirect(routes.AccountingPeriodNotAlignedController.show(editMode)))
             }
           case false => throw new InternalServerException("[AccountingPeriodController][submit] - Could not save accounting period")
         }
