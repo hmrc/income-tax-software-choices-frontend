@@ -1,6 +1,6 @@
-base.service-name           = ***** MISSING WELSH TRANSLATION *****
-base.title                  = {0} - ***** MISSING WELSH TRANSLATION ***** - GOV.UK
-base.title.error            = Gwall: {0} - ***** MISSING WELSH TRANSLATION ***** - GOV.UK
+base.service-name           = Dod o hyd i feddalwedd sy’n cydweddu â’r cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm
+base.title                  = {0} - Dod o hyd i feddalwedd sy’n cydweddu â’r cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm - GOV.UK
+base.title.error            = Gwall: {0} - Dod o hyd i feddalwedd sy’n cydweddu â’r cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm - GOV.UK
 base.error-heading          = Mae problem
 base.continue               = Parhau
 base.confirm-continue       = Cadarnhau a pharhau
@@ -57,11 +57,10 @@ other-items.student-loans = Benthyciad myfyriwr
 other-items.marriage-allowance = Lwfans Priodasol
 other-items.voluntary-class-2-national-insurance = Yswiriant Gwladol Dosbarth 2 Gwirfoddol
 other-items.high-income-child-benefit-charge = Tâl Treth Budd-dal Plant Incwm Uchel
-other-items.averaging-adjustment = ***** MISSING WELSH TRANSLATION *****
+other-items.averaging-adjustment = Addasiadau cyfartalu
 other-items.none-of-these = Dim un o’r rhain
 
-
-other-items.error.non-empty = ***** MISSING WELSH TRANSLATION *****
+other-items.error.non-empty = Dewiswch un eitem arall neu eitemau eraill
 other-items.error.invalid-selection = Dewiswch un eitem arall, eitemau eraill, neu ‘dim un o’r rhain’
 
 # Check Your Answers view
@@ -70,7 +69,7 @@ check-your-answers.business-income      = Ffynonellau incwm (diweddariadau chwar
 check-your-answers.additional-income    = Ffynonellau eraill o incwm (Ffurflen Dreth yn unig)
 check-your-answers.other-items          = Eitemau eraill (Ffurflen Dreth yn unig)
 check-your-answers.accounting-period    = Cyfnod cyfrifyddu
-check-your-answers.none-selected        = ***** MISSING WELSH TRANSLATION *****
+check-your-answers.none-selected        = Dim wedi’i ddewis
 
 # Choosing Software from Your Results view
 choosing-software.heading                   = Dewis meddalwedd o’ch canlyniadau
@@ -101,7 +100,7 @@ search-software.p1                                        = Mae pob meddalwedd y
 search-software.p2                                        = Efallai bydd rhai o’r cynhyrchion sy’n cael eu rhestru yn cynnig cyfnod prawf am ddim, neu fersiynau am ddim, ond bydd yn rhaid i chi dalu am rhai eraill.
 search-software.p3.agent.intent                           = Mae rhai o’r nodweddion y bydd eu hangen arnoch er mwyn cyflwyno Ffurflen Dreth eich cleient yn parhau o dan ddatblygiad.
 search-software.inset.agent.intent                        = Nid yw CThEF yn gyfrifol am argaeledd cynnyrch nag am sicrhau bod y cynnyrch yr ydych yn ei ddewis yn bodloni anghenion presennol eich cleient, a’i anghenion yn y dyfodol. Rydym yn argymell eich bod yn ymweld â gwefan darparwyr meddalwedd i wneud ymchwil cyn dewis cynnyrch.
-search-software.skip-to-results                           = ***** MISSING WELSH TRANSLATION *****
+search-software.skip-to-results                           = Ewch yn syth i’r canlyniadau.
 
 search-software.intent.h2                                 = Bydd rhai meddalwedd yn cael eu rhestru fel eu bod ‘o dan ddatblygiad’
 search-software.intent.p1                                 = Bydd pob cynnyrch sy’n ymddangos yn y rhestr hidlo yn eich caniatáu chi i gyflwyno eich diweddariadau chwarterol.
@@ -199,7 +198,7 @@ product-details.tax-return.heading = Yr hyn sydd ei angen arnoch ar gyfer eich F
 product-details.other-income.heading = Eitemau eraill a ffynonellau eraill o incwm
 product-details.other-income.construction-industry-scheme = Cynllun y Diwydiant Adeiladu
 product-details.other-income.employment = Cyflogaeth (TWE)
-product-details.other-income.foreign-interest = FLlog tramor
+product-details.other-income.foreign-interest = Llog tramor
 product-details.other-income.foreign-dividends = Difidendau tramor
 product-details.other-income.uk-dividends = Difidendau’r DU
 product-details.other-income.uk-interest = Llog yn y DU
@@ -212,10 +211,10 @@ product-details.other-income.voluntary-class-2-national-insurance = Yswiriant Gw
 product-details.other-income.high-income-child-benefit-charge = Tâl Treth Budd-dal Plant Incwm Uchel
 product-details.other-income.payments-into-a-private-pension = Cyfraniadau pensiwn preifat
 product-details.other-income.marriage-allowance = Lwfans Priodasol
-product-details.other-income.partner-income = ***** MISSING WELSH TRANSLATION *****
-product-details.other-income.foster-carer = ***** MISSING WELSH TRANSLATION *****
-product-details.other-income.trust-income = ***** MISSING WELSH TRANSLATION *****
-product-details.other-income.averaging-adjustment = ***** MISSING WELSH TRANSLATION *****
+product-details.other-income.partner-income = Incwm partner o bartneriaeth
+product-details.other-income.foster-carer = Gofalwr maeth
+product-details.other-income.trust-income = Ymddiriedolwr
+product-details.other-income.averaging-adjustment = Addasiadau cyfartalu
 
 product-details.status.heading = Statws
 product-details.status.ready = Yn barod nawr
@@ -251,30 +250,30 @@ additional.income.source-employment                                 = Cyflogaeth
 additional.income.source-uk-dividends                               = Difidendau’r DU
 additional.income.source-state-pension-income                       = Incwm o Bensiwn y Wladwriaeth
 additional.income.source-private-pension-income                     = Incwm o bensiwn preifat
-additional.income.source-partner-income                             = ***** MISSING WELSH TRANSLATION *****
+additional.income.source-partner-income                             = Incwm partner o bartneriaeth
 additional.income.source-foreign-dividends                          = Difidendau tramor
 additional.income.source-foreign-interest                           = Llog tramor
-additional.income.source-trust-income                               = ***** MISSING WELSH TRANSLATION *****
-additional.income.source-foster-carer                               = ***** MISSING WELSH TRANSLATION *****
+additional.income.source-trust-income                               = Ymddiriedolwr
+additional.income.source-foster-carer                               = Gofalwr maeth
 additional.income.source-none                                       = Dim un o’r rhain
 additional.income.source.error-non-empty                            = Dewiswch fath o incwm, mathau o incwm, neu ‘dim un o’r rhain’
 additional.income.source.error-none-only                            = Dewiswch naill ai math o incwm, mathau o incwm, neu ‘dim un o’r rhain’
 
 
-unsupported-accounting-period.heading                               = ***** MISSING WELSH TRANSLATION *****
-unsupported-accounting-period.para-one                              = ***** MISSING WELSH TRANSLATION *****
+unsupported-accounting-period.heading                               = Nid oes unrhyw gynnyrch neu gynhyrchion meddalwedd sy’n cefnogi’ch cyfnod cyfrifyddu
+unsupported-accounting-period.para-one                              = Dim ond i bobl sy’n defnyddio’r cyfnodau cyfrifyddu busnes y mae’r cynllun Troi Treth yn Ddigidol ar gael:
 unsupported-accounting-period.bullet-one                            = 6 Ebrill i 5 Ebrill
 unsupported-accounting-period.bullet-two                            = 1 Ebrill i 31 Mawrth
-unsupported-accounting-period.para-two                              = ***** MISSING WELSH TRANSLATION *****
-unsupported-accounting-period.self-assessment-tax-return.link-text  = ***** MISSING WELSH TRANSLATION *****
-unsupported-accounting-period.self-assessment-tax-return.link-url   = ***** MISSING WELSH TRANSLATION *****
+unsupported-accounting-period.para-two                              = Mae’n bosibl y byddwn yn ymestyn y gwasanaeth hwn i bobl sydd â chyfnodau cyfrifyddu eraill yn y dyfodol. Bydd angen i chi barhau i gyflwyno’ch Ffurflen {0} fel arfer.
+unsupported-accounting-period.self-assessment-tax-return.link-text  = Ffurflen Dreth Hunanasesiad
+unsupported-accounting-period.self-assessment-tax-return.link-url   = https://www.gov.uk/ffurflenni-treth-hunanasesiad/anfon-ffurflen-dreth
 
 timeout.title = Er eich diogelwch
 timeout.message = Byddwn yn dileu’ch atebion mewn
 timeout.continue = Dod o hyd i feddalwedd am y cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm
 timeout.reset = Dileu’ch atebion
 
-session-expired.title = ***** MISSING WELSH TRANSLATION *****
+session-expired.title = Atebion wedi’u Dileu
 session-expired.user = Rydych wedi dileu’ch atebion
 session-expired.timeout = Er diogelwch, gwnaethom ddileu’ch atebion.
 session-expired.button = Dechrau eto
