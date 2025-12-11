@@ -33,25 +33,24 @@ class MessagesSpec extends PlaySpec with MessagesMatcher {
   private val messageKeysWelsh: List[String] = getMessageKeys("messages.cy").toList
   private lazy val messageKeySetWelsh = messageKeysWelsh.toSet
 
-//  Un comment when Welsh translation introduced
-//  "Messages present in Welsh (conf/messages.cy)" should {
-//    "also have an English translation (conf/messages)" in {
-//      messageKeySetWelsh must allBeIn(messageKeySetEnglish)
-//    }
-//
-//    "not contain duplicate keys" in {
-//      messageKeysWelsh must containUniqueKeys
-//    }
-//
-//    "contain only permitted characters" in {
-//      messageKeysWelsh must containOnlyPermittedCharacters
-//    }
-//  }
+  "Messages present in Welsh (conf/messages.cy)" should {
+    "also have an English translation (conf/messages)" in {
+      messageKeySetWelsh must allBeIn(messageKeySetEnglish)
+    }
+
+    "not contain duplicate keys" in {
+      messageKeysWelsh must containUniqueKeys
+    }
+
+    "contain only permitted characters" in {
+      messageKeysWelsh must containOnlyPermittedCharacters
+    }
+  }
 
   "Messages present in English (conf/messages)" should {
-//    "also have a Welsh translation (conf/messages.cy)" in {
-//      messageKeySetEnglish must allBeIn(messageKeySetWelsh)
-//    }
+    "also have a Welsh translation (conf/messages.cy)" in {
+      messageKeySetEnglish must allBeIn(messageKeySetWelsh)
+    }
 
     "not contain duplicate keys" in {
       messageKeysEnglish must containUniqueKeys
