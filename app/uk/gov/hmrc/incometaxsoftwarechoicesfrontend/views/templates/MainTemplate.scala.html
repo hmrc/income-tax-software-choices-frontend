@@ -44,7 +44,12 @@
         serviceUrl = Some(routes.IndexController.index.url)
     ),
     banners = Banners(
-        phaseBanner = Some(standardAlphaBanner(url = appConfig.feedbackUrl))
+        phaseBanner = Some(PhaseBanner(
+            tag = Some(Tag(
+               content = Text("Alpha")
+            )),
+            content = HtmlContent(s"""This is a new service – your <a class="govuk-link" href="${appConfig.feedbackUrl}">feedback</a> will help us to improve it.""")
+        ))
     ),
     templateOverrides = TemplateOverrides(
         additionalHeadBlock = Some(additionalHeadBlock),
