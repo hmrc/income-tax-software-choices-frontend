@@ -38,14 +38,32 @@ object SearchResultsEvent {
             vendorsList: Seq[String]): SearchResultsEvent = {
 
     val userAnswers = userFilters.answers.getOrElse(UserAnswers())
-    val userAnswersFormatted = Json.obj(
-      "userType" -> userAnswers.get(UserTypePage).map(_.auditDescription),
-      "businessIncome" -> userAnswers.get(BusinessIncomePage).getOrElse(Seq.empty).map(_.auditDescription),
-      "additionalIncome" -> userAnswers.get(AdditionalIncomeSourcesPage).getOrElse(Seq.empty).map(_.auditDescription),
-      "otherItems" -> userAnswers.get(OtherItemsPage).getOrElse(Seq.empty).map(_.auditDescription),
-      "accountingPeriod" -> userAnswers.get(AccountingPeriodPage).map(_.auditDescription).getOrElse("")
-    )
-    
+
+    val businessIncome = {
+      userAnswers.get(BusinessIncomePage).map(answers =>
+        Json.obj("businessIncome" -> answers.map(_.auditDescription))).getOrElse(Json.obj())
+    }
+    val additionalIncome = {
+      userAnswers.get(AdditionalIncomeSourcesPage).map(answers =>
+        Json.obj("additionalIncome" -> answers.map(_.auditDescription))).getOrElse(Json.obj())
+    }
+    val otherItems = {
+      userAnswers.get(OtherItemsPage).map(answers =>
+        Json.obj("otherItems" -> answers.map(_.auditDescription))).getOrElse(Json.obj())
+    }
+    val accountingPeriod = {
+      userAnswers.get(AccountingPeriodPage).map(answer =>
+        Json.obj("accountingPeriod" -> answer.auditDescription)).getOrElse(Json.obj())
+    }
+
+    val userAnswersFormatted = {
+      Json.obj("userType" -> userAnswers.get(UserTypePage).map(_.auditDescription)) ++
+        businessIncome ++
+        additionalIncome ++
+        otherItems ++
+        accountingPeriod
+    }
+
     SearchResultsEvent(
       userAnswersFormatted,
       userFilters.finalFilters.map(_.auditDescription),

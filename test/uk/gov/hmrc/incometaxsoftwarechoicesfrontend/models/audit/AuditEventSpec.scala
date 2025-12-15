@@ -22,7 +22,7 @@ import uk.gov.hmrc.http.SessionKeys.sessionId
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.AccountingPeriod.FirstAprilToThirtyFirstMarch
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.SoleTraderOrLandlord
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.*
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{UserAnswers, UserFilters, UserType, VendorFilter}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.*
 
 class AuditEventSpec extends PlaySpec {
@@ -47,11 +47,7 @@ class AuditEventSpec extends PlaySpec {
 
         val expectedDetail = Json.obj(
           "userAnswers" -> Json.obj(
-            "userType" -> "agent",
-            "businessIncome" -> Json.arr(),
-            "additionalIncome" -> Json.arr(),
-            "otherItems" -> Json.arr(),
-            "accountingPeriod" -> ""
+            "userType" -> "agent"
           ),
           "filtersApplied" -> Json.arr("agent"),
           "vendorsList" -> Json.arr(),
