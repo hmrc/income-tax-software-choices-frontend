@@ -134,7 +134,7 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
           getPageData(SessionId, AccountingPeriodPage) shouldBe Some(FirstAprilToThirtyFirstMarch)
         }
       }
-      "redirect to the unsupported accounting period page" when {
+      "redirect to the accounting period not aligned page" when {
         "the user selected the neither radio button" in {
           setupAnswers(SessionId, None)
 
@@ -142,7 +142,7 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
 
           res should have(
             httpStatus(SEE_OTHER),
-            redirectURI(routes.UnsupportedAccountingPeriodController.show.url)
+            redirectURI(routes.AccountingPeriodNotAlignedController.show().url)
           )
 
           getPageData(SessionId, AccountingPeriodPage) shouldBe Some(OtherAccountingPeriod)
@@ -176,7 +176,7 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
           getPageData(SessionId, AccountingPeriodPage) shouldBe Some(FirstAprilToThirtyFirstMarch)
         }
       }
-      "redirect to the unsupported accounting period page" when {
+      "redirect to the accounting period not aligned page" when {
         "the user selected the neither radio button" in {
           setPageData(SessionId, AccountingPeriodPage, SixthAprilToFifthApril)
 
@@ -184,7 +184,7 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
 
           res should have(
             httpStatus(SEE_OTHER),
-            redirectURI(routes.UnsupportedAccountingPeriodController.show.url)
+            redirectURI(routes.AccountingPeriodNotAlignedController.show().url)
           )
 
           getPageData(SessionId, AccountingPeriodPage) shouldBe Some(OtherAccountingPeriod)

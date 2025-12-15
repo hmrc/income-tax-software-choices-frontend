@@ -99,7 +99,10 @@ trait ComponentSpecBase extends AnyWordSpec
       post(s"/which-other-items-tax-return?editMode=$editMode")(body)
     }
 
-    def getUnsupportedAccountingPeriod: WSResponse = get("/accounting-period-not-supported")
+    def getAccountingPeriodNotAligned: WSResponse = get("/accounting-period-not-aligned")
+    def getAccountingPeriodNotAlignedEditMode: WSResponse = get("/accounting-period-not-aligned?editMode=true")
+
+    def postAccountingPeriodNotAligned: WSResponse = post("/accounting-period-not-aligned")(Map.empty)
 
     def getAccountingPeriod: WSResponse = get("/accounting-period-check")
 
