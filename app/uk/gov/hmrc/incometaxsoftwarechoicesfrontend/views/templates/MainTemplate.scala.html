@@ -44,7 +44,9 @@
         serviceUrl = Some(routes.IndexController.index.url)
     ),
     banners = Banners(
-        phaseBanner = Some(standardAlphaBanner(url = appConfig.feedbackUrl))
+         phaseBanner = Some(standardAlphaBanner(
+             url = appConfig.feedbackUrl
+         ))
     ),
     templateOverrides = TemplateOverrides(
         additionalHeadBlock = Some(additionalHeadBlock),
