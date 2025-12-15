@@ -43,7 +43,7 @@ object SearchResultsEvent {
       userAnswers.get(BusinessIncomePage).map(answers =>
         Json.obj("businessIncome" -> answers.map(_.auditDescription))).getOrElse(Json.obj())
     }
-    val additionalIncome: JsObject = {
+    val additionalIncome = {
       userAnswers.get(AdditionalIncomeSourcesPage).map(answers =>
         Json.obj("additionalIncome" -> answers.map(_.auditDescription))).getOrElse(Json.obj())
     }
