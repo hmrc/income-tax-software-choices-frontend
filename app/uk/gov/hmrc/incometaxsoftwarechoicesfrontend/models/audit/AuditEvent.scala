@@ -44,11 +44,11 @@ object SearchResultsEvent {
         Json.obj("businessIncome" -> answers.map(_.auditDescription))).getOrElse(Json.obj())
     }
     val additionalIncome = {
-      userAnswers.get(AdditionalIncomeSourcesPage).map(answers =>
+      userAnswers.get(AdditionalIncomeSourcesPage).filter(_.nonEmpty).map(answers =>
         Json.obj("additionalIncome" -> answers.map(_.auditDescription))).getOrElse(Json.obj())
     }
     val otherItems = {
-      userAnswers.get(OtherItemsPage).map(answers =>
+      userAnswers.get(OtherItemsPage).filter(_.nonEmpty).map(answers =>
         Json.obj("otherItems" -> answers.map(_.auditDescription))).getOrElse(Json.obj())
     }
     val accountingPeriod = {
