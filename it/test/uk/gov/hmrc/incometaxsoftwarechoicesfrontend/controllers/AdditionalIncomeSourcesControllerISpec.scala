@@ -23,7 +23,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.AdditionalIncomeForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.SessionId
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, DatabaseHelper}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{ConstructionIndustryScheme, Employment, ForeignDividends, ForeignInterest, PrivatePensionIncome, StatePensionIncome, UkDividends, UkInterest}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{ConstructionIndustryScheme, Employment, ForeignDividends, ForeignInterest, PartnerIncome, PrivatePensionIncome, StatePensionIncome, UkDividends, UkInterest}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.AdditionalIncomeSourcesPage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
 
@@ -57,7 +57,8 @@ class AdditionalIncomeSourcesControllerISpec extends ComponentSpecBase with Befo
           checkboxSelected("additionalIncome-6", None),
           checkboxSelected("additionalIncome-7", None),
           checkboxSelected("additionalIncome-8", None),
-          checkboxSelected("additionalIncome-10", None)
+          checkboxSelected("additionalIncome-9", None),
+          checkboxSelected("additionalIncome-11", None)
         )
       }
       "the additional income has been answered previously with additional income selections" in {
@@ -74,9 +75,10 @@ class AdditionalIncomeSourcesControllerISpec extends ComponentSpecBase with Befo
           checkboxSelected("additionalIncome-4", Some(UkDividends.key)),
           checkboxSelected("additionalIncome-5", Some(StatePensionIncome.key)),
           checkboxSelected("additionalIncome-6", Some(PrivatePensionIncome.key)),
-          checkboxSelected("additionalIncome-7", Some(ForeignDividends.key)),
-          checkboxSelected("additionalIncome-8", Some(ForeignInterest.key)),
-          checkboxSelected("additionalIncome-10", None)
+          checkboxSelected("additionalIncome-7", Some(PartnerIncome.key)),
+          checkboxSelected("additionalIncome-8", Some(ForeignDividends.key)),
+          checkboxSelected("additionalIncome-9", Some(ForeignInterest.key)),
+          checkboxSelected("additionalIncome-11", None)
         )
       }
       "the additional income has been answered previously with none selected" in {
@@ -95,7 +97,8 @@ class AdditionalIncomeSourcesControllerISpec extends ComponentSpecBase with Befo
           checkboxSelected("additionalIncome-6", None),
           checkboxSelected("additionalIncome-7", None),
           checkboxSelected("additionalIncome-8", None),
-          checkboxSelected("additionalIncome-10", Some("none"))
+          checkboxSelected("additionalIncome-9", None),
+          checkboxSelected("additionalIncome-11", Some("none"))
         )
       }
     }
@@ -246,6 +249,7 @@ class AdditionalIncomeSourcesControllerISpec extends ComponentSpecBase with Befo
     UkDividends,
     StatePensionIncome,
     PrivatePensionIncome,
+    PartnerIncome,
     ForeignDividends,
     ForeignInterest
   )
