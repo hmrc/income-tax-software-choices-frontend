@@ -23,7 +23,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.AdditionalIncomeForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.SessionId
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, DatabaseHelper}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{ConstructionIndustryScheme, Employment, ForeignDividends, ForeignInterest, PartnerIncome, PrivatePensionIncome, StatePensionIncome, UkDividends, UkInterest}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.AdditionalIncomeSourcesPage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
 
