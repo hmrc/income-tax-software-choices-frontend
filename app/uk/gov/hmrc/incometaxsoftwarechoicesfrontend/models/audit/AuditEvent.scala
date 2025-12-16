@@ -20,8 +20,6 @@ import play.api.libs.json.{JsObject, Json, OWrites}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.*
 
-// scalastyle:off cyclomatic.complexity
-
 sealed trait AuditEvent {
   val auditType: String
 }
