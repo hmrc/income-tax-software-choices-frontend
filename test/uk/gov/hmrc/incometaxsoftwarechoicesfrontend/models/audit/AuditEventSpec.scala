@@ -19,7 +19,7 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.audit
 import org.scalatestplus.play.PlaySpec
 import play.api.libs.json.Json
 import uk.gov.hmrc.http.SessionKeys.sessionId
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.AccountingPeriod.FirstAprilToThirtyFirstMarch
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.AccountingPeriod.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.SoleTraderOrLandlord
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.*
@@ -35,7 +35,7 @@ class AuditEventSpec extends PlaySpec {
     }
 
     "convert data into correct json detail" when {
-      "there are minimal filters and no vendor results" in {
+      "agent user applies no filters and has no vendor results" in {
         val userAnswers = UserAnswers().set(UserTypePage, UserType.Agent).get
         val userFilters = UserFilters(
           id = "test-id",
@@ -57,8 +57,7 @@ class AuditEventSpec extends PlaySpec {
         Json.toJson(auditEvent) mustBe expectedDetail
       }
 
-      "there are many filters with vendor results" in {
-
+      "individual user applies many filters with vendor results" in {
         val userAnswers: UserAnswers = UserAnswers()
           .set(UserTypePage, SoleTraderOrLandlord).get
           .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
@@ -112,6 +111,45 @@ class AuditEventSpec extends PlaySpec {
           "vendorsListCount" -> 3
         )
         
+        Json.toJson(event) mustBe expectedDetail
+      }
+      
+      "individual user selects none of these for non mandated income" in {
+        val userAnswers: UserAnswers = UserAnswers()
+          .set(UserTypePage, SoleTraderOrLandlord).get
+          .set(BusinessIncomePage, Seq(SoleTrader)).get
+          .set(AdditionalIncomeSourcesPage, Seq.empty).get
+          .set(OtherItemsPage, Seq.empty).get
+          .set(AccountingPeriodPage, OtherAccountingPeriod).get
+
+        val finalFilters: Seq[VendorFilter] = Seq(
+          Individual, QuarterlyUpdates, TaxReturn,
+          SoleTrader, FreeVersion, Visual, Cognitive)
+
+        val userFilters = UserFilters(sessionId, Some(userAnswers), finalFilters)
+        val vendorsList = Seq("Test Vendor 1", "Test Vendor 2", "Test Vendor 3")
+
+        val event = SearchResultsEvent(userFilters, vendorsList)
+
+        val expectedDetail = Json.obj(
+          "userAnswers" -> Json.obj(
+            "userType" -> "soleTraderOrLandlord",
+            "businessIncome" -> Json.arr("soleTrader"),
+            "accountingPeriod" -> "otherAccountingPeriod"
+          ),
+          "filtersApplied" -> Json.arr(
+            "individual",
+            "quarterlyUpdates",
+            "taxReturn",
+            "soleTrader",
+            "freeVersion",
+            "visual",
+            "cognitive"
+          ),
+          "vendorsList" -> Json.arr("Test Vendor 1", "Test Vendor 2", "Test Vendor 3"),
+          "vendorsListCount" -> 3
+        )
+
         Json.toJson(event) mustBe expectedDetail
       }
     }
