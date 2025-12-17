@@ -31,9 +31,9 @@
         form: FormWithCSRF
 )(implicit appConfig: AppConfig)
 
-@(summaryList: SummaryList, postAction: Call, backLink: String)(implicit request: Request[_], messages: Messages)
+@(summaryList: SummaryList, postAction: Call)(implicit request: Request[_], messages: Messages)
 
-@mainTemplate(title = messages("check-your-answers.heading"), backLink = Some(backLink)) {
+@mainTemplate(title = messages("check-your-answers.heading"), useJSBacklink = true) {
 
     <h1 class="govuk-heading-l">@messages("check-your-answers.heading")</h1>
 

@@ -106,6 +106,7 @@ search-software.p1                                        = All of this software
 search-software.p2                                        = Some of the listed products may have free trials or free versions, but you’ll have to pay for others.
 search-software.p3.agent.intent                           = Some of the features you’ll need to submit your client’s tax returns are still being developed.
 search-software.inset.agent.intent                        = HMRC is not responsible for the availability of products or making sure that the product you chose meets the current and future needs of your clients. We recommend that you visit software providers’ websites to do more research before choosing a product.
+search-software.check-answers                             = Change answers
 search-software.skip-to-results                           = Skip to results.
 
 search-software.intent.h2                                 = Some software may be listed as in development

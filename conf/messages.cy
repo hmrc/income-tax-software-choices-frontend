@@ -106,6 +106,7 @@ search-software.p1                                        = Mae pob meddalwedd y
 search-software.p2                                        = Efallai bydd rhai o’r cynhyrchion sy’n cael eu rhestru yn cynnig cyfnod prawf am ddim, neu fersiynau am ddim, ond bydd yn rhaid i chi dalu am rhai eraill.
 search-software.p3.agent.intent                           = Mae rhai o’r nodweddion y bydd eu hangen arnoch er mwyn cyflwyno Ffurflen Dreth eich cleient yn parhau o dan ddatblygiad.
 search-software.inset.agent.intent                        = Nid yw CThEF yn gyfrifol am argaeledd cynnyrch nag am sicrhau bod y cynnyrch yr ydych yn ei ddewis yn bodloni anghenion presennol eich cleient, a’i anghenion yn y dyfodol. Rydym yn argymell eich bod yn ymweld â gwefan darparwyr meddalwedd i wneud ymchwil cyn dewis cynnyrch.
+search-software.check-answers                             = **** Welsh translation needed ****
 search-software.skip-to-results                           = Ewch yn syth i’r canlyniadau.
 
 search-software.intent.h2                                 = Bydd rhai meddalwedd yn cael eu rhestru fel eu bod ‘o dan ddatblygiad’
