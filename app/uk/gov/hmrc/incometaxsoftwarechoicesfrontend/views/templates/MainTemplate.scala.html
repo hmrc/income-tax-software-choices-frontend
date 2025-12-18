@@ -30,7 +30,7 @@
     fullWidthPageLayout: FixedWidthPageLayout
 )
 
-@(title: String, backLink: Option[String] = None, optForm: Option[Form[_]] = None, scripts: Option[Html] = None, isFullWidth: Boolean = false, showTimeoutDialog: Boolean = true, useJSBacklink: Boolean = false)(contentBlock: Html)(implicit request: RequestHeader, messages: Messages)
+@(title: String, backLink: Option[String] = None, optForm: Option[Form[_]] = None, scripts: Option[Html] = None, isFullWidth: Boolean = false, showTimeoutDialog: Boolean = true)(contentBlock: Html)(implicit request: RequestHeader, messages: Messages)
 
 @prefixedTitle = @{
   optForm match {
@@ -55,7 +55,7 @@
     serviceName = Some(messages("base.service-name")),
     isWelshTranslationAvailable = appConfig.welshLanguageSupportEnabled,
     pageTitle = prefixedTitle,
-    backLink = if (useJSBacklink) Some(BackLink.mimicsBrowserBackButtonViaJavaScript) else backLink.map(href => BackLink(href = href))
+    backLink = backLink.map(href => BackLink(href = href))
 ))(content)
 
 @additionalHeadBlock = {
