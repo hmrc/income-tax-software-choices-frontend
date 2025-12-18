@@ -38,9 +38,6 @@ class CheckYourAnswersViewSpec extends ViewSpec {
     "have a title" in {
       document.title() shouldBe CheckYourAnswersViewContent.title
     }
-    "have a backlink" in {
-      document.selectHead(".govuk-back-link").attr("href") shouldBe testBackUrl
-    }
     "have a h1 heading" in {
       document.selectHead("h1").text() shouldBe CheckYourAnswersViewContent.heading
     }
@@ -63,7 +60,7 @@ class CheckYourAnswersViewSpec extends ViewSpec {
     }
   }
 
-  def page: HtmlFormat.Appendable = view(summaryList, testCall, testBackUrl)
+  def page: HtmlFormat.Appendable = view(summaryList, testCall)
 
   def document: Document = Jsoup.parse(page.body)
 

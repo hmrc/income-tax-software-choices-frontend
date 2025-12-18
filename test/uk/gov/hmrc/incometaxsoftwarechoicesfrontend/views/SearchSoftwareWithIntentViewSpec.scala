@@ -124,6 +124,10 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
       document.mainContent.selectNth("p", 2).text shouldBe SearchSoftwareWithIntentPageContent.paragraphTwo
     }
 
+    "have a button to Change answers" in {
+      document.mainContent.selectHead(".govuk-button.govuk-button--secondary").text shouldBe SearchSoftwareWithIntentPageContent.changeAnswers
+    }
+
     "have a filter section" which {
       val filterSection = getFilterSection(document)
 
@@ -360,6 +364,10 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
       "has inset text paragraph" in {
         document.mainContent.selectHead(".govuk-inset-text").text shouldBe SearchSoftwareWithIntentPageContent.agentInset
       }
+
+      "does not have a 'Change answers' button" in {
+        document.mainContent.selectOptionally(".govuk-button--secondary") shouldBe None
+      }
     }
 
     "have a single software vendor section for agents" which {
@@ -525,6 +533,7 @@ private object SearchSoftwareWithIntentPageContent {
   val heading = "Software for Making Tax Digital for Income Tax"
   val paragraph = "All the products showing in the filter list will allow you to submit your quarterly updates."
   val paragraphTwo = "In development means one or more features you need to complete your tax return are still being built. We expect these features will be ready for you to do your 2026 to 2027 return."
+  val changeAnswers = "Change answers"
 
   object SearchSoftwareSection {
     val searchFormHeading = "Search by software name"
