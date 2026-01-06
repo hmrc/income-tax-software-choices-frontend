@@ -126,7 +126,7 @@ search-software.filters.clear-filters = Clirio hidlyddion
 
 search-software.intent.vendor-visit-link        = Dysgwch beth mae {0} yn ei ddarparu ar hyn o bryd, a’r hyn sy’n cael ei ddatblygu ganddynt
 
-search-software.vendor-count.agent.heading.many     = Rydym wedi canfod {0} p o ganlyniadau
+search-software.vendor-count.agent.heading.many     = Rydym wedi canfod {0} o ganlyniadau
 search-software.vendor-count.agent.heading.one      = Rydym wedi canfod 1 canlyniad
 search-software.vendor-count.agent.heading.none     = Does dim canlyniadau cyfatebol
 
