@@ -275,3 +275,10 @@ session-expired.title = Atebion wedi’u Dileu
 session-expired.user = Rydych wedi dileu’ch atebion
 session-expired.timeout = Er diogelwch, gwnaethom ddileu’ch atebion.
 session-expired.button = Dechrau eto
+
+page-not-found.title = **** Welsh Translation needed ****
+page-not-found.p1 = **** Welsh Translation needed ****
+page-not-found.p2 = **** Welsh Translation needed ****
+page-not-found.p3 = **** Welsh Translation needed ****
+page-not-found.bullet1 = **** Welsh Translation needed ****
+page-not-found.bullet2 = **** Welsh Translation needed ****

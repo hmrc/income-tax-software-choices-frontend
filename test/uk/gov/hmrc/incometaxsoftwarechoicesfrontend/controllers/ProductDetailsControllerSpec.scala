@@ -19,15 +19,15 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 import org.scalatest.BeforeAndAfterEach
 import play.api.http.Status
 import play.api.test.Helpers._
-import uk.gov.hmrc.http.NotFoundException
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.SoftwareChoicesService
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.ProductDetailsView
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.{ProductDetailsView, NotFoundView}
 
 import java.net.URLEncoder
 
 class ProductDetailsControllerSpec extends ControllerBaseSpec with BeforeAndAfterEach {
 
   private val productDetailsPage = app.injector.instanceOf[ProductDetailsView]
+  private val notFoundView = app.injector.instanceOf[NotFoundView]
   private val softwareChoicesService = app.injector.instanceOf[SoftwareChoicesService]
 
   "Show" when {
@@ -39,8 +39,10 @@ class ProductDetailsControllerSpec extends ControllerBaseSpec with BeforeAndAfte
       }
     }
     "an invalid param has been passed" should {
-      "return OK status with the product details page" in withController { controller =>
-        intercept[NotFoundException](await(controller.show("dummy")(fakeRequest))).message should be(ProductDetailsController.NotFound)
+      "return NotFound status with the product details page" in withController { controller =>
+        val result = controller.show(URLEncoder.encode("@dummy", "UTF-8"))(fakeRequest)
+
+        status(result) shouldBe Status.NOT_FOUND
       }
     }
   }
@@ -48,7 +50,8 @@ class ProductDetailsControllerSpec extends ControllerBaseSpec with BeforeAndAfte
   private def withController(testCode: ProductDetailsController => Any): Unit = {
     val controller = new ProductDetailsController(
       softwareChoicesService,
-      productDetailsPage
+      productDetailsPage,
+      notFoundView
     )
 
     testCode(controller)
