@@ -39,10 +39,10 @@ class MainTemplateViewSpec extends ViewSpec {
       banner.selectHead(".govuk-phase-banner__content__tag").text shouldBe "Alpha"
 
       val bannerContent: Element = banner.selectHead(".govuk-phase-banner__text")
-      bannerContent.text shouldBe "This is a new service – your feedback will help us to improve it."
+      bannerContent.text shouldBe "This is a new service. Help us improve it and give your feedback (opens in new tab)"
 
       val feedbackLink: Element = bannerContent.selectHead("a")
-      feedbackLink.text shouldBe "feedback"
+      feedbackLink.text shouldBe "give your feedback (opens in new tab)"
       feedbackLink.attr("href") shouldBe "http://localhost:9514/feedback/SOFTWAREMTDIT"
     }
 

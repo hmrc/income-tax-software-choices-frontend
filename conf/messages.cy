@@ -282,3 +282,8 @@ page-not-found.p2 = Os gwnaethoch ludo’r cyfeiriad gwe, gwiriwch eich bod wedi
 page-not-found.p3 = Os yw’r cyfeiriad gwe yn gywir neu os ydych wedi dewis cysylltiad neu fotwm, gallwch wneud y canlynol:
 page-not-found.bullet1 = cysylltu â ni ynghylch y broblem hon
 page-not-found.bullet2 = dod o hyd i feddalwedd sy’n cydweddu â’r cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm
+
+# Phase Banner
+phase-banner.tag = Alffa
+phase-banner.intro = Gwasanaeth newydd yw hwn. Helpwch ni i’w wella a
+phase-banner.feedback = rhoi eich adborth

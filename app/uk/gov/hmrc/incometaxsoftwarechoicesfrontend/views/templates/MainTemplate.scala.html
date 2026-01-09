@@ -19,6 +19,7 @@
 @import views.html.helper.CSPNonce
 @import uk.gov.hmrc.hmrcfrontend.views.viewmodels.hmrcstandardpage._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes
+@import uk.gov.hmrc.hmrcfrontend.views.viewmodels.newtablinkhelper.NewTabLinkHelper
 
 @this(
     hmrcStandardPage: HmrcStandardPage,
@@ -27,7 +28,9 @@
     hmrcReportTechnicalIssueHelper: HmrcReportTechnicalIssueHelper,
     standardAlphaBanner: StandardAlphaBanner,
     hmrcTimeoutDialogHelper: HmrcTimeoutDialogHelper,
-    fullWidthPageLayout: FixedWidthPageLayout
+    fullWidthPageLayout: FixedWidthPageLayout,
+    govukPhaseBanner : GovukPhaseBanner,
+    hmrcNewTabLinkHelper: HmrcNewTabLinkHelper
 )
 
 @(title: String, backLink: Option[String] = None, optForm: Option[Form[_]] = None, scripts: Option[Html] = None, isFullWidth: Boolean = false, showTimeoutDialog: Boolean = true)(contentBlock: Html)(implicit request: RequestHeader, messages: Messages)
@@ -44,9 +47,7 @@
         serviceUrl = Some(routes.IndexController.index.url)
     ),
     banners = Banners(
-         phaseBanner = Some(standardAlphaBanner(
-             url = appConfig.feedbackUrl
-         ))
+        phaseBanner = Some(customBanner)
     ),
     templateOverrides = TemplateOverrides(
         additionalHeadBlock = Some(additionalHeadBlock),
@@ -91,4 +92,18 @@
 
     @hmrcReportTechnicalIssueHelper()
 
+}
+
+@customBanner = @{
+    PhaseBanner(
+        tag = Some(Tag(
+            content = Text(messages("phase-banner.tag"))
+        )),
+        content = HtmlContent(
+            s"${messages("phase-banner.intro")} ${hmrcNewTabLinkHelper(NewTabLinkHelper(
+                text = messages("phase-banner.feedback"),
+                href = Some(appConfig.feedbackUrl)
+            ))}"
+        )
+    )
 }
