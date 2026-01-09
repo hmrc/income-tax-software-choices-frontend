@@ -276,9 +276,9 @@ session-expired.user = Rydych wedi dileu’ch atebion
 session-expired.timeout = Er diogelwch, gwnaethom ddileu’ch atebion.
 session-expired.button = Dechrau eto
 
-page-not-found.title = **** Welsh Translation needed ****
-page-not-found.p1 = **** Welsh Translation needed ****
-page-not-found.p2 = **** Welsh Translation needed ****
-page-not-found.p3 = **** Welsh Translation needed ****
-page-not-found.bullet1 = **** Welsh Translation needed ****
-page-not-found.bullet2 = **** Welsh Translation needed ****
+page-not-found.title = Heb ddod o hyd i’r dudalen
+page-not-found.p1 = Os gwnaethoch deipio’r cyfeiriad gwe, gwiriwch ei fod yn gywir.
+page-not-found.p2 = Os gwnaethoch ludo’r cyfeiriad gwe, gwiriwch eich bod wedi copïo’r cyfeiriad yn llawn.
+page-not-found.p3 = Os yw’r cyfeiriad gwe yn gywir neu os ydych wedi dewis cysylltiad neu fotwm, gallwch wneud y canlynol:
+page-not-found.bullet1 = cysylltu â ni ynghylch y broblem hon (yn agor tab newydd)
+page-not-found.bullet2 = dod o hyd i feddalwedd sy’n cydweddu â’r cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm
