@@ -282,3 +282,8 @@ page-not-found.p2 = If you pasted the web address, check you copied the entire a
 page-not-found.p3 = If the web address is correct or you selected a link or button, you can:
 page-not-found.bullet1 = contact us about this problem
 page-not-found.bullet2 = find software that works with Making Tax Digital for Income Tax
+
+# Phase Banner
+phase-banner.tag = Alpha
+phase-banner.intro = This is a new service. Help us improve it and
+phase-banner.feedback = give your feedback
