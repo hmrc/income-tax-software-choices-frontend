@@ -39,7 +39,7 @@ class ProductDetailsControllerSpec extends ControllerBaseSpec with BeforeAndAfte
       }
     }
     "an invalid param has been passed" should {
-      "return NotFound status with the product details page" in withController { controller =>
+      "return NotFound status with the Not Found view" in withController { controller =>
         val result = controller.show(URLEncoder.encode("@dummy", "UTF-8"))(fakeRequest)
 
         status(result) shouldBe Status.NOT_FOUND

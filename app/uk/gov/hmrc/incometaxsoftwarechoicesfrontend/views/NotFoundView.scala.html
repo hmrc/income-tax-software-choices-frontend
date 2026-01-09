@@ -15,13 +15,16 @@
  *@
 
 @import uk.gov.hmrc.govukfrontend.views.html.components._
+@import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcNewTabLinkHelper
+@import uk.gov.hmrc.hmrcfrontend.views.viewmodels.newtablinkhelper.NewTabLinkHelper
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTemplate
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes
 @import java.net.URLEncoder
 
 @this(
-        mainTemplate: MainTemplate
+        mainTemplate: MainTemplate,
+        hmrcNewTabLinkHelper: HmrcNewTabLinkHelper
 )(implicit appConfig: AppConfig)
 
 @(url: String)(implicit request: Request[_], messages: Messages)
@@ -34,7 +37,10 @@
     <p class="govuk-body">@messages("page-not-found.p2")</p>
     <p class="govuk-body">@messages("page-not-found.p3")</p>
     <ul class="govuk-list govuk-list--bullet">
-        <li><a class="govuk-link" href="@{appConfig.getContactUrl(URLEncoder.encode(url, "UTF-8"))}">@messages("page-not-found.bullet1")</a> @messages("base.or")</li>
+        <li>@hmrcNewTabLinkHelper(NewTabLinkHelper(
+            text = s"${messages("page-not-found.bullet1")}",
+            href = Some(appConfig.getContactUrl(URLEncoder.encode(url, "UTF-8")))
+        ))  @messages("base.or")</li>
         <li><a class="govuk-link" href="@{routes.IndexController.index.url}">@messages("page-not-found.bullet2")</a></li>
     </ul>
 
