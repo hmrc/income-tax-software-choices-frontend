@@ -275,3 +275,10 @@ session-expired.title = Answers Deleted
 session-expired.user = You deleted your answers
 session-expired.timeout = For security, we deleted your answers
 session-expired.button = Start again
+
+page-not-found.title = Page not found
+page-not-found.p1 = If you typed the web address, check it is correct.
+page-not-found.p2 = If you pasted the web address, check you copied the entire address.
+page-not-found.p3 = If the web address is correct or you selected a link or button, you can:
+page-not-found.bullet1 = contact us about this problem
+page-not-found.bullet2 = find software that works with Making Tax Digital for Income Tax
