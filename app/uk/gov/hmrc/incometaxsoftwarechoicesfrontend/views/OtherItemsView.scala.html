@@ -22,15 +22,12 @@
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTemplate
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitchingImpl
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch._
 
 @this(
         mainTemplate: MainTemplate,
         govukCheckboxes: GovukCheckboxes,
         govukButton: GovukButton,
-        form: FormWithCSRF,
-        featureSwitchingImpl: FeatureSwitchingImpl
+        form: FormWithCSRF
 )(implicit appConfig: AppConfig)
 
 @(otherItemsForm: Form[Seq[VendorFilter]], postAction: Call, backLink: String)(implicit request: Request[_], messages: Messages)
@@ -80,7 +77,6 @@
                     value = HighIncomeChildBenefitCharge.key
                 )
             ) ++
-            averagingAdjustmentCheckbox ++
             Seq(
                 CheckboxItem(
                     divider = Some(messages("base.or"))
@@ -97,14 +93,5 @@
             content = Text(messages("base.continue"))
         ))
     }
-}
-
-@averagingAdjustmentCheckbox = @{
-    if(featureSwitchingImpl.isEnabled(AveragingAdjustmentFeature)) {
-        Seq(CheckboxItem(
-            content = Text(messages("other-items.averaging-adjustment")),
-            value = AveragingAdjustment.key
-        ))
-    } else Seq.empty
 }
 

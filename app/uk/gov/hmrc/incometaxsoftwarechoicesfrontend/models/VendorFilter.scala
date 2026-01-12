@@ -478,22 +478,11 @@ object VendorFilterGroups {
     (accessibilityFilters, "accessibility")
   )
 
-  def nonMandatedIncomeGroup()(implicit appConfig: AppConfig): List[VendorFilter] = {
-    val featureSwitchingImpl = FeatureSwitchingImpl(appConfig)
-
-    val partnerIncomeFilter = if (featureSwitchingImpl.isEnabled(PartnerIncomeFeature)) List(PartnerIncome) else List.empty
-    val trustIncomeFilter = if (featureSwitchingImpl.isEnabled(TrustIncomeFeature)) List(TrustIncome) else List.empty
-    val fosterCareFilter = if (featureSwitchingImpl.isEnabled(FosterCarerFeature)) List(FosterCarer) else List.empty
-    val averagingAdjustmentFilter = if (featureSwitchingImpl.isEnabled(AveragingAdjustmentFeature)) List(AveragingAdjustment) else List.empty
-
-    List(UkInterest, ConstructionIndustryScheme, Employment, UkDividends, StatePensionIncome, PrivatePensionIncome) ++
-    partnerIncomeFilter ++
-    List(ForeignDividends, ForeignInterest) ++
-    fosterCareFilter ++
-    trustIncomeFilter ++
-    List(PaymentsIntoAPrivatePension, CharitableGiving, CapitalGainsTax, StudentLoans, MarriageAllowance, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge) ++
-    averagingAdjustmentFilter
-  }
+  val nonMandatedIncomeGroup: List[VendorFilter] = List(
+      UkInterest, ConstructionIndustryScheme, Employment, UkDividends, StatePensionIncome, PrivatePensionIncome, PartnerIncome,
+      ForeignDividends, ForeignInterest, PaymentsIntoAPrivatePension, CharitableGiving,
+      CapitalGainsTax, StudentLoans, MarriageAllowance, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge
+     )
 
   val softwareTypeGroup: List[VendorFilter] = List(DesktopApplication, WebBrowser)
   val compatibleWithGroup: List[VendorFilter] = List(MicrosoftWindows, MacOS, Linux)
