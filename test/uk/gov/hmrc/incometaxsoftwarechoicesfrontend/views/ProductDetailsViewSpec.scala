@@ -406,9 +406,6 @@ class ProductDetailsViewSpec extends ViewSpec with FeatureSwitching with BeforeA
     val privatePensionContribution = "Private pension contributions"
     val marriage = "Marriage Allowance"
     val partnerIncome = "Partner income from a partnership"
-    val trustIncome = "Trustee"
-    val fosterCarerIncome = "Foster carer"
-    val averagingAdjustment = "Averaging adjustments"
 
     val softwareSpecHeading = "Software specifications"
     val softwareType = "Software type"

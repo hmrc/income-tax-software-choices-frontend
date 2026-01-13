@@ -187,7 +187,6 @@ private object OtherItemsPageContent {
   val marriageAllowance = "Marriage Allowance"
   val voluntaryClass2Nic = "Voluntary Class 2 National Insurance"
   val highIncomeChildBenefitCharge = "High Income Child Benefit Charge"
-  val averagingAdjustment = "Averaging adjustments"
   val noneOfThese = "None of these"
   val continue = "Continue"
 }

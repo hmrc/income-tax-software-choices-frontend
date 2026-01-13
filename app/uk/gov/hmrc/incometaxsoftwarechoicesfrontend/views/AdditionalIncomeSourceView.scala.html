@@ -68,31 +68,25 @@
                 CheckboxItem(
                     content = Text(messages("additional.income.source-private-pension-income")),
                     value = PrivatePensionIncome.key
-                )
-            ) ++
-            Seq(
-              CheckboxItem(
-                 content = Text(messages("additional.income.source-partner-income")),
-                 value = PartnerIncome.key
-                )
-             ) ++
-            Seq(
-                CheckboxItem(
-                    content = Text(messages("additional.income.source-foreign-dividends")),
-                    value = ForeignDividends.key
                 ),
                 CheckboxItem(
-                    content = Text(messages("additional.income.source-foreign-interest")),
-                    value = ForeignInterest.key
-                )
-            ) ++
-            Seq(
-              CheckboxItem(divider = Some(messages("base.or"))),
-                CheckboxItem(
-                    content   = Text(messages("additional.income.source-none")),
-                    value     = "none",
-                    behaviour = Some(ExclusiveCheckbox)
-                )
+                    content = Text(messages("additional.income.source-partner-income")),
+                    value = PartnerIncome.key
+               ),
+               CheckboxItem(
+                   content = Text(messages("additional.income.source-foreign-dividends")),
+                   value = ForeignDividends.key
+               ),
+               CheckboxItem(
+                  content = Text(messages("additional.income.source-foreign-interest")),
+                  value = ForeignInterest.key
+                ),
+               CheckboxItem(divider = Some(messages("base.or"))),
+               CheckboxItem(
+                 content   = Text(messages("additional.income.source-none")),
+                 value     = "none",
+                 behaviour = Some(ExclusiveCheckbox)
+               )
             )
         ).withFormField(additionalIncomeForm(AdditionalIncomeForm.formKey)))
 

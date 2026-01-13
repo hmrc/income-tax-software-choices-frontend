@@ -75,17 +75,15 @@
                 CheckboxItem(
                     content = Text(messages("other-items.high-income-child-benefit-charge")),
                     value = HighIncomeChildBenefitCharge.key
-                )
-            ) ++
-            Seq(
-                CheckboxItem(
-                    divider = Some(messages("base.or"))
                 ),
-                CheckboxItem(
-                    content = Text(messages("other-items.none-of-these")),
-                    value = "none",
-                    behaviour = Some(ExclusiveCheckbox)
-                )
+               CheckboxItem(
+                  divider = Some(messages("base.or"))
+               ),
+               CheckboxItem(
+                  content = Text(messages("other-items.none-of-these")),
+                  value = "none",
+                  behaviour = Some(ExclusiveCheckbox)
+               )
             )
         ).withFormField(otherItemsForm(OtherItemsForm.formKey)))
 

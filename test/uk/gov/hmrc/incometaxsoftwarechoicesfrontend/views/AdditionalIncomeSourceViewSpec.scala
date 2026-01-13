@@ -212,8 +212,6 @@ private object AdditionalIncomeSourcesPageContent {
   val partnerIncomeFromPartnership = "Partner income from a partnership"
   val foreignDividends = "Foreign dividends"
   val foreignInterest = "Foreign interest"
-  val trustee = "Trustee"
-  val fosterCarer = "Foster carer"
   val none = "None of these"
   val continue = "Continue"
 }
