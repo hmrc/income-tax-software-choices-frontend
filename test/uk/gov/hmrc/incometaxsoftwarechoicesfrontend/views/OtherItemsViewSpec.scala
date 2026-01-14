@@ -20,7 +20,6 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.{Document, Element}
 import play.api.data.FormError
 import play.twirl.api.HtmlFormat
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.AveragingAdjustmentFeature
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.OtherItemsForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.OtherItemsView
@@ -55,7 +54,6 @@ class OtherItemsViewSpec extends ViewSpec with FeatureSwitching {
     }
 
     "there is no error (without Averaging Adjustment feature OFF)" must {
-      disable(AveragingAdjustmentFeature)
       val document: Document = Jsoup.parse(page().body)
 
       "have a title" in {
@@ -175,32 +173,6 @@ class OtherItemsViewSpec extends ViewSpec with FeatureSwitching {
         }
       }
     }
-
-    "Averaging Adjustment checkbox is feature switched" must {
-      "have the averaging adjustment checkbox when feature switch is ON" in {
-        enable(AveragingAdjustmentFeature)
-        val document: Document = Jsoup.parse(page().body)
-        val form: Element = document.mainContent.selectHead("form")
-
-        form.mustHaveCheckbox("fieldSet")(
-          checkbox = 8,
-          legend = OtherItemsPageContent.legend,
-          isHeading = true,
-          isLegendHidden = false,
-          name = "otherItems[]",
-          label = OtherItemsPageContent.averagingAdjustment,
-          value = "averaging-adjustment",
-        )
-      }
-
-      "not have averaging adjustment checkbox with feature switch OFF" in {
-        disable(AveragingAdjustmentFeature)
-        val document: Document = Jsoup.parse(page().body)
-        val form: Element = document.mainContent.selectHead("form")
-
-        form.text.contains(OtherItemsPageContent.averagingAdjustment) shouldBe false
-      }
-    }
   }
 }
 
@@ -215,7 +187,6 @@ private object OtherItemsPageContent {
   val marriageAllowance = "Marriage Allowance"
   val voluntaryClass2Nic = "Voluntary Class 2 National Insurance"
   val highIncomeChildBenefitCharge = "High Income Child Benefit Charge"
-  val averagingAdjustment = "Averaging adjustments"
   val noneOfThese = "None of these"
   val continue = "Continue"
 }

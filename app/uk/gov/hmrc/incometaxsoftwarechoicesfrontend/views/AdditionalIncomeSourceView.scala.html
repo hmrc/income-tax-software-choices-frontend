@@ -21,15 +21,12 @@
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTemplate
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.AdditionalIncomeForm
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitchingImpl
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch._
 
 @this(
     mainTemplate: MainTemplate,
     form: FormWithCSRF,
     govukCheckboxes: GovukCheckboxes,
-    govukButton: GovukButton,
-    featureSwitchingImpl: FeatureSwitchingImpl
+    govukButton: GovukButton
 )(implicit appConfig: AppConfig)
 
 @(additionalIncomeForm: Form[Seq[VendorFilter]], postAction: Call, backUrl: String)(implicit request: Request[_], messages: Messages)
@@ -71,64 +68,28 @@
                 CheckboxItem(
                     content = Text(messages("additional.income.source-private-pension-income")),
                     value = PrivatePensionIncome.key
-                )
-            ) ++
-            partnerIncomePartnershipCheckbox ++
-            Seq(
-                CheckboxItem(
-                    content = Text(messages("additional.income.source-foreign-dividends")),
-                    value = ForeignDividends.key
                 ),
                 CheckboxItem(
-                    content = Text(messages("additional.income.source-foreign-interest")),
-                    value = ForeignInterest.key
-                )
-            ) ++
-            trustIncomeCheckbox ++
-            fosterCarerCheckbox ++
-            Seq(
-              CheckboxItem(divider = Some(messages("base.or"))),
-                CheckboxItem(
-                    content   = Text(messages("additional.income.source-none")),
-                    value     = "none",
-                    behaviour = Some(ExclusiveCheckbox)
-                )
+                    content = Text(messages("additional.income.source-partner-income")),
+                    value = PartnerIncome.key
+               ),
+               CheckboxItem(
+                   content = Text(messages("additional.income.source-foreign-dividends")),
+                   value = ForeignDividends.key
+               ),
+               CheckboxItem(
+                  content = Text(messages("additional.income.source-foreign-interest")),
+                  value = ForeignInterest.key
+                ),
+               CheckboxItem(divider = Some(messages("base.or"))),
+               CheckboxItem(
+                 content   = Text(messages("additional.income.source-none")),
+                 value     = "none",
+                 behaviour = Some(ExclusiveCheckbox)
+               )
             )
         ).withFormField(additionalIncomeForm(AdditionalIncomeForm.formKey)))
 
             @govukButton(Button(content = Text(messages("base.continue"))))
         }
-}
-
-@partnerIncomePartnershipCheckbox = @{
-   if(featureSwitchingImpl.isEnabled(PartnerIncomeFeature)) {
-      Seq(
-          CheckboxItem(
-            content = Text(messages("additional.income.source-partner-income")),
-            value = PartnerIncome.key
-         )
-      )
-   } else Seq.empty
-}
-
-@trustIncomeCheckbox = @{
-   if(featureSwitchingImpl.isEnabled(TrustIncomeFeature)) {
-     Seq(
-       CheckboxItem(
-          content = Text(messages("additional.income.source-trust-income")),
-          value = TrustIncome.key
-        )
-     )
-   } else Seq.empty
-}
-
-@fosterCarerCheckbox = @{
-     if(featureSwitchingImpl.isEnabled(FosterCarerFeature)) {
-        Seq(
-           CheckboxItem(
-               content = Text(messages("additional.income.source-foster-carer")),
-               value = FosterCarer.key
-           )
-        )
-    } else Seq.empty
 }

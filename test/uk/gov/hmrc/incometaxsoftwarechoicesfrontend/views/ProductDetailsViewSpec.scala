@@ -23,7 +23,6 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.{Availa
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareVendorModel
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.ProductDetailsView
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.{AveragingAdjustmentFeature, FosterCarerFeature, PartnerIncomeFeature, TrustIncomeFeature}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 
 class ProductDetailsViewSpec extends ViewSpec with FeatureSwitching with BeforeAndAfterEach {
@@ -50,14 +49,6 @@ class ProductDetailsViewSpec extends ViewSpec with FeatureSwitching with BeforeA
       UkDividends -> Intended, ForeignDividends -> Available, UkInterest -> Intended,
       StandardUpdatePeriods -> Available, CalendarUpdatePeriods -> Intended, FreeVersion -> Intended
     ))
-
-  override def beforeEach(): Unit = {
-    super.beforeEach()
-    disable(PartnerIncomeFeature)
-    disable(TrustIncomeFeature)
-    disable(FosterCarerFeature)
-    disable(AveragingAdjustmentFeature)
-  }
 
   "ProductDetailsPage" when {
 
@@ -142,15 +133,16 @@ class ProductDetailsViewSpec extends ViewSpec with FeatureSwitching with BeforeA
           checkRow(table(3), 4, ProductDetailsPage.ukDividends, status = s"${ProductDetailsPage.readyNow}")
           checkRow(table(3), 5, ProductDetailsPage.statePension, status = s"${ProductDetailsPage.readyNow}")
           checkRow(table(3), 6, ProductDetailsPage.privatePensionIncome, status = s"${ProductDetailsPage.readyNow}")
-          checkRow(table(3), 7, ProductDetailsPage.foreignDividend, status = s"${ProductDetailsPage.readyNow}")
-          checkRow(table(3), 8, ProductDetailsPage.foreignInterest, status = s"${ProductDetailsPage.readyNow}")
-          checkRow(table(3), 9, ProductDetailsPage.privatePensionContribution, status = s"${ProductDetailsPage.readyNow}")
-          checkRow(table(3), 10, ProductDetailsPage.charitableGiving, status = s"${ProductDetailsPage.readyNow}")
-          checkRow(table(3), 11, ProductDetailsPage.cgt, status = s"${ProductDetailsPage.readyNow}")
-          checkRow(table(3), 12, ProductDetailsPage.student, status = s"${ProductDetailsPage.readyNow}")
-          checkRow(table(3), 13, ProductDetailsPage.marriage, status = s"${ProductDetailsPage.readyNow}")
-          checkRow(table(3), 14, ProductDetailsPage.class2NIC, status = s"${ProductDetailsPage.readyNow}")
-          checkRow(table(3), 15, ProductDetailsPage.childBenefitCharge, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(3), 7, ProductDetailsPage.partnerIncome, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(3), 8, ProductDetailsPage.foreignDividend, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(3), 9, ProductDetailsPage.foreignInterest, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(3), 10, ProductDetailsPage.privatePensionContribution, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(3), 11, ProductDetailsPage.charitableGiving, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(3), 12, ProductDetailsPage.cgt, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(3), 13, ProductDetailsPage.student, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(3), 14, ProductDetailsPage.marriage, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(3), 15, ProductDetailsPage.class2NIC, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(3), 16, ProductDetailsPage.childBenefitCharge, status = s"${ProductDetailsPage.readyNow}")
         }
       }
     }
@@ -221,15 +213,16 @@ class ProductDetailsViewSpec extends ViewSpec with FeatureSwitching with BeforeA
           checkRow(table(3), 4, ProductDetailsPage.ukDividends, status = s"${ProductDetailsPage.inDevelopment}")
           checkRow(table(3), 5, ProductDetailsPage.statePension, status = s"${ProductDetailsPage.notIncluded}")
           checkRow(table(3), 6, ProductDetailsPage.privatePensionIncome, status = s"${ProductDetailsPage.notIncluded}")
-          checkRow(table(3), 7, ProductDetailsPage.foreignDividend, status = s"${ProductDetailsPage.readyNow}")
-          checkRow(table(3), 8, ProductDetailsPage.foreignInterest, status = s"${ProductDetailsPage.notIncluded}")
-          checkRow(table(3), 9, ProductDetailsPage.privatePensionContribution, status = s"${ProductDetailsPage.notIncluded}")
-          checkRow(table(3), 10, ProductDetailsPage.charitableGiving, status = s"${ProductDetailsPage.notIncluded}")
-          checkRow(table(3), 11, ProductDetailsPage.cgt, status = s"${ProductDetailsPage.notIncluded}")
-          checkRow(table(3), 12, ProductDetailsPage.student, status = s"${ProductDetailsPage.notIncluded}")
-          checkRow(table(3), 13, ProductDetailsPage.marriage, status = s"${ProductDetailsPage.notIncluded}")
-          checkRow(table(3), 14, ProductDetailsPage.class2NIC, status = s"${ProductDetailsPage.notIncluded}")
-          checkRow(table(3), 15, ProductDetailsPage.childBenefitCharge, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(3), 7, ProductDetailsPage.partnerIncome, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(3), 8, ProductDetailsPage.foreignDividend, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(3), 9, ProductDetailsPage.foreignInterest, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(3), 10, ProductDetailsPage.privatePensionContribution, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(3), 11, ProductDetailsPage.charitableGiving, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(3), 12, ProductDetailsPage.cgt, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(3), 13, ProductDetailsPage.student, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(3), 14, ProductDetailsPage.marriage, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(3), 15, ProductDetailsPage.class2NIC, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(3), 16, ProductDetailsPage.childBenefitCharge, status = s"${ProductDetailsPage.notIncluded}")
         }
       }
     }
@@ -304,33 +297,17 @@ class ProductDetailsViewSpec extends ViewSpec with FeatureSwitching with BeforeA
           checkRow(table(3), 4, ProductDetailsPage.ukDividends, status = s"${ProductDetailsPage.notIncluded}")
           checkRow(table(3), 5, ProductDetailsPage.statePension, status = s"${ProductDetailsPage.notIncluded}")
           checkRow(table(3), 6, ProductDetailsPage.privatePensionIncome, status = s"${ProductDetailsPage.notIncluded}")
-          checkRow(table(3), 7, ProductDetailsPage.foreignDividend, status = s"${ProductDetailsPage.notIncluded}")
-          checkRow(table(3), 8, ProductDetailsPage.foreignInterest, status = s"${ProductDetailsPage.notIncluded}")
-          checkRow(table(3), 9, ProductDetailsPage.privatePensionContribution, status = s"${ProductDetailsPage.notIncluded}")
-          checkRow(table(3), 10, ProductDetailsPage.charitableGiving, status = s"${ProductDetailsPage.notIncluded}")
-          checkRow(table(3), 11, ProductDetailsPage.cgt, status = s"${ProductDetailsPage.notIncluded}")
-          checkRow(table(3), 12, ProductDetailsPage.student, status = s"${ProductDetailsPage.notIncluded}")
-          checkRow(table(3), 13, ProductDetailsPage.marriage, status = s"${ProductDetailsPage.notIncluded}")
-          checkRow(table(3), 14, ProductDetailsPage.class2NIC, status = s"${ProductDetailsPage.notIncluded}")
-          checkRow(table(3), 15, ProductDetailsPage.childBenefitCharge, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(3), 7, ProductDetailsPage.partnerIncome, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(3), 8, ProductDetailsPage.foreignDividend, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(3), 9, ProductDetailsPage.foreignInterest, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(3), 10, ProductDetailsPage.privatePensionContribution, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(3), 11, ProductDetailsPage.charitableGiving, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(3), 12, ProductDetailsPage.cgt, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(3), 13, ProductDetailsPage.student, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(3), 14, ProductDetailsPage.marriage, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(3), 15, ProductDetailsPage.class2NIC, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(3), 16, ProductDetailsPage.childBenefitCharge, status = s"${ProductDetailsPage.notIncluded}")
         }
-      }
-    }
-
-    "the vendor has everything ready now(Feature switch is ON)" which {
-      enable(PartnerIncomeFeature)
-      enable(TrustIncomeFeature)
-      enable(FosterCarerFeature)
-      enable(AveragingAdjustmentFeature)
-
-      val document: Document = createAndParseDocument(softwareVendorModelFull)
-      def table(index: Int): Element = document.getTable(index)
-
-      "displays all the rows (partner income, trust income and foster care feature switch is ON)" in {
-        checkRow(table(3), 7, ProductDetailsPage.partnerIncome, status = s"${ProductDetailsPage.readyNow}")
-        checkRow(table(3), 10, ProductDetailsPage.fosterCarerIncome, status = s"${ProductDetailsPage.readyNow}")
-        checkRow(table(3), 11, ProductDetailsPage.trustIncome, status = s"${ProductDetailsPage.readyNow}")
-        checkRow(table(3), 19, ProductDetailsPage.averagingAdjustment, status = s"${ProductDetailsPage.readyNow}")
       }
     }
 
@@ -429,9 +406,6 @@ class ProductDetailsViewSpec extends ViewSpec with FeatureSwitching with BeforeA
     val privatePensionContribution = "Private pension contributions"
     val marriage = "Marriage Allowance"
     val partnerIncome = "Partner income from a partnership"
-    val trustIncome = "Trustee"
-    val fosterCarerIncome = "Foster carer"
-    val averagingAdjustment = "Averaging adjustments"
 
     val softwareSpecHeading = "Software specifications"
     val softwareType = "Software type"

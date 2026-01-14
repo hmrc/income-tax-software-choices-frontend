@@ -63,7 +63,6 @@ other-items.student-loans = Benthyciad myfyriwr
 other-items.marriage-allowance = Lwfans Priodasol
 other-items.voluntary-class-2-national-insurance = Yswiriant Gwladol Dosbarth 2 Gwirfoddol
 other-items.high-income-child-benefit-charge = Tâl Treth Budd-dal Plant Incwm Uchel
-other-items.averaging-adjustment = Addasiadau cyfartalu
 other-items.none-of-these = Dim un o’r rhain
 
 other-items.error.non-empty = Dewiswch un eitem arall neu eitemau eraill
@@ -219,9 +218,6 @@ product-details.other-income.high-income-child-benefit-charge = Tâl Treth Budd-
 product-details.other-income.payments-into-a-private-pension = Cyfraniadau pensiwn preifat
 product-details.other-income.marriage-allowance = Lwfans Priodasol
 product-details.other-income.partner-income = Incwm partner o bartneriaeth
-product-details.other-income.foster-carer = Gofalwr maeth
-product-details.other-income.trust-income = Ymddiriedolwr
-product-details.other-income.averaging-adjustment = Addasiadau cyfartalu
 
 product-details.status.heading = Statws
 product-details.status.ready = Yn barod nawr
@@ -260,8 +256,6 @@ additional.income.source-private-pension-income                     = Incwm o be
 additional.income.source-partner-income                             = Incwm partner o bartneriaeth
 additional.income.source-foreign-dividends                          = Difidendau tramor
 additional.income.source-foreign-interest                           = Llog tramor
-additional.income.source-trust-income                               = Ymddiriedolwr
-additional.income.source-foster-carer                               = Gofalwr maeth
 additional.income.source-none                                       = Dim un o’r rhain
 additional.income.source.error-non-empty                            = Dewiswch fath o incwm, mathau o incwm, neu ‘dim un o’r rhain’
 additional.income.source.error-none-only                            = Dewiswch naill ai math o incwm, mathau o incwm, neu ‘dim un o’r rhain’

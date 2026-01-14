@@ -51,7 +51,7 @@ class SoftwareChoicesService @Inject()(
         andThen SoftwareChoicesService.sortVendors
       )(allPotentialVendors.vendors)
 
-    val nonMandatoryFilters = filters.filter(nonMandatedIncomeGroup().contains)
+    val nonMandatoryFilters = filters.filter(nonMandatedIncomeGroup.contains)
     val vendorsToDisplay = if (nonMandatoryFilters.isEmpty) {
       qualifyingVendors
     } else {

@@ -57,7 +57,7 @@ case class SoftwareVendorModel(
   }
 
   def isEoyReady(searchFilters: Seq[VendorFilter])(implicit appConfig: AppConfig): Option[Boolean] = {
-    val nonMandatoryFilters = searchFilters.filter(nonMandatedIncomeGroup().contains)
+    val nonMandatoryFilters = searchFilters.filter(nonMandatedIncomeGroup.contains)
     
     if (nonMandatoryFilters.isEmpty && getFeatureStatus(TaxReturn).eq(NotApplicable)) 
       None
