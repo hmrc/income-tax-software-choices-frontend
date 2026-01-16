@@ -19,31 +19,41 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.SessionIdentifierAction
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.RecoveryIdService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SessionExpiredView
 
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class SessionExpiredController @Inject()(repo: UserFiltersRepository,
+                                         recoveryIdService: RecoveryIdService,
                                          view: SessionExpiredView,
                                          identify: SessionIdentifierAction)
                                         (implicit ec: ExecutionContext,
                                          mcc: MessagesControllerComponents) extends BaseFrontendController {
 
-  def show(timeout: Boolean = false): Action[AnyContent] = identify.async { request =>
+  def show(timeout: Boolean = false, recoveryId: Option[String] = None): Action[AnyContent] = identify.async { request =>
     given Request[AnyContent] = request
     for {
-      _ <- repo.delete(request.sessionId)
+      _ <- if (!recoveryId.isDefined) repo.delete(request.sessionId) else Future.successful(true)
     } yield {
       Ok(view(
-        postAction = routes.SessionExpiredController.submit(),
-        timeout = timeout
+        postAction = routes.SessionExpiredController.submit(recoveryId),
+        timeout = timeout,
+        recoveryId = recoveryId
       ))
     }
   }
 
-  def submit(): Action[AnyContent] = Action { _ =>
-    Redirect(routes.IndexController.index)
+  def submit(recoveryId: Option[String]): Action[AnyContent] = identify { request =>
+    recoveryId.match {
+      case Some(rid) => {
+        recoveryIdService.recoverSession(request.sessionId, rid)
+        Redirect(routes.SearchSoftwareController.show())
+      }
+      case _ => Redirect(routes.IndexController.index)
+    }
   }
+
 }

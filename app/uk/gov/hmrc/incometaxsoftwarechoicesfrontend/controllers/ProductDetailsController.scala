@@ -17,24 +17,33 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.SoftwareChoicesService
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.{ProductDetailsView, NotFoundView}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.SessionIdentifierAction
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.{RecoveryIdService, SoftwareChoicesService}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.{NotFoundView, ProductDetailsView}
 
 import java.net.URLDecoder
 import javax.inject.{Inject, Singleton}
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class ProductDetailsController @Inject()(softwareChoicesService: SoftwareChoicesService,
+                                         recoveryIdService: RecoveryIdService,
+                                         identify: SessionIdentifierAction,
                                          productDetailsPage: ProductDetailsView,
                                          notFoundView: NotFoundView)
-                                        (implicit mcc: MessagesControllerComponents) extends BaseFrontendController {
+                                        (implicit ec: ExecutionContext,
+                                         mcc: MessagesControllerComponents) extends BaseFrontendController {
 
-  def show(software: String): Action[AnyContent] = Action { request =>
+  def show(software: String): Action[AnyContent] = identify.async { request =>
     given Request[AnyContent] = request
     val softwareName = URLDecoder.decode(software, "UTF-8")
     softwareChoicesService.getSoftwareVendor(softwareName) match {
-      case None => NotFound(notFoundView(routes.ProductDetailsController.show(software).url))
-      case Some(softwareVendor) => Ok(productDetailsPage(softwareVendor))
+      case None => Future.successful(NotFound(notFoundView(routes.ProductDetailsController.show(software).url)))
+      case Some(softwareVendor) => {
+        recoveryIdService.getRecoveryId(request.sessionId).map(recoveryId =>
+          Ok(productDetailsPage(softwareVendor, recoveryId))
+        )
+      }
     }
   }
 }

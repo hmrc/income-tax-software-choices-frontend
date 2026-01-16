@@ -26,7 +26,7 @@
         form: FormWithCSRF
 )
 
-@(postAction: Call, timeout: Boolean = false)(implicit request: Request[_], messages: Messages)
+@(postAction: Call, timeout: Boolean = false, recoveryId: Option[String] = None)(implicit request: Request[_], messages: Messages)
 
 @mainTemplate(title = messages("session-expired.title"), backLink = None, showTimeoutDialog = false) {
 
@@ -39,7 +39,7 @@
     @form(action = postAction) {
 
         @govukButton(Button(
-            content = Text(messages("session-expired.button"))
+            content = if(!recoveryId.isDefined) Text(messages("session-expired.button")) else Text(s"Recover with id ${recoveryId.get}")
         ))
     }
 }

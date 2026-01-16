@@ -40,6 +40,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
                                          softwareChoicesService: SoftwareChoicesService,
                                          pageAnswersService: PageAnswersService,
+                                         recoveryIdService: RecoveryIdService,
                                          userFiltersRepository: UserFiltersRepository,
                                          identify: SessionIdentifierAction,
                                          requireData: RequireUserDataRefiner,
@@ -48,7 +49,7 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
                                          val appConfig: AppConfig,
                                          mcc: MessagesControllerComponents) extends BaseFrontendController with FeatureSwitching {
 
-  def show(): Action[AnyContent] = (identify andThen requireData) { implicit request =>
+  def show(): Action[AnyContent] = (identify andThen requireData).async { implicit request =>
     given Request[AnyContent] = request
 
     val finalFilters = request.userFilters.finalFilters
@@ -59,7 +60,9 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
     )
 
     if (isEnabled(ExplicitAudits)) auditService.auditSearchResults(request.userFilters, model.vendorsWithIntent.map(_.vendor.name))
-    Ok(view(model = model, form = FiltersForm.form.fill(FiltersFormModel(filters = finalFilters))))
+    recoveryIdService.getRecoveryId(request.sessionId).map(recoveryId =>
+      Ok(view(model = model, form = FiltersForm.form.fill(FiltersFormModel(filters = finalFilters)), recoveryId))
+    )
 
   }
 
@@ -68,6 +71,7 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
     val filters = FiltersForm.form.bindFromRequest().get
     for {
       updatedUserFilters <- update(filters)(request).flatMap(_ => userFiltersRepository.get(request.sessionId))
+      recoveryId <- recoveryIdService.getRecoveryId(request.sessionId)
     } yield {
       val isAgent = pageAnswersService.getPageAnswers(request.userFilters.answers, UserTypePage).contains(Agent)
       val userFilters = updatedUserFilters.getOrElse(UserFilters(request.sessionId, None, filters.filters))
@@ -77,7 +81,7 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
       )
 
       if (isEnabled(ExplicitAudits)) auditService.auditSearchResults(userFilters, model.vendorsWithIntent.map(_.vendor.name))
-      Ok(view(model, FiltersForm.form.fill(filters)))
+      Ok(view(model, FiltersForm.form.fill(filters), recoveryId))
     }
   }
 
@@ -96,16 +100,18 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
     userFiltersRepository.set(request.userFilters.copy(finalFilters = filtersFromAnswers ++ search.filters))
   }
 
-  private def view(model: SoftwareChoicesResultsViewModel, form: Form[FiltersFormModel])
-                  (implicit request: Request[_]): Html = {
-
-    searchSoftwareView(
-      viewModel = model,
-      searchForm = form,
-      postAction = routes.SearchSoftwareController.search(),
-      clearAction = routes.SearchSoftwareController.clear(),
-      backUrl = backLinkUrl(model.isAgent)
-    )
+  private def view(model: SoftwareChoicesResultsViewModel, form: Form[FiltersFormModel], recoveryId: Option[String])
+                  (implicit request: SessionDataRequest[_]): Html = {
+    
+      searchSoftwareView(
+        viewModel = model,
+        searchForm = form,
+        postAction = routes.SearchSoftwareController.search(),
+        clearAction = routes.SearchSoftwareController.clear(),
+        backUrl = backLinkUrl(model.isAgent),
+        recoveryId = recoveryId
+      )
+    
   }
 
   def backLinkUrl(isAgent: Boolean): String = {

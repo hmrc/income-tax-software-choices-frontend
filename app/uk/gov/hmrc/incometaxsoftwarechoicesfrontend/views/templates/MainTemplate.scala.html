@@ -30,7 +30,7 @@
     hmrcNewTabLinkHelper: HmrcNewTabLinkHelper
 )
 
-@(title: String, backLink: Option[String] = None, optForm: Option[Form[_]] = None, scripts: Option[Html] = None, isFullWidth: Boolean = false, showTimeoutDialog: Boolean = true)(contentBlock: Html)(implicit request: RequestHeader, messages: Messages)
+@(title: String, backLink: Option[String] = None, optForm: Option[Form[_]] = None, scripts: Option[Html] = None, isFullWidth: Boolean = false, showTimeoutDialog: Boolean = true, recoveryId: Option[String] = None)(contentBlock: Html)(implicit request: RequestHeader, messages: Messages)
 
 @prefixedTitle = @{
   optForm match {
@@ -64,7 +64,7 @@
             timeout = Some(appConfig.timeoutInSeconds),
             countdown = Some(appConfig.timeoutWarningInSeconds),
             signOutUrl = routes.SessionExpiredController.show(false).url,
-            timeoutUrl = Some(routes.SessionExpiredController.show(true).url),
+            timeoutUrl = Some(routes.SessionExpiredController.show(true, recoveryId).url),
             keepAliveUrl = Some(routes.KeepAliveController.keepAlive().url),
             title = Some(messages("timeout.title")),
             message = Some(messages("timeout.message")),

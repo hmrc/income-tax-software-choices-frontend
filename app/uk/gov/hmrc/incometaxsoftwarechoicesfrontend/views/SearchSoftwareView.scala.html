@@ -35,9 +35,9 @@
   govukButton: GovukButton,
   languageUtils: LanguageUtils
 )(implicit appConfig: AppConfig)
-@(viewModel: SoftwareChoicesResultsViewModel, searchForm: Form[FiltersFormModel], postAction: Call, clearAction: Call, backUrl: String)(implicit request: Request[_], messages: Messages)
+@(viewModel: SoftwareChoicesResultsViewModel, searchForm: Form[FiltersFormModel], postAction: Call, clearAction: Call, backUrl: String, recoveryId: Option[String] = None)(implicit request: Request[_], messages: Messages)
 
-@mainTemplate(title = messages("search-software.title"), backLink = Some(backUrl), optForm = Some(searchForm), isFullWidth = true) {
+@mainTemplate(title = messages("search-software.title"), backLink = Some(backUrl), optForm = Some(searchForm), isFullWidth = true, recoveryId = recoveryId) {
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">

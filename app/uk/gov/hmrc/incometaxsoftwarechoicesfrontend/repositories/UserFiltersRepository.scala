@@ -54,6 +54,7 @@ class UserFiltersRepository @Inject()(
   implicit val instantFormat: Format[Instant] = MongoJavatimeFormats.instantFormat
 
   private def byId(id: String): Bson = Filters.equal("_id", id)
+  private def byRecovery(id: String): Bson = Filters.equal("recoveryId", id)
 
   def keepAlive(id: String): Future[Boolean] = {
     collection
@@ -69,6 +70,15 @@ class UserFiltersRepository @Inject()(
     for {
       _ <- keepAlive(id)
       result <- collection.find(byId(id)).toFuture()
+    } yield {
+      result.headOption
+    }
+  }
+
+  def getRecovery(id: String): Future[Option[UserFilters]] = {
+    for {
+      _ <- keepAlive(id)
+      result <- collection.find(byRecovery(id)).toFuture()
     } yield {
       result.headOption
     }
