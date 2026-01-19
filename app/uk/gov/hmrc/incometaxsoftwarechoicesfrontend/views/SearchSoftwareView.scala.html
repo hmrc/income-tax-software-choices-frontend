@@ -53,6 +53,12 @@
             <p class="govuk-body">@messages("search-software.intent.p2")</p>
             <a href="@{routes.CheckYourAnswersController.show().url}" class="govuk-button govuk-button--secondary" data-module="govuk-button" data-govuk-button-init>@messages("search-software.check-answers")</a>
         }
+
+        <p class="govuk-body">
+            <a target="_blank" href=@{appConfig.feedbackUrl} class="govuk-link">
+            @messages("exit-survey.link")
+            </a>
+        </p>
     </div>
   </div>
 

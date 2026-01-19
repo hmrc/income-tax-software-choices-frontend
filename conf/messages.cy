@@ -281,3 +281,6 @@ page-not-found.bullet2 = dod o hyd i feddalwedd sy’n cydweddu â’r cynllun T
 phase-banner.tag = Alffa
 phase-banner.intro = Gwasanaeth newydd yw hwn. Helpwch ni i’w wella a
 phase-banner.feedback = rhoi eich adborth
+
+# Exit Survey
+exit-survey.link = Rhoi adborth ar y gwasanaeth hwn

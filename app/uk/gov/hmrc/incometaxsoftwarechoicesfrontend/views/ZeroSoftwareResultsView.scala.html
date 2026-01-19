@@ -40,6 +40,11 @@
         <li>@messages("zero-results.bullet1")</li>
         <li>@messages("zero-results.bullet2")</li>
     </ul>
+    <p class="govuk-body">
+        <a target="_blank" href=@{appConfig.feedbackUrl} class="govuk-link">
+            @messages("exit-survey.link")
+        </a>
+    </p>
 
     @form(action = finishAction) {
 
