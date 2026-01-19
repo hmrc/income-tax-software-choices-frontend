@@ -16,6 +16,8 @@
 
 @import uk.gov.hmrc.govukfrontend.views.html.components._
 @import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
+@import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcNewTabLinkHelper
+@import uk.gov.hmrc.hmrcfrontend.views.viewmodels.newtablinkhelper.NewTabLinkHelper
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
@@ -28,6 +30,7 @@
 
 @this(
   mainTemplate: MainTemplate,
+  hmrcNewTabLinkHelper: HmrcNewTabLinkHelper,
   softwareFiltersTemplate: SoftwareFiltersTemplate,
   softwareVendorsIntentResultsTemplate: SoftwareVendorsIntentResultsTemplate,
   softwareVendorsAgentTemplate: SoftwareVendorsAgentTemplate,
@@ -55,9 +58,10 @@
         }
 
         <p class="govuk-body">
-            <a target="_blank" href=@{appConfig.feedbackUrl} class="govuk-link">
-            @messages("exit-survey.link")
-            </a>
+            @hmrcNewTabLinkHelper(NewTabLinkHelper(
+               text = messages("exit-survey.link"),
+               href = Some(appConfig.feedbackUrl)
+            ))
         </p>
     </div>
   </div>

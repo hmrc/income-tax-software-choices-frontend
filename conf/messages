@@ -283,4 +283,4 @@ phase-banner.intro = This is a new service. Help us improve it and
 phase-banner.feedback = give your feedback
 
 # Exit Survey
-exit-survey.link = Give feedback on this service (opens in new tab)
+exit-survey.link = Give feedback on this service

@@ -107,9 +107,10 @@
         }
     }
 <p class="govuk-body">
-    <a target="_blank" href=@{appConfig.feedbackUrl} class="govuk-link">
-        @messages("exit-survey.link")
-    </a>
+    @hmrcNewTabLinkHelper(NewTabLinkHelper(
+        text = messages("exit-survey.link"),
+        href = Some(appConfig.feedbackUrl)
+    ))
 </p>
 }
 
