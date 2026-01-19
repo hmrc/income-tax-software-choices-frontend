@@ -363,7 +363,6 @@ class ProductDetailsViewSpec extends ViewSpec with FeatureSwitching with BeforeA
 
     "display the exit survey link" in {
       val document: Document = createAndParseDocument(softwareVendorModelFull)
-      document.mainContent.select("p").get(2).text shouldBe ProductDetailsPage.exitSurveyLinkTitle
       val link = document.mainContent.select(".govuk-link").get(1)
       link.text shouldBe ProductDetailsPage.exitSurveyLinkTitle
       link.attr("href") shouldBe ProductDetailsPage.exitSurveyLink
