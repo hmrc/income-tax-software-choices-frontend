@@ -72,6 +72,13 @@ class ZeroSoftwareResultsViewSpec extends ViewSpec {
           bulletList.selectNth("li", 2).text mustBe ZeroSoftwareResultsViewContent.bulletPoint2
         }
       }
+
+       "display the exit survey link" in {
+          val link = document().mainContent.select(".govuk-link").get(0)
+          link.text shouldBe ZeroSoftwareResultsViewContent.exitSurveyLinkTitle
+          link.attr("href") shouldBe ZeroSoftwareResultsViewContent.exitSurveyLink
+       }
+
       "have a finish button" in {
         document().select("form").select(".govuk-button").text() shouldBe ZeroSoftwareResultsViewContent.finish
       }
@@ -89,4 +96,6 @@ private object ZeroSoftwareResultsViewContent {
   val bulletPoint1 = "visit software providers’ websites to find out more about what they’re developing"
   val bulletPoint2 = "ask your agent or accountant about software, if you have one"
   val finish = "Finish"
+  val exitSurveyLinkTitle = "Give feedback on this service (opens in new tab)"
+  val exitSurveyLink = "http://localhost:9514/feedback/SOFTWAREMTDIT"
 }

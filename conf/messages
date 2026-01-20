@@ -281,3 +281,6 @@ page-not-found.bullet2 = find software that works with Making Tax Digital for In
 phase-banner.tag = Alpha
 phase-banner.intro = This is a new service. Help us improve it and
 phase-banner.feedback = give your feedback
+
+# Exit Survey
+exit-survey.link = Give feedback on this service

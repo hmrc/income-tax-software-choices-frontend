@@ -360,6 +360,13 @@ class ProductDetailsViewSpec extends ViewSpec with FeatureSwitching with BeforeA
         docEmpty.select(s"h2:contains($specHeading)").size shouldBe 0
       }
     }
+
+    "display the exit survey link" in {
+      val document: Document = createAndParseDocument(softwareVendorModelFull)
+      val link = document.mainContent.select(".govuk-link").get(1)
+      link.text shouldBe ProductDetailsPage.exitSurveyLinkTitle
+      link.attr("href") shouldBe ProductDetailsPage.exitSurveyLink
+    }
   }
 
   private def page(vendorModel: SoftwareVendorModel) =
@@ -371,6 +378,9 @@ class ProductDetailsViewSpec extends ViewSpec with FeatureSwitching with BeforeA
   object ProductDetailsPage {
     val paragraph = "Visit the company’s website to check if the software is right for you"
     val contactDetailsWebsite = "Website"
+
+    val exitSurveyLinkTitle = "Give feedback on this service (opens in new tab)"
+    val exitSurveyLink = "http://localhost:9514/feedback/SOFTWAREMTDIT"
 
     val softwareFeaturesHeading = "Software features"
     val quarterlyUpdatessHeading = "What you need for your quarterly updates"

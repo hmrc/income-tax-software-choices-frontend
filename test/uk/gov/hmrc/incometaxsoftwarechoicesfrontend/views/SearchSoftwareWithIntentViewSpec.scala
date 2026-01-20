@@ -128,6 +128,12 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
       document.mainContent.selectHead(".govuk-button.govuk-button--secondary").text shouldBe SearchSoftwareWithIntentPageContent.changeAnswers
     }
 
+    "display the exit survey link" in {
+      val link = document.mainContent.select(".govuk-link").get(0)
+      link.text shouldBe SearchSoftwareWithIntentPageContent.exitSurveyLinkTitle
+      link.attr("href") shouldBe SearchSoftwareWithIntentPageContent.exitSurveyLink
+    }
+
     "have a filter section" which {
       val filterSection = getFilterSection(document)
 
@@ -534,6 +540,8 @@ private object SearchSoftwareWithIntentPageContent {
   val paragraph = "All the products showing in the filter list will allow you to submit your quarterly updates."
   val paragraphTwo = "In development means one or more features you need to complete your tax return are still being built. We expect these features will be ready for you to do your 2026 to 2027 return."
   val changeAnswers = "Change answers"
+  val exitSurveyLinkTitle = "Give feedback on this service (opens in new tab)"
+  val exitSurveyLink = "http://localhost:9514/feedback/SOFTWAREMTDIT"
 
   object SearchSoftwareSection {
     val searchFormHeading = "Search by software name"
