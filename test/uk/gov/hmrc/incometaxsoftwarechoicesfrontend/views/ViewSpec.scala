@@ -247,11 +247,11 @@ trait ViewSpec extends AnyWordSpecLike with Matchers with GuiceOneAppPerSuite {
       }
       if (isLegendHidden) {
         checkpoint {
-          fieldSetLegend.attr("class") should include("govuk-visually-hidden")
+          fieldSetLegend.attr("class") should include("govuk-visually-hidden govuk-!-display-block")
         }
       } else {
         checkpoint {
-          fieldSetLegend.attr("class") shouldNot include("govuk-visually-hidden")
+          fieldSetLegend.attr("class") shouldNot include("govuk-visually-hidden govuk-!-display-block")
         }
       }
     }
