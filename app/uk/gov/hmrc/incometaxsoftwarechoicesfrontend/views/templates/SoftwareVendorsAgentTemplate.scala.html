@@ -25,9 +25,9 @@
 
 @resultsHeading(count: Int) = @{
     count match {
-        case 0 => <h2 class="govuk-heading-m">{messages("search-software.vendor-count.agent.heading.none")}</h2>
-        case 1 => <h2 class="govuk-heading-m">{messages("search-software.vendor-count.agent.heading.one")}</h2>
-        case _ => <h2 class="govuk-heading-m">{messages("search-software.vendor-count.agent.heading.many", count)}</h2>
+        case 0 => <h2 class="govuk-heading-l">{messages("search-software.vendor-count.agent.heading.none")}</h2>
+        case 1 => <h2 class="govuk-heading-l">{messages("search-software.vendor-count.agent.heading.one")}</h2>
+        case _ => <h2 class="govuk-heading-l">{messages("search-software.vendor-count.agent.heading.many", count)}</h2>
     }
 }
 

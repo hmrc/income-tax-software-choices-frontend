@@ -44,14 +44,14 @@
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-      <h1 class="govuk-heading-l">@messages("search-software.heading")</h1>
+      <h1 class="govuk-heading-xl">@messages("search-software.heading")</h1>
         @if(viewModel.isAgent) {
             <p class="govuk-body">@messages("search-software.p1")</p>
             <p class="govuk-body">@messages("search-software.p2")</p>
             <p class="govuk-body">@messages("search-software.p3.agent.intent")</p>
             <p class="govuk-inset-text">@messages("search-software.inset.agent.intent")</p>
         } else {
-            <h2 class="govuk-heading-m">@messages("search-software.intent.h2")</h2>
+            <h2 class="govuk-heading-l">@messages("search-software.intent.h2")</h2>
             <p class="govuk-body">@messages("search-software.intent.p1")</p>
             <p class="govuk-body">@messages("search-software.intent.p2")</p>
             @govukButton(Button(
@@ -81,7 +81,7 @@
 
       <div class="govuk-grid-column-one-third govuk-!-margin-bottom-8">
         <div class="filters-section" role="search" aria-label="@messages("search-software.filters.heading")">
-          <h2 class="govuk-heading-m">@messages("search-software.filters.heading")</h2>
+          <h2 class="govuk-heading-l">@messages("search-software.filters.heading")</h2>
 
           <p class="govuk-body">@messages("search-software.filters.paragraph")</p>
 
