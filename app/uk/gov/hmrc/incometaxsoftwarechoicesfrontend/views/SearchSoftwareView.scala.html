@@ -54,13 +54,11 @@
             <h2 class="govuk-heading-m">@messages("search-software.intent.h2")</h2>
             <p class="govuk-body">@messages("search-software.intent.p1")</p>
             <p class="govuk-body">@messages("search-software.intent.p2")</p>
-          <p>
-              @govukButton(Button(
-                   content = Text(messages("search-software.check-answers")),
-                   href = Some(routes.CheckYourAnswersController.show().url),
-                   classes = "govuk-button--secondary"
-              ))
-          </p>
+            @govukButton(Button(
+               content = Text(messages("search-software.check-answers")),
+               href = Some(routes.CheckYourAnswersController.show().url),
+               classes = "govuk-button--secondary"
+            ))
         }
 
         <p class="govuk-body">
