@@ -66,7 +66,9 @@
             rows += SummaryListRow(
                 key = Key(content = Text(messages("product-details.software-spec.software-type"))),
                 value = Value(content = HtmlContent(
-                    softwareTypes.map(f => messages(s"product-details.software-type.${f.key}")).mkString("<br>")
+                    s"""<ul class="govuk-list">
+                    ${softwareTypes.map(f => s"""<li>${messages(s"product-details.software-type.${f.key}")}</li>""").mkString("")}
+                    </ul>"""
                 ))
             )
         }
@@ -75,7 +77,9 @@
             rows += SummaryListRow(
                 key = Key(content = Text(messages("product-details.software-spec.compatible-with"))),
                 value = Value(content = HtmlContent(
-                    compatible.map(f => messages(s"product-details.compatible-with.${f.key}")).mkString("<br>")
+                    s"""<ul class="govuk-list">
+                    ${compatible.map(f => s"""<li>${messages(s"product-details.compatible-with.${f.key}")}</li>""").mkString("")}
+                    </ul>"""
                 ))
             )
         }
@@ -84,7 +88,9 @@
             rows += SummaryListRow(
                 key = Key(content = Text(messages("product-details.software-spec.mobile-app"))),
                 value = Value(content = HtmlContent(
-                    mobiles.map(f => messages(s"product-details.mobile-app.${f.key}")).mkString("<br>")
+                    s"""<ul class="govuk-list">
+                    ${mobiles.map(f => s"""<li>${messages(s"product-details.mobile-app.${f.key}")}</li>""").mkString("")}
+                    </ul>"""
                 ))
             )
         }
@@ -93,7 +99,9 @@
             rows += SummaryListRow(
                 key = Key(content = Text(messages("product-details.software-spec.language"))),
                 value = Value(content = HtmlContent(
-                    languages.map(f => messages(s"product-details.language.${f.key}")).mkString("<br>")
+                    s"""<ul class="govuk-list">
+                    ${languages.map(f => s"""<li>${messages(s"product-details.language.${f.key}")}</li>""").mkString("")}
+                    </ul>"""
                 ))
             )
         }
