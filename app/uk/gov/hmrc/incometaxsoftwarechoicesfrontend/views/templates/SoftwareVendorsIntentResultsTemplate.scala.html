@@ -26,12 +26,12 @@
 
 @count = @{viewModel.vendorsWithIntent.length}
 
-<div id="vendor-count">
+<div id="vendor-count" class="govuk-!-padding-top-3">
     @{
         count match {
-            case 0 => <h2 class="govuk-heading-m">{messages("search-software.vendor-count.intent.heading.none")}</h2>
-            case 1 => <h2 class="govuk-heading-m">{messages("search-software.vendor-count.intent.heading.one")}</h2>
-            case _ => <h2 class="govuk-heading-m">{messages("search-software.vendor-count.intent.heading.many", count)}</h2>
+            case 0 => <h2 class="govuk-heading-l">{messages("search-software.vendor-count.intent.heading.none")}</h2>
+            case 1 => <h2 class="govuk-heading-l">{messages("search-software.vendor-count.intent.heading.one")}</h2>
+            case _ => <h2 class="govuk-heading-l">{messages("search-software.vendor-count.intent.heading.many", count)}</h2>
         }
     }
 
