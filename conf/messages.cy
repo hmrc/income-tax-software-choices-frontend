@@ -98,10 +98,7 @@ choosing-software.button.view-your-results  = Gweld eich canlyniadau
 
 
 # Search software page
-
-search-software.title.many                                = Mae gennych {0} canlyniad meddalwedd
 search-software.heading.many                              = Mae gennych {0} canlyniad meddalwedd
-search-software.title.one                                 = Mae gennych 1 canlyniad meddalwedd
 search-software.heading.one                               = Mae gennych 1 canlyniad meddalwedd
 search-software.p1                                        = Mae pob meddalwedd yma wedi bod drwy broses gydnabod ble mae CThEF yn gwirio ayw’n gallu cyflwyno eich trethi. Nid yw CThEF yn argymell nac yn cymeradwyo unrhyw gynnyrch neu ddarparwr meddalwedd penodol.
 search-software.p2                                        = Efallai bydd rhai o’r cynhyrchion sy’n cael eu rhestru yn cynnig cyfnod prawf am ddim, neu fersiynau am ddim, ond bydd yn rhaid i chi dalu am rhai eraill.

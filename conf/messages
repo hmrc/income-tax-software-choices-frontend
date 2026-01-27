@@ -98,10 +98,7 @@ choosing-software.button.view-your-results  = View your results
 
 
 # Search software page
-
-search-software.title.many                                = You have {0} software results
 search-software.heading.many                              = You have {0} software results
-search-software.title.one                                 = You have 1 software result
 search-software.heading.one                               = You have 1 software result
 search-software.p1                                        = All of this software has been through a recognition process where HMRC checks it’s capable of filing your taxes. HMRC does not endorse or recommend any one product or software provider.
 search-software.p2                                        = Some of the listed products may have free trials or free versions, but you’ll have to pay for others.

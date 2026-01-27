@@ -26,7 +26,6 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.{Agent, Sole
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{VendorFilter, *}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.*
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
 
 import java.time.Instant
 
