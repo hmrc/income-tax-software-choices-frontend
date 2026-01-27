@@ -40,11 +40,22 @@
 )(implicit appConfig: AppConfig)
 @(viewModel: SoftwareChoicesResultsViewModel, searchForm: Form[FiltersFormModel], postAction: Call, clearAction: Call, backUrl: String)(implicit request: Request[_], messages: Messages)
 
-@mainTemplate(title = messages("search-software.title"), backLink = Some(backUrl), optForm = Some(searchForm), isFullWidth = true) {
+
+@count = @{viewModel.vendorsWithIntent.length}
+
+@title = @{
+    if (count == 1) {
+        messages("search-software.heading.one", count)
+    } else {
+        messages("search-software.heading.many", count)
+    }
+}
+
+@mainTemplate(title = title, backLink = Some(backUrl), optForm = Some(searchForm), isFullWidth = true) {
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-      <h1 class="govuk-heading-xl">@messages("search-software.heading")</h1>
+      <h1 class="govuk-heading-xl">@title</h1>
         @if(viewModel.isAgent) {
             <p class="govuk-body">@messages("search-software.p1")</p>
             <p class="govuk-body">@messages("search-software.p2")</p>
