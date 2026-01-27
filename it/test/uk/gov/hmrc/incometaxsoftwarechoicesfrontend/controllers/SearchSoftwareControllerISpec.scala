@@ -60,7 +60,7 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
 
         response should have(
           httpStatus(OK),
-          pageTitle(s"""${messages("search-software.title")} - ${PageContentBase.title} - GOV.UK"""),
+          pageTitle(s"""${messages("search-software.title.many", 7)} - ${PageContentBase.title} - GOV.UK"""),
           elementExists("#agent-filter", false)
         )
       }
@@ -73,7 +73,7 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
 
         response should have(
           httpStatus(OK),
-          pageTitle(s"""${messages("search-software.title")} - ${PageContentBase.title} - GOV.UK"""),
+          pageTitle(s"""${messages("search-software.title.many", 7)} - ${PageContentBase.title} - GOV.UK"""),
           elementExists("#agent-filter", true)
         )
       }

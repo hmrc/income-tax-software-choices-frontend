@@ -99,14 +99,16 @@ choosing-software.button.view-your-results  = Gweld eich canlyniadau
 
 # Search software page
 
-search-software.title                                     = Meddalwedd ar gyfer y cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm
-search-software.heading                                   = Meddalwedd ar gyfer y cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm
+search-software.title.many                                = Mae gennych {0} canlyniad meddalwedd
+search-software.heading.many                              = Mae gennych {0} canlyniad meddalwedd
+search-software.title.one                                 = Mae gennych 1 canlyniad meddalwedd
+search-software.heading.one                               = Mae gennych 1 canlyniad meddalwedd
 search-software.p1                                        = Mae pob meddalwedd yma wedi bod drwy broses gydnabod ble mae CThEF yn gwirio ayw’n gallu cyflwyno eich trethi. Nid yw CThEF yn argymell nac yn cymeradwyo unrhyw gynnyrch neu ddarparwr meddalwedd penodol.
 search-software.p2                                        = Efallai bydd rhai o’r cynhyrchion sy’n cael eu rhestru yn cynnig cyfnod prawf am ddim, neu fersiynau am ddim, ond bydd yn rhaid i chi dalu am rhai eraill.
 search-software.p3.agent.intent                           = Mae rhai o’r nodweddion y bydd eu hangen arnoch er mwyn cyflwyno Ffurflen Dreth eich cleient yn parhau o dan ddatblygiad.
 search-software.inset.agent.intent                        = Nid yw CThEF yn gyfrifol am argaeledd cynnyrch nag am sicrhau bod y cynnyrch yr ydych yn ei ddewis yn bodloni anghenion presennol eich cleient, a’i anghenion yn y dyfodol. Rydym yn argymell eich bod yn ymweld â gwefan darparwyr meddalwedd i wneud ymchwil cyn dewis cynnyrch.
 search-software.check-answers                             = Gwirio atebion
-search-software.skip-to-results                           = Ewch yn syth i’r canlyniadau.
+search-software.skip-to-results                           = Ewch yn syth i’r canlyniadau
 
 search-software.intent.h2                                 = Bydd rhai meddalwedd yn cael eu rhestru fel eu bod ‘o dan ddatblygiad’
 search-software.intent.p1                                 = Bydd pob cynnyrch sy’n ymddangos yn y rhestr hidlo yn eich caniatáu chi i gyflwyno eich diweddariadau chwarterol.
@@ -125,13 +127,13 @@ search-software.filters.clear-filters = Clirio hidlyddion
 
 search-software.intent.vendor-visit-link        = Dysgwch beth mae {0} yn ei ddarparu ar hyn o bryd, a’r hyn sy’n cael ei ddatblygu ganddynt
 
-search-software.vendor-count.agent.heading.many     = Rydym wedi canfod {0} o ganlyniadau
-search-software.vendor-count.agent.heading.one      = Rydym wedi canfod 1 canlyniad
-search-software.vendor-count.agent.heading.none     = Does dim canlyniadau cyfatebol
+search-software.vendor-count.agent.heading.many     = Yn seiliedig ar eich atebion, rydym wedi dod o hyd i {0} canlyniad
+search-software.vendor-count.agent.heading.one      = Yn seiliedig ar eich atebion, rydym wedi dod o hyd i 1 canlyniad
+search-software.vendor-count.agent.heading.none     = Yn seiliedig ar eich atebion, nid oes unrhyw ganlyniad
 
-search-software.vendor-count.intent.heading.many     = Yn seiliedig ar eich atebion, rydym wedi dod o hyd i {0} o ganlyniadau
-search-software.vendor-count.intent.heading.one      = Yn seiliedig ar eich atebion, rydym wedi dod o hyd i 1 canlyniad
-search-software.vendor-count.intent.heading.none     = Does dim canlyniadau cyfatebol
+search-software.vendor-count.intent.heading.many    = Yn seiliedig ar eich hidlyddion ac atebion, rydym wedi dod o hyd i {0} canlyniad
+search-software.vendor-count.intent.heading.one     = Yn seiliedig ar eich hidlyddion ac atebion, rydym wedi dod o hyd i 1 canlyniad
+search-software.vendor-count.intent.heading.none    = Yn seiliedig ar eich hidlyddion ac atebion, nid oes unrhyw ganlyniad
 
 search-software.vendor-detail.pricing = Pris
 search-software.vendor-detail.pricing.free-version = Fersiwn am ddim
