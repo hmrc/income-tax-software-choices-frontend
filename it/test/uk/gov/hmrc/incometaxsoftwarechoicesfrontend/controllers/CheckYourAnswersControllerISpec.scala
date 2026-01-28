@@ -216,8 +216,11 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
 
   lazy val controller: CheckYourAnswersController = app.injector.instanceOf[CheckYourAnswersController]
 
-  def testUserFilters(answers: Option[UserAnswers]): UserFilters = UserFilters(SessionId, answers)
-
+  def testUserFilters(answers: Option[UserAnswers]): UserFilters = UserFilters(
+    id = SessionId,
+    answers = answers,
+    randomVendorOrder = (for (x <- 100 to 200) yield x).toList // range of productId in local test data
+  )
 
   object SummaryListKeys {
     val incomeSources = "Income sources (quarterly updates and tax return)"

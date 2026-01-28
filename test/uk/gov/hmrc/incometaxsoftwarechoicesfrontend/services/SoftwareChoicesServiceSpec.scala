@@ -26,16 +26,19 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.{Availa
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilterGroups.userTypeFilters
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.*
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.requests.SessionDataRequest
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 
 import java.time.LocalDate
 
 class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with BeforeAndAfterEach {
 
   implicit val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
+  implicit val mockRequest: SessionDataRequest[_] = mock[SessionDataRequest[_]]
 
-  private def vendor(filters: Seq[VendorFilter]): SoftwareVendorModel = SoftwareVendorModel(
-    productId = 0,
-    name = filters.head.toString,
+  private def vendor(productId: Int, filters: Seq[VendorFilter]): SoftwareVendorModel = SoftwareVendorModel(
+    productId = productId,
+    name = s"Vendor_$productId",
     email = None,
     phone = None,
     website = "",
@@ -51,13 +54,14 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
       vendor(Seq(userType, QuarterlyUpdates, TaxReturn, UkProperty, StandardUpdatePeriods)),
       vendor(Seq(userType, QuarterlyUpdates, TaxReturn, OverseasProperty, StandardUpdatePeriods)),
       vendor(Seq(userType, QuarterlyUpdates, TaxReturn, OverseasProperty, CalendarUpdatePeriods, Welsh)),
+
     )}.toSeq ++ Seq(
-      vendor(userTypeFilters.toSeq)
+      vendor(7, userTypeFilters.toSeq)
     )
   )
 
-  private def intentVendor(name: String, filters: Map[VendorFilter, FeatureStatus]): SoftwareVendorModel = SoftwareVendorModel(
-    productId = 0,
+  private def intentVendor(productId: Int, name: String, filters: Map[VendorFilter, FeatureStatus]): SoftwareVendorModel = SoftwareVendorModel(
+    productId = productId,
     name = name,
     email = None,
     phone = None,
@@ -66,22 +70,33 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
   )
  
   val mockDataService = mock[DataService]
+  val mockUserFiltersRepo = mock[UserFiltersRepository]
 
   override def beforeEach(): Unit = {
     super.beforeEach()
     when(mockDataService.getSoftwareVendors()).thenReturn(
       allVendors
     )
+    when(mockRequest.userFilters).thenReturn(
+      UserFilters(
+        id = "test-id",
+        answers = None,
+        finalFilters = Seq.empty,
+        randomVendorOrder = (for (x <- 1 to 20) yield x).toList // doesn't want to random for tests!
+      )
+    )
   }
 
   val service = new SoftwareChoicesService(
-    mockDataService
+    mockDataService,
+    mockUserFiltersRepo
   )
 
   "getAllInOneVendors" should {
-    "exclude vendors that are not for Individual and have both Quarterly Submissions and Tax returns" in {
+
+    "exclude both Quarterly Submissions and Tax returns filters from filter list" in {
       val result = service.getAllInOneVendors(Seq(Individual, QuarterlyUpdates, TaxReturn))
-      result.vendors.size mustBe 5
+      result.vendors.size mustBe 7
     }
 
     "include vendors which supports welsh" in {
@@ -98,6 +113,36 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
       val result = service.getAllInOneVendors(Seq(Agent, FreeVersion))
       result.vendors.size mustBe 0
     }
+
+    "randomise the order of vendors when no previous order set" in {
+      val result1 = service.getAllInOneVendors(Seq(Individual, QuarterlyUpdates, TaxReturn))
+      result1.vendors.map(_.productId) mustBe List(1,2,3,4,5,6,7)
+
+      when(mockRequest.userFilters).thenReturn(
+        UserFilters(
+          id = "test-id",
+          answers = None,
+          finalFilters = Seq.empty,
+          randomVendorOrder = List.empty // should generate a new random order
+        )
+      )
+
+      val result2 = service.getAllInOneVendors(Seq(Individual, QuarterlyUpdates, TaxReturn))
+      result2.vendors.map(_.productId) == result1.vendors.map(_.productId) mustBe false
+
+      result2.vendors.map(_.productId).toSet mustBe result1.vendors.map(_.productId).toSet
+    }
+
+    "retain randomised order when filters change" in {
+      val result1 = service.getAllInOneVendors(Seq(Individual, QuarterlyUpdates, TaxReturn))
+      result1.vendors.map(_.productId) mustBe List(1,2,3,4,5,6,7)
+
+      val result5 = service.getAllInOneVendors(Seq(Individual, QuarterlyUpdates, TaxReturn, UkProperty))
+      result5.vendors.map(_.productId) mustBe List(3,4)
+
+      val result3 = service.getAllInOneVendors(Seq(Individual, QuarterlyUpdates, TaxReturn))
+      result3.vendors.map(_.productId) mustBe List(1,2,3,4,5,6,7)
+    }
   }
 
   "getVendorsWithIntent" should {
@@ -106,8 +151,8 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
         SoftwareVendors(
           lastUpdated = LocalDate.now,
           vendors = Seq(
-            intentVendor("Vendor 01", Map(Individual->Available, QuarterlyUpdates->Available, TaxReturn->Available, UkProperty->Available, StudentLoans->Available, StandardUpdatePeriods->Available, Visual->Available)),
-            intentVendor("Vendor 02", Map(
+            intentVendor(1, "Vendor 01", Map(Individual->Available, QuarterlyUpdates->Available, TaxReturn->Available, UkProperty->Available, StudentLoans->Available, StandardUpdatePeriods->Available, Visual->Available)),
+            intentVendor(2, "Vendor 02", Map(
               Individual->Available, Agent->Available, QuarterlyUpdates->Available, TaxReturn->Available,
               SoleTrader->Available, UkProperty->Available, OverseasProperty->Available,
               UkInterest->Available, ConstructionIndustryScheme->Available, Employment->Available, UkDividends->Available,
@@ -141,9 +186,9 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
         SoftwareVendors(
           lastUpdated = LocalDate.now,
           vendors = Seq(
-            intentVendor("Vendor 01", Map(Individual->Available, QuarterlyUpdates->Available, TaxReturn->Available, UkProperty->Available, StudentLoans->Available, StandardUpdatePeriods->Available, Visual->Available)),
-            intentVendor("Vendor 02", Map(Individual->Available, QuarterlyUpdates->Available, TaxReturn->Available, UkProperty->Available, StudentLoans->Intended, StandardUpdatePeriods->Available, Visual->Available)),
-            intentVendor("Vendor 03", Map(Individual->Available, QuarterlyUpdates->Available, TaxReturn->Intended, UkProperty->Available, StudentLoans->Available, StandardUpdatePeriods->Available, Visual->Available))
+            intentVendor(1, "Vendor 01", Map(Individual->Available, QuarterlyUpdates->Available, TaxReturn->Available, UkProperty->Available, StudentLoans->Available, StandardUpdatePeriods->Available, Visual->Available)),
+            intentVendor(2, "Vendor 02", Map(Individual->Available, QuarterlyUpdates->Available, TaxReturn->Available, UkProperty->Available, StudentLoans->Intended, StandardUpdatePeriods->Available, Visual->Available)),
+            intentVendor(3, "Vendor 03", Map(Individual->Available, QuarterlyUpdates->Available, TaxReturn->Intended, UkProperty->Available, StudentLoans->Available, StandardUpdatePeriods->Available, Visual->Available))
           )
         )
       )
@@ -165,7 +210,7 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
         SoftwareVendors(
           lastUpdated = LocalDate.now,
           vendors = Seq(
-            intentVendor("Vendor 01", Map(Individual->Available, QuarterlyUpdates->Available, UkProperty->Available, StudentLoans->Available, StandardUpdatePeriods->Available, Visual->Available))
+            intentVendor(1, "Vendor 01", Map(Individual->Available, QuarterlyUpdates->Available, UkProperty->Available, StudentLoans->Available, StandardUpdatePeriods->Available, Visual->Available))
           )
         )
       )
@@ -182,17 +227,17 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
         SoftwareVendors(
           lastUpdated = LocalDate.now,
           vendors = Seq(
-            intentVendor("Vendor 01", Map(Individual->Intended, QuarterlyUpdates->Available, TaxReturn->Available, UkProperty->Available, StudentLoans->Available, StandardUpdatePeriods->Available, Visual->Available)),
-            intentVendor("Vendor 02", Map(QuarterlyUpdates->Available, TaxReturn->Available, UkProperty->Available, StudentLoans->Available, StandardUpdatePeriods->Available, Visual->Available)),
-            intentVendor("Vendor 03", Map(Individual->Available, QuarterlyUpdates->Intended, TaxReturn->Available, UkProperty->Available, StudentLoans->Available, StandardUpdatePeriods->Available, Visual->Available)),
-            intentVendor("Vendor 04", Map(Individual->Available, TaxReturn->Available, UkProperty->Available, StudentLoans->Available, StandardUpdatePeriods->Available, Visual->Available)),
-            intentVendor("Vendor 05", Map(Individual->Available, QuarterlyUpdates->Available, TaxReturn->Available, UkProperty->Intended, StudentLoans->Available, StandardUpdatePeriods->Available, Visual->Available)),
-            intentVendor("Vendor 06", Map(Individual->Available, QuarterlyUpdates->Available, TaxReturn->Available, StudentLoans->Available, StandardUpdatePeriods->Available, Visual->Available)),
-            intentVendor("Vendor 07", Map(Individual->Available, QuarterlyUpdates->Available, TaxReturn->Available, UkProperty->Available, StudentLoans->Available, StandardUpdatePeriods->Intended, Visual->Available)),
-            intentVendor("Vendor 08", Map(Individual->Available, QuarterlyUpdates->Available, TaxReturn->Available, UkProperty->Available, StudentLoans->Available, Visual->Available)),
-            intentVendor("Vendor 09", Map(Individual->Available, QuarterlyUpdates->Available, TaxReturn->Available, UkProperty->Available, StudentLoans->Available, StandardUpdatePeriods->Available, Visual->Intended)),
-            intentVendor("Vendor 10", Map(Individual->Available, QuarterlyUpdates->Available, TaxReturn->Available, UkProperty->Available, StudentLoans->Available, StandardUpdatePeriods->Available)),
-            intentVendor("Vendor 11", Map(Individual->NotApplicable, QuarterlyUpdates->Available, TaxReturn->Available, UkProperty->Available, StudentLoans->Available, StandardUpdatePeriods->Available, Visual->Available))
+            intentVendor(1, "Vendor 01", Map(Individual->Intended, QuarterlyUpdates->Available, TaxReturn->Available, UkProperty->Available, StudentLoans->Available, StandardUpdatePeriods->Available, Visual->Available)),
+            intentVendor(2, "Vendor 02", Map(QuarterlyUpdates->Available, TaxReturn->Available, UkProperty->Available, StudentLoans->Available, StandardUpdatePeriods->Available, Visual->Available)),
+            intentVendor(3, "Vendor 03", Map(Individual->Available, QuarterlyUpdates->Intended, TaxReturn->Available, UkProperty->Available, StudentLoans->Available, StandardUpdatePeriods->Available, Visual->Available)),
+            intentVendor(4, "Vendor 04", Map(Individual->Available, TaxReturn->Available, UkProperty->Available, StudentLoans->Available, StandardUpdatePeriods->Available, Visual->Available)),
+            intentVendor(5, "Vendor 05", Map(Individual->Available, QuarterlyUpdates->Available, TaxReturn->Available, UkProperty->Intended, StudentLoans->Available, StandardUpdatePeriods->Available, Visual->Available)),
+            intentVendor(6, "Vendor 06", Map(Individual->Available, QuarterlyUpdates->Available, TaxReturn->Available, StudentLoans->Available, StandardUpdatePeriods->Available, Visual->Available)),
+            intentVendor(7, "Vendor 07", Map(Individual->Available, QuarterlyUpdates->Available, TaxReturn->Available, UkProperty->Available, StudentLoans->Available, StandardUpdatePeriods->Intended, Visual->Available)),
+            intentVendor(8, "Vendor 08", Map(Individual->Available, QuarterlyUpdates->Available, TaxReturn->Available, UkProperty->Available, StudentLoans->Available, Visual->Available)),
+            intentVendor(9, "Vendor 09", Map(Individual->Available, QuarterlyUpdates->Available, TaxReturn->Available, UkProperty->Available, StudentLoans->Available, StandardUpdatePeriods->Available, Visual->Intended)),
+            intentVendor(10, "Vendor 10", Map(Individual->Available, QuarterlyUpdates->Available, TaxReturn->Available, UkProperty->Available, StudentLoans->Available, StandardUpdatePeriods->Available)),
+            intentVendor(11, "Vendor 11", Map(Individual->NotApplicable, QuarterlyUpdates->Available, TaxReturn->Available, UkProperty->Available, StudentLoans->Available, StandardUpdatePeriods->Available, Visual->Available))
           )
         )
       )
@@ -205,8 +250,8 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
         SoftwareVendors(
           lastUpdated = LocalDate.now,
           vendors = Seq(
-            intentVendor("Vendor 01", Map(Individual -> Available, QuarterlyUpdates -> Available, TaxReturn -> Available, UkProperty -> Available, StudentLoans -> Available, StandardUpdatePeriods -> Available, Visual -> Available)),
-            intentVendor("Vendor 02", Map(
+            intentVendor(1, "Vendor 01", Map(Individual -> Available, QuarterlyUpdates -> Available, TaxReturn -> Available, UkProperty -> Available, StudentLoans -> Available, StandardUpdatePeriods -> Available, Visual -> Available)),
+            intentVendor(2, "Vendor 02", Map(
               Individual -> Available, Agent -> Available, QuarterlyUpdates -> Available, TaxReturn -> Available,
               SoleTrader -> Available, UkProperty -> Available, OverseasProperty -> Available,
               UkInterest -> Available, ConstructionIndustryScheme -> Available, Employment -> Available, UkDividends -> Available,
@@ -216,7 +261,7 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
               StandardUpdatePeriods -> Available, CalendarUpdatePeriods -> Available,
               FreeVersion -> Available, Bridging -> Available, Vat -> Available,
               Visual -> Available, Hearing -> Available, Motor -> Available, Cognitive -> Available)),
-            intentVendor("Vendor 03", Map(
+            intentVendor(3, "Vendor 03", Map(
               Individual -> Available, Agent -> Available, QuarterlyUpdates -> Available, TaxReturn -> Available,
               SoleTrader -> Available, UkProperty -> Available, OverseasProperty -> Available,
               UkInterest -> Available, ConstructionIndustryScheme -> Available, Employment -> Available, UkDividends -> Available,
@@ -300,8 +345,8 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
         SoftwareVendors(
           lastUpdated = LocalDate.now,
           vendors = Seq(
-            intentVendor("Vendor 01", Map(Individual -> Available, QuarterlyUpdates -> Available, TaxReturn -> Available, UkProperty -> Available, StudentLoans -> Available, StandardUpdatePeriods -> Available, Visual -> Available)),
-            intentVendor("Vendor 02", Map(
+            intentVendor(1, "Vendor 01", Map(Individual -> Available, QuarterlyUpdates -> Available, TaxReturn -> Available, UkProperty -> Available, StudentLoans -> Available, StandardUpdatePeriods -> Available, Visual -> Available)),
+            intentVendor(2, "Vendor 02", Map(
               Individual -> Available, Agent -> Available, QuarterlyUpdates -> Available, TaxReturn -> Available,
               SoleTrader -> Available, UkProperty -> Available, OverseasProperty -> Available,
               UkInterest -> Available, ConstructionIndustryScheme -> Available, Employment -> Available, UkDividends -> Available,
@@ -311,7 +356,7 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
               StandardUpdatePeriods -> Available, CalendarUpdatePeriods -> Available,
               FreeVersion -> Available, Bridging -> Available, Vat -> Available,
               Visual -> Available, Hearing -> Available, Motor -> Available, Cognitive -> Available)),
-            intentVendor("Vendor 03", Map(
+            intentVendor(3, "Vendor 03", Map(
               Individual -> Available, Agent -> Available, QuarterlyUpdates -> Available, TaxReturn -> Available,
               SoleTrader -> Available, UkProperty -> Available, OverseasProperty -> Available,
               UkInterest -> Available, ConstructionIndustryScheme -> Available, Employment -> Available, UkDividends -> Available,
@@ -348,8 +393,8 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
         SoftwareVendors(
           lastUpdated = LocalDate.now,
           vendors = Seq(
-            intentVendor("Vendor 01", Map(Individual -> Available, QuarterlyUpdates -> Available, TaxReturn -> Available, UkProperty -> Available, StudentLoans -> Available, StandardUpdatePeriods -> Available, Visual -> Available)),
-            intentVendor("Vendor 02", Map(
+            intentVendor(1, "Vendor 01", Map(Individual -> Available, QuarterlyUpdates -> Available, TaxReturn -> Available, UkProperty -> Available, StudentLoans -> Available, StandardUpdatePeriods -> Available, Visual -> Available)),
+            intentVendor(2, "Vendor 02", Map(
               Individual -> Available, Agent -> Available, QuarterlyUpdates -> Available, TaxReturn -> Available,
               SoleTrader -> Available, UkProperty -> Available, OverseasProperty -> Available,
               UkInterest -> Available, ConstructionIndustryScheme -> Available, Employment -> Available, UkDividends -> Available,
@@ -397,8 +442,8 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
         SoftwareVendors(
           lastUpdated = LocalDate.now,
           vendors = Seq(
-            intentVendor("Vendor 01", Map(Individual -> Available, QuarterlyUpdates -> Available, TaxReturn -> Available, UkProperty -> Available, StudentLoans -> Available, StandardUpdatePeriods -> Available, Visual -> Available)),
-            intentVendor("Vendor 02", Map(
+            intentVendor(1, "Vendor 01", Map(Individual -> Available, QuarterlyUpdates -> Available, TaxReturn -> Available, UkProperty -> Available, StudentLoans -> Available, StandardUpdatePeriods -> Available, Visual -> Available)),
+            intentVendor(2, "Vendor 02", Map(
               Individual -> Available, Agent -> Available, QuarterlyUpdates -> Available, TaxReturn -> Available,
               SoleTrader -> Available, UkProperty -> Available, OverseasProperty -> Available,
               UkInterest -> Available, ConstructionIndustryScheme -> Available, Employment -> Available, UkDividends -> Available,
