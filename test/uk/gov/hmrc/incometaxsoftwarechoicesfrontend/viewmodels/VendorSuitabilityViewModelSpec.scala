@@ -17,21 +17,16 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.viewmodels
 
 import org.scalatestplus.play.PlaySpec
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.TestModels.softwareVendorModelBase
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.Available
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareVendorModel
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{SoleTrader, UkProperty}
 
 class VendorSuitabilityViewModelSpec extends PlaySpec {
 
   "VendorSuitabilityViewModel" should {
     "create an empty default model" which {
-      val vendor = SoftwareVendorModel(
-        name = "name",
-        email = None,
-        phone = None,
-        website = "website",
+      val vendor = softwareVendorModelBase.copy(
         filters = Map(SoleTrader -> Available, UkProperty -> Available),
-        accessibilityStatementLink = None
       )
       val model = VendorSuitabilityViewModel(vendor)
 
