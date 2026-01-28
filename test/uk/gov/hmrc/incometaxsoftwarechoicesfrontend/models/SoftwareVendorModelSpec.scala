@@ -17,14 +17,15 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models
 
 import org.scalatestplus.play.PlaySpec
-import play.api.libs.json._
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.TestModels.fullSoftwareVendorModel
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus._
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
+import play.api.libs.json.*
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.TestModels.{softwareVendorModelBase, fullSoftwareVendorModel}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.*
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.*
 
 class SoftwareVendorModelSpec extends PlaySpec {
 
   val fullJson: JsObject = Json.obj(
+    "productId" -> "0001",
     "name" -> "software vendor name",
     "email" -> "test@software-vendor-name.com",
     "phone" -> "00000 000 000",
@@ -65,6 +66,11 @@ class SoftwareVendorModelSpec extends PlaySpec {
     }
 
     "fail to read json" when {
+      "productId is missing" in {
+        val json: JsObject = fullJson - "productId"
+        Json.fromJson[SoftwareVendorModel](json) mustBe JsError(JsPath \ "productId", "error.path.missing")
+      }
+
       "name is missing" in {
         val json: JsObject = fullJson - "name"
         Json.fromJson[SoftwareVendorModel](json) mustBe JsError(JsPath \ "name", "error.path.missing")
@@ -82,14 +88,10 @@ class SoftwareVendorModelSpec extends PlaySpec {
     }
 
     "search for filters and order the results correctly" should {
-      def getVendorModel(vendorFilters: Map[VendorFilter, FeatureStatus]): SoftwareVendorModel = SoftwareVendorModel(
-        name = "name",
-        email = None,
-        phone = None,
-        website = "website",
-        filters = vendorFilters,
-        accessibilityStatementLink = None
-      )
+      def getVendorModel(vendorFilters: Map[VendorFilter, FeatureStatus]): SoftwareVendorModel =
+        softwareVendorModelBase.copy(
+          filters = vendorFilters,
+        )
 
       "find no matches when a selection of elements is present in the list but not in the vendor" in {
         val vendorFilters: Map[VendorFilter, FeatureStatus] = Map(Visual -> Available, Hearing -> Available)
@@ -116,17 +118,12 @@ class SoftwareVendorModelSpec extends PlaySpec {
       }
     }
 
-    val model = SoftwareVendorModel(
-      name = "",
-      email = None,
-      phone = None,
-      website = "",
+    val model = softwareVendorModelBase.copy(
       filters = Map(
         Individual -> Available,
         Agent -> Available,
         SoleTrader -> Available
-      ),
-      accessibilityStatementLink = None
+      )
     )
 
     "mustHaveAtAll" should {
