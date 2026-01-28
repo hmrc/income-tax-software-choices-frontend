@@ -33,7 +33,13 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
   private val testTime = Instant.now()
 
   def testUserFilters(answers: Option[UserAnswers], filters: Seq[VendorFilter]): UserFilters =
-    UserFilters(SessionId, answers, finalFilters = filters, lastUpdated = testTime)
+    UserFilters(
+      SessionId,
+      answers,
+      finalFilters = filters,
+      randomVendorOrder = (for (x <- 100 to 200) yield x).toList, // range of productId in local test data
+      lastUpdated = testTime
+    )
 
   override def beforeEach(): Unit = {
     await(userFiltersRepository.collection.drop().toFuture())
@@ -197,7 +203,8 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
         .set(UserTypePage, Agent).get
 
       val initialFilter = Seq()
-      setupAnswers(SessionId, Some(userAnswers), initialFilter)
+      val randonVendorOrder = (for (x <- 100 to 200) yield x).toList
+      setupAnswers(SessionId, Some(userAnswers), initialFilter, randonVendorOrder)
 
       val response = SoftwareChoicesFrontend.submitSoftwareSearch(FiltersFormModel(Seq(VendorFilter.Agent, FreeVersion)))
 

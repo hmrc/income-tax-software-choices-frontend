@@ -88,7 +88,13 @@ class PageAnswersService @Inject()(userFiltersRepository: UserFiltersRepository,
   }
 
   def resetUserAnswers(id: String): Future[Boolean] = {
-    userFiltersRepository.set(UserFilters(id, Some(UserAnswers()), Seq.empty))
+    userFiltersRepository.get(id).flatMap {
+      case Some(userFilters) =>
+        userFiltersRepository.set(userFilters.copy(answers = Some(UserAnswers()),finalFilters = Seq.empty))
+      case None =>
+        userFiltersRepository.set(UserFilters(id, Some(UserAnswers()), Seq.empty))
+    }
+    
   }
 
 }

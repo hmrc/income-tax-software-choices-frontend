@@ -37,8 +37,8 @@ trait DatabaseHelper extends ComponentSpecBase with ObservableImplicits {
 
   def getFinalFilters(id: String): Seq[VendorFilter] = await(getById(id)).get.finalFilters
 
-  def setupAnswers(id: String, userAnswers: Option[UserAnswers], finalFilters: Seq[VendorFilter] = Seq.empty): Unit = {
-    await(userFiltersRepository.set(UserFilters(id = id, answers = userAnswers, finalFilters = finalFilters)))
+  def setupAnswers(id: String, userAnswers: Option[UserAnswers], finalFilters: Seq[VendorFilter] = Seq.empty, randomVendorOrder: List[Int] = List.empty): Unit = {
+    await(userFiltersRepository.set(UserFilters(id = id, answers = userAnswers, randomVendorOrder = randomVendorOrder, finalFilters = finalFilters)))
   }
 
   def setPageData[A](id: String, page: QuestionPage[A], data: A)(implicit writes: Writes[A]): Unit = {

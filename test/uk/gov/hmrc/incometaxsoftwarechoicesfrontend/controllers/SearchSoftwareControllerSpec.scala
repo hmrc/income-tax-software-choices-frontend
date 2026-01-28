@@ -130,7 +130,7 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec
     when(mockEnvironment.resourceAsStream(eqTo(appConfig.softwareChoicesVendorFileName)))
       .thenReturn(Some(new FileInputStream("test/resources/test-valid-software-vendors.json")))
 
-    lazy val softwareChoicesService: SoftwareChoicesService = new SoftwareChoicesService(new DataService(appConfig, mockEnvironment))
+    lazy val softwareChoicesService: SoftwareChoicesService = new SoftwareChoicesService(new DataService(appConfig, mockEnvironment), mockUserFiltersRepo)
     lazy val pageAnswerService: PageAnswersService = new PageAnswersService(mockUserFiltersRepo, ec)
 
     val controller = new SearchSoftwareController(
