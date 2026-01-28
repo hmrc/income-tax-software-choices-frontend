@@ -60,52 +60,10 @@
     </div>
 
     @defining({
-        val rows = Seq.newBuilder[SummaryListRow]
-        val softwareTypes = softwareTypeGroup.filter(f => softwareVendor.filters.contains(f) && softwareVendor.getFeatureStatus(f).eq(Available))
-        if (softwareTypes.nonEmpty) {
-            rows += SummaryListRow(
-                key = Key(content = Text(messages("product-details.software-spec.software-type"))),
-                value = Value(content = HtmlContent(
-                    s"""<ul class="govuk-list">
-                    ${softwareTypes.map(f => s"""<li>${messages(s"product-details.software-type.${f.key}")}</li>""").mkString("")}
-                    </ul>"""
-                ))
-            )
-        }
-        val compatible = compatibleWithGroup.filter(f => softwareVendor.filters.contains(f) && softwareVendor.getFeatureStatus(f).eq(Available))
-        if (compatible.nonEmpty) {
-            rows += SummaryListRow(
-                key = Key(content = Text(messages("product-details.software-spec.compatible-with"))),
-                value = Value(content = HtmlContent(
-                    s"""<ul class="govuk-list">
-                    ${compatible.map(f => s"""<li>${messages(s"product-details.compatible-with.${f.key}")}</li>""").mkString("")}
-                    </ul>"""
-                ))
-            )
-        }
-        val mobiles = mobileGroup.filter(f => softwareVendor.filters.contains(f) && softwareVendor.getFeatureStatus(f).eq(Available))
-        if (mobiles.nonEmpty) {
-            rows += SummaryListRow(
-                key = Key(content = Text(messages("product-details.software-spec.mobile-app"))),
-                value = Value(content = HtmlContent(
-                    s"""<ul class="govuk-list">
-                    ${mobiles.map(f => s"""<li>${messages(s"product-details.mobile-app.${f.key}")}</li>""").mkString("")}
-                    </ul>"""
-                ))
-            )
-        }
-        val languages = languageGroup.filter(f => softwareVendor.filters.contains(f) && softwareVendor.getFeatureStatus(f).eq(Available))
-        if (languages.nonEmpty) {
-            rows += SummaryListRow(
-                key = Key(content = Text(messages("product-details.software-spec.language"))),
-                value = Value(content = HtmlContent(
-                    s"""<ul class="govuk-list">
-                    ${languages.map(f => s"""<li>${messages(s"product-details.language.${f.key}")}</li>""").mkString("")}
-                    </ul>"""
-                ))
-            )
-        }
-        rows.result()
+        swSpecRow(softwareTypeGroup, "software-type") ++
+        swSpecRow(compatibleWithGroup, "compatible-with") ++
+        swSpecRow(mobileGroup, "mobile-app") ++
+        swSpecRow(languageGroup, "language")
     }) { specsRows =>
         @if(specsRows.nonEmpty) {
             <div class="govuk-!-width-two-thirds govuk-!-padding-0">
@@ -114,12 +72,13 @@
             </div>
         }
     }
-<p class="govuk-body">
-    @hmrcNewTabLinkHelper(NewTabLinkHelper(
-        text = messages("exit-survey.link"),
-        href = Some(appConfig.feedbackUrl)
-    ))
-</p>
+
+    <p class="govuk-body">
+        @hmrcNewTabLinkHelper(NewTabLinkHelper(
+            text = messages("exit-survey.link"),
+            href = Some(appConfig.feedbackUrl)
+        ))
+    </p>
 }
 
 @contactDetailsList = {
@@ -182,3 +141,21 @@
     ))
 }
 
+@swSpecRow(filtersGroup: List[VendorFilter], sectionKey: String) = @{
+    val filters = filtersGroup.filter(f => softwareVendor.filters.contains(f) && softwareVendor.getFeatureStatus(f).eq(Available))
+    filters.size match {
+        case x if x==1 => Seq(SummaryListRow(
+            key = Key(content = Text(messages(s"product-details.software-spec.$sectionKey"))),
+            value = Value(content = HtmlContent(
+                s"${filters.map(f => s"""${messages(s"product-details.${sectionKey}.${f.key}")}""").mkString("")}"
+            ))))
+        case x if x>1 => Seq(SummaryListRow(
+            key = Key(content = Text(messages(s"product-details.software-spec.$sectionKey"))),
+            value = Value(content = HtmlContent(
+                s"""<ul class="govuk-list">
+                    ${filters.map(f => s"""<li>${messages(s"product-details.${sectionKey}.${f.key}")}</li>""").mkString("")}
+                    </ul>"""
+            ))))
+        case _ => Seq.empty
+    }
+}
