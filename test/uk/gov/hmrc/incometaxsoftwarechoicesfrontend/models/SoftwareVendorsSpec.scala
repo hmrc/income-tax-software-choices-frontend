@@ -26,6 +26,7 @@ class SoftwareVendorsSpec extends PlaySpec {
     "lastUpdated" -> "2022-12-02",
     "vendors" -> Json.arr(
       Json.obj(
+        "productId" -> "0001",
         "name" -> "software vendor name",
         "email" -> "test@software-vendor-name.com",
         "phone" -> "00000 000 000",

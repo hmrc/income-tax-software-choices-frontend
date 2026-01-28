@@ -34,6 +34,7 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
   implicit val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
 
   private def vendor(filters: Seq[VendorFilter]): SoftwareVendorModel = SoftwareVendorModel(
+    productId = "",
     name = filters.head.toString,
     email = None,
     phone = None,
@@ -56,6 +57,7 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
   )
 
   private def intentVendor(name: String, filters: Map[VendorFilter, FeatureStatus]): SoftwareVendorModel = SoftwareVendorModel(
+    productId = "",
     name = name,
     email = None,
     phone = None,

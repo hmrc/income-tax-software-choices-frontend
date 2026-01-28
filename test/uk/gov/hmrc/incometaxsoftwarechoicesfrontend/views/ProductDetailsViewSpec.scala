@@ -24,19 +24,11 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareVendorModel
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.ProductDetailsView
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.TestModels.softwareVendorModelBase
 
 class ProductDetailsViewSpec extends ViewSpec with FeatureSwitching with BeforeAndAfterEach {
 
   private val productDetailsPage = app.injector.instanceOf[ProductDetailsView]
-
-  val softwareVendorModelBase: SoftwareVendorModel = SoftwareVendorModel(
-    name = "abc",
-    email = Some("test@software-vendor-name.com"),
-    phone = Some("00000 000 000"),
-    website = "software-vendor-name.com",
-    filters = Map.empty,
-    accessibilityStatementLink = None
-  )
 
   private val softwareVendorModelFull = softwareVendorModelBase
     .copy(name = "abc full")
