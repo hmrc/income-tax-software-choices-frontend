@@ -16,14 +16,13 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models
 
-import play.api.libs.functional.syntax.toFunctionalBuilderOps
-import play.api.libs.json.*
+import play.api.libs.json.{Json, Reads}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.{Available, NotApplicable}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilterGroups.{nonMandatedIncomeGroup, quarterlyReturnsGroup}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{QuarterlyUpdates, TaxReturn}
 
-case class SoftwareVendorModel(productId: String,
+case class SoftwareVendorModel(productId: Int,
                                name: String,
                                email: Option[String],
                                phone: Option[String],
@@ -68,15 +67,5 @@ case class SoftwareVendorModel(productId: String,
 }
 
 object SoftwareVendorModel {
-  implicit val reads: Reads[SoftwareVendorModel] = (
-    (__ \ "productId").read[String] and
-      (__ \ "name").read[String] and
-      (__ \ "email").readNullable[String] and
-      (__ \ "phone").readNullable[String] and
-      (__ \ "website").read[String] and
-      (__ \ "filters").read[Map[VendorFilter, FeatureStatus]] and
-      (__ \ "accessibilityStatementLink").readNullable[String]
-
-    )(SoftwareVendorModel.apply _)
-
+  implicit val reads: Reads[SoftwareVendorModel] = Json.reads[SoftwareVendorModel]
 }

@@ -25,7 +25,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.*
 class SoftwareVendorModelSpec extends PlaySpec {
 
   val fullJson: JsObject = Json.obj(
-    "productId" -> "0001",
+    "productId" -> 0,
     "name" -> "software vendor name",
     "email" -> "test@software-vendor-name.com",
     "phone" -> "00000 000 000",
