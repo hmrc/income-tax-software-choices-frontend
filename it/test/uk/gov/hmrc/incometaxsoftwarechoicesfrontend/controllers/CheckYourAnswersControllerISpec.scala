@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
+import org.jsoup.Jsoup
 import org.scalatest.BeforeAndAfterEach
 import play.api.http.Status.*
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
@@ -41,7 +42,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
       }
     }
     "there is pre-filled data" should {
-      "display the page with appropriate summary lists" in {
+      "display the page with appropriate summary lists with answers organised as lists" in {
         val userAnswers = UserAnswers()
           .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
           .set(AdditionalIncomeSourcesPage, Seq(UkInterest, ConstructionIndustryScheme, Employment, UkDividends, StatePensionIncome,
@@ -67,6 +68,33 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
           summaryListRow(SummaryListKeys.accountingPeriod, Set(OtherAccountingPeriod)
             .map(vf => messages(s"accounting-period.${vf.key}")).mkString(" "))
         )
+
+        Jsoup.parse(res.body).select("main li").size() shouldBe 18
+      }
+      "display the page with minimal summary lists" in {
+        val userAnswers = UserAnswers()
+          .set(BusinessIncomePage, Seq(SoleTrader)).get
+          .set(AdditionalIncomeSourcesPage, Seq(UkInterest)).get
+          .set(OtherItemsPage, Seq(PaymentsIntoAPrivatePension)).get
+          .set(AccountingPeriodPage, OtherAccountingPeriod).get
+        await(userFiltersRepository.set(testUserFilters(Some(userAnswers))))
+
+        val res = SoftwareChoicesFrontend.getCheckYourAnswers
+
+        res should have(
+          httpStatus(OK),
+          pageTitle(s"${messages("check-your-answers.heading")} - ${PageContentBase.title} - GOV.UK"),
+          summaryListRow(SummaryListKeys.incomeSources, Seq(SoleTrader)
+            .map(vf => messages(s"business-income.$vf")).mkString(" ")),
+          summaryListRow(SummaryListKeys.otherIncome, Seq(UkInterest)
+            .map(vf => messages(s"additional.income.source-$vf")).mkString(" ")),
+          summaryListRow(SummaryListKeys.otherItems, Seq(PaymentsIntoAPrivatePension)
+            .map(vf => messages(s"other-items.$vf")).mkString(" ")),
+          summaryListRow(SummaryListKeys.accountingPeriod, Set(OtherAccountingPeriod)
+            .map(vf => messages(s"accounting-period.${vf.key}")).mkString(" "))
+        )
+
+        Jsoup.parse(res.body).select("main li").size() shouldBe 0
       }
       "'None of these' is selected for other income and other items sources" in {
         val userAnswers = UserAnswers()
