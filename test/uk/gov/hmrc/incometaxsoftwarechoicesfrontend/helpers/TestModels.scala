@@ -31,7 +31,17 @@ object TestModels {
     Cognitive -> Available
   )
 
+  val softwareVendorModelBase: SoftwareVendorModel = SoftwareVendorModel(
+    productId = 0,
+    name = "vendor-name",
+    email = None,
+    phone = None,
+    website = "website@test.com",
+    filters = Map.empty,
+    accessibilityStatementLink = None
+  )
   val fullSoftwareVendorModel: SoftwareVendorModel = SoftwareVendorModel(
+    productId = 0,
     name = "software vendor name",
     email = Some("test@software-vendor-name.com"),
     phone = Some("00000 000 000"),
@@ -41,6 +51,7 @@ object TestModels {
   )
 
   val testVendorOne: SoftwareVendorModel = SoftwareVendorModel(
+    productId = 101,
     "test software vendor one",
     Some("test@software-vendor-name-one.com"),
     Some("11111 111 111"),
@@ -53,6 +64,7 @@ object TestModels {
   )
 
   val testVendorTwo: SoftwareVendorModel = SoftwareVendorModel(
+    productId = 102,
     "test software vendor two",
     Some("test@software-vendor-name-two.com"),
     Some("22222 222 222"),
@@ -61,6 +73,7 @@ object TestModels {
   )
 
   val testVendorThree: SoftwareVendorModel = SoftwareVendorModel(
+    productId = 103,
     "test software vendor three",
     Some("test@software-vendor-name-three.com"),
     Some("33333 333 333"),
@@ -69,6 +82,7 @@ object TestModels {
   )
 
   val testVendorFour: SoftwareVendorModel = SoftwareVendorModel(
+    productId = 104,
     "test software vendor four",
     Some("test@software-vendor-name-four.com"),
     Some("44444 444 444"),
@@ -82,6 +96,7 @@ object TestModels {
   )
 
   val testVendorFive: SoftwareVendorModel = SoftwareVendorModel(
+    productId = 105,
     "test software vendor five",
     Some("test@software-vendor-name-five.com"),
     Some("55555 555 555"),

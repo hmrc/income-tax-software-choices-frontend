@@ -22,14 +22,14 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.{Availa
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilterGroups.{nonMandatedIncomeGroup, quarterlyReturnsGroup}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{QuarterlyUpdates, TaxReturn}
 
-case class SoftwareVendorModel(
-  name: String,
-  email: Option[String],
-  phone: Option[String],
-  website: String,
-  filters: Map[VendorFilter, FeatureStatus],
-  accessibilityStatementLink: Option[String] = None
-) {
+case class SoftwareVendorModel(productId: Int,
+                               name: String,
+                               email: Option[String],
+                               phone: Option[String],
+                               website: String,
+                               filters: Map[VendorFilter, FeatureStatus],
+                               accessibilityStatementLink: Option[String] = None
+                              ) {
   def orderedFilterSubset(subsetFilters: Set[VendorFilter]): Map[VendorFilter, FeatureStatus] = {
     val filtersFromVendor = filters.filter(filter => subsetFilters.contains(filter._1)).toSet
     filtersFromVendor.toSeq.sortBy(_._1.priority).toMap
@@ -58,10 +58,10 @@ case class SoftwareVendorModel(
 
   def isEoyReady(searchFilters: Seq[VendorFilter])(implicit appConfig: AppConfig): Option[Boolean] = {
     val nonMandatoryFilters = searchFilters.filter(nonMandatedIncomeGroup.contains)
-    
-    if (nonMandatoryFilters.isEmpty && getFeatureStatus(TaxReturn).eq(NotApplicable)) 
+
+    if (nonMandatoryFilters.isEmpty && getFeatureStatus(TaxReturn).eq(NotApplicable))
       None
-    else 
+    else
       Some((nonMandatoryFilters ++ Seq(TaxReturn)).forall(filter => getFeatureStatus(filter).eq(Available)))
   }
 }

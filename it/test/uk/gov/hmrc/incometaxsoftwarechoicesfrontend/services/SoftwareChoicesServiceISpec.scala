@@ -41,14 +41,21 @@ class SoftwareChoicesServiceISpec extends PlaySpec with GuiceOneServerPerSuite {
     }
   }
 
-  "software-vendors.json must have all websites starting with https://" in {
-    val test = app("software-vendors.json").injector.instanceOf[SoftwareChoicesService].softwareVendors.vendors
-    test.foreach(element => element.website should startWith("https://"))
-  }
+  "software-vendors.json" must {
+    "have all websites starting with https://" in {
+      val test = app("software-vendors.json").injector.instanceOf[SoftwareChoicesService].softwareVendors.vendors
+      test.foreach(element => element.website should startWith("https://"))
+    }
 
-  "software-vendors.json must have unique names" in {
-    val test = app("software-vendors.json").injector.instanceOf[SoftwareChoicesService].softwareVendors.vendors.map(_.name)
-    test.size shouldBe test.distinct.size
+    "have unique names" in {
+      val test = app("software-vendors.json").injector.instanceOf[SoftwareChoicesService].softwareVendors.vendors.map(_.name)
+      test.size shouldBe test.distinct.size
+    }
+
+    "have unique productIds" in {
+      val test = app("software-vendors.json").injector.instanceOf[SoftwareChoicesService].softwareVendors.vendors.map(_.productId)
+      test.size shouldBe test.distinct.size
+    }
   }
 
   "a file which does not exist" must {

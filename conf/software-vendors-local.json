@@ -2,6 +2,7 @@
   "lastUpdated": "2022-12-02",
   "vendors": [
     {
+      "productId": 101,
       "name": "vendor 01",
       "website": "01-sole-trader-only.com",
       "filters": {
@@ -18,6 +19,7 @@
       }
     },
     {
+      "productId": 102,
       "name": "vendor 02",
       "website": "02-mandated-only-no-TR.com",
       "filters": {
@@ -44,6 +46,7 @@
       }
     },
     {
+      "productId": 103,
       "name": "vendor 03",
       "website": "03-sole-trader-intended.com",
       "filters": {
@@ -69,6 +72,7 @@
       }
     },
     {
+      "productId": 104,
       "name": "vendor 04",
       "website": "04-mandated-only-TR-intended.com",
       "filters": {
@@ -92,6 +96,7 @@
       }
     },
     {
+      "productId": 105,
       "name": "vendor 05",
       "website": "05-non-mandated-mixed-no-calendar.com",
       "filters": {
@@ -118,6 +123,7 @@
       }
     },
     {
+      "productId": 106,
       "name": "vendor 06",
       "website": "06-non-mandated-TR-intended.com",
       "filters": {
@@ -152,6 +158,7 @@
       }
     },
     {
+      "productId": 107,
       "name": "vendor 07",
       "website": "07-non-mandated-no-TR.com",
       "filters": {
@@ -177,6 +184,7 @@
       }
     },
     {
+      "productId": 108,
       "name": "vendor 08",
       "website": "08-properties-only.com",
       "filters": {
@@ -203,6 +211,7 @@
       }
     },
     {
+      "productId": 109,
       "name": "vendor 09",
       "website": "09-agent-only.com",
       "filters": {
