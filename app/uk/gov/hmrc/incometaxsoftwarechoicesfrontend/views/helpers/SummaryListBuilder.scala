@@ -39,7 +39,11 @@ trait SummaryListBuilder {
 
   private def businessIncomeSummaryListRow(userAnswers: UserAnswers)(implicit messages: Messages): SummaryListRow = {
     val filterList: String = userAnswers.get(BusinessIncomePage) match {
-      case Some(vf) if vf.nonEmpty => vf.map(f => messages(s"business-income.${f.key}")).mkString("<br>")
+      case Some(vf) if vf.size == 1 => vf.map(f => messages(s"business-income.${f.key}")).mkString("<br>")
+      case Some(vf) if vf.size > 1 =>
+        s"""<ul class="govuk-list">
+            ${vf.map(f => s"""<li>${messages(s"business-income.${f.key}")}</li>""").mkString("")}
+            </ul>"""
       case _ => throw new InternalServerException("[SummaryListBuilder][businessIncomeSummaryListRow] - Business income sources data not found")
     }
 
@@ -49,7 +53,11 @@ trait SummaryListBuilder {
   private def otherIncomeSummaryListRow(userAnswers: UserAnswers)(implicit messages: Messages): SummaryListRow = {
     val filterList: String = userAnswers.get(AdditionalIncomeSourcesPage) match {
       case Some(vf) if vf.isEmpty => messages(s"check-your-answers.none-selected")
-      case Some(vf) => vf.map(f => messages(s"additional.income.source-${f.key}")).mkString("<br>")
+      case Some(vf) if vf.size == 1 => vf.map(f => messages(s"additional.income.source-${f.key}")).mkString("<br>")
+      case Some(vf) if vf.size > 1 =>
+        s"""<ul class="govuk-list">
+            ${vf.map(f => s"""<li>${messages(s"additional.income.source-${f.key}")}</li>""").mkString("")}
+            </ul>"""
       case None => throw new InternalServerException("[SummaryListBuilder][otherIncomeSummaryListRow] - Other income sources data not found")
     }
 
@@ -59,7 +67,11 @@ trait SummaryListBuilder {
   private def otherItemsSummaryListRow(userAnswers: UserAnswers)(implicit messages: Messages): SummaryListRow = {
     val filterList: String = userAnswers.get(OtherItemsPage) match {
       case Some(vf) if vf.isEmpty => messages(s"check-your-answers.none-selected")
-      case Some(vf) => vf.map(f => messages(s"other-items.${f.key}")).mkString("<br>")
+      case Some(vf) if vf.size == 1 => vf.map(f => messages(s"other-items.${f.key}")).mkString("<br>")
+      case Some(vf) if vf.size > 1 =>
+        s"""<ul class="govuk-list">
+            ${vf.map(f => s"""<li>${messages(s"other-items.${f.key}")}</li>""").mkString("")}
+            </ul>"""
       case None => throw new InternalServerException("[SummaryListBuilder][otherItemsSummaryListRow] - Other items data not found")
     }
 
