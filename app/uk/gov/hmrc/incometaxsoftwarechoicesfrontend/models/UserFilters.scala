@@ -24,7 +24,7 @@ import java.time.Instant
 case class UserFilters(id: String,
                        answers: Option[UserAnswers] = None,
                        finalFilters: Seq[VendorFilter] = Seq.empty,
-                       vendorResults: Seq[Int] = Seq.empty,
+                       vendorResults: List[Int] = List.empty,
                        lastUpdated: Instant = Instant.now)
 
 object UserFilters {
@@ -37,7 +37,7 @@ object UserFilters {
       (__ \ "_id").read[String] and
         (__ \ "answers").readNullable[UserAnswers] and
         (__ \ "finalFilters").read[Seq[VendorFilter]] and
-        (__ \ "vendorResults").read[Seq[Int]] and
+        (__ \ "vendorResults").read[List[Int]] and
         (__ \ "lastUpdated").read(MongoJavatimeFormats.instantFormat)
       ) (UserFilters.apply _)
   }
@@ -50,7 +50,7 @@ object UserFilters {
       (__ \ "_id").write[String] and
         (__ \ "answers").writeNullable[UserAnswers] and
         (__ \ "finalFilters").write[Seq[VendorFilter]] and
-        (__ \ "vendorResults").write[Seq[Int]] and
+        (__ \ "vendorResults").write[List[Int]] and
         (__ \ "lastUpdated").write(MongoJavatimeFormats.instantFormat)
       ) (ua => (ua.id, ua.answers, ua.finalFilters, ua.vendorResults, ua.lastUpdated))
   }
