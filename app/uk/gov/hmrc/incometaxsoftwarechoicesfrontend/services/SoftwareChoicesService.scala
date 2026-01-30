@@ -16,18 +16,23 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services
 
+import play.mvc.Http.Request
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.{Available, Intended}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilterGroups.*
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.requests.SessionDataRequest
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareVendorModel, SoftwareVendors, VendorFilter, VendorFilterGroups}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.viewmodels.VendorSuitabilityViewModel
 
 import javax.inject.{Inject, Singleton}
+import scala.util.Random.shuffle
 
 @Singleton
 class SoftwareChoicesService @Inject()(
-  dataService: DataService
+  dataService: DataService,
+  userFiltersRepository: UserFiltersRepository
 ) {
 
   def softwareVendors: SoftwareVendors =
@@ -41,14 +46,15 @@ class SoftwareChoicesService @Inject()(
       }
   }
 
-  def getVendorsWithIntent(filters: Seq[VendorFilter])(implicit appConfig: AppConfig): Seq[VendorSuitabilityViewModel] = {
+  def getVendorsWithIntent(filters: Seq[VendorFilter], lastDisplayedVendors: List[Int])
+                          (implicit appConfig: AppConfig, request: SessionDataRequest[_]): Seq[VendorSuitabilityViewModel] = {
     val userFilters = filters.filterNot(_.eq(TaxReturn)).filterNot(_.eq(QuarterlyUpdates))
     val allPotentialVendors = getAllInOneVendors(userFilters)
 
     val mandatoryFilters = filters.filter((mandatoryFilterGroup++quarterlyReturnsGroup).contains) ++ Seq(QuarterlyUpdates)
     val qualifyingVendors = (
       SoftwareChoicesService.matchAvailableFilter(mandatoryFilters)
-        andThen SoftwareChoicesService.sortVendors
+        andThen SoftwareChoicesService.sortVendors(lastDisplayedVendors)
       )(allPotentialVendors.vendors)
 
     val nonMandatoryFilters = filters.filter(nonMandatedIncomeGroup.contains)
@@ -56,9 +62,11 @@ class SoftwareChoicesService @Inject()(
       qualifyingVendors
     } else {
       (SoftwareChoicesService.matchAvailableOrIntendedFilter(nonMandatoryFilters ++ Seq(TaxReturn))
-      andThen SoftwareChoicesService.sortVendors
+      andThen SoftwareChoicesService.sortVendors(lastDisplayedVendors)
       ) (qualifyingVendors)
     }
+
+    userFiltersRepository.set(request.userFilters.copy(vendorResults = vendorsToDisplay.toList.map(_.productId)))
 
     vendorsToDisplay.map(vendor =>
       VendorSuitabilityViewModel(
@@ -72,8 +80,7 @@ class SoftwareChoicesService @Inject()(
     val vendors = softwareVendors
     vendors.copy(
       vendors = (
-        SoftwareChoicesService.matchFilter(filters) _
-          andThen SoftwareChoicesService.sortVendors
+        SoftwareChoicesService.matchFilter(filters)
         ) (vendors.vendors)
     )
   }
@@ -82,8 +89,12 @@ class SoftwareChoicesService @Inject()(
 
 object SoftwareChoicesService {
 
-  private[services] def sortVendors(vendors: Seq[SoftwareVendorModel]) =
-    vendors.sortBy(vendor => vendor.name)
+  private[services] def sortVendors(lastVendors: List[Int] = List.empty)(vendors: Seq[SoftwareVendorModel]) = {
+    val vendorsPreviouslyDisplayed = lastVendors.map(id=>vendors.filter(_.productId==id)).flatten
+    val newVendors = shuffle(vendors.filterNot(v=>lastVendors.contains(v.productId)))
+
+    vendorsPreviouslyDisplayed ++ newVendors
+  }
 
   private[services] def matchFilter(filters: Seq[VendorFilter])(vendors: Seq[SoftwareVendorModel]) =
     vendors.filter(vendor => filters.forall(vendor.filters.contains(_)))
