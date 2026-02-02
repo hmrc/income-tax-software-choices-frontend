@@ -46,14 +46,16 @@
     <p class="govuk-body">
         @hmrcNewTabLinkHelper(NewTabLinkHelper(
           text = messages("exit-survey.link"),
-          href = Some(appConfig.feedbackUrl)
+          href = Some(appConfig.feedbackUrl),
+          classList = Some("govuk-!-display-none-print")
         ))
     </p>
 
     @form(action = finishAction) {
 
         @govukButton(Button(
-            content = Text(messages("zero-results.button"))
+            content = Text(messages("zero-results.button")),
+            classes = "govuk-!-display-none-print"
         ))
     }
 }

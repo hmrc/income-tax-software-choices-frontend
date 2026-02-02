@@ -66,7 +66,8 @@
 
     @form(action = postAction) {
         @govukButton(Button(
-            content = Text(messages("choosing-software.button.view-your-results"))
+            content = Text(messages("choosing-software.button.view-your-results")),
+            classes = "govuk-!-display-none-print"
         ))
     }
 

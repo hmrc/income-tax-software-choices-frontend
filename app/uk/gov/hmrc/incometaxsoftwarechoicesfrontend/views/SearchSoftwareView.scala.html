@@ -68,14 +68,15 @@
             @govukButton(Button(
                content = Text(messages("search-software.check-answers")),
                href = Some(routes.CheckYourAnswersController.show().url),
-               classes = "govuk-button--secondary"
+               classes = "govuk-button--secondary govuk-!-display-none-print"
             ))
         }
 
         <p class="govuk-body">
             @hmrcNewTabLinkHelper(NewTabLinkHelper(
                text = messages("exit-survey.link"),
-               href = Some(appConfig.feedbackUrl)
+               href = Some(appConfig.feedbackUrl),
+               classList = Some("govuk-!-display-none-print")
             ))
         </p>
     </div>
@@ -100,11 +101,11 @@
 
           <div class="govuk-button-group govuk-!-padding-top-0 apply-filters-group">
             @govukButton(Button(
-              classes = "apply-filters-button",
+              classes = "apply-filters-button govuk-!-display-none-print",
               content = Text(messages("search-software.filters.apply-filters")),
             ))
             <p class="govuk-body">
-              <a class="govuk-link" href="@clearAction.url">@messages("search-software.filters.clear-filters")</a>
+              <a class="govuk-link govuk-!-display-none-print" href="@clearAction.url">@messages("search-software.filters.clear-filters")</a>
             </p>
           </div>
         </div>
