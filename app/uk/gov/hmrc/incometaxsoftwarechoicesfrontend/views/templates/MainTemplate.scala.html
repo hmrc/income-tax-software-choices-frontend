@@ -96,6 +96,7 @@
         tag = Some(Tag(
             content = Text(messages("phase-banner.tag"))
         )),
+        classes = "govuk-!-display-none-print",
         content = HtmlContent(
             s"${messages("phase-banner.intro")} ${hmrcNewTabLinkHelper(NewTabLinkHelper(
                 text = messages("phase-banner.feedback"),
