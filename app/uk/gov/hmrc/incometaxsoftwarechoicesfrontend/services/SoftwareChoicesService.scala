@@ -46,7 +46,7 @@ class SoftwareChoicesService @Inject()(
       }
   }
 
-  def getVendorsWithIntent(filters: Seq[VendorFilter], lastDisplayedVendors: List[Int])
+  def getVendorsWithIntent(filters: Seq[VendorFilter])
                           (implicit appConfig: AppConfig, request: SessionDataRequest[_]): Seq[VendorSuitabilityViewModel] = {
     val userFilters = filters.filterNot(_.eq(TaxReturn)).filterNot(_.eq(QuarterlyUpdates))
     val allPotentialVendors = getAllInOneVendors(userFilters)
@@ -54,7 +54,7 @@ class SoftwareChoicesService @Inject()(
     val mandatoryFilters = filters.filter((mandatoryFilterGroup++quarterlyReturnsGroup).contains) ++ Seq(QuarterlyUpdates)
     val qualifyingVendors = (
       SoftwareChoicesService.matchAvailableFilter(mandatoryFilters)
-        andThen SoftwareChoicesService.sortVendors(lastDisplayedVendors)
+//        andThen SoftwareChoicesService.sortVendors
       )(allPotentialVendors.vendors)
 
     val nonMandatoryFilters = filters.filter(nonMandatedIncomeGroup.contains)
@@ -62,11 +62,9 @@ class SoftwareChoicesService @Inject()(
       qualifyingVendors
     } else {
       (SoftwareChoicesService.matchAvailableOrIntendedFilter(nonMandatoryFilters ++ Seq(TaxReturn))
-      andThen SoftwareChoicesService.sortVendors(lastDisplayedVendors)
+//      andThen SoftwareChoicesService.sortVendors
       ) (qualifyingVendors)
     }
-
-    userFiltersRepository.set(request.userFilters.copy(vendorResults = vendorsToDisplay.toList.map(_.productId)))
 
     vendorsToDisplay.map(vendor =>
       VendorSuitabilityViewModel(
@@ -76,24 +74,34 @@ class SoftwareChoicesService @Inject()(
       ))
   }
 
-  def getAllInOneVendors(filters: Seq[VendorFilter]): SoftwareVendors = {
+  def getAllInOneVendors(filters: Seq[VendorFilter])(implicit appConfig: AppConfig, request: SessionDataRequest[_]): SoftwareVendors = {
     val vendors = softwareVendors
-    vendors.copy(
-      vendors = (
-        SoftwareChoicesService.matchFilter(filters)
-        ) (vendors.vendors)
-    )
+
+    if (request.userFilters.randomVendorOrder.isEmpty) {
+      val randomisedVendors = vendors.copy(vendors = scala.util.Random.shuffle(vendors.vendors))
+      userFiltersRepository.set(request.userFilters.copy(randomVendorOrder = randomisedVendors.vendors.map(_.productId).toList))
+
+      randomisedVendors.copy(
+        vendors = SoftwareChoicesService.matchFilter(filters)(randomisedVendors.vendors)
+      )
+    } else {
+      vendors.copy(
+        vendors = {
+          request.userFilters.randomVendorOrder.flatMap( id =>
+            SoftwareChoicesService.matchFilter(filters)(vendors.vendors) filter (_.productId == id)
+          )
+        }
+      )
+    }
+
   }
 
 }
 
 object SoftwareChoicesService {
 
-  private[services] def sortVendors(lastVendors: List[Int] = List.empty)(vendors: Seq[SoftwareVendorModel]) = {
-    val vendorsPreviouslyDisplayed = lastVendors.map(id=>vendors.filter(_.productId==id)).flatten
-    val newVendors = shuffle(vendors.filterNot(v=>lastVendors.contains(v.productId)))
-
-    vendorsPreviouslyDisplayed ++ newVendors
+  private[services] def sortVendors(randomisedVendors: List[Int] = List.empty)(vendors: Seq[SoftwareVendorModel]) = {
+    randomisedVendors.flatMap(id=>vendors.filter(_.productId==id))
   }
 
   private[services] def matchFilter(filters: Seq[VendorFilter])(vendors: Seq[SoftwareVendorModel]) =
