@@ -45,7 +45,7 @@
 
     <p class="govuk-body-l">@messages("product-details.contact-details.heading")</p>
 
-    <div class="govuk-!-width-two-thirds govuk-!-padding-0">
+    <div class="govuk-!-width-three-quarters govuk-!-padding-0">
         @contactDetailsList
 
         <h2 class="govuk-heading-m">@messages("product-details.details.heading")</h2>
@@ -66,7 +66,7 @@
         swSpecRow(languageGroup, "language")
     }) { specsRows =>
         @if(specsRows.nonEmpty) {
-            <div class="govuk-!-width-two-thirds govuk-!-padding-0">
+            <div class="govuk-!-width-three-quarters govuk-!-padding-0">
                 <h2 class="govuk-heading-m">@messages("product-details.software-spec.heading")</h2>
                 @govukSummaryList(SummaryList(rows = specsRows))
             </div>
@@ -98,7 +98,7 @@
         Seq(
             TableRow(
                 content = Text(messages(s"product-details.$section.${filter.key}")),
-                classes = "govuk-!-width-three-quarters"
+                classes = "govuk-!-width-two-thirds"
             ),
             TableRow(
                 content = (softwareVendor.getFeatureStatus(filter), displayIntent) match {
@@ -108,17 +108,17 @@
                     case (Intended, true) => {
                         HtmlContent(govukTag(Tag(
                             content = Text(messages("search-software.vendor-detail.eoy-tax-return.development")),
-                            classes = "govuk-tag--yellow"
+                            classes = "govuk-tag--yellow govuk-!-display-inline"
                         )))
                     }
                     case _ => {
                         HtmlContent(govukTag(Tag(
                             content = Text(messages("search-software.vendor-detail.eoy-tax-return.not-included")),
-                            classes = "govuk-tag--red"
+                            classes = "govuk-tag--red govuk-!-display-inline"
                         )))
                     }
                 },
-                classes = "govuk-!-width-one-quarter"
+                classes = "govuk-!-width-one-third"
             )
         )
     }
@@ -145,12 +145,18 @@
     val filters = filtersGroup.filter(f => softwareVendor.filters.contains(f) && softwareVendor.getFeatureStatus(f).eq(Available))
     filters.size match {
         case x if x==1 => Seq(SummaryListRow(
-            key = Key(content = Text(messages(s"product-details.software-spec.$sectionKey"))),
+            key = Key(
+                content = Text(messages(s"product-details.software-spec.$sectionKey")),
+                classes = "govuk-!-width-one-half"
+            ),
             value = Value(content = HtmlContent(
                 s"${filters.map(f => s"""${messages(s"product-details.${sectionKey}.${f.key}")}""").mkString("")}"
             ))))
         case x if x>1 => Seq(SummaryListRow(
-            key = Key(content = Text(messages(s"product-details.software-spec.$sectionKey"))),
+            key = Key(
+                content = Text(messages(s"product-details.software-spec.$sectionKey")),
+                classes = "govuk-!-width-one-half"
+            ),
             value = Value(content = HtmlContent(
                 s"""<ul class="govuk-list">
                     ${filters.map(f => s"""<li>${messages(s"product-details.${sectionKey}.${f.key}")}</li>""").mkString("")}
