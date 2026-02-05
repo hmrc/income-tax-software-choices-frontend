@@ -34,9 +34,9 @@ class MainTemplateViewSpec extends ViewSpec {
       document.getTechnicalHelpLinkText shouldBe "Is this page not working properly? (opens in new tab)"
     }
 
-    "have an Alpha banner" in {
+    "have a Beta banner" in {
       val banner: Element = document.selectHead(".govuk-phase-banner")
-      banner.selectHead(".govuk-phase-banner__content__tag").text shouldBe "Alpha"
+      banner.selectHead(".govuk-phase-banner__content__tag").text shouldBe "Beta"
 
       val bannerContent: Element = banner.selectHead(".govuk-phase-banner__text")
       bannerContent.text shouldBe "This is a new service. Help us improve it and give your feedback (opens in new tab)"

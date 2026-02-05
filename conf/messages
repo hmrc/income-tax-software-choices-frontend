@@ -277,7 +277,7 @@ page-not-found.bullet1 = contact us about this problem
 page-not-found.bullet2 = find software that works with Making Tax Digital for Income Tax
 
 # Phase Banner
-phase-banner.tag = Alpha
+phase-banner.tag = Beta
 phase-banner.intro = This is a new service. Help us improve it and
 phase-banner.feedback = give your feedback
 

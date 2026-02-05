@@ -277,7 +277,7 @@ page-not-found.bullet1 = cysylltu â ni ynghylch y broblem hon
 page-not-found.bullet2 = dod o hyd i feddalwedd sy’n cydweddu â’r cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm
 
 # Phase Banner
-phase-banner.tag = Alffa
+phase-banner.tag = Beta
 phase-banner.intro = Gwasanaeth newydd yw hwn. Helpwch ni i’w wella a
 phase-banner.feedback = rhoi eich adborth
 
