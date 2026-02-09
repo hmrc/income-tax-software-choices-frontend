@@ -41,7 +41,8 @@
 
     @form(action = postAction) {
         @govukButton(Button(
-            content = Text(messages("base.confirm-continue"))
+            content = Text(messages("base.confirm-continue")),
+            classes = "govuk-!-display-none-print"
         ))
     }
 
