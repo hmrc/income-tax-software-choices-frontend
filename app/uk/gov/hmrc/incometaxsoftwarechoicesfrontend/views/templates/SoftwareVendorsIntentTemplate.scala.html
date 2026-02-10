@@ -121,7 +121,7 @@
 }
 
 @tag(content: String, colour: String) = @{
-    HtmlContent(s"""<strong class="govuk-tag ${colour}">${content}</strong>""")
+    HtmlContent(s"""<strong class="govuk-tag ${colour}" style="max-width: 100%;">${content}</strong>""")
 }
 
 @summaryListRow(key: String, value: Content) = @{
