@@ -23,6 +23,7 @@ import play.api.mvc.Call
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes.ProductDetailsController
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.TestModels.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.{Available, Intended}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.*
@@ -538,8 +539,11 @@ object SearchSoftwareWithIntentViewSpec extends ViewSpec {
 
 private object SearchSoftwareWithIntentPageContent {
   def heading(count: Int) = s"You have $count software results"
+
   val headingOne = "You have 1 software result"
+
   def title(count: Int) = s"${heading(count)} - ${PageContentBase.title} - GOV.UK"
+
   val titleOne = s"$headingOne - ${PageContentBase.title} - GOV.UK"
   val paragraph = "All the products showing in the filter list will allow you to submit your quarterly updates."
   val paragraphTwo = "In development means one or more features you need to complete your tax return are still being built. " +
@@ -607,11 +611,7 @@ private object SearchSoftwareWithIntentPageContent {
   val softwareVendorsResults: SoftwareVendors = SoftwareVendors(
     lastUpdated = lastUpdateTest,
     vendors = Seq(
-      SoftwareVendorModel(
-        name = "test software vendor one",
-        email = Some("test@software-vendor-name-one.com"),
-        phone = Some("11111 111 111"),
-        website = "software-vendor-name-one.com",
+      testVendorOne.copy(
         filters = Seq(
           FreeVersion,
           FreeTrial,
@@ -628,23 +628,13 @@ private object SearchSoftwareWithIntentPageContent {
           TaxReturn
         ).map(vf => vf -> Available).toMap
       ),
-      SoftwareVendorModel(
-        name = "test software vendor two",
-        email = Some("test@software-vendor-name-two.com"),
-        phone = Some("22222 222 222"),
-        website = "software-vendor-name-two.com",
-        filters = Map.empty
-      )
+      testVendorTwo.copy(filters = Map.empty)
     )
   )
 
   val multipleVendorsWithIntent: Seq[VendorSuitabilityViewModel] = Seq(
     VendorSuitabilityViewModel(
-      vendor = SoftwareVendorModel(
-        name = "test software vendor one",
-        email = Some("test@software-vendor-name-one.com"),
-        phone = Some("11111 111 111"),
-        website = "software-vendor-name-one.com",
+      vendor = testVendorOne.copy(
         filters = Seq(
           FreeVersion,
           FreeTrial,
@@ -666,11 +656,7 @@ private object SearchSoftwareWithIntentPageContent {
       eoyReady = Some(true)
     ),
     VendorSuitabilityViewModel(
-      vendor = SoftwareVendorModel(
-        name = "test software vendor two",
-        email = Some("test@software-vendor-two.com"),
-        phone = Some("22222 222 222"),
-        website = "software-vendor-name-two.com",
+      vendor = testVendorTwo.copy(
         filters = Seq(
           SoleTrader
         ).map(vf => vf -> Available).toMap
@@ -679,11 +665,7 @@ private object SearchSoftwareWithIntentPageContent {
       eoyReady = Some(false)
     ),
     VendorSuitabilityViewModel(
-      vendor = SoftwareVendorModel(
-        name = "test software vendor three",
-        email = Some("test@software-vendor-name-three.com"),
-        phone = Some("33333 333 333"),
-        website = "software-vendor-name-three.com",
+      vendor = testVendorThree.copy(
         filters = Seq(
           FreeVersion,
           FreeTrial,
@@ -698,11 +680,7 @@ private object SearchSoftwareWithIntentPageContent {
       eoyReady = None
     ),
     VendorSuitabilityViewModel(
-      vendor = SoftwareVendorModel(
-        name = "test software vendor four",
-        email = Some("test@software-vendor-name-four.com"),
-        phone = Some("44444 444 444"),
-        website = "software-vendor-name-four.com",
+      vendor = testVendorFour.copy(
         filters = Map(
           FreeVersion -> Intended,
           SoleTrader -> Available,
@@ -720,11 +698,7 @@ private object SearchSoftwareWithIntentPageContent {
 
   def singleVendorWithIntent(quarterlyReady: Boolean, eoyReady: Boolean): Seq[VendorSuitabilityViewModel] = Seq(
     VendorSuitabilityViewModel(
-      vendor = SoftwareVendorModel(
-        name = "test software vendor one",
-        email = Some("test@software-vendor-name-one.com"),
-        phone = Some("11111 111 111"),
-        website = "software-vendor-name-one.com",
+      vendor = testVendorOne.copy(
         filters = Seq(
           FreeVersion,
           FreeTrial,
