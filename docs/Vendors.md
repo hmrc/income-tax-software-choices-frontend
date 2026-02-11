@@ -1,88 +1,23 @@
-# How to convert a Vendor spreadsheet to a json entry.
+# Vendor Data Capture process
 
-We currently receive a spreadsheet of information, which must be converted to strings matching 
-the values in our traits.  The below guide gives the questions on the spreadsheet which map to 
-each value in a Vendor.
+## Overview
 
-## Main information
+The vendor data capture template is a spreadsheet that allows the customer (HMRC vendor management team) to capture the relevant features of a software product.
 
-### Name
+The customer will complete a template for each software product to be added to the Software Choices service and share that spreadsheet with the development team.
 
-Name (of product, not company).
+The development team will extract the json data (that the service uses) from the spreadsheet and apply it to the [software-vendors.json](conf/software-vendors.json) file.
 
-### Website (and also Url, for now)
+## Development team process
+The spreadsheet contains a hidden tab called "Json Output". This tab should be unhidden and the contents of the appropriate field (currently F1) should be copied and either appended to the bottom of the [software-vendors.json](conf/software-vendors.json) file, or used to replace an existing entry for a software product.
 
-URL link to be used to direct customers to your website - can be link to homepage, or ITSA MTD specific page
+## Template Update process
 
-### Email
+The template spreadsheet contains a series of hidden columns on both the Data and Json Output tabs.
+The Data tab will need to have any new filters added as new rows and the appropriate filter name associated with that row. Provided the formula are copied to the correct row then the new filter should be reflected in the output.
 
-Pleased provide your company email address as it should be displayed for customers
+It is recommended that the person updating the template should have a good understanding of how the template works and how the filters are applied to ensure that the correct data is being captured and outputted. It is also recommended that the person updating the template should have a good understanding of Excel!
 
-### Phone
+The passwords to unprotect the template tabs can be obtained from a current member of the development team.
 
-If populated with a valid phone number, ONLY: Please provide your company contact details as they should be displayed for customers
-
-### AccessibilityStatementLink
-
-Please insert URL link to your Accessibility Statement - if available on your website
-
-## Filters
-
-### FreeVersion, FreeTrial and PaidFor
-
-Is your product free (completely), free with limitations, free trial available? Please provide a narrative in the Remarks column.
-
-### SoleTrader, UkProperty and OverseasProperty
-
-This is taken from the API section:
-
-Self employment API = Sole trader
-Property API = Uk Property
-Foreign API = Overseas Property
-
-### Individual and Agent
-
-Product suitable for Agent and/or Individual
-
-### MicrosoftWindows
-
-Is your product compatible with Windows operating systems
-
-### MacOS
-
-Is your product compatible with MacOS operating systems
-
-### Android
-
-Is your product downloadable for Android
-
-### AppleIOS
-
-Is your product downloadable for iOS
-
-### BrowserBased or ApplicationBased
-
-Is your product web browser based?
-
-### RecordKeeping or Bridging
-
-Is your product ITSA bridging software or ITSA record keeping software
-
-### Vat
-
-Do you have an product available for Making Tax Digital for VAT
-
-### Welsh
-
-Does your product offer Welsh language option
-
-### Visual, Hearing, Motor and Cognitive
-
-Software to be listed as Accessible - Motor needs
-Software to be listed as Accessible - Cognitive needs
-Software to be listed as Accessible - Hearing needs
-Software to be listed as Accessible - Visual needs
-
-## IncomeAndDeductions
-
-These are all taken from the grey section.
+The vendor data capture templates are versioned for the benefit of the customer. Please copy the latest one and create a new version to avoid confusion.
