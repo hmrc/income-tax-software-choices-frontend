@@ -77,23 +77,21 @@ check-your-answers.accounting-period    = Cyfnod cyfrifyddu
 check-your-answers.none-selected        = Dim wedi’i ddewis
 
 # Choosing Software from Your Results view
-choosing-software.heading                   = Dewis meddalwedd o’ch canlyniadau
-choosing-software.para1                     = Mae’r holl feddalwedd a restrir wedi bod drwy broses gydnabod CThEF. Nid yw CThEF yn argymell nac yn cymeradwyo unrhyw gynnyrch neu ddarparwr meddalwedd penodol.
-choosing-software.h2.future-software        = Diweddariadau i feddalwedd yn y dyfodol
-choosing-software.para2                     = Mae rhai o nodweddion meddalwedd naill ai:
-choosing-software.bullet1                   = yn barod nawr
-choosing-software.bullet2                   = o dan ddatblygiad
-choosing-software.para3                     = Bydd pob un o’r cynhyrchion meddalwedd sy’n ymddangos yn eich canlyniadau yn eich caniatáu chi, neu’ch asiant, i wneud y canlynol:
+choosing-software.heading                   = Sut i ddewis meddalwedd o’ch canlyniadau
+choosing-software.para1                     = Mae CThEF wedi ymrwymo i adeiladu’r holl nodweddion sydd eu hangen arnoch, yn barod at pan fyddwch yn cyflwyno eich Ffurflen Dreth 2026 i 2027. Mae’r darparwyr meddalwedd sydd wedi’u rhestru yma wedi adeiladu, neu wedi ymrwymo i adeiladu, y nodweddion hyn erbyn y bydd angen i chi gyflwyno eich Ffurflen Dreth 2026 i 2027.
+choosing-software.para2                     = Mae’r holl feddalwedd a restrir wedi bod drwy broses gydnabod CThEF. Nid yw CThEF yn argymell nac yn cymeradwyo unrhyw gynnyrch neu ddarparwr meddalwedd penodol.
+choosing-software.h2.future-software        = Diweddariadau i feddalwedd yn y dyfodol ar gyfer eich Ffurflen Dreth 2026 i 2027
+choosing-software.para3                     = Mae rhai o’r nodweddion y bydd eu hangen arnoch er mwyn cyflwyno’ch Ffurflen Dreth yn parhau o dan ddatblygiad gan rai darparwyr meddalwedd a CThEF. Cânt eu nodi fel bod:
+choosing-software.bullet1                   = ‘yn barod nawr’ neu
+choosing-software.bullet2                   = ‘o dan ddatblygiad’
+choosing-software.para4                     = Bydd pob un o’r cynhyrchion meddalwedd sy’n ymddangos yn eich canlyniadau yn eich caniatáu chi, neu’ch asiant, i wneud y canlynol:
 choosing-software.bullet3                   = creu, cadw, a chywiro cofnodion digidol o’ch hunangyflogaeth ynghyd ag incwm a threuliau eiddo
 choosing-software.bullet4                   = anfon eich diweddariadau chwarterol at CThEF
-choosing-software.para4                     = Dyma’r cyfan sydd eu hangen arnoch i ddechrau defnyddio’r cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm o 6 Ebrill 2026 ymlaen.
-choosing-software.h3                        = Cyflwyno eich Ffurflen Dreth 2026 i 2027
-choosing-software.para5                     = Mae’r nodweddion y bydd eu hangen arnoch er mwyn cyflwyno’ch Ffurflen Dreth yn parhau o dan ddatblygiad gan rai darparwyr meddalwedd. Maent yn cael eu dangos fel eu bod ‘o dan ddatblygiad’.
-choosing-software.para6                     = Mae’r rhain yn nodweddion y mae darparwyr meddalwedd wedi eu hadeiladu, neu wedi ymrwymo i’w hadeiladu, erbyn y bydd angen i chi gyflwyno eich Ffurflen Dreth 2026 i 2027.
-choosing-software.h2.making-sure            = Gwneud yn siŵr eich bod yn cael y cynnyrch cywir
-choosing-software.para7                     = Efallai y bydd rhai o’r cynhyrchion sy’n cael eu rhestru yn cynnig cyfnod prawf am ddim, neu fersiynau am ddim, ond bydd yn rhaid i chi dalu am rhai eraill.
-choosing-software.para8                     = Nid yw CThEF yn gyfrifol am argaeledd cynhyrchion nag am sicrhau bod y cynnyrch yr ydych yn ei ddewis yn bodloni eich anghenion presennol, ac eich anghenion yn y dyfodol.
-choosing-software.para9                     = Rydym yn argymell eich bod yn ymweld â gwefannau darparwyr meddalwedd i wneud ymchwil cyn dewis cynnyrch.
+choosing-software.para5                     = Dyma’r cyfan sydd eu hangen arnoch i ddechrau defnyddio’r cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm o 6 Ebrill 2026 ymlaen.
+choosing-software.h2.making-sure            = Sut i wneud yn siŵr eich bod yn cael y feddalwedd gywir
+choosing-software.para6                     = Efallai y bydd rhai o’r cynhyrchion sy’n cael eu rhestru yn cynnig cyfnod prawf am ddim, neu fersiynau am ddim, ond bydd yn rhaid i chi dalu am rhai eraill.
+choosing-software.para7                     = Nid yw CThEF yn gyfrifol am argaeledd cynhyrchion nag am sicrhau bod y cynnyrch yr ydych yn ei ddewis yn bodloni eich anghenion presennol, ac eich anghenion yn y dyfodol.
+choosing-software.para8                     = Rydym yn argymell eich bod yn ymweld â gwefannau darparwyr meddalwedd i wneud ymchwil cyn dewis cynnyrch.
 choosing-software.button.view-your-results  = Gweld eich canlyniadau
 
 
