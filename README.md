@@ -13,6 +13,7 @@ will enable them to submit electronic tax returns as part of Making Tax Digital
     - [How to use](#How-to-use)
     - [How to test](#How-to-test)
 2. [Persistence](#Persistence)
+2. [Vendor Data](#Vendor-Data)
 
 # Quick start
 
@@ -67,6 +68,10 @@ This service is under development.  Please keep this section up to date.
 * Run integration tests: `sbt clean it:test`
 * Run performance tests: **to be provided** in the repo [income-tax-subscription-performance-tests](https://github.com/hmrc/income-tax-subscription-performance-tests)
 * Run acceptance tests: **to be provided** in the repo [income-tax-subscription-acceptance-tests](https://github.com/hmrc/income-tax-subscription-acceptance-tests)
+
+# Vendor Data
+
+The vendor data capture process and the template are document [here](docs/Vendors.md)
 
 # Persistence
 
