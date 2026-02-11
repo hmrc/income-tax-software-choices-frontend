@@ -20,14 +20,18 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.{Available, Intended}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilterGroups.*
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.requests.SessionDataRequest
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareVendorModel, SoftwareVendors, VendorFilter, VendorFilterGroups}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.viewmodels.VendorSuitabilityViewModel
 
 import javax.inject.{Inject, Singleton}
+import scala.util.Random.shuffle
 
 @Singleton
 class SoftwareChoicesService @Inject()(
-  dataService: DataService
+  dataService: DataService,
+  userFiltersRepository: UserFiltersRepository
 ) {
 
   def softwareVendors: SoftwareVendors =
@@ -41,23 +45,19 @@ class SoftwareChoicesService @Inject()(
       }
   }
 
-  def getVendorsWithIntent(filters: Seq[VendorFilter])(implicit appConfig: AppConfig): Seq[VendorSuitabilityViewModel] = {
+  def getVendorsWithIntent(filters: Seq[VendorFilter])
+                          (implicit appConfig: AppConfig, request: SessionDataRequest[_]): Seq[VendorSuitabilityViewModel] = {
     val userFilters = filters.filterNot(_.eq(TaxReturn)).filterNot(_.eq(QuarterlyUpdates))
-    val allPotentialVendors = getAllInOneVendors(userFilters)
+    val allPotentialVendorsInRandOrder = getAllInOneVendors(userFilters)
 
     val mandatoryFilters = filters.filter((mandatoryFilterGroup++quarterlyReturnsGroup).contains) ++ Seq(QuarterlyUpdates)
-    val qualifyingVendors = (
-      SoftwareChoicesService.matchAvailableFilter(mandatoryFilters)
-        andThen SoftwareChoicesService.sortVendors
-      )(allPotentialVendors.vendors)
+    val qualifyingVendors = SoftwareChoicesService.matchAvailableFilter(mandatoryFilters)(allPotentialVendorsInRandOrder.vendors)
 
     val nonMandatoryFilters = filters.filter(nonMandatedIncomeGroup.contains)
     val vendorsToDisplay = if (nonMandatoryFilters.isEmpty) {
       qualifyingVendors
     } else {
-      (SoftwareChoicesService.matchAvailableOrIntendedFilter(nonMandatoryFilters ++ Seq(TaxReturn))
-      andThen SoftwareChoicesService.sortVendors
-      ) (qualifyingVendors)
+      SoftwareChoicesService.matchAvailableOrIntendedFilter(nonMandatoryFilters ++ Seq(TaxReturn))(qualifyingVendors)
     }
 
     vendorsToDisplay.map(vendor =>
@@ -68,22 +68,28 @@ class SoftwareChoicesService @Inject()(
       ))
   }
 
-  def getAllInOneVendors(filters: Seq[VendorFilter]): SoftwareVendors = {
+  def getAllInOneVendors(filters: Seq[VendorFilter])(implicit appConfig: AppConfig, request: SessionDataRequest[_]): SoftwareVendors = {
     val vendors = softwareVendors
-    vendors.copy(
-      vendors = (
-        SoftwareChoicesService.matchFilter(filters) _
-          andThen SoftwareChoicesService.sortVendors
-        ) (vendors.vendors)
-    )
+
+    val orderedMatchingVendors = if (request.userFilters.randomVendorOrder.isEmpty) {
+      val randomisedVendors = vendors.copy(vendors = shuffle(vendors.vendors))
+      userFiltersRepository.set(request.userFilters.copy(randomVendorOrder = randomisedVendors.vendors.map(_.productId).toList))
+
+      SoftwareChoicesService.matchFilter(filters)(randomisedVendors.vendors)
+
+    } else {
+      val matchingVendors = SoftwareChoicesService.matchFilter(filters)(vendors.vendors)
+      val vendorMap = matchingVendors.map(_.productId).zip(matchingVendors).toMap
+
+      request.userFilters.randomVendorOrder.flatMap(vendorMap.get)
+    }
+
+    vendors.copy(vendors = orderedMatchingVendors)
   }
 
 }
 
 object SoftwareChoicesService {
-
-  private[services] def sortVendors(vendors: Seq[SoftwareVendorModel]) =
-    vendors.sortBy(vendor => vendor.name)
 
   private[services] def matchFilter(filters: Seq[VendorFilter])(vendors: Seq[SoftwareVendorModel]) =
     vendors.filter(vendor => filters.forall(vendor.filters.contains(_)))
