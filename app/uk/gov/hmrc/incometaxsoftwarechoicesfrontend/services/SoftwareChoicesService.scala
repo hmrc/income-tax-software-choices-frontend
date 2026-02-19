@@ -33,11 +33,11 @@ class SoftwareChoicesService @Inject()(
   def softwareVendors: SoftwareVendors =
     dataService.getSoftwareVendors()
 
-  def getSoftwareVendor(software: String): Option[SoftwareVendorModel] = {
+  def getSoftwareVendor(productId: Int): Option[SoftwareVendorModel] = {
     softwareVendors
       .vendors
       .collectFirst {
-        case vendor if vendor.name == software => vendor
+        case vendor if vendor.productId == productId => vendor
       }
   }
 

@@ -20,27 +20,24 @@ import org.scalatest.BeforeAndAfterEach
 import play.api.http.Status.{NOT_FOUND, OK}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.ComponentSpecBase
 
-import java.net.URLEncoder
-
 class ProductDetailsControllerISpec extends ComponentSpecBase with BeforeAndAfterEach {
 
   val address = "/product-details"
 
   s"GET /find-making-tax-digital-income-tax-software${address}" when {
-    val vendorOneName = "vendor 01"
 
     "respond with 200 status for a real software name" in {
       When(s"GET $address is called")
-      val response = SoftwareChoicesFrontend.productDetails(URLEncoder.encode(vendorOneName, "UTF-8"))
+      val response = SoftwareChoicesFrontend.productDetails(101)
 
       Then("Should return OK with the software search page")
       response should have(
         httpStatus(OK)
       )
     }
-    "respond with 404 status for a fake software name" in {
+    "respond with 404 status for a non existent product id" in {
       When(s"GET $address is called")
-      val response = SoftwareChoicesFrontend.productDetails("fake")
+      val response = SoftwareChoicesFrontend.productDetails(0)
 
       Then("Should return Not Found")
       response should have(

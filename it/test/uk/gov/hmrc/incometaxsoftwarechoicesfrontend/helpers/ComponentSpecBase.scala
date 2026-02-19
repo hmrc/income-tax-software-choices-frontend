@@ -29,7 +29,7 @@ import play.api.libs.crypto.CookieSigner
 import play.api.libs.ws.{WSClient, WSResponse}
 import play.api.test.FakeRequest
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.{AccountingPeriodForm, AdditionalIncomeForm, BusinessIncomeForm, FiltersForm, OtherItemsForm, UserTypeForm}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.baseURI
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{AccountingPeriod, FiltersFormModel, UserType, VendorFilter}
 import play.api.libs.ws.WSBodyWritables.writeableOf_urlEncodedForm
@@ -69,7 +69,7 @@ trait ComponentSpecBase extends AnyWordSpec
 
     def clear(): WSResponse = get("/clear")
 
-    def productDetails(name: String): WSResponse = get(s"/product-details/$name")
+    def productDetails(productId: Int): WSResponse = get(s"/product-details/$productId")
 
     def getBusinessIncome: WSResponse = get("/which-income-source-quarterly-updates")
 

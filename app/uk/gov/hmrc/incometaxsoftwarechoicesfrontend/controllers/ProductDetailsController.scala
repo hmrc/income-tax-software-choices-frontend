@@ -18,9 +18,8 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.SoftwareChoicesService
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.{ProductDetailsView, NotFoundView}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.{NotFoundView, ProductDetailsView}
 
-import java.net.URLDecoder
 import javax.inject.{Inject, Singleton}
 
 @Singleton
@@ -29,11 +28,11 @@ class ProductDetailsController @Inject()(softwareChoicesService: SoftwareChoices
                                          notFoundView: NotFoundView)
                                         (implicit mcc: MessagesControllerComponents) extends BaseFrontendController {
 
-  def show(software: String): Action[AnyContent] = Action { request =>
+  def show(productId: Int): Action[AnyContent] = Action { request =>
     given Request[AnyContent] = request
-    val softwareName = URLDecoder.decode(software, "UTF-8")
-    softwareChoicesService.getSoftwareVendor(softwareName) match {
-      case None => NotFound(notFoundView(routes.ProductDetailsController.show(software).url))
+
+    softwareChoicesService.getSoftwareVendor(productId) match {
+      case None => NotFound(notFoundView(routes.ProductDetailsController.show(productId).url))
       case Some(softwareVendor) => Ok(productDetailsPage(softwareVendor))
     }
   }
