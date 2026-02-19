@@ -30,7 +30,6 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.viewmodels.{SoftwareChoicesResultsViewModel, VendorSuitabilityViewModel}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SearchSoftwareView
 
-import java.net.URLEncoder
 import java.time.LocalDate
 
 class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach {
@@ -276,7 +275,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
 
             "has a link for the software vendor" in {
               val link: Element = firstVendor.selectHead("a")
-              val expectedUrl = ProductDetailsController.show(URLEncoder.encode(firstModel.name, "UTF-8")).url
+              val expectedUrl = ProductDetailsController.show(101).url
 
               link.attr("href") shouldBe expectedUrl
               link.text should include(firstModel.name)
@@ -299,7 +298,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
 
             "has a link for the software vendor" in {
               val link: Element = secondVendor.selectHead("a")
-              val expectedUrl = ProductDetailsController.show(URLEncoder.encode(secondModel.name, "UTF-8")).url
+              val expectedUrl = ProductDetailsController.show(102).url
 
               link.attr("href") shouldBe expectedUrl
               link.text should include(secondModel.name)
@@ -322,7 +321,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
 
             "has a link for the software vendor" in {
               val link: Element = thirdVendor.selectHead("a")
-              val expectedUrl = ProductDetailsController.show(URLEncoder.encode(thirdModel.name, "UTF-8")).url
+              val expectedUrl = ProductDetailsController.show(103).url
 
               link.attr("href") shouldBe expectedUrl
               link.text should include(thirdModel.name)
@@ -428,7 +427,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
 
             "has a link for the software vendor" in {
               val link: Element = firstVendor.selectHead("a")
-              val expectedUrl = ProductDetailsController.show(URLEncoder.encode(firstModel.name, "UTF-8")).url
+              val expectedUrl = ProductDetailsController.show(101).url
 
               link.attr("href") shouldBe expectedUrl
               link.text should include(firstModel.name)
@@ -451,7 +450,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
 
             "has a link for the software vendor" in {
               val link: Element = secondVendor.selectHead("a")
-              val expectedUrl = ProductDetailsController.show(URLEncoder.encode(secondModel.name, "UTF-8")).url
+              val expectedUrl = ProductDetailsController.show(102).url
 
               link.attr("href") shouldBe expectedUrl
               link.text should include(secondModel.name)

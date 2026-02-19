@@ -20,7 +20,6 @@
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{VendorFilterGroups, _}
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus._
-@import java.net.URLEncoder
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes.ProductDetailsController
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.viewmodels.VendorSuitabilityViewModel
 
@@ -158,7 +157,7 @@
       classes = "govuk-summary-list--no-border"
     ))
     <p class="govuk-body">
-      <a href="@{ProductDetailsController.show(URLEncoder.encode(vendorSuitability.vendor.name, "UTF-8"))}" class="govuk-link">
+      <a href="@{ProductDetailsController.show(vendorSuitability.vendor.productId)}" class="govuk-link">
         @messages("search-software.intent.vendor-visit-link", vendorSuitability.vendor.name)
       </a>
     </p>
