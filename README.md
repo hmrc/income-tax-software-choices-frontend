@@ -12,8 +12,8 @@ will enable them to submit electronic tax returns as part of Making Tax Digital
     - [How to start](#How-to-start)
     - [How to use](#How-to-use)
     - [How to test](#How-to-test)
-2. [Persistence](#Persistence)
 2. [Vendor Data](#Vendor-Data)
+3. [Persistence](#Persistence)
 
 # Quick start
 
