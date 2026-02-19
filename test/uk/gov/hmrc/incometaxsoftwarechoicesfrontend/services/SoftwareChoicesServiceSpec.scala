@@ -92,6 +92,12 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
   )
 
   "getAllInOneVendors" should {
+
+    // The changes to the service mean that the following test no longer work as Quarterly Update and Tax Return are excluded
+    // from the search filters within this method now when previous they were excluded outside o the method. This test
+    // needs to change but also perhaps should be tested through the getVendorsWithIntent method as getAllInOneVendors
+    // should really be a private method.
+
     "exclude vendors that are not for Individual and have both Quarterly Submissions and Tax returns" in {
       val result = service.getAllInOneVendors(Seq(Individual, QuarterlyUpdates, TaxReturn))
       result.vendors.size mustBe 5

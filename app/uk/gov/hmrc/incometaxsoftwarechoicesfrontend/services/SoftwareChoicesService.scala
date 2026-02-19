@@ -67,17 +67,17 @@ class SoftwareChoicesService @Inject()(
       ))
   }
 
-  private def getAllInOneVendors(finalFilters: Seq[VendorFilter])(implicit appConfig: AppConfig, request: SessionDataRequest[_]): SoftwareVendors = {
+  def getAllInOneVendors(finalFilters: Seq[VendorFilter])(implicit appConfig: AppConfig, request: SessionDataRequest[_]): SoftwareVendors = {
     val vendors = softwareVendors
-    val userFilters = finalFilters.filterNot(_.eq(TaxReturn)).filterNot(_.eq(QuarterlyUpdates))
+    val selectedFilters = finalFilters.filterNot(_.eq(TaxReturn)).filterNot(_.eq(QuarterlyUpdates))
 
     val orderedMatchingVendors = if (request.userFilters.randomVendorOrder.isEmpty) {
       val randomisedVendors = vendors.copy(vendors = shuffle(vendors.vendors))
       userFiltersRepository.set(request.userFilters.copy(finalFilters = finalFilters, randomVendorOrder = randomisedVendors.vendors.map(_.productId).toList))
- 
-      SoftwareChoicesService.matchFilter(finalFilters)(randomisedVendors.vendors)
+
+      SoftwareChoicesService.matchFilter(selectedFilters)(randomisedVendors.vendors)
     } else {
-      val matchingVendors = SoftwareChoicesService.matchFilter(finalFilters)(vendors.vendors)
+      val matchingVendors = SoftwareChoicesService.matchFilter(selectedFilters)(vendors.vendors)
       val vendorMap = matchingVendors.map(_.productId).zip(matchingVendors).toMap
 
       request.userFilters.randomVendorOrder.flatMap(vendorMap.get)
