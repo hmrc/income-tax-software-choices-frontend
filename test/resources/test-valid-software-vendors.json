@@ -56,9 +56,7 @@
         "agent": "Available",
         "motor": "Intended",
         "partner-income": "Available",
-        "averaging-adjustment": "Available",
-        "foster-carer": "Available",
-        "trust-income": "Available"
+        "hmrc-assist": "Available"
       }
     }
   ]

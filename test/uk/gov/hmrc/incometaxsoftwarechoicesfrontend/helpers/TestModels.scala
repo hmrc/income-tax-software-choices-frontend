@@ -106,9 +106,7 @@ object TestModels {
       Agent -> Available,
       Motor -> Intended,
       PartnerIncome -> Available,
-      TrustIncome -> Available,
-      AveragingAdjustment -> Available,
-      FosterCarer -> Available
+      HMRCAssist -> Available
     )
   )
 
