@@ -45,15 +45,14 @@ class SoftwareChoicesService @Inject()(
       }
   }
 
-  def getVendorsWithIntent(filters: Seq[VendorFilter])
+  def getVendorsWithIntent(finalFilters: Seq[VendorFilter])
                           (implicit appConfig: AppConfig, request: SessionDataRequest[_]): Seq[VendorSuitabilityViewModel] = {
-    val userFilters = filters.filterNot(_.eq(TaxReturn)).filterNot(_.eq(QuarterlyUpdates))
-    val allPotentialVendorsInRandOrder = getAllInOneVendors(userFilters)
+    val allPotentialVendorsInRandOrder = getAllInOneVendors(finalFilters)
 
-    val mandatoryFilters = filters.filter((mandatoryFilterGroup++quarterlyReturnsGroup).contains) ++ Seq(QuarterlyUpdates)
+    val mandatoryFilters = finalFilters.filter((mandatoryFilterGroup++quarterlyReturnsGroup).contains) ++ Seq(QuarterlyUpdates)
     val qualifyingVendors = SoftwareChoicesService.matchAvailableFilter(mandatoryFilters)(allPotentialVendorsInRandOrder.vendors)
 
-    val nonMandatoryFilters = filters.filter(nonMandatedIncomeGroup.contains)
+    val nonMandatoryFilters = finalFilters.filter(nonMandatedIncomeGroup.contains)
     val vendorsToDisplay = if (nonMandatoryFilters.isEmpty) {
       qualifyingVendors
     } else {
@@ -63,22 +62,22 @@ class SoftwareChoicesService @Inject()(
     vendorsToDisplay.map(vendor =>
       VendorSuitabilityViewModel(
         vendor = vendor,
-        quarterlyReady = Some(vendor.isQuarterlyReady(filters)),
-        eoyReady = vendor.isEoyReady(filters)
+        quarterlyReady = Some(vendor.isQuarterlyReady(finalFilters)),
+        eoyReady = vendor.isEoyReady(finalFilters)
       ))
   }
 
-  def getAllInOneVendors(filters: Seq[VendorFilter])(implicit appConfig: AppConfig, request: SessionDataRequest[_]): SoftwareVendors = {
+  private def getAllInOneVendors(finalFilters: Seq[VendorFilter])(implicit appConfig: AppConfig, request: SessionDataRequest[_]): SoftwareVendors = {
     val vendors = softwareVendors
+    val userFilters = finalFilters.filterNot(_.eq(TaxReturn)).filterNot(_.eq(QuarterlyUpdates))
 
     val orderedMatchingVendors = if (request.userFilters.randomVendorOrder.isEmpty) {
       val randomisedVendors = vendors.copy(vendors = shuffle(vendors.vendors))
-      userFiltersRepository.set(request.userFilters.copy(randomVendorOrder = randomisedVendors.vendors.map(_.productId).toList))
-
-      SoftwareChoicesService.matchFilter(filters)(randomisedVendors.vendors)
-
+      userFiltersRepository.set(request.userFilters.copy(finalFilters = finalFilters, randomVendorOrder = randomisedVendors.vendors.map(_.productId).toList))
+ 
+      SoftwareChoicesService.matchFilter(finalFilters)(randomisedVendors.vendors)
     } else {
-      val matchingVendors = SoftwareChoicesService.matchFilter(filters)(vendors.vendors)
+      val matchingVendors = SoftwareChoicesService.matchFilter(finalFilters)(vendors.vendors)
       val vendorMap = matchingVendors.map(_.productId).zip(matchingVendors).toMap
 
       request.userFilters.randomVendorOrder.flatMap(vendorMap.get)
