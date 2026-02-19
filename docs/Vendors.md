@@ -8,6 +8,8 @@ The customer will complete a template for each software product to be added to t
 
 The development team will extract the json data (that the service uses) from the spreadsheet and apply it to the [software-vendors.json](conf/software-vendors.json) file.
 
+Note: If a new vendor product is to be added to the service then a new row should be created at the end of the software-vendor file and a new product Id should be allocated that is 3 larger than the last entry.
+
 ## Development team process
 The spreadsheet contains a hidden tab called "Json Output". This tab should be unhidden and the contents of the appropriate field (currently F1) should be copied and either appended to the bottom of the [software-vendors.json](conf/software-vendors.json) file, or used to replace an existing entry for a software product.
 
