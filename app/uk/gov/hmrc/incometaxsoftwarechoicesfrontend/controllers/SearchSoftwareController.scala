@@ -54,7 +54,7 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
     val finalFilters = request.userFilters.finalFilters
     val isAgent = pageAnswersService.getPageAnswers(request.userFilters.answers, UserTypePage).contains(Agent)
     val model = SoftwareChoicesResultsViewModel(
-      vendorsWithIntent = softwareChoicesService.getVendorsWithIntent(filters = finalFilters),
+      vendorsWithIntent = softwareChoicesService.getVendorsWithIntent(finalFilters),
       isAgent = isAgent
     )
 

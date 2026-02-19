@@ -31,13 +31,13 @@ class CheckYourAnswersController @Inject()(view: CheckYourAnswersView,
                                            softwareChoicesService: SoftwareChoicesService,
                                            identify: SessionIdentifierAction,
                                            requireData: RequireUserDataRefiner)
-                                          (val appConfig: AppConfig)
                                           (implicit ec: ExecutionContext,
                                            mcc: MessagesControllerComponents,
-                                           pageAnswersService: PageAnswersService)
+                                           pageAnswersService: PageAnswersService,
+                                           val appConfig: AppConfig)
   extends BaseFrontendController with SummaryListBuilder {
 
-  def show(): Action[AnyContent] = (identify andThen requireData) { request =>
+  def show(): Action[AnyContent] = (identify andThen requireData) { implicit request =>
     given Request[AnyContent] = request
 
     Ok(view(
@@ -46,13 +46,11 @@ class CheckYourAnswersController @Inject()(view: CheckYourAnswersView,
     ))
   }
 
-  def submit(): Action[AnyContent] = (identify andThen requireData).async { request =>
+  def submit(): Action[AnyContent] = (identify andThen requireData).async { implicit request =>
     given Request[AnyContent] = request
     for {
       vendorFilters <- pageAnswersService.saveFiltersFromAnswers(request.sessionId)
-      vendors = {
-        softwareChoicesService.getVendorsWithIntent(vendorFilters)(appConfig)
-      }
+      vendors = softwareChoicesService.getVendorsWithIntent(vendorFilters)
     } yield {
       (vendors.isEmpty) match {
         case (true) => Redirect(routes.ZeroSoftwareResultsController.show())
