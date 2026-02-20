@@ -116,6 +116,7 @@ search-software.filters.user-type = User type
 search-software.filters.software-for = Type of software
 search-software.filters.software-compatibility = Making Tax Digital Compatibility
 search-software.filters.accessibility = Accessibility features
+search-software.filters.extra-features = Extra features
 
 search-software.filters.apply-filters = Apply filters
 search-software.filters.clear-filters = Clear filters
@@ -166,6 +167,8 @@ search-software.vendor-detail.accessibility.cognitive = Cognitive impairments
 search-software.vendor-detail.user-type.agent = Agent
 search-software.vendor-detail.user-type.individual = Individual
 
+search-software.vendor-detail.extra-features.hmrc-assist = HMRC Assist (Submission Feedback)
+
 # Product details page
 
 # Contact details section
@@ -186,6 +189,7 @@ product-details.features-provided.standard-update-periods = Standard update peri
 product-details.features-provided.tax-return = Tax return
 product-details.features-provided.agent = Agent software
 product-details.features-provided.individual = Individual software
+product-details.features-provided.hmrc-assist = HMRC Assist (Submission Feedback)
 product-details.features-provided.free-version = Free version
 
 product-details.quarterly-updates.heading = What you need for your quarterly updates
