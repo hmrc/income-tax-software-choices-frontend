@@ -275,7 +275,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
 
             "has a link for the software vendor" in {
               val link: Element = firstVendor.selectHead("a")
-              val expectedUrl = ProductDetailsController.show(101).url
+              val expectedUrl = ProductDetailsController.show("101").url
 
               link.attr("href") shouldBe expectedUrl
               link.text should include(firstModel.name)
@@ -298,7 +298,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
 
             "has a link for the software vendor" in {
               val link: Element = secondVendor.selectHead("a")
-              val expectedUrl = ProductDetailsController.show(102).url
+              val expectedUrl = ProductDetailsController.show("102").url
 
               link.attr("href") shouldBe expectedUrl
               link.text should include(secondModel.name)
@@ -321,7 +321,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
 
             "has a link for the software vendor" in {
               val link: Element = thirdVendor.selectHead("a")
-              val expectedUrl = ProductDetailsController.show(103).url
+              val expectedUrl = ProductDetailsController.show("103").url
 
               link.attr("href") shouldBe expectedUrl
               link.text should include(thirdModel.name)
@@ -427,7 +427,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
 
             "has a link for the software vendor" in {
               val link: Element = firstVendor.selectHead("a")
-              val expectedUrl = ProductDetailsController.show(101).url
+              val expectedUrl = ProductDetailsController.show("101").url
 
               link.attr("href") shouldBe expectedUrl
               link.text should include(firstModel.name)
@@ -450,7 +450,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
 
             "has a link for the software vendor" in {
               val link: Element = secondVendor.selectHead("a")
-              val expectedUrl = ProductDetailsController.show(102).url
+              val expectedUrl = ProductDetailsController.show("102").url
 
               link.attr("href") shouldBe expectedUrl
               link.text should include(secondModel.name)

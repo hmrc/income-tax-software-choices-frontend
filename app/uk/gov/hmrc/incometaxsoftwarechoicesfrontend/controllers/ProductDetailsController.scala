@@ -28,12 +28,13 @@ class ProductDetailsController @Inject()(softwareChoicesService: SoftwareChoices
                                          notFoundView: NotFoundView)
                                         (implicit mcc: MessagesControllerComponents) extends BaseFrontendController {
 
-  def show(productId: Int): Action[AnyContent] = Action { request =>
+  def show(productId: String): Action[AnyContent] = Action { request =>
     given Request[AnyContent] = request
 
-    softwareChoicesService.getSoftwareVendor(productId) match {
-      case None => NotFound(notFoundView(routes.ProductDetailsController.show(productId).url))
+    productId.toIntOption.flatMap(id => softwareChoicesService.getSoftwareVendor(id)) match {
       case Some(softwareVendor) => Ok(productDetailsPage(softwareVendor))
+      case _ => NotFound(notFoundView(routes.ProductDetailsController.show(productId).url))
     }
+
   }
 }

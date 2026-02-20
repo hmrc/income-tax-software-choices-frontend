@@ -28,7 +28,7 @@ class ProductDetailsControllerISpec extends ComponentSpecBase with BeforeAndAfte
 
     "respond with 200 status for a real software name" in {
       When(s"GET $address is called")
-      val response = SoftwareChoicesFrontend.productDetails(101)
+      val response = SoftwareChoicesFrontend.productDetails("101")
 
       Then("Should return OK with the software search page")
       response should have(
@@ -37,7 +37,7 @@ class ProductDetailsControllerISpec extends ComponentSpecBase with BeforeAndAfte
     }
     "respond with 404 status for a non existent product id" in {
       When(s"GET $address is called")
-      val response = SoftwareChoicesFrontend.productDetails(0)
+      val response = SoftwareChoicesFrontend.productDetails("0")
 
       Then("Should return Not Found")
       response should have(

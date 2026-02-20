@@ -69,7 +69,7 @@ trait ComponentSpecBase extends AnyWordSpec
 
     def clear(): WSResponse = get("/clear")
 
-    def productDetails(productId: Int): WSResponse = get(s"/product-details/$productId")
+    def productDetails(productId: String): WSResponse = get(s"/product-details?productId=$productId")
 
     def getBusinessIncome: WSResponse = get("/which-income-source-quarterly-updates")
 

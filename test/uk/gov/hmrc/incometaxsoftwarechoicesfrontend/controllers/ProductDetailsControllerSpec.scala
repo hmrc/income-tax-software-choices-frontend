@@ -22,8 +22,6 @@ import play.api.test.Helpers._
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.SoftwareChoicesService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.{ProductDetailsView, NotFoundView}
 
-import java.net.URLEncoder
-
 class ProductDetailsControllerSpec extends ControllerBaseSpec with BeforeAndAfterEach {
 
   private val productDetailsPage = app.injector.instanceOf[ProductDetailsView]
@@ -33,14 +31,21 @@ class ProductDetailsControllerSpec extends ControllerBaseSpec with BeforeAndAfte
   "Show" when {
     "a valid param has been passed" should {
       "return OK status with the product details page" in withController { controller =>
-        val result = controller.show(101)(fakeRequest)
+        val result = controller.show("101")(fakeRequest)
 
         status(result) shouldBe Status.OK
       }
     }
     "an invalid param has been passed" when {
       "return NotFound status with the Not Found view" in withController { controller =>
-        val result = controller.show(2)(fakeRequest)
+        val result = controller.show("vendor1")(fakeRequest)
+
+        status(result) shouldBe Status.NOT_FOUND
+      }
+    }
+    "a non existent vendor id has been passed" when {
+      "return NotFound status with the Not Found view" in withController { controller =>
+        val result = controller.show("2")(fakeRequest)
 
         status(result) shouldBe Status.NOT_FOUND
       }
