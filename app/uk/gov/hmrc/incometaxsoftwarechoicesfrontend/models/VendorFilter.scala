@@ -399,6 +399,10 @@ object VendorFilterGroups {
     Cognitive
   )
 
+  val extraFeatures: Set[VendorFilter] = Set(
+    HMRCAssist
+  )
+
   val accountingPeriodFilters: Set[VendorFilter] = Set(
     StandardUpdatePeriods,
     CalendarUpdatePeriods
@@ -449,7 +453,7 @@ object VendorFilterGroups {
 
   // product details page groups //
   val featuresProvidedGroup: List[VendorFilter] = List(
-    FreeVersion, RecordKeeping, Bridging, Agent, Individual, StandardUpdatePeriods, CalendarUpdatePeriods
+    FreeVersion, RecordKeeping, Bridging, Agent, Individual, HMRCAssist, StandardUpdatePeriods, CalendarUpdatePeriods
   )
 
   val incomeSourcesGroup: List[VendorFilter] = List(
@@ -479,7 +483,8 @@ object VendorFilterGroups {
     (pricingFilters, "pricing"),
     (Set(Bridging), "software-for"),
     (compatibility, "software-compatibility"),
-    (accessibilityFilters, "accessibility")
+    (accessibilityFilters, "accessibility"),
+    (extraFeatures, "extra-features")
   )
 
   val nonMandatedIncomeGroup: List[VendorFilter] = List(
