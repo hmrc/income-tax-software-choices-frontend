@@ -21,12 +21,16 @@
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilterGroups
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.helpers.CheckboxGroupHelper
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitchingImpl
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.HMRCAssist
 
 @this(
-        checkboxGroup: CheckboxGroupHelper
+        checkboxGroup: CheckboxGroupHelper,
+        featureSwitchingImpl: FeatureSwitchingImpl
 )
 
 @(checkboxField: Field, isAgent: Boolean)(implicit messages: Messages)
+@withHMRCAssist = @{featureSwitchingImpl.isEnabled(HMRCAssist)}
 
 @buildCheckBoxes(filters: Set[VendorFilter], label: String) = @{
     filters.toSeq.sortBy(_.priority).map(item =>
@@ -40,7 +44,7 @@
 }
 
 @{
-    VendorFilterGroups.allGroups(isAgent).map { case (group, label) =>
+    VendorFilterGroups.allGroups(isAgent, withHMRCAssist).map { case (group, label) =>
 
         checkboxGroup(
             field = checkboxField,

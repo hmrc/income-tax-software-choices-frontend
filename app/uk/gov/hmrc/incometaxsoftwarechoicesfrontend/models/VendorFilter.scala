@@ -399,6 +399,10 @@ object VendorFilterGroups {
     Cognitive
   )
 
+  val extraFeatures: Set[VendorFilter] = Set(
+    HMRCAssist
+  )
+
   val accountingPeriodFilters: Set[VendorFilter] = Set(
     StandardUpdatePeriods,
     CalendarUpdatePeriods
@@ -448,9 +452,12 @@ object VendorFilterGroups {
   )
 
   // product details page groups //
-  val featuresProvidedGroup: List[VendorFilter] = List(
-    FreeVersion, RecordKeeping, Bridging, Agent, Individual, StandardUpdatePeriods, CalendarUpdatePeriods
-  )
+  def featuresProvidedGroup(withHMRCAssist: Boolean): List[VendorFilter] = {
+    if(withHMRCAssist)
+      List(FreeVersion, RecordKeeping, Bridging, Agent, Individual, HMRCAssist, StandardUpdatePeriods, CalendarUpdatePeriods)
+    else
+      List(FreeVersion, RecordKeeping, Bridging, Agent, Individual, StandardUpdatePeriods, CalendarUpdatePeriods)
+  }
 
   val incomeSourcesGroup: List[VendorFilter] = List(
     SoleTrader,
@@ -468,11 +475,12 @@ object VendorFilterGroups {
     QuarterlyUpdates
   )
 
-  def allGroups(isAgent: Boolean): Seq[(Set[VendorFilter], String)] =
-    if (isAgent) {
-      Seq((userTypeFilters, "user-type")) ++ groups
-    } else {
-      groups
+  def allGroups(isAgent: Boolean, withHMRCAssist: Boolean): Seq[(Set[VendorFilter], String)] =
+    (isAgent, withHMRCAssist) match {
+      case (true, true) => Seq((userTypeFilters, "user-type")) ++ groups ++ Seq((extraFeatures, "extra-features"))
+      case (true, false) => Seq((userTypeFilters, "user-type")) ++ groups
+      case (false, true) => groups ++ Seq((extraFeatures, "extra-features"))
+      case (false, false) => groups
     }
 
   private val groups: Seq[(Set[VendorFilter], String)] = Seq(

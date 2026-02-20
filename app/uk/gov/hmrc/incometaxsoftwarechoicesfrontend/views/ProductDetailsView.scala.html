@@ -26,6 +26,8 @@
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTemplate
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.{Available, Intended, NotApplicable}
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitchingImpl
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.HMRCAssist
 
 
 @this(
@@ -33,7 +35,8 @@
         hmrcNewTabLinkHelper: HmrcNewTabLinkHelper,
         govukSummaryList: GovukSummaryList,
         govukTable: GovukTable,
-        govukTag: GovukTag
+        govukTag: GovukTag,
+        featureSwitchingImpl: FeatureSwitchingImpl
 )(implicit appConfig: AppConfig)
 @(softwareVendor: SoftwareVendorModel)(implicit request: Request[_], messages: Messages)
 
@@ -49,7 +52,7 @@
         @contactDetailsList
 
         <h2 class="govuk-heading-m">@messages("product-details.details.heading")</h2>
-        @table(featuresProvidedGroup, "features-provided", displayIntent = false)
+        @table(featuresProvidedGroup(featureSwitchingImpl.isEnabled(HMRCAssist)), "features-provided", displayIntent = false)
 
         <h2 class="govuk-heading-m">@messages("product-details.quarterly-updates.heading")</h2>
         <p class="govuk-body-m">@messages("product-details.quarterly-updates.what-you-need")</p>
