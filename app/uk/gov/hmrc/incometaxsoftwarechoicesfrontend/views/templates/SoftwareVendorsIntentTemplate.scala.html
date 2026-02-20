@@ -157,7 +157,7 @@
       classes = "govuk-summary-list--no-border"
     ))
     <p class="govuk-body">
-      <a href="@{ProductDetailsController.show(vendorSuitability.vendor.productId)}" class="govuk-link">
+      <a href="@{ProductDetailsController.show(vendorSuitability.vendor.productId.toString)}" class="govuk-link">
         @messages("search-software.intent.vendor-visit-link", vendorSuitability.vendor.name)
       </a>
     </p>
