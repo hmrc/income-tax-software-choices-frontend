@@ -116,6 +116,7 @@ search-software.filters.user-type = Math o ddefnyddiwr
 search-software.filters.software-for = Math o feddalwedd
 search-software.filters.software-compatibility = Cydweddoldeb â’r cynllun Troi Treth yn Ddigidol
 search-software.filters.accessibility = Nodweddion hygyrchedd
+search-software.filters.extra-features = Nodweddion ychwanegol
 
 search-software.filters.apply-filters = Rhoi hidlyddion ar waith
 search-software.filters.clear-filters = Clirio hidlyddion
@@ -166,6 +167,8 @@ search-software.vendor-detail.accessibility.cognitive = Amhariad gwybyddol
 search-software.vendor-detail.user-type.agent = Asiant
 search-software.vendor-detail.user-type.individual = Unigolyn
 
+search-software.vendor-detail.extra-features.hmrc-assist = HMRC Assist (Adborth wrth gyflwyno)
+
 # Product details page
 
 # Contact details section
@@ -186,6 +189,7 @@ product-details.features-provided.standard-update-periods = Cyfnod diweddaru saf
 product-details.features-provided.tax-return = Ffurfleni Treth
 product-details.features-provided.agent = Meddalwedd asiant
 product-details.features-provided.individual = Meddalwedd unigolyn
+product-details.features-provided.hmrc-assist = HMRC Assist (Adborth wrth gyflwyno)
 product-details.features-provided.free-version = Fersiwn am ddim
 
 product-details.quarterly-updates.heading = Yr hyn sydd ei angen arnoch ar gyfer eich diweddariadau chwarterol

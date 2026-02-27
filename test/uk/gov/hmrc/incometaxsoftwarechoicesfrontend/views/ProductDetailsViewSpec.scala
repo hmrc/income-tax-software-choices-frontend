@@ -23,7 +23,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.{Availa
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareVendorModel
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.ProductDetailsView
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.{FeatureSwitch, FeatureSwitching}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.TestModels.softwareVendorModelBase
 
 class ProductDetailsViewSpec extends ViewSpec with FeatureSwitching with BeforeAndAfterEach {
@@ -116,6 +116,92 @@ class ProductDetailsViewSpec extends ViewSpec with FeatureSwitching with BeforeA
           checkRow(table(1), 5, ProductDetailsPage.individual, status = s"${ProductDetailsPage.readyNow}")
           checkRow(table(1), 6, ProductDetailsPage.standardUpdatePeriods, status = s"${ProductDetailsPage.readyNow}")
           checkRow(table(1), 7, ProductDetailsPage.calendarUpdatePeriods, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(2), 1, ProductDetailsPage.soleTrader, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(2), 2, ProductDetailsPage.ukProperty, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(2), 3, ProductDetailsPage.foreignProperty, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(3), 1, ProductDetailsPage.ukInterest, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(3), 2, ProductDetailsPage.cis, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(3), 3, ProductDetailsPage.employment, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(3), 4, ProductDetailsPage.ukDividends, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(3), 5, ProductDetailsPage.statePension, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(3), 6, ProductDetailsPage.privatePensionIncome, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(3), 7, ProductDetailsPage.partnerIncome, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(3), 8, ProductDetailsPage.foreignDividend, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(3), 9, ProductDetailsPage.foreignInterest, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(3), 10, ProductDetailsPage.privatePensionContribution, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(3), 11, ProductDetailsPage.charitableGiving, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(3), 12, ProductDetailsPage.cgt, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(3), 13, ProductDetailsPage.student, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(3), 14, ProductDetailsPage.marriage, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(3), 15, ProductDetailsPage.class2NIC, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(3), 16, ProductDetailsPage.childBenefitCharge, status = s"${ProductDetailsPage.readyNow}")
+        }
+      }
+    }
+
+    "the vendor has HMRC Assist ready now" which {
+
+      enable(FeatureSwitch.HMRCAssist)
+      val document: Document = createAndParseDocument(softwareVendorModelFull)
+      disable(FeatureSwitch.HMRCAssist) // turn off after document generated
+
+      def table(index: Int): Element = document.getTable(index)
+
+      "have a title" in {
+        document.title shouldBe s"""${softwareVendorModelFull.name} - ${PageContentBase.title} - GOV.UK"""
+      }
+
+      "display the vendor name heading" in {
+        document.selectNth("h1", 1).text() shouldBe softwareVendorModelFull.name
+      }
+
+      "display the vendor name heading paragraph" in {
+        document.mainContent.selectNth("p", 1).text() shouldBe s"${ProductDetailsPage.paragraph}"
+      }
+
+      "display the vendor website" in {
+        val vendorInformationSection = document.selectNth("dl", 1)
+        val row: Element = vendorInformationSection.selectNth(".govuk-summary-list__row", 1)
+        val link = row.selectHead("dd").selectHead("a")
+
+        row.selectHead("dt").text shouldBe s"${ProductDetailsPage.contactDetailsWebsite}:"
+        link.text shouldBe s"${softwareVendorModelBase.website} (opens in new tab)"
+        link.attr("href") shouldBe softwareVendorModelBase.website
+        link.attr("target") shouldBe "_blank"
+      }
+
+      "have a software features heading" in {
+        document.selectNth("h2", 1).text shouldBe ProductDetailsPage.softwareFeaturesHeading
+      }
+
+      "have the correct quarterly updates title" in {
+        document.selectNth("h2", 2).text shouldBe ProductDetailsPage.quarterlyUpdatessHeading
+      }
+
+      "have the correct quarterly updates description" in {
+        document.mainContent.selectNth(".govuk-body-m", 1).text() shouldBe ProductDetailsPage.quarterlyUpdatessDetails
+      }
+
+      "have the correct tax return title" in {
+        document.selectNth("h2", 3).text shouldBe ProductDetailsPage.taxReturnHeading
+      }
+
+      "display all tables with correct details" which {
+        "has the correct table headings" in {
+          checkTableHeader(table(1), "Features provided", "Status")
+          checkTableHeader(table(2), "Business income sources", "Status")
+          checkTableHeader(table(3), "Other income sources and items", "Status")
+        }
+
+        "displays all the rows" in {
+          checkRow(table(1), 1, ProductDetailsPage.freeVersion, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(1), 2, ProductDetailsPage.recordKeeping, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(1), 3, ProductDetailsPage.bridging, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(1), 4, ProductDetailsPage.agent, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(1), 5, ProductDetailsPage.individual, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(1), 6, ProductDetailsPage.hmrcAssist, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(1), 7, ProductDetailsPage.standardUpdatePeriods, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(1), 8, ProductDetailsPage.calendarUpdatePeriods, status = s"${ProductDetailsPage.readyNow}")
           checkRow(table(2), 1, ProductDetailsPage.soleTrader, status = s"${ProductDetailsPage.readyNow}")
           checkRow(table(2), 2, ProductDetailsPage.ukProperty, status = s"${ProductDetailsPage.readyNow}")
           checkRow(table(2), 3, ProductDetailsPage.foreignProperty, status = s"${ProductDetailsPage.readyNow}")
@@ -387,6 +473,7 @@ class ProductDetailsViewSpec extends ViewSpec with FeatureSwitching with BeforeA
     val saTaxReturn = "Tax return"
     val agent = "Agent software"
     val individual = "Individual software"
+    val hmrcAssist = "HMRC Assist (Submission Feedback)"
     val standardUpdatePeriods = "Standard update period (6 April to 5 April)"
     val calendarUpdatePeriods = "Calendar update period (1 April to 31 March)"
     val soleTrader = "Sole trader"

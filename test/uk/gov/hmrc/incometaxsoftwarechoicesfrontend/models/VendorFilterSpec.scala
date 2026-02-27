@@ -19,12 +19,12 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models
 import org.scalatestplus.play.PlaySpec
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.Agent
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.Individual
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilterGroups.{accessibilityFilters, compatibility, pricingFilters, softwareForFilters, userTypeFilters}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilterGroups.*
 
 class VendorFilterSpec extends PlaySpec {
 
   "Vendor Filter Groups" should {
-    "contain ALL the filters" in {
+    "contain ALL the filters without HMRCAssist" in {
       val filters = Seq(
         userTypeFilters,
         pricingFilters,
@@ -33,7 +33,25 @@ class VendorFilterSpec extends PlaySpec {
         accessibilityFilters
       ).flatten
       Seq(false, true).foreach { isAgent =>
-        val actual = VendorFilterGroups.allGroups(isAgent).flatMap(f => f._1) ++ VendorFilterGroups.featuresProvidedGroup
+        val actual = VendorFilterGroups.allGroups(isAgent, withHMRCAssist = false).flatMap(f => f._1) ++ VendorFilterGroups.featuresProvidedGroup(withHMRCAssist = false)
+        val expected = isAgent match {
+          case true  => filters
+          case false => filters.filter(_ != Agent).filter(_ != Individual)
+        }
+        expected.map(f => actual.contains(f) mustBe true)
+      }
+    }
+    "contain ALL the filters including HMRCAssist" in {
+      val filters = Seq(
+        userTypeFilters,
+        pricingFilters,
+        softwareForFilters,
+        compatibility,
+        accessibilityFilters,
+        extraFeatures
+      ).flatten
+      Seq(false, true).foreach { isAgent =>
+        val actual = VendorFilterGroups.allGroups(isAgent, withHMRCAssist = true).flatMap(f => f._1) ++ VendorFilterGroups.featuresProvidedGroup(withHMRCAssist = true)
         val expected = isAgent match {
           case true  => filters
           case false => filters.filter(_ != Agent).filter(_ != Individual)

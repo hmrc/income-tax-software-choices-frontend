@@ -21,6 +21,7 @@ import org.jsoup.nodes.{Document, Element}
 import org.scalatest.{Assertion, BeforeAndAfterEach}
 import play.api.mvc.Call
 import play.twirl.api.HtmlFormat
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.{FeatureSwitch, FeatureSwitching}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes.ProductDetailsController
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.TestModels.*
@@ -32,7 +33,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SearchSoftwareVie
 
 import java.time.LocalDate
 
-class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach {
+class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach with FeatureSwitching {
 
   import SearchSoftwareWithIntentViewSpec._
 
@@ -194,6 +195,135 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
           1,
           Vat.key,
           SearchSoftwareWithIntentPageContent.vat,
+          None
+        )
+      }
+    }
+
+    "has a apply button section" that {
+      "contains an apply filters button" in {
+        filterSection.selectHead(".apply-filters-button").text shouldBe SearchSoftwareWithIntentPageContent.Filters.applyFilters
+      }
+    }
+  }
+
+  "Search software page must have a filter section with HMRC Assist" which {
+    enable(FeatureSwitch.HMRCAssist)
+
+    lazy val document = {
+      val model = SoftwareChoicesResultsViewModel(
+        vendorsWithIntent = SearchSoftwareWithIntentPageContent.multipleVendorsWithIntent
+      )
+      Jsoup.parse(page(model).body)
+    }
+    val filterSection = getFilterSection(document)
+
+    "has a role attribute to identify it as a search landmark" in {
+      filterSection.attr("role") shouldBe "search"
+    }
+
+    "has a heading" in {
+      filterSection.selectHead("h2").text shouldBe SearchSoftwareWithIntentPageContent.Filters.filterHeading
+    }
+
+    "has a paragraph" in {
+      filterSection.selectHead("p").text shouldBe SearchSoftwareWithIntentPageContent.Filters.filterParagraph
+    }
+
+    "has a clear filters link" in {
+      filterSection.selectHead("a").text shouldBe SearchSoftwareWithIntentPageContent.Filters.clearFilters
+    }
+
+    "has an accessibility features section" that {
+      val checkboxGroup = getCheckboxGroup(document, 4)
+
+      "contains a fieldset legend" in {
+        checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwareWithIntentPageContent.Filters.accessibilityFeatures
+      }
+
+      "contains an Visual checkbox" in {
+        validateCheckboxInGroup(checkboxGroup, 1, Visual.key, SearchSoftwareWithIntentPageContent.visual)
+      }
+
+      "contains an Hearing checkbox" in {
+        validateCheckboxInGroup(checkboxGroup, 2, Hearing.key, SearchSoftwareWithIntentPageContent.hearing)
+      }
+
+      "contains an Motor checkbox" in {
+        validateCheckboxInGroup(checkboxGroup, 3, Motor.key, SearchSoftwareWithIntentPageContent.motor)
+      }
+
+      "contains an Cognitive checkbox" in {
+        validateCheckboxInGroup(checkboxGroup, 4, Cognitive.key, SearchSoftwareWithIntentPageContent.cognitive)
+      }
+    }
+
+    "has a pricing section" that {
+      val checkboxGroup = getCheckboxGroup(document, 1)
+
+      "contains a fieldset legend" in {
+        checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwareWithIntentPageContent.Filters.pricing
+      }
+
+      "contains a Free version checkbox" in {
+        validateCheckboxInGroup(
+          checkboxGroup,
+          1,
+          FreeVersion.key,
+          SearchSoftwareWithIntentPageContent.freeVersion,
+          Some(SearchSoftwareWithIntentPageContent.freeVersionHint)
+        )
+      }
+    }
+
+    "has a software for section" that {
+      val checkboxGroup = getCheckboxGroup(document, 2)
+
+      "contains a fieldset legend" in {
+        checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwareWithIntentPageContent.Filters.softwareFor
+      }
+
+      "contains a Bridging checkbox" in {
+        validateCheckboxInGroup(
+          checkboxGroup,
+          1,
+          Bridging.key,
+          SearchSoftwareWithIntentPageContent.bridging
+        )
+      }
+    }
+
+    "has a software compatibility section" that {
+      val checkboxGroup = getCheckboxGroup(document, 3)
+
+      "contains a fieldset legend" in {
+        checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwareWithIntentPageContent.Filters.softwareCompatibility
+      }
+
+      "contains an VAT checkbox" in {
+        validateCheckboxInGroup(
+          checkboxGroup,
+          1,
+          Vat.key,
+          SearchSoftwareWithIntentPageContent.vat,
+          None
+        )
+      }
+    }
+
+    "has an extra features section" that {
+      val checkboxGroup = getCheckboxGroup(document, 5)
+
+      "contains a fieldset legend" in {
+        checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwareWithIntentPageContent.Filters.extraFeatures
+      }
+
+      "contains a HMRC Assist checkbox" in {
+        validateCheckboxInGroup(
+          checkboxGroup,
+          1,
+          HMRCAssist.key,
+          SearchSoftwareWithIntentPageContent.hmrcAssist,
           None
         )
       }
@@ -560,6 +690,7 @@ private object SearchSoftwareWithIntentPageContent {
     val softwareFor = "Type of software"
     val softwareCompatibility = "Making Tax Digital Compatibility"
     val accessibilityFeatures = "Accessibility features"
+    val extraFeatures = "Extra features"
     val applyFilters = "Apply filters"
   }
 
@@ -604,6 +735,8 @@ private object SearchSoftwareWithIntentPageContent {
   val hearing = "Deafness or impaired hearing"
   val motor = "Motor or physical difficulties"
   val cognitive = "Cognitive impairments"
+
+  val hmrcAssist = "HMRC Assist (Submission Feedback)"
 
   private val lastUpdateTest = LocalDate.of(2022, 12, 2)
 
