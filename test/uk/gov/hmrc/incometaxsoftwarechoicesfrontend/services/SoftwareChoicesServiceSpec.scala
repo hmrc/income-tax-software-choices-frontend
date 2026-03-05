@@ -51,6 +51,8 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
       vendor(Seq(userType, QuarterlyUpdates, TaxReturn, UkProperty, StandardUpdatePeriods)),
       vendor(Seq(userType, QuarterlyUpdates, TaxReturn, OverseasProperty, StandardUpdatePeriods)),
       vendor(Seq(userType, QuarterlyUpdates, TaxReturn, OverseasProperty, CalendarUpdatePeriods)),
+      vendor(Seq(userType, QuarterlyUpdates, TaxReturn, OverseasProperty, CalendarUpdatePeriods, English)),
+      vendor(Seq(userType, QuarterlyUpdates, TaxReturn, OverseasProperty, CalendarUpdatePeriods, Welsh)),
     )}.toSeq ++ Seq(
       vendor(userTypeFilters.toSeq)
     )
@@ -82,6 +84,11 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
     "exclude vendors that are not for Individual and have both Quarterly Submissions and Tax returns" in {
       val result = service.getAllInOneVendors(Seq(Individual, QuarterlyUpdates, TaxReturn))
       result.vendors.size mustBe 5
+    }
+
+    "include vendors which supports welsh" in {
+      val result = service.getAllInOneVendors(Seq(Individual, QuarterlyUpdates, TaxReturn, Welsh))
+      result.vendors.size mustBe 1
     }
 
     "not ignore question filters" in {

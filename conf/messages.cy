@@ -119,6 +119,7 @@ search-software.filters.software-for = Math o feddalwedd
 search-software.filters.software-compatibility = Cydweddoldeb â’r cynllun Troi Treth yn Ddigidol
 search-software.filters.accessibility = Nodweddion hygyrchedd
 search-software.filters.extra-features = Nodweddion ychwanegol
+search-software.filters.language-features = Iaith
 
 search-software.filters.apply-filters = Rhoi hidlyddion ar waith
 search-software.filters.clear-filters = Clirio hidlyddion
@@ -171,6 +172,8 @@ search-software.vendor-detail.user-type.individual = Unigolyn
 
 search-software.vendor-detail.extra-features.hmrc-assist = HMRC Assist (Adborth wrth gyflwyno)
 
+search-software.vendor-detail.language-features.welsh = Cymraeg
+
 # Product details page
 
 # Contact details section
@@ -193,6 +196,8 @@ product-details.features-provided.agent = Meddalwedd asiant
 product-details.features-provided.individual = Meddalwedd unigolyn
 product-details.features-provided.hmrc-assist = HMRC Assist (Adborth wrth gyflwyno)
 product-details.features-provided.free-version = Fersiwn am ddim
+
+product-details.language.welsh = Cymraeg
 
 product-details.quarterly-updates.heading = Yr hyn sydd ei angen arnoch ar gyfer eich diweddariadau chwarterol
 product-details.quarterly-updates.what-you-need = Bydd angen i chi gynnwys y ffynonellau incwm hyn yn eich Ffurflen Dreth o hyd.

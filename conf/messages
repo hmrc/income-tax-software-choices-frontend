@@ -122,6 +122,8 @@ search-software.filters.extra-features = Extra features
 
 search-software.filters.apply-filters = Apply filters
 search-software.filters.clear-filters = Clear filters
+search-software.filters.extra-features = Extra features
+search-software.filters.language-features = Language
 
 search-software.intent.vendor-visit-link        = Find out what {0} provide now and what they’re developing
 
@@ -132,6 +134,9 @@ search-software.vendor-count.agent.heading.none     = Based on your answers, the
 search-software.vendor-count.intent.heading.many    = Based on your filters and answers, we’ve found {0} results
 search-software.vendor-count.intent.heading.one     = Based on your filters and answers, we’ve found 1 result
 search-software.vendor-count.intent.heading.none    = Based on your filters and answers, there are no results
+
+search-software.vendor-detail.extra-features.hmrc-assist = HMRC Assist (Submission Feedback)
+search-software.vendor-detail.language-features.welsh = Welsh
 
 search-software.vendor-detail.pricing = Price
 search-software.vendor-detail.pricing.free-version = Free version
@@ -193,6 +198,7 @@ product-details.features-provided.agent = Agent software
 product-details.features-provided.individual = Individual software
 product-details.features-provided.hmrc-assist = HMRC Assist (Submission Feedback)
 product-details.features-provided.free-version = Free version
+product-details.features-provided.hmrc-assist = HMRC Assist (Submission Feedback)
 
 product-details.quarterly-updates.heading = What you need for your quarterly updates
 product-details.quarterly-updates.what-you-need = You’ll still need to send these income sources in your tax return.
@@ -246,6 +252,7 @@ product-details.mobile-app.android = Android
 product-details.mobile-app.apple-ios = Apple iOS
 
 product-details.language.english = English
+product-details.language.welsh = Welsh
 
 # Other Income Sources Page
 additional.income.source-heading                                    = Which of these other incomes do you need to submit in your tax return?

@@ -33,7 +33,7 @@ class VendorFilterSpec extends PlaySpec {
         accessibilityFilters
       ).flatten
       Seq(false, true).foreach { isAgent =>
-        val actual = VendorFilterGroups.allGroups(isAgent, withHMRCAssist = false).flatMap(f => f._1) ++ VendorFilterGroups.featuresProvidedGroup(withHMRCAssist = false)
+        val actual = VendorFilterGroups.allGroups(isAgent, withHMRCAssist = false, withLanguage = true).flatMap(f => f._1) ++ VendorFilterGroups.featuresProvidedGroup(withHMRCAssist = false)
         val expected = isAgent match {
           case true  => filters
           case false => filters.filter(_ != Agent).filter(_ != Individual)
@@ -51,7 +51,7 @@ class VendorFilterSpec extends PlaySpec {
         extraFeatures
       ).flatten
       Seq(false, true).foreach { isAgent =>
-        val actual = VendorFilterGroups.allGroups(isAgent, withHMRCAssist = true).flatMap(f => f._1) ++ VendorFilterGroups.featuresProvidedGroup(withHMRCAssist = true)
+        val actual = VendorFilterGroups.allGroups(isAgent, withHMRCAssist = true, withLanguage = true).flatMap(f => f._1) ++ VendorFilterGroups.featuresProvidedGroup(withHMRCAssist = true)
         val expected = isAgent match {
           case true  => filters
           case false => filters.filter(_ != Agent).filter(_ != Individual)
