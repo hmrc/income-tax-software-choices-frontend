@@ -17,8 +17,7 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models
 
 import org.scalatestplus.play.PlaySpec
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.Agent
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.Individual
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{Agent, Individual, Welsh}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilterGroups.*
 
 class VendorFilterSpec extends PlaySpec {
@@ -58,6 +57,16 @@ class VendorFilterSpec extends PlaySpec {
         }
         expected.map(f => actual.contains(f) mustBe true)
       }
+    }
+
+    "contain required filters INCLUDING Welsh Language" in {
+      val actual = VendorFilterGroups.allGroups(isAgent = false, withHMRCAssist = false, withLanguage = true).flatMap(f => f._1) ++ VendorFilterGroups.featuresProvidedGroup(withHMRCAssist = false)
+      actual.contains(Welsh) mustBe true
+     }
+
+    "contain required filters WITHOUT Welsh Language" in {
+      val actual = VendorFilterGroups.allGroups(isAgent = false, withHMRCAssist = false, withLanguage = false).flatMap(f => f._1) ++ VendorFilterGroups.featuresProvidedGroup(withHMRCAssist = false)
+      actual.contains(Welsh) mustBe false
     }
   }
 

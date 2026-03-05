@@ -336,6 +336,36 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
     }
   }
 
+  "Search software page must have a filter section with Welsh Language" which {
+    enable(FeatureSwitch.Language)
+
+    lazy val document = {
+      val model = SoftwareChoicesResultsViewModel(
+        vendorsWithIntent = SearchSoftwareWithIntentPageContent.multipleVendorsWithIntent
+      )
+      Jsoup.parse(page(model).body)
+    }
+    val filterSection = getFilterSection(document)
+
+    "has an language section" that {
+      val checkboxGroup = getCheckboxGroup(document, 5)
+
+      "contains a fieldset legend" in {
+        checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwareWithIntentPageContent.Filters.language
+      }
+
+      "contains a Welsh Language checkbox" in {
+        validateCheckboxInGroup(
+          checkboxGroup,
+          1,
+          Welsh.key,
+          SearchSoftwareWithIntentPageContent.welsh,
+          None
+        )
+      }
+    }
+  }
+
   "Search software page" when {
     "user is an individual" must {
       lazy val documentManyResults = {
@@ -691,6 +721,7 @@ private object SearchSoftwareWithIntentPageContent {
     val softwareCompatibility = "Making Tax Digital Compatibility"
     val accessibilityFeatures = "Accessibility features"
     val extraFeatures = "Extra features"
+    val language = "Language"
     val applyFilters = "Apply filters"
   }
 
@@ -737,6 +768,7 @@ private object SearchSoftwareWithIntentPageContent {
   val cognitive = "Cognitive impairments"
 
   val hmrcAssist = "HMRC Assist (Submission Feedback)"
+  val welsh = "Welsh"
 
   private val lastUpdateTest = LocalDate.of(2022, 12, 2)
 

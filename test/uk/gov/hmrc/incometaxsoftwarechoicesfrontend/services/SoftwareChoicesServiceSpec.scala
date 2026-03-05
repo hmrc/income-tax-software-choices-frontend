@@ -50,8 +50,6 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
       vendor(Seq(userType, QuarterlyUpdates, TaxReturn, SoleTrader, UkProperty, StandardUpdatePeriods)),
       vendor(Seq(userType, QuarterlyUpdates, TaxReturn, UkProperty, StandardUpdatePeriods)),
       vendor(Seq(userType, QuarterlyUpdates, TaxReturn, OverseasProperty, StandardUpdatePeriods)),
-      vendor(Seq(userType, QuarterlyUpdates, TaxReturn, OverseasProperty, CalendarUpdatePeriods)),
-      vendor(Seq(userType, QuarterlyUpdates, TaxReturn, OverseasProperty, CalendarUpdatePeriods, English)),
       vendor(Seq(userType, QuarterlyUpdates, TaxReturn, OverseasProperty, CalendarUpdatePeriods, Welsh)),
     )}.toSeq ++ Seq(
       vendor(userTypeFilters.toSeq)
