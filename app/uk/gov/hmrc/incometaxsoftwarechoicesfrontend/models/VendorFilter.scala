@@ -463,18 +463,11 @@ object VendorFilterGroups {
   )
 
   // product details page groups //
-  val featuresProvidedGroup2: List[VendorFilter] = List(
-    FreeVersion, RecordKeeping, Bridging, Agent, Individual, StandardUpdatePeriods, CalendarUpdatePeriods
-  )
-
   def featuresProvidedGroup(withHMRCAssist: Boolean): List[VendorFilter] = {
-    var result: List[VendorFilter] = List()
-    result = List(FreeVersion, RecordKeeping, Bridging, Agent, Individual)
     if (withHMRCAssist)
-       result = result ++ List(HMRCAssist)
-
-    result = result ++ List(StandardUpdatePeriods, CalendarUpdatePeriods)
-    result
+      List(FreeVersion, RecordKeeping, Bridging, Agent, Individual, HMRCAssist, StandardUpdatePeriods, CalendarUpdatePeriods)
+    else
+      List(FreeVersion, RecordKeeping, Bridging, Agent, Individual, StandardUpdatePeriods, CalendarUpdatePeriods)
   }
 
   val incomeSourcesGroup: List[VendorFilter] = List(
