@@ -23,6 +23,7 @@
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.helpers.CheckboxGroupHelper
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitchingImpl
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.HMRCAssist
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.Language
 
 @this(
         checkboxGroup: CheckboxGroupHelper,
@@ -31,6 +32,7 @@
 
 @(checkboxField: Field, isAgent: Boolean)(implicit messages: Messages)
 @withHMRCAssist = @{featureSwitchingImpl.isEnabled(HMRCAssist)}
+@withLanguage = @{featureSwitchingImpl.isEnabled(Language)}
 
 @buildCheckBoxes(filters: Set[VendorFilter], label: String) = @{
     filters.toSeq.sortBy(_.priority).map(item =>
@@ -44,7 +46,7 @@
 }
 
 @{
-    VendorFilterGroups.allGroups(isAgent, withHMRCAssist).map { case (group, label) =>
+    VendorFilterGroups.allGroups(isAgent, withHMRCAssist, withLanguage).map { case (group, label) =>
 
         checkboxGroup(
             field = checkboxField,

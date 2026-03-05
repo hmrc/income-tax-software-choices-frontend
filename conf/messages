@@ -118,10 +118,11 @@ search-software.filters.user-type = User type
 search-software.filters.software-for = Type of software
 search-software.filters.software-compatibility = Making Tax Digital Compatibility
 search-software.filters.accessibility = Accessibility features
-search-software.filters.extra-features = Extra features
 
 search-software.filters.apply-filters = Apply filters
 search-software.filters.clear-filters = Clear filters
+search-software.filters.extra-features = Extra features
+search-software.filters.language-features = Language
 
 search-software.intent.vendor-visit-link        = Find out what {0} provide now and what they’re developing
 
@@ -132,6 +133,8 @@ search-software.vendor-count.agent.heading.none     = Based on your answers, the
 search-software.vendor-count.intent.heading.many    = Based on your filters and answers, we’ve found {0} results
 search-software.vendor-count.intent.heading.one     = Based on your filters and answers, we’ve found 1 result
 search-software.vendor-count.intent.heading.none    = Based on your filters and answers, there are no results
+
+search-software.vendor-detail.language-features.welsh = Welsh
 
 search-software.vendor-detail.pricing = Price
 search-software.vendor-detail.pricing.free-version = Free version
@@ -246,6 +249,7 @@ product-details.mobile-app.android = Android
 product-details.mobile-app.apple-ios = Apple iOS
 
 product-details.language.english = English
+product-details.language.welsh = Welsh
 
 # Other Income Sources Page
 additional.income.source-heading                                    = Which of these other incomes do you need to submit in your tax return?

@@ -50,7 +50,7 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
       vendor(Seq(userType, QuarterlyUpdates, TaxReturn, SoleTrader, UkProperty, StandardUpdatePeriods)),
       vendor(Seq(userType, QuarterlyUpdates, TaxReturn, UkProperty, StandardUpdatePeriods)),
       vendor(Seq(userType, QuarterlyUpdates, TaxReturn, OverseasProperty, StandardUpdatePeriods)),
-      vendor(Seq(userType, QuarterlyUpdates, TaxReturn, OverseasProperty, CalendarUpdatePeriods)),
+      vendor(Seq(userType, QuarterlyUpdates, TaxReturn, OverseasProperty, CalendarUpdatePeriods, Welsh)),
     )}.toSeq ++ Seq(
       vendor(userTypeFilters.toSeq)
     )
@@ -82,6 +82,11 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
     "exclude vendors that are not for Individual and have both Quarterly Submissions and Tax returns" in {
       val result = service.getAllInOneVendors(Seq(Individual, QuarterlyUpdates, TaxReturn))
       result.vendors.size mustBe 5
+    }
+
+    "include vendors which supports welsh" in {
+      val result = service.getAllInOneVendors(Seq(Individual, QuarterlyUpdates, TaxReturn, Welsh))
+      result.vendors.size mustBe 1
     }
 
     "not ignore question filters" in {
@@ -242,7 +247,55 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
       result(0).eoyReady mustBe Some(true)
     }
 
-    "return 1 vendor if Foster Carer is also selected" in {
+    "return 1 vendors if HMRC Assist is selected" in {
+      when(mockDataService.getSoftwareVendors()).thenReturn(
+        SoftwareVendors(
+          lastUpdated = LocalDate.now,
+          vendors = Seq(
+            intentVendor("Vendor 01", Map(Individual -> Available, QuarterlyUpdates -> Available, TaxReturn -> Available, UkProperty -> Available, StudentLoans -> Available, StandardUpdatePeriods -> Available, Visual -> Available)),
+            intentVendor("Vendor 02", Map(
+              Individual -> Available, Agent -> Available, QuarterlyUpdates -> Available, TaxReturn -> Available,
+              SoleTrader -> Available, UkProperty -> Available, OverseasProperty -> Available,
+              UkInterest -> Available, ConstructionIndustryScheme -> Available, Employment -> Available, UkDividends -> Available,
+              StatePensionIncome -> Available, PrivatePensionIncome -> Available, ForeignDividends -> Available, ForeignInterest -> Available,
+              PaymentsIntoAPrivatePension -> Available, CharitableGiving -> Available, CapitalGainsTax -> Available, StudentLoans -> Available,
+              MarriageAllowance -> Available, VoluntaryClass2NationalInsurance -> Available, HighIncomeChildBenefitCharge -> Available,
+              StandardUpdatePeriods -> Available, CalendarUpdatePeriods -> Available,
+              FreeVersion -> Available, Bridging -> Available, Vat -> Available,
+              Visual -> Available, Hearing -> Available, Motor -> Available, Cognitive -> Available,
+              HMRCAssist -> Available)),
+            intentVendor("Vendor 03", Map(
+              Individual -> Available, Agent -> Available, QuarterlyUpdates -> Available, TaxReturn -> Available,
+              SoleTrader -> Available, UkProperty -> Available, OverseasProperty -> Available,
+              UkInterest -> Available, ConstructionIndustryScheme -> Available, Employment -> Available, UkDividends -> Available,
+              StatePensionIncome -> Available, PrivatePensionIncome -> Available, ForeignDividends -> Available, ForeignInterest -> Available,
+              PaymentsIntoAPrivatePension -> Available, CharitableGiving -> Available, CapitalGainsTax -> Available, StudentLoans -> Available,
+              MarriageAllowance -> Available, VoluntaryClass2NationalInsurance -> Available, HighIncomeChildBenefitCharge -> Available,
+              StandardUpdatePeriods -> Available, CalendarUpdatePeriods -> Available,
+              PartnerIncome -> Available, TrustIncome -> Available, FosterCarer -> Available, AveragingAdjustment -> Available,
+              FreeVersion -> Available, Bridging -> Available, Vat -> Available,
+              Visual -> Available, Hearing -> Available, Motor -> Available, Cognitive -> Available))
+          )
+        )
+      )
+      val result = service.getVendorsWithIntent(
+        Seq(Individual, Agent, QuarterlyUpdates, TaxReturn, SoleTrader, UkProperty, OverseasProperty,
+          UkInterest, ConstructionIndustryScheme, Employment, UkDividends,
+          StatePensionIncome, PrivatePensionIncome, ForeignDividends, ForeignInterest,
+          PaymentsIntoAPrivatePension, CharitableGiving, CapitalGainsTax, StudentLoans,
+          MarriageAllowance, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge,
+          StandardUpdatePeriods, CalendarUpdatePeriods,
+          FreeVersion, Bridging, Vat,
+          Visual, Hearing, Motor, Cognitive,
+          HMRCAssist
+        ))
+      result.size mustBe 1
+      result(0).vendor.name mustBe "Vendor 02"
+      result(0).quarterlyReady mustBe Some(true)
+      result(0).eoyReady mustBe Some(true)
+    }
+
+    "return 1 vendors if Welsh is selected" in {
       when(mockDataService.getSoftwareVendors()).thenReturn(
         SoftwareVendors(
           lastUpdated = LocalDate.now,
@@ -266,9 +319,10 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
               PaymentsIntoAPrivatePension -> Available, CharitableGiving -> Available, CapitalGainsTax -> Available, StudentLoans -> Available,
               MarriageAllowance -> Available, VoluntaryClass2NationalInsurance -> Available, HighIncomeChildBenefitCharge -> Available,
               StandardUpdatePeriods -> Available, CalendarUpdatePeriods -> Available,
-              PartnerIncome -> Available, TrustIncome -> Available, FosterCarer -> Available, AveragingAdjustment -> Available,
+              PartnerIncome -> Available,
               FreeVersion -> Available, Bridging -> Available, Vat -> Available,
-              Visual -> Available, Hearing -> Available, Motor -> Available, Cognitive -> Available))
+              Visual -> Available, Hearing -> Available, Motor -> Available, Cognitive -> Available,
+              Welsh -> Available))
           )
         )
       )
@@ -279,9 +333,9 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
           PaymentsIntoAPrivatePension, CharitableGiving, CapitalGainsTax, StudentLoans,
           MarriageAllowance, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge,
           StandardUpdatePeriods, CalendarUpdatePeriods,
-          FosterCarer,
           FreeVersion, Bridging, Vat,
-          Visual, Hearing, Motor, Cognitive
+          Visual, Hearing, Motor, Cognitive,
+          Welsh
         ))
       result.size mustBe 1
       result(0).vendor.name mustBe "Vendor 03"
@@ -289,7 +343,7 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
       result(0).eoyReady mustBe Some(true)
     }
 
-    "return 1 vendor if Trustee Income is also selected" in {
+    "return 1 vendor if Welsh is selected but Intended" in {
       when(mockDataService.getSoftwareVendors()).thenReturn(
         SoftwareVendors(
           lastUpdated = LocalDate.now,
@@ -304,7 +358,8 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
               MarriageAllowance -> Available, VoluntaryClass2NationalInsurance -> Available, HighIncomeChildBenefitCharge -> Available,
               StandardUpdatePeriods -> Available, CalendarUpdatePeriods -> Available,
               FreeVersion -> Available, Bridging -> Available, Vat -> Available,
-              Visual -> Available, Hearing -> Available, Motor -> Available, Cognitive -> Available)),
+              Visual -> Available, Hearing -> Available, Motor -> Available, Cognitive -> Available,
+              Welsh -> Available)),
             intentVendor("Vendor 03", Map(
               Individual -> Available, Agent -> Available, QuarterlyUpdates -> Available, TaxReturn -> Available,
               SoleTrader -> Available, UkProperty -> Available, OverseasProperty -> Available,
@@ -313,9 +368,10 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
               PaymentsIntoAPrivatePension -> Available, CharitableGiving -> Available, CapitalGainsTax -> Available, StudentLoans -> Available,
               MarriageAllowance -> Available, VoluntaryClass2NationalInsurance -> Available, HighIncomeChildBenefitCharge -> Available,
               StandardUpdatePeriods -> Available, CalendarUpdatePeriods -> Available,
-              PartnerIncome -> Available, TrustIncome -> Available, FosterCarer -> Available, AveragingAdjustment -> Available,
+              PartnerIncome -> Available,
               FreeVersion -> Available, Bridging -> Available, Vat -> Available,
-              Visual -> Available, Hearing -> Available, Motor -> Available, Cognitive -> Available))
+              Visual -> Available, Hearing -> Available, Motor -> Available, Cognitive -> Available,
+              Welsh -> Intended))
           )
         )
       )
@@ -326,17 +382,17 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
           PaymentsIntoAPrivatePension, CharitableGiving, CapitalGainsTax, StudentLoans,
           MarriageAllowance, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge,
           StandardUpdatePeriods, CalendarUpdatePeriods,
-          TrustIncome,
           FreeVersion, Bridging, Vat,
-          Visual, Hearing, Motor, Cognitive
+          Visual, Hearing, Motor, Cognitive,
+          Welsh
         ))
       result.size mustBe 1
-      result(0).vendor.name mustBe "Vendor 03"
+      result(0).vendor.name mustBe "Vendor 02"
       result(0).quarterlyReady mustBe Some(true)
       result(0).eoyReady mustBe Some(true)
     }
 
-    "return 2 vendors if Averaging Adjustment is selected" in {
+    "return 1 vendor if English is selected but Intended" in {
       when(mockDataService.getSoftwareVendors()).thenReturn(
         SoftwareVendors(
           lastUpdated = LocalDate.now,
@@ -350,9 +406,9 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
               PaymentsIntoAPrivatePension -> Available, CharitableGiving -> Available, CapitalGainsTax -> Available, StudentLoans -> Available,
               MarriageAllowance -> Available, VoluntaryClass2NationalInsurance -> Available, HighIncomeChildBenefitCharge -> Available,
               StandardUpdatePeriods -> Available, CalendarUpdatePeriods -> Available,
-              AveragingAdjustment -> Available,
               FreeVersion -> Available, Bridging -> Available, Vat -> Available,
-              Visual -> Available, Hearing -> Available, Motor -> Available, Cognitive -> Available)),
+              Visual -> Available, Hearing -> Available, Motor -> Available, Cognitive -> Available,
+              English -> Available)),
             intentVendor("Vendor 03", Map(
               Individual -> Available, Agent -> Available, QuarterlyUpdates -> Available, TaxReturn -> Available,
               SoleTrader -> Available, UkProperty -> Available, OverseasProperty -> Available,
@@ -361,9 +417,10 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
               PaymentsIntoAPrivatePension -> Available, CharitableGiving -> Available, CapitalGainsTax -> Available, StudentLoans -> Available,
               MarriageAllowance -> Available, VoluntaryClass2NationalInsurance -> Available, HighIncomeChildBenefitCharge -> Available,
               StandardUpdatePeriods -> Available, CalendarUpdatePeriods -> Available,
-              PartnerIncome -> Available, TrustIncome -> Available, FosterCarer -> Available, AveragingAdjustment -> Available,
+              PartnerIncome -> Available,
               FreeVersion -> Available, Bridging -> Available, Vat -> Available,
-              Visual -> Available, Hearing -> Available, Motor -> Available, Cognitive -> Available))
+              Visual -> Available, Hearing -> Available, Motor -> Available, Cognitive -> Available,
+              English -> Intended))
           )
         )
       )
@@ -374,11 +431,11 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
           PaymentsIntoAPrivatePension, CharitableGiving, CapitalGainsTax, StudentLoans,
           MarriageAllowance, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge,
           StandardUpdatePeriods, CalendarUpdatePeriods,
-          AveragingAdjustment,
           FreeVersion, Bridging, Vat,
-          Visual, Hearing, Motor, Cognitive
+          Visual, Hearing, Motor, Cognitive,
+          English
         ))
-      result.size mustBe 2
+      result.size mustBe 1
       result(0).vendor.name mustBe "Vendor 02"
       result(0).quarterlyReady mustBe Some(true)
       result(0).eoyReady mustBe Some(true)

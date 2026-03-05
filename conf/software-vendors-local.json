@@ -154,7 +154,8 @@
         "linux": "Available",
         "android": "Available",
         "apple-ios": "Available",
-        "english": "Available"
+        "english": "Available",
+        "welsh": "Available"
       }
     },
     {
@@ -207,7 +208,8 @@
         "student-loans": "Available",
         "android": "Available",
         "apple-ios": "Available",
-        "english": "Available"
+        "english": "Available",
+        "welsh": "Available"
       }
     },
     {
