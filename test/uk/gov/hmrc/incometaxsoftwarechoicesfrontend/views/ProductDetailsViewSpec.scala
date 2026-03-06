@@ -424,7 +424,11 @@ class ProductDetailsViewSpec extends ViewSpec with FeatureSwitching with BeforeA
           ).mkString(" ")
 
         rows.get(3).select("dt").text() shouldBe ProductDetailsPage.language
-        rows.get(3).select("dd").text() shouldBe ProductDetailsPage.english
+        rows.get(3).select("dd").text() shouldBe
+          Seq(
+            ProductDetailsPage.english,
+            ProductDetailsPage.welsh
+          ).mkString(" ")
       }
 
       "not render the specs section when no specs are present or are intended" in {
@@ -509,6 +513,7 @@ class ProductDetailsViewSpec extends ViewSpec with FeatureSwitching with BeforeA
     val android = "Android"
     val appleIOS = "Apple iOS"
     val english = "English"
+    val welsh = "Welsh"
 
     val readyNow = "Ready now"
     val inDevelopment = "In development"

@@ -313,6 +313,12 @@ object VendorFilter {
     override val auditDescription: String = "english"
   }
 
+  case object Welsh extends VendorFilter {
+    override val key: String = "welsh"
+    override val priority: Int = 1
+    override val auditDescription: String = "welsh"
+  }
+
   case object HMRCAssist extends VendorFilter {
     override val key: String = "hmrc-assist"
     override val priority: Int = 4
@@ -365,6 +371,7 @@ object VendorFilter {
     Android,
     Apple,
     English,
+    Welsh,
     HMRCAssist
   ).map(value => value.key -> value).toMap
 
@@ -401,6 +408,10 @@ object VendorFilterGroups {
 
   val extraFeatures: Set[VendorFilter] = Set(
     HMRCAssist
+  )
+
+  val languageFeature: Set[VendorFilter] = Set(
+    Welsh
   )
 
   val accountingPeriodFilters: Set[VendorFilter] = Set(
@@ -453,7 +464,7 @@ object VendorFilterGroups {
 
   // product details page groups //
   def featuresProvidedGroup(withHMRCAssist: Boolean): List[VendorFilter] = {
-    if(withHMRCAssist)
+    if (withHMRCAssist)
       List(FreeVersion, RecordKeeping, Bridging, Agent, Individual, HMRCAssist, StandardUpdatePeriods, CalendarUpdatePeriods)
     else
       List(FreeVersion, RecordKeeping, Bridging, Agent, Individual, StandardUpdatePeriods, CalendarUpdatePeriods)
@@ -475,13 +486,22 @@ object VendorFilterGroups {
     QuarterlyUpdates
   )
 
-  def allGroups(isAgent: Boolean, withHMRCAssist: Boolean): Seq[(Set[VendorFilter], String)] =
-    (isAgent, withHMRCAssist) match {
-      case (true, true) => Seq((userTypeFilters, "user-type")) ++ groups ++ Seq((extraFeatures, "extra-features"))
-      case (true, false) => Seq((userTypeFilters, "user-type")) ++ groups
-      case (false, true) => groups ++ Seq((extraFeatures, "extra-features"))
-      case (false, false) => groups
+  def allGroups(isAgent: Boolean, withHMRCAssist: Boolean, withLanguage: Boolean): Seq[(Set[VendorFilter], String)] = {
+    var result: Seq[(Set[VendorFilter], String)] = Seq()
+    if (isAgent) {
+      result = result ++ Seq((userTypeFilters, "user-type"))
     }
+    result = result ++ groups
+
+    if (withLanguage) {
+      result = result ++ Seq((languageFeature, "language-features"))
+    }
+
+    if (withHMRCAssist) {
+      result = result ++ Seq((extraFeatures, "extra-features"))
+    }
+    result
+  }
 
   private val groups: Seq[(Set[VendorFilter], String)] = Seq(
     (pricingFilters, "pricing"),
@@ -499,7 +519,7 @@ object VendorFilterGroups {
   val softwareTypeGroup: List[VendorFilter] = List(DesktopApplication, WebBrowser)
   val compatibleWithGroup: List[VendorFilter] = List(MicrosoftWindows, MacOS, Linux)
   val mobileGroup: List[VendorFilter] = List(Android, Apple)
-  val languageGroup: List[VendorFilter] = List(English)
+  val languageGroup: List[VendorFilter] = List(English, Welsh)
 
   val quarterlyReturnsGroup: List[VendorFilter] = List(QuarterlyUpdates) ++ incomeSourcesGroup
 
