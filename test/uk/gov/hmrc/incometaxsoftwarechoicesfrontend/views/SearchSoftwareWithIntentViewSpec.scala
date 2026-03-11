@@ -207,8 +207,9 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
     }
   }
 
-  "Search software page must have a filter section with HMRC Assist" which {
+  "Search software page must have a filter section with all features available" which {
     enable(FeatureSwitch.HMRCAssist)
+    enable(FeatureSwitch.Language)
 
     lazy val document = {
       val model = SoftwareChoicesResultsViewModel(
@@ -311,8 +312,26 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
       }
     }
 
-    "has an extra features section" that {
+    "has an language section" that {
       val checkboxGroup = getCheckboxGroup(document, 5)
+
+      "contains a fieldset legend" in {
+        checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwareWithIntentPageContent.Filters.language
+      }
+
+      "contains a Welsh Language checkbox" in {
+        validateCheckboxInGroup(
+          checkboxGroup,
+          1,
+          Welsh.key,
+          SearchSoftwareWithIntentPageContent.welsh,
+          None
+        )
+      }
+    }
+
+    "has an extra features section" that {
+      val checkboxGroup = getCheckboxGroup(document, 6)
 
       "contains a fieldset legend" in {
         checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwareWithIntentPageContent.Filters.extraFeatures
@@ -332,36 +351,6 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
     "has a apply button section" that {
       "contains an apply filters button" in {
         filterSection.selectHead(".apply-filters-button").text shouldBe SearchSoftwareWithIntentPageContent.Filters.applyFilters
-      }
-    }
-  }
-
-  "Search software page must have a filter section with Welsh Language" which {
-    enable(FeatureSwitch.Language)
-
-    lazy val document = {
-      val model = SoftwareChoicesResultsViewModel(
-        vendorsWithIntent = SearchSoftwareWithIntentPageContent.multipleVendorsWithIntent
-      )
-      Jsoup.parse(page(model).body)
-    }
-    val filterSection = getFilterSection(document)
-
-    "has an language section" that {
-      val checkboxGroup = getCheckboxGroup(document, 5)
-
-      "contains a fieldset legend" in {
-        checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwareWithIntentPageContent.Filters.language
-      }
-
-      "contains a Welsh Language checkbox" in {
-        validateCheckboxInGroup(
-          checkboxGroup,
-          1,
-          Welsh.key,
-          SearchSoftwareWithIntentPageContent.welsh,
-          None
-        )
       }
     }
   }
