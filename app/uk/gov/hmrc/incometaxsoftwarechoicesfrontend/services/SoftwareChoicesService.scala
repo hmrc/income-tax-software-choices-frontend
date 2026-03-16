@@ -49,27 +49,34 @@ class SoftwareChoicesService @Inject()(
                           (implicit appConfig: AppConfig, request: SessionDataRequest[_]): Seq[VendorSuitabilityViewModel] = {
     val allPotentialVendorsInRandOrder = getAllInOneVendors(finalFilters)
 
-    val mandatoryFilters = finalFilters.filter((mandatoryFilterGroup++quarterlyReturnsGroup).contains) ++ Seq(QuarterlyUpdates)
+    val mandatoryFilters = finalFilters.filter((mandatoryFilterGroup++quarterlyReturnsGroup).contains).filterNot(_.eq(ReadyNow)) ++ Seq(QuarterlyUpdates)
     val qualifyingVendors = SoftwareChoicesService.matchAvailableFilter(mandatoryFilters)(allPotentialVendorsInRandOrder.vendors)
 
-    val nonMandatoryFilters = finalFilters.filter(nonMandatedIncomeGroup.contains)
+    val nonMandatoryFilters = finalFilters.filter(nonMandatedIncomeGroup.contains).filterNot(_.eq(ReadyNow))
     val vendorsToDisplay = if (nonMandatoryFilters.isEmpty) {
       qualifyingVendors
     } else {
       SoftwareChoicesService.matchAvailableOrIntendedFilter(nonMandatoryFilters ++ Seq(TaxReturn))(qualifyingVendors)
     }
 
-    vendorsToDisplay.map(vendor =>
+    val viewModel = vendorsToDisplay.map(vendor =>
       VendorSuitabilityViewModel(
         vendor = vendor,
         quarterlyReady = Some(vendor.isQuarterlyReady(finalFilters)),
         eoyReady = vendor.isEoyReady(finalFilters)
       ))
+
+    if (finalFilters.contains(ReadyNow)) {
+      val (fullyReady, notFullyReady) = viewModel.partition(vendor => vendor.quarterlyReady.contains(true) && vendor.eoyReady.contains(true))
+      fullyReady ++ notFullyReady
+    } else {
+      viewModel
+    }
   }
 
   def getAllInOneVendors(finalFilters: Seq[VendorFilter])(implicit appConfig: AppConfig, request: SessionDataRequest[_]): SoftwareVendors = {
     val vendors = softwareVendors
-    val selectedFilters = finalFilters.filterNot(_.eq(TaxReturn)).filterNot(_.eq(QuarterlyUpdates))
+    val selectedFilters = finalFilters.filterNot(_.eq(TaxReturn)).filterNot(_.eq(QuarterlyUpdates)).filterNot(_.eq(ReadyNow))
 
     val orderedMatchingVendors = if (request.userFilters.randomVendorOrder.isEmpty) {
       val randomisedVendors = vendors.copy(vendors = shuffle(vendors.vendors))

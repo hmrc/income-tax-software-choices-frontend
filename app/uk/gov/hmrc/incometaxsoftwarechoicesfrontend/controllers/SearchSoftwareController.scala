@@ -58,6 +58,7 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
       isAgent = isAgent
     )
 
+//    println(Console.RED + "vendors = " + model.vendorsWithIntent.map(_.vendor.name) + Console.RESET)
     if (isEnabled(ExplicitAudits)) auditService.auditSearchResults(request.userFilters, model.vendorsWithIntent.map(_.vendor.name))
     Ok(view(model = model, form = FiltersForm.form.fill(FiltersFormModel(filters = finalFilters))))
 
@@ -77,6 +78,8 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
       )
 
       if (isEnabled(ExplicitAudits)) auditService.auditSearchResults(userFilters, model.vendorsWithIntent.map(_.vendor.name))
+
+//      println(Console.RED + "vendors = " + model.vendorsWithIntent.map(_.vendor.name) + Console.RESET)
       Ok(view(model, FiltersForm.form.fill(filters)))
     }
   }

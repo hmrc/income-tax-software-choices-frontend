@@ -319,6 +319,12 @@ object VendorFilter {
     override val auditDescription: String = "hmrc-assist"
   }
 
+  case object ReadyNow extends VendorFilter {
+    override val key: String = "ready-now"
+    override val priority: Int = 4
+    override val auditDescription: String = "ready-now"
+  }
+
   val filterKeyToFilter: Map[String, VendorFilter] = Seq(
     FreeVersion,
     QuarterlyUpdates,
@@ -365,7 +371,8 @@ object VendorFilter {
     Android,
     Apple,
     English,
-    HMRCAssist
+    HMRCAssist,
+    ReadyNow
   ).map(value => value.key -> value).toMap
 
   implicit val reads: Reads[VendorFilter] = __.read[String] map filterKeyToFilter
@@ -485,6 +492,7 @@ object VendorFilterGroups {
 
   private val groups: Seq[(Set[VendorFilter], String)] = Seq(
     (pricingFilters, "pricing"),
+    (Set(ReadyNow), "ready-now"),
     (Set(Bridging), "software-for"),
     (compatibility, "software-compatibility"),
     (accessibilityFilters, "accessibility")
