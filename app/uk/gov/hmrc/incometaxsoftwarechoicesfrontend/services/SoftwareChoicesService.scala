@@ -67,8 +67,7 @@ class SoftwareChoicesService @Inject()(
       ))
 
     if (finalFilters.contains(ReadyNow)) {
-      val (fullyReady, notFullyReady) = viewModel.partition(vendor => vendor.quarterlyReady.contains(true) && vendor.eoyReady.contains(true))
-      fullyReady ++ notFullyReady
+      viewModel.filter(vendor => vendor.quarterlyReady.contains(true) && vendor.eoyReady.contains(true))
     } else {
       viewModel
     }
