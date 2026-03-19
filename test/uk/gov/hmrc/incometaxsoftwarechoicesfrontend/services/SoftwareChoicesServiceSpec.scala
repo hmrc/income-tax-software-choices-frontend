@@ -48,12 +48,12 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
   private val allVendors = SoftwareVendors(
     lastUpdated = LocalDate.now,
     vendors = userTypeFilters.flatMap { userType => Seq(
-      vendor(Seq(userType, QuarterlyUpdates, TaxReturn, SoleTrader, StandardUpdatePeriods)),
-      vendor(Seq(userType, QuarterlyUpdates, SoleTrader, StandardUpdatePeriods)),
-      vendor(Seq(userType, QuarterlyUpdates, TaxReturn, SoleTrader, UkProperty, StandardUpdatePeriods)),
-      vendor(Seq(userType, QuarterlyUpdates, TaxReturn, UkProperty, StandardUpdatePeriods)),
-      vendor(Seq(userType, QuarterlyUpdates, TaxReturn, OverseasProperty, StandardUpdatePeriods)),
-      vendor(Seq(userType, QuarterlyUpdates, TaxReturn, OverseasProperty, CalendarUpdatePeriods, Welsh)),
+      vendor(1, Seq(userType, QuarterlyUpdates, TaxReturn, SoleTrader, StandardUpdatePeriods)),
+      vendor(2, Seq(userType, QuarterlyUpdates, SoleTrader, StandardUpdatePeriods)),
+      vendor(3, Seq(userType, QuarterlyUpdates, TaxReturn, SoleTrader, UkProperty, StandardUpdatePeriods)),
+      vendor(4, Seq(userType, QuarterlyUpdates, TaxReturn, UkProperty, StandardUpdatePeriods)),
+      vendor(5, Seq(userType, QuarterlyUpdates, TaxReturn, OverseasProperty, StandardUpdatePeriods)),
+      vendor(6, Seq(userType, QuarterlyUpdates, TaxReturn, OverseasProperty, CalendarUpdatePeriods, Welsh)),
 
     )}.toSeq ++ Seq(
       vendor(7, userTypeFilters.toSeq)
@@ -297,8 +297,8 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
         SoftwareVendors(
           lastUpdated = LocalDate.now,
           vendors = Seq(
-            intentVendor("Vendor 01", Map(Individual -> Available, QuarterlyUpdates -> Available, TaxReturn -> Available, UkProperty -> Available, StudentLoans -> Available, StandardUpdatePeriods -> Available, Visual -> Available)),
-            intentVendor("Vendor 02", Map(
+            intentVendor(1, "Vendor 01", Map(Individual -> Available, QuarterlyUpdates -> Available, TaxReturn -> Available, UkProperty -> Available, StudentLoans -> Available, StandardUpdatePeriods -> Available, Visual -> Available)),
+            intentVendor(2, "Vendor 02", Map(
               Individual -> Available, Agent -> Available, QuarterlyUpdates -> Available, TaxReturn -> Available,
               SoleTrader -> Available, UkProperty -> Available, OverseasProperty -> Available,
               UkInterest -> Available, ConstructionIndustryScheme -> Available, Employment -> Available, UkDividends -> Available,
@@ -309,7 +309,7 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
               FreeVersion -> Available, Bridging -> Available, Vat -> Available,
               Visual -> Available, Hearing -> Available, Motor -> Available, Cognitive -> Available,
               HMRCAssist -> Available)),
-            intentVendor("Vendor 03", Map(
+            intentVendor(3, "Vendor 03", Map(
               Individual -> Available, Agent -> Available, QuarterlyUpdates -> Available, TaxReturn -> Available,
               SoleTrader -> Available, UkProperty -> Available, OverseasProperty -> Available,
               UkInterest -> Available, ConstructionIndustryScheme -> Available, Employment -> Available, UkDividends -> Available,
@@ -405,7 +405,7 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
               FreeVersion -> Available, Bridging -> Available, Vat -> Available,
               Visual -> Available, Hearing -> Available, Motor -> Available, Cognitive -> Available,
               Welsh -> Available)),
-            intentVendor("Vendor 03", Map(
+            intentVendor(3, "Vendor 03", Map(
               Individual -> Available, Agent -> Available, QuarterlyUpdates -> Available, TaxReturn -> Available,
               SoleTrader -> Available, UkProperty -> Available, OverseasProperty -> Available,
               UkInterest -> Available, ConstructionIndustryScheme -> Available, Employment -> Available, UkDividends -> Available,
@@ -454,7 +454,7 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
               FreeVersion -> Available, Bridging -> Available, Vat -> Available,
               Visual -> Available, Hearing -> Available, Motor -> Available, Cognitive -> Available,
               English -> Available)),
-            intentVendor("Vendor 03", Map(
+            intentVendor(3, "Vendor 03", Map(
               Individual -> Available, Agent -> Available, QuarterlyUpdates -> Available, TaxReturn -> Available,
               SoleTrader -> Available, UkProperty -> Available, OverseasProperty -> Available,
               UkInterest -> Available, ConstructionIndustryScheme -> Available, Employment -> Available, UkDividends -> Available,
