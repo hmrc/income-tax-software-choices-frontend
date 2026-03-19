@@ -217,7 +217,7 @@ class PageAnswersServiceSpec extends PlaySpec with BeforeAndAfterEach {
         "the userFilters do not exist" in new Setup {
           when(mockUserFiltersRepository.get(eqTo(sessionId)))
             .thenReturn(Future.successful(None))
-          when(mockUserFiltersRepository.set(any()))
+          when(mockUserFiltersRepository.set(UserFilters(sessionId, Some(UserAnswers()), Seq.empty, List.empty, any())))
             .thenReturn(Future.successful(true))
 
           await(service.resetUserAnswers(sessionId)) mustBe true
