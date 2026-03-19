@@ -78,7 +78,7 @@ class SoftwareChoicesService @Inject()(
       SoftwareChoicesService.matchFilter(selectedFilters)(randomisedVendors.vendors)
     } else {
       val matchingVendors = SoftwareChoicesService.matchFilter(selectedFilters)(vendors.vendors)
-      val vendorMap = matchingVendors.map(_.productId).zip(matchingVendors).toMap
+      val vendorMap = matchingVendors.map(vendor => vendor.productId -> vendor).toMap
 
       request.userFilters.randomVendorOrder.flatMap(vendorMap.get)
     }
