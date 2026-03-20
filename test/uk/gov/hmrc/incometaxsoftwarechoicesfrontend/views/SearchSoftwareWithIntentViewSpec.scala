@@ -99,6 +99,8 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
   }
 
   "Search software page must have a filter section" which {
+    disable (FeatureSwitch.HMRCAssist)
+    disable (FeatureSwitch.Language)
     lazy val document = {
       val model = SoftwareChoicesResultsViewModel(
         vendorsWithIntent = SearchSoftwareWithIntentPageContent.multipleVendorsWithIntent
@@ -123,27 +125,9 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
       filterSection.selectHead("a").text shouldBe SearchSoftwareWithIntentPageContent.Filters.clearFilters
     }
 
-    "has an accessibility features section" that {
-      val checkboxGroup = getCheckboxGroup(document, 5)
-
-      "contains a fieldset legend" in {
-        checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwareWithIntentPageContent.Filters.accessibilityFeatures
-      }
-
-      "contains an Visual checkbox" in {
-        validateCheckboxInGroup(checkboxGroup, 1, Visual.key, SearchSoftwareWithIntentPageContent.visual)
-      }
-
-      "contains an Hearing checkbox" in {
-        validateCheckboxInGroup(checkboxGroup, 2, Hearing.key, SearchSoftwareWithIntentPageContent.hearing)
-      }
-
-      "contains an Motor checkbox" in {
-        validateCheckboxInGroup(checkboxGroup, 3, Motor.key, SearchSoftwareWithIntentPageContent.motor)
-      }
-
-      "contains an Cognitive checkbox" in {
-        validateCheckboxInGroup(checkboxGroup, 4, Cognitive.key, SearchSoftwareWithIntentPageContent.cognitive)
+    "has a apply button section" that {
+      "contains an apply filters button" in {
+        filterSection.selectHead(".apply-filters-button").text shouldBe SearchSoftwareWithIntentPageContent.Filters.applyFilters
       }
     }
 
@@ -164,6 +148,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
         )
       }
     }
+
     "has a readiness section" that {
       val checkboxGroup = getCheckboxGroup(document, 2)
 
@@ -216,41 +201,6 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
       }
     }
 
-    "has a apply button section" that {
-      "contains an apply filters button" in {
-        filterSection.selectHead(".apply-filters-button").text shouldBe SearchSoftwareWithIntentPageContent.Filters.applyFilters
-      }
-    }
-  }
-
-  "Search software page must have a filter section with all features available" which {
-    enable(FeatureSwitch.HMRCAssist)
-    enable(FeatureSwitch.Language)
-
-    lazy val document = {
-      val model = SoftwareChoicesResultsViewModel(
-        vendorsWithIntent = SearchSoftwareWithIntentPageContent.multipleVendorsWithIntent
-      )
-      Jsoup.parse(page(model).body)
-    }
-    val filterSection = getFilterSection(document)
-
-    "has a role attribute to identify it as a search landmark" in {
-      filterSection.attr("role") shouldBe "search"
-    }
-
-    "has a heading" in {
-      filterSection.selectHead("h2").text shouldBe SearchSoftwareWithIntentPageContent.Filters.filterHeading
-    }
-
-    "has a paragraph" in {
-      filterSection.selectHead("p").text shouldBe SearchSoftwareWithIntentPageContent.Filters.filterParagraph
-    }
-
-    "has a clear filters link" in {
-      filterSection.selectHead("a").text shouldBe SearchSoftwareWithIntentPageContent.Filters.clearFilters
-    }
-
     "has an accessibility features section" that {
       val checkboxGroup = getCheckboxGroup(document, 5)
 
@@ -275,98 +225,104 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
       }
     }
 
-    "has a pricing section" that {
-      val checkboxGroup = getCheckboxGroup(document, 1)
+    "does not have additional filters when feature switches disabled" in {
+      getFilterSection(document).selectNthOptionally(".govuk-form-group", 6) shouldBe None
+      getFilterSection(document).selectNthOptionally(".govuk-form-group", 7) shouldBe None
+    }
 
-      "contains a fieldset legend" in {
-        checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwareWithIntentPageContent.Filters.pricing
-      }
+    "has additional filters when feature switches enabled" which {
+      enable(FeatureSwitch.HMRCAssist)
+      enable(FeatureSwitch.Language)
 
-      "contains a Free version checkbox" in {
-        validateCheckboxInGroup(
-          checkboxGroup,
-          1,
-          FreeVersion.key,
-          SearchSoftwareWithIntentPageContent.freeVersion,
-          Some(SearchSoftwareWithIntentPageContent.freeVersionHint)
+      lazy val document = {
+        val model = SoftwareChoicesResultsViewModel(
+          vendorsWithIntent = SearchSoftwareWithIntentPageContent.multipleVendorsWithIntent
         )
+        Jsoup.parse(page(model).body)
+      }
+      "has an language section" that {
+        val checkboxGroup = getCheckboxGroup(document, 6)
+
+        "contains a fieldset legend" in {
+          checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwareWithIntentPageContent.Filters.language
+        }
+
+        "contains a Welsh Language checkbox" in {
+          validateCheckboxInGroup(
+            checkboxGroup,
+            1,
+            Welsh.key,
+            SearchSoftwareWithIntentPageContent.welsh,
+            None
+          )
+        }
+      }
+      "has an extra features section" that {
+        val checkboxGroup = getCheckboxGroup(document, 7)
+
+        "contains a fieldset legend" in {
+          checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwareWithIntentPageContent.Filters.extraFeatures
+        }
+
+        "contains a HMRC Assist checkbox" in {
+          validateCheckboxInGroup(
+            checkboxGroup,
+            1,
+            HMRCAssist.key,
+            SearchSoftwareWithIntentPageContent.hmrcAssist,
+            None
+          )
+        }
       }
     }
 
-    "has a software for section" that {
-      val checkboxGroup = getCheckboxGroup(document, 3)
-
-      "contains a fieldset legend" in {
-        checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwareWithIntentPageContent.Filters.softwareFor
-      }
-
-      "contains a Bridging checkbox" in {
-        validateCheckboxInGroup(
-          checkboxGroup,
-          1,
-          Bridging.key,
-          SearchSoftwareWithIntentPageContent.bridging
+    "has the correct filters for agent users" which {
+      enable(FeatureSwitch.HMRCAssist)
+      enable(FeatureSwitch.Language)
+      lazy val document = {
+        val model = SoftwareChoicesResultsViewModel(
+          vendorsWithIntent = SearchSoftwareWithIntentPageContent.multipleVendorsWithIntent,
+          isAgent = true
         )
+        Jsoup.parse(page(model).body)
       }
-    }
+      "has a user type section" that {
+        val checkboxGroup = getCheckboxGroup(document, 1)
 
-    "has a software compatibility section" that {
-      val checkboxGroup = getCheckboxGroup(document, 4)
+        "contains a fieldset legend" in {
+          checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwareWithIntentPageContent.Filters.userType
+        }
 
-      "contains a fieldset legend" in {
-        checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwareWithIntentPageContent.Filters.softwareCompatibility
+        "contains a checkbox for Agent" in {
+          validateCheckboxInGroup(
+            checkboxGroup,
+            1,
+            Agent.key,
+            SearchSoftwareWithIntentPageContent.agent
+          )
+        }
+
+        "contains a checkbox for Individual" in {
+          validateCheckboxInGroup(
+            checkboxGroup,
+            2,
+            Individual.key,
+            SearchSoftwareWithIntentPageContent.individual
+          )
+        }
       }
 
-      "contains an VAT checkbox" in {
-        validateCheckboxInGroup(
-          checkboxGroup,
-          1,
-          Vat.key,
-          SearchSoftwareWithIntentPageContent.vat,
-          None
+      "has the correct order of filters with no readiness section" in {
+        val filterGroups = getFilterSection(document).selectSeq(".govuk-form-group > fieldset > legend").map(_.text)
+        filterGroups shouldBe Seq(
+          SearchSoftwareWithIntentPageContent.Filters.userType,
+          SearchSoftwareWithIntentPageContent.Filters.pricing,
+          SearchSoftwareWithIntentPageContent.Filters.softwareFor,
+          SearchSoftwareWithIntentPageContent.Filters.softwareCompatibility,
+          SearchSoftwareWithIntentPageContent.Filters.accessibilityFeatures,
+          SearchSoftwareWithIntentPageContent.Filters.language,
+          SearchSoftwareWithIntentPageContent.Filters.extraFeatures
         )
-      }
-    }
-
-    "has an language section" that {
-      val checkboxGroup = getCheckboxGroup(document, 6)
-
-      "contains a fieldset legend" in {
-        checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwareWithIntentPageContent.Filters.language
-      }
-
-      "contains a Welsh Language checkbox" in {
-        validateCheckboxInGroup(
-          checkboxGroup,
-          1,
-          Welsh.key,
-          SearchSoftwareWithIntentPageContent.welsh,
-          None
-        )
-      }
-    }
-
-    "has an extra features section" that {
-      val checkboxGroup = getCheckboxGroup(document, 7)
-
-      "contains a fieldset legend" in {
-        checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwareWithIntentPageContent.Filters.extraFeatures
-      }
-
-      "contains a HMRC Assist checkbox" in {
-        validateCheckboxInGroup(
-          checkboxGroup,
-          1,
-          HMRCAssist.key,
-          SearchSoftwareWithIntentPageContent.hmrcAssist,
-          None
-        )
-      }
-    }
-
-    "has a apply button section" that {
-      "contains an apply filters button" in {
-        filterSection.selectHead(".apply-filters-button").text shouldBe SearchSoftwareWithIntentPageContent.Filters.applyFilters
       }
     }
   }
@@ -720,6 +676,7 @@ private object SearchSoftwareWithIntentPageContent {
     val filterHeading = "Filter options"
     val filterParagraph = "You can use filters to find specific software. All fields are optional."
     val clearFilters = "Clear filters"
+    val userType = "User type"
     val pricing = "Price"
     val readiness = "Software readiness"
     val suitableFor = "Income sources"
@@ -744,6 +701,8 @@ private object SearchSoftwareWithIntentPageContent {
   val agentPara3 = "Some of the features you’ll need to submit your client’s tax returns are still being developed."
   val agentInset = "HMRC is not responsible for the availability of products or making sure that the product you chose meets the current and future needs of your clients. We recommend that you visit software providers’ websites to do more research before choosing a product."
 
+  val agent = "Agent"
+  val individual = "Individual"
   val pricing = "Price"
   val freeVersion = "Free version"
   val noFreeVersion = "Paid version"
