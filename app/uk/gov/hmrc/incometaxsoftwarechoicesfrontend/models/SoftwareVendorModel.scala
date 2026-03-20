@@ -59,7 +59,7 @@ case class SoftwareVendorModel(productId: Int,
   def isEoyReady(searchFilters: Seq[VendorFilter])(implicit appConfig: AppConfig): Option[Boolean] = {
     val nonMandatoryFilters = searchFilters.filter(nonMandatedIncomeGroup.contains)
     
-    if (nonMandatoryFilters.isEmpty && getFeatureStatus(TaxReturn).eq(NotApplicable)) 
+    if (nonMandatoryFilters.isEmpty && getFeatureStatus(TaxReturn).eq(NotApplicable))
       None
     else 
       Some((nonMandatoryFilters ++ Seq(TaxReturn)).forall(filter => getFeatureStatus(filter).eq(Available)))

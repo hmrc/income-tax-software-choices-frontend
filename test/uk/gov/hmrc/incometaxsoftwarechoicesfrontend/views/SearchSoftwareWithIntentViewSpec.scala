@@ -124,7 +124,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
     }
 
     "has an accessibility features section" that {
-      val checkboxGroup = getCheckboxGroup(document, 4)
+      val checkboxGroup = getCheckboxGroup(document, 5)
 
       "contains a fieldset legend" in {
         checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwareWithIntentPageContent.Filters.accessibilityFeatures
@@ -164,9 +164,25 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
         )
       }
     }
+    "has a readiness section" that {
+      val checkboxGroup = getCheckboxGroup(document, 2)
+
+      "contains a fieldset legend" in {
+        checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwareWithIntentPageContent.Filters.readiness
+      }
+
+      "contains a Ready for QU and TR checkbox" in {
+        validateCheckboxInGroup(
+          checkboxGroup,
+          1,
+          FullyReady.key,
+          SearchSoftwareWithIntentPageContent.fullyReady
+        )
+      }
+    }
 
     "has a software for section" that {
-      val checkboxGroup = getCheckboxGroup(document, 2)
+      val checkboxGroup = getCheckboxGroup(document, 3)
 
       "contains a fieldset legend" in {
         checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwareWithIntentPageContent.Filters.softwareFor
@@ -183,7 +199,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
     }
 
     "has a software compatibility section" that {
-      val checkboxGroup = getCheckboxGroup(document, 3)
+      val checkboxGroup = getCheckboxGroup(document, 4)
 
       "contains a fieldset legend" in {
         checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwareWithIntentPageContent.Filters.softwareCompatibility
@@ -236,7 +252,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
     }
 
     "has an accessibility features section" that {
-      val checkboxGroup = getCheckboxGroup(document, 4)
+      val checkboxGroup = getCheckboxGroup(document, 5)
 
       "contains a fieldset legend" in {
         checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwareWithIntentPageContent.Filters.accessibilityFeatures
@@ -278,7 +294,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
     }
 
     "has a software for section" that {
-      val checkboxGroup = getCheckboxGroup(document, 2)
+      val checkboxGroup = getCheckboxGroup(document, 3)
 
       "contains a fieldset legend" in {
         checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwareWithIntentPageContent.Filters.softwareFor
@@ -295,7 +311,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
     }
 
     "has a software compatibility section" that {
-      val checkboxGroup = getCheckboxGroup(document, 3)
+      val checkboxGroup = getCheckboxGroup(document, 4)
 
       "contains a fieldset legend" in {
         checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwareWithIntentPageContent.Filters.softwareCompatibility
@@ -313,7 +329,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
     }
 
     "has an language section" that {
-      val checkboxGroup = getCheckboxGroup(document, 5)
+      val checkboxGroup = getCheckboxGroup(document, 6)
 
       "contains a fieldset legend" in {
         checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwareWithIntentPageContent.Filters.language
@@ -331,7 +347,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
     }
 
     "has an extra features section" that {
-      val checkboxGroup = getCheckboxGroup(document, 6)
+      val checkboxGroup = getCheckboxGroup(document, 7)
 
       "contains a fieldset legend" in {
         checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwareWithIntentPageContent.Filters.extraFeatures
@@ -705,6 +721,7 @@ private object SearchSoftwareWithIntentPageContent {
     val filterParagraph = "You can use filters to find specific software. All fields are optional."
     val clearFilters = "Clear filters"
     val pricing = "Price"
+    val readiness = "Software readiness"
     val suitableFor = "Income sources"
     val softwareFor = "Type of software"
     val softwareCompatibility = "Making Tax Digital Compatibility"
@@ -758,6 +775,8 @@ private object SearchSoftwareWithIntentPageContent {
 
   val hmrcAssist = "HMRC Assist (Submission Feedback)"
   val welsh = "Welsh"
+
+  val fullyReady = "Ready for quarterly updates and tax return"
 
   private val lastUpdateTest = LocalDate.of(2022, 12, 2)
 
