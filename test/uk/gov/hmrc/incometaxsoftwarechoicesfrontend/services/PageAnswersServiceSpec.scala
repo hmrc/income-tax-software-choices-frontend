@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services
 
-import org.mockito.ArgumentMatchers.{any, eq => eqTo}
+import org.mockito.ArgumentMatchers.{any, eq as eqTo}
 import org.mockito.Mockito.when
 import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.mockito.MockitoSugar.mock
@@ -25,11 +25,12 @@ import play.api.libs.json.{JsPath, Reads}
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.AccountingPeriod.FirstAprilToThirtyFirstMarch
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.SoleTraderOrLandlord
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{UserAnswers, UserFilters, VendorFilter}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages._
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 
+import java.time.Instant
 import scala.concurrent.{ExecutionContext, Future}
 
 class PageAnswersServiceSpec extends PlaySpec with BeforeAndAfterEach {
@@ -45,6 +46,7 @@ class PageAnswersServiceSpec extends PlaySpec with BeforeAndAfterEach {
   }
 
   private val sessionId: String = "sessionId"
+  private val testTime: Instant = Instant.now()
   private val dummyUserAnswers: UserAnswers = UserAnswers().set(DummyPage, "Test").get
   private val vendorFilterUserAnswers: UserAnswers = UserAnswers().set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
   private val mixedUserAnswers: UserAnswers = UserAnswers()
@@ -63,6 +65,8 @@ class PageAnswersServiceSpec extends PlaySpec with BeforeAndAfterEach {
   private val userFilterWithVendorFilterAnswerForPage = UserFilters(sessionId, Some(vendorFilterUserAnswers), Seq.empty)
   private val userFilterWithMixedAnswersForPage = UserFilters(sessionId, Some(mixedUserAnswers), Seq.empty)
   private val userFilterWithFullAnswersForPage = UserFilters(sessionId, Some(fullUserAnswers), Seq.empty)
+  private val userFilterWithRandomOrder = UserFilters(sessionId, Some(fullUserAnswers), Seq.empty, List(3,1,2), testTime)
+  private val resetUserFilterWithRandomOrder = UserFilters(sessionId, Some(UserAnswers()), Seq.empty, List(3,1,2), testTime)
 
   class Setup {
     implicit val ec: ExecutionContext = scala.concurrent.ExecutionContext.global
@@ -199,4 +203,26 @@ class PageAnswersServiceSpec extends PlaySpec with BeforeAndAfterEach {
 
   }
 
+  "resetUserAnswers" when {
+    "provided with a session id" must {
+      "return true to show the answers have been reset" when {
+        "the userFilters exist" in new Setup {
+          when(mockUserFiltersRepository.get(eqTo(sessionId)))
+            .thenReturn(Future.successful(Some(userFilterWithRandomOrder)))
+          when(mockUserFiltersRepository.set(resetUserFilterWithRandomOrder))
+            .thenReturn(Future.successful(true))
+
+          await(service.resetUserAnswers(sessionId)) mustBe true
+        }
+        "the userFilters do not exist" in new Setup {
+          when(mockUserFiltersRepository.get(eqTo(sessionId)))
+            .thenReturn(Future.successful(None))
+          when(mockUserFiltersRepository.set(UserFilters(sessionId, Some(UserAnswers()), Seq.empty, List.empty, any())))
+            .thenReturn(Future.successful(true))
+
+          await(service.resetUserAnswers(sessionId)) mustBe true
+        }
+      }
+    }
+  }
 }
