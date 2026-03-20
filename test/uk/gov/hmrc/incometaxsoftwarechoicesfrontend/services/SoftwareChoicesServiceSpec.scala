@@ -45,7 +45,7 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
     filters = filters.map(vf => vf -> Available).toMap
   )
 
-  private val allVendors: SoftwareVendors = SoftwareVendors(
+  private val allVendors = SoftwareVendors(
     lastUpdated = LocalDate.now,
     vendors = userTypeFilters.flatMap { userType => Seq(
       vendor(1, Seq(userType, QuarterlyUpdates, TaxReturn, SoleTrader, StandardUpdatePeriods)),
@@ -503,7 +503,7 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
         resultWithFullyReady.size mustBe 0
       }
 
-      "there are matching vendors with tax return Not Included" in {
+      "there are matching vendors with features Not Included" in {
         when(mockDataService.getSoftwareVendors()).thenReturn(allVendors.copy(vendors = allVendors.vendors ++ vendorsInDevelopment))
 
         val result = service.getVendorsWithIntent(Seq(Individual, SoleTrader, QuarterlyUpdates, TaxReturn))

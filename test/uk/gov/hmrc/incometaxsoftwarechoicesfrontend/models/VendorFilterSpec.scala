@@ -35,7 +35,7 @@ class VendorFilterSpec extends PlaySpec {
         languageFeature
       ).flatten.distinct
       Seq(false, true).foreach { testCondition =>
-        val actual = VendorFilterGroups.filtersToDisplay(isAgent = testCondition, withHMRCAssist = testCondition, withLanguage = testCondition).flatMap(f => f._1)
+        val actual = VendorFilterGroups.preferenceFilters(isAgent = testCondition, withHMRCAssist = testCondition, withLanguage = testCondition).flatMap(f => f._1)
           ++ VendorFilterGroups.featuresProvidedGroup(withHMRCAssist = testCondition)
         val expected = testCondition match {
           case true => filters

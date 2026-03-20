@@ -122,7 +122,6 @@ search-software.filters.extra-features = Nodweddion ychwanegol
 search-software.filters.language-features = Iaith
 search-software.filters.readiness = *** MISSING WELSH ***
 
-
 search-software.filters.apply-filters = Rhoi hidlyddion ar waith
 search-software.filters.clear-filters = Clirio hidlyddion
 
@@ -176,7 +175,7 @@ search-software.vendor-detail.extra-features.hmrc-assist = HMRC Assist (Adborth 
 
 search-software.vendor-detail.language-features.welsh = Cymraeg
 
-search-software.vendor-detail.readiness.fully-ready = *** MISSING WELSH***
+search-software.vendor-detail.readiness.fully-ready = *** MISSING WELSH ***
 
 # Product details page
 

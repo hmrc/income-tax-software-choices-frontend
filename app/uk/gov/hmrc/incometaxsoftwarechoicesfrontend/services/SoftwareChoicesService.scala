@@ -53,24 +53,25 @@ class SoftwareChoicesService @Inject()(
     val qualifyingVendors = SoftwareChoicesService.matchAvailableFilter(mandatoryFilters)(allPotentialVendorsInRandOrder.vendors)
 
     val nonMandatoryFilters = finalFilters.filter(nonMandatedIncomeGroup.contains)
-    val vendorsToDisplay = if (nonMandatoryFilters.isEmpty) {
+
+    val matchingVendors = if (nonMandatoryFilters.isEmpty) {
       qualifyingVendors
     } else {
       SoftwareChoicesService.matchAvailableOrIntendedFilter(nonMandatoryFilters ++ Seq(TaxReturn))(qualifyingVendors)
     }
 
-    val viewModel = vendorsToDisplay.map(vendor =>
+    val vendorsToDisplay = if (finalFilters.contains(FullyReady)) {
+      SoftwareChoicesService.matchFullyReady(finalFilters)(matchingVendors)
+    } else {
+      matchingVendors
+    }
+
+    vendorsToDisplay.map(vendor =>
       VendorSuitabilityViewModel(
         vendor = vendor,
         quarterlyReady = Some(vendor.isQuarterlyReady(finalFilters)),
         eoyReady = vendor.isEoyReady(finalFilters)
       ))
-
-    if (finalFilters.contains(FullyReady)) {
-      viewModel.filter(vendor => vendor.quarterlyReady.contains(true) && vendor.eoyReady.contains(true))
-    } else {
-      viewModel
-    }
   }
 
   def getAllInOneVendors(finalFilters: Seq[VendorFilter])(implicit appConfig: AppConfig, request: SessionDataRequest[_]): SoftwareVendors = {
@@ -101,6 +102,11 @@ object SoftwareChoicesService {
 
   private[services] def matchAvailableFilter(filters: Seq[VendorFilter])(vendors: Seq[SoftwareVendorModel]) = {
     vendors.filter(vendor => filters.forall(filter => vendor.getFeatureStatus(filter).eq(Available)))
+  }
+
+  private[services] def matchFullyReady(filters: Seq[VendorFilter])(vendors: Seq[SoftwareVendorModel]) = {
+    val requiredReadyFilters = filters.filterNot(_.eq(FullyReady)) ++ Seq(QuarterlyUpdates, TaxReturn)
+    matchAvailableFilter(requiredReadyFilters)(vendors)
   }
 
   private[services] def matchAvailableOrIntendedFilter(filters: Seq[VendorFilter])(vendors: Seq[SoftwareVendorModel]) = {

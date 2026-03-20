@@ -125,7 +125,6 @@ search-software.filters.extra-features = Extra features
 search-software.filters.language-features = Language
 search-software.filters.readiness = Software readiness
 
-
 search-software.intent.vendor-visit-link        = Find out what {0} provide now and what they’re developing
 
 search-software.vendor-count.agent.heading.many     = Based on your answers, we’ve found {0} results

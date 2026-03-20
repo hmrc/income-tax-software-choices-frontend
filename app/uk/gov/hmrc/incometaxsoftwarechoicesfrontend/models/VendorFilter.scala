@@ -430,7 +430,7 @@ object VendorFilterGroups {
     QuarterlyUpdates,
     TaxReturn
   )
-  
+
   val compatibleWith: Set[VendorFilter] = Set(
     MicrosoftWindows,
     MacOS,
@@ -481,7 +481,7 @@ object VendorFilterGroups {
       List(FreeVersion, RecordKeeping, Bridging, Agent, Individual, StandardUpdatePeriods, CalendarUpdatePeriods)
   }
 
-  val incomeSourcesGroup: List[VendorFilter] = List(
+  val businessIncomeGroup: List[VendorFilter] = List(
     SoleTrader,
     UkProperty,
     OverseasProperty
@@ -497,38 +497,38 @@ object VendorFilterGroups {
     QuarterlyUpdates
   )
 
-  def filtersToDisplay(isAgent: Boolean, withHMRCAssist: Boolean, withLanguage: Boolean): Seq[(Set[VendorFilter], String)] = {
+  def preferenceFilters(isAgent: Boolean, withHMRCAssist: Boolean, withLanguage: Boolean): Seq[(Set[VendorFilter], String)] = {
 
-    val commonGroup: Seq[(Set[VendorFilter], String)] = Seq(
-      (Set(Bridging), "software-for"),
-      (compatibility, "software-compatibility"),
-      (accessibilityFilters, "accessibility")
-    )
     val agentGroup = if (isAgent) Seq((userTypeFilters, "user-type")) else Seq.empty
 
-    val individualGroup = if (!isAgent) Seq((readinessFilters, "readiness")) else Seq.empty
+    val readinessGroup = if (!isAgent) Seq((readinessFilters, "readiness")) else Seq.empty
 
     val languageGroup = if (withLanguage) Seq((languageFeature, "language-features")) else Seq.empty
 
     val extraFeaturesGroup = if (withHMRCAssist) Seq((extraFeatures, "extra-features")) else Seq.empty
 
-    agentGroup ++ Seq((pricingFilters, "pricing")) ++ individualGroup ++ commonGroup ++ languageGroup ++ extraFeaturesGroup
+    agentGroup ++
+      Seq((pricingFilters, "pricing")) ++
+      readinessGroup ++
+      Seq((Set(Bridging), "software-for")) ++
+      Seq((compatibility, "software-compatibility")) ++
+      Seq((accessibilityFilters, "accessibility")) ++
+      languageGroup ++
+      extraFeaturesGroup
   }
 
   val nonMandatedIncomeGroup: List[VendorFilter] = List(
-      UkInterest, ConstructionIndustryScheme, Employment, UkDividends, StatePensionIncome, PrivatePensionIncome, PartnerIncome,
-      ForeignDividends, ForeignInterest, PaymentsIntoAPrivatePension, CharitableGiving,
-      CapitalGainsTax, StudentLoans, MarriageAllowance, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge
-     )
+    UkInterest, ConstructionIndustryScheme, Employment, UkDividends, StatePensionIncome, PrivatePensionIncome, PartnerIncome,
+    ForeignDividends, ForeignInterest, PaymentsIntoAPrivatePension, CharitableGiving,
+    CapitalGainsTax, StudentLoans, MarriageAllowance, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge
+  )
 
   val softwareTypeGroup: List[VendorFilter] = List(DesktopApplication, WebBrowser)
   val compatibleWithGroup: List[VendorFilter] = List(MicrosoftWindows, MacOS, Linux)
   val mobileGroup: List[VendorFilter] = List(Android, Apple)
   val languageGroup: List[VendorFilter] = List(English, Welsh)
 
-  val quarterlyReturnsGroup: List[VendorFilter] = List(QuarterlyUpdates) ++ incomeSourcesGroup
-
   val mandatoryFilterGroup: List[VendorFilter] =
-    quarterlyReturnsGroup ++ userTypeFilters ++ accountingPeriodFilters ++ pricingFilters ++
+    businessIncomeGroup ++ userTypeFilters ++ accountingPeriodFilters ++ pricingFilters ++
       compatibility ++ accessibilityFilters ++ Seq(Bridging) ++ extraFeatures ++ languageFilter
 }
