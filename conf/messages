@@ -287,3 +287,9 @@ phase-banner.feedback = give your feedback
 
 # Exit Survey
 exit-survey.link = Give feedback on this service
+
+# AUTOCOMPLETE
+check-software.h1 = What is the name of your software?
+check-software.hint = Start typing and select from the list
+check-software.error.empty = Select a software from the list or continue typing to find it
+

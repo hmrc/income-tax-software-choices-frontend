@@ -287,3 +287,8 @@ phase-banner.feedback = rhoi eich adborth
 
 # Exit Survey
 exit-survey.link = Rhoi adborth ar y gwasanaeth hwn
+
+# AUTOCOMPLETE
+check-software.h1 = *WELSH*What is the name of your software?
+check-software.hint = *WELSH*Start typing and select from the list
+check-software.error.empty = *WELSH*Select a software from the list or continue typing to find it
