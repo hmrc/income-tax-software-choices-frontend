@@ -90,20 +90,9 @@ class AdditionalIncomeSourceViewSpec extends ViewSpec  with BeforeAndAfterEach {
             value = "uk-interest",
           )
         }
-        "has a checkbox for construction-industry-scheme" in {
-          form.mustHaveCheckbox("fieldSet")(
-            checkbox = 2,
-            legend = AdditionalIncomeSourcesPageContent.legend,
-            isHeading = true,
-            isLegendHidden = false,
-            name = "additionalIncome[]",
-            label = AdditionalIncomeSourcesPageContent.constructionIndustryScheme,
-            value = "construction-industry-scheme",
-          )
-        }
         "has a checkbox for employment" in {
           form.mustHaveCheckbox("fieldSet")(
-            checkbox = 3,
+            checkbox = 2,
             legend = AdditionalIncomeSourcesPageContent.legend,
             isHeading = true,
             isLegendHidden = false,
@@ -114,7 +103,7 @@ class AdditionalIncomeSourceViewSpec extends ViewSpec  with BeforeAndAfterEach {
         }
         "has a checkbox for uk-dividends" in {
           form.mustHaveCheckbox("fieldSet")(
-            checkbox = 4,
+            checkbox = 3,
             legend = AdditionalIncomeSourcesPageContent.legend,
             isHeading = true,
             isLegendHidden = false,
@@ -125,7 +114,7 @@ class AdditionalIncomeSourceViewSpec extends ViewSpec  with BeforeAndAfterEach {
         }
         "has a checkbox for state-pension-income" in {
           form.mustHaveCheckbox("fieldSet")(
-            checkbox = 5,
+            checkbox = 4,
             legend = AdditionalIncomeSourcesPageContent.legend,
             isHeading = true,
             isLegendHidden = false,
@@ -136,7 +125,7 @@ class AdditionalIncomeSourceViewSpec extends ViewSpec  with BeforeAndAfterEach {
         }
         "has a checkbox for private-pension-income" in {
           form.mustHaveCheckbox("fieldSet")(
-            checkbox = 6,
+            checkbox = 5,
             legend = AdditionalIncomeSourcesPageContent.legend,
             isHeading = true,
             isLegendHidden = false,
@@ -147,7 +136,7 @@ class AdditionalIncomeSourceViewSpec extends ViewSpec  with BeforeAndAfterEach {
         }
         "has a checkbox for partner-income" in {
           form.mustHaveCheckbox("fieldSet")(
-            checkbox = 7,
+            checkbox = 6,
             legend = AdditionalIncomeSourcesPageContent.legend,
             isHeading = true,
             isLegendHidden = false,
@@ -159,7 +148,7 @@ class AdditionalIncomeSourceViewSpec extends ViewSpec  with BeforeAndAfterEach {
 
         "has a checkbox for foreign-dividends" in {
           form.mustHaveCheckbox("fieldSet")(
-            checkbox = 8,
+            checkbox = 7,
             legend = AdditionalIncomeSourcesPageContent.legend,
             isHeading = true,
             isLegendHidden = false,
@@ -170,7 +159,7 @@ class AdditionalIncomeSourceViewSpec extends ViewSpec  with BeforeAndAfterEach {
         }
         "has a checkbox for foreign-interest" in {
           form.mustHaveCheckbox("fieldSet")(
-            checkbox = 9,
+            checkbox = 8,
             legend = AdditionalIncomeSourcesPageContent.legend,
             isHeading = true,
             isLegendHidden = false,
@@ -181,7 +170,7 @@ class AdditionalIncomeSourceViewSpec extends ViewSpec  with BeforeAndAfterEach {
         }
         "has a checkbox for None" in {
           form.mustHaveCheckbox("fieldSet")(
-            checkbox = 11,
+            checkbox = 10,
             legend = AdditionalIncomeSourcesPageContent.legend,
             isHeading = true,
             isLegendHidden = false,
@@ -204,7 +193,6 @@ private object AdditionalIncomeSourcesPageContent {
   val legend = "Which of these other incomes do you need to submit in your tax return?"
   val hint = "Select all that apply"
   val ukInterest = "UK interest"
-  val constructionIndustryScheme = "Construction Industry Scheme"
   val employment = "Employment (PAYE)"
   val ukDividends = "UK dividends"
   val statePension = "State Pension income"
