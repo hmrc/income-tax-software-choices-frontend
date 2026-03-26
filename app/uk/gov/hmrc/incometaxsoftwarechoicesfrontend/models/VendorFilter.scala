@@ -325,12 +325,6 @@ object VendorFilter {
     override val auditDescription: String = "hmrc-assist"
   }
 
-  case object FullyReady extends VendorFilter {
-    override val key: String = "fully-ready"
-    override val priority: Int = 4
-    override val auditDescription: String = "fully-ready"
-  }
-
   val filterKeyToFilter: Map[String, VendorFilter] = Seq(
     FreeVersion,
     QuarterlyUpdates,
@@ -378,8 +372,7 @@ object VendorFilter {
     Apple,
     English,
     Welsh,
-    HMRCAssist,
-    FullyReady
+    HMRCAssist
   ).map(value => value.key -> value).toMap
 
   implicit val reads: Reads[VendorFilter] = __.read[String] map filterKeyToFilter
@@ -430,7 +423,7 @@ object VendorFilterGroups {
     QuarterlyUpdates,
     TaxReturn
   )
-
+  
   val compatibleWith: Set[VendorFilter] = Set(
     MicrosoftWindows,
     MacOS,
@@ -444,10 +437,6 @@ object VendorFilterGroups {
 
   val languageFilter: Set[VendorFilter] = Set(
     English, Welsh
-  )
-
-  val readinessFilters: Set[VendorFilter] = Set(
-    FullyReady
   )
 
   val userPageFilters: Set[VendorFilter] = Set(
@@ -481,7 +470,7 @@ object VendorFilterGroups {
       List(FreeVersion, RecordKeeping, Bridging, Agent, Individual, StandardUpdatePeriods, CalendarUpdatePeriods)
   }
 
-  val businessIncomeGroup: List[VendorFilter] = List(
+  val incomeSourcesGroup: List[VendorFilter] = List(
     SoleTrader,
     UkProperty,
     OverseasProperty
@@ -518,10 +507,10 @@ object VendorFilterGroups {
   }
 
   val nonMandatedIncomeGroup: List[VendorFilter] = List(
-    UkInterest, ConstructionIndustryScheme, Employment, UkDividends, StatePensionIncome, PrivatePensionIncome, PartnerIncome,
-    ForeignDividends, ForeignInterest, PaymentsIntoAPrivatePension, CharitableGiving,
-    CapitalGainsTax, StudentLoans, MarriageAllowance, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge
-  )
+      UkInterest, Employment, UkDividends, StatePensionIncome, PrivatePensionIncome, PartnerIncome,
+      ForeignDividends, ForeignInterest, PaymentsIntoAPrivatePension, ConstructionIndustryScheme, CharitableGiving,
+      CapitalGainsTax, StudentLoans, MarriageAllowance, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge
+     )
 
   val softwareTypeGroup: List[VendorFilter] = List(DesktopApplication, WebBrowser)
   val compatibleWithGroup: List[VendorFilter] = List(MicrosoftWindows, MacOS, Linux)

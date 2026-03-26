@@ -70,15 +70,14 @@ class AdditionalIncomeSourcesControllerISpec extends ComponentSpecBase with Befo
           httpStatus(OK),
           pageTitle(s"${messages("additional.income.source-heading")} - ${PageContentBase.title} - GOV.UK"),
           checkboxSelected("additionalIncome", Some(UkInterest.key)),
-          checkboxSelected("additionalIncome-2", Some(ConstructionIndustryScheme.key)),
-          checkboxSelected("additionalIncome-3", Some(Employment.key)),
-          checkboxSelected("additionalIncome-4", Some(UkDividends.key)),
-          checkboxSelected("additionalIncome-5", Some(StatePensionIncome.key)),
-          checkboxSelected("additionalIncome-6", Some(PrivatePensionIncome.key)),
-          checkboxSelected("additionalIncome-7", Some(PartnerIncome.key)),
-          checkboxSelected("additionalIncome-8", Some(ForeignDividends.key)),
-          checkboxSelected("additionalIncome-9", Some(ForeignInterest.key)),
-          checkboxSelected("additionalIncome-11", None)
+          checkboxSelected("additionalIncome-2", Some(Employment.key)),
+          checkboxSelected("additionalIncome-3", Some(UkDividends.key)),
+          checkboxSelected("additionalIncome-4", Some(StatePensionIncome.key)),
+          checkboxSelected("additionalIncome-5", Some(PrivatePensionIncome.key)),
+          checkboxSelected("additionalIncome-6", Some(PartnerIncome.key)),
+          checkboxSelected("additionalIncome-7", Some(ForeignDividends.key)),
+          checkboxSelected("additionalIncome-8", Some(ForeignInterest.key)),
+          checkboxSelected("additionalIncome-10", None)
         )
       }
       "the additional income has been answered previously with none selected" in {
@@ -97,8 +96,7 @@ class AdditionalIncomeSourcesControllerISpec extends ComponentSpecBase with Befo
           checkboxSelected("additionalIncome-6", None),
           checkboxSelected("additionalIncome-7", None),
           checkboxSelected("additionalIncome-8", None),
-          checkboxSelected("additionalIncome-9", None),
-          checkboxSelected("additionalIncome-11", Some("none"))
+          checkboxSelected("additionalIncome-10", Some("none"))
         )
       }
     }
