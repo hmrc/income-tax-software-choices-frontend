@@ -123,7 +123,7 @@ search-software.filters.apply-filters = Apply filters
 search-software.filters.clear-filters = Clear filters
 search-software.filters.extra-features = Extra features
 search-software.filters.language-features = Language
-search-software.filters.readiness = Software readiness
+search-software.filters.readiness = Software Readiness
 
 search-software.intent.vendor-visit-link        = Find out what {0} provide now and what they’re developing
 

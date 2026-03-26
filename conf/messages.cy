@@ -120,7 +120,7 @@ search-software.filters.software-compatibility = Cydweddoldeb â’r cynllun Tro
 search-software.filters.accessibility = Nodweddion hygyrchedd
 search-software.filters.extra-features = Nodweddion ychwanegol
 search-software.filters.language-features = Iaith
-search-software.filters.readiness = *** MISSING WELSH ***
+search-software.filters.readiness = Parodrwydd y Feddalwedd
 
 search-software.filters.apply-filters = Rhoi hidlyddion ar waith
 search-software.filters.clear-filters = Clirio hidlyddion
@@ -175,7 +175,7 @@ search-software.vendor-detail.extra-features.hmrc-assist = HMRC Assist (Adborth 
 
 search-software.vendor-detail.language-features.welsh = Cymraeg
 
-search-software.vendor-detail.readiness.fully-ready = *** MISSING WELSH ***
+search-software.vendor-detail.readiness.fully-ready = Yn barod ar gyfer diweddariadau chwarterol a Ffurflen Dreth
 
 # Product details page
 
