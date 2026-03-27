@@ -19,7 +19,7 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models
 import play.api.libs.json.{Json, Reads}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.{Available, NotApplicable}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilterGroups.{nonMandatedIncomeGroup, quarterlyReturnsGroup}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilterGroups.{businessIncomeGroup, nonMandatedIncomeGroup}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{QuarterlyUpdates, TaxReturn}
 
 case class SoftwareVendorModel(productId: Int,
@@ -52,14 +52,14 @@ case class SoftwareVendorModel(productId: Int,
   }
 
   def isQuarterlyReady(searchFilters: Seq[VendorFilter]): Boolean = {
-    val userMandatedIncomes = searchFilters.filter(quarterlyReturnsGroup.contains) ++ Seq(QuarterlyUpdates)
+    val userMandatedIncomes = searchFilters.filter(businessIncomeGroup.contains) ++ Seq(QuarterlyUpdates)
     userMandatedIncomes.forall(filter => getFeatureStatus(filter).eq(Available))
   }
 
   def isEoyReady(searchFilters: Seq[VendorFilter])(implicit appConfig: AppConfig): Option[Boolean] = {
     val nonMandatoryFilters = searchFilters.filter(nonMandatedIncomeGroup.contains)
     
-    if (nonMandatoryFilters.isEmpty && getFeatureStatus(TaxReturn).eq(NotApplicable)) 
+    if (nonMandatoryFilters.isEmpty && getFeatureStatus(TaxReturn).eq(NotApplicable))
       None
     else 
       Some((nonMandatoryFilters ++ Seq(TaxReturn)).forall(filter => getFeatureStatus(filter).eq(Available)))

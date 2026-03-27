@@ -46,7 +46,7 @@
 }
 
 @{
-    VendorFilterGroups.allGroups(isAgent, withHMRCAssist, withLanguage).map { case (group, label) =>
+    VendorFilterGroups.preferenceFilters(isAgent, withHMRCAssist, withLanguage).map { case (group, label) =>
 
         checkboxGroup(
             field = checkboxField,

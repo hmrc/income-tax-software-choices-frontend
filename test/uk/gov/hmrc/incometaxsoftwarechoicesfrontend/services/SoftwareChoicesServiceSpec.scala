@@ -94,8 +94,8 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
 
   "getAllInOneVendors" should {
 
-    "exclude both Quarterly Submissions and Tax returns filters from filter list" in {
-      val result = service.getAllInOneVendors(Seq(Individual, QuarterlyUpdates, TaxReturn))
+    "exclude Quarterly Submissions, Tax return and Fully Ready Now filters from filter list" in {
+      val result = service.getAllInOneVendors(Seq(Individual, QuarterlyUpdates, TaxReturn, FullyReady))
       result.vendors.size mustBe 7
     }
 
@@ -484,6 +484,34 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
       result(0).vendor.name mustBe "Vendor 02"
       result(0).quarterlyReady mustBe Some(true)
       result(0).eoyReady mustBe Some(true)
+    }
+
+    "return only vendors that are fully ready when readiness filter applied" when {
+      val vendorsInDevelopment = Seq(
+        intentVendor(10, "Vendor 10", Map(Individual -> Available, QuarterlyUpdates -> Available, TaxReturn -> Available, SoleTrader -> Available, StudentLoans -> Intended)),
+        intentVendor(11, "Vendor 11", Map(Individual -> Available, QuarterlyUpdates -> Available, TaxReturn -> Intended, SoleTrader -> Available, StudentLoans -> Available)),
+        intentVendor(12, "Vendor 12", Map(Individual -> Available, QuarterlyUpdates -> Available, TaxReturn -> Available, SoleTrader -> Available, StudentLoans -> NotApplicable)),
+      )
+
+      "there are matching vendors with features In Development" in {
+        when(mockDataService.getSoftwareVendors()).thenReturn(allVendors.copy(vendors = allVendors.vendors ++ vendorsInDevelopment))
+
+        val result = service.getVendorsWithIntent(Seq(Individual, SoleTrader, QuarterlyUpdates, TaxReturn, StudentLoans))
+        val resultWithFullyReady = service.getVendorsWithIntent(Seq(Individual, SoleTrader, QuarterlyUpdates, TaxReturn, StudentLoans, FullyReady))
+
+        result.size mustBe 2
+        resultWithFullyReady.size mustBe 0
+      }
+
+      "there are matching vendors with features Not Included" in {
+        when(mockDataService.getSoftwareVendors()).thenReturn(allVendors.copy(vendors = allVendors.vendors ++ vendorsInDevelopment))
+
+        val result = service.getVendorsWithIntent(Seq(Individual, SoleTrader, QuarterlyUpdates, TaxReturn))
+        val resultWithFullyReady = service.getVendorsWithIntent(Seq(Individual, SoleTrader, QuarterlyUpdates, TaxReturn, FullyReady))
+
+        result.size mustBe 6
+        resultWithFullyReady.size mustBe 4
+      }
     }
   }
 }

@@ -49,14 +49,21 @@ class SoftwareChoicesService @Inject()(
                           (implicit appConfig: AppConfig, request: SessionDataRequest[_]): Seq[VendorSuitabilityViewModel] = {
     val allPotentialVendorsInRandOrder = getAllInOneVendors(finalFilters)
 
-    val mandatoryFilters = finalFilters.filter((mandatoryFilterGroup++quarterlyReturnsGroup).contains) ++ Seq(QuarterlyUpdates)
+    val mandatoryFilters = finalFilters.filter(mandatoryFilterGroup.contains) ++ Seq(QuarterlyUpdates)
     val qualifyingVendors = SoftwareChoicesService.matchAvailableFilter(mandatoryFilters)(allPotentialVendorsInRandOrder.vendors)
 
     val nonMandatoryFilters = finalFilters.filter(nonMandatedIncomeGroup.contains)
-    val vendorsToDisplay = if (nonMandatoryFilters.isEmpty) {
+
+    val matchingVendors = if (nonMandatoryFilters.isEmpty) {
       qualifyingVendors
     } else {
       SoftwareChoicesService.matchAvailableOrIntendedFilter(nonMandatoryFilters ++ Seq(TaxReturn))(qualifyingVendors)
+    }
+
+    val vendorsToDisplay = if (finalFilters.contains(FullyReady)) {
+      SoftwareChoicesService.matchFullyReady(finalFilters)(matchingVendors)
+    } else {
+      matchingVendors
     }
 
     vendorsToDisplay.map(vendor =>
@@ -69,7 +76,7 @@ class SoftwareChoicesService @Inject()(
 
   def getAllInOneVendors(finalFilters: Seq[VendorFilter])(implicit appConfig: AppConfig, request: SessionDataRequest[_]): SoftwareVendors = {
     val vendors = softwareVendors
-    val selectedFilters = finalFilters.filterNot(_.eq(TaxReturn)).filterNot(_.eq(QuarterlyUpdates))
+    val selectedFilters = finalFilters.filterNot(_.eq(TaxReturn)).filterNot(_.eq(QuarterlyUpdates)).filterNot(_.eq(FullyReady))
 
     val orderedMatchingVendors = if (request.userFilters.randomVendorOrder.isEmpty) {
       val randomisedVendors = vendors.copy(vendors = shuffle(vendors.vendors))
@@ -95,6 +102,11 @@ object SoftwareChoicesService {
 
   private[services] def matchAvailableFilter(filters: Seq[VendorFilter])(vendors: Seq[SoftwareVendorModel]) = {
     vendors.filter(vendor => filters.forall(filter => vendor.getFeatureStatus(filter).eq(Available)))
+  }
+
+  private[services] def matchFullyReady(filters: Seq[VendorFilter])(vendors: Seq[SoftwareVendorModel]) = {
+    val requiredReadyFilters = filters.filterNot(_.eq(FullyReady)) ++ Seq(QuarterlyUpdates, TaxReturn)
+    matchAvailableFilter(requiredReadyFilters)(vendors)
   }
 
   private[services] def matchAvailableOrIntendedFilter(filters: Seq[VendorFilter])(vendors: Seq[SoftwareVendorModel]) = {

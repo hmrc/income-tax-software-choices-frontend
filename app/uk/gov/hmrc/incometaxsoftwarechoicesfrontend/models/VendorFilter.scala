@@ -325,6 +325,12 @@ object VendorFilter {
     override val auditDescription: String = "hmrc-assist"
   }
 
+  case object FullyReady extends VendorFilter {
+    override val key: String = "fully-ready"
+    override val priority: Int = 4
+    override val auditDescription: String = "fully-ready"
+  }
+
   val filterKeyToFilter: Map[String, VendorFilter] = Seq(
     FreeVersion,
     QuarterlyUpdates,
@@ -372,7 +378,8 @@ object VendorFilter {
     Apple,
     English,
     Welsh,
-    HMRCAssist
+    HMRCAssist,
+    FullyReady
   ).map(value => value.key -> value).toMap
 
   implicit val reads: Reads[VendorFilter] = __.read[String] map filterKeyToFilter
@@ -423,7 +430,7 @@ object VendorFilterGroups {
     QuarterlyUpdates,
     TaxReturn
   )
-  
+
   val compatibleWith: Set[VendorFilter] = Set(
     MicrosoftWindows,
     MacOS,
@@ -437,6 +444,10 @@ object VendorFilterGroups {
 
   val languageFilter: Set[VendorFilter] = Set(
     English, Welsh
+  )
+
+  val readinessFilters: Set[VendorFilter] = Set(
+    FullyReady
   )
 
   val userPageFilters: Set[VendorFilter] = Set(
@@ -470,7 +481,7 @@ object VendorFilterGroups {
       List(FreeVersion, RecordKeeping, Bridging, Agent, Individual, StandardUpdatePeriods, CalendarUpdatePeriods)
   }
 
-  val incomeSourcesGroup: List[VendorFilter] = List(
+  val businessIncomeGroup: List[VendorFilter] = List(
     SoleTrader,
     UkProperty,
     OverseasProperty
@@ -486,41 +497,38 @@ object VendorFilterGroups {
     QuarterlyUpdates
   )
 
-  def allGroups(isAgent: Boolean, withHMRCAssist: Boolean, withLanguage: Boolean): Seq[(Set[VendorFilter], String)] = {
+  def preferenceFilters(isAgent: Boolean, withHMRCAssist: Boolean, withLanguage: Boolean): Seq[(Set[VendorFilter], String)] = {
 
     val agentGroup = if (isAgent) Seq((userTypeFilters, "user-type")) else Seq.empty
+
+    val readinessGroup = if (!isAgent) Seq((readinessFilters, "readiness")) else Seq.empty
 
     val languageGroup = if (withLanguage) Seq((languageFeature, "language-features")) else Seq.empty
 
     val extraFeaturesGroup = if (withHMRCAssist) Seq((extraFeatures, "extra-features")) else Seq.empty
 
-    agentGroup ++ groups ++ languageGroup ++ extraFeaturesGroup
+    agentGroup ++
+      Seq((pricingFilters, "pricing")) ++
+      readinessGroup ++
+      Seq((Set(Bridging), "software-for")) ++
+      Seq((compatibility, "software-compatibility")) ++
+      Seq((accessibilityFilters, "accessibility")) ++
+      languageGroup ++
+      extraFeaturesGroup
   }
 
-  private val groups: Seq[(Set[VendorFilter], String)] = Seq(
-    (pricingFilters, "pricing"),
-    (Set(Bridging), "software-for"),
-    (compatibility, "software-compatibility"),
-    (accessibilityFilters, "accessibility")
-  )
-
   val nonMandatedIncomeGroup: List[VendorFilter] = List(
-      UkInterest, ConstructionIndustryScheme, Employment, UkDividends, StatePensionIncome, PrivatePensionIncome, PartnerIncome,
-      ForeignDividends, ForeignInterest, PaymentsIntoAPrivatePension, CharitableGiving,
-      CapitalGainsTax, StudentLoans, MarriageAllowance, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge
-     )
+    UkInterest, ConstructionIndustryScheme, Employment, UkDividends, StatePensionIncome, PrivatePensionIncome, PartnerIncome,
+    ForeignDividends, ForeignInterest, PaymentsIntoAPrivatePension, CharitableGiving,
+    CapitalGainsTax, StudentLoans, MarriageAllowance, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge
+  )
 
   val softwareTypeGroup: List[VendorFilter] = List(DesktopApplication, WebBrowser)
   val compatibleWithGroup: List[VendorFilter] = List(MicrosoftWindows, MacOS, Linux)
   val mobileGroup: List[VendorFilter] = List(Android, Apple)
   val languageGroup: List[VendorFilter] = List(English, Welsh)
 
-  val quarterlyReturnsGroup: List[VendorFilter] = List(QuarterlyUpdates) ++ incomeSourcesGroup
-
   val mandatoryFilterGroup: List[VendorFilter] =
-    userTypeFilters.toList ++
-      accountingPeriodFilters ++
-      groups.flatMap(_._1.toList) ++
-      extraFeatures ++
-      languageFilter
+    businessIncomeGroup ++ userTypeFilters ++ accountingPeriodFilters ++ pricingFilters ++
+      compatibility ++ accessibilityFilters ++ Seq(Bridging) ++ extraFeatures ++ languageFilter
 }
