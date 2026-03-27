@@ -58,6 +58,7 @@ class ProductDetailsViewSpec extends ViewSpec with FeatureSwitching with BeforeA
 
     "the vendor has everything ready now" which {
 
+      disable(FeatureSwitch.HMRCAssist)
       val document: Document = createAndParseDocument(softwareVendorModelFull)
 
       def table(index: Int): Element = document.getTable(index)
