@@ -505,8 +505,8 @@ object VendorFilterGroups {
   )
 
   val nonMandatedIncomeGroup: List[VendorFilter] = List(
-      UkInterest, ConstructionIndustryScheme, Employment, UkDividends, StatePensionIncome, PrivatePensionIncome, PartnerIncome,
-      ForeignDividends, ForeignInterest, PaymentsIntoAPrivatePension, CharitableGiving,
+      UkInterest, Employment, UkDividends, StatePensionIncome, PrivatePensionIncome, PartnerIncome,
+      ForeignDividends, ForeignInterest, PaymentsIntoAPrivatePension, ConstructionIndustryScheme, CharitableGiving,
       CapitalGainsTax, StudentLoans, MarriageAllowance, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge
      )
 

@@ -68,13 +68,14 @@ class OtherItemsControllerISpec extends ComponentSpecBase with BeforeAndAfterEac
           httpStatus(OK),
           pageTitle(s"${messages("other-items.title")} - ${PageContentBase.title} - GOV.UK"),
           checkboxSelected("otherItems", Some(PaymentsIntoAPrivatePension.key)),
-          checkboxSelected("otherItems-2", Some(CharitableGiving.key)),
-          checkboxSelected("otherItems-3", Some(CapitalGainsTax.key)),
-          checkboxSelected("otherItems-4", Some(StudentLoans.key)),
-          checkboxSelected("otherItems-5", Some(MarriageAllowance.key)),
-          checkboxSelected("otherItems-6", Some(VoluntaryClass2NationalInsurance.key)),
-          checkboxSelected("otherItems-7", Some(HighIncomeChildBenefitCharge.key)),
-          checkboxSelected("otherItems-9", None)
+          checkboxSelected("otherItems-2", Some(ConstructionIndustryScheme.key)),
+          checkboxSelected("otherItems-3", Some(CharitableGiving.key)),
+          checkboxSelected("otherItems-4", Some(CapitalGainsTax.key)),
+          checkboxSelected("otherItems-5", Some(StudentLoans.key)),
+          checkboxSelected("otherItems-6", Some(MarriageAllowance.key)),
+          checkboxSelected("otherItems-7", Some(VoluntaryClass2NationalInsurance.key)),
+          checkboxSelected("otherItems-8", Some(HighIncomeChildBenefitCharge.key)),
+          checkboxSelected("otherItems-10", None)
         )
       }
       "the other items page has been answered previously with none selected" in {
@@ -92,7 +93,8 @@ class OtherItemsControllerISpec extends ComponentSpecBase with BeforeAndAfterEac
           checkboxSelected("otherItems-5", None),
           checkboxSelected("otherItems-6", None),
           checkboxSelected("otherItems-7", None),
-          checkboxSelected("otherItems-9", Some("none"))
+          checkboxSelected("otherItems-8", None),
+          checkboxSelected("otherItems-10", Some("none"))
         )
       }
     }
@@ -238,6 +240,7 @@ class OtherItemsControllerISpec extends ComponentSpecBase with BeforeAndAfterEac
 
   lazy val otherItemsFilters: Seq[VendorFilter] = Seq(
     PaymentsIntoAPrivatePension,
+    ConstructionIndustryScheme,
     CharitableGiving,
     CapitalGainsTax,
     StudentLoans,
