@@ -260,6 +260,7 @@ product-details.language.english = Saesneg
 additional.income.source-heading                                    = Pa rai o’r ffynonellau incwm hyn y mae angen i chi eu cyflwyno yn eich Ffurflen Dreth?
 additional.income.source-hint                                       = Dewiswch bob un sy’n berthnasol
 additional.income.source-uk-interest                                = Llog yn y DU
+additional.income.source-construction-industry-scheme               = Cynllun y Diwydiant Adeiladu
 additional.income.source-employment                                 = Cyflogaeth (TWE)
 additional.income.source-uk-dividends                               = Difidendau’r DU
 additional.income.source-state-pension-income                       = Incwm o Bensiwn y Wladwriaeth

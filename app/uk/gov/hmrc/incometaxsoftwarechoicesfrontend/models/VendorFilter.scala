@@ -325,6 +325,12 @@ object VendorFilter {
     override val auditDescription: String = "hmrc-assist"
   }
 
+  case object FullyReady extends VendorFilter {
+    override val key: String = "fully-ready"
+    override val priority: Int = 4
+    override val auditDescription: String = "fully-ready"
+  }
+
   val filterKeyToFilter: Map[String, VendorFilter] = Seq(
     FreeVersion,
     QuarterlyUpdates,
@@ -372,7 +378,8 @@ object VendorFilter {
     Apple,
     English,
     Welsh,
-    HMRCAssist
+    HMRCAssist,
+    FullyReady
   ).map(value => value.key -> value).toMap
 
   implicit val reads: Reads[VendorFilter] = __.read[String] map filterKeyToFilter
@@ -439,6 +446,10 @@ object VendorFilterGroups {
     English, Welsh
   )
 
+  val readinessFilters: Set[VendorFilter] = Set(
+    FullyReady
+  )
+  
   val userPageFilters: Set[VendorFilter] = Set(
     SoleTrader,
     UkProperty,
@@ -470,7 +481,7 @@ object VendorFilterGroups {
       List(FreeVersion, RecordKeeping, Bridging, Agent, Individual, StandardUpdatePeriods, CalendarUpdatePeriods)
   }
 
-  val incomeSourcesGroup: List[VendorFilter] = List(
+  val businessIncomeGroup: List[VendorFilter] = List(
     SoleTrader,
     UkProperty,
     OverseasProperty

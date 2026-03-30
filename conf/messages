@@ -259,6 +259,7 @@ product-details.language.welsh = Welsh
 additional.income.source-heading                                    = Which of these other incomes do you need to submit in your tax return?
 additional.income.source-hint                                       = Select all that apply
 additional.income.source-uk-interest                                = UK interest
+additional.income.source-construction-industry-scheme               = Construction Industry Scheme
 additional.income.source-employment                                 = Employment (PAYE)
 additional.income.source-uk-dividends                               = UK dividends
 additional.income.source-state-pension-income                       = State Pension income
