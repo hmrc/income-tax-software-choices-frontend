@@ -430,7 +430,7 @@ object VendorFilterGroups {
     QuarterlyUpdates,
     TaxReturn
   )
-  
+
   val compatibleWith: Set[VendorFilter] = Set(
     MicrosoftWindows,
     MacOS,
@@ -449,7 +449,7 @@ object VendorFilterGroups {
   val readinessFilters: Set[VendorFilter] = Set(
     FullyReady
   )
-  
+
   val userPageFilters: Set[VendorFilter] = Set(
     SoleTrader,
     UkProperty,
@@ -518,10 +518,10 @@ object VendorFilterGroups {
   }
 
   val nonMandatedIncomeGroup: List[VendorFilter] = List(
-      UkInterest, Employment, UkDividends, StatePensionIncome, PrivatePensionIncome, PartnerIncome,
-      ForeignDividends, ForeignInterest, PaymentsIntoAPrivatePension, ConstructionIndustryScheme, CharitableGiving,
-      CapitalGainsTax, StudentLoans, MarriageAllowance, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge
-     )
+    UkInterest, Employment, UkDividends, StatePensionIncome, PrivatePensionIncome, PartnerIncome,
+    ForeignDividends, ForeignInterest, PaymentsIntoAPrivatePension, ConstructionIndustryScheme, CharitableGiving,
+    CapitalGainsTax, StudentLoans, MarriageAllowance, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge
+  )
 
   val softwareTypeGroup: List[VendorFilter] = List(DesktopApplication, WebBrowser)
   val compatibleWithGroup: List[VendorFilter] = List(MicrosoftWindows, MacOS, Linux)
