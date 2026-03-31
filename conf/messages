@@ -57,6 +57,7 @@ zero-results.button = Finish
 other-items.title = Which of these other items do you need to submit in your tax return?
 other-items.hint = Select all that apply
 other-items.payments-into-a-private-pension = Private pension contributions
+other-items.construction-industry-scheme = Construction Industry Scheme
 other-items.charitable-giving = Charitable giving
 other-items.capital-gains-tax = Capital Gains
 other-items.student-loans = Student loan

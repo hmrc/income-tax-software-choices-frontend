@@ -87,9 +87,20 @@ class OtherItemsViewSpec extends ViewSpec with FeatureSwitching {
             value = "payments-into-a-private-pension",
           )
         }
-        "has a checkbox for Charitable giving" in {
+        "has a checkbox for construction-industry-scheme" in {
           form.mustHaveCheckbox("fieldSet")(
             checkbox = 2,
+            legend = OtherItemsPageContent.legend,
+            isHeading = true,
+            isLegendHidden = false,
+            name = "otherItems[]",
+            label = OtherItemsPageContent.constructionIndustryScheme,
+            value = "construction-industry-scheme",
+          )
+        }
+        "has a checkbox for Charitable giving" in {
+          form.mustHaveCheckbox("fieldSet")(
+            checkbox = 3,
             legend = OtherItemsPageContent.legend,
             isHeading = true,
             isLegendHidden = false,
@@ -100,7 +111,7 @@ class OtherItemsViewSpec extends ViewSpec with FeatureSwitching {
         }
         "has a checkbox for Capital Gains Tax" in {
           form.mustHaveCheckbox("fieldSet")(
-            checkbox = 3,
+            checkbox = 4,
             legend = OtherItemsPageContent.legend,
             isHeading = true,
             isLegendHidden = false,
@@ -111,7 +122,7 @@ class OtherItemsViewSpec extends ViewSpec with FeatureSwitching {
         }
         "has a checkbox for Student Loan" in {
           form.mustHaveCheckbox("fieldSet")(
-            checkbox = 4,
+            checkbox = 5,
             legend = OtherItemsPageContent.legend,
             isHeading = true,
             isLegendHidden = false,
@@ -122,7 +133,7 @@ class OtherItemsViewSpec extends ViewSpec with FeatureSwitching {
         }
         "has a checkbox for Marriage Allowance" in {
           form.mustHaveCheckbox("fieldSet")(
-            checkbox = 5,
+            checkbox = 6,
             legend = OtherItemsPageContent.legend,
             isHeading = true,
             isLegendHidden = false,
@@ -133,7 +144,7 @@ class OtherItemsViewSpec extends ViewSpec with FeatureSwitching {
         }
         "has a checkbox for Voluntary Class 2 National Insurance" in {
           form.mustHaveCheckbox("fieldSet")(
-            checkbox = 6,
+            checkbox = 7,
             legend = OtherItemsPageContent.legend,
             isHeading = true,
             isLegendHidden = false,
@@ -144,7 +155,7 @@ class OtherItemsViewSpec extends ViewSpec with FeatureSwitching {
         }
         "has a checkbox for High Income Child Benefit Charge" in {
           form.mustHaveCheckbox("fieldSet")(
-            checkbox = 7,
+            checkbox = 8,
             legend = OtherItemsPageContent.legend,
             isHeading = true,
             isLegendHidden = false,
@@ -158,7 +169,7 @@ class OtherItemsViewSpec extends ViewSpec with FeatureSwitching {
         }
         "has a checkbox for None of these" in {
           form.mustHaveCheckbox("fieldSet")(
-            checkbox = 9,
+            checkbox = 10,
             legend = OtherItemsPageContent.legend,
             isHeading = true,
             isLegendHidden = false,
@@ -181,6 +192,7 @@ private object OtherItemsPageContent {
   val legend = "Which of these other items do you need to submit in your tax return?"
   val hint = "Select all that apply"
   val privatePensionContributions = "Private pension contributions"
+  val constructionIndustryScheme = "Construction Industry Scheme"
   val charitableGiving = "Charitable giving"
   val capitalGainsTax = "Capital Gains"
   val studentLoan = "Student loan"

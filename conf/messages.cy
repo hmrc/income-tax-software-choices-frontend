@@ -57,6 +57,7 @@ zero-results.button = Gorffen
 other-items.title = Pa rai o’r eitemau hyn y mae angen i chi eu cyflwyno yn eich Ffurflen Dreth?
 other-items.hint = Dewiswch bob un sy’n berthnasol
 other-items.payments-into-a-private-pension = Cyfraniadau pensiwn preifat
+other-items.construction-industry-scheme = Cynllun y Diwydiant Adeiladu
 other-items.charitable-giving = Cyfrannu at elusennau
 other-items.capital-gains-tax = Enillion Cyfalaf
 other-items.student-loans = Benthyciad myfyriwr
