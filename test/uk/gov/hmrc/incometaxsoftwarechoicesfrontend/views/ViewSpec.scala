@@ -49,9 +49,9 @@ trait ViewSpec extends AnyWordSpecLike with Matchers with GuiceOneAppPerSuite {
 
   implicit class CustomSelectors(element: Element) {
 
-    lazy val getServiceLink: String = element.selectHead(".govuk-header__link.govuk-header__service-name").attr("href")
+    lazy val getServiceLink: String = element.selectHead(".govuk-service-navigation__link").attr("href")
 
-    lazy val getServiceName: String = element.selectHead(".govuk-header__link.govuk-header__service-name").text
+    lazy val getServiceName: String = element.selectHead(".govuk-service-navigation__link").text
 
     lazy val getTechnicalHelpLink: String = element.getElementsByClass("hmrc-report-technical-issue").attr("href")
 
