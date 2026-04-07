@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.requests
 
-import play.api.mvc.{Request, WrappedRequest}
+import play.api.mvc.Request
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserFilters
 
-case class SessionDataRequest[A](request: Request[A], sessionId: String, userFilters: UserFilters) extends WrappedRequest[A](request)
+case class SessionDataRequest[A](request: Request[A], override val sessionId: String, userFilters: UserFilters) extends SessionRequest[A](request, sessionId)

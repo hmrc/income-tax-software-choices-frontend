@@ -16,13 +16,17 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
+import play.api.mvc.*
 import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.SessionIdentifierAction
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.CheckJourney
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{RequireUserDataRefiner, SessionIdentifierAction}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.UserTypeForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.UserTypeForm.userTypeForm
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.{Agent, SoleTraderOrLandlord}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.requests.SessionRequest
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.UserTypePage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.PageAnswersService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.UserTypeView
@@ -33,12 +37,13 @@ import scala.concurrent.{ExecutionContext, Future}
 @Singleton
 class UserTypeController @Inject()(view: UserTypeView,
                                    pageAnswersService: PageAnswersService,
-                                   appConfig: AppConfig,
-                                   identify: SessionIdentifierAction)
+                                   identify: SessionIdentifierAction,
+                                   requireData: RequireUserDataRefiner,
+                                   val appConfig: AppConfig)
                                   (implicit ec: ExecutionContext,
-                                   mcc: MessagesControllerComponents) extends BaseFrontendController {
+                                   mcc: MessagesControllerComponents) extends BaseFrontendController with FeatureSwitching {
 
-  def show(): Action[AnyContent] = identify.async { request =>
+  def show(): Action[AnyContent] = identifyAndRequireData.async { request =>
     given Request[AnyContent] = request
     for {
       pageAnswers <- pageAnswersService.getPageAnswers(request.sessionId, UserTypePage)
@@ -46,12 +51,12 @@ class UserTypeController @Inject()(view: UserTypeView,
       Ok(view(
         userTypeForm = UserTypeForm.userTypeForm.fill(pageAnswers),
         postAction = routes.UserTypeController.submit(),
-        backUrl = appConfig.guidance
+        backUrl = backUrl
       ))
     }
   }
 
-  def submit(): Action[AnyContent] = identify.async { request =>
+  def submit(): Action[AnyContent] = identifyAndRequireData.async { request =>
     given Request[AnyContent] = request
     userTypeForm.bindFromRequest().fold(
       formWithErrors => {
@@ -59,7 +64,7 @@ class UserTypeController @Inject()(view: UserTypeView,
           BadRequest(view(
             userTypeForm = formWithErrors,
             postAction = routes.UserTypeController.submit(),
-            backUrl = appConfig.guidance
+            backUrl = backUrl
           ))
         )
       }, {
@@ -84,4 +89,14 @@ class UserTypeController @Inject()(view: UserTypeView,
     )
   }
 
+  private def identifyAndRequireData: ActionBuilder[SessionRequest, AnyContent] = {
+    if (isEnabled(CheckJourney)) identify andThen requireData
+    else identify
+  }
+
+  def backUrl: String = {
+    if (isEnabled(CheckJourney)) routes.HowYouFindSoftwareController.show().url
+    else appConfig.guidance
+  }
+  
 }

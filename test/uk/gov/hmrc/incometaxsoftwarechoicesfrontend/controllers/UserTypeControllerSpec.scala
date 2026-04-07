@@ -16,14 +16,16 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
-import org.mockito.ArgumentMatchers.{any, eq => eqTo}
+import org.mockito.ArgumentMatchers.{any, eq as eqTo}
 import org.mockito.Mockito.when
 import play.api.http.Status.{OK, SEE_OTHER}
 import play.api.mvc.Result
 import play.api.test.Helpers.{HTML, await, contentType, defaultAwaitTimeout, redirectLocation, status}
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.http.InternalServerException
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.mocks.MockSessionIdentifierAction
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.CheckJourney
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.mocks.{MockRequireUserDataRefiner, MockSessionIdentifierAction}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.UserTypeForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.SoleTraderOrLandlord
@@ -35,7 +37,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.UserTypeView
 
 import scala.concurrent.Future
 
-class UserTypeControllerSpec extends ControllerBaseSpec with MockSessionIdentifierAction {
+class UserTypeControllerSpec extends ControllerBaseSpec with MockSessionIdentifierAction with MockRequireUserDataRefiner with FeatureSwitching{
 
   "show" must {
     "return OK and display the user type page" when {
@@ -154,6 +156,17 @@ class UserTypeControllerSpec extends ControllerBaseSpec with MockSessionIdentifi
     }
   }
 
+  "backUrl" should {
+    "return the guidance page url when CheckJourney feature switch is disabled" in new Setup {
+      disable(CheckJourney)
+      controller.backUrl shouldBe appConfig.guidance
+    }
+    "return the HowYouFindSoftware page url when CheckJourney feature switch is enabled" in new Setup {
+      enable(CheckJourney)
+      controller.backUrl shouldBe routes.HowYouFindSoftwareController.show().url
+    }
+  }
+
   trait Setup {
     lazy val mockPageAnswersService: PageAnswersService = mock[PageAnswersService]
     lazy val mockUserTypeView: UserTypeView = mock[UserTypeView]
@@ -161,8 +174,9 @@ class UserTypeControllerSpec extends ControllerBaseSpec with MockSessionIdentifi
     val controller: UserTypeController = new UserTypeController(
       mockUserTypeView,
       mockPageAnswersService,
-      appConfig,
-      fakeSessionIdentifierAction
+      fakeSessionIdentifierAction,
+      fakeRequireUserDataRefiner,
+      appConfig
     )(ec, mcc)
 
     val mockUserFiltersRepository: UserFiltersRepository = mock[UserFiltersRepository]

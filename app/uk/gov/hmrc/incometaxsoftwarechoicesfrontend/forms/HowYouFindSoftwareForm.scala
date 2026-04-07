@@ -14,9 +14,22 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views
+package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms
 
-object PageContentBase {
-  val title: String = "Find software that works with Making Tax Digital for Income Tax"
-  val continue: String = "Continue"
+import play.api.data.Form
+import play.api.data.Forms.single
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.mappings.JourneyTypeMapping.journeyTypeMapping
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType
+
+object HowYouFindSoftwareForm {
+
+  val fieldName: String = "how-you-find-software"
+  val errorKey: String  = "how-you-find-software.error"
+
+  val form: Form[JourneyType] = Form(
+    single(
+      fieldName -> journeyTypeMapping(errorKey)
+    )
+  )
+
 }

@@ -14,9 +14,15 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views
+package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages
 
-object PageContentBase {
-  val title: String = "Find software that works with Making Tax Digital for Income Tax"
-  val continue: String = "Continue"
+import play.api.libs.json.{JsPath, Reads}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType
+
+case object HowYouFindSoftwarePage extends QuestionPage[JourneyType] {
+  override def toString: String = "howYouFindSoftware"
+
+  override def path: JsPath = JsPath \ toString
+
+  override def reads: Reads[JourneyType] = implicitly
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,9 +14,19 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views
+package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models
+import play.api.libs.json.{JsString, Reads, Writes, __}
 
-object PageContentBase {
-  val title: String = "Find software that works with Making Tax Digital for Income Tax"
-  val continue: String = "Continue"
+enum JourneyType(val key: String) {
+  case Find  extends JourneyType("find")
+  case Check extends JourneyType("check")
+}
+
+object JourneyType {
+
+  private val keyToJourney = JourneyType.values.map(value => value.key -> value).toMap
+
+  implicit val reads: Reads[JourneyType] = __.read[String] map keyToJourney
+  
+  implicit val writes: Writes[JourneyType] = Writes(journeyType => JsString(journeyType.key))
 }

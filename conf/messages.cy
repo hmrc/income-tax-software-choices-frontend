@@ -7,6 +7,14 @@ base.confirm-continue       = Cadarnhau a pharhau
 base.or                     = neu
 base.change                 = Newid
 
+## How you find software page
+how-you-find-software.heading = *** MISSING WELSH ***
+how-you-find-software.find = *** MISSING WELSH ***
+how-you-find-software.find.hint = *** MISSING WELSH ***
+how-you-find-software.check = *** MISSING WELSH ***
+how-you-find-software.check.hint = *** MISSING WELSH ***
+how-you-find-software.error = *** MISSING WELSH ***
+
 ## User type page
 type-of-user.heading                                              = Sut y byddwch yn defnyddio Meddalwedd ar gyfer y cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm?
 type-of-user.sole-trader-or-landlord                              = Fel unig fasnachwr neu landlord sy’n gwneud fy nhrethi

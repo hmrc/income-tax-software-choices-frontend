@@ -18,4 +18,4 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.requests
 
 import play.api.mvc.{Request, WrappedRequest}
 
-case class SessionRequest[A](request: Request[A], sessionId: String) extends WrappedRequest[A](request)
+class SessionRequest[A](request: Request[A], val sessionId: String) extends WrappedRequest[A](request)

@@ -7,6 +7,14 @@ base.confirm-continue       = Confirm and continue
 base.or                     = or
 base.change                 = Change
 
+## How you find software page
+how-you-find-software.heading = How would you like to find software?
+how-you-find-software.find = Find software based on my answers to questions
+how-you-find-software.find.hint = We will ask you questions about your income sources to show you the best software for your needs
+how-you-find-software.check = Check if my current software is compatible
+how-you-find-software.check.hint = This includes using spreadsheets
+how-you-find-software.error = Select an option
+
 ## User type page
 type-of-user.heading                                              = How will you use Making Tax Digital for Income Tax software?
 type-of-user.sole-trader-or-landlord                              = As a sole trader or landlord doing my taxes
