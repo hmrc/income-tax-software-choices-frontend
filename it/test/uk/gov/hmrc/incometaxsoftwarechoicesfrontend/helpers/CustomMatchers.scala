@@ -125,7 +125,7 @@ trait CustomMatchers {
 
       HavePropertyMatchResult(
         matches = matchCondition,
-        propertyName = "accounting-period",
+        propertyName = "radioButton",
         expectedValue = selectedRadioButton.fold("")(identity),
         actualValue = {
           val selected = radios.select("input[checked]")

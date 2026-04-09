@@ -19,24 +19,38 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 import org.scalatest.BeforeAndAfterEach
 import play.api.http.Status.{BAD_REQUEST, OK, SEE_OTHER}
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.CheckJourney
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.SessionId
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, DatabaseHelper}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.{Agent, SoleTraderOrLandlord}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{UserAnswers, UserFilters, VendorFilter}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages._
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
 
-class UserTypeControllerISpec extends ComponentSpecBase with BeforeAndAfterEach with DatabaseHelper {
+class UserTypeControllerISpec extends ComponentSpecBase with BeforeAndAfterEach with DatabaseHelper with FeatureSwitching {
 
   def testUserFilters(answers: UserAnswers): UserFilters = UserFilters(SessionId, Some(answers))
 
   override def beforeEach(): Unit = {
     await(userFiltersRepository.collection.drop().toFuture())
+    disable(CheckJourney)
     super.beforeEach()
   }
 
   "GET /how-will-you-use-it" when {
+    "there is nothing saved in the database for this user" should {
+      "redirect to the index page when Check feature switch is enabled" in {
+        enable(CheckJourney)
+        val res = SoftwareChoicesFrontend.getUserType
+
+        res should have(
+          httpStatus(SEE_OTHER),
+          redirectURI(routes.IndexController.index.url)
+        )
+      }
+    }
     "there are no existing page answers" should {
       "display the page with an empty form" in {
         val res = SoftwareChoicesFrontend.getUserType

@@ -31,7 +31,7 @@ import play.api.test.FakeRequest
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.baseURI
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{AccountingPeriod, FiltersFormModel, UserType, VendorFilter}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.*
 import play.api.libs.ws.WSBodyWritables.writeableOf_urlEncodedForm
 
 trait ComponentSpecBase extends AnyWordSpec
@@ -141,6 +141,16 @@ trait ComponentSpecBase extends AnyWordSpec
     def getZeroSoftwareResults(): WSResponse = get("/no-all-in-one-product")
 
     def postZeroSoftwareResults(): WSResponse = post("/no-all-in-one-product")(Map.empty)
+
+    def getHowYouFindSoftware(): WSResponse = get("/do-you-have-software")
+
+    def postHowYouFindSoftware(pageAnswer: Option[JourneyType]): WSResponse = {
+      post("/do-you-have-software")(
+        pageAnswer.fold(Map.empty[String, Seq[String]])(
+          journeyType=> HowYouFindSoftwareForm.form.fill(journeyType).data.map { case (k, v) => (k, Seq(v)) }
+        )
+      )
+    }
 
     def healthcheck(): WSResponse =
       wsClient

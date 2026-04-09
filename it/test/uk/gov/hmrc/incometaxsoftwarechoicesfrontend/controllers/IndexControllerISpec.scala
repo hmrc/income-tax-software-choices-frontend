@@ -17,20 +17,37 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import play.api.http.Status.SEE_OTHER
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.CheckJourney
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.ComponentSpecBase
 
-class IndexControllerISpec extends ComponentSpecBase {
+class IndexControllerISpec extends ComponentSpecBase with FeatureSwitching {
 
   lazy val indexController: IndexController = app.injector.instanceOf[IndexController]
 
-  "GET /" must {
-    "redirect to the user type page" in {
-      val res = SoftwareChoicesFrontend.index()
+  "GET /" when {
+    "Check feature switch is enabled" must {
+      "redirect to the how you find software page" in {
+        enable(CheckJourney)
 
-      res should have(
-        httpStatus(SEE_OTHER),
-        redirectURI(routes.UserTypeController.show().url)
-      )
+        val res = SoftwareChoicesFrontend.index()
+
+        res should have(
+          httpStatus(SEE_OTHER),
+          redirectURI(routes.HowYouFindSoftwareController.show().url)
+        )
+      }
+    }
+    "Check feature switch is disabled" must {
+      "redirect to the user type page" in {
+        disable(CheckJourney)
+        val res = SoftwareChoicesFrontend.index()
+
+        res should have(
+          httpStatus(SEE_OTHER),
+          redirectURI(routes.UserTypeController.show().url)
+        )
+      }
     }
   }
 
