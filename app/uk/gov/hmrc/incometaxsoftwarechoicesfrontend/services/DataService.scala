@@ -20,7 +20,7 @@ import play.api.Environment
 import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
 import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareVendors
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareVendors, OtherSoftware}
 
 import javax.inject.{Inject, Singleton}
 
@@ -46,5 +46,22 @@ class DataService @Inject()(
 
   def getSoftwareVendors(): SoftwareVendors =
     softwareVendors
+
+  private val otherSoftwareJson: JsValue = environment.resourceAsStream(appConfig.otherSoftwareFileName) match {
+    case Some(resource) =>
+      Json.parse(resource)
+    case None =>
+      throw new InternalServerException(s"[DataService][jsonFile] - ${appConfig.otherSoftwareFileName} not found")
+  }
+
+  private val otherSoftware = Json.fromJson[Seq[OtherSoftware]](otherSoftwareJson) match {
+    case JsSuccess(value, _) =>
+      value
+    case JsError(errors) =>
+      throw new InternalServerException(s"[DataService][otherSoftware] - Json parse failures - ${errors.mkString(",")}")
+  }
+
+  def getOtherSoftware(): Seq[OtherSoftware] =
+    otherSoftware
 
 }

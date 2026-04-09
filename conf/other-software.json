@@ -1,0 +1,11 @@
+[
+    {"productId": 1001,"name": "Microsoft Excel","isSpreadsheet": true,"isFutureVendor": false},
+    {"productId": 1002,"name": "Google Sheets","isSpreadsheet": true,"isFutureVendor": false},
+    {"productId": 1003,"name": "Apple Numbers","isSpreadsheet": true,"isFutureVendor": false},
+    {"productId": 1004,"name": "LibreOffice Calc","isSpreadsheet": true,"isFutureVendor": false},
+    {"productId": 1005,"name": "Smartsheet","isSpreadsheet": true,"isFutureVendor": false},
+    {"productId": 1006,"name": "Quip Spreadsheets","isSpreadsheet": true,"isFutureVendor": false},
+    {"productId": 1007,"name": "OnlyOffice Spreadsheets","isSpreadsheet": true,"isFutureVendor": false},
+    {"productId": 1008,"name": "WPS Spreadsheets","isSpreadsheet": true,"isFutureVendor": false},
+    {"productId": 2001,"name": "Maybe Vendor","isSpreadsheet": false,"isFutureVendor": true}
+]

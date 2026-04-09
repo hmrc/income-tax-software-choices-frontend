@@ -27,6 +27,8 @@ class AppConfig @Inject()(val config: Configuration) {
 
   val softwareChoicesVendorFileName: String = config.get[String]("vendor-list.file-name")
 
+  val otherSoftwareFileName: String = config.get[String]("other-list.file-name")
+
   val guidance: String = config.get[String]("guidance.url")
 
   val feedbackUrl: String = config.get[String]("microservice.services.feedback-frontend.url")
