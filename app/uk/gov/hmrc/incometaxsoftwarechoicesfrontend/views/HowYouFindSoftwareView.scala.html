@@ -36,7 +36,6 @@
         @radioHelper(
             field = howYouFindSoftwareForm(HowYouFindSoftwareForm.fieldName),
             legend = messages("how-you-find-software.heading"),
-            isPageHeading = true,
             radioItems = Seq(
                 RadioItem(
                     content = Text(messages("how-you-find-software.find")),
@@ -48,8 +47,7 @@
                     value = Some(JourneyType.Check.key),
                     hint = Some(Hint(content = Text(messages("how-you-find-software.check.hint"))))
                 )
-            ),
-            inline = false
+            )
         )
 
         @govukButton(Button(content = Text(messages("base.continue"))))
