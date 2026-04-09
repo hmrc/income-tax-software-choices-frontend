@@ -46,3 +46,5 @@ POST        /accounting-period-not-aligned          uk.gov.hmrc.incometaxsoftwar
 
 GET         /do-you-have-software                   uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.HowYouFindSoftwareController.show()
 POST        /do-you-have-software                   uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.HowYouFindSoftwareController.submit()
+
+GET         /no-software-listed                     uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.NoSoftwareListedController.show()
