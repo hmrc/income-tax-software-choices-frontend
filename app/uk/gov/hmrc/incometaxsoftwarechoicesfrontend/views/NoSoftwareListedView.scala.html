@@ -24,14 +24,13 @@
 @this(
 mainTemplate: MainTemplate,
 hmrcNewTabLinkHelper: HmrcNewTabLinkHelper,
-govukCheckboxes: GovukCheckboxes,
 govukButton: GovukButton,
 form: FormWithCSRF
 )(implicit appConfig: AppConfig)
 
-@(finishAction: Call, backLink: Call)(implicit request: Request[_], messages: Messages)
+@(finishAction: Call, backLink: String)(implicit request: Request[_], messages: Messages)
 
-@mainTemplate(title = messages("zero-results.title"), backLink = Some(backLink.url)) {
+@mainTemplate(title = messages("not-listed-software.title"), backLink = Some(backLink)) {
 
 <h1 class="govuk-heading-l">@messages("not-listed-software.title")</h1>
 <h2 class="govuk-heading-m">@messages("not-listed-software.sub-heading1")</h2>
@@ -49,7 +48,7 @@ form: FormWithCSRF
 @form(action = finishAction) {
 
 @govukButton(Button(
-content = Text(messages("not-listed-software.button")),
+content = Text(messages("base.find.compatible")),
 classes = "govuk-!-display-none-print"
 ))
 }

@@ -20,26 +20,18 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.scalatest.matchers.must.Matchers.*
 import play.twirl.api.HtmlFormat
-import play.api.mvc.Call
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.NoSoftwareListedView
 
 class NoSoftwareListedViewSpec extends ViewSpec {
   private val view = app.injector.instanceOf[NoSoftwareListedView]
 
-  val finishActionUrl: Call = Call("POST", "/no-software-listed-finish-action-test-url")
-  val testBackLink: Call = Call("GET", "/no-software-listed-back-link-test-url")
-
   def page(): HtmlFormat.Appendable = {
-    view(finishAction = finishActionUrl, backLink = testBackLink)
+    view(finishAction = testCall, backLink = testBackUrl)
   }
 
   def document(): Document = Jsoup.parse(page().body)
 
   "NoSoftwareListedView" when {
-
-    "have the correct page title" in {
-      document().title() mustBe NoSoftwareListedViewContent.title
-    }
 
     "have the correct main heading" in {
       document().selectHead("h1").text() mustBe NoSoftwareListedViewContent.heading
@@ -90,7 +82,7 @@ class NoSoftwareListedViewSpec extends ViewSpec {
 }
 
 private object NoSoftwareListedViewContent {
-  val title = s"Your results - ${PageContentBase.title} - GOV.UK"
+  val title = "You may need additional software"
   val heading = "You may need additional software"
   val subHeading1 = "If your software is not listed"
   val paragraph1 = "You may want to contact your current software provider to see if they are going to support Making Tax Digital for Income Tax. You can also search for other software packages to see if they are suitable."

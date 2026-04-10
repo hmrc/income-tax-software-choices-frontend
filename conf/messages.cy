@@ -6,6 +6,7 @@ base.continue               = Parhau
 base.confirm-continue       = Cadarnhau a pharhau
 base.or                     = neu
 base.change                 = Newid
+base.find.compatible        = *** MISSING WELSH ***
 
 ## How you find software page
 how-you-find-software.heading = *** MISSING WELSH ***
@@ -316,4 +317,3 @@ not-listed-software.para4 = *** MISSING WELSH ***
 not-listed-software.bullet1 = *** MISSING WELSH ***
 not-listed-software.bullet2 = *** MISSING WELSH ***
 not-listed-software.bullet3 = *** MISSING WELSH ***
-not-listed-software.button = *** MISSING WELSH ***

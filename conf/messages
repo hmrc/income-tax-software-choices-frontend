@@ -6,6 +6,7 @@ base.continue               = Continue
 base.confirm-continue       = Confirm and continue
 base.or                     = or
 base.change                 = Change
+base.find.compatible        = Find compatible software
 
 ## How you find software page
 how-you-find-software.heading = How would you like to find software?
@@ -315,4 +316,3 @@ not-listed-software.para4 = This software is able to:
 not-listed-software.bullet1 = create digital records
 not-listed-software.bullet2 = send quarterly updates to HMRC
 not-listed-software.bullet3 = submit tax returns
-not-listed-software.button = Find compatible software
