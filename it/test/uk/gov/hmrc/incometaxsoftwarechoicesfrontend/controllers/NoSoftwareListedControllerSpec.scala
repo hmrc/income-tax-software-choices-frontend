@@ -26,13 +26,12 @@ class NoSoftwareListedControllerSpec extends ComponentSpecBase {
   lazy val noSoftwareListedController: NoSoftwareListedController = app.injector.instanceOf[NoSoftwareListedController]
 
   s"GET ${routes.NoSoftwareListedController.show().url}" should {
-    s"return $OK" in {
+    s"return $SEE_OTHER" in {
 
       val result = SoftwareChoicesFrontend.getNoListedSoftware()
 
       result should have(
-        httpStatus(OK),
-        pageTitle(s"${messages("not-listed-software.title")} - ${PageContentBase.title} - GOV.UK"),
+        httpStatus(SEE_OTHER),
       )
     }
   }
