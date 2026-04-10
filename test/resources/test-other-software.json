@@ -1,0 +1,7 @@
+{
+  "software": [
+    {"productId": 1001,"name": "Microsoft Excel","softwareType": "spreadsheet"},
+    {"productId": 1002,"name": "Google Sheets","softwareType": "spreadsheet"},
+    {"productId": 2001,"name": "Maybe Vendor","softwareType": "future-vendor"}
+  ]
+}

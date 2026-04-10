@@ -18,22 +18,27 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models
 
 import org.scalatestplus.play.PlaySpec
 import play.api.libs.json.*
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.TestModels.{fullSoftwareVendorModel, softwareVendorModelBase}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.*
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.*
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.{FutureVendor, Spreadsheet}
 
 class OtherSoftwareSpec extends PlaySpec {
 
   val fullJson: JsObject = Json.obj(
     "software" -> Json.arr(
-      Json.obj("productId" -> 1, "name" -> "software vendor name 1", "isSpreadsheet" -> false, "isFutureVendor" -> true),
-      Json.obj("productId" -> 2, "name" -> "software vendor name 2", "isSpreadsheet" -> true, "isFutureVendor" -> false)
+      Json.obj("productId" -> 1, "name" -> "software vendor name 1", "softwareType" -> "spreadsheet"),
+      Json.obj("productId" -> 2, "name" -> "software vendor name 2", "softwareType" -> "future-vendor")
+    )
+  )
+
+  val errorJson: JsObject = Json.obj(
+    "software" -> Json.arr(
+      Json.obj("name" -> "software vendor name 1", "softwareType" -> "spreadsheet"),
+      Json.obj("productId" -> 2, "name" -> "software vendor name 2", "softwareType" -> "future-vendor")
     )
   )
 
   val fullModel: OtherSoftwareList = OtherSoftwareList(Seq(
-    OtherSoftware(1, "software vendor name 1", isSpreadsheet = false, isFutureVendor = true),
-    OtherSoftware(2, "software vendor name 2", isSpreadsheet = true, isFutureVendor = false)
+    OtherSoftware(1, "software vendor name 1", Spreadsheet),
+    OtherSoftware(2, "software vendor name 2", FutureVendor)
   ))
 
   "OtherSoftwareList" must {
@@ -44,11 +49,16 @@ class OtherSoftwareSpec extends PlaySpec {
     }
 
     "fail to read json" when {
+      "a json is empty" in {
+        val json: JsObject = fullJson - "software"
+        Json.fromJson[OtherSoftwareList](json) mustBe JsError(JsPath \ "software", "error.path.missing")
+      }
+
       "a field is missing" in {
-        val json: JsObject = fullJson - "productId"
-        Json.fromJson[OtherSoftwareList](json) mustBe JsError(JsPath \ "productId", "error.path.missing")
+        Json.fromJson[OtherSoftwareList](errorJson) mustBe JsError(JsPath \ "software" \ (0) \ "productId", "error.path.missing")
       }
 
     }
   }
+
 }

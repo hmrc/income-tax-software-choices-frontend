@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,11 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models
 
-import play.api.libs.json.{Json, Reads}
+import play.api.libs.json.{JsString, Json, Reads, Writes, __}
 
 case class OtherSoftware(productId: Int,
-                        name: String,
-                        isSpreadsheet: Boolean,
-                        isFutureVendor: Boolean)
+                         name: String,
+                         softwareType: SoftwareType)
 
 object OtherSoftware {
   implicit val reads: Reads[OtherSoftware] = Json.reads[OtherSoftware]
@@ -33,5 +32,15 @@ object OtherSoftwareList {
   implicit val reads: Reads[OtherSoftwareList] = Json.reads[OtherSoftwareList]
 }
 
+enum SoftwareType(val key: String) {
+  case Spreadsheet  extends SoftwareType("spreadsheet")
+  case FutureVendor extends SoftwareType("future-vendor")
+}
 
-  
+object SoftwareType {
+  private val keyToJourney = SoftwareType.values.map(value => value.key -> value).toMap
+
+  implicit val reads: Reads[SoftwareType] = __.read[String] map keyToJourney
+
+  implicit val writes: Writes[SoftwareType] = Writes(softwareType => JsString(softwareType.key))
+}
