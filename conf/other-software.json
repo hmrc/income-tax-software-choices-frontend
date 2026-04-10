@@ -1,0 +1,13 @@
+{
+  "software": [
+    {"productId": 1001,"name": "Microsoft Excel","softwareType": "spreadsheet"},
+    {"productId": 1002,"name": "Google Sheets","softwareType": "spreadsheet"},
+    {"productId": 1003,"name": "Apple Numbers","softwareType": "spreadsheet"},
+    {"productId": 1004,"name": "LibreOffice Calc","softwareType": "spreadsheet"},
+    {"productId": 1005,"name": "Smartsheet","softwareType": "spreadsheet"},
+    {"productId": 1006,"name": "Quip Spreadsheets","softwareType": "spreadsheet"},
+    {"productId": 1007,"name": "OnlyOffice Spreadsheets","softwareType": "spreadsheet"},
+    {"productId": 1008,"name": "WPS Spreadsheets","softwareType": "spreadsheet"},
+    {"productId": 2001,"name": "Maybe Vendor","softwareType": "future-vendor"}
+  ]
+}
