@@ -20,7 +20,7 @@ import play.api.Environment
 import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
 import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareVendors, OtherSoftware}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{OtherSoftware, OtherSoftwareList, SoftwareVendors}
 
 import javax.inject.{Inject, Singleton}
 
@@ -54,7 +54,7 @@ class DataService @Inject()(
       throw new InternalServerException(s"[DataService][jsonFile] - ${appConfig.otherSoftwareFileName} not found")
   }
 
-  private val otherSoftware = Json.fromJson[Seq[OtherSoftware]](otherSoftwareJson) match {
+  private val otherSoftware = Json.fromJson[OtherSoftwareList](otherSoftwareJson) match {
     case JsSuccess(value, _) =>
       value
     case JsError(errors) =>
@@ -62,6 +62,6 @@ class DataService @Inject()(
   }
 
   def getOtherSoftware(): Seq[OtherSoftware] =
-    otherSoftware
+    otherSoftware.software
 
 }

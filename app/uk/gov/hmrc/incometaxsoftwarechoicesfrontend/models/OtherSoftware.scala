@@ -27,4 +27,11 @@ object OtherSoftware {
   implicit val reads: Reads[OtherSoftware] = Json.reads[OtherSoftware]
 }
 
+case class OtherSoftwareList(software: Seq[OtherSoftware])
 
+object OtherSoftwareList {
+  implicit val reads: Reads[OtherSoftwareList] = Json.reads[OtherSoftwareList]
+}
+
+
+  
