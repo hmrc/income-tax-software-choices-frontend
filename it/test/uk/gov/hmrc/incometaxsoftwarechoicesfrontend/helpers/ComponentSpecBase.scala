@@ -77,6 +77,8 @@ trait ComponentSpecBase extends AnyWordSpec
       BusinessIncomeForm.form.fill(pageAnswers).data.map { case (k, v) => (k, Seq(v)) }
     )
 
+    def getNeedAdditionalSoftware: WSResponse = get("/need-additional-software")
+
     def getAdditionalIncome: WSResponse = get("/which-other-income-source-tax-return")
 
     def submitAdditionalIncome(maybeKeys: Option[Seq[String]], editMode: Boolean = false): WSResponse = {

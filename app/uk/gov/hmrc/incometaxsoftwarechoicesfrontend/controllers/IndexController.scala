@@ -35,5 +35,5 @@ class IndexController @Inject()(implicit val appConfig: AppConfig,
       Redirect(routes.UserTypeController.show())
     }
   }
-
 }
+
