@@ -48,4 +48,3 @@ GET         /do-you-have-software                   uk.gov.hmrc.incometaxsoftwar
 POST        /do-you-have-software                   uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.HowYouFindSoftwareController.submit()
 
 GET         /no-software-listed                     uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.NoSoftwareListedController.show()
-POST        /no-software-listed                     uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.NoSoftwareListedController.submit()

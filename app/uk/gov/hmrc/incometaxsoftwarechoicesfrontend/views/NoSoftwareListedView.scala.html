@@ -20,26 +20,26 @@
 @import uk.gov.hmrc.hmrcfrontend.views.viewmodels.newtablinkhelper.NewTabLinkHelper
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTemplate
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes
 
 @this(
-mainTemplate: MainTemplate,
-hmrcNewTabLinkHelper: HmrcNewTabLinkHelper,
-govukButton: GovukButton,
-form: FormWithCSRF
+      mainTemplate: MainTemplate,
+      hmrcNewTabLinkHelper: HmrcNewTabLinkHelper,
+      govukButton: GovukButton,
+      form: FormWithCSRF
 )(implicit appConfig: AppConfig)
 
-@(finishAction: Call, backLink: String)(implicit request: Request[_], messages: Messages)
+@(backLink: String)(implicit request: Request[_], messages: Messages)
 
 @mainTemplate(title = messages("not-listed-software.title"), backLink = Some(backLink)) {
 
-<h1 class="govuk-heading-l">@messages("not-listed-software.title")</h1>
-<p class ="govuk-body">@messages("not-listed-software.para1")</p>
-
-@form(action = finishAction) {
-
-@govukButton(Button(
-content = Text(messages("base.find.compatible")),
-classes = "govuk-!-display-none-print"
-))
-}
+    <h1 class="govuk-heading-l">@messages("not-listed-software.title")</h1>
+    <p class ="govuk-body">@messages("not-listed-software.para1")</p>
+    <p class ="govuk-body">
+        @govukButton(Button(
+            content = Text(messages("base.find.compatible")),
+            href = Some(routes.UserTypeController.show().url),
+            classes = "govuk-!-display-none-print"
+    ))
+    </p>
 }

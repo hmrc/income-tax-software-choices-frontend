@@ -21,7 +21,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.ComponentSpecBase
 
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
 
-class NoSoftwareListedControllerSpec extends ComponentSpecBase {
+class NoSoftwareListedControllerISpec extends ComponentSpecBase {
 
   lazy val noSoftwareListedController: NoSoftwareListedController = app.injector.instanceOf[NoSoftwareListedController]
 
@@ -32,16 +32,6 @@ class NoSoftwareListedControllerSpec extends ComponentSpecBase {
 
       result should have(
         httpStatus(SEE_OTHER),
-      )
-    }
-  }
-
-  s"POST ${routes.NoSoftwareListedController.submit().url}" should {
-    s"return $SEE_OTHER" in {
-      val result = SoftwareChoicesFrontend.postNoListedSoftware()
-
-      result should have(
-        httpStatus(SEE_OTHER)
       )
     }
   }

@@ -32,13 +32,7 @@ class NoSoftwareListedController @Inject()(view: NoSoftwareListedView ,
   def show(): Action[AnyContent] = (identify andThen requireData) { request =>
     given Request[AnyContent] = request
     Ok(view(
-      finishAction = routes.NoSoftwareListedController.submit(),
       backLink = routes.NoSoftwareListedController.show().url
     ))
   }
-
-  def submit(): Action[AnyContent] = (identify andThen requireData) { _ =>
-    Redirect(routes.UserTypeController.show())
-  }
-
 }

@@ -26,7 +26,7 @@ class NoSoftwareListedViewSpec extends ViewSpec {
   private val view = app.injector.instanceOf[NoSoftwareListedView]
 
   def page(): HtmlFormat.Appendable = {
-    view(finishAction = testCall, backLink = testBackUrl)
+    view(backLink = testBackUrl)
   }
 
   def document(): Document = Jsoup.parse(page().body)
@@ -42,7 +42,7 @@ class NoSoftwareListedViewSpec extends ViewSpec {
     }
 
     "have a finish button" in {
-      document().select("form").select(".govuk-button").text() shouldBe NoSoftwareListedViewContent.finishSoftwareButton
+      document().select(".govuk-button").text() shouldBe NoSoftwareListedViewContent.finishSoftwareButton
     }
   }
 }
