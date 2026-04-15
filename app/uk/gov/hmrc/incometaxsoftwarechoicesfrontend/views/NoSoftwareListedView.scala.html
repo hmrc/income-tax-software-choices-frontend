@@ -33,17 +33,7 @@ form: FormWithCSRF
 @mainTemplate(title = messages("not-listed-software.title"), backLink = Some(backLink)) {
 
 <h1 class="govuk-heading-l">@messages("not-listed-software.title")</h1>
-<h2 class="govuk-heading-m">@messages("not-listed-software.sub-heading1")</h2>
 <p class ="govuk-body">@messages("not-listed-software.para1")</p>
-<h2 class="govuk-heading-m">@messages("not-listed-software.sub-heading2")</h2>
-<p class ="govuk-body">@messages("not-listed-software.para2")</p>
-<p class ="govuk-body">@messages("not-listed-software.para3")</p>
-<p class ="govuk-body">@messages("not-listed-software.para4")</p>
-<ul class="govuk-list govuk-list--bullet">
-    <li>@messages("not-listed-software.bullet1")</li>
-    <li>@messages("not-listed-software.bullet2")</li>
-    <li>@messages("not-listed-software.bullet3")</li>
-</ul>
 
 @form(action = finishAction) {
 

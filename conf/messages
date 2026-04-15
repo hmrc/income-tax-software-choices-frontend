@@ -306,13 +306,5 @@ phase-banner.feedback = give your feedback
 exit-survey.link = Give feedback on this service
 
 # Not Listed Software
-not-listed-software.title = You may need additional software
-not-listed-software.sub-heading1 = If your software is not listed
-not-listed-software.sub-heading2 = If you are using spreadsheets to record your income and expenses
+not-listed-software.title = This software is not recognised for Making Tax Digital for Income Tax
 not-listed-software.para1 = You may want to contact your current software provider to see if they are going to support Making Tax Digital for Income Tax. You can also search for other software packages to see if they are suitable.
-not-listed-software.para2 = You will need to use software that connects to your digital records if you want to keep using your spreadsheets. This is called bridging software.
-not-listed-software.para3 = You can also choose software that creates digital records. This may be the better option if you want one product to meet all your needs.
-not-listed-software.para4 = This software is able to:
-not-listed-software.bullet1 = create digital records
-not-listed-software.bullet2 = send quarterly updates to HMRC
-not-listed-software.bullet3 = submit tax returns

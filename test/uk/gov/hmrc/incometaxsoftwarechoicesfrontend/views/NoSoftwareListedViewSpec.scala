@@ -37,42 +37,8 @@ class NoSoftwareListedViewSpec extends ViewSpec {
       document().selectHead("h1").text() mustBe NoSoftwareListedViewContent.heading
     }
 
-    "have the correct first sub heading" in {
-      document().mainContent.select("h2").get(0).text() mustBe NoSoftwareListedViewContent.subHeading1
-    }
-
     "have the correct first paragraph text" in {
       document().mainContent.select("p").get(0).text mustBe NoSoftwareListedViewContent.paragraph1
-    }
-
-    "have the correct second sub heading" in {
-      document().mainContent.select("h2").get(1).text() mustBe NoSoftwareListedViewContent.subHeading2
-    }
-
-    "have the correct second paragraph text" in {
-      document().mainContent.select("p").get(1).text mustBe NoSoftwareListedViewContent.paragraph2
-    }
-
-    "have the correct third paragraph text" in {
-      document().mainContent.select("p").get(2).text mustBe NoSoftwareListedViewContent.paragraph3
-    }
-
-    "have the correct forth paragraph text" in {
-      document().mainContent.select("p").get(3).text mustBe NoSoftwareListedViewContent.paragraph4
-    }
-
-    "have a bullet list" which {
-      lazy val bulletList = document().mainContent.selectHead("ul.govuk-list.govuk-list--bullet")
-
-      "has a first point" in {
-        bulletList.selectNth("li", 1).text mustBe NoSoftwareListedViewContent.bulletPoint1
-      }
-      "has a second point" in {
-        bulletList.selectNth("li", 2).text mustBe NoSoftwareListedViewContent.bulletPoint2
-      }
-      "has a third point" in {
-        bulletList.selectNth("li", 3).text mustBe NoSoftwareListedViewContent.bulletPoint3
-      }
     }
 
     "have a finish button" in {
@@ -82,16 +48,8 @@ class NoSoftwareListedViewSpec extends ViewSpec {
 }
 
 private object NoSoftwareListedViewContent {
-  val title = "You may need additional software"
-  val heading = "You may need additional software"
-  val subHeading1 = "If your software is not listed"
+  val title = "This software is not recognised for Making Tax Digital for Income Tax"
+  val heading = "This software is not recognised for Making Tax Digital for Income Tax"
   val paragraph1 = "You may want to contact your current software provider to see if they are going to support Making Tax Digital for Income Tax. You can also search for other software packages to see if they are suitable."
-  val subHeading2 = "If you are using spreadsheets to record your income and expenses"
-  val paragraph2 = "You will need to use software that connects to your digital records if you want to keep using your spreadsheets. This is called bridging software."
-  val paragraph3 = "You can also choose software that creates digital records. This may be the better option if you want one product to meet all your needs."
-  val paragraph4 = "This software is able to:"
-  val bulletPoint1 = "create digital records"
-  val bulletPoint2 = "send quarterly updates to HMRC"
-  val bulletPoint3 = "submit tax returns"
   val finishSoftwareButton = "Find compatible software"
 }
