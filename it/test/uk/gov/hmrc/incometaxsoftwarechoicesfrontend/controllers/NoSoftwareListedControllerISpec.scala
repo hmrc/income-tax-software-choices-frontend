@@ -16,20 +16,24 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
-import play.api.http.Status.{SEE_OTHER, OK}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.ComponentSpecBase
+import play.api.http.Status.{OK, SEE_OTHER}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, DatabaseHelper}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.SessionId
 
-class NoSoftwareListedControllerISpec extends ComponentSpecBase {
+class NoSoftwareListedControllerISpec extends ComponentSpecBase  with DatabaseHelper {
 
   lazy val noSoftwareListedController: NoSoftwareListedController = app.injector.instanceOf[NoSoftwareListedController]
 
   s"GET ${routes.NoSoftwareListedController.show().url}" should {
-    s"return $SEE_OTHER" in {
+    s"return $OK" in {
+      setupAnswers(SessionId, None)
 
       val result = SoftwareChoicesFrontend.getNoListedSoftware()
 
       result should have(
-        httpStatus(SEE_OTHER),
+        httpStatus(OK),
+        pageTitle(s"${messages("not-listed-software.title")} - ${PageContentBase.title} - GOV.UK"),
       )
     }
   }
