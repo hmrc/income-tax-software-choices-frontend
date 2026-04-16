@@ -19,8 +19,6 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 import play.api.http.Status.{SEE_OTHER, OK}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.ComponentSpecBase
 
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
-
 class NoSoftwareListedControllerISpec extends ComponentSpecBase {
 
   lazy val noSoftwareListedController: NoSoftwareListedController = app.injector.instanceOf[NoSoftwareListedController]
