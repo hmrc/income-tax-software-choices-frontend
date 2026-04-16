@@ -143,9 +143,7 @@ trait ComponentSpecBase extends AnyWordSpec
     def postZeroSoftwareResults(): WSResponse = post("/no-all-in-one-product")(Map.empty)
 
     def getNoListedSoftware(): WSResponse = get("/no-software-listed")
-
-    def postNoListedSoftware(): WSResponse = post("/no-software-listed")(Map.empty)
-
+    
     def getHowYouFindSoftware(): WSResponse = get("/do-you-have-software")
     
     def postHowYouFindSoftware(pageAnswer: Option[JourneyType]): WSResponse = {

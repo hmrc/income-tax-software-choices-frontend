@@ -31,7 +31,7 @@ class NoSoftwareListedViewSpec extends ViewSpec {
 
   def document(): Document = Jsoup.parse(page().body)
 
-  "NoSoftwareListedView" when {
+  "NoSoftwareListedView" should {
 
     "have the correct main heading" in {
       document().selectHead("h1").text() mustBe NoSoftwareListedViewContent.heading
@@ -41,8 +41,8 @@ class NoSoftwareListedViewSpec extends ViewSpec {
       document().mainContent.select("p").get(0).text mustBe NoSoftwareListedViewContent.paragraph1
     }
 
-    "have a finish button" in {
-      document().select(".govuk-button").text() shouldBe NoSoftwareListedViewContent.finishSoftwareButton
+    "have a find compatible software button" in {
+      document().select(".govuk-button").text() shouldBe NoSoftwareListedViewContent.compatibleSoftwareButton
     }
   }
 }
@@ -51,5 +51,5 @@ private object NoSoftwareListedViewContent {
   val title = "This software is not recognised for Making Tax Digital for Income Tax"
   val heading = "This software is not recognised for Making Tax Digital for Income Tax"
   val paragraph1 = "You may want to contact your current software provider to see if they are going to support Making Tax Digital for Income Tax. You can also search for other software packages to see if they are suitable."
-  val finishSoftwareButton = "Find compatible software"
+  val compatibleSoftwareButton = "Find compatible software"
 }

@@ -33,7 +33,7 @@ class NoSoftwareListedControllerISpec extends ComponentSpecBase  with DatabaseHe
 
       result should have(
         httpStatus(OK),
-        pageTitle(s"${messages("not-listed-software.title")} - ${PageContentBase.title} - GOV.UK"),
+        pageTitle(s"${messages("not-listed-software.title")} - ${PageContentBase.title} - GOV.UK")
       )
     }
   }

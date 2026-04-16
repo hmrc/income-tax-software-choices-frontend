@@ -16,17 +16,13 @@
 
 @import uk.gov.hmrc.govukfrontend.views.html.components._
 @import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
-@import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcNewTabLinkHelper
-@import uk.gov.hmrc.hmrcfrontend.views.viewmodels.newtablinkhelper.NewTabLinkHelper
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTemplate
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes
 
 @this(
       mainTemplate: MainTemplate,
-      hmrcNewTabLinkHelper: HmrcNewTabLinkHelper,
-      govukButton: GovukButton,
-      form: FormWithCSRF
+      govukButton: GovukButton
 )(implicit appConfig: AppConfig)
 
 @(backLink: String)(implicit request: Request[_], messages: Messages)
@@ -41,6 +37,6 @@
             content = Text(messages("base.find.compatible")),
             href = Some(routes.UserTypeController.show().url),
             classes = "govuk-!-display-none-print"
-    ))
+        ))
     </p>
 }
