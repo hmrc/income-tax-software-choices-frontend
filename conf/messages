@@ -6,6 +6,7 @@ base.continue               = Continue
 base.confirm-continue       = Confirm and continue
 base.or                     = or
 base.change                 = Change
+base.find.compatible        = Find compatible software
 
 ## How you find software page
 how-you-find-software.heading = How would you like to find software?
@@ -303,3 +304,7 @@ phase-banner.feedback = give your feedback
 
 # Exit Survey
 exit-survey.link = Give feedback on this service
+
+# Not Listed Software
+not-listed-software.title = This software is not recognised for Making Tax Digital for Income Tax
+not-listed-software.para1 = You may want to contact your current software provider to see if they are going to support Making Tax Digital for Income Tax. You can also search for other software packages to see if they are suitable.

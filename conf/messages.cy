@@ -6,6 +6,7 @@ base.continue               = Parhau
 base.confirm-continue       = Cadarnhau a pharhau
 base.or                     = neu
 base.change                 = Newid
+base.find.compatible        = *** MISSING WELSH ***
 
 ## How you find software page
 how-you-find-software.heading = *** MISSING WELSH ***
@@ -304,3 +305,7 @@ phase-banner.feedback = rhoi eich adborth
 
 # Exit Survey
 exit-survey.link = Rhoi adborth ar y gwasanaeth hwn
+
+# Not Listed Software
+not-listed-software.title = *** MISSING WELSH ***
+not-listed-software.para1 = *** MISSING WELSH ***
