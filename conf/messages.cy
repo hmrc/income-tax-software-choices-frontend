@@ -318,3 +318,9 @@ exit-survey.link = Rhoi adborth ar y gwasanaeth hwn
 # Not Listed Software
 not-listed-software.title = *** MISSING WELSH ***
 not-listed-software.para1 = *** MISSING WELSH ***
+
+# AUTOCOMPLETE
+enter-software-name.heading = *** MISSING WELSH ***
+enter-software-name.hint = *** MISSING WELSH ***
+enter-software-name.error.empty = *** MISSING WELSH ***
+enter-software-name.software-not-listed = *** MISSING WELSH ***

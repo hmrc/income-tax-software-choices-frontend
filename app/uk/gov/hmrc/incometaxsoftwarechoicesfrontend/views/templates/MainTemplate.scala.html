@@ -20,6 +20,7 @@
 @import uk.gov.hmrc.hmrcfrontend.views.viewmodels.hmrcstandardpage._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes
 @import uk.gov.hmrc.hmrcfrontend.views.viewmodels.newtablinkhelper.NewTabLinkHelper
+@import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcAccessibleAutocompleteCss
 
 @this(
     hmrcStandardPage: HmrcStandardPage,
@@ -27,7 +28,8 @@
     govukErrorSummary: GovukErrorSummary,
     hmrcReportTechnicalIssueHelper: HmrcReportTechnicalIssueHelper,
     hmrcTimeoutDialogHelper: HmrcTimeoutDialogHelper,
-    hmrcNewTabLinkHelper: HmrcNewTabLinkHelper
+    hmrcNewTabLinkHelper: HmrcNewTabLinkHelper,
+        autocompleteCss: HmrcAccessibleAutocompleteCss,
 )
 
 @(title: String, backLink: Option[String] = None, optForm: Option[Form[_]] = None, scripts: Option[Html] = None, isFullWidth: Boolean = false, showTimeoutDialog: Boolean = true)(contentBlock: Html)(implicit request: RequestHeader, messages: Messages)
@@ -48,6 +50,7 @@
     ),
     templateOverrides = TemplateOverrides(
         additionalHeadBlock = Some(additionalHeadBlock),
+        additionalScriptsBlock = scripts,
         mainContentLayout = if(isFullWidth) Some(identity) else None
     ),
     serviceName = Some(messages("base.service-name")),
@@ -57,6 +60,7 @@
 ))(content)
 
 @additionalHeadBlock = {
+    @autocompleteCss()
     <link href='@controllers.routes.Assets.versioned("stylesheets/application.css")' media="all" rel="stylesheet" type="text/css" />
 
     @if(showTimeoutDialog) {

@@ -32,7 +32,7 @@ class NoSoftwareListedController @Inject()(view: NoSoftwareListedView ,
   def show(): Action[AnyContent] = (identify andThen requireData) { request =>
     given Request[AnyContent] = request
     Ok(view(
-      backLink = routes.NoSoftwareListedController.show().url
+      backLink = routes.EnterSoftwareNameController.show().url
     ))
   }
 }

@@ -1,0 +1,76 @@
+@*
+ * Copyright 2025 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import uk.gov.hmrc.govukfrontend.views.html.components._
+@import uk.gov.hmrc.govukfrontend.views.html.components.implicits._
+@import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.OtherItemsForm
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTemplate
+@import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcAccessibleAutocompleteCss
+@import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcAccessibleAutocompleteJavascript
+@import uk.gov.hmrc.govukfrontend.views.Implicits.RichSelect
+@import uk.gov.hmrc.hmrcfrontend.views.viewmodels.accessibleautocomplete.AccessibleAutocomplete
+
+@this(
+        mainTemplate: MainTemplate,
+        govukButton: GovukButton,
+        form: FormWithCSRF,
+        autocompleteCss: HmrcAccessibleAutocompleteCss,
+        autocompleteJavascript: HmrcAccessibleAutocompleteJavascript,
+        govukSelect: GovukSelect,
+        govukInput: GovukInput
+)(implicit appConfig: AppConfig)
+
+@(enterSoftwareNameForm: Form[Int], selectOptions: Seq[SelectItem], postAction: Call, notListedLink:String, backLink: String)(implicit request: Request[_], messages: Messages)
+
+@mainTemplate(title = messages("enter-software-name.heading"), backLink = Some(backLink), scripts = Some(autocompleteJavascript()), optForm = Some(enterSoftwareNameForm)) {
+
+    @form(action = postAction) {
+
+        <h1 class="govuk-label-wrapper">
+            <label class="govuk-label govuk-label--l"  for="enter-software-name">
+            @messages("enter-software-name.heading")
+            </label>
+        </h1>
+
+        <div id="container" class="autocomplete__wrapper govuk-!-width-two-thirds">
+            @govukSelect(Select(
+                id = "enter-software-name",
+                name = "enter-software-name",
+                items = selectOptions,
+                hint = Some(Hint(content = Text(messages("enter-software-name.hint"))))
+            ).asAccessibleAutocomplete(Some(AccessibleAutocomplete(
+                defaultValue = Some(""),
+                showAllValues = false,
+                autoSelect = false,
+                minLength = Some(2)
+            ))).withFormField(enterSoftwareNameForm("enter-software-name")))
+        </div>
+
+        <div class="govuk-button-group">
+            @govukButton(Button(content = Text(messages("base.continue"))))
+
+            @govukButton(Button(
+                content = Text(messages("enter-software-name.software-not-listed")),
+                href = Some(notListedLink),
+                classes = "govuk-button--secondary govuk-!-display-none-print"
+            ))
+        </div>
+    }
+}

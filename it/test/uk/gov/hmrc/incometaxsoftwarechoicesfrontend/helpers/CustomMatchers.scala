@@ -151,4 +151,18 @@ trait CustomMatchers {
         elementExists
       )
     }
+
+  def autocompleteSelected(expectedValue: String): HavePropertyMatcher[WSResponse, String] =
+    (response: WSResponse) => {
+      val body = Jsoup.parse(response.body)
+      val elementValue = body.select("[selected]").text()
+
+      HavePropertyMatchResult(
+        matches = elementValue == expectedValue,
+        propertyName = "autocompleteSelected",
+        expectedValue = expectedValue,
+        actualValue = elementValue
+      )
+    }
+
 }
