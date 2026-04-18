@@ -25,6 +25,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.Feature
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{RequireUserDataRefiner, SessionIdentifierAction}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.*
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.ViewAll
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.Agent
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.requests.SessionDataRequest
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.UserTypePage
@@ -53,9 +54,15 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
 
     val finalFilters = request.userFilters.finalFilters
     val isAgent = pageAnswersService.getPageAnswers(request.userFilters.answers, UserTypePage).contains(Agent)
+    val isUnguided = (request.journey, isAgent) match {
+      case (Some(ViewAll), _) => true
+      case (None, true) => true
+      case _ => false
+    }
+
     val model = SoftwareChoicesResultsViewModel(
       vendorsWithIntent = softwareChoicesService.getVendorsWithIntent(finalFilters),
-      isAgent = isAgent
+      isUnguided = isUnguided
     )
 
     if (isEnabled(ExplicitAudits)) auditService.auditSearchResults(request.userFilters, model.vendorsWithIntent.map(_.vendor.name))
@@ -70,10 +77,15 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
       updatedUserFilters <- update(filters)(request).flatMap(_ => userFiltersRepository.get(request.sessionId))
     } yield {
       val isAgent = pageAnswersService.getPageAnswers(request.userFilters.answers, UserTypePage).contains(Agent)
+      val isUnguided = (request.journey, isAgent) match {
+        case (Some(ViewAll), _) => true
+        case (None, true) => true
+        case _ => false
+      }
       val userFilters = updatedUserFilters.getOrElse(UserFilters(request.sessionId, None, filters.filters))
       val model = SoftwareChoicesResultsViewModel(
         vendorsWithIntent = softwareChoicesService.getVendorsWithIntent(userFilters.finalFilters),
-        isAgent = isAgent
+        isUnguided = isUnguided
       )
 
       if (isEnabled(ExplicitAudits)) auditService.auditSearchResults(userFilters, model.vendorsWithIntent.map(_.vendor.name))
@@ -104,12 +116,12 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
       searchForm = form,
       postAction = routes.SearchSoftwareController.search(),
       clearAction = routes.SearchSoftwareController.clear(),
-      backUrl = backLinkUrl(model.isAgent)
+      backUrl = backLinkUrl(model.isUnguided)
     )
   }
 
-  def backLinkUrl(isAgent: Boolean): String = {
-    if (isAgent) routes.UserTypeController.show().url
+  def backLinkUrl(isUnguided: Boolean): String = {
+    if (isUnguided) routes.UserTypeController.show().url
     else routes.ChoosingSoftwareController.show().url
   }
 

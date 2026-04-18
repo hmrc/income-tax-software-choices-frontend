@@ -18,5 +18,5 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.viewmodels
 
 case class SoftwareChoicesResultsViewModel (
                                              vendorsWithIntent: Seq[VendorSuitabilityViewModel] = Seq.empty,
-                                             isAgent: Boolean = false
+                                             isUnguided: Boolean = false
                                            )

@@ -33,7 +33,7 @@
   hmrcNewTabLinkHelper: HmrcNewTabLinkHelper,
   softwareFiltersTemplate: SoftwareFiltersTemplate,
   softwareVendorsIntentResultsTemplate: SoftwareVendorsIntentResultsTemplate,
-  softwareVendorsAgentTemplate: SoftwareVendorsAgentTemplate,
+  softwareVendorsUnguidedTemplate: SoftwareVendorsUnguidedTemplate,
   form: FormWithCSRF,
   govukButton: GovukButton,
   languageUtils: LanguageUtils
@@ -56,11 +56,11 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <h1 class="govuk-heading-xl">@title</h1>
-        @if(viewModel.isAgent) {
+        @if(viewModel.isUnguided) {
             <p class="govuk-body">@messages("search-software.p1")</p>
             <p class="govuk-body">@messages("search-software.p2")</p>
-            <p class="govuk-body">@messages("search-software.p3.agent.intent")</p>
-            <p class="govuk-inset-text">@messages("search-software.inset.agent.intent")</p>
+            <p class="govuk-body">@messages("search-software.p3.unguided.intent")</p>
+            <p class="govuk-inset-text">@messages("search-software.inset.unguided.intent")</p>
         } else {
             <h2 class="govuk-heading-l">@messages("search-software.intent.h2")</h2>
             <p class="govuk-body">@messages("search-software.intent.p1")</p>
@@ -97,7 +97,7 @@
 
           <p class="govuk-body">@messages("search-software.filters.paragraph")</p>
 
-          @softwareFiltersTemplate(searchForm(FiltersForm.filters), viewModel.isAgent)
+          @softwareFiltersTemplate(searchForm(FiltersForm.filters), viewModel.isUnguided)
 
           <div class="govuk-button-group govuk-!-padding-top-0 apply-filters-group">
             @govukButton(Button(
@@ -112,8 +112,8 @@
       </div>
 
     <div class="govuk-grid-column-two-thirds">
-        @if(viewModel.isAgent) {
-            @softwareVendorsAgentTemplate(viewModel)
+        @if(viewModel.isUnguided) {
+            @softwareVendorsUnguidedTemplate(viewModel)
         } else {
             @softwareVendorsIntentResultsTemplate(viewModel)
         }

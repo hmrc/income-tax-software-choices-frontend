@@ -12,6 +12,7 @@ base.find.compatible        = *** MISSING WELSH ***
 how-you-find-software.heading = *** MISSING WELSH ***
 how-you-find-software.find = *** MISSING WELSH ***
 how-you-find-software.find.hint = *** MISSING WELSH ***
+how-you-find-software.view-all = *** MISSING WELSH ***
 how-you-find-software.check = *** MISSING WELSH ***
 how-you-find-software.check.hint = *** MISSING WELSH ***
 how-you-find-software.error = *** MISSING WELSH ***
@@ -112,8 +113,8 @@ search-software.heading.many                              = Mae gennych {0} canl
 search-software.heading.one                               = Mae gennych 1 canlyniad meddalwedd
 search-software.p1                                        = Mae pob meddalwedd yma wedi bod drwy broses gydnabod ble mae CThEF yn gwirio ayw’n gallu cyflwyno eich trethi. Nid yw CThEF yn argymell nac yn cymeradwyo unrhyw gynnyrch neu ddarparwr meddalwedd penodol.
 search-software.p2                                        = Efallai bydd rhai o’r cynhyrchion sy’n cael eu rhestru yn cynnig cyfnod prawf am ddim, neu fersiynau am ddim, ond bydd yn rhaid i chi dalu am rhai eraill.
-search-software.p3.agent.intent                           = Mae rhai o’r nodweddion y bydd eu hangen arnoch er mwyn cyflwyno Ffurflen Dreth eich cleient yn parhau o dan ddatblygiad.
-search-software.inset.agent.intent                        = Nid yw CThEF yn gyfrifol am argaeledd cynnyrch nag am sicrhau bod y cynnyrch yr ydych yn ei ddewis yn bodloni anghenion presennol eich cleient, a’i anghenion yn y dyfodol. Rydym yn argymell eich bod yn ymweld â gwefan darparwyr meddalwedd i wneud ymchwil cyn dewis cynnyrch.
+search-software.p3.unguided.intent                           = Mae rhai o’r nodweddion y bydd eu hangen arnoch er mwyn cyflwyno Ffurflen Dreth eich cleient yn parhau o dan ddatblygiad.
+search-software.inset.unguided.intent                        = Nid yw CThEF yn gyfrifol am argaeledd cynnyrch nag am sicrhau bod y cynnyrch yr ydych yn ei ddewis yn bodloni anghenion presennol eich cleient, a’i anghenion yn y dyfodol. Rydym yn argymell eich bod yn ymweld â gwefan darparwyr meddalwedd i wneud ymchwil cyn dewis cynnyrch.
 search-software.check-answers                             = Gwirio atebion
 search-software.skip-to-results                           = Ewch yn syth i’r canlyniadau
 
@@ -137,9 +138,9 @@ search-software.filters.clear-filters = Clirio hidlyddion
 
 search-software.intent.vendor-visit-link        = Dysgwch beth mae {0} yn ei ddarparu ar hyn o bryd, a’r hyn sy’n cael ei ddatblygu ganddynt
 
-search-software.vendor-count.agent.heading.many     = Yn seiliedig ar eich atebion, rydym wedi dod o hyd i {0} canlyniad
-search-software.vendor-count.agent.heading.one      = Yn seiliedig ar eich atebion, rydym wedi dod o hyd i 1 canlyniad
-search-software.vendor-count.agent.heading.none     = Yn seiliedig ar eich atebion, nid oes unrhyw ganlyniad
+search-software.vendor-count.unguided.heading.many     = Yn seiliedig ar eich atebion, rydym wedi dod o hyd i {0} canlyniad
+search-software.vendor-count.unguided.heading.one      = Yn seiliedig ar eich atebion, rydym wedi dod o hyd i 1 canlyniad
+search-software.vendor-count.unguided.heading.none     = Yn seiliedig ar eich atebion, nid oes unrhyw ganlyniad
 
 search-software.vendor-count.intent.heading.many    = Yn seiliedig ar eich hidlyddion ac atebion, rydym wedi dod o hyd i {0} canlyniad
 search-software.vendor-count.intent.heading.one     = Yn seiliedig ar eich hidlyddion ac atebion, rydym wedi dod o hyd i 1 canlyniad
