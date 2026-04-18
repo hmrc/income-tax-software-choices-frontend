@@ -34,6 +34,7 @@ class EnterSoftwareNameControllerISpec extends ComponentSpecBase with BeforeAndA
 
   private val firstOtherSpreadsheetProduct = SoftwareProduct(1001, "Microsoft Excel", Spreadsheet)
 
+
   override def beforeEach(): Unit = {
     await(userFiltersRepository.collection.drop().toFuture())
     super.beforeEach()
@@ -41,6 +42,7 @@ class EnterSoftwareNameControllerISpec extends ComponentSpecBase with BeforeAndA
 
   private val dataService: DataService = app.injector.instanceOf[DataService]
   private val recognisedProducts = dataService.getSoftwareVendors().vendors.map(v => SoftwareProduct(v.productId, v.name, Recognised))
+
   private val futureProducts = dataService.getOtherSoftware().filter(_.softwareType.eq(FutureVendor))
   private val spreadsheetProducts = dataService.getOtherSoftware().filter(_.softwareType.eq(Spreadsheet))
 
@@ -67,6 +69,7 @@ class EnterSoftwareNameControllerISpec extends ComponentSpecBase with BeforeAndA
           httpStatus(OK),
           pageTitle(s"${messages("enter-software-name.heading")} - ${PageContentBase.title} - GOV.UK"),
           autocompleteSelected("")
+
         )
       }
     }
@@ -88,7 +91,6 @@ class EnterSoftwareNameControllerISpec extends ComponentSpecBase with BeforeAndA
     }
 
   }
-
   s"POST ${routes.EnterSoftwareNameController.submit()}" when {
     "there is nothing saved in the database for this user" should {
       "redirect to the service index" in {
@@ -116,6 +118,7 @@ class EnterSoftwareNameControllerISpec extends ComponentSpecBase with BeforeAndA
         )
 
         getPageData(SessionId, EnterSoftwareNamePage).map(_.name) shouldBe Some(recognisedProducts.head.name)
+
       }
     }
 
@@ -134,6 +137,7 @@ class EnterSoftwareNameControllerISpec extends ComponentSpecBase with BeforeAndA
         )
 
         getPageData(SessionId, EnterSoftwareNamePage).map(_.name) shouldBe Some(spreadsheetProducts.head.name)
+
       }
     }
 
@@ -152,6 +156,7 @@ class EnterSoftwareNameControllerISpec extends ComponentSpecBase with BeforeAndA
         )
 
         getPageData(SessionId, EnterSoftwareNamePage).map(_.name) shouldBe Some(futureProducts.head.name)
+
       }
     }
 
@@ -170,6 +175,7 @@ class EnterSoftwareNameControllerISpec extends ComponentSpecBase with BeforeAndA
         )
 
         getPageData(SessionId, EnterSoftwareNamePage).map(_.name) shouldBe Some("Unknown")
+
       }
     }
 
@@ -188,6 +194,7 @@ class EnterSoftwareNameControllerISpec extends ComponentSpecBase with BeforeAndA
         )
 
         getPageData(SessionId, EnterSoftwareNamePage).map(_.name) shouldBe Some(spreadsheetProducts.head.name)
+
       }
     }
 

@@ -25,9 +25,10 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.Feature
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{RequireUserDataRefiner, SessionIdentifierAction}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.*
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.ViewAll
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.Agent
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.requests.SessionDataRequest
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.UserTypePage
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.{HowYouFindSoftwarePage, UserTypePage}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.viewmodels.SoftwareChoicesResultsViewModel
@@ -53,9 +54,10 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
 
     val finalFilters = request.userFilters.finalFilters
     val isAgent = pageAnswersService.getPageAnswers(request.userFilters.answers, UserTypePage).contains(Agent)
+    val isViewAll = pageAnswersService.getPageAnswers(request.userFilters.answers, HowYouFindSoftwarePage).contains(ViewAll)
     val model = SoftwareChoicesResultsViewModel(
       vendorsWithIntent = softwareChoicesService.getVendorsWithIntent(finalFilters),
-      isAgent = isAgent
+      isAgent = isViewAll
     )
 
     if (isEnabled(ExplicitAudits)) auditService.auditSearchResults(request.userFilters, model.vendorsWithIntent.map(_.vendor.name))
@@ -70,10 +72,11 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
       updatedUserFilters <- update(filters)(request).flatMap(_ => userFiltersRepository.get(request.sessionId))
     } yield {
       val isAgent = pageAnswersService.getPageAnswers(request.userFilters.answers, UserTypePage).contains(Agent)
+      val isViewAll = pageAnswersService.getPageAnswers(request.userFilters.answers, HowYouFindSoftwarePage).contains(ViewAll)
       val userFilters = updatedUserFilters.getOrElse(UserFilters(request.sessionId, None, filters.filters))
       val model = SoftwareChoicesResultsViewModel(
         vendorsWithIntent = softwareChoicesService.getVendorsWithIntent(userFilters.finalFilters),
-        isAgent = isAgent
+        isAgent = isViewAll
       )
 
       if (isEnabled(ExplicitAudits)) auditService.auditSearchResults(userFilters, model.vendorsWithIntent.map(_.vendor.name))

@@ -20,6 +20,7 @@ import play.api.libs.json.{JsString, Reads, Writes, __}
 enum JourneyType(val key: String) {
   case Find  extends JourneyType("find")
   case Check extends JourneyType("check")
+  case ViewAll extends JourneyType("view-all")
 }
 
 object JourneyType {

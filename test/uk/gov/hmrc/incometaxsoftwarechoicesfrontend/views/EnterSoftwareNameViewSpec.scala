@@ -106,10 +106,8 @@ class EnterSoftwareNameViewSpec extends ViewSpec with SelectBuilder {
           form.selectNth(".govuk-button--secondary", 1).attr("href") shouldBe notListedLink
         }
       }
-
     }
   }
-
 }
 
 private object EnterSoftwareNameViewContent {

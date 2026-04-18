@@ -21,7 +21,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.SessionIdentifierAction
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.HowYouFindSoftwareForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.{Check, Find}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.{Check, Find, ViewAll}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.HowYouFindSoftwarePage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.PageAnswersService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.HowYouFindSoftwareView
@@ -70,6 +70,7 @@ class HowYouFindSoftwareController @Inject()(view: HowYouFindSoftwareView,
   
   private def redirect(journeyType: JourneyType) = journeyType match {
     case Find => Redirect(routes.UserTypeController.show())
+    case ViewAll => Redirect(routes.UserTypeController.show())
     case Check => Redirect(routes.EnterSoftwareNameController.show())
   }
 }

@@ -33,6 +33,7 @@ object JourneyTypeMapping {
       override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], JourneyType] =
         data.get(key) match {
           case Some(Find.key) => Right(Find)
+          case Some(ViewAll.key) => Right(ViewAll)
           case Some(Check.key) => Right(Check)
           case _ => Left(Seq(FormError(key, error)))
         }
