@@ -67,6 +67,6 @@ class SessionExpiredViewSpec extends ViewSpec {
 private object SessionExpiredContent {
   val title = s"Answers Deleted - ${PageContentBase.title} - GOV.UK"
   val userHeading = "You deleted your answers"
-  val timeoutHeading = "For security, we deleted your answers"
+  val timeoutHeading = "Session timed out due to inactivity"
   val continue = "Start again"
 }

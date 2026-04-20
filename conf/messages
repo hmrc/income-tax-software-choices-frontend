@@ -287,7 +287,8 @@ timeout.reset = Delete your answers
 
 session-expired.title = Answers Deleted
 session-expired.user = You deleted your answers
-session-expired.timeout = For security, we deleted your answers
+session-expired.timeout.heading = Session timed out due to inactivity
+session-expired.timeout.para1 = Your session timed out after 15 minutes of inactivity, so we cleared your information to keep it secure. You will need to start again.
 session-expired.button = Start again
 
 page-not-found.title = Page not found

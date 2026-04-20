@@ -31,7 +31,8 @@
 @mainTemplate(title = messages("session-expired.title"), backLink = None, showTimeoutDialog = false) {
 
     @if(timeout) {
-        <h1 class="govuk-heading-l">@messages("session-expired.timeout")</h1>
+        <h1 class="govuk-heading-l">@messages("session-expired.timeout.heading")</h1>
+        <p class ="govuk-body">@messages("session-expired.timeout.para1")</p>
     } else {
         <h1 class="govuk-heading-l">@messages("session-expired.user")</h1>
     }
