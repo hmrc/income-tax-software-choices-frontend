@@ -317,3 +317,8 @@ exit-survey.link = Give feedback on this service
 # Not Listed Software
 not-listed-software.title = This software is not recognised for Making Tax Digital for Income Tax
 not-listed-software.para1 = You may want to contact your current software provider to see if they are going to support Making Tax Digital for Income Tax. You can also search for other software packages to see if they are suitable.
+
+#Software In Development page
+software-in-development.heading = is not recognised for Making Tax Digital for Income Tax yet
+software-in-development.para1 = You may want to contact your current software provider to ask if they are going to support Making Tax Digital for Income Tax for your circumstances.
+software-in-development.para2 = You can also search for other software packages that are currently ready for Making Tax Digital for Income Tax to see if they are suitable.
