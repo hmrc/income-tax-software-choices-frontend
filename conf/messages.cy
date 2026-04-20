@@ -298,6 +298,15 @@ page-not-found.p3 = Os yw’r cyfeiriad gwe yn gywir neu os ydych wedi dewis cys
 page-not-found.bullet1 = cysylltu â ni ynghylch y broblem hon
 page-not-found.bullet2 = dod o hyd i feddalwedd sy’n cydweddu â’r cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm
 
+# Need Additional Software page
+need-additional-software.heading = *** MISSING WELSH ***
+need-additional-software.para1 = *** MISSING WELSH ***
+need-additional-software.para2 = *** MISSING WELSH ***
+need-additional-software.para3 = *** MISSING WELSH ***
+need-additional-software.bullet1 = *** MISSING WELSH ***
+need-additional-software.bullet2 = *** MISSING WELSH ***
+need-additional-software.bullet3 = *** MISSING WELSH ***
+
 # Phase Banner
 phase-banner.tag = Beta
 phase-banner.intro = Gwasanaeth newydd yw hwn. Helpwch ni i’w wella a

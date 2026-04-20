@@ -50,5 +50,4 @@ class IndexControllerISpec extends ComponentSpecBase with FeatureSwitching {
       }
     }
   }
-
 }

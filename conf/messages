@@ -297,6 +297,15 @@ page-not-found.p3 = If the web address is correct or you selected a link or butt
 page-not-found.bullet1 = contact us about this problem
 page-not-found.bullet2 = find software that works with Making Tax Digital for Income Tax
 
+#Need Additional Software page
+need-additional-software.heading = You will need additional software
+need-additional-software.para1 = If you want to keep using your spreadsheets to record your income and expenses, you will need to use new software that connects to your digital records.
+need-additional-software.para2 = You can also choose software that creates digital records. This may be the better option if you want one product to meet all your needs.
+need-additional-software.para3 = This software is able to:
+need-additional-software.bullet1 = create digital records
+need-additional-software.bullet2 = send quarterly updates to HMRC
+need-additional-software.bullet3 = submit tax returns
+
 # Phase Banner
 phase-banner.tag = Beta
 phase-banner.intro = This is a new service. Help us improve it and
