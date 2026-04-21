@@ -288,7 +288,7 @@ timeout.reset = Dileu’ch atebion
 
 session-expired.title = Atebion wedi’u Dileu
 session-expired.user = Rydych wedi dileu’ch atebion
-session-expired.timeout.heading = Er diogelwch, gwnaethom ddileu’ch atebion.
+session-expired.timeout.heading = *** MISSING WELSH ***
 session-expired.timeout.para1 = *** MISSING WELSH ***
 session-expired.button = Dechrau eto
 

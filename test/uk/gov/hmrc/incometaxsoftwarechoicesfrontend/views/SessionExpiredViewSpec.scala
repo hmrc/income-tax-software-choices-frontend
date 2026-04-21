@@ -56,6 +56,9 @@ class SessionExpiredViewSpec extends ViewSpec {
       "have the correct heading" in {
         document.selectHead("h1").text mustBe SessionExpiredContent.timeoutHeading
       }
+      "have the correct paragraph" in {
+        document.mainContent.selectHead("p").text mustBe SessionExpiredContent.timeoutparagraph
+      }
 
       "have a continue button" in {
         form.selectNth(".govuk-button", 1).text mustBe SessionExpiredContent.continue
@@ -69,4 +72,6 @@ private object SessionExpiredContent {
   val userHeading = "You deleted your answers"
   val timeoutHeading = "Session timed out due to inactivity"
   val continue = "Start again"
+  val timeoutparagraph = "Your session timed out after 15 minutes of inactivity, so we cleared your information to keep it secure. You will need to start again."
+
 }
