@@ -17,7 +17,7 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.helpers
 
 import uk.gov.hmrc.govukfrontend.views.viewmodels.select.*
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{OtherSoftware, SoftwareVendorModel}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.OtherSoftware
 
 trait SelectBuilder {
   def buildSelects(products: Seq[OtherSoftware]): Seq[SelectItem] = {
@@ -31,8 +31,6 @@ trait SelectBuilder {
       )
     )
 
-     default +: combinedProducts
+    default +: combinedProducts
   }
-
-
 }
