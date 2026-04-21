@@ -85,7 +85,7 @@ class EnterSoftwareNameController @Inject()(view: EnterSoftwareNameView,
     selectedProduct match {
       case product if product.softwareType == Recognised => Redirect(routes.UserTypeController.show())
       case product if product.softwareType == FutureVendor => Redirect(routes.EnterSoftwareNameController.show())
-      case product if product.softwareType == Spreadsheet => Redirect(routes.EnterSoftwareNameController.show())
+      case product if product.softwareType == Spreadsheet => Redirect(routes.NeedAdditionalSoftwareController.show())
       case _ => Redirect(routes.NoSoftwareListedController.show())
     }
   }

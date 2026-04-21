@@ -18,8 +18,6 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms
 
 import org.scalatestplus.play.PlaySpec
 import play.api.data.FormError
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.{Check, Find}
 
 class EnterSoftwareNameFormSpec extends PlaySpec {
 

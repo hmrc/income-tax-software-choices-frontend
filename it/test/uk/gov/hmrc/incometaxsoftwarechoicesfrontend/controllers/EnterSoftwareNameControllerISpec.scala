@@ -29,8 +29,6 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.DataService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
 
-import javax.inject.Inject
-
 class EnterSoftwareNameControllerISpec extends ComponentSpecBase with BeforeAndAfterEach with DatabaseHelper {
 
   def testUserFilters(answers: UserAnswers): UserFilters = UserFilters(SessionId, Some(answers))
@@ -131,7 +129,7 @@ class EnterSoftwareNameControllerISpec extends ComponentSpecBase with BeforeAndA
 
         res should have(
           httpStatus(SEE_OTHER),
-          redirectURI(routes.EnterSoftwareNameController.show().url)
+          redirectURI(routes.NeedAdditionalSoftwareController.show().url)
         )
 
         Json.fromJson[OtherSoftware](getPageData(SessionId, EnterSoftwareNamePage.toString).getOrElse(JsNull)).get.name shouldBe spreadsheetProducts.head.name
@@ -185,7 +183,7 @@ class EnterSoftwareNameControllerISpec extends ComponentSpecBase with BeforeAndA
 
         res should have(
           httpStatus(SEE_OTHER),
-          redirectURI(routes.EnterSoftwareNameController.show().url)
+          redirectURI(routes.NeedAdditionalSoftwareController.show().url)
         )
 
         Json.fromJson[OtherSoftware](getPageData(SessionId, EnterSoftwareNamePage.toString).getOrElse(JsNull)).get.name shouldBe spreadsheetProducts.head.name
