@@ -33,8 +33,7 @@
         form: FormWithCSRF,
         autocompleteCss: HmrcAccessibleAutocompleteCss,
         autocompleteJavascript: HmrcAccessibleAutocompleteJavascript,
-        govukSelect: GovukSelect,
-        govukInput: GovukInput
+        govukSelect: GovukSelect
 )(implicit appConfig: AppConfig)
 
 @(enterSoftwareNameForm: Form[Int], selectOptions: Seq[SelectItem], postAction: Call, notListedLink:String, backLink: String)(implicit request: Request[_], messages: Messages)

@@ -8,6 +8,6 @@
     {"productId": 1006,"name": "Quip Spreadsheets","softwareType": "spreadsheet"},
     {"productId": 1007,"name": "OnlyOffice Spreadsheets","softwareType": "spreadsheet"},
     {"productId": 1008,"name": "WPS Spreadsheets","softwareType": "spreadsheet"},
-    {"productId": 2001,"name": "MaybeNot Vendor","softwareType": "future-vendor"}
+    {"productId": 2001,"name": "Maybe Vendor","softwareType": "future-vendor"}
   ]
 }

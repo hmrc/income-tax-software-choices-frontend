@@ -22,7 +22,7 @@ import play.api.data.FormError
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.EnterSoftwareNameForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.TestModels.*
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.OtherSoftware
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareProduct
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.{FutureVendor, Recognised, Spreadsheet}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.helpers.SelectBuilder
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.EnterSoftwareNameView
@@ -33,10 +33,10 @@ class EnterSoftwareNameViewSpec extends ViewSpec with SelectBuilder {
 
   private val formError: FormError = FormError("enterSoftwareName", "enterSoftwareName.error.nonEmpty")
 
-  private val testProducts: Seq[OtherSoftware] = Seq(
-    OtherSoftware(1, "Vendor One", Recognised),
-    OtherSoftware(2, "Vendor Two", Spreadsheet),
-    OtherSoftware(3, "Vendor Three", FutureVendor)
+  private val testProducts: Seq[SoftwareProduct] = Seq(
+    SoftwareProduct(1, "Vendor One", Recognised),
+    SoftwareProduct(2, "Vendor Two", Spreadsheet),
+    SoftwareProduct(3, "Vendor Three", FutureVendor)
   )
 
   private val notListedLink = "testNotListedLink"

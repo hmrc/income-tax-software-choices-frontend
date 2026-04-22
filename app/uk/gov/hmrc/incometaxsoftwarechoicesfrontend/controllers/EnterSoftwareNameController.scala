@@ -19,7 +19,7 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{RequireUserDataRefiner, SessionIdentifierAction}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.EnterSoftwareNameForm
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.OtherSoftware
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareProduct
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.EnterSoftwareNamePage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.{DataService, PageAnswersService}
@@ -38,7 +38,7 @@ class EnterSoftwareNameController @Inject()(view: EnterSoftwareNameView,
                                        )(implicit mcc: MessagesControllerComponents,
                                          ec: ExecutionContext) extends BaseFrontendController with SelectBuilder {
 
-  private val recognisedProducts = dataService.getSoftwareVendors().vendors.map(v => OtherSoftware(v.productId, v.name, Recognised))
+  private val recognisedProducts = dataService.getSoftwareVendors().vendors.map(v => SoftwareProduct(v.productId, v.name, Recognised))
   private val futureProducts = dataService.getOtherSoftware().filter(_.softwareType.eq(FutureVendor))
   private val spreadsheetProducts = dataService.getOtherSoftware().filter(_.softwareType.eq(Spreadsheet))
   private val allProducts = recognisedProducts ++ futureProducts ++ spreadsheetProducts
@@ -71,7 +71,7 @@ class EnterSoftwareNameController @Inject()(view: EnterSoftwareNameView,
         )))
       },
       productId => {
-        val selectedProduct  = allProducts.find(_.productId == productId).getOrElse(OtherSoftware(productId, "Unknown", Unrecognised))
+        val selectedProduct  = allProducts.find(_.productId == productId).getOrElse(SoftwareProduct(productId, "Unknown", Unrecognised))
 
         pageAnswersService.setPageAnswers(request.sessionId, EnterSoftwareNamePage, selectedProduct).map {
           case true => redirect(selectedProduct)
@@ -81,7 +81,7 @@ class EnterSoftwareNameController @Inject()(view: EnterSoftwareNameView,
     )
   }
 
-  private def redirect(selectedProduct: OtherSoftware) = {
+  private def redirect(selectedProduct: SoftwareProduct) = {
     selectedProduct match {
       case product if product.softwareType == Recognised => Redirect(routes.UserTypeController.show())
       case product if product.softwareType == FutureVendor => Redirect(routes.EnterSoftwareNameController.show())

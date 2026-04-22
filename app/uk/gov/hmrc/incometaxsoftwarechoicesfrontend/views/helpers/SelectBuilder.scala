@@ -17,17 +17,17 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.helpers
 
 import uk.gov.hmrc.govukfrontend.views.viewmodels.select.*
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.OtherSoftware
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareProduct
 
 trait SelectBuilder {
-  def buildSelects(products: Seq[OtherSoftware]): Seq[SelectItem] = {
+  def buildSelects(products: Seq[SoftwareProduct]): Seq[SelectItem] = {
 
     val default = SelectItem(value = Some(""))
 
     val combinedProducts = products.sortBy(_.name).map(product =>
       SelectItem(
-        value = Some(product._1.toString),
-        text = product._2
+        value = Some(product.productId.toString),
+        text = product.name
       )
     )
 

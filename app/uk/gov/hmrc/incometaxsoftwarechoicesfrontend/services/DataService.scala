@@ -20,7 +20,7 @@ import play.api.Environment
 import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
 import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{OtherSoftware, OtherSoftwareList, SoftwareVendors}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareProduct, OtherSoftwareList, SoftwareVendors}
 
 import javax.inject.{Inject, Singleton}
 
@@ -61,7 +61,7 @@ class DataService @Inject()(
       throw new InternalServerException(s"[DataService][otherSoftware] - Json parse failures - ${errors.mkString(",")}")
   }
 
-  def getOtherSoftware(): Seq[OtherSoftware] =
+  def getOtherSoftware(): Seq[SoftwareProduct] =
     otherSoftware.software
 
 }

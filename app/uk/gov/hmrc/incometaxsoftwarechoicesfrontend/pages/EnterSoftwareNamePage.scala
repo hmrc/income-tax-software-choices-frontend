@@ -17,12 +17,12 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages
 
 import play.api.libs.json.{JsPath, Reads}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.OtherSoftware
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareProduct
 
-case object EnterSoftwareNamePage extends QuestionPage[OtherSoftware] {
+case object EnterSoftwareNamePage extends QuestionPage[SoftwareProduct] {
   override def toString: String = "softwareProduct"
 
   override def path: JsPath = JsPath \ toString
 
-  override def reads: Reads[OtherSoftware] = implicitly
+  override def reads: Reads[SoftwareProduct] = implicitly
 }

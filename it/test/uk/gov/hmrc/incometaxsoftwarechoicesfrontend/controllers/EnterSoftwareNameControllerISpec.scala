@@ -18,13 +18,12 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import org.scalatest.BeforeAndAfterEach
 import play.api.http.Status.{BAD_REQUEST, OK, SEE_OTHER}
-import play.api.libs.json.{JsNull, Json}
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.SessionId
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, DatabaseHelper}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.Check
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.{FutureVendor, Recognised, Spreadsheet}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{JourneyType, OtherSoftware, UserAnswers, UserFilters}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{JourneyType, SoftwareProduct, UserAnswers, UserFilters}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.DataService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
@@ -33,7 +32,7 @@ class EnterSoftwareNameControllerISpec extends ComponentSpecBase with BeforeAndA
 
   def testUserFilters(answers: UserAnswers): UserFilters = UserFilters(SessionId, Some(answers))
 
-  private val firstOtherSpreadsheetProduct = OtherSoftware(1001, "Microsoft Excel", Spreadsheet)
+  private val firstOtherSpreadsheetProduct = SoftwareProduct(1001, "Microsoft Excel", Spreadsheet)
 
   override def beforeEach(): Unit = {
     await(userFiltersRepository.collection.drop().toFuture())
@@ -41,7 +40,7 @@ class EnterSoftwareNameControllerISpec extends ComponentSpecBase with BeforeAndA
   }
 
   private val dataService: DataService = app.injector.instanceOf[DataService]
-  private val recognisedProducts = dataService.getSoftwareVendors().vendors.map(v => OtherSoftware(v.productId, v.name, Recognised))
+  private val recognisedProducts = dataService.getSoftwareVendors().vendors.map(v => SoftwareProduct(v.productId, v.name, Recognised))
   private val futureProducts = dataService.getOtherSoftware().filter(_.softwareType.eq(FutureVendor))
   private val spreadsheetProducts = dataService.getOtherSoftware().filter(_.softwareType.eq(Spreadsheet))
 
@@ -66,7 +65,8 @@ class EnterSoftwareNameControllerISpec extends ComponentSpecBase with BeforeAndA
 
         res should have(
           httpStatus(OK),
-          pageTitle(s"${messages("enter-software-name.heading")} - ${PageContentBase.title} - GOV.UK")
+          pageTitle(s"${messages("enter-software-name.heading")} - ${PageContentBase.title} - GOV.UK"),
+          autocompleteSelected("")
         )
       }
     }
@@ -88,6 +88,7 @@ class EnterSoftwareNameControllerISpec extends ComponentSpecBase with BeforeAndA
     }
 
   }
+
   s"POST ${routes.EnterSoftwareNameController.submit()}" when {
     "there is nothing saved in the database for this user" should {
       "redirect to the service index" in {
@@ -114,7 +115,7 @@ class EnterSoftwareNameControllerISpec extends ComponentSpecBase with BeforeAndA
           redirectURI(routes.UserTypeController.show().url)
         )
 
-        Json.fromJson[OtherSoftware](getPageData(SessionId, EnterSoftwareNamePage.toString).getOrElse(JsNull)).get.name shouldBe recognisedProducts.head.name
+        getPageData(SessionId, EnterSoftwareNamePage).map(_.name) shouldBe Some(recognisedProducts.head.name)
       }
     }
 
@@ -132,7 +133,7 @@ class EnterSoftwareNameControllerISpec extends ComponentSpecBase with BeforeAndA
           redirectURI(routes.NeedAdditionalSoftwareController.show().url)
         )
 
-        Json.fromJson[OtherSoftware](getPageData(SessionId, EnterSoftwareNamePage.toString).getOrElse(JsNull)).get.name shouldBe spreadsheetProducts.head.name
+        getPageData(SessionId, EnterSoftwareNamePage).map(_.name) shouldBe Some(spreadsheetProducts.head.name)
       }
     }
 
@@ -150,7 +151,7 @@ class EnterSoftwareNameControllerISpec extends ComponentSpecBase with BeforeAndA
           redirectURI(routes.EnterSoftwareNameController.show().url)
         )
 
-        Json.fromJson[OtherSoftware](getPageData(SessionId, EnterSoftwareNamePage.toString).getOrElse(JsNull)).get.name shouldBe futureProducts.head.name
+        getPageData(SessionId, EnterSoftwareNamePage).map(_.name) shouldBe Some(futureProducts.head.name)
       }
     }
 
@@ -168,7 +169,7 @@ class EnterSoftwareNameControllerISpec extends ComponentSpecBase with BeforeAndA
           redirectURI(routes.NoSoftwareListedController.show().url)
         )
 
-        Json.fromJson[OtherSoftware](getPageData(SessionId, EnterSoftwareNamePage.toString).getOrElse(JsNull)).get.name shouldBe "Unknown"
+        getPageData(SessionId, EnterSoftwareNamePage).map(_.name) shouldBe Some("Unknown")
       }
     }
 
@@ -186,7 +187,7 @@ class EnterSoftwareNameControllerISpec extends ComponentSpecBase with BeforeAndA
           redirectURI(routes.NeedAdditionalSoftwareController.show().url)
         )
 
-        Json.fromJson[OtherSoftware](getPageData(SessionId, EnterSoftwareNamePage.toString).getOrElse(JsNull)).get.name shouldBe spreadsheetProducts.head.name
+        getPageData(SessionId, EnterSoftwareNamePage).map(_.name) shouldBe Some(spreadsheetProducts.head.name)
       }
     }
 

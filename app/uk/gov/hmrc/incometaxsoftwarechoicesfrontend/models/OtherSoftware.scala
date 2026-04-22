@@ -18,15 +18,15 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models
 
 import play.api.libs.json.{Format, JsString, Json, Reads, Writes, __}
 
-case class OtherSoftware(productId: Int,
+case class SoftwareProduct(productId: Int,
                          name: String,
                          softwareType: SoftwareType)
 
-object OtherSoftware {
-  implicit val format: Format[OtherSoftware] = Json.format[OtherSoftware]
+object SoftwareProduct {
+  implicit val format: Format[SoftwareProduct] = Json.format[SoftwareProduct]
 }
 
-case class OtherSoftwareList(software: Seq[OtherSoftware])
+case class OtherSoftwareList(software: Seq[SoftwareProduct])
 
 object OtherSoftwareList {
   implicit val reads: Reads[OtherSoftwareList] = Json.reads[OtherSoftwareList]

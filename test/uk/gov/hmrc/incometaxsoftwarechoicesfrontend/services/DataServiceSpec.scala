@@ -25,7 +25,7 @@ import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.TestModels.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.{FutureVendor, Spreadsheet}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{OtherSoftware, SoftwareVendors}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareProduct, SoftwareVendors}
 
 import java.io.FileInputStream
 import java.time.LocalDate
@@ -67,10 +67,10 @@ class DataServiceSpec extends PlaySpec {
     )
   )
 
-  val validOtherSoftwareProducts: Seq[OtherSoftware] = Seq(
-    OtherSoftware(1001, "Microsoft Excel", Spreadsheet),
-    OtherSoftware(1002, "Google Sheets", Spreadsheet),
-    OtherSoftware(2001, "Maybe Vendor", FutureVendor)
+  val validOtherSoftwareProducts: Seq[SoftwareProduct] = Seq(
+    SoftwareProduct(1001, "Microsoft Excel", Spreadsheet),
+    SoftwareProduct(1002, "Google Sheets", Spreadsheet),
+    SoftwareProduct(2001, "Maybe Vendor", FutureVendor)
     )
 
   "getSoftwareVendors" when {

@@ -37,8 +37,8 @@ class OtherSoftwareSpec extends PlaySpec {
   )
 
   val fullModel: OtherSoftwareList = OtherSoftwareList(Seq(
-    OtherSoftware(1, "software vendor name 1", Spreadsheet),
-    OtherSoftware(2, "software vendor name 2", FutureVendor)
+    SoftwareProduct(1, "software vendor name 1", Spreadsheet),
+    SoftwareProduct(2, "software vendor name 2", FutureVendor)
   ))
 
   "OtherSoftwareList" must {
