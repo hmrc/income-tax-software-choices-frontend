@@ -31,8 +31,6 @@ object FeatureSwitch {
   val switches: Set[FeatureSwitch] = Set(
     TestFeature,
     ExplicitAudits,
-    HMRCAssist,
-    Language,
     CheckJourney
   )
   def get(str: String): Option[FeatureSwitch] = switches find (_.key == str)
@@ -45,16 +43,6 @@ object FeatureSwitch {
   case object ExplicitAudits extends FeatureSwitch {
     override val key = "explicit-audits"
     override val displayText = "Explicit audits"
-  }
-
-  case object HMRCAssist extends FeatureSwitch {
-    override val key = "hmrc-assist"
-    override val displayText = "HMRC Assist"
-  }
-
-  case object Language extends FeatureSwitch {
-    override val key = "language"
-    override val displayText = "Language"
   }
 
   case object CheckJourney extends FeatureSwitch {

@@ -474,13 +474,17 @@ object VendorFilterGroups {
   )
 
   // product details page groups //
-  def featuresProvidedGroup(withHMRCAssist: Boolean): List[VendorFilter] = {
-    if (withHMRCAssist)
-      List(FreeVersion, RecordKeeping, Bridging, Agent, Individual, HMRCAssist, StandardUpdatePeriods, CalendarUpdatePeriods)
-    else
-      List(FreeVersion, RecordKeeping, Bridging, Agent, Individual, StandardUpdatePeriods, CalendarUpdatePeriods)
-  }
-
+  def featuresProvidedGroup: List[VendorFilter] = List(
+    FreeVersion,
+    RecordKeeping,
+    Bridging,
+    Agent,
+    Individual,
+    HMRCAssist,
+    StandardUpdatePeriods,
+    CalendarUpdatePeriods
+  )
+  
   val businessIncomeGroup: List[VendorFilter] = List(
     SoleTrader,
     UkProperty,
@@ -497,15 +501,11 @@ object VendorFilterGroups {
     QuarterlyUpdates
   )
 
-  def preferenceFilters(isAgent: Boolean, withHMRCAssist: Boolean, withLanguage: Boolean): Seq[(Set[VendorFilter], String)] = {
+  def preferenceFilters(isAgent: Boolean): Seq[(Set[VendorFilter], String)] = {
 
     val agentGroup = if (isAgent) Seq((userTypeFilters, "user-type")) else Seq.empty
 
     val readinessGroup = if (!isAgent) Seq((readinessFilters, "readiness")) else Seq.empty
-
-    val languageGroup = if (withLanguage) Seq((languageFeature, "language-features")) else Seq.empty
-
-    val extraFeaturesGroup = if (withHMRCAssist) Seq((extraFeatures, "extra-features")) else Seq.empty
 
     agentGroup ++
       Seq((pricingFilters, "pricing")) ++
@@ -513,8 +513,8 @@ object VendorFilterGroups {
       Seq((Set(Bridging), "software-for")) ++
       Seq((compatibility, "software-compatibility")) ++
       Seq((accessibilityFilters, "accessibility")) ++
-      languageGroup ++
-      extraFeaturesGroup
+      Seq((languageFeature, "language-features")) ++
+      Seq((extraFeatures, "extra-features"))
   }
 
   val nonMandatedIncomeGroup: List[VendorFilter] = List(
