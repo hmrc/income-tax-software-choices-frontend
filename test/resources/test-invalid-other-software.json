@@ -1,0 +1,6 @@
+{
+  "software": [
+    {"productId": 1001,"name": "Microsoft Excel","softwareType": "spreadsheet"},
+    {"productId": 1002,"softwareType": "spreadsheet"}
+  ]
+}

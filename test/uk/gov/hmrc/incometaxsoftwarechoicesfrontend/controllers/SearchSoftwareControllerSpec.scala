@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -129,6 +129,8 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec
     when(mockUserFiltersRepo.set(ArgumentMatchers.any())).thenReturn(Future.successful(true))
     when(mockEnvironment.resourceAsStream(eqTo(appConfig.softwareChoicesVendorFileName)))
       .thenReturn(Some(new FileInputStream("test/resources/test-valid-software-vendors.json")))
+    when(mockEnvironment.resourceAsStream(eqTo(appConfig.otherSoftwareFileName)))
+      .thenReturn(Some(new FileInputStream("test/resources/test-other-software.json")))
 
     lazy val softwareChoicesService: SoftwareChoicesService = new SoftwareChoicesService(new DataService(appConfig, mockEnvironment), mockUserFiltersRepo)
     lazy val pageAnswerService: PageAnswersService = new PageAnswersService(mockUserFiltersRepo, ec)

@@ -70,6 +70,6 @@ class HowYouFindSoftwareController @Inject()(view: HowYouFindSoftwareView,
   
   private def redirect(journeyType: JourneyType) = journeyType match {
     case Find => Redirect(routes.UserTypeController.show())
-    case Check => Redirect(routes.HowYouFindSoftwareController.show())
+    case Check => Redirect(routes.EnterSoftwareNameController.show())
   }
 }

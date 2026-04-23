@@ -85,7 +85,7 @@ class HowYouFindSoftwareControllerISpec extends ComponentSpecBase with BeforeAnd
 
         res should have(
           httpStatus(SEE_OTHER),
-          redirectURI(routes.HowYouFindSoftwareController.show().url)
+          redirectURI(routes.EnterSoftwareNameController.show().url)
         )
 
         getPageData(SessionId, HowYouFindSoftwarePage.toString).size shouldBe 1
@@ -115,7 +115,7 @@ class HowYouFindSoftwareControllerISpec extends ComponentSpecBase with BeforeAnd
 
         res should have(
           httpStatus(SEE_OTHER),
-          redirectURI(routes.HowYouFindSoftwareController.show().url)
+          redirectURI(routes.EnterSoftwareNameController.show().url)
         )
         getAllPageData(SessionId).size shouldBe 2
       }

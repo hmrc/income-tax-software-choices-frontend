@@ -24,7 +24,8 @@ import play.api.Environment
 import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.TestModels.*
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareVendors
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.{FutureVendor, Spreadsheet}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareProduct, SoftwareVendors}
 
 import java.io.FileInputStream
 import java.time.LocalDate
@@ -34,6 +35,11 @@ class DataServiceSpec extends PlaySpec {
   private val validVendors = "test/resources/test-valid-software-vendors.json"
   private val invalidVendors = "test/resources/test-invalid-software-vendors.json"
   private val productionVendors = "conf/software-vendors.json"
+
+  private val testOtherSoftwareFileName: String = "test-other-software.json"
+  private val validOtherSoftware = "test/resources/test-other-software.json"
+  private val invalidOtherSoftware = "test/resources/test-invalid-other-software.json"
+  private val productionOtherSoftware = "conf/other-software.json"
 
   class Setup {
     val mockConfig: AppConfig = mock[AppConfig]
@@ -45,6 +51,9 @@ class DataServiceSpec extends PlaySpec {
     )
 
     when(mockConfig.softwareChoicesVendorFileName) thenReturn testFileName
+    when(mockConfig.otherSoftwareFileName) thenReturn testOtherSoftwareFileName
+    when(mockEnvironment.resourceAsStream(eqTo(testOtherSoftwareFileName))).thenReturn(Some(new FileInputStream(validOtherSoftware)))
+    when(mockEnvironment.resourceAsStream(eqTo(testFileName))).thenReturn(Some(new FileInputStream(validVendors)))
   }
 
   val unsortedSoftwareVendors: SoftwareVendors = SoftwareVendors(
@@ -57,6 +66,12 @@ class DataServiceSpec extends PlaySpec {
       testVendorFive
     )
   )
+
+  val validOtherSoftwareProducts: Seq[SoftwareProduct] = Seq(
+    SoftwareProduct(1001, "Microsoft Excel", Spreadsheet),
+    SoftwareProduct(1002, "Google Sheets", Spreadsheet),
+    SoftwareProduct(2001, "Maybe Vendor", FutureVendor)
+    )
 
   "getSoftwareVendors" when {
 
@@ -87,6 +102,38 @@ class DataServiceSpec extends PlaySpec {
 
       intercept[InternalServerException](service.getSoftwareVendors()).message
         .contains("[DataService][softwareVendors] - Json parse failures") mustBe true
+    }
+  }
+
+  "getOtherSoftware" when {
+
+    "the other software production config file exists and is valid" in new Setup {
+      when(mockEnvironment.resourceAsStream(eqTo(testOtherSoftwareFileName)))
+        .thenReturn(Some(new FileInputStream(productionOtherSoftware)))
+
+      noException shouldBe thrownBy(service.getOtherSoftware())
+    }
+
+    "the other software config file exists and is valid" in new Setup {
+      when(mockEnvironment.resourceAsStream(eqTo(testOtherSoftwareFileName)))
+        .thenReturn(Some(new FileInputStream(validOtherSoftware)))
+
+      service.getOtherSoftware() mustBe validOtherSoftwareProducts
+    }
+
+    "the other software config file does not exist" in new Setup {
+      when(mockEnvironment.resourceAsStream(eqTo(testOtherSoftwareFileName)))
+        .thenReturn(None)
+
+      intercept[InternalServerException](service.getOtherSoftware()).message mustBe s"[DataService][jsonFile] - $testOtherSoftwareFileName not found"
+    }
+
+    "the other software config file contains invalid json" in new Setup {
+      when(mockEnvironment.resourceAsStream(eqTo(testOtherSoftwareFileName)))
+        .thenReturn(Some(new FileInputStream(invalidOtherSoftware)))
+
+      intercept[InternalServerException](service.getOtherSoftware()).message
+        .contains("[DataService][otherSoftware] - Json parse failures") mustBe true
     }
   }
 }
