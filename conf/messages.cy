@@ -288,7 +288,8 @@ timeout.reset = Dileu’ch atebion
 
 session-expired.title = Atebion wedi’u Dileu
 session-expired.user = Rydych wedi dileu’ch atebion
-session-expired.timeout = Er diogelwch, gwnaethom ddileu’ch atebion.
+session-expired.timeout.heading = Sesiwn wedi dod i ben oherwydd anweithgarwch
+session-expired.timeout.para1 = Fe ddaeth eich sesiwn i ben ar ôl 15 munud o anweithgarwch, felly rydym wedi clirio eich gwybodaeth er mwyn ei chadw’n ddiogel. Bydd angen i chi ddechrau eto.
 session-expired.button = Dechrau eto
 
 page-not-found.title = Heb ddod o hyd i’r dudalen
@@ -318,6 +319,12 @@ exit-survey.link = Rhoi adborth ar y gwasanaeth hwn
 # Not Listed Software
 not-listed-software.title = *** MISSING WELSH ***
 not-listed-software.para1 = *** MISSING WELSH ***
+
+# Enter Software Name
+enter-software-name.heading = *** MISSING WELSH ***
+enter-software-name.hint = *** MISSING WELSH ***
+enter-software-name.error.empty = *** MISSING WELSH ***
+enter-software-name.software-not-listed = *** MISSING WELSH ***
 
 #Software In Development page
 software-in-development.heading = *** MISSING WELSH ***

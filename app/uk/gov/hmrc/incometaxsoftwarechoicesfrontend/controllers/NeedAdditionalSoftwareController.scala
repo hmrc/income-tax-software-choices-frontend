@@ -33,7 +33,7 @@ class NeedAdditionalSoftwareController @Inject()(view: NeedAdditionalSoftwareVie
   
     Ok(view(
       continueURL = routes.UserTypeController.show().url,
-      backLink = routes.NeedAdditionalSoftwareController.show().url
+      backLink = routes.EnterSoftwareNameController.show().url
     ))
   }
 }

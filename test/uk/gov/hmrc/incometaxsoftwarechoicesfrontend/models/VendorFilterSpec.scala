@@ -17,7 +17,7 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models
 
 import org.scalatestplus.play.PlaySpec
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{Agent, Individual, Welsh, HMRCAssist}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{Agent, Individual}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilterGroups.*
 
 class VendorFilterSpec extends PlaySpec {
@@ -35,11 +35,11 @@ class VendorFilterSpec extends PlaySpec {
         languageFeature
       ).flatten.distinct
       Seq(false, true).foreach { testCondition =>
-        val actual = VendorFilterGroups.preferenceFilters(isAgent = testCondition, withHMRCAssist = testCondition, withLanguage = testCondition).flatMap(f => f._1)
-          ++ VendorFilterGroups.featuresProvidedGroup(withHMRCAssist = testCondition)
+        val actual = VendorFilterGroups.preferenceFilters(isAgent = testCondition).flatMap(f => f._1)
+          ++ VendorFilterGroups.featuresProvidedGroup
         val expected = testCondition match {
           case true => filters
-          case false => filters.filter(_ != Agent).filter(_ != Individual).filter(_ != HMRCAssist).filter(_ != Welsh)
+          case false => filters.filter(_ != Agent).filter(_ != Individual)
         }
         expected.map(f => actual.contains(f) mustBe true)
       }

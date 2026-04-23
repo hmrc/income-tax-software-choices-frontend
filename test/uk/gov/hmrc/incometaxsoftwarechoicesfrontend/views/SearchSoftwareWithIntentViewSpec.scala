@@ -21,7 +21,6 @@ import org.jsoup.nodes.{Document, Element}
 import org.scalatest.{Assertion, BeforeAndAfterEach}
 import play.api.mvc.Call
 import play.twirl.api.HtmlFormat
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.{FeatureSwitch, FeatureSwitching}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes.ProductDetailsController
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.TestModels.*
@@ -33,7 +32,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SearchSoftwareVie
 
 import java.time.LocalDate
 
-class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach with FeatureSwitching {
+class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach {
 
   import SearchSoftwareWithIntentViewSpec._
 
@@ -99,8 +98,6 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
   }
 
   "Search software page must have a filter section" which {
-    disable (FeatureSwitch.HMRCAssist)
-    disable (FeatureSwitch.Language)
     lazy val document = {
       val model = SoftwareChoicesResultsViewModel(
         vendorsWithIntent = SearchSoftwareWithIntentPageContent.multipleVendorsWithIntent
@@ -225,60 +222,43 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
       }
     }
 
-    "does not have additional filters when feature switches disabled" in {
-      getFilterSection(document).selectNthOptionally(".govuk-form-group", 6) shouldBe None
-      getFilterSection(document).selectNthOptionally(".govuk-form-group", 7) shouldBe None
+    "has a language section" that {
+      val checkboxGroup = getCheckboxGroup(document, 6)
+
+      "contains a fieldset legend" in {
+        checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwareWithIntentPageContent.Filters.language
+      }
+
+      "contains a Welsh Language checkbox" in {
+        validateCheckboxInGroup(
+          checkboxGroup,
+          1,
+          Welsh.key,
+          SearchSoftwareWithIntentPageContent.welsh,
+          None
+        )
+      }
     }
 
-    "has additional filters when feature switches enabled" which {
-      enable(FeatureSwitch.HMRCAssist)
-      enable(FeatureSwitch.Language)
+    "has an extra features section" that {
+      val checkboxGroup = getCheckboxGroup(document, 7)
 
-      lazy val document = {
-        val model = SoftwareChoicesResultsViewModel(
-          vendorsWithIntent = SearchSoftwareWithIntentPageContent.multipleVendorsWithIntent
+      "contains a fieldset legend" in {
+        checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwareWithIntentPageContent.Filters.extraFeatures
+      }
+
+      "contains an HMRC Assist checkbox" in {
+        validateCheckboxInGroup(
+          checkboxGroup,
+          1,
+          HMRCAssist.key,
+          SearchSoftwareWithIntentPageContent.hmrcAssist,
+          None
         )
-        Jsoup.parse(page(model).body)
-      }
-      "has an language section" that {
-        val checkboxGroup = getCheckboxGroup(document, 6)
-
-        "contains a fieldset legend" in {
-          checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwareWithIntentPageContent.Filters.language
-        }
-
-        "contains a Welsh Language checkbox" in {
-          validateCheckboxInGroup(
-            checkboxGroup,
-            1,
-            Welsh.key,
-            SearchSoftwareWithIntentPageContent.welsh,
-            None
-          )
-        }
-      }
-      "has an extra features section" that {
-        val checkboxGroup = getCheckboxGroup(document, 7)
-
-        "contains a fieldset legend" in {
-          checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwareWithIntentPageContent.Filters.extraFeatures
-        }
-
-        "contains a HMRC Assist checkbox" in {
-          validateCheckboxInGroup(
-            checkboxGroup,
-            1,
-            HMRCAssist.key,
-            SearchSoftwareWithIntentPageContent.hmrcAssist,
-            None
-          )
-        }
       }
     }
 
     "has the correct filters for agent users" which {
-      enable(FeatureSwitch.HMRCAssist)
-      enable(FeatureSwitch.Language)
       lazy val document = {
         val model = SoftwareChoicesResultsViewModel(
           vendorsWithIntent = SearchSoftwareWithIntentPageContent.multipleVendorsWithIntent,
@@ -352,7 +332,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
           documentManyResults.title shouldBe SearchSoftwareWithIntentPageContent.title(4)
           documentManyResults.mainContent.selectHead("h1").text shouldBe SearchSoftwareWithIntentPageContent.heading(4)
         }
-        "there is one results" in {
+        "there is one result" in {
           documentOneResult.title shouldBe SearchSoftwareWithIntentPageContent.titleOne
           documentOneResult.mainContent.selectHead("h1").text shouldBe SearchSoftwareWithIntentPageContent.headingOne
         }
@@ -494,7 +474,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
           documentAgentMany.title shouldBe SearchSoftwareWithIntentPageContent.title(4)
           documentAgentMany.mainContent.selectHead("h1").text shouldBe SearchSoftwareWithIntentPageContent.heading(4)
         }
-        "there is one results" in {
+        "there is one result" in {
           documentAgentOneResult.title shouldBe SearchSoftwareWithIntentPageContent.titleOne
           documentAgentOneResult.mainContent.selectHead("h1").text shouldBe SearchSoftwareWithIntentPageContent.headingOne
         }

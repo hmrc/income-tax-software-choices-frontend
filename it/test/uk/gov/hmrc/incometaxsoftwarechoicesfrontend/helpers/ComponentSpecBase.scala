@@ -158,6 +158,14 @@ trait ComponentSpecBase extends AnyWordSpec
       )
     }
 
+    def getEnterSoftwareName(): WSResponse = get("/enter-software-name")
+
+    def postEnterSoftwareName(pageAnswer: Option[Int]): WSResponse = post("/enter-software-name")(
+      pageAnswer.fold(Map.empty[String, Seq[String]])(
+        productId => EnterSoftwareNameForm.form.fill(productId).data.map { case (k, v) => (k, Seq(v)) }
+      )
+    )
+
     def healthcheck(): WSResponse =
       wsClient
         .url(s"$baseUrl/ping/ping")
