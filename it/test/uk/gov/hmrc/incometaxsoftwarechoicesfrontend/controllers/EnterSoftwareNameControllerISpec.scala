@@ -148,7 +148,7 @@ class EnterSoftwareNameControllerISpec extends ComponentSpecBase with BeforeAndA
 
         res should have(
           httpStatus(SEE_OTHER),
-          redirectURI(routes.EnterSoftwareNameController.show().url)
+          redirectURI(routes.SoftwareInDevelopmentController.show().url)
         )
 
         getPageData(SessionId, EnterSoftwareNamePage).map(_.name) shouldBe Some(futureProducts.head.name)

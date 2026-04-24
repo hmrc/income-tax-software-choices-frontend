@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
+import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import play.api.http.Status.OK
@@ -23,6 +24,9 @@ import play.api.mvc.Result
 import play.api.test.Helpers.{HTML, contentType, defaultAwaitTimeout, status}
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.mocks.{MockRequireUserDataRefiner, MockSessionIdentifierAction}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserFilters
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.PageAnswersService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SoftwareInDevelopmentView
 
 import scala.concurrent.Future
@@ -32,17 +36,23 @@ class SoftwareInDevelopmentControllerSpec extends ControllerBaseSpec
   with MockRequireUserDataRefiner {
 
   val mockSoftwareInDevelopmentView: SoftwareInDevelopmentView = mock[SoftwareInDevelopmentView]
+  val mockUserFiltersRepo: UserFiltersRepository = mock[UserFiltersRepository]
+  lazy val pageAnswersService: PageAnswersService = new PageAnswersService(mockUserFiltersRepo, ec)
 
   val controller: SoftwareInDevelopmentController = new SoftwareInDevelopmentController(
-    view         = mockSoftwareInDevelopmentView,
-    identify     = fakeSessionIdentifierAction,
-    requireData  = fakeRequireUserDataRefiner
+    view               = mockSoftwareInDevelopmentView,
+    identify           = fakeSessionIdentifierAction,
+    requireData        = fakeRequireUserDataRefiner,
+    pageAnswersService = pageAnswersService
   )
 
   "show" must {
     "return OK and display the software in development page" in {
       when(mockSoftwareInDevelopmentView(any(), any(), any())(any(), any()))
         .thenReturn(HtmlFormat.empty)
+      when(mockUserFiltersRepo.get(any()))
+        .thenReturn(Future.successful(Some(mock[UserFilters]))
+      )
 
       val result: Future[Result] = controller.show()(fakeRequest)
 

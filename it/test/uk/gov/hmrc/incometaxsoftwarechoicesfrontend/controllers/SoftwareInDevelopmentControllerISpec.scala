@@ -21,7 +21,9 @@ import play.api.http.Status.{OK, SEE_OTHER}
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.SessionId
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, DatabaseHelper}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserAnswers
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.FutureVendor
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareProduct, UserAnswers}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.EnterSoftwareNamePage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
 
 class SoftwareInDevelopmentControllerISpec
@@ -39,14 +41,17 @@ class SoftwareInDevelopmentControllerISpec
       }
     }
     "display the page" in {
-      setupAnswers(SessionId, Some(UserAnswers()))
+      val softwareProduct = SoftwareProduct(0, "A1 Tax Stuff", FutureVendor)
+      val userAnswers = UserAnswers()
+        .set(EnterSoftwareNamePage, softwareProduct).get
+
+      setupAnswers(SessionId, Some(userAnswers))
 
       val res = SoftwareChoicesFrontend.getSoftwareInDevelopment
 
       res should have(
         httpStatus(OK),
-        //TODO - Remove hardcoding of software name
-        pageTitle(s"A1 Tax Stuff ${messages("software-in-development.heading")} - ${PageContentBase.title} - GOV.UK"),
+        pageTitle(s"${softwareProduct.name} ${messages("software-in-development.heading")} - ${PageContentBase.title} - GOV.UK"),
       )
     }
   }
