@@ -36,7 +36,7 @@ class NeedAdditionalSoftwareControllerSpec extends ControllerBaseSpec
   val controller: NeedAdditionalSoftwareController = new NeedAdditionalSoftwareController(
     view         = mockNeedAdditionalSoftwareView,
     identify     = fakeSessionIdentifierAction,
-    requireData  = fakeRequireUserDataRefiner
+    requireData  = fakeRequireUserDataRefiner()
   )
 
   "show" must {

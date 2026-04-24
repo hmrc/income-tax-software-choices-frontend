@@ -18,8 +18,6 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{RequireUserDataRefiner, SessionIdentifierAction}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.EnterSoftwareNamePage
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.PageAnswersService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SoftwareInDevelopmentView
 
 import javax.inject.{Inject, Singleton}
@@ -27,24 +25,22 @@ import javax.inject.{Inject, Singleton}
 @Singleton
 class SoftwareInDevelopmentController @Inject()(view: SoftwareInDevelopmentView,
                                                 identify: SessionIdentifierAction,
-                                                requireData: RequireUserDataRefiner,
-                                                pageAnswersService: PageAnswersService)
+                                                requireData: RequireUserDataRefiner)
                                                (implicit mcc: MessagesControllerComponents) extends BaseFrontendController {
 
   def show(): Action[AnyContent] = (identify andThen requireData) { request =>
     given Request[AnyContent] = request
 
-    val softwareName = pageAnswersService
-      .getPageAnswers(request.userFilters.answers, EnterSoftwareNamePage)
-      .map(_.name)
-      .getOrElse(InternalServerError("[SoftwareInDevelopmentController][show] - Could not find software name in answers]"))
-      .toString
-    
+    request.softwareName match {
+      case Some(softwareName) => {
+        Ok(view(
+          continueURL = routes.UserTypeController.show().url,
+          backLink = routes.EnterSoftwareNameController.show().url,
+          chosenSoftware = softwareName
+        ))
+      }
+      case None => InternalServerError("[SoftwareInDevelopmentController][show] - Could not find software name in answers]")
+    }
 
-    Ok(view(
-      continueURL = routes.UserTypeController.show().url,
-      backLink = routes.NeedAdditionalSoftwareController.show().url,
-      chosenSoftware = softwareName
-    ))
   }
 }

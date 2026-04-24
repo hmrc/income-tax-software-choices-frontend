@@ -17,22 +17,29 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions
 
 import play.api.mvc.Results.Redirect
-import play.api.mvc._
+import play.api.mvc.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.requests.{SessionDataRequest, SessionRequest}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.{EnterSoftwareNamePage, HowYouFindSoftwarePage}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.PageAnswersService
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class RequireUserDataRefiner @Inject()(userFiltersRepository: UserFiltersRepository)
+class RequireUserDataRefiner @Inject()(userFiltersRepository: UserFiltersRepository,
+                                       pageAnswersService: PageAnswersService)
                                       (implicit val executionContext: ExecutionContext)
   extends ActionRefiner[SessionRequest, SessionDataRequest] {
 
-  override protected def refine[A](request: SessionRequest[A]): Future[Either[Result, SessionDataRequest[A]]] = {
+  override def refine[A](request: SessionRequest[A]): Future[Either[Result, SessionDataRequest[A]]] = {
     userFiltersRepository.get(request.sessionId) map {
-      case Some(userFilters) => Right(SessionDataRequest(request, request.sessionId, userFilters))
+      case Some(userFilters) => {
+        val journey = pageAnswersService.getPageAnswers(userFilters.answers, HowYouFindSoftwarePage)
+        val softwareName = pageAnswersService.getPageAnswers(userFilters.answers, EnterSoftwareNamePage).map(_.name)
+        Right(SessionDataRequest(request, request.sessionId, userFilters, journey, softwareName))
+      }
       case None => Left(Redirect(routes.IndexController.index))
     }
   }
