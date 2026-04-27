@@ -325,3 +325,8 @@ enter-software-name.heading = *** MISSING WELSH ***
 enter-software-name.hint = *** MISSING WELSH ***
 enter-software-name.error.empty = *** MISSING WELSH ***
 enter-software-name.software-not-listed = *** MISSING WELSH ***
+
+#Software In Development page
+software-in-development.heading = *** MISSING WELSH ***
+software-in-development.para1 = *** MISSING WELSH ***
+software-in-development.para2 = *** MISSING WELSH ***

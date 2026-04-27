@@ -79,6 +79,8 @@ trait ComponentSpecBase extends AnyWordSpec
 
     def getNeedAdditionalSoftware: WSResponse = get("/need-additional-software")
 
+    def getSoftwareInDevelopment: WSResponse = get("/software-in-development")
+
     def getAdditionalIncome: WSResponse = get("/which-other-income-source-tax-return")
 
     def submitAdditionalIncome(maybeKeys: Option[Seq[String]], editMode: Boolean = false): WSResponse = {

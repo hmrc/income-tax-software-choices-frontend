@@ -175,7 +175,7 @@ class UserTypeControllerSpec extends ControllerBaseSpec with MockSessionIdentifi
       mockUserTypeView,
       mockPageAnswersService,
       fakeSessionIdentifierAction,
-      fakeRequireUserDataRefiner,
+      fakeRequireUserDataRefiner(),
       appConfig
     )(ec, mcc)
 

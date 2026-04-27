@@ -19,23 +19,25 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.mocks
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.mvc.Result
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.RequireUserDataRefiner
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserFilters
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{JourneyType, UserFilters}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.requests.{SessionDataRequest, SessionRequest}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.PageAnswersService
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 trait MockRequireUserDataRefiner extends MockitoSugar {
 
-  val fakeRequireUserDataRefiner: RequireUserDataRefiner = new RequireUserDataRefiner(mock[UserFiltersRepository]) {
+  def fakeRequireUserDataRefiner(journey: Option[JourneyType] = None, softwareName: Option[String] = None): RequireUserDataRefiner =
+    new RequireUserDataRefiner(mock[UserFiltersRepository], mock[PageAnswersService]) {
     override def refine[A](request: SessionRequest[A]): Future[Either[Result, SessionDataRequest[A]]] = {
       Future.successful(Right(SessionDataRequest(
-        request = request,
-        sessionId = request.sessionId,
-        userFilters = UserFilters(
-          id = request.sessionId
-        )
+        request      = request,
+        sessionId    = request.sessionId,
+        userFilters  = UserFilters(id = request.sessionId),
+        journey      = journey,
+        softwareName = softwareName
       )))
     }
   }

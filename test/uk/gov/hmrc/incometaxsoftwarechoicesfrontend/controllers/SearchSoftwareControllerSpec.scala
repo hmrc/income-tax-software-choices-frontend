@@ -141,7 +141,7 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec
       pageAnswerService,
       mockUserFiltersRepo,
       fakeSessionIdentifierAction,
-      fakeRequireUserDataRefiner,
+      fakeRequireUserDataRefiner(),
       auditService
     )(ec, appConfig, mcc)
 
