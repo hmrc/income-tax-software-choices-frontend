@@ -38,7 +38,8 @@ class RequireUserDataRefiner @Inject()(userFiltersRepository: UserFiltersReposit
       case Some(userFilters) => {
         val journey = pageAnswersService.getPageAnswers(userFilters.answers, HowYouFindSoftwarePage)
         val softwareName = pageAnswersService.getPageAnswers(userFilters.answers, EnterSoftwareNamePage).map(_.name)
-        Right(SessionDataRequest(request, request.sessionId, userFilters, journey, softwareName))
+        val softwareType = pageAnswersService.getPageAnswers(userFilters.answers, EnterSoftwareNamePage).map(_.softwareType)
+        Right(SessionDataRequest(request, request.sessionId, userFilters, journey, softwareName, softwareType))
       }
       case None => Left(Redirect(routes.IndexController.index))
     }
