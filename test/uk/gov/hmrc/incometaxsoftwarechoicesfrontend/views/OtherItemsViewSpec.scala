@@ -37,7 +37,8 @@ class OtherItemsViewSpec extends ViewSpec with FeatureSwitching {
       OtherItemsForm.form
     },
     postAction = testCall,
-    backLink = testBackUrl
+    backLink = testBackUrl,
+    softwareName = None
   )
 
   "OtherItemsPage" when {

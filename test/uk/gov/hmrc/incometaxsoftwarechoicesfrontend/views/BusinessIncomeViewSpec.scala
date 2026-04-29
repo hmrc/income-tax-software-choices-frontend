@@ -36,7 +36,8 @@ class BusinessIncomeSourcesViewSpec extends ViewSpec {
       BusinessIncomeForm.form
     },
     postAction = testCall,
-    backUrl = testBackUrl
+    backUrl = testBackUrl,
+    softwareName = None
   )
 
   def document(hasError: Boolean = false): Document = Jsoup.parse(page(hasError).body)

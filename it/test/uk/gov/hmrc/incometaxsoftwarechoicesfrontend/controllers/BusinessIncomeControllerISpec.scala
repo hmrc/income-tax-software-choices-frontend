@@ -63,6 +63,7 @@ class BusinessIncomeControllerISpec extends ComponentSpecBase with BeforeAndAfte
           checkboxSelected("businessIncome", Some(SoleTrader.key)),
           checkboxSelected("businessIncome-2", Some(UkProperty.key)),
           checkboxSelected("businessIncome-3", Some(OverseasProperty.key)),
+          //elementExists(".govuk-phase-banner", expectedResult = true)
         )
       }
     }

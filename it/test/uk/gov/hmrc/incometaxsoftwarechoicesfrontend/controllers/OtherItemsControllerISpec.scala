@@ -56,7 +56,8 @@ class OtherItemsControllerISpec extends ComponentSpecBase with BeforeAndAfterEac
           checkboxSelected("otherItems-5", None),
           checkboxSelected("otherItems-6", None),
           checkboxSelected("otherItems-7", None),
-          checkboxSelected("otherItems-9", None)
+          checkboxSelected("otherItems-9", None),
+          //elementExists(".govuk-phase-banner", expectedResult = true)
         )
       }
       "the other items page has been answered previously with other items selections" in {
@@ -75,7 +76,8 @@ class OtherItemsControllerISpec extends ComponentSpecBase with BeforeAndAfterEac
           checkboxSelected("otherItems-6", Some(MarriageAllowance.key)),
           checkboxSelected("otherItems-7", Some(VoluntaryClass2NationalInsurance.key)),
           checkboxSelected("otherItems-8", Some(HighIncomeChildBenefitCharge.key)),
-          checkboxSelected("otherItems-10", None)
+          checkboxSelected("otherItems-10", None),
+          //elementExists(".govuk-phase-banner", expectedResult = true)
         )
       }
       "the other items page has been answered previously with none selected" in {
@@ -94,7 +96,8 @@ class OtherItemsControllerISpec extends ComponentSpecBase with BeforeAndAfterEac
           checkboxSelected("otherItems-6", None),
           checkboxSelected("otherItems-7", None),
           checkboxSelected("otherItems-8", None),
-          checkboxSelected("otherItems-10", Some("none"))
+          checkboxSelected("otherItems-10", Some("none")),
+          //elementExists(".govuk-phase-banner", expectedResult = true)
         )
       }
     }

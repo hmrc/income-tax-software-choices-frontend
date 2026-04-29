@@ -18,12 +18,15 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{RequireUserDataRefiner, SessionIdentifierAction}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.EnterSoftwareNamePage
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.PageAnswersService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.AccountingPeriodNotAlignedView
 
 import javax.inject.{Inject, Singleton}
 
 @Singleton
 class AccountingPeriodNotAlignedController @Inject()(view: AccountingPeriodNotAlignedView,
+                                                     pageAnswersService: PageAnswersService,
                                                      identify: SessionIdentifierAction,
                                                      requireData: RequireUserDataRefiner)
                                                     (implicit mcc: MessagesControllerComponents)extends BaseFrontendController {
@@ -31,9 +34,11 @@ class AccountingPeriodNotAlignedController @Inject()(view: AccountingPeriodNotAl
 
   def show(editMode: Boolean): Action[AnyContent] = (identify andThen requireData) { request =>
     given Request[AnyContent] = request
+    val softwareName = pageAnswersService.getPageAnswers(request.userFilters.answers, EnterSoftwareNamePage).map(_.name)
     Ok(view(
       postAction = routes.AccountingPeriodNotAlignedController.submit(editMode),
-      backLink = routes.AccountingPeriodController.show(editMode).url
+      backLink = routes.AccountingPeriodController.show(editMode).url,
+      softwareName = softwareName
     ))
   }
 

@@ -34,7 +34,7 @@ class AccountingPeriodNotAlignedViewSpec extends ViewSpec {
 
   private val view = app.injector.instanceOf[AccountingPeriodNotAlignedView]
 
-  val page: HtmlFormat.Appendable = view(postAction = testCall, backLink = testBackUrl)
+  val page: HtmlFormat.Appendable = view(postAction = testCall, backLink = testBackUrl, softwareName = None)
   val document: Document = Jsoup.parse(page.body)
 
   "AccountingPeriodNotAlignedView" must {
