@@ -20,7 +20,7 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{RequireUserDataRefiner, SessionIdentifierAction}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.AdditionalIncomeForm
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.AdditionalIncomeSourcesPage
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.{AdditionalIncomeSourcesPage, EnterSoftwareNamePage}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.PageAnswersService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.AdditionalIncomeSourceView
 
@@ -39,23 +39,27 @@ class AdditionalIncomeSourcesController @Inject()(view: AdditionalIncomeSourceVi
     given Request[AnyContent] = request
 
     val pageAnswers = pageAnswersService.getPageAnswers(request.userFilters.answers, AdditionalIncomeSourcesPage)
+    val softwareName = pageAnswersService.getPageAnswers(request.userFilters.answers, EnterSoftwareNamePage).map(_.name)
     Ok(view(
       AdditionalIncomeForm.form.fill(pageAnswers),
       postAction = routes.AdditionalIncomeSourcesController.submit(editMode),
-      backUrl = backUrl(editMode)
+      backUrl = backUrl(editMode),
+      softwareName = softwareName
     ))
   }
 
 
   def submit(editMode: Boolean): Action[AnyContent] = (identify andThen requireData).async { request =>
     given Request[AnyContent] = request
+    val softwareName = pageAnswersService.getPageAnswers(request.userFilters.answers, EnterSoftwareNamePage).map(_.name)
     AdditionalIncomeForm.form.bindFromRequest().fold(
       formWithErrors =>
         Future.successful(
           BadRequest(view(
             additionalIncomeForm = formWithErrors,
             postAction = routes.AdditionalIncomeSourcesController.submit(editMode),
-            backUrl = backUrl(editMode)
+            backUrl = backUrl(editMode),
+            softwareName = softwareName
           ))
         ),
       answers => {

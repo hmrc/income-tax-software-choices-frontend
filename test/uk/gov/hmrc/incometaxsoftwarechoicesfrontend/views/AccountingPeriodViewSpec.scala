@@ -37,7 +37,7 @@ class AccountingPeriodViewSpec extends ViewSpec {
     } else {
       AccountingPeriodForm.accountingPeriodForm
     }
-    view(accountingPeriodForm = form, postAction = testCall, backUrl = testBackUrl)
+    view(accountingPeriodForm = form, postAction = testCall, backUrl = testBackUrl,softwareName = None)
   }
 
   def document(hasError: Boolean = false): Document = Jsoup.parse(page(hasError).body)

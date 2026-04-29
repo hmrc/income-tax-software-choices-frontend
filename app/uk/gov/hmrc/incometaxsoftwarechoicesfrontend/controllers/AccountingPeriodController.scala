@@ -23,7 +23,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{Require
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.AccountingPeriodForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.AccountingPeriodForm.accountingPeriodForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.AccountingPeriod.*
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.AccountingPeriodPage
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.{AccountingPeriodPage, EnterSoftwareNamePage}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.PageAnswersService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.AccountingPeriodView
 
@@ -42,23 +42,27 @@ class AccountingPeriodController @Inject()(view: AccountingPeriodView,
     given Request[AnyContent] = request
 
     val pageAnswers = pageAnswersService.getPageAnswers(request.userFilters.answers, AccountingPeriodPage)
+    val softwareName = pageAnswersService.getPageAnswers(request.userFilters.answers, EnterSoftwareNamePage).map(_.name)
     Ok(view(
       accountingPeriodForm = AccountingPeriodForm.accountingPeriodForm.fill(pageAnswers),
       postAction = routes.AccountingPeriodController.submit(editMode),
-      backUrl = backUrl(editMode)
+      backUrl = backUrl(editMode),
+      softwareName = softwareName
     ))
   }
 
 
   def submit(editMode: Boolean): Action[AnyContent] = (identify andThen requireData).async { request =>
     given Request[AnyContent] = request
+    val softwareName = pageAnswersService.getPageAnswers(request.userFilters.answers, EnterSoftwareNamePage).map(_.name)
     accountingPeriodForm.bindFromRequest().fold(
       formWithErrors => {
         Future.successful(
           BadRequest(view(
             accountingPeriodForm = formWithErrors,
             postAction = routes.AccountingPeriodController.submit(editMode),
-            backUrl = backUrl(editMode)
+            backUrl = backUrl(editMode),
+            softwareName = softwareName
           ))
         )
       },

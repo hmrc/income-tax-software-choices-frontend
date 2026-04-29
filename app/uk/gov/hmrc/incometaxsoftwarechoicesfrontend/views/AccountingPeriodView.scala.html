@@ -30,12 +30,22 @@
         form: FormWithCSRF,
         radioHelper: RadioHelper,
         hmrcNewTabLinkHelper: HmrcNewTabLinkHelper,
+        govukPhaseBanner: GovukPhaseBanner,
         govukButton: GovukButton
 )
 
-@(accountingPeriodForm: Form[AccountingPeriod], postAction: Call, backUrl: String)(implicit request: Request[_], messages: Messages)
+@(accountingPeriodForm: Form[AccountingPeriod], postAction: Call, backUrl: String,softwareName: Option[String])(implicit request: Request[_], messages: Messages)
 
 @mainTemplate(title = messages("accounting-period.heading"), optForm = Some(accountingPeriodForm), backLink = Some(backUrl)) {
+    @softwareName.map { name =>
+        @govukPhaseBanner(PhaseBanner(
+            tag = Some(Tag(
+                content = Text(name)
+                //content = HtmlContent(s"<strong>$name</strong>")
+            )),
+            content = HtmlContent("")
+        ))
+    }
 
     <h1 class="govuk-heading-l">@messages("accounting-period.heading")</h1>
 

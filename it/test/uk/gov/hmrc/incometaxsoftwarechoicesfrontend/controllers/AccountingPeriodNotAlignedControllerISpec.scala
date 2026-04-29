@@ -46,6 +46,7 @@ class AccountingPeriodNotAlignedControllerISpec
       res should have(
         httpStatus(OK),
         pageTitle(s"${messages("accounting-period-not-aligned.heading")} - ${PageContentBase.title} - GOV.UK"),
+        //elementExists(".govuk-phase-banner", expectedResult = true)
       )
     }
     "have correct back link when not in edit mode" in {

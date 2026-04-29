@@ -26,6 +26,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.BusinessIncomeVie
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.EnterSoftwareNamePage
 
 @Singleton
 class BusinessIncomeController @Inject()(view: BusinessIncomeView,
@@ -40,22 +41,26 @@ class BusinessIncomeController @Inject()(view: BusinessIncomeView,
     given Request[AnyContent] = request
 
     val pageAnswers = pageAnswersService.getPageAnswers(request.userFilters.answers, BusinessIncomePage)
+    val softwareName = pageAnswersService.getPageAnswers(request.userFilters.answers, EnterSoftwareNamePage).map(_.name)
     Ok(view(
       businessIncomeForm = BusinessIncomeForm.form.fill(pageAnswers),
       postAction = routes.BusinessIncomeController.submit(editMode),
-      backUrl = backUrl(editMode)
+      backUrl = backUrl(editMode),
+      softwareName = softwareName
     ))
   }
 
   def submit(editMode: Boolean): Action[AnyContent] = (identify andThen requireData).async { request =>
     given Request[AnyContent] = request
+    val softwareName = pageAnswersService.getPageAnswers(request.userFilters.answers, EnterSoftwareNamePage).map(_.name)
     BusinessIncomeForm.form.bindFromRequest().fold(
       formWithErrors => {
         Future.successful(
           BadRequest(view(
             businessIncomeForm = formWithErrors,
             postAction = routes.BusinessIncomeController.submit(editMode),
-            backUrl = backUrl(editMode)
+            backUrl = backUrl(editMode),
+            softwareName = softwareName
           ))
         )
       },

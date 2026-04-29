@@ -49,7 +49,8 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
           pageTitle(s"${messages("accounting-period.heading")} - ${PageContentBase.title} - GOV.UK"),
           radioButtonSelected(id = "accounting-period", None),
           radioButtonSelected(id = "accounting-period-2", None),
-          radioButtonSelected(id = "accounting-period-4", None)
+          radioButtonSelected(id = "accounting-period-4", None),
+          //elementExists(".govuk-phase-banner", expectedResult = true)
         )
       }
       "the accounting period question has been answered previously" which {
@@ -63,7 +64,8 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
             pageTitle(s"${messages("accounting-period.heading")} - ${PageContentBase.title} - GOV.UK"),
             radioButtonSelected(id = "accounting-period", Some(SixthAprilToFifthApril.key)),
             radioButtonSelected(id = "accounting-period-2", None),
-            radioButtonSelected(id = "accounting-period-4", None)
+            radioButtonSelected(id = "accounting-period-4", None),
+            //elementExists(".govuk-phase-banner", expectedResult = true)
           )
         }
         "was the 1st April to 31st March option" in {
@@ -76,7 +78,8 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
             pageTitle(s"${messages("accounting-period.heading")} - ${PageContentBase.title} - GOV.UK"),
             radioButtonSelected(id = "accounting-period", None),
             radioButtonSelected(id = "accounting-period-2", Some(FirstAprilToThirtyFirstMarch.key)),
-            radioButtonSelected(id = "accounting-period-4", None)
+            radioButtonSelected(id = "accounting-period-4", None),
+            //elementExists(".govuk-phase-banner", expectedResult = true)
           )
         }
         "was the neither option" in {
@@ -89,7 +92,8 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
             pageTitle(s"${messages("accounting-period.heading")} - ${PageContentBase.title} - GOV.UK"),
             radioButtonSelected(id = "accounting-period", None),
             radioButtonSelected(id = "accounting-period-2", None),
-            radioButtonSelected(id = "accounting-period-4", Some(OtherAccountingPeriod.key))
+            radioButtonSelected(id = "accounting-period-4", Some(OtherAccountingPeriod.key)),
+            //elementExists(".govuk-phase-banner", expectedResult = true)
           )
         }
       }

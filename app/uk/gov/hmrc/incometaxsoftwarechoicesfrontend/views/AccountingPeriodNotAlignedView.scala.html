@@ -20,12 +20,22 @@
 @this(
     mainTemplate: MainTemplate,
     govukButton: GovukButton,
+        govukPhaseBanner: GovukPhaseBanner,
     form: FormWithCSRF
 )
 
-@(postAction: Call, backLink: String)(implicit request: Request[_], messages: Messages)
+@(postAction: Call, backLink: String,softwareName: Option[String])(implicit request: Request[_], messages: Messages)
 
 @mainTemplate(title = messages("accounting-period-not-aligned.heading"), backLink = Some(backLink)) {
+    @softwareName.map { name =>
+        @govukPhaseBanner(PhaseBanner(
+            tag = Some(Tag(
+                content = Text(name)
+                //content = HtmlContent(s"<strong>$name</strong>")
+            )),
+            content = HtmlContent("")
+        ))
+    }
 
     <h1 class="govuk-heading-l">@messages("accounting-period-not-aligned.heading")</h1>
 

@@ -27,12 +27,23 @@
         mainTemplate: MainTemplate,
         govukCheckboxes: GovukCheckboxes,
         govukButton: GovukButton,
+        govukPhaseBanner: GovukPhaseBanner,
         form: FormWithCSRF
 )(implicit appConfig: AppConfig)
 
-@(otherItemsForm: Form[Seq[VendorFilter]], postAction: Call, backLink: String)(implicit request: Request[_], messages: Messages)
+@(otherItemsForm: Form[Seq[VendorFilter]], postAction: Call, backLink: String,softwareName:Option[String])(implicit request: Request[_], messages: Messages)
 
 @mainTemplate(title = messages("other-items.title"), backLink = Some(backLink), optForm = Some(otherItemsForm)) {
+
+    @softwareName.map { name =>
+        @govukPhaseBanner(PhaseBanner(
+            tag = Some(Tag(
+                content = Text(name)
+                //content = HtmlContent(s"<strong>$name</strong>")
+            )),
+            content = HtmlContent("")
+        ))
+    }
 
     @form(action = postAction) {
 

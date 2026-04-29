@@ -41,7 +41,8 @@ class AdditionalIncomeSourceViewSpec extends ViewSpec  with BeforeAndAfterEach {
     view(
       additionalIncomeForm = form,
       postAction = testCall,
-      backUrl = testBackUrl
+      backUrl = testBackUrl,
+      softwareName = None
     )
   }
 
