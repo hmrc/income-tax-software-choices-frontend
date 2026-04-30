@@ -18,6 +18,8 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{RequireUserDataRefiner, SessionIdentifierAction}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.EnterSoftwareNamePage
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.PageAnswersService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.FullyCompatibleView
 
 import javax.inject.{Inject, Singleton}
@@ -30,13 +32,13 @@ class FullyCompatibleController @Inject()(view: FullyCompatibleView,
 
   def show(): Action[AnyContent] = (identify andThen requireData) { request =>
     given Request[AnyContent] = request
-
-    (request.softwareId, request.softwareName) match {
-      case (Some(softwareId), Some(softwareName)) => {
+    
+    request.product match {
+      case Some(product) => {
         Ok(view(
-          continueURL = routes.ProductDetailsController.show(softwareId.toString).url,
+          continueURL = routes.ProductDetailsController.show(product.productId.toString).url,
           backLink = routes.CheckYourAnswersController.show().url,
-          chosenSoftware = softwareName,
+          chosenSoftware = product.name,
         ))
       }
       case _ => InternalServerError("[FullyCompatibleController][show] - Could not find software name and software product ID in answers]")

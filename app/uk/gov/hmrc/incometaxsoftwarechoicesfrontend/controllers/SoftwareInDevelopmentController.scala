@@ -31,12 +31,12 @@ class SoftwareInDevelopmentController @Inject()(view: SoftwareInDevelopmentView,
   def show(): Action[AnyContent] = (identify andThen requireData) { request =>
     given Request[AnyContent] = request
 
-    request.softwareName match {
-      case Some(softwareName) => {
+    request.product match {
+      case Some(product) => {
         Ok(view(
           continueURL = routes.UserTypeController.show().url,
           backLink = routes.EnterSoftwareNameController.show().url,
-          chosenSoftware = softwareName
+          chosenSoftware = product.name
         ))
       }
       case None => InternalServerError("[SoftwareInDevelopmentController][show] - Could not find software name in answers]")

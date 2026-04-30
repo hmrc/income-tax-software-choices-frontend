@@ -55,15 +55,12 @@ class CheckYourAnswersController @Inject()(view: CheckYourAnswersView,
       vendors = softwareChoicesService.getVendorsWithIntent(vendorFilters)
     } yield {
       //TODO - Remove print lines in yield when new controllers are in place
-      println(Console.GREEN + vendors.map(_.vendor.name) + Console.RESET)
-      println(Console.YELLOW + request.softwareName + Console.RESET)
-      val foundVendor = vendors.find(v => request.softwareName == Some(v.vendor.name))
-      println(Console.RED + foundVendor + Console.RESET)
+      val softwareName = request.product.map(_.name).getOrElse("")
+      val softwareType = request.product.map(_.softwareType)
+      val foundVendor = vendors.find(v => softwareName == v.vendor.name)
       val isQuarterlyReady = foundVendor.flatMap(_.quarterlyReady)
-      println(Console.RED + isQuarterlyReady + Console.RESET)
       val isEoyReady = foundVendor.flatMap(_.eoyReady)
-      println(Console.RED + isEoyReady + Console.RESET)
-      (vendors.isEmpty, request.journey, request.softwareType, isQuarterlyReady, isEoyReady) match {
+      (vendors.isEmpty, request.journey, softwareType, isQuarterlyReady, isEoyReady) match {
         case (true, _, _, _, _) =>
           println(Console.BLUE + "zero results" + Console.RESET)
           Redirect(routes.ZeroSoftwareResultsController.show())

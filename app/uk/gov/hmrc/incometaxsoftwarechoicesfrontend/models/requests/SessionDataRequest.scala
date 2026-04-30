@@ -17,13 +17,11 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.requests
 
 import play.api.mvc.Request
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{JourneyType, SoftwareType, UserFilters}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.*
 
 case class SessionDataRequest[A](request: Request[A],
                                  override val sessionId: String,
                                  userFilters: UserFilters,
                                  journey: Option[JourneyType],
-                                 softwareName: Option[String],
-                                 softwareType:  Option[SoftwareType],
-                                 softwareId: Option[Int]
+                                 product: Option[SoftwareProduct]
                                 ) extends SessionRequest[A](request, sessionId)
