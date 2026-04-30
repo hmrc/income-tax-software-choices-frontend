@@ -74,16 +74,16 @@ class CheckYourAnswersController @Inject()(view: CheckYourAnswersView,
           println(Console.BLUE + "find journey, choosing software" + Console.RESET)
           Redirect(routes.ChoosingSoftwareController.show())
         case (false, Some(Check), Some(Recognised), Some(true), Some(true)) =>
-          println(Console.BLUE + "check journey, fully compliant" + Console.RESET)
-          Redirect(routes.CheckYourAnswersController.show())
+          println(Console.BLUE + "check journey, fully compatible" + Console.RESET)
+          Redirect(routes.FullyCompatibleController.show())
         case (false, Some(Check), Some(Recognised), Some(true), Some(false)) =>
-          println(Console.BLUE + "check journey, partially compliant" + Console.RESET)
+          println(Console.BLUE + "check journey, partially compatible" + Console.RESET)
           Redirect(routes.CheckYourAnswersController.show())
         case (false, Some(Check), Some(Recognised), Some(true), None) =>
           println(Console.BLUE + "check journey, quarterly only" + Console.RESET)
           Redirect(routes.CheckYourAnswersController.show())
         case (false, Some(Check), Some(Recognised), None, None) =>
-          println(Console.BLUE + "check journey, not compliant" + Console.RESET)
+          println(Console.BLUE + "check journey, not compatible" + Console.RESET)
           Redirect(routes.CheckYourAnswersController.show())
         case (false, Some(Check), _, _, _) =>
           println(Console.BLUE + "check journey, choosing software" + Console.RESET)

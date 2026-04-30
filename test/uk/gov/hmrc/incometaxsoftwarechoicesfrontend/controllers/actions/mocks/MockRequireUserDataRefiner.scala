@@ -31,7 +31,8 @@ trait MockRequireUserDataRefiner extends MockitoSugar {
 
   def fakeRequireUserDataRefiner(journey: Option[JourneyType] = None,
                                  softwareName: Option[String] = None,
-                                 softwareType: Option[SoftwareType] = None
+                                 softwareType: Option[SoftwareType] = None,
+                                 softwareId: Option[Int] = None
                                 ): RequireUserDataRefiner =
     new RequireUserDataRefiner(mock[UserFiltersRepository], mock[PageAnswersService]) {
     override def refine[A](request: SessionRequest[A]): Future[Either[Result, SessionDataRequest[A]]] = {
@@ -41,7 +42,8 @@ trait MockRequireUserDataRefiner extends MockitoSugar {
         userFilters  = UserFilters(id = request.sessionId),
         journey      = journey,
         softwareName = softwareName,
-        softwareType = softwareType
+        softwareType = softwareType,
+        softwareId = softwareId
       )))
     }
   }

@@ -232,9 +232,8 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
           case None => fail("No user filters found")
         }
       }
-//      TODO - update controller routing in title and assertion
-      "redirect to the check your answers page when in the check journey when software type is recognised and fully complaint" in {
-        val fullyCompliantProduct = dataService.getSoftwareVendors().vendors.map(v => SoftwareProduct(v.productId, "vendor 05", Recognised)).head
+      "redirect to the fully compatible page when in the check journey when software type is recognised and fully compatible" in {
+        val fullyCompatibleProduct = dataService.getSoftwareVendors().vendors.map(v => SoftwareProduct(v.productId, "vendor 05", Recognised)).head
 
         val userAnswers = UserAnswers()
           .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
@@ -242,14 +241,14 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
           .set(OtherItemsPage, Seq.empty).get
           .set(AccountingPeriodPage, SixthAprilToFifthApril).get
           .set(HowYouFindSoftwarePage, Check).get
-          .set(EnterSoftwareNamePage, fullyCompliantProduct).get
+          .set(EnterSoftwareNamePage, fullyCompatibleProduct).get
         await(userFiltersRepository.set(testUserFilters(Some(userAnswers))))
 
         val res = SoftwareChoicesFrontend.postCheckYourAnswers()
 
         res should have(
           httpStatus(SEE_OTHER),
-          redirectURI(routes.CheckYourAnswersController.show().url)
+          redirectURI(routes.FullyCompatibleController.show().url)
         )
 
         await(userFiltersRepository.get(SessionId)) match {
@@ -258,8 +257,8 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
         }
       }
 //      TODO - update controller routing in title and assertion
-      "redirect to the check your answers page when in the check journey when software type is recognised and partially complaint" in {
-        val partiallyCompliantProduct = dataService.getSoftwareVendors().vendors.map(v => SoftwareProduct(v.productId, "vendor 04", Recognised)).head
+      "redirect to the check your answers page when in the check journey when software type is recognised and partially compatible" in {
+        val partiallyCompatibleProduct = dataService.getSoftwareVendors().vendors.map(v => SoftwareProduct(v.productId, "vendor 04", Recognised)).head
 
         val userAnswers = UserAnswers()
           .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
@@ -267,7 +266,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
           .set(OtherItemsPage, Seq.empty).get
           .set(AccountingPeriodPage, SixthAprilToFifthApril).get
           .set(HowYouFindSoftwarePage, Check).get
-          .set(EnterSoftwareNamePage, partiallyCompliantProduct).get
+          .set(EnterSoftwareNamePage, partiallyCompatibleProduct).get
         await(userFiltersRepository.set(testUserFilters(Some(userAnswers))))
 
         val res = SoftwareChoicesFrontend.postCheckYourAnswers()
@@ -308,8 +307,8 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
         }
       }
 //      TODO - update controller routing in title and assertion
-      "redirect to the check your answers page when in the check journey when software type is recognised and not compliant" in {
-        val nonCompliantProduct = dataService.getSoftwareVendors().vendors.map(v => SoftwareProduct(v.productId, "vendor 01", Recognised)).head
+      "redirect to the check your answers page when in the check journey when software type is recognised and not compatible" in {
+        val nonCompatibleProduct = dataService.getSoftwareVendors().vendors.map(v => SoftwareProduct(v.productId, "vendor 01", Recognised)).head
 
         val userAnswers = UserAnswers()
           .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
@@ -317,7 +316,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
           .set(OtherItemsPage, Seq.empty).get
           .set(AccountingPeriodPage, SixthAprilToFifthApril).get
           .set(HowYouFindSoftwarePage, Check).get
-          .set(EnterSoftwareNamePage, nonCompliantProduct).get
+          .set(EnterSoftwareNamePage, nonCompatibleProduct).get
         await(userFiltersRepository.set(testUserFilters(Some(userAnswers))))
 
         val res = SoftwareChoicesFrontend.postCheckYourAnswers()

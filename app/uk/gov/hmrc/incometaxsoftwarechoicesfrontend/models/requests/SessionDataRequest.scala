@@ -24,5 +24,6 @@ case class SessionDataRequest[A](request: Request[A],
                                  userFilters: UserFilters,
                                  journey: Option[JourneyType],
                                  softwareName: Option[String],
-                                 softwareType:  Option[SoftwareType]
+                                 softwareType:  Option[SoftwareType],
+                                 softwareId: Option[Int]
                                 ) extends SessionRequest[A](request, sessionId)
