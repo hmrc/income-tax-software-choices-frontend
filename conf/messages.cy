@@ -12,6 +12,7 @@ base.find.compatible        = *** MISSING WELSH ***
 how-you-find-software.heading = *** MISSING WELSH ***
 how-you-find-software.find = *** MISSING WELSH ***
 how-you-find-software.find.hint = *** MISSING WELSH ***
+how-you-find-software.view-all = *** MISSING WELSH ***
 how-you-find-software.check = *** MISSING WELSH ***
 how-you-find-software.check.hint = *** MISSING WELSH ***
 how-you-find-software.error = *** MISSING WELSH ***

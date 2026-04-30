@@ -25,6 +25,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.AccountingPeriod.Sixt
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.{Agent, SoleTraderOrLandlord}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{VendorFilter, *}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.*
 
 import java.time.Instant

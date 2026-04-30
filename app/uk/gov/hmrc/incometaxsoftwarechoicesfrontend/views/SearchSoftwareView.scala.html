@@ -56,7 +56,7 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <h1 class="govuk-heading-xl">@title</h1>
-        @if(viewModel.isAgent) {
+        @if(viewModel.isUnguided) {
             <p class="govuk-body">@messages("search-software.p1")</p>
             <p class="govuk-body">@messages("search-software.p2")</p>
             <p class="govuk-body">@messages("search-software.p3.agent.intent")</p>
@@ -97,7 +97,7 @@
 
           <p class="govuk-body">@messages("search-software.filters.paragraph")</p>
 
-          @softwareFiltersTemplate(searchForm(FiltersForm.filters), viewModel.isAgent)
+          @softwareFiltersTemplate(searchForm(FiltersForm.filters), viewModel.isUnguided)
 
           <div class="govuk-button-group govuk-!-padding-top-0 apply-filters-group">
             @govukButton(Button(
@@ -112,7 +112,7 @@
       </div>
 
     <div class="govuk-grid-column-two-thirds">
-        @if(viewModel.isAgent) {
+        @if(viewModel.isUnguided) {
             @softwareVendorsAgentTemplate(viewModel)
         } else {
             @softwareVendorsIntentResultsTemplate(viewModel)

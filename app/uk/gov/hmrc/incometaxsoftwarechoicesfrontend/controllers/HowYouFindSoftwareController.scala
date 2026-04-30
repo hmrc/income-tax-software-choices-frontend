@@ -60,11 +60,23 @@ class HowYouFindSoftwareController @Inject()(view: HowYouFindSoftwareView,
           postAction = routes.HowYouFindSoftwareController.submit(),
           backUrl = appConfig.guidance
         ))),
-      journeyType =>
-        pageAnswersService.setPageAnswers(request.sessionId, HowYouFindSoftwarePage, journeyType).map {
-          case true => redirect(journeyType)
-          case false => InternalServerError("[HowYouFindSoftwareController][submit] - Could not save journey type]")
-        }
+      journeyType => journeyType match {
+        case Find | Check =>
+          pageAnswersService.setPageAnswers(request.sessionId, HowYouFindSoftwarePage, journeyType).map {
+            case true => redirect(journeyType)
+            case false => InternalServerError("[HowYouFindSoftwareController][submit] - Could not save journey type]")
+          }
+        case ViewAll =>
+          for {
+            resetUserAnswers <- pageAnswersService.resetUserAnswers(request.sessionId)
+            setPageAnswers <- pageAnswersService.setPageAnswers(request.sessionId, HowYouFindSoftwarePage, journeyType)
+          } yield {
+            if (resetUserAnswers && setPageAnswers)
+              redirect(journeyType)
+            else
+              InternalServerError("[HowYouFindSoftwareController][submit] - Could not reset user answers or save journey type]")
+          }
+      }
     )
   }
   

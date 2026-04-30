@@ -26,7 +26,7 @@
         checkboxGroup: CheckboxGroupHelper
 )
 
-@(checkboxField: Field, isAgent: Boolean)(implicit messages: Messages)
+@(checkboxField: Field, isUnguided: Boolean)(implicit messages: Messages)
 
 
 @buildCheckBoxes(filters: Set[VendorFilter], label: String) = @{
@@ -41,7 +41,7 @@
 }
 
 @{
-    VendorFilterGroups.preferenceFilters(isAgent).map { case (group, label) =>
+    VendorFilterGroups.preferenceFilters(isUnguided).map { case (group, label) =>
 
         checkboxGroup(
             field = checkboxField,

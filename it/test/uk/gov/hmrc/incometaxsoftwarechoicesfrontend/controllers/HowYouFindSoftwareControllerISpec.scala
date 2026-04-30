@@ -21,7 +21,7 @@ import play.api.http.Status.{BAD_REQUEST, OK, SEE_OTHER}
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.SessionId
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, DatabaseHelper}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.{Check, Find}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.SoleTraderOrLandlord
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{JourneyType, UserAnswers, UserFilters}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.*
@@ -45,7 +45,8 @@ class HowYouFindSoftwareControllerISpec extends ComponentSpecBase with BeforeAnd
           httpStatus(OK),
           pageTitle(s"${messages("how-you-find-software.heading")} - ${PageContentBase.title} - GOV.UK"),
           radioButtonSelected(id = "how-you-find-software", None),
-          radioButtonSelected(id = "how-you-find-software-2", None)
+          radioButtonSelected(id = "how-you-find-software-2", None),
+          radioButtonSelected(id = "how-you-find-software-3", None)
         )
       }
     }
@@ -60,7 +61,7 @@ class HowYouFindSoftwareControllerISpec extends ComponentSpecBase with BeforeAnd
         res should have(
           httpStatus(OK),
           pageTitle(s"${messages("how-you-find-software.heading")} - ${PageContentBase.title} - GOV.UK"),
-          radioButtonSelected(id = "how-you-find-software-2", selectedRadioButton = Some(Check.key))
+          radioButtonSelected(id = "how-you-find-software-3", selectedRadioButton = Some(Check.key))
         )
       }
       "display the page with Find radio checked" in {
@@ -73,6 +74,18 @@ class HowYouFindSoftwareControllerISpec extends ComponentSpecBase with BeforeAnd
           httpStatus(OK),
           pageTitle(s"${messages("how-you-find-software.heading")} - ${PageContentBase.title} - GOV.UK"),
           radioButtonSelected(id = "how-you-find-software", selectedRadioButton = Some(Find.key))
+        )
+      }
+      "display the page with View All radio checked" in {
+        val userAnswers = UserAnswers().set(HowYouFindSoftwarePage, ViewAll).get
+        await(userFiltersRepository.set(testUserFilters(userAnswers)))
+
+        val res = SoftwareChoicesFrontend.getHowYouFindSoftware()
+
+        res should have(
+          httpStatus(OK),
+          pageTitle(s"${messages("how-you-find-software.heading")} - ${PageContentBase.title} - GOV.UK"),
+          radioButtonSelected(id = "how-you-find-software-2", selectedRadioButton = Some(ViewAll.key))
         )
       }
     }
@@ -94,6 +107,18 @@ class HowYouFindSoftwareControllerISpec extends ComponentSpecBase with BeforeAnd
     "user selects Find journey" must {
       s"return $SEE_OTHER and save page answer" in {
         val res = SoftwareChoicesFrontend.postHowYouFindSoftware(Some(Find))
+
+        res should have(
+          httpStatus(SEE_OTHER),
+          redirectURI(routes.UserTypeController.show().url)
+        )
+
+        getPageData(SessionId, HowYouFindSoftwarePage.toString).size shouldBe 1
+      }
+    }
+    "user selects View All journey" must {
+      s"return $SEE_OTHER and save page answer" in {
+        val res = SoftwareChoicesFrontend.postHowYouFindSoftware(Some(ViewAll))
 
         res should have(
           httpStatus(SEE_OTHER),

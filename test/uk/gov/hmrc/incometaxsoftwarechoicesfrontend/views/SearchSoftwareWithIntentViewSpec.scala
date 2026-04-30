@@ -262,7 +262,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
       lazy val document = {
         val model = SoftwareChoicesResultsViewModel(
           vendorsWithIntent = SearchSoftwareWithIntentPageContent.multipleVendorsWithIntent,
-          isAgent = true
+          isUnguided = true
         )
         Jsoup.parse(page(model).body)
       }
@@ -450,21 +450,21 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
       lazy val documentAgentMany = {
         val model = SoftwareChoicesResultsViewModel(
           vendorsWithIntent = SearchSoftwareWithIntentPageContent.multipleVendorsWithIntent,
-          isAgent = true
+          isUnguided = true
         )
         Jsoup.parse(page(model).body)
       }
       lazy val documentAgentOneResult = {
         val model = SoftwareChoicesResultsViewModel(
           vendorsWithIntent = SearchSoftwareWithIntentPageContent.singleVendorWithIntent(quarterlyReady = true, eoyReady = true),
-          isAgent = true
+          isUnguided = true
         )
         Jsoup.parse(page(model).body)
       }
       lazy val documentAgentNoResults = {
         val model = SoftwareChoicesResultsViewModel(
           vendorsWithIntent = Seq.empty,
-          isAgent = true
+          isUnguided = true
         )
         Jsoup.parse(page(model).body)
       }

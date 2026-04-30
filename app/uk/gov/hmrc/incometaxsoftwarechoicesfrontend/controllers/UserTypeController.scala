@@ -72,41 +72,40 @@ class UserTypeController @Inject()(view: UserTypeView,
         )
       },
       userType => journey.flatMap {
-       case Some(Find) | Some(Check) =>
-        pageAnswersService.setPageAnswers(request.sessionId, UserTypePage, userType).flatMap {
-          case true => Future.successful(Redirect(routes.BusinessIncomeController.show()))
-          case false => throw new InternalServerException("[UserTypeController][submit] - Could not save sole trader or landlord user type")
-        }
-       case Some(ViewAll) =>
-          for {
-            resetUserAnswers <- pageAnswersService.resetUserAnswers(request.sessionId) // don't delete JourneyType
-            setPageAnswers <- pageAnswersService.setPageAnswers(request.sessionId, UserTypePage, userType)
-            saveFiltersFromAnswers <- pageAnswersService.saveFiltersFromAnswers(request.sessionId)
-          } yield {
-            if (resetUserAnswers && setPageAnswers && saveFiltersFromAnswers.nonEmpty) {
-              Redirect(routes.SearchSoftwareController.show())
-            } else {
-              throw new InternalServerException("[UserTypeController][submit] - Could not save agent user type")
+          case Some(Find) | Some(Check) =>
+            pageAnswersService.setPageAnswers(request.sessionId, UserTypePage, userType).map {
+              case true => Redirect(routes.BusinessIncomeController.show())
+              case false => throw new InternalServerException("[UserTypeController][submit] - Could not save user type for find or check journey")
             }
-          }
-       case None if userType == SoleTraderOrLandlord =>
-        pageAnswersService.setPageAnswers(request.sessionId, UserTypePage, userType).flatMap {
-          case true => Future.successful(Redirect(routes.BusinessIncomeController.show()))
-          case false => throw new InternalServerException("[UserTypeController][submit] - Could not save sole trader or landlord user type")
-        }
-       case None if userType == Agent =>
-          for {
-            resetUserAnswers <- pageAnswersService.resetUserAnswers(request.sessionId) // don't delete JourneyType
-            setPageAnswers <- pageAnswersService.setPageAnswers(request.sessionId, UserTypePage, userType)
-            saveFiltersFromAnswers <- pageAnswersService.saveFiltersFromAnswers(request.sessionId)
-          } yield {
-            if (resetUserAnswers && setPageAnswers && saveFiltersFromAnswers.nonEmpty) {
-              Redirect(routes.SearchSoftwareController.show())
-            } else {
-              throw new InternalServerException("[UserTypeController][submit] - Could not save agent user type")
+          case Some(ViewAll) =>
+            for {
+              setPageAnswers <- pageAnswersService.setPageAnswers(request.sessionId, UserTypePage, userType)
+              saveFiltersFromAnswers <- pageAnswersService.saveFiltersFromAnswers(request.sessionId)
+            } yield {
+              if (setPageAnswers && saveFiltersFromAnswers.nonEmpty) {
+                Redirect(routes.SearchSoftwareController.show())
+              } else {
+                throw new InternalServerException("[UserTypeController][submit] - Could not save user type for view all journey")
+              }
             }
-          }
-      }
+          case None if userType == SoleTraderOrLandlord =>
+            pageAnswersService.setPageAnswers(request.sessionId, UserTypePage, userType).map {
+              case true => Redirect(routes.BusinessIncomeController.show())
+              case false => throw new InternalServerException("[UserTypeController][submit] - Could not save sole trader or landlord user type")
+            }
+          case None if userType == Agent =>
+            for {
+              resetUserAnswers <- pageAnswersService.resetUserAnswers(request.sessionId) // don't delete JourneyType
+              setPageAnswers <- pageAnswersService.setPageAnswers(request.sessionId, UserTypePage, userType)
+              saveFiltersFromAnswers <- pageAnswersService.saveFiltersFromAnswers(request.sessionId)
+            } yield {
+              if (resetUserAnswers && setPageAnswers && saveFiltersFromAnswers.nonEmpty) {
+                Redirect(routes.SearchSoftwareController.show())
+              } else {
+                throw new InternalServerException("[UserTypeController][submit] - Could not save agent user type")
+              }
+            }
+        }
     )
   }
 
