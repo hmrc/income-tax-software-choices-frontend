@@ -19,7 +19,7 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.mocks
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.mvc.Result
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.RequireUserDataRefiner
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{JourneyType, SoftwareProduct, SoftwareType, UserFilters}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{JourneyType, SoftwareProduct, UserFilters}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.requests.{SessionDataRequest, SessionRequest}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.PageAnswersService

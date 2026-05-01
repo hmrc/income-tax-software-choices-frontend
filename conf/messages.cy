@@ -330,3 +330,14 @@ enter-software-name.software-not-listed = *** MISSING WELSH ***
 software-in-development.heading = *** MISSING WELSH ***
 software-in-development.para1 = *** MISSING WELSH ***
 software-in-development.para2 = *** MISSING WELSH ***
+
+#Fully Compatible page
+fully-compatible.heading1 = *** MISSING WELSH ***
+fully-compatible.para1 = *** MISSING WELSH ***
+fully-compatible.para2.part1 = *** MISSING WELSH ***
+fully-compatible.para2.link = *** MISSING WELSH ***
+fully-compatible.para2.part2 = *** MISSING WELSH ***
+fully-compatible.heading2 = *** MISSING WELSH ***
+fully-compatible.para3 = *** MISSING WELSH ***
+fully-compatible.bullet1 = *** MISSING WELSH ***
+fully-compatible.bullet2 = *** MISSING WELSH ***

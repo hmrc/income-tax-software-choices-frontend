@@ -16,26 +16,44 @@
 
 @import uk.gov.hmrc.govukfrontend.views.html.components._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTemplate
+@import uk.gov.hmrc.hmrcfrontend.views.viewmodels.newtablinkhelper.NewTabLinkHelper
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
+
 
 @this(
         mainTemplate: MainTemplate,
-        govukButton: GovukButton
-)
+        govukPanel : GovukPanel,
+        hmrcNewTabLinkHelper: HmrcNewTabLinkHelper
+)(implicit appConfig: AppConfig)
 
 @(continueURL: String, backLink: String, chosenSoftware: String)(implicit request: Request[_], messages: Messages)
 
-@mainTemplate(title = s"$chosenSoftware ${messages("software-in-development.heading")}", backLink = Some(backLink)) {
+@mainTemplate(title = s"$chosenSoftware ${messages("fully-compatible.heading1")}", backLink = Some(backLink)) {
 
-    <h1 class="govuk-heading-l">@chosenSoftware @messages("software-in-development.heading")</h1>
+    @govukPanel(Panel(
+     title = Text(s"$chosenSoftware ${messages("fully-compatible.heading1")}"),
+    ))
 
-    <p class="govuk-body">@messages("software-in-development.para1")</p>
-    <p class="govuk-body">@messages("software-in-development.para2")</p>
-
+    <p class="govuk-body">@messages("fully-compatible.para1")</p>
+    
     <p class="govuk-body">
-    @govukButton(Button(
-            content = Text(messages("base.find.compatible")),
-            href = Some(continueURL),
-            classes = "govuk-!-display-none-print"
-        ))
+        @messages("fully-compatible.para2.part1")
+        <a class="govuk-link govuk-!-display-none-print" href="@continueURL">@messages("fully-compatible.para2.link")</a>
+        @messages("fully-compatible.para2.part2")
     </p>
+
+    <h1 class="govuk-heading-m">@messages("fully-compatible.heading2")</h1>
+
+    <p class="govuk-body">@messages("fully-compatible.para3")</p>
+
+    <ul class="govuk-list govuk-list--bullet">
+        <li>@hmrcNewTabLinkHelper(NewTabLinkHelper(
+            text = s"${messages("fully-compatible.bullet1")}",
+            href = Some(appConfig.signUpForMtdUrl)
+        ))</li>
+        <li>@hmrcNewTabLinkHelper(NewTabLinkHelper(
+            text = s"${messages("fully-compatible.bullet2")}",
+            href = Some(appConfig.getSoftwareReadyUrl)
+        ))</li>
+    </ul>
 }
