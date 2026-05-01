@@ -41,8 +41,8 @@ class PartiallyCompatibleViewSpec extends ViewSpec {
       document.selectHead("h1").text() shouldBe PartiallyCompatibleContent.heading1
     }
 
-    "have an intermediate heading" in {
-      document.selectHead("h1.govuk-heading-m").text() shouldBe PartiallyCompatibleContent.heading2
+    "have an h2" in {
+      document.selectHead("h2").text() shouldBe PartiallyCompatibleContent.heading2
     }
 
     "have the correct paragraphs" in {

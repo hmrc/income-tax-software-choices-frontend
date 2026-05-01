@@ -343,9 +343,8 @@ fully-compatible.bullet2 = authorise your software for HMRC
 #Partially Compatible page
 partially-compatible.heading1 = is ready to send quarterly updates but is still building your tax return features
 partially-compatible.para1 = Your software provider has built the features you need to send your quarterly updates. They are now developing the remaining features required for your tax return. These will be available in time for your 2026 to 2027 tax return.
-partially-compatible.para2.part1 = You can
+partially-compatible.para2.part1 = You can {0} and the features they are planning to provide.
 partially-compatible.para2.link = view more information about your software provider
-partially-compatible.para2.part2 = and the features they are planning to provide.
 partially-compatible.heading2 = What you should do next
 partially-compatible.para3 = If you have not done so already, you now need to:
 partially-compatible.bullet1 = sign up for Making Tax Digital for Income Tax
