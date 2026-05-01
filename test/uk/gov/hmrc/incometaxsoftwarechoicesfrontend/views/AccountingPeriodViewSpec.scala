@@ -30,6 +30,7 @@ class AccountingPeriodViewSpec extends ViewSpec {
 
   private val view = app.injector.instanceOf[AccountingPeriodView]
   private val formError = FormError(AccountingPeriodForm.fieldName, "accounting-period.error")
+  private val SoftwareName = "Bright"
 
   def page(hasError: Boolean = false): HtmlFormat.Appendable = {
     val form = if (hasError) {
@@ -37,7 +38,7 @@ class AccountingPeriodViewSpec extends ViewSpec {
     } else {
       AccountingPeriodForm.accountingPeriodForm
     }
-    view(accountingPeriodForm = form, postAction = testCall, backUrl = testBackUrl,softwareName = None)
+    view(accountingPeriodForm = form, postAction = testCall, backUrl = testBackUrl, softwareName = Some(SoftwareName))
   }
 
   def document(hasError: Boolean = false): Document = Jsoup.parse(page(hasError).body)
@@ -63,6 +64,10 @@ class AccountingPeriodViewSpec extends ViewSpec {
         val link = document().mainContent.select(".govuk-link").first()
         link.text mustBe AccountingPeriodContent.linkText
         link.attr("href") mustBe AccountingPeriodContent.linkHref
+      }
+
+      "have a software name caption" in {
+        document().mainContent.selectHead("span.govuk-caption-l").text() shouldBe SoftwareName
       }
 
       "have a form" which {

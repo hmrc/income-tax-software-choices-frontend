@@ -26,7 +26,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.BusinessIncomeVie
 class BusinessIncomeSourcesViewSpec extends ViewSpec {
 
   private val view = app.injector.instanceOf[BusinessIncomeView]
-
+  private val SoftwareName = "Bright"
   private val formError: FormError = FormError("businessIncome", "business-income.error.nonEmpty")
 
   def page(hasError: Boolean = false): HtmlFormat.Appendable = view(
@@ -37,7 +37,8 @@ class BusinessIncomeSourcesViewSpec extends ViewSpec {
     },
     postAction = testCall,
     backUrl = testBackUrl,
-    softwareName = None
+    softwareName = Some(SoftwareName)
+
   )
 
   def document(hasError: Boolean = false): Document = Jsoup.parse(page(hasError).body)
@@ -64,6 +65,9 @@ class BusinessIncomeSourcesViewSpec extends ViewSpec {
       }
       "have a paragraph" in {
         document().mainContent.selectNth("p", 1).text shouldBe BusinessIncomePageContent.para
+      }
+      "have a software name caption" in {
+        document().mainContent.selectHead("span.govuk-caption-l").text() shouldBe SoftwareName
       }
       "have a form" which {
         def form: Element = document().mainContent.selectHead("form")

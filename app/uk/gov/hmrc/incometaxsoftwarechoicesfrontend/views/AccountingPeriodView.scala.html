@@ -37,16 +37,9 @@
 @(accountingPeriodForm: Form[AccountingPeriod], postAction: Call, backUrl: String,softwareName: Option[String])(implicit request: Request[_], messages: Messages)
 
 @mainTemplate(title = messages("accounting-period.heading"), optForm = Some(accountingPeriodForm), backLink = Some(backUrl)) {
-    @softwareName.map { name =>
-        @govukPhaseBanner(PhaseBanner(
-            tag = Some(Tag(
-                content = Text(name)
-                //content = HtmlContent(s"<strong>$name</strong>")
-            )),
-            content = HtmlContent("")
-        ))
-    }
-
+    @softwareName.map(name =>
+        <span class="govuk-caption-l">{name}</span>
+    )
     <h1 class="govuk-heading-l">@messages("accounting-period.heading")</h1>
 
     <p class="govuk-body">

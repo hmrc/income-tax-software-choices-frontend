@@ -20,6 +20,7 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{RequireUserDataRefiner, SessionIdentifierAction}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.BusinessIncomeForm
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.Recognised
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.BusinessIncomePage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.PageAnswersService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.BusinessIncomeView
@@ -41,18 +42,27 @@ class BusinessIncomeController @Inject()(view: BusinessIncomeView,
     given Request[AnyContent] = request
 
     val pageAnswers = pageAnswersService.getPageAnswers(request.userFilters.answers, BusinessIncomePage)
-    val softwareName = pageAnswersService.getPageAnswers(request.userFilters.answers, EnterSoftwareNamePage).map(_.name)
+    val name = request.softwareType match {
+      case Some(Recognised) => request.softwareName
+      case _ => None
+    }
+
     Ok(view(
       businessIncomeForm = BusinessIncomeForm.form.fill(pageAnswers),
       postAction = routes.BusinessIncomeController.submit(editMode),
       backUrl = backUrl(editMode),
-      softwareName = softwareName
+      softwareName = name
     ))
   }
 
   def submit(editMode: Boolean): Action[AnyContent] = (identify andThen requireData).async { request =>
     given Request[AnyContent] = request
-    val softwareName = pageAnswersService.getPageAnswers(request.userFilters.answers, EnterSoftwareNamePage).map(_.name)
+
+    val name = request.softwareType match {
+      case Some(Recognised) => request.softwareName
+      case _ => None
+    }
+
     BusinessIncomeForm.form.bindFromRequest().fold(
       formWithErrors => {
         Future.successful(
@@ -60,7 +70,7 @@ class BusinessIncomeController @Inject()(view: BusinessIncomeView,
             businessIncomeForm = formWithErrors,
             postAction = routes.BusinessIncomeController.submit(editMode),
             backUrl = backUrl(editMode),
-            softwareName = softwareName
+            softwareName = name
           ))
         )
       },

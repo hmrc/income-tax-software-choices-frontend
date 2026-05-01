@@ -35,15 +35,9 @@
 
 @mainTemplate(title = messages("other-items.title"), backLink = Some(backLink), optForm = Some(otherItemsForm)) {
 
-    @softwareName.map { name =>
-        @govukPhaseBanner(PhaseBanner(
-            tag = Some(Tag(
-                content = Text(name)
-                //content = HtmlContent(s"<strong>$name</strong>")
-            )),
-            content = HtmlContent("")
-        ))
-    }
+    @softwareName.map(name =>
+        <span class="govuk-caption-l">{name}</span>
+    )
 
     @form(action = postAction) {
 

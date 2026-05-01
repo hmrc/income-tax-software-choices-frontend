@@ -21,6 +21,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{Require
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.EnterSoftwareNamePage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.PageAnswersService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.AccountingPeriodNotAlignedView
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.Recognised
 
 import javax.inject.{Inject, Singleton}
 
@@ -34,11 +35,15 @@ class AccountingPeriodNotAlignedController @Inject()(view: AccountingPeriodNotAl
 
   def show(editMode: Boolean): Action[AnyContent] = (identify andThen requireData) { request =>
     given Request[AnyContent] = request
-    val softwareName = pageAnswersService.getPageAnswers(request.userFilters.answers, EnterSoftwareNamePage).map(_.name)
+
+    val name = request.softwareType match {
+      case Some(Recognised) => request.softwareName
+      case _ => None
+    }    
     Ok(view(
       postAction = routes.AccountingPeriodNotAlignedController.submit(editMode),
       backLink = routes.AccountingPeriodController.show(editMode).url,
-      softwareName = softwareName
+      softwareName = name
     ))
   }
 

@@ -23,10 +23,10 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.OtherItemsForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.OtherItemsPage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.PageAnswersService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.OtherItemsView
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.Recognised
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.EnterSoftwareNamePage
 
 @Singleton
 class OtherItemsController @Inject()(view: OtherItemsView,
@@ -40,18 +40,27 @@ class OtherItemsController @Inject()(view: OtherItemsView,
     given Request[AnyContent] = request
 
     val pageAnswers = pageAnswersService.getPageAnswers(request.userFilters.answers, OtherItemsPage)
-    val softwareName = pageAnswersService.getPageAnswers(request.userFilters.answers, EnterSoftwareNamePage).map(_.name)
+
+    val name = request.softwareType match {
+      case Some(Recognised) => request.softwareName
+      case _ => None
+    }
+
     Ok(view(
       otherItemsForm = OtherItemsForm.form.fill(pageAnswers),
       postAction = routes.OtherItemsController.submit(editMode),
       backLink = backUrl(editMode),
-      softwareName = softwareName
+      softwareName = name
     ))
   }
 
   def submit(editMode: Boolean): Action[AnyContent] = (identify andThen requireData).async { request =>
     given Request[AnyContent] = request
-    val softwareName = pageAnswersService.getPageAnswers(request.userFilters.answers, EnterSoftwareNamePage).map(_.name)
+
+    val name = request.softwareType match {
+      case Some(Recognised) => request.softwareName
+      case _ => None
+    }
     OtherItemsForm.form.bindFromRequest().fold(
       formWithErrors => {
         Future.successful(
@@ -59,7 +68,7 @@ class OtherItemsController @Inject()(view: OtherItemsView,
             otherItemsForm = formWithErrors,
             postAction = routes.OtherItemsController.submit(editMode),
             backLink = backUrl(editMode),
-            softwareName = softwareName
+            softwareName = name
           ))
         )
       },

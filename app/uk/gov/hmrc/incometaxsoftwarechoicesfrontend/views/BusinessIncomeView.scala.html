@@ -31,19 +31,13 @@
         form: FormWithCSRF
 )(implicit appConfig: AppConfig)
 
-@(businessIncomeForm: Form[Seq[VendorFilter]], postAction: Call, backUrl: String,softwareName:Option[String])(implicit request: Request[_], messages: Messages)
+@(businessIncomeForm: Form[Seq[VendorFilter]], postAction: Call, backUrl: String, softwareName: Option[String])(implicit request: Request[_], messages: Messages)
 
 @mainTemplate(title = messages("business-income.title"), backLink = Some(backUrl), optForm = Some(businessIncomeForm)) {
 
-    @softwareName.map { name =>
-        @govukPhaseBanner(PhaseBanner(
-            tag = Some(Tag(
-                content = Text(name)
-                //content = HtmlContent(s"<strong>$name</strong>")
-            )),
-            content = HtmlContent("")
-        ))
-    }
+    @softwareName.map(name =>
+        <span class="govuk-caption-l">{name}</span>
+    )
     <h1 class="govuk-heading-l">@messages("business-income.legend")</h1>
     <p class ="govuk-body">@messages("business-income.para")</p>
 
