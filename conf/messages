@@ -329,3 +329,13 @@ enter-software-name.software-not-listed = My software is not listed
 software-in-development.heading = is not recognised for Making Tax Digital for Income Tax yet
 software-in-development.para1 = You may want to contact your current software provider to ask if they are going to support Making Tax Digital for Income Tax for your circumstances.
 software-in-development.para2 = You can also search for other software packages that are currently ready for Making Tax Digital for Income Tax to see if they are suitable.
+
+#Fully Compatible page
+fully-compatible.heading1 = is compatible with Making Tax Digital for Income Tax
+fully-compatible.para1 = Your software currently supports all the features you need for Making Tax Digital for Income Tax. These features should be ready for your 2026 to 2027 tax return.
+fully-compatible.para2 = You can {0} and the features they are planning to provide.
+fully-compatible.para2.link = view more information about your software provider
+fully-compatible.heading2 = What you should do next
+fully-compatible.para3 = If you have not done so already, you now need to:
+fully-compatible.bullet1 = sign up for Making Tax Digital for Income Tax
+fully-compatible.bullet2 = authorise your software for HMRC

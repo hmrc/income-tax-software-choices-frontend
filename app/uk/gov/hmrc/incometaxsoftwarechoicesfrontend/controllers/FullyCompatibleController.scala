@@ -18,28 +18,29 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{RequireUserDataRefiner, SessionIdentifierAction}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SoftwareInDevelopmentView
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.Recognised
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.FullyCompatibleView
 
 import javax.inject.{Inject, Singleton}
 
 @Singleton
-class SoftwareInDevelopmentController @Inject()(view: SoftwareInDevelopmentView,
-                                                identify: SessionIdentifierAction,
-                                                requireData: RequireUserDataRefiner)
-                                               (implicit mcc: MessagesControllerComponents) extends BaseFrontendController {
+class FullyCompatibleController @Inject()(view: FullyCompatibleView,
+                                          identify: SessionIdentifierAction,
+                                          requireData: RequireUserDataRefiner)
+                                         (implicit mcc: MessagesControllerComponents) extends BaseFrontendController {
 
   def show(): Action[AnyContent] = (identify andThen requireData) { request =>
     given Request[AnyContent] = request
 
     request.product match {
-      case Some(product) => {
+      case Some(product) if product.softwareType == Recognised => {
         Ok(view(
-          continueURL = routes.UserTypeController.show().url,
-          backLink = routes.EnterSoftwareNameController.show().url,
+          continueURL = routes.ProductDetailsController.show(product.productId.toString).url,
+          backLink = routes.CheckYourAnswersController.show().url,
           chosenSoftware = product.name
         ))
       }
-      case None => InternalServerError("[SoftwareInDevelopmentController][show] - Could not find software name in answers]")
+      case _ => InternalServerError("[FullyCompatibleController][show] - Could not find details of a recognised software product in answers]")
     }
 
   }

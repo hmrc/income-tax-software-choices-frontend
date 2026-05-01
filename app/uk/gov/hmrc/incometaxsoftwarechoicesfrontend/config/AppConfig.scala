@@ -45,4 +45,8 @@ class AppConfig @Inject()(val config: Configuration) {
   val contactHost: String = s"${config.get[String]("contact-frontend.host")}/contact/report-technical-problem"
   val contactService: String = config.get[String]("contact-frontend.serviceId")
   def getContactUrl(url: String): String = s"$contactHost?service=$contactService&referrerUrl=${url}"
+
+  val individualSignUpForMtdUrl: String = config.get[String]("individualSignUpForMtd.url")
+
+  val getSoftwareReadyUrl: String = config.get[String]("getSoftwareReady.url")
 }

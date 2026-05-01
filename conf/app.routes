@@ -55,3 +55,5 @@ GET         /no-software-listed                     uk.gov.hmrc.incometaxsoftwar
 GET         /need-additional-software               uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.NeedAdditionalSoftwareController.show()
 
 GET         /software-in-development                uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SoftwareInDevelopmentController.show()
+
+GET         /fully-compatible                       uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.FullyCompatibleController.show()

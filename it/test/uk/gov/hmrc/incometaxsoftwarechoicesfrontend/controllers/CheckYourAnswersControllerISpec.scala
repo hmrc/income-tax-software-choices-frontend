@@ -23,9 +23,12 @@ import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.SessionId
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, DatabaseHelper}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.AccountingPeriod.{OtherAccountingPeriod, SixthAprilToFifthApril}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.{Check, Find}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.Recognised
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.*
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{UserAnswers, UserFilters}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.{AccountingPeriodPage, AdditionalIncomeSourcesPage, BusinessIncomePage, OtherItemsPage}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareProduct, UserAnswers, UserFilters}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.{AccountingPeriodPage, AdditionalIncomeSourcesPage, BusinessIncomePage, EnterSoftwareNamePage, HowYouFindSoftwarePage, OtherItemsPage}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.DataService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
 
 class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAfterEach with DatabaseHelper {
@@ -166,7 +169,29 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
 
   "POST /check-your-answers" must {
     s"return $SEE_OTHER" when {
-      "redirect to the choosing software page when there are all-in-one vendors" in {
+      val dataService: DataService = app.injector.instanceOf[DataService]
+
+      "redirect to the zero results page when there are no all-in-one vendors" in {
+        val userAnswers = UserAnswers()
+          .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
+          .set(AdditionalIncomeSourcesPage, Seq(ForeignInterest)).get
+          .set(OtherItemsPage, Seq.empty).get
+          .set(AccountingPeriodPage, SixthAprilToFifthApril).get
+        await(userFiltersRepository.set(testUserFilters(Some(userAnswers))))
+
+        val res = SoftwareChoicesFrontend.postCheckYourAnswers()
+
+        res should have(
+          httpStatus(SEE_OTHER),
+          redirectURI(routes.ZeroSoftwareResultsController.show().url)
+        )
+
+        await(userFiltersRepository.get(SessionId)) match {
+          case Some(uf) => uf.finalFilters shouldBe Seq(SoleTrader, UkProperty, OverseasProperty, ForeignInterest, StandardUpdatePeriods)
+          case None => fail("No user filters found")
+        }
+      }
+      "redirect to the choosing software page when there are all-in-one vendors and no journey has been set" in {
         val userAnswers = UserAnswers()
           .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
           .set(AdditionalIncomeSourcesPage, Seq.empty).get
@@ -186,23 +211,142 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
           case None => fail("No user filters found")
         }
       }
-      "redirect to the zero results page when there are no all-in-one vendors" in {
+      "redirect to the choosing software page when there are all-in-one vendors in the find journey" in {
         val userAnswers = UserAnswers()
           .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
-          .set(AdditionalIncomeSourcesPage, Seq(ForeignInterest)).get
+          .set(AdditionalIncomeSourcesPage, Seq.empty).get
           .set(OtherItemsPage, Seq.empty).get
           .set(AccountingPeriodPage, SixthAprilToFifthApril).get
+          .set(HowYouFindSoftwarePage, Find).get
         await(userFiltersRepository.set(testUserFilters(Some(userAnswers))))
 
         val res = SoftwareChoicesFrontend.postCheckYourAnswers()
 
         res should have(
           httpStatus(SEE_OTHER),
-          redirectURI(routes.ZeroSoftwareResultsController.show().url)
+          redirectURI(routes.ChoosingSoftwareController.show().url)
         )
 
         await(userFiltersRepository.get(SessionId)) match {
-          case Some(uf) => uf.finalFilters shouldBe Seq(SoleTrader, UkProperty, OverseasProperty, ForeignInterest, StandardUpdatePeriods)
+          case Some(uf) => uf.finalFilters shouldBe Seq(SoleTrader, UkProperty, OverseasProperty, StandardUpdatePeriods)
+          case None => fail("No user filters found")
+        }
+      }
+      "redirect to the fully compatible page when in the check journey when software type is recognised and fully compatible" in {
+        val fullyCompatibleProduct = dataService.getSoftwareVendors().vendors.map(v => SoftwareProduct(v.productId, "vendor 05", Recognised)).head
+
+        val userAnswers = UserAnswers()
+          .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
+          .set(AdditionalIncomeSourcesPage, Seq.empty).get
+          .set(OtherItemsPage, Seq.empty).get
+          .set(AccountingPeriodPage, SixthAprilToFifthApril).get
+          .set(HowYouFindSoftwarePage, Check).get
+          .set(EnterSoftwareNamePage, fullyCompatibleProduct).get
+        await(userFiltersRepository.set(testUserFilters(Some(userAnswers))))
+
+        val res = SoftwareChoicesFrontend.postCheckYourAnswers()
+
+        res should have(
+          httpStatus(SEE_OTHER),
+          redirectURI(routes.FullyCompatibleController.show().url)
+        )
+
+        await(userFiltersRepository.get(SessionId)) match {
+          case Some(uf) => uf.finalFilters shouldBe Seq(SoleTrader, UkProperty, OverseasProperty, StandardUpdatePeriods)
+          case None => fail("No user filters found")
+        }
+      }
+      "redirect to the check your answers page when in the check journey when software type is recognised and partially compatible" in {
+        val partiallyCompatibleProduct = dataService.getSoftwareVendors().vendors.map(v => SoftwareProduct(v.productId, "vendor 04", Recognised)).head
+
+        val userAnswers = UserAnswers()
+          .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
+          .set(AdditionalIncomeSourcesPage, Seq.empty).get
+          .set(OtherItemsPage, Seq.empty).get
+          .set(AccountingPeriodPage, SixthAprilToFifthApril).get
+          .set(HowYouFindSoftwarePage, Check).get
+          .set(EnterSoftwareNamePage, partiallyCompatibleProduct).get
+        await(userFiltersRepository.set(testUserFilters(Some(userAnswers))))
+
+        val res = SoftwareChoicesFrontend.postCheckYourAnswers()
+
+        res should have(
+          httpStatus(SEE_OTHER),
+          redirectURI(routes.CheckYourAnswersController.show().url)
+        )
+
+        await(userFiltersRepository.get(SessionId)) match {
+          case Some(uf) => uf.finalFilters shouldBe Seq(SoleTrader, UkProperty, OverseasProperty, StandardUpdatePeriods)
+          case None => fail("No user filters found")
+        }
+      }
+      "redirect to the check your answers page when in the check journey when software type is recognised and quarterly only" in {
+        val quarterlyOnlyProduct = dataService.getSoftwareVendors().vendors.map(v => SoftwareProduct(v.productId, "vendor 02", Recognised)).head
+
+        val userAnswers = UserAnswers()
+          .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
+          .set(AdditionalIncomeSourcesPage, Seq.empty).get
+          .set(OtherItemsPage, Seq.empty).get
+          .set(AccountingPeriodPage, SixthAprilToFifthApril).get
+          .set(HowYouFindSoftwarePage, Check).get
+          .set(EnterSoftwareNamePage, quarterlyOnlyProduct).get
+        await(userFiltersRepository.set(testUserFilters(Some(userAnswers))))
+
+        val res = SoftwareChoicesFrontend.postCheckYourAnswers()
+
+        res should have(
+          httpStatus(SEE_OTHER),
+          redirectURI(routes.CheckYourAnswersController.show().url)
+        )
+
+        await(userFiltersRepository.get(SessionId)) match {
+          case Some(uf) => uf.finalFilters shouldBe Seq(SoleTrader, UkProperty, OverseasProperty, StandardUpdatePeriods)
+          case None => fail("No user filters found")
+        }
+      }
+      "redirect to the check your answers page when in the check journey when software type is recognised and not compatible" in {
+        val nonCompatibleProduct = dataService.getSoftwareVendors().vendors.map(v => SoftwareProduct(v.productId, "vendor 01", Recognised)).head
+
+        val userAnswers = UserAnswers()
+          .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
+          .set(AdditionalIncomeSourcesPage, Seq.empty).get
+          .set(OtherItemsPage, Seq.empty).get
+          .set(AccountingPeriodPage, SixthAprilToFifthApril).get
+          .set(HowYouFindSoftwarePage, Check).get
+          .set(EnterSoftwareNamePage, nonCompatibleProduct).get
+        await(userFiltersRepository.set(testUserFilters(Some(userAnswers))))
+
+        val res = SoftwareChoicesFrontend.postCheckYourAnswers()
+
+        res should have(
+          httpStatus(SEE_OTHER),
+          redirectURI(routes.CheckYourAnswersController.show().url)
+        )
+
+        await(userFiltersRepository.get(SessionId)) match {
+          case Some(uf) => uf.finalFilters shouldBe Seq(SoleTrader, UkProperty, OverseasProperty, StandardUpdatePeriods)
+          case None => fail("No user filters found")
+        }
+      }
+
+      "redirect to the choosing software page when there are all-in-one vendors in the check journey when software type is not set to recognised" in {
+        val userAnswers = UserAnswers()
+          .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
+          .set(AdditionalIncomeSourcesPage, Seq.empty).get
+          .set(OtherItemsPage, Seq.empty).get
+          .set(AccountingPeriodPage, SixthAprilToFifthApril).get
+          .set(HowYouFindSoftwarePage, Check).get
+        await(userFiltersRepository.set(testUserFilters(Some(userAnswers))))
+
+        val res = SoftwareChoicesFrontend.postCheckYourAnswers()
+
+        res should have(
+          httpStatus(SEE_OTHER),
+          redirectURI(routes.ChoosingSoftwareController.show().url)
+        )
+
+        await(userFiltersRepository.get(SessionId)) match {
+          case Some(uf) => uf.finalFilters shouldBe Seq(SoleTrader, UkProperty, OverseasProperty, StandardUpdatePeriods)
           case None => fail("No user filters found")
         }
       }

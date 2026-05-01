@@ -19,6 +19,8 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{RequireUserDataRefiner, SessionIdentifierAction}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.{Check, Find}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.Recognised
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.{PageAnswersService, SoftwareChoicesService}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.helpers.SummaryListBuilder
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.CheckYourAnswersView
@@ -52,9 +54,28 @@ class CheckYourAnswersController @Inject()(view: CheckYourAnswersView,
       vendorFilters <- pageAnswersService.saveFiltersFromAnswers(request.sessionId)
       vendors = softwareChoicesService.getVendorsWithIntent(vendorFilters)
     } yield {
-      (vendors.isEmpty) match {
-        case (true) => Redirect(routes.ZeroSoftwareResultsController.show())
-        case (false) => Redirect(routes.ChoosingSoftwareController.show())
+      val softwareName = request.product.map(_.name).getOrElse("")
+      val softwareType = request.product.map(_.softwareType)
+      val foundVendor = vendors.find(v => softwareName == v.vendor.name)
+      val isQuarterlyReady = foundVendor.flatMap(_.quarterlyReady)
+      val isEoyReady = foundVendor.flatMap(_.eoyReady)
+      (vendors.isEmpty, request.journey, softwareType, isQuarterlyReady, isEoyReady) match {
+        case (true, _, _, _, _) =>
+          Redirect(routes.ZeroSoftwareResultsController.show())
+        case (false, None, _, _, _) =>
+          Redirect(routes.ChoosingSoftwareController.show())
+        case (false, Some(Find), _, _, _)  =>
+          Redirect(routes.ChoosingSoftwareController.show())
+        case (false, Some(Check), Some(Recognised), Some(true), Some(true)) =>
+          Redirect(routes.FullyCompatibleController.show())
+        case (false, Some(Check), Some(Recognised), Some(true), Some(false)) =>
+          Redirect(routes.CheckYourAnswersController.show())
+        case (false, Some(Check), Some(Recognised), Some(true), None) =>
+          Redirect(routes.CheckYourAnswersController.show())
+        case (false, Some(Check), Some(Recognised), None, None) =>
+          Redirect(routes.CheckYourAnswersController.show())
+        case (false, Some(Check), _, _, _) =>
+          Redirect(routes.ChoosingSoftwareController.show())
       }
     }
   }

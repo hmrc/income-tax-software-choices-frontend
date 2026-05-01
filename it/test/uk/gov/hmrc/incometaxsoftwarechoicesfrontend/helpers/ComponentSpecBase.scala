@@ -166,6 +166,8 @@ trait ComponentSpecBase extends AnyWordSpec
       )
     )
 
+    def getFullyCompatible(): WSResponse = get("/fully-compatible")
+
     def healthcheck(): WSResponse =
       wsClient
         .url(s"$baseUrl/ping/ping")
