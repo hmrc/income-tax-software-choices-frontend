@@ -37,19 +37,17 @@
     <p class="govuk-body">@messages("fully-compatible.para1")</p>
     
     <p class="govuk-body">
-        @messages("fully-compatible.para2.part1")
-        <a class="govuk-link govuk-!-display-none-print" href="@continueURL">@messages("fully-compatible.para2.link")</a>
-        @messages("fully-compatible.para2.part2")
+        @Html(messages("fully-compatible.para2", s"""<a class="govuk-link govuk-!-display-none-print" href="$continueURL">${messages("fully-compatible.para2.link")}</a>"""))
     </p>
 
-    <h1 class="govuk-heading-m">@messages("fully-compatible.heading2")</h1>
+    <h2 class="govuk-heading-m">@messages("fully-compatible.heading2")</h2>
 
     <p class="govuk-body">@messages("fully-compatible.para3")</p>
 
     <ul class="govuk-list govuk-list--bullet">
         <li>@hmrcNewTabLinkHelper(NewTabLinkHelper(
             text = s"${messages("fully-compatible.bullet1")}",
-            href = Some(appConfig.signUpForMtdUrl)
+            href = Some(appConfig.individualSignUpForMtdUrl)
         ))</li>
         <li>@hmrcNewTabLinkHelper(NewTabLinkHelper(
             text = s"${messages("fully-compatible.bullet2")}",

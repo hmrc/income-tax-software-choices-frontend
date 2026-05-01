@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{RequireUserDataRefiner, SessionIdentifierAction}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.Recognised
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.FullyCompatibleView
 
 import javax.inject.{Inject, Singleton}
@@ -32,14 +33,14 @@ class FullyCompatibleController @Inject()(view: FullyCompatibleView,
     given Request[AnyContent] = request
 
     request.product match {
-      case Some(product) => {
+      case Some(product) if product.softwareType == Recognised => {
         Ok(view(
           continueURL = routes.ProductDetailsController.show(product.productId.toString).url,
           backLink = routes.CheckYourAnswersController.show().url,
           chosenSoftware = product.name
         ))
       }
-      case _ => InternalServerError("[FullyCompatibleController][show] - Could not find software name and software product ID in answers]")
+      case _ => InternalServerError("[FullyCompatibleController][show] - Could not find details of a recognised software product in answers]")
     }
 
   }
