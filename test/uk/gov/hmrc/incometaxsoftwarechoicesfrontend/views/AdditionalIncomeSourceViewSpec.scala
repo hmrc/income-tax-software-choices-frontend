@@ -29,6 +29,7 @@ class AdditionalIncomeSourceViewSpec extends ViewSpec  with BeforeAndAfterEach {
 
   private val formEmpty: FormError = FormError("additionalIncome", "additional.income.source.error-non-empty")
   private val formNoneOnly: FormError = FormError("additionalIncome", "additional.income.source.error-none-only")
+  private val SoftwareName = "Bright"
 
   def page(hasError: Boolean = false): HtmlFormat.Appendable = {
     val form = if (hasError) {
@@ -42,7 +43,7 @@ class AdditionalIncomeSourceViewSpec extends ViewSpec  with BeforeAndAfterEach {
       additionalIncomeForm = form,
       postAction = testCall,
       backUrl = testBackUrl,
-      softwareName = None
+      softwareName = Some(SoftwareName)
     )
   }
 
@@ -65,7 +66,10 @@ class AdditionalIncomeSourceViewSpec extends ViewSpec  with BeforeAndAfterEach {
       "have a title" in {
         document().title() shouldBe AdditionalIncomeSourcesPageContent.title
       }
-
+      
+      "have a software name caption" in {
+        document().mainContent.selectHead("span.govuk-caption-l").text() shouldBe SoftwareName
+      }
       "have a form" which {
         def form: Element = document().mainContent.selectHead("form")
 

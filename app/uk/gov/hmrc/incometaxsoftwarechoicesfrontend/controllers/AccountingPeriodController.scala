@@ -23,9 +23,10 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{Require
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.AccountingPeriodForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.AccountingPeriodForm.accountingPeriodForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.AccountingPeriod.*
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.{AccountingPeriodPage, EnterSoftwareNamePage}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.AccountingPeriodPage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.PageAnswersService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.AccountingPeriodView
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.Recognised
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
@@ -42,19 +43,27 @@ class AccountingPeriodController @Inject()(view: AccountingPeriodView,
     given Request[AnyContent] = request
 
     val pageAnswers = pageAnswersService.getPageAnswers(request.userFilters.answers, AccountingPeriodPage)
-    val softwareName = pageAnswersService.getPageAnswers(request.userFilters.answers, EnterSoftwareNamePage).map(_.name)
+
+    val name = request.softwareType match {
+      case Some(Recognised) => request.softwareName
+      case _ => None
+    }
     Ok(view(
       accountingPeriodForm = AccountingPeriodForm.accountingPeriodForm.fill(pageAnswers),
       postAction = routes.AccountingPeriodController.submit(editMode),
       backUrl = backUrl(editMode),
-      softwareName = softwareName
+      softwareName = name
     ))
   }
 
 
   def submit(editMode: Boolean): Action[AnyContent] = (identify andThen requireData).async { request =>
     given Request[AnyContent] = request
-    val softwareName = pageAnswersService.getPageAnswers(request.userFilters.answers, EnterSoftwareNamePage).map(_.name)
+    val name = request.softwareType match {
+      case Some(Recognised) => request.softwareName
+      case _ => None
+    }
+
     accountingPeriodForm.bindFromRequest().fold(
       formWithErrors => {
         Future.successful(
@@ -62,7 +71,7 @@ class AccountingPeriodController @Inject()(view: AccountingPeriodView,
             accountingPeriodForm = formWithErrors,
             postAction = routes.AccountingPeriodController.submit(editMode),
             backUrl = backUrl(editMode),
-            softwareName = softwareName
+            softwareName = name
           ))
         )
       },

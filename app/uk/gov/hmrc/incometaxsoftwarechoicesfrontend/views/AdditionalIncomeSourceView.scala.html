@@ -34,15 +34,9 @@
 
 @mainTemplate(messages("additional.income.source-heading"), optForm = Some(additionalIncomeForm), backLink = Some(backUrl)) {
 
-    @softwareName.map { name =>
-        @govukPhaseBanner(PhaseBanner(
-            tag = Some(Tag(
-                content = Text(name)
-                //content = HtmlContent(s"<strong>$name</strong>")
-            )),
-            content = HtmlContent("")
-        ))
-    }
+    @softwareName.map(name =>
+        <span class="govuk-caption-l">{name}</span>
+    )
 
 @form(action = postAction) {
 

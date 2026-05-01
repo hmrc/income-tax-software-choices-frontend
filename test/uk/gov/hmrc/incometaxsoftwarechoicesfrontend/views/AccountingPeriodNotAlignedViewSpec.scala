@@ -33,8 +33,9 @@ class AccountingPeriodNotAlignedViewSpec extends ViewSpec {
   }
 
   private val view = app.injector.instanceOf[AccountingPeriodNotAlignedView]
+  private val SoftwareName = "Bright"
 
-  val page: HtmlFormat.Appendable = view(postAction = testCall, backLink = testBackUrl, softwareName = None)
+  val page: HtmlFormat.Appendable = view(postAction = testCall, backLink = testBackUrl, Some(SoftwareName))
   val document: Document = Jsoup.parse(page.body)
 
   "AccountingPeriodNotAlignedView" must {
@@ -43,6 +44,9 @@ class AccountingPeriodNotAlignedViewSpec extends ViewSpec {
     }
     "have a heading" in {
       document.mainContent.selectHead("h1").text shouldBe AccountingPeriodNotAlignedViewContent.heading
+    }
+    "have a software name caption" in {
+      document.mainContent.selectHead("span.govuk-caption-l").text() shouldBe SoftwareName
     }
     "have a first paragraph" in {
       document.mainContent.selectNth("p", 1).text shouldBe AccountingPeriodNotAlignedViewContent.paraOne
