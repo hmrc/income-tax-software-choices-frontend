@@ -54,7 +54,6 @@ class CheckYourAnswersController @Inject()(view: CheckYourAnswersView,
       vendorFilters <- pageAnswersService.saveFiltersFromAnswers(request.sessionId)
       vendors = softwareChoicesService.getVendorsWithIntent(vendorFilters)
     } yield {
-      //TODO - Remove print lines in yield when new controllers are in place
       val softwareName = request.product.map(_.name).getOrElse("")
       val softwareType = request.product.map(_.softwareType)
       val foundVendor = vendors.find(v => softwareName == v.vendor.name)
@@ -62,28 +61,20 @@ class CheckYourAnswersController @Inject()(view: CheckYourAnswersView,
       val isEoyReady = foundVendor.flatMap(_.eoyReady)
       (vendors.isEmpty, request.journey, softwareType, isQuarterlyReady, isEoyReady) match {
         case (true, _, _, _, _) =>
-          println(Console.BLUE + "zero results" + Console.RESET)
           Redirect(routes.ZeroSoftwareResultsController.show())
         case (false, None, _, _, _) =>
-          println(Console.BLUE + "no journey, choosing software" + Console.RESET)
           Redirect(routes.ChoosingSoftwareController.show())
         case (false, Some(Find), _, _, _)  =>
-          println(Console.BLUE + "find journey, choosing software" + Console.RESET)
           Redirect(routes.ChoosingSoftwareController.show())
         case (false, Some(Check), Some(Recognised), Some(true), Some(true)) =>
-          println(Console.BLUE + "check journey, fully compatible" + Console.RESET)
           Redirect(routes.FullyCompatibleController.show())
         case (false, Some(Check), Some(Recognised), Some(true), Some(false)) =>
-          println(Console.BLUE + "check journey, partially compatible" + Console.RESET)
           Redirect(routes.CheckYourAnswersController.show())
         case (false, Some(Check), Some(Recognised), Some(true), None) =>
-          println(Console.BLUE + "check journey, quarterly only" + Console.RESET)
           Redirect(routes.CheckYourAnswersController.show())
         case (false, Some(Check), Some(Recognised), None, None) =>
-          println(Console.BLUE + "check journey, not compatible" + Console.RESET)
           Redirect(routes.CheckYourAnswersController.show())
         case (false, Some(Check), _, _, _) =>
-          println(Console.BLUE + "check journey, choosing software" + Console.RESET)
           Redirect(routes.ChoosingSoftwareController.show())
       }
     }

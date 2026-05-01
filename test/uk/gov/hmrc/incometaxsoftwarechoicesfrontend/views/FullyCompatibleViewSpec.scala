@@ -42,8 +42,8 @@ class FullyCompatibleViewSpec extends ViewSpec {
       document.selectHead("h1").text() shouldBe FullyCompatibleContent.heading1
     }
 
-    "have an intermediate heading" in {
-      document.selectHead("h1.govuk-heading-m").text() shouldBe FullyCompatibleContent.heading2
+    "have an h2" in {
+      document.selectHead("h2").text() shouldBe FullyCompatibleContent.heading2
     }
 
     "have the correct paragraphs" in {

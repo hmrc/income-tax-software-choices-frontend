@@ -256,7 +256,6 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
           case None => fail("No user filters found")
         }
       }
-//      TODO - update controller routing in title and assertion
       "redirect to the check your answers page when in the check journey when software type is recognised and partially compatible" in {
         val partiallyCompatibleProduct = dataService.getSoftwareVendors().vendors.map(v => SoftwareProduct(v.productId, "vendor 04", Recognised)).head
 
@@ -281,7 +280,6 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
           case None => fail("No user filters found")
         }
       }
-//      TODO - update controller routing in title and assertion
       "redirect to the check your answers page when in the check journey when software type is recognised and quarterly only" in {
         val quarterlyOnlyProduct = dataService.getSoftwareVendors().vendors.map(v => SoftwareProduct(v.productId, "vendor 02", Recognised)).head
 
@@ -306,7 +304,6 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
           case None => fail("No user filters found")
         }
       }
-//      TODO - update controller routing in title and assertion
       "redirect to the check your answers page when in the check journey when software type is recognised and not compatible" in {
         val nonCompatibleProduct = dataService.getSoftwareVendors().vendors.map(v => SoftwareProduct(v.productId, "vendor 01", Recognised)).head
 

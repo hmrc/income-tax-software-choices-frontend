@@ -17,11 +17,11 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import org.scalatest.BeforeAndAfterEach
-import play.api.http.Status.{OK, SEE_OTHER}
+import play.api.http.Status.{INTERNAL_SERVER_ERROR, OK, SEE_OTHER}
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.SessionId
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, DatabaseHelper}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.Recognised
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.{Recognised, Spreadsheet}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareProduct, UserAnswers}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.EnterSoftwareNamePage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
@@ -40,7 +40,7 @@ class FullyCompatibleControllerISpec
         )
       }
     }
-    "display the page" in {
+    "display the page for a recognised product" in {
       val softwareProduct = SoftwareProduct(0, "A1 Tax Stuff", Recognised)
       val userAnswers = UserAnswers()
         .set(EnterSoftwareNamePage, softwareProduct).get
@@ -54,6 +54,20 @@ class FullyCompatibleControllerISpec
         pageTitle(s"${softwareProduct.name} ${messages("fully-compatible.heading1")} - ${PageContentBase.title} - GOV.UK"),
       )
     }
+    "display an error for a non-recognised product" in {
+      val softwareProduct = SoftwareProduct(0, "Old-Fashioned Tax Stuff", Spreadsheet)
+      val userAnswers = UserAnswers()
+        .set(EnterSoftwareNamePage, softwareProduct).get
+
+      setupAnswers(SessionId, Some(userAnswers))
+
+      val res = SoftwareChoicesFrontend.getFullyCompatible()
+
+      res should have(
+        httpStatus(INTERNAL_SERVER_ERROR)
+      )
+    }
+
   }
   override def beforeEach(): Unit = {
     super.beforeEach()
