@@ -256,7 +256,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
           case None => fail("No user filters found")
         }
       }
-//      TODO - update controller routing in title and assertion
+
       "redirect to the check your answers page when in the check journey when software type is recognised and partially compatible" in {
         val partiallyCompatibleProduct = dataService.getSoftwareVendors().vendors.map(v => SoftwareProduct(v.productId, "vendor 04", Recognised)).head
 
@@ -273,7 +273,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
 
         res should have(
           httpStatus(SEE_OTHER),
-          redirectURI(routes.CheckYourAnswersController.show().url)
+          redirectURI(routes.PartiallyCompatibleController.show().url)
         )
 
         await(userFiltersRepository.get(SessionId)) match {
