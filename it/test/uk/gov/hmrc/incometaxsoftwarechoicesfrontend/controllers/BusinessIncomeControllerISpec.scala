@@ -21,8 +21,10 @@ import play.api.http.Status.{BAD_REQUEST, OK, SEE_OTHER}
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.SessionId
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, DatabaseHelper}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareProduct, UserAnswers}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.Recognised
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{OverseasProperty, SoleTrader, UkProperty}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.BusinessIncomePage
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.{BusinessIncomePage, EnterSoftwareNamePage}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
 
 class BusinessIncomeControllerISpec extends ComponentSpecBase with BeforeAndAfterEach with DatabaseHelper {
@@ -53,8 +55,11 @@ class BusinessIncomeControllerISpec extends ComponentSpecBase with BeforeAndAfte
         )
       }
       "the business income sources has been answered previously" in {
-        setPageData(SessionId, BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty))
-
+        val softwareProduct = SoftwareProduct(0, "Bright", Recognised)
+        val userAnswers = UserAnswers()
+          .set(EnterSoftwareNamePage, softwareProduct).get
+          .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
+        setupAnswers(SessionId, Some(userAnswers))
         val res = SoftwareChoicesFrontend.getBusinessIncome
 
         res should have(
@@ -63,8 +68,8 @@ class BusinessIncomeControllerISpec extends ComponentSpecBase with BeforeAndAfte
           checkboxSelected("businessIncome", Some(SoleTrader.key)),
           checkboxSelected("businessIncome-2", Some(UkProperty.key)),
           checkboxSelected("businessIncome-3", Some(OverseasProperty.key)),
-          //elementExists(".govuk-phase-banner", expectedResult = true)
         )
+        res.body.contains(softwareProduct.name) shouldBe true
       }
     }
   }

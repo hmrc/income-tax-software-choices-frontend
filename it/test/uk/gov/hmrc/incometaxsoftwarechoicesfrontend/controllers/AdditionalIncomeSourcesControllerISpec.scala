@@ -22,9 +22,10 @@ import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.AdditionalIncomeForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.SessionId
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, DatabaseHelper}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.AdditionalIncomeSourcesPage
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.Recognised
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareProduct, UserAnswers, VendorFilter}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.*
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.{AdditionalIncomeSourcesPage, EnterSoftwareNamePage}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
 
 class AdditionalIncomeSourcesControllerISpec extends ComponentSpecBase with BeforeAndAfterEach with DatabaseHelper {
@@ -43,7 +44,6 @@ class AdditionalIncomeSourcesControllerISpec extends ComponentSpecBase with Befo
     "display the page" when {
       "the additional income has not been answered previously" in {
         setupAnswers(SessionId, None)
-
         val res = SoftwareChoicesFrontend.getAdditionalIncome
 
         res should have(
@@ -59,12 +59,15 @@ class AdditionalIncomeSourcesControllerISpec extends ComponentSpecBase with Befo
           checkboxSelected("additionalIncome-8", None),
           checkboxSelected("additionalIncome-9", None),
           checkboxSelected("additionalIncome-11", None),
-          //elementExists(".govuk-phase-banner", expectedResult = true)
         )
       }
       "the additional income has been answered previously with additional income selections" in {
         setPageData(SessionId, AdditionalIncomeSourcesPage, additionalIncomeFilters)
-
+        val softwareProduct = SoftwareProduct(0, "Bright", Recognised)
+        val userAnswers = UserAnswers()
+          .set(EnterSoftwareNamePage, softwareProduct).get
+          .set(AdditionalIncomeSourcesPage, additionalIncomeFilters).get
+        setupAnswers(SessionId, Some(userAnswers))
         val res = SoftwareChoicesFrontend.getAdditionalIncome
 
         res should have(
@@ -79,12 +82,16 @@ class AdditionalIncomeSourcesControllerISpec extends ComponentSpecBase with Befo
           checkboxSelected("additionalIncome-7", Some(ForeignDividends.key)),
           checkboxSelected("additionalIncome-8", Some(ForeignInterest.key)),
           checkboxSelected("additionalIncome-10", None),
-          //elementExists(".govuk-phase-banner", expectedResult = true)
         )
+        res.body.contains(softwareProduct.name) shouldBe true
       }
       "the additional income has been answered previously with none selected" in {
         setPageData(SessionId, AdditionalIncomeSourcesPage, Seq.empty)
-
+        val softwareProduct = SoftwareProduct(0, "Bright", Recognised)
+        val userAnswers = UserAnswers()
+          .set(EnterSoftwareNamePage, softwareProduct).get
+          .set(AdditionalIncomeSourcesPage, Seq.empty).get
+        setupAnswers(SessionId, Some(userAnswers))
         val res = SoftwareChoicesFrontend.getAdditionalIncome
 
         res should have(
@@ -99,8 +106,8 @@ class AdditionalIncomeSourcesControllerISpec extends ComponentSpecBase with Befo
           checkboxSelected("additionalIncome-7", None),
           checkboxSelected("additionalIncome-8", None),
           checkboxSelected("additionalIncome-10", Some("none")),
-          //elementExists(".govuk-phase-banner", expectedResult = true)
         )
+        res.body.contains(softwareProduct.name) shouldBe true
       }
     }
   }

@@ -27,7 +27,6 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.BusinessIncomeVie
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.EnterSoftwareNamePage
 
 @Singleton
 class BusinessIncomeController @Inject()(view: BusinessIncomeView,

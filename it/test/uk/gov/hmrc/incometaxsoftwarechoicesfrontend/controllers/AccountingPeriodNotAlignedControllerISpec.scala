@@ -20,11 +20,13 @@ import org.scalatest.BeforeAndAfterEach
 import play.api.http.Status.{OK, SEE_OTHER}
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.SessionId
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserAnswers
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareProduct, UserAnswers}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, DatabaseHelper}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.Recognised
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.EnterSoftwareNamePage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
 
-class AccountingPeriodNotAlignedControllerISpec 
+class AccountingPeriodNotAlignedControllerISpec
   extends ComponentSpecBase with BeforeAndAfterEach with DatabaseHelper {
 
   s"GET ${routes.AccountingPeriodNotAlignedController.show().url}" should {
@@ -39,15 +41,17 @@ class AccountingPeriodNotAlignedControllerISpec
       }
     }
     "display the page" in {
-      setupAnswers(SessionId, Some(UserAnswers()))
-
+      val softwareProduct = SoftwareProduct(0, "Bright", Recognised)
+      val userAnswers = UserAnswers()
+        .set(EnterSoftwareNamePage, softwareProduct).get
+      setupAnswers(SessionId, Some(userAnswers))
       val res = SoftwareChoicesFrontend.getAccountingPeriodNotAligned
 
       res should have(
         httpStatus(OK),
         pageTitle(s"${messages("accounting-period-not-aligned.heading")} - ${PageContentBase.title} - GOV.UK"),
-        //elementExists(".govuk-phase-banner", expectedResult = true)
       )
+      res.body.contains(softwareProduct.name) shouldBe true
     }
     "have correct back link when not in edit mode" in {
       setupAnswers(SessionId, Some(UserAnswers()))
@@ -66,7 +70,7 @@ class AccountingPeriodNotAlignedControllerISpec
   }
 
   s"POST ${routes.AccountingPeriodNotAlignedController.submit().url}" should {
-    "redirect to the service index" should {
+    "redirect to the service index" when {
       "there is nothing saved in the database for this user" in {
         val res = SoftwareChoicesFrontend.postAccountingPeriodNotAligned
 

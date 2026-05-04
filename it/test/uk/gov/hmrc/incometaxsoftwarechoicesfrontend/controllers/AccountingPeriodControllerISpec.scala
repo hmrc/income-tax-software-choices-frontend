@@ -22,7 +22,9 @@ import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.SessionId
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, DatabaseHelper}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.AccountingPeriod.{FirstAprilToThirtyFirstMarch, OtherAccountingPeriod, SixthAprilToFifthApril}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.AccountingPeriodPage
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.Recognised
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareProduct, UserAnswers}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.{AccountingPeriodPage, EnterSoftwareNamePage}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
 
 class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAfterEach with DatabaseHelper {
@@ -50,12 +52,15 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
           radioButtonSelected(id = "accounting-period", None),
           radioButtonSelected(id = "accounting-period-2", None),
           radioButtonSelected(id = "accounting-period-4", None),
-          //elementExists(".govuk-phase-banner", expectedResult = true)
         )
       }
       "the accounting period question has been answered previously" which {
         "was the 6th April to 5th April option" in {
-          setPageData(SessionId, AccountingPeriodPage, SixthAprilToFifthApril)
+          val softwareProduct = SoftwareProduct(0, "Bright", Recognised)
+          val userAnswers = UserAnswers()
+            .set(EnterSoftwareNamePage, softwareProduct).get
+            .set(AccountingPeriodPage, SixthAprilToFifthApril).get
+          setupAnswers(SessionId, Some(userAnswers))
 
           val res = SoftwareChoicesFrontend.getAccountingPeriod
 
@@ -65,12 +70,15 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
             radioButtonSelected(id = "accounting-period", Some(SixthAprilToFifthApril.key)),
             radioButtonSelected(id = "accounting-period-2", None),
             radioButtonSelected(id = "accounting-period-4", None),
-            //elementExists(".govuk-phase-banner", expectedResult = true)
           )
+          res.body.contains(softwareProduct.name) shouldBe true
         }
         "was the 1st April to 31st March option" in {
-          setPageData(SessionId, AccountingPeriodPage, FirstAprilToThirtyFirstMarch)
-
+          val softwareProduct = SoftwareProduct(0, "Bright", Recognised)
+          val userAnswers = UserAnswers()
+            .set(EnterSoftwareNamePage, softwareProduct).get
+            .set(AccountingPeriodPage, FirstAprilToThirtyFirstMarch).get
+          setupAnswers(SessionId, Some(userAnswers))
           val res = SoftwareChoicesFrontend.getAccountingPeriod
 
           res should have(
@@ -79,12 +87,15 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
             radioButtonSelected(id = "accounting-period", None),
             radioButtonSelected(id = "accounting-period-2", Some(FirstAprilToThirtyFirstMarch.key)),
             radioButtonSelected(id = "accounting-period-4", None),
-            //elementExists(".govuk-phase-banner", expectedResult = true)
           )
+          res.body.contains(softwareProduct.name) shouldBe true
         }
         "was the neither option" in {
-          setPageData(SessionId, AccountingPeriodPage, OtherAccountingPeriod)
-
+          val softwareProduct = SoftwareProduct(0, "Bright", Recognised)
+          val userAnswers = UserAnswers()
+            .set(EnterSoftwareNamePage, softwareProduct).get
+            .set(AccountingPeriodPage, OtherAccountingPeriod).get
+          setupAnswers(SessionId, Some(userAnswers))
           val res = SoftwareChoicesFrontend.getAccountingPeriod
 
           res should have(
@@ -93,8 +104,8 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
             radioButtonSelected(id = "accounting-period", None),
             radioButtonSelected(id = "accounting-period-2", None),
             radioButtonSelected(id = "accounting-period-4", Some(OtherAccountingPeriod.key)),
-            //elementExists(".govuk-phase-banner", expectedResult = true)
           )
+          res.body.contains(softwareProduct.name) shouldBe true
         }
       }
     }

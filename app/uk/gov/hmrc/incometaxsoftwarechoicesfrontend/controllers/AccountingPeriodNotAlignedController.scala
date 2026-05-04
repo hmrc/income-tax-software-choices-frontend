@@ -18,8 +18,6 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{RequireUserDataRefiner, SessionIdentifierAction}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.EnterSoftwareNamePage
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.PageAnswersService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.AccountingPeriodNotAlignedView
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.Recognised
 
@@ -27,10 +25,9 @@ import javax.inject.{Inject, Singleton}
 
 @Singleton
 class AccountingPeriodNotAlignedController @Inject()(view: AccountingPeriodNotAlignedView,
-                                                     pageAnswersService: PageAnswersService,
                                                      identify: SessionIdentifierAction,
                                                      requireData: RequireUserDataRefiner)
-                                                    (implicit mcc: MessagesControllerComponents)extends BaseFrontendController {
+                                                    (implicit mcc: MessagesControllerComponents) extends BaseFrontendController {
 
 
   def show(editMode: Boolean): Action[AnyContent] = (identify andThen requireData) { request =>
@@ -39,7 +36,7 @@ class AccountingPeriodNotAlignedController @Inject()(view: AccountingPeriodNotAl
     val name = request.softwareType match {
       case Some(Recognised) => request.softwareName
       case _ => None
-    }    
+    }
     Ok(view(
       postAction = routes.AccountingPeriodNotAlignedController.submit(editMode),
       backLink = routes.AccountingPeriodController.show(editMode).url,
