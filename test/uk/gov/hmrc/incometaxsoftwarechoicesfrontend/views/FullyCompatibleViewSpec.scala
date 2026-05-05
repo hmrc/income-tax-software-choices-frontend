@@ -60,6 +60,12 @@ class FullyCompatibleViewSpec extends ViewSpec {
       document.selectNth("ul.govuk-list--bullet > li", 2).selectHead("a").attribute("href").getValue shouldBe FullyCompatibleContent.bullet2Link
     }
 
+    "display the exit survey link" in {
+      val link = document.mainContent.select(".govuk-link").get(3)
+      link.text shouldBe FullyCompatibleContent.exitSurveyLinkTitle
+      link.attr("href") shouldBe FullyCompatibleContent.exitSurveyLink
+    }
+
   }
 
 }
@@ -76,4 +82,6 @@ private object FullyCompatibleContent {
   val bullet1Link = "https://www.gov.uk/guidance/sign-up-for-making-tax-digital-for-income-tax"
   val bullet2Text = "authorise your software for HMRC (opens in new tab)"
   val bullet2Link = "https://www.gov.uk/guidance/use-making-tax-digital-for-income-tax/get-your-software-ready"
+  val exitSurveyLinkTitle = "Give feedback on this service (opens in new tab)"
+  val exitSurveyLink = "http://localhost:9514/feedback/SOFTWAREMTDIT"
 }
