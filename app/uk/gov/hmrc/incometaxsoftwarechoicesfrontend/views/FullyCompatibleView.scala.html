@@ -56,10 +56,10 @@
     </ul>
 
     <p class="govuk-body">
-    @hmrcNewTabLinkHelper(NewTabLinkHelper(
-        text = messages("exit-survey.link"),
-        href = Some(appConfig.feedbackUrl),
-        classList = Some("govuk-!-display-none-print")
-    ))
+        @hmrcNewTabLinkHelper(NewTabLinkHelper(
+            text = messages("exit-survey.link"),
+            href = Some(appConfig.feedbackUrl),
+            classList = Some("govuk-!-display-none-print")
+        ))
     </p>
 }
