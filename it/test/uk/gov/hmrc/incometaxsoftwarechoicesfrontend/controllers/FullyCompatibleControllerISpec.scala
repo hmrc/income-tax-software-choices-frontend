@@ -17,19 +17,19 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import org.scalatest.BeforeAndAfterEach
-import play.api.http.Status.{OK, SEE_OTHER}
+import play.api.http.Status.{INTERNAL_SERVER_ERROR, OK, SEE_OTHER}
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.SessionId
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, DatabaseHelper}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.FutureVendor
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.{Recognised, Spreadsheet}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareProduct, UserAnswers}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.EnterSoftwareNamePage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
 
-class SoftwareInDevelopmentControllerISpec
+class FullyCompatibleControllerISpec
   extends ComponentSpecBase with BeforeAndAfterEach with DatabaseHelper {
 
-  s"GET ${routes.SoftwareInDevelopmentController.show().url}" should {
+  s"GET ${routes.FullyCompatibleController.show().url}" should {
     "redirect to the service index" when {
       "there is nothing saved in the database for this user" in {
         val res = SoftwareChoicesFrontend.getSoftwareInDevelopment
@@ -40,20 +40,34 @@ class SoftwareInDevelopmentControllerISpec
         )
       }
     }
-    "display the page" in {
-      val softwareProduct = SoftwareProduct(0, "A1 Tax Stuff", FutureVendor)
+    "display the page for a recognised product" in {
+      val softwareProduct = SoftwareProduct(0, "A1 Tax Stuff", Recognised)
       val userAnswers = UserAnswers()
         .set(EnterSoftwareNamePage, softwareProduct).get
 
       setupAnswers(SessionId, Some(userAnswers))
 
-      val res = SoftwareChoicesFrontend.getSoftwareInDevelopment
+      val res = SoftwareChoicesFrontend.getFullyCompatible()
 
       res should have(
         httpStatus(OK),
-        pageTitle(s"${softwareProduct.name} ${messages("software-in-development.heading")} - ${PageContentBase.title} - GOV.UK"),
+        pageTitle(s"${messages("fully-compatible.heading1", softwareProduct.name)} - ${PageContentBase.title} - GOV.UK"),
       )
     }
+    "display an error for a non-recognised product" in {
+      val softwareProduct = SoftwareProduct(0, "Old-Fashioned Tax Stuff", Spreadsheet)
+      val userAnswers = UserAnswers()
+        .set(EnterSoftwareNamePage, softwareProduct).get
+
+      setupAnswers(SessionId, Some(userAnswers))
+
+      val res = SoftwareChoicesFrontend.getFullyCompatible()
+
+      res should have(
+        httpStatus(INTERNAL_SERVER_ERROR)
+      )
+    }
+
   }
   override def beforeEach(): Unit = {
     super.beforeEach()
