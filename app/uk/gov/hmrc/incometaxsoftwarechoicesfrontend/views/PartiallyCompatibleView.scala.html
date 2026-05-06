@@ -26,18 +26,18 @@
         hmrcNewTabLinkHelper: HmrcNewTabLinkHelper
 )(implicit appConfig: AppConfig)
 
-@(continueURL: String, backLink: String, chosenSoftware: String)(implicit request: Request[_], messages: Messages)
+@(productDetailsUrl: String, backLink: String, chosenSoftware: String)(implicit request: Request[_], messages: Messages)
 
-@mainTemplate(title = s"$chosenSoftware ${messages("partially-compatible.heading1")}", backLink = Some(backLink)) {
+@mainTemplate(title = messages("partially-compatible.heading1", chosenSoftware), backLink = Some(backLink)) {
 
     @govukPanel(Panel(
-     title = Text(s"$chosenSoftware ${messages("partially-compatible.heading1")}"),
+     title = Text(messages("partially-compatible.heading1", chosenSoftware))
     ))
 
     <p class="govuk-body">@messages("partially-compatible.para1")</p>
     
     <p class="govuk-body">
-        @Html(messages("partially-compatible.para2", s"""<a class="govuk-link govuk-!-display-none-print" href="$continueURL">${messages("partially-compatible.para2.link")}</a>"""))
+        @Html(messages("partially-compatible.para2", s"""<a class="govuk-link govuk-!-display-none-print" href="$productDetailsUrl">${messages("partially-compatible.para2.link.text")}</a>"""))
     </p>
 
     <h2 class="govuk-heading-m">@messages("partially-compatible.heading2")</h2>

@@ -51,7 +51,7 @@ class PartiallyCompatibleControllerISpec
 
       res should have(
         httpStatus(OK),
-        pageTitle(s"${softwareProduct.name} ${messages("partially-compatible.heading1")} - ${PageContentBase.title} - GOV.UK"),
+        pageTitle(s"${messages("partially-compatible.heading1", softwareProduct.name)} - ${PageContentBase.title} - GOV.UK"),
       )
     }
     "display an error for a non-recognised product" in {

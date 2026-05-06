@@ -25,7 +25,7 @@ class PartiallyCompatibleViewSpec extends ViewSpec {
 
   private val softwareName = "A1 Tax Stuff"
   private val view = app.injector.instanceOf[PartiallyCompatibleView]
-  val page: HtmlFormat.Appendable = view(continueURL = testCall.url, backLink = testBackUrl, chosenSoftware = softwareName)
+  val page: HtmlFormat.Appendable = view(productDetailsUrl = testCall.url, backLink = testBackUrl, chosenSoftware = softwareName)
   val document: Document = Jsoup.parse(page.body)
   "PartiallyCompatible view" must {
 

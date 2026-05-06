@@ -35,12 +35,12 @@ class PartiallyCompatibleController @Inject()(view: PartiallyCompatibleView,
     request.product match {
       case Some(product) if product.softwareType == Recognised => {
         Ok(view(
-          continueURL = routes.ProductDetailsController.show(product.productId.toString).url,
+          productDetailsUrl = routes.ProductDetailsController.show(product.productId.toString).url,
           backLink = routes.CheckYourAnswersController.show().url,
           chosenSoftware = product.name
         ))
       }
-      case _ => InternalServerError("[PartiallyCompatibleController][show] - Could not find details of a recognised software product in answers]")
+      case _ => InternalServerError("[PartiallyCompatibleController][show] - Could not find details of a recognised software product in answers")
     }
 
   }
