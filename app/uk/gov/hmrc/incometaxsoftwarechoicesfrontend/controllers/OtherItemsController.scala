@@ -23,7 +23,6 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.OtherItemsForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.OtherItemsPage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.PageAnswersService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.OtherItemsView
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.Recognised
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
@@ -41,26 +40,26 @@ class OtherItemsController @Inject()(view: OtherItemsView,
 
     val pageAnswers = pageAnswersService.getPageAnswers(request.userFilters.answers, OtherItemsPage)
 
-    val name = request.softwareType match {
-      case Some(Recognised) => request.softwareName
-      case _ => None
-    }
+//    val name = request.softwareType match {
+//      case Some(Recognised) => request.softwareName
+//      case _ => None
+//    }
 
     Ok(view(
       otherItemsForm = OtherItemsForm.form.fill(pageAnswers),
       postAction = routes.OtherItemsController.submit(editMode),
       backLink = backUrl(editMode),
-      softwareName = name
+      //softwareName = name
     ))
   }
 
   def submit(editMode: Boolean): Action[AnyContent] = (identify andThen requireData).async { request =>
     given Request[AnyContent] = request
 
-    val name = request.softwareType match {
-      case Some(Recognised) => request.softwareName
-      case _ => None
-    }
+//    val name = request.softwareType match {
+//      case Some(Recognised) => request.softwareName
+//      case _ => None
+//    }
     OtherItemsForm.form.bindFromRequest().fold(
       formWithErrors => {
         Future.successful(
@@ -68,7 +67,7 @@ class OtherItemsController @Inject()(view: OtherItemsView,
             otherItemsForm = formWithErrors,
             postAction = routes.OtherItemsController.submit(editMode),
             backLink = backUrl(editMode),
-            softwareName = name
+            //softwareName = name
           ))
         )
       },

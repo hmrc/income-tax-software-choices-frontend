@@ -26,7 +26,6 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.AccountingPeriod.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.AccountingPeriodPage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.PageAnswersService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.AccountingPeriodView
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.Recognised
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
@@ -44,25 +43,25 @@ class AccountingPeriodController @Inject()(view: AccountingPeriodView,
 
     val pageAnswers = pageAnswersService.getPageAnswers(request.userFilters.answers, AccountingPeriodPage)
 
-    val name = request.softwareType match {
-      case Some(Recognised) => request.softwareName
-      case _ => None
-    }
+//    val name = request.softwareType match {
+//      case Some(Recognised) => request.softwareName
+//      case _ => None
+//    }
     Ok(view(
       accountingPeriodForm = AccountingPeriodForm.accountingPeriodForm.fill(pageAnswers),
       postAction = routes.AccountingPeriodController.submit(editMode),
       backUrl = backUrl(editMode),
-      softwareName = name
+      //softwareName = name
     ))
   }
 
 
   def submit(editMode: Boolean): Action[AnyContent] = (identify andThen requireData).async { request =>
     given Request[AnyContent] = request
-    val name = request.softwareType match {
-      case Some(Recognised) => request.softwareName
-      case _ => None
-    }
+//    val name = request.softwareType match {
+//      case Some(Recognised) => request.softwareName
+//      case _ => None
+//    }
 
     accountingPeriodForm.bindFromRequest().fold(
       formWithErrors => {
@@ -71,7 +70,7 @@ class AccountingPeriodController @Inject()(view: AccountingPeriodView,
             accountingPeriodForm = formWithErrors,
             postAction = routes.AccountingPeriodController.submit(editMode),
             backUrl = backUrl(editMode),
-            softwareName = name
+            //softwareName = name
           ))
         )
       },
