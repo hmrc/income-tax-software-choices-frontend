@@ -30,9 +30,7 @@
 
 @mainTemplate(title = messages("partially-compatible.heading1", chosenSoftware), backLink = Some(backLink)) {
 
-    @govukPanel(Panel(
-     title = Text(messages("partially-compatible.heading1", chosenSoftware))
-    ))
+    <h1 class="govuk-heading-l">@messages("partially-compatible.heading1", chosenSoftware)</h1>
 
     <p class="govuk-body">@messages("partially-compatible.para1")</p>
     
