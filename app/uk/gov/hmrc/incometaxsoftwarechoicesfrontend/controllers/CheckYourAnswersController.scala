@@ -65,7 +65,7 @@ class CheckYourAnswersController @Inject()(view: CheckYourAnswersView,
         case (false, Some(Check), Some(Recognised), Some(true), Some(true)) =>
           Redirect(routes.FullyCompatibleController.show())
         case (false, Some(Check), Some(Recognised), Some(true), Some(false)) =>
-          Redirect(routes.CheckYourAnswersController.show())
+          Redirect(routes.PartiallyCompatibleController.show())
         case (false, Some(Check), Some(Recognised), Some(true), None) =>
           Redirect(routes.CheckYourAnswersController.show())
         case (false, Some(Check), Some(Recognised), None, None) =>

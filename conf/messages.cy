@@ -340,3 +340,13 @@ fully-compatible.heading2 = *** MISSING WELSH ***
 fully-compatible.para3 = *** MISSING WELSH ***
 fully-compatible.bullet1 = *** MISSING WELSH ***
 fully-compatible.bullet2 = *** MISSING WELSH ***
+
+#Partially Compatible page
+partially-compatible.heading1 = *** MISSING WELSH ***
+partially-compatible.para1 = *** MISSING WELSH ***
+partially-compatible.para2 = *** MISSING WELSH ***
+partially-compatible.para2.link.text = *** MISSING WELSH ***
+partially-compatible.heading2 = *** MISSING WELSH ***
+partially-compatible.para3 = *** MISSING WELSH ***
+partially-compatible.bullet1 = *** MISSING WELSH ***
+partially-compatible.bullet2 = *** MISSING WELSH ***

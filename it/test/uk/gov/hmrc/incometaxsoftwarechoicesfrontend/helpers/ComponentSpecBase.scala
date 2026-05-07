@@ -167,6 +167,8 @@ trait ComponentSpecBase extends AnyWordSpec
     )
 
     def getFullyCompatible(): WSResponse = get("/fully-compatible")
+    
+    def getPartiallyCompatible(): WSResponse = get("/partly-compatible")
 
     def healthcheck(): WSResponse =
       wsClient
