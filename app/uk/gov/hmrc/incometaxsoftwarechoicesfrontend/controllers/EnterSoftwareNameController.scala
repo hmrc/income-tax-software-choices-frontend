@@ -75,7 +75,7 @@ class EnterSoftwareNameController @Inject()(view: EnterSoftwareNameView,
 
         pageAnswersService.setPageAnswers(request.sessionId, EnterSoftwareNamePage, selectedProduct).map {
           case true => redirect(selectedProduct)
-          case false => InternalServerError("[EnterSoftwareNameController][submit] - Could not save product]")
+          case false => InternalServerError("[EnterSoftwareNameController][submit] - Could not save product")
         }
       }
     )
@@ -86,7 +86,7 @@ class EnterSoftwareNameController @Inject()(view: EnterSoftwareNameView,
 
     pageAnswersService.setPageAnswers(request.sessionId, EnterSoftwareNamePage, unrecognisedProduct).map {
       case true => redirect(unrecognisedProduct)
-      case false => InternalServerError("[EnterSoftwareNameController][clearSelection] - Could not clear product]")
+      case false => InternalServerError("[EnterSoftwareNameController][clearSelection] - Could not clear product")
     }
   }
 

@@ -22,7 +22,7 @@ import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.SessionId
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, DatabaseHelper}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.Check
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.{FutureVendor, Recognised, Spreadsheet, Unrecognised}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{JourneyType, SoftwareProduct, UserAnswers, UserFilters}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.DataService
@@ -87,8 +87,8 @@ class EnterSoftwareNameControllerISpec extends ComponentSpecBase with BeforeAndA
       }
     }
 
-    "there are no pre-existing software name for this page" should {
-      "display the page with no pre-selected product" in {
+    "the pre-existing software name is cleared for this page" should {
+      "display the page with the pre-selected product cleared" in {
         val preUserAnswers = UserAnswers().set(HowYouFindSoftwarePage, Check).get
            .set(EnterSoftwareNamePage, firstOtherSpreadsheetProduct).get
         await(userFiltersRepository.set(testUserFilters(preUserAnswers)))
@@ -101,9 +101,7 @@ class EnterSoftwareNameControllerISpec extends ComponentSpecBase with BeforeAndA
           autocompleteSelected(firstOtherSpreadsheetProduct.name)
         )
 
-        val clearedUserAnswers = UserAnswers().set(HowYouFindSoftwarePage, Check).get
-          .set(EnterSoftwareNamePage, SoftwareProduct(0, "", Unrecognised)).get
-        await(userFiltersRepository.set(testUserFilters(clearedUserAnswers)))
+        SoftwareChoicesFrontend.clearEnterSoftwareName()
 
         val secondRes = SoftwareChoicesFrontend.getEnterSoftwareName()
 

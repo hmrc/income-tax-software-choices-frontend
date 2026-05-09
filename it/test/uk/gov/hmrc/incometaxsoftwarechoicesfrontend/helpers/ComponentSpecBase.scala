@@ -166,6 +166,8 @@ trait ComponentSpecBase extends AnyWordSpec
       )
     )
 
+    def clearEnterSoftwareName(): WSResponse = get("/enter-software-name/clear")
+
     def getFullyCompatible(): WSResponse = get("/fully-compatible")
     
     def getPartiallyCompatible(): WSResponse = get("/partly-compatible")
