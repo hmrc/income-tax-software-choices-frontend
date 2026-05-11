@@ -19,43 +19,48 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views
 import org.jsoup.Jsoup
 import org.jsoup.nodes.{Document, Element}
 import play.twirl.api.HtmlFormat
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SoftwareInDevelopmentView
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.NotCompatibleView
 
-class SoftwareInDevelopmentViewSpec extends ViewSpec {
+class NotCompatibleViewSpec extends ViewSpec {
 
   private val softwareName = "A1 Tax Stuff"
-  private val view = app.injector.instanceOf[SoftwareInDevelopmentView]
+  private val view = app.injector.instanceOf[NotCompatibleView]
   val page: HtmlFormat.Appendable = view(continueURL = testCall.url, backLink = testBackUrl, chosenSoftware = softwareName)
   val document: Document = Jsoup.parse(page.body)
-  "SoftwareInDevelopment view" must {
+  "NotCompatible view" must {
 
     "have a title" in {
-      document.title() shouldBe SoftwareInDevelopmentContent.title
+      document.title() shouldBe NotCompatibleContent.title
     }
+
     "have a back link" in {
       document.selectHead(".govuk-back-link").attr("href") shouldBe testBackUrl
     }
-    "have a h1" in {
-      document.selectHead("h1").text() shouldBe SoftwareInDevelopmentContent.heading
+
+    "have an h1" in {
+      document.selectHead("h1").text() shouldBe NotCompatibleContent.heading
     }
 
     "have the correct paragraphs" in {
-      document.mainContent.selectNth("p", 1).text() shouldBe SoftwareInDevelopmentContent.para1
-      document.mainContent.selectNth("p", 2).text() shouldBe SoftwareInDevelopmentContent.para2
+      document.mainContent.selectNth("p", 1).text() shouldBe NotCompatibleContent.para1
+      document.mainContent.selectNth("p", 2).text() shouldBe NotCompatibleContent.para2
     }
 
     "have a link button" in {
-      val link: Element = document.selectHead("a.govuk-button")
-      link.text() shouldBe SoftwareInDevelopmentContent.button
-      link.attr("href") shouldBe testCall.url
+    val link: Element = document.selectHead("a.govuk-button")
+    link.text() shouldBe NeedAdditionalSoftwareContent.button
+    link.attr("href") shouldBe testCall.url
     }
+
   }
+
 }
 
-private object SoftwareInDevelopmentContent {
-  val heading = "A1 Tax Stuff is not recognised for Making Tax Digital for Income Tax yet"
+
+private object NotCompatibleContent {
+  val heading = "A1 Tax Stuff is not currently compatible"
   val title = s"$heading - ${PageContentBase.title} - GOV.UK"
-  val para1 = "You may want to contact your current software provider to ask if they are going to support Making Tax Digital for Income Tax for your circumstances."
+  val para1 = "You may want to contact your current software provider to see if they are going to support Making Tax Digital for Income Tax for your circumstances."
   val para2 = "You can also search for other software packages that are currently ready for Making Tax Digital for Income Tax to see if they are suitable."
   val button = "Find compatible software"
 }
