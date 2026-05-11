@@ -23,6 +23,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.BusinessIncomeForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.BusinessIncomePage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.PageAnswersService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.BusinessIncomeView
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
@@ -40,47 +41,55 @@ class BusinessIncomeController @Inject()(view: BusinessIncomeView,
     given Request[AnyContent] = request
 
     val pageAnswers = pageAnswersService.getPageAnswers(request.userFilters.answers, BusinessIncomePage)
-//    val name = request.softwareType match {
-//      case Some(Recognised) => request.softwareName
-//      case _ => None
-//    }
+    request.product match {
+      case Some(product) =>
+        val softwareName: Option[String] = product.softwareType match {
+          case SoftwareType.Recognised => Some(product.name)
+          case _                       => None
+        }
 
-    Ok(view(
-      businessIncomeForm = BusinessIncomeForm.form.fill(pageAnswers),
-      postAction = routes.BusinessIncomeController.submit(editMode),
-      backUrl = backUrl(editMode),
-      //softwareName = name
-    ))
+        Ok(view(
+          businessIncomeForm = BusinessIncomeForm.form.fill(pageAnswers),
+          postAction = routes.BusinessIncomeController.submit(editMode),
+          backUrl = backUrl(editMode),
+          softwareName = softwareName
+        ))
+      case None => InternalServerError("[BusinessIncomeController][show] - Could not find software product in answers")
+    }
   }
 
   def submit(editMode: Boolean): Action[AnyContent] = (identify andThen requireData).async { request =>
     given Request[AnyContent] = request
 
-//    val name = request.softwareType match {
-//      case Some(Recognised) => request.softwareName
-//      case _ => None
-//    }
-
-    BusinessIncomeForm.form.bindFromRequest().fold(
-      formWithErrors => {
-        Future.successful(
-          BadRequest(view(
-            businessIncomeForm = formWithErrors,
-            postAction = routes.BusinessIncomeController.submit(editMode),
-            backUrl = backUrl(editMode),
-            //softwareName = name
-          ))
-        )
-      },
-      answers => {
-        pageAnswersService.setPageAnswers(request.userFilters, BusinessIncomePage, answers).flatMap {
-          case true =>
-            if (editMode) Future.successful(Redirect(routes.CheckYourAnswersController.show()))
-            else Future.successful(Redirect(routes.AdditionalIncomeSourcesController.show()))
-          case false => throw new InternalServerException("[BusinessIncomeController][submit] - Could not save business income sources")
+    request.product match {
+      case Some(product) =>
+        val softwareName: Option[String] = product.softwareType match {
+          case SoftwareType.Recognised => Some(product.name)
+          case _                       => None
         }
-      }
-    )
+
+        BusinessIncomeForm.form.bindFromRequest().fold(
+          formWithErrors => {
+            Future.successful(
+              BadRequest(view(
+                businessIncomeForm = formWithErrors,
+                postAction = routes.BusinessIncomeController.submit(editMode),
+                backUrl = backUrl(editMode),
+                softwareName = softwareName
+              ))
+            )
+          },
+          answers => {
+            pageAnswersService.setPageAnswers(request.userFilters, BusinessIncomePage, answers).flatMap {
+              case true =>
+                if (editMode) Future.successful(Redirect(routes.CheckYourAnswersController.show()))
+                else Future.successful(Redirect(routes.AdditionalIncomeSourcesController.show()))
+              case false => throw new InternalServerException("[BusinessIncomeController][submit] - Could not save business income sources")
+            }
+          }
+        )
+      case None => Future.successful(InternalServerError("[BusinessIncomeController][submit] - Could not find software product in answers"))
+    }
   }
 
   def backUrl(editMode: Boolean): String = {

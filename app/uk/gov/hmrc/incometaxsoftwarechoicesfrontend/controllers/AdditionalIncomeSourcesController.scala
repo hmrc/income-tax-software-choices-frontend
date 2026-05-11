@@ -23,6 +23,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.AdditionalIncomeForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.AdditionalIncomeSourcesPage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.PageAnswersService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.AdditionalIncomeSourceView
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
@@ -39,45 +40,54 @@ class AdditionalIncomeSourcesController @Inject()(view: AdditionalIncomeSourceVi
     given Request[AnyContent] = request
 
     val pageAnswers = pageAnswersService.getPageAnswers(request.userFilters.answers, AdditionalIncomeSourcesPage)
-//    val name = request.softwareType match {
-//      case Some(Recognised) => request.softwareName
-//      case _ => None
-//    }
-    Ok(view(
-      AdditionalIncomeForm.form.fill(pageAnswers),
-      postAction = routes.AdditionalIncomeSourcesController.submit(editMode),
-      backUrl = backUrl(editMode),
-      //softwareName = name
-    ))
+    request.product match {
+      case Some(product) =>
+        val softwareName: Option[String] = product.softwareType match {
+          case SoftwareType.Recognised => Some(product.name)
+          case _                       => None
+        }
+
+        Ok(view(
+          AdditionalIncomeForm.form.fill(pageAnswers),
+          postAction = routes.AdditionalIncomeSourcesController.submit(editMode),
+          backUrl = backUrl(editMode),
+          softwareName = softwareName
+        ))
+      case None => InternalServerError("[AdditionalIncomeSourcesController][show] - Could not find software product in answers")
+    }
   }
 
 
   def submit(editMode: Boolean): Action[AnyContent] = (identify andThen requireData).async { request =>
     given Request[AnyContent] = request
 
-//    val name = request.softwareType match {
-//      case Some(Recognised) => request.softwareName
-//      case _ => None
-//    }
-    AdditionalIncomeForm.form.bindFromRequest().fold(
-      formWithErrors =>
-        Future.successful(
-          BadRequest(view(
-            additionalIncomeForm = formWithErrors,
-            postAction = routes.AdditionalIncomeSourcesController.submit(editMode),
-            backUrl = backUrl(editMode),
-            //softwareName = name
-          ))
-        ),
-      answers => {
-        pageAnswersService.setPageAnswers(request.userFilters, AdditionalIncomeSourcesPage, answers).flatMap {
-          case true =>
-            if (editMode) Future.successful(Redirect(routes.CheckYourAnswersController.show()))
-            else Future.successful(Redirect(routes.OtherItemsController.show()))
-          case false => Future.failed(new InternalServerException("[AdditionalIncomeSourcesController][submit] – could not save additional income sources"))
+    request.product match {
+      case Some(product) =>
+        val softwareName: Option[String] = product.softwareType match {
+          case SoftwareType.Recognised => Some(product.name)
+          case _                       => None
         }
-      }
-    )
+        AdditionalIncomeForm.form.bindFromRequest().fold(
+          formWithErrors =>
+            Future.successful(
+              BadRequest(view(
+                additionalIncomeForm = formWithErrors,
+                postAction = routes.AdditionalIncomeSourcesController.submit(editMode),
+                backUrl = backUrl(editMode),
+                softwareName = softwareName
+              ))
+            ),
+          answers => {
+            pageAnswersService.setPageAnswers(request.userFilters, AdditionalIncomeSourcesPage, answers).flatMap {
+              case true =>
+                if (editMode) Future.successful(Redirect(routes.CheckYourAnswersController.show()))
+                else Future.successful(Redirect(routes.OtherItemsController.show()))
+              case false => Future.failed(new InternalServerException("[AdditionalIncomeSourcesController][submit] – could not save additional income sources"))
+            }
+          }
+        )
+      case None => Future.successful(InternalServerError("[AdditionalIncomeSourcesController][submit] - Could not find software product in answers"))
+    }
   }
 
   def backUrl(editMode: Boolean): String = {

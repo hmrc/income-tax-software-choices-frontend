@@ -23,6 +23,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.OtherItemsForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.OtherItemsPage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.PageAnswersService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.OtherItemsView
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
@@ -40,46 +41,55 @@ class OtherItemsController @Inject()(view: OtherItemsView,
 
     val pageAnswers = pageAnswersService.getPageAnswers(request.userFilters.answers, OtherItemsPage)
 
-//    val name = request.softwareType match {
-//      case Some(Recognised) => request.softwareName
-//      case _ => None
-//    }
+    request.product match {
+      case Some(product) =>
+        val softwareName: Option[String] = product.softwareType match {
+          case SoftwareType.Recognised => Some(product.name)
+          case _                       => None
+        }
 
-    Ok(view(
-      otherItemsForm = OtherItemsForm.form.fill(pageAnswers),
-      postAction = routes.OtherItemsController.submit(editMode),
-      backLink = backUrl(editMode),
-      //softwareName = name
-    ))
+        Ok(view(
+          otherItemsForm = OtherItemsForm.form.fill(pageAnswers),
+          postAction = routes.OtherItemsController.submit(editMode),
+          backLink = backUrl(editMode),
+          softwareName = softwareName
+        ))
+      case None => InternalServerError("[OtherItemsController][show] - Could not find software product in answers")
+    }
   }
 
   def submit(editMode: Boolean): Action[AnyContent] = (identify andThen requireData).async { request =>
     given Request[AnyContent] = request
 
-//    val name = request.softwareType match {
-//      case Some(Recognised) => request.softwareName
-//      case _ => None
-//    }
-    OtherItemsForm.form.bindFromRequest().fold(
-      formWithErrors => {
-        Future.successful(
-          BadRequest(view(
-            otherItemsForm = formWithErrors,
-            postAction = routes.OtherItemsController.submit(editMode),
-            backLink = backUrl(editMode),
-            //softwareName = name
-          ))
-        )
-      },
-      answers => {
-        pageAnswersService.setPageAnswers(request.userFilters, OtherItemsPage, answers).flatMap {
-          case true =>
-            if (editMode) Future.successful(Redirect(routes.CheckYourAnswersController.show()))
-            else Future.successful(Redirect(routes.AccountingPeriodController.show(editMode)))
-          case false => throw new InternalServerException("[OtherItemsController][submit] - Could not save other items income sources")
+    request.product match {
+     case Some(product) =>
+        val softwareName: Option[String] = product.softwareType match {
+          case SoftwareType.Recognised => Some(product.name)
+          case _                       => None
         }
-      }
-    )
+
+        OtherItemsForm.form.bindFromRequest().fold(
+          formWithErrors => {
+            Future.successful(
+              BadRequest(view(
+                otherItemsForm = formWithErrors,
+                postAction = routes.OtherItemsController.submit(editMode),
+                backLink = backUrl(editMode),
+                softwareName = softwareName
+              ))
+            )
+          },
+          answers => {
+            pageAnswersService.setPageAnswers(request.userFilters, OtherItemsPage, answers).flatMap {
+              case true =>
+                if (editMode) Future.successful(Redirect(routes.CheckYourAnswersController.show()))
+                else Future.successful(Redirect(routes.AccountingPeriodController.show(editMode)))
+              case false => throw new InternalServerException("[OtherItemsController][submit] - Could not save other items income sources")
+            }
+          }
+        )
+      case None => Future.successful(InternalServerError("[OtherItemsController][submit] - Could not find software product in answers"))
+    }
   }
 
   def backUrl(editMode: Boolean): String = {

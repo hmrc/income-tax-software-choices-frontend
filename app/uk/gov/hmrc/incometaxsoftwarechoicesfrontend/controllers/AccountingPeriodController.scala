@@ -17,16 +17,16 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import play.api.i18n.I18nSupport
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import uk.gov.hmrc.http.InternalServerException
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{RequireUserDataRefiner, SessionIdentifierAction}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.AccountingPeriodForm
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.AccountingPeriodForm.accountingPeriodForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.AccountingPeriod.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.AccountingPeriodPage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.PageAnswersService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.AccountingPeriodView
-
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.AccountingPeriodForm
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.AccountingPeriodForm.accountingPeriodForm
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -43,50 +43,58 @@ class AccountingPeriodController @Inject()(view: AccountingPeriodView,
 
     val pageAnswers = pageAnswersService.getPageAnswers(request.userFilters.answers, AccountingPeriodPage)
 
-//    val name = request.softwareType match {
-//      case Some(Recognised) => request.softwareName
-//      case _ => None
-//    }
-    Ok(view(
-      accountingPeriodForm = AccountingPeriodForm.accountingPeriodForm.fill(pageAnswers),
-      postAction = routes.AccountingPeriodController.submit(editMode),
-      backUrl = backUrl(editMode),
-      //softwareName = name
-    ))
-  }
+    request.product match {
+      case Some(product) =>
+        val softwareName: Option[String] = product.softwareType match {
+          case SoftwareType.Recognised => Some(product.name)
+          case _ => None
+        }
 
+        Ok(view(
+          accountingPeriodForm = AccountingPeriodForm.accountingPeriodForm.fill(pageAnswers),
+          postAction = routes.AccountingPeriodController.submit(editMode),
+          backUrl = backUrl(editMode),
+          softwareName = softwareName
+        ))
+      case None => InternalServerError("[AccountingPeriodController][show] - Could not find software product in answers")
+    }
+  }
 
   def submit(editMode: Boolean): Action[AnyContent] = (identify andThen requireData).async { request =>
     given Request[AnyContent] = request
-//    val name = request.softwareType match {
-//      case Some(Recognised) => request.softwareName
-//      case _ => None
-//    }
 
-    accountingPeriodForm.bindFromRequest().fold(
-      formWithErrors => {
-        Future.successful(
-          BadRequest(view(
-            accountingPeriodForm = formWithErrors,
-            postAction = routes.AccountingPeriodController.submit(editMode),
-            backUrl = backUrl(editMode),
-            //softwareName = name
-          ))
-        )
-      },
-      selectedPeriod => {
-        pageAnswersService.setPageAnswers(request.userFilters, AccountingPeriodPage, selectedPeriod).flatMap {
-          case true =>
-            selectedPeriod match {
-              case SixthAprilToFifthApril | FirstAprilToThirtyFirstMarch =>
-                Future.successful(Redirect(routes.CheckYourAnswersController.show()))
-              case OtherAccountingPeriod =>
-                Future.successful(Redirect(routes.AccountingPeriodNotAlignedController.show(editMode)))
-            }
-          case false => throw new InternalServerException("[AccountingPeriodController][submit] - Could not save accounting period")
+    request.product match {
+      case Some(product) =>
+        val softwareName: Option[String] = product.softwareType match {
+          case SoftwareType.Recognised => Some(product.name)
+          case _ => None
         }
-      }
-    )
+        accountingPeriodForm.bindFromRequest().fold(
+          formWithErrors => {
+            Future.successful(
+              BadRequest(view(
+                accountingPeriodForm = formWithErrors,
+                postAction = routes.AccountingPeriodController.submit(editMode),
+                backUrl = backUrl(editMode),
+                softwareName = softwareName
+              ))
+            )
+          },
+          selectedPeriod => {
+            pageAnswersService.setPageAnswers(request.userFilters, AccountingPeriodPage, selectedPeriod).flatMap {
+              case true =>
+                selectedPeriod match {
+                  case SixthAprilToFifthApril | FirstAprilToThirtyFirstMarch =>
+                    Future.successful(Redirect(routes.CheckYourAnswersController.show()))
+                  case OtherAccountingPeriod =>
+                    Future.successful(Redirect(routes.AccountingPeriodNotAlignedController.show(editMode)))
+                }
+              case false => throw new InternalServerException("[AccountingPeriodController][submit] - Could not save accounting period")
+            }
+          }
+        )
+      case None => Future.successful(InternalServerError("[AccountingPeriodController][submit] - Could not find software product in answers"))
+    }
   }
 
   def backUrl(editMode: Boolean): String = {

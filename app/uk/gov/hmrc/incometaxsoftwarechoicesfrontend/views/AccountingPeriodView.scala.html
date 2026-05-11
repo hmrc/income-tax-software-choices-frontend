@@ -34,9 +34,13 @@
         govukButton: GovukButton
 )
 
-@(accountingPeriodForm: Form[AccountingPeriod], postAction: Call, backUrl: String)(implicit request: Request[_], messages: Messages)
+@(accountingPeriodForm: Form[AccountingPeriod], postAction: Call, backUrl: String,softwareName: Option[String])(implicit request: Request[_], messages: Messages)
 
 @mainTemplate(title = messages("accounting-period.heading"), optForm = Some(accountingPeriodForm), backLink = Some(backUrl)) {
+
+@softwareName.map(name =>
+      <span class="govuk-caption-l">{name}</span>
+       )
 
     <h1 class="govuk-heading-l">@messages("accounting-period.heading")</h1>
 
