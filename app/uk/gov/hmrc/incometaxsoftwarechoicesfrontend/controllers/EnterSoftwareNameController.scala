@@ -52,7 +52,7 @@ class EnterSoftwareNameController @Inject()(view: EnterSoftwareNameView,
       enterSoftwareNameForm = EnterSoftwareNameForm.form.fill(pageAnswers.map(_.productId)),
       selectOptions = buildSelects(allProducts),
       postAction = routes.EnterSoftwareNameController.submit(),
-      notListedLink = routes.NoSoftwareListedController.show().url,
+      notListedLink = routes.EnterSoftwareNameController.clearSelection().url,
       backLink = routes.HowYouFindSoftwareController.show().url
     ))
   }
@@ -75,10 +75,19 @@ class EnterSoftwareNameController @Inject()(view: EnterSoftwareNameView,
 
         pageAnswersService.setPageAnswers(request.sessionId, EnterSoftwareNamePage, selectedProduct).map {
           case true => redirect(selectedProduct)
-          case false => InternalServerError("[EnterSoftwareNameController][submit] - Could not save product]")
+          case false => InternalServerError("[EnterSoftwareNameController][submit] - Could not save product")
         }
       }
     )
+  }
+
+  def clearSelection(): Action[AnyContent] = (identify andThen requireData).async { request =>
+    val unrecognisedProduct = SoftwareProduct(0, "", Unrecognised)
+
+    pageAnswersService.setPageAnswers(request.sessionId, EnterSoftwareNamePage, unrecognisedProduct).map {
+      case true => redirect(unrecognisedProduct)
+      case false => InternalServerError("[EnterSoftwareNameController][clearSelection] - Could not clear product")
+    }
   }
 
   private def redirect(selectedProduct: SoftwareProduct) = {
