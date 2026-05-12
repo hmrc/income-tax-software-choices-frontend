@@ -59,7 +59,7 @@ class OtherItemsControllerISpec extends ComponentSpecBase with BeforeAndAfterEac
           checkboxSelected("otherItems-5", None),
           checkboxSelected("otherItems-6", None),
           checkboxSelected("otherItems-7", None),
-          checkboxSelected("otherItems-9", None),
+          checkboxSelected("otherItems-9", None)
         )
         res.body.contains(softwareProduct.name) shouldBe true
       }
@@ -82,7 +82,7 @@ class OtherItemsControllerISpec extends ComponentSpecBase with BeforeAndAfterEac
           checkboxSelected("otherItems-6", Some(MarriageAllowance.key)),
           checkboxSelected("otherItems-7", Some(VoluntaryClass2NationalInsurance.key)),
           checkboxSelected("otherItems-8", Some(HighIncomeChildBenefitCharge.key)),
-          checkboxSelected("otherItems-10", None),
+          checkboxSelected("otherItems-10", None)
         )
         res.body.contains(softwareProduct.name) shouldBe true
       }
@@ -105,7 +105,7 @@ class OtherItemsControllerISpec extends ComponentSpecBase with BeforeAndAfterEac
           checkboxSelected("otherItems-6", None),
           checkboxSelected("otherItems-7", None),
           checkboxSelected("otherItems-8", None),
-          checkboxSelected("otherItems-10", Some("none")),
+          checkboxSelected("otherItems-10", Some("none"))
         )
         res.body.contains(softwareProduct.name) shouldBe true
       }
@@ -169,7 +169,6 @@ class OtherItemsControllerISpec extends ComponentSpecBase with BeforeAndAfterEac
     "in edit mode" should {
       "save answers and redirect to the check your answers page" when {
         "they submit a single other item" in {
-          //setPageData(SessionId, OtherItemsPage, Seq.empty)
           val userAnswers = UserAnswers()
             .set(EnterSoftwareNamePage, SoftwareProduct(0, "Bright", Recognised)).get
             .set(OtherItemsPage, Seq.empty).get

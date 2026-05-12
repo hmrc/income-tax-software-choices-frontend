@@ -68,7 +68,7 @@ class BusinessIncomeControllerISpec extends ComponentSpecBase with BeforeAndAfte
           pageTitle(s"${messages("business-income.title")} - ${PageContentBase.title} - GOV.UK"),
           checkboxSelected("businessIncome", Some(SoleTrader.key)),
           checkboxSelected("businessIncome-2", Some(UkProperty.key)),
-          checkboxSelected("businessIncome-3", Some(OverseasProperty.key)),
+          checkboxSelected("businessIncome-3", Some(OverseasProperty.key))
         )
         res.body.contains(softwareProduct.name) shouldBe true
       }

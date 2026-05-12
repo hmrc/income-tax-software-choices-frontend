@@ -59,7 +59,7 @@ class AdditionalIncomeSourcesControllerISpec extends ComponentSpecBase with Befo
           checkboxSelected("additionalIncome-7", None),
           checkboxSelected("additionalIncome-8", None),
           checkboxSelected("additionalIncome-9", None),
-          checkboxSelected("additionalIncome-11", None),
+          checkboxSelected("additionalIncome-11", None)
         )
       }
       "the additional income has been answered previously with additional income selections" in {
@@ -81,7 +81,7 @@ class AdditionalIncomeSourcesControllerISpec extends ComponentSpecBase with Befo
           checkboxSelected("additionalIncome-6", Some(PartnerIncome.key)),
           checkboxSelected("additionalIncome-7", Some(ForeignDividends.key)),
           checkboxSelected("additionalIncome-8", Some(ForeignInterest.key)),
-          checkboxSelected("additionalIncome-10", None),
+          checkboxSelected("additionalIncome-10", None)
         )
         res.body.contains(softwareProduct.name) shouldBe true
       }
@@ -104,7 +104,7 @@ class AdditionalIncomeSourcesControllerISpec extends ComponentSpecBase with Befo
           checkboxSelected("additionalIncome-6", None),
           checkboxSelected("additionalIncome-7", None),
           checkboxSelected("additionalIncome-8", None),
-          checkboxSelected("additionalIncome-10", Some("none")),
+          checkboxSelected("additionalIncome-10", Some("none"))
         )
         res.body.contains(softwareProduct.name) shouldBe true
       }

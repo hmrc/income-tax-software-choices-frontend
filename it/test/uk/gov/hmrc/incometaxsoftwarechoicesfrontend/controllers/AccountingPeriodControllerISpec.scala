@@ -52,7 +52,7 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
           pageTitle(s"${messages("accounting-period.heading")} - ${PageContentBase.title} - GOV.UK"),
           radioButtonSelected(id = "accounting-period", None),
           radioButtonSelected(id = "accounting-period-2", None),
-          radioButtonSelected(id = "accounting-period-4", None),
+          radioButtonSelected(id = "accounting-period-4", None)
         )
       }
       "the accounting period question has been answered previously" which {
@@ -70,7 +70,7 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
             pageTitle(s"${messages("accounting-period.heading")} - ${PageContentBase.title} - GOV.UK"),
             radioButtonSelected(id = "accounting-period", Some(SixthAprilToFifthApril.key)),
             radioButtonSelected(id = "accounting-period-2", None),
-            radioButtonSelected(id = "accounting-period-4", None),
+            radioButtonSelected(id = "accounting-period-4", None)
           )
           res.body.contains(softwareProduct.name) shouldBe true
         }
@@ -87,7 +87,7 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
             pageTitle(s"${messages("accounting-period.heading")} - ${PageContentBase.title} - GOV.UK"),
             radioButtonSelected(id = "accounting-period", None),
             radioButtonSelected(id = "accounting-period-2", Some(FirstAprilToThirtyFirstMarch.key)),
-            radioButtonSelected(id = "accounting-period-4", None),
+            radioButtonSelected(id = "accounting-period-4", None)
           )
           res.body.contains(softwareProduct.name) shouldBe true
         }
@@ -104,7 +104,7 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
             pageTitle(s"${messages("accounting-period.heading")} - ${PageContentBase.title} - GOV.UK"),
             radioButtonSelected(id = "accounting-period", None),
             radioButtonSelected(id = "accounting-period-2", None),
-            radioButtonSelected(id = "accounting-period-4", Some(OtherAccountingPeriod.key)),
+            radioButtonSelected(id = "accounting-period-4", Some(OtherAccountingPeriod.key))
           )
           res.body.contains(softwareProduct.name) shouldBe true
         }
