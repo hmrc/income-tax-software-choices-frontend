@@ -21,17 +21,22 @@
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTemplate
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.AdditionalIncomeForm
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.helpers._
 
 @this(
     mainTemplate: MainTemplate,
     form: FormWithCSRF,
-    govukCheckboxes: GovukCheckboxes,
+    govukCheckboxes: GovukCheckboxes, 
+    govukPhaseBanner: GovukPhaseBanner,
+    captionHelper:CaptionHelper,
     govukButton: GovukButton
 )(implicit appConfig: AppConfig)
 
-@(additionalIncomeForm: Form[Seq[VendorFilter]], postAction: Call, backUrl: String)(implicit request: Request[_], messages: Messages)
+@(additionalIncomeForm: Form[Seq[VendorFilter]], postAction: Call, backUrl: String, softwareName: Option[String])(implicit request: Request[_], messages: Messages)
 
 @mainTemplate(messages("additional.income.source-heading"), optForm = Some(additionalIncomeForm), backLink = Some(backUrl)) {
+
+@captionHelper(softwareName)
 
 @form(action = postAction) {
 

@@ -19,6 +19,7 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{RequireUserDataRefiner, SessionIdentifierAction}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.helpers.ControllerHelper
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.OtherItemsForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.OtherItemsPage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.PageAnswersService
@@ -39,22 +40,26 @@ class OtherItemsController @Inject()(view: OtherItemsView,
     given Request[AnyContent] = request
 
     val pageAnswers = pageAnswersService.getPageAnswers(request.userFilters.answers, OtherItemsPage)
+
     Ok(view(
       otherItemsForm = OtherItemsForm.form.fill(pageAnswers),
       postAction = routes.OtherItemsController.submit(editMode),
-      backLink = backUrl(editMode)
+      backLink = backUrl(editMode),
+      softwareName = getSoftwareName(request.product)
     ))
   }
 
   def submit(editMode: Boolean): Action[AnyContent] = (identify andThen requireData).async { request =>
     given Request[AnyContent] = request
+
     OtherItemsForm.form.bindFromRequest().fold(
       formWithErrors => {
         Future.successful(
           BadRequest(view(
             otherItemsForm = formWithErrors,
             postAction = routes.OtherItemsController.submit(editMode),
-            backLink = backUrl(editMode)
+            backLink = backUrl(editMode),
+            softwareName = getSoftwareName(request.product)
           ))
         )
       },

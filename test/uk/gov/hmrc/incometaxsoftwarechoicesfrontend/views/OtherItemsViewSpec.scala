@@ -27,7 +27,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.OtherItemsView
 class OtherItemsViewSpec extends ViewSpec with FeatureSwitching {
 
   private val view = app.injector.instanceOf[OtherItemsView]
-
+  private val SoftwareName = "Bright"
   private val formError: FormError = FormError("otherItems", "other-items.error.nonEmpty")
 
   def page(hasError: Boolean = false): HtmlFormat.Appendable = view(
@@ -37,7 +37,8 @@ class OtherItemsViewSpec extends ViewSpec with FeatureSwitching {
       OtherItemsForm.form
     },
     postAction = testCall,
-    backLink = testBackUrl
+    backLink = testBackUrl,
+    softwareName = Some(SoftwareName)
   )
 
   "OtherItemsPage" when {
@@ -59,6 +60,10 @@ class OtherItemsViewSpec extends ViewSpec with FeatureSwitching {
       "have a title" in {
         document.title() shouldBe OtherItemsPageContent.title
       }
+      "have a software name caption" in {
+        document.mainContent.selectHead("span.govuk-caption-l").text() shouldBe SoftwareName
+      }
+
       "have a back link" in {
         document.selectHead(".govuk-back-link").attr("href") shouldBe testBackUrl
       }

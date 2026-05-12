@@ -19,6 +19,7 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{RequireUserDataRefiner, SessionIdentifierAction}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.helpers.ControllerHelper
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.BusinessIncomeForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.BusinessIncomePage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.PageAnswersService
@@ -40,22 +41,26 @@ class BusinessIncomeController @Inject()(view: BusinessIncomeView,
     given Request[AnyContent] = request
 
     val pageAnswers = pageAnswersService.getPageAnswers(request.userFilters.answers, BusinessIncomePage)
+
     Ok(view(
       businessIncomeForm = BusinessIncomeForm.form.fill(pageAnswers),
       postAction = routes.BusinessIncomeController.submit(editMode),
-      backUrl = backUrl(editMode)
+      backUrl = backUrl(editMode),
+      softwareName = getSoftwareName(request.product)
     ))
   }
 
   def submit(editMode: Boolean): Action[AnyContent] = (identify andThen requireData).async { request =>
     given Request[AnyContent] = request
+
     BusinessIncomeForm.form.bindFromRequest().fold(
       formWithErrors => {
         Future.successful(
           BadRequest(view(
             businessIncomeForm = formWithErrors,
             postAction = routes.BusinessIncomeController.submit(editMode),
-            backUrl = backUrl(editMode)
+            backUrl = backUrl(editMode),
+            softwareName = getSoftwareName(request.product)
           ))
         )
       },
