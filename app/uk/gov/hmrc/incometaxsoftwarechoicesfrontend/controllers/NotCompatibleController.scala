@@ -35,7 +35,7 @@ class NotCompatibleController @Inject()(view: NotCompatibleView,
     request.product match {
       case Some(product) if product.softwareType == Recognised => {
         Ok(view(
-          continueURL = routes.UserTypeController.show().url,
+          continueURL = routes.SearchSoftwareController.show().url,
           backLink = routes.CheckYourAnswersController.show().url,
           chosenSoftware = product.name
         ))
