@@ -20,12 +20,14 @@ import play.api.i18n.I18nSupport
 import uk.gov.hmrc.http.InternalServerException
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{RequireUserDataRefiner, SessionIdentifierAction}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.AccountingPeriod.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.AccountingPeriodPage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.PageAnswersService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.AccountingPeriodView
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.AccountingPeriodForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.AccountingPeriodForm.accountingPeriodForm
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.AccountingPeriod.*
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.helpers.SoftwareProductHelper
+
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -35,30 +37,23 @@ class AccountingPeriodController @Inject()(view: AccountingPeriodView,
                                            identify: SessionIdentifierAction,
                                            requireData: RequireUserDataRefiner)
                                           (implicit ec: ExecutionContext,
-                                           mcc: MessagesControllerComponents) extends BaseFrontendController with I18nSupport {
+                                           mcc: MessagesControllerComponents) extends BaseFrontendController with I18nSupport with SoftwareProductHelper   {
 
   def show(editMode: Boolean): Action[AnyContent] = (identify andThen requireData) { request =>
     given Request[AnyContent] = request
 
     val pageAnswers = pageAnswersService.getPageAnswers(request.userFilters.answers, AccountingPeriodPage)
-
-    request.product match {
-      case Some(product) =>
         Ok(view(
           accountingPeriodForm = AccountingPeriodForm.accountingPeriodForm.fill(pageAnswers),
           postAction = routes.AccountingPeriodController.submit(editMode),
           backUrl = backUrl(editMode),
-          softwareName = product.softwareName
+          softwareName = getSoftwareName(request.product)
         ))
-      case None => InternalServerError("[AccountingPeriodController][show] - Could not find software product in answers")
     }
-  }
 
   def submit(editMode: Boolean): Action[AnyContent] = (identify andThen requireData).async { request =>
     given Request[AnyContent] = request
 
-    request.product match {
-      case Some(product) =>
         accountingPeriodForm.bindFromRequest().fold(
           formWithErrors => {
             Future.successful(
@@ -66,7 +61,7 @@ class AccountingPeriodController @Inject()(view: AccountingPeriodView,
                 accountingPeriodForm = formWithErrors,
                 postAction = routes.AccountingPeriodController.submit(editMode),
                 backUrl = backUrl(editMode),
-                softwareName = product.softwareName
+                softwareName = getSoftwareName(request.product)
               ))
             )
           },
@@ -83,9 +78,7 @@ class AccountingPeriodController @Inject()(view: AccountingPeriodView,
             }
           }
         )
-      case None => Future.successful(InternalServerError("[AccountingPeriodController][submit] - Could not find software product in answers"))
     }
-  }
 
   def backUrl(editMode: Boolean): String = {
     if (editMode) routes.CheckYourAnswersController.show().url

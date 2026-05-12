@@ -90,7 +90,7 @@ class OtherItemsControllerISpec extends ComponentSpecBase with BeforeAndAfterEac
         val softwareProduct = SoftwareProduct(0, "Bright", Recognised)
         val userAnswers = UserAnswers()
           .set(EnterSoftwareNamePage, softwareProduct).get
-          .set( OtherItemsPage, Seq.empty).get
+          .set(OtherItemsPage, Seq.empty).get
         setupAnswers(SessionId, Some(userAnswers))
         val res = SoftwareChoicesFrontend.getOtherItems
 
@@ -126,8 +126,7 @@ class OtherItemsControllerISpec extends ComponentSpecBase with BeforeAndAfterEac
     "not in edit mode" should {
       "save answers and redirect to the accounting period page" when {
         "they submit a single other item" in {
-          val userAnswers = UserAnswers().set(EnterSoftwareNamePage, SoftwareProduct(0, "Bright", Recognised)).get
-          setupAnswers(SessionId, Some(userAnswers))
+          setupAnswers(SessionId, None)
 
           val res = SoftwareChoicesFrontend.postOtherItems(Some(Seq(PaymentsIntoAPrivatePension)))
 
@@ -139,8 +138,7 @@ class OtherItemsControllerISpec extends ComponentSpecBase with BeforeAndAfterEac
           getPageData(SessionId, OtherItemsPage) shouldBe Some(Seq(PaymentsIntoAPrivatePension))
         }
         "they submit multiple other items" in {
-          val userAnswers = UserAnswers().set(EnterSoftwareNamePage, SoftwareProduct(0, "Bright", Recognised)).get
-          setupAnswers(SessionId, Some(userAnswers))
+          setupAnswers(SessionId, None)
 
           val res = SoftwareChoicesFrontend.postOtherItems(Some(otherItemsFilters.map(_.key)))
 
@@ -152,8 +150,7 @@ class OtherItemsControllerISpec extends ComponentSpecBase with BeforeAndAfterEac
           getPageData(SessionId, OtherItemsPage) shouldBe Some(otherItemsFilters)
         }
         "they submit none for their other items" in {
-          val userAnswers = UserAnswers().set(EnterSoftwareNamePage, SoftwareProduct(0, "Bright", Recognised)).get
-          setupAnswers(SessionId, Some(userAnswers))
+          setupAnswers(SessionId, None)
 
           val res = SoftwareChoicesFrontend.postOtherItems(Some(Seq.empty))
 
@@ -169,10 +166,7 @@ class OtherItemsControllerISpec extends ComponentSpecBase with BeforeAndAfterEac
     "in edit mode" should {
       "save answers and redirect to the check your answers page" when {
         "they submit a single other item" in {
-          val userAnswers = UserAnswers()
-            .set(EnterSoftwareNamePage, SoftwareProduct(0, "Bright", Recognised)).get
-            .set(OtherItemsPage, Seq.empty).get
-          setupAnswers(SessionId, Some(userAnswers))
+          setPageData(SessionId, OtherItemsPage, Seq.empty)
 
           val res = SoftwareChoicesFrontend.postOtherItems(Some(Seq(PaymentsIntoAPrivatePension)), editMode = true)
 
@@ -184,10 +178,7 @@ class OtherItemsControllerISpec extends ComponentSpecBase with BeforeAndAfterEac
           getPageData(SessionId, OtherItemsPage) shouldBe Some(Seq(PaymentsIntoAPrivatePension))
         }
         "they submit multiple other items" in {
-          val userAnswers = UserAnswers()
-            .set(EnterSoftwareNamePage, SoftwareProduct(0, "Bright", Recognised)).get
-            .set(OtherItemsPage, Seq.empty).get
-          setupAnswers(SessionId, Some(userAnswers))
+          setPageData(SessionId, OtherItemsPage, Seq.empty)
 
           val res = SoftwareChoicesFrontend.postOtherItems(Some(otherItemsFilters.map(_.key)), editMode = true)
 
@@ -199,10 +190,7 @@ class OtherItemsControllerISpec extends ComponentSpecBase with BeforeAndAfterEac
           getPageData(SessionId, OtherItemsPage) shouldBe Some(otherItemsFilters)
         }
         "they submit none for their other items" in {
-          val userAnswers = UserAnswers()
-            .set(EnterSoftwareNamePage, SoftwareProduct(0, "Bright", Recognised)).get
-            .set(OtherItemsPage, otherItemsFilters).get
-          setupAnswers(SessionId, Some(userAnswers))
+          setPageData(SessionId, OtherItemsPage, otherItemsFilters)
 
           val res = SoftwareChoicesFrontend.postOtherItems(Some(Seq.empty), editMode = true)
 
@@ -217,8 +205,7 @@ class OtherItemsControllerISpec extends ComponentSpecBase with BeforeAndAfterEac
     }
     "the user has no checkboxes selected" should {
       "return a bad request" in {
-        val userAnswers = UserAnswers().set(EnterSoftwareNamePage, SoftwareProduct(0, "Bright", Recognised)).get
-        setupAnswers(SessionId, Some(userAnswers))
+        setupAnswers(SessionId, None)
 
         val res = SoftwareChoicesFrontend.postOtherItems(None)
 
@@ -232,8 +219,7 @@ class OtherItemsControllerISpec extends ComponentSpecBase with BeforeAndAfterEac
     }
     "the user has other items and the none checkbox selected" should {
       "return a bad request" in {
-        val userAnswers = UserAnswers().set(EnterSoftwareNamePage, SoftwareProduct(0, "Bright", Recognised)).get
-        setupAnswers(SessionId, Some(userAnswers))
+        setupAnswers(SessionId, None)
 
         val res = SoftwareChoicesFrontend.postOtherItems(Some(otherItemsFilters.map(_.key) :+ OtherItemsForm.noneKey))
 

@@ -42,8 +42,7 @@ class BusinessIncomeControllerISpec extends ComponentSpecBase with BeforeAndAfte
     }
     "display the page" when {
       "the business income sources has not been answered previously" in {
-        val userAnswers = UserAnswers().set(EnterSoftwareNamePage, SoftwareProduct(0, "Bright", Recognised)).get
-        setupAnswers(SessionId, Some(userAnswers))
+        setupAnswers(SessionId, None)
 
         val res = SoftwareChoicesFrontend.getBusinessIncome
 
@@ -89,10 +88,7 @@ class BusinessIncomeControllerISpec extends ComponentSpecBase with BeforeAndAfte
     "not in edit mode" should {
       "save answers and redirect to the additional income page" when {
         "they submit a single business income source" in {
-          val userAnswers = UserAnswers()
-            .set(EnterSoftwareNamePage, SoftwareProduct(0, "Bright", Recognised)).get
-            .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
-          setupAnswers(SessionId, Some(userAnswers))
+          setupAnswers(SessionId, None)
 
           val res = SoftwareChoicesFrontend.postBusinessIncome(pageAnswers = Seq(UkProperty))
 
@@ -104,10 +100,7 @@ class BusinessIncomeControllerISpec extends ComponentSpecBase with BeforeAndAfte
           getPageData(SessionId, BusinessIncomePage) shouldBe Some(Seq(UkProperty))
         }
         "they submit multiple business income sources" in {
-          val userAnswers = UserAnswers()
-            .set(EnterSoftwareNamePage, SoftwareProduct(0, "Bright", Recognised)).get
-            .set(BusinessIncomePage, Seq(UkProperty)).get
-          setupAnswers(SessionId, Some(userAnswers))
+          setupAnswers(SessionId, None)
 
           val res = SoftwareChoicesFrontend.postBusinessIncome(pageAnswers = Seq(SoleTrader, UkProperty, OverseasProperty))
 
@@ -123,10 +116,7 @@ class BusinessIncomeControllerISpec extends ComponentSpecBase with BeforeAndAfte
     "in edit mode" should {
       "save answers and redirect to the check your answers page" when {
         "they submit a single business income source" in {
-          val userAnswers = UserAnswers()
-            .set(EnterSoftwareNamePage, SoftwareProduct(0, "Bright", Recognised)).get
-            .set(BusinessIncomePage, Seq(UkProperty)).get
-          setupAnswers(SessionId, Some(userAnswers))
+          setPageData(SessionId, BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty))
           val res = SoftwareChoicesFrontend.postBusinessIncome(pageAnswers = Seq(UkProperty), editMode = true)
 
           res should have(
@@ -137,10 +127,7 @@ class BusinessIncomeControllerISpec extends ComponentSpecBase with BeforeAndAfte
           getPageData(SessionId, BusinessIncomePage) shouldBe Some(Seq(UkProperty))
         }
         "they submit multiple business income sources" in {
-          val userAnswers = UserAnswers()
-            .set(EnterSoftwareNamePage, SoftwareProduct(0, "Bright", Recognised)).get
-            .set(BusinessIncomePage, Seq(UkProperty)).get
-          setupAnswers(SessionId, Some(userAnswers))
+          setPageData(SessionId, BusinessIncomePage, Seq(UkProperty))
           val res = SoftwareChoicesFrontend.postBusinessIncome(pageAnswers = Seq(SoleTrader, UkProperty, OverseasProperty), editMode = true)
 
           res should have(
@@ -154,8 +141,7 @@ class BusinessIncomeControllerISpec extends ComponentSpecBase with BeforeAndAfte
     }
     "the user has no checkboxes selected" should {
       "return a bad request" in {
-        val userAnswers = UserAnswers().set(EnterSoftwareNamePage, SoftwareProduct(0, "Bright", Recognised)).get
-        setupAnswers(SessionId, Some(userAnswers))
+        setupAnswers(SessionId, None)
 
         val res = SoftwareChoicesFrontend.postBusinessIncome(Seq.empty)
 

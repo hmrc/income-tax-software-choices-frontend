@@ -25,6 +25,8 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, 
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.Recognised
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.EnterSoftwareNamePage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.{EnterSoftwareNamePage, AccountingPeriodPage}
+
 
 class AccountingPeriodNotAlignedControllerISpec
   extends ComponentSpecBase with BeforeAndAfterEach with DatabaseHelper {
@@ -45,6 +47,7 @@ class AccountingPeriodNotAlignedControllerISpec
       val userAnswers = UserAnswers()
         .set(EnterSoftwareNamePage, softwareProduct).get
       setupAnswers(SessionId, Some(userAnswers))
+
       val res = SoftwareChoicesFrontend.getAccountingPeriodNotAligned
 
       res should have(
@@ -54,16 +57,14 @@ class AccountingPeriodNotAlignedControllerISpec
       res.body.contains(softwareProduct.name) shouldBe true
     }
     "have correct back link when not in edit mode" in {
-      val userAnswers = UserAnswers().set(EnterSoftwareNamePage, SoftwareProduct(0, "Some Software", Recognised)).get
-      setupAnswers(SessionId, Some(userAnswers))
+      setupAnswers(SessionId, Some(UserAnswers()))
 
       val res = SoftwareChoicesFrontend.getAccountingPeriodNotAligned
 
       res.body.contains("/accounting-period-check?editMode=true") shouldBe false
     }
     "have correct back link in edit mode" in {
-      val userAnswers = UserAnswers().set(EnterSoftwareNamePage, SoftwareProduct(0, "Some Software", Recognised)).get
-      setupAnswers(SessionId, Some(userAnswers))
+      setupAnswers(SessionId, Some(UserAnswers()))
 
       val res = SoftwareChoicesFrontend.getAccountingPeriodNotAlignedEditMode
 
@@ -83,8 +84,7 @@ class AccountingPeriodNotAlignedControllerISpec
       }
     }
     "redirect to software results page" in {
-      val userAnswers = UserAnswers().set(EnterSoftwareNamePage, SoftwareProduct(0, "Some Software", Recognised)).get
-      setupAnswers(SessionId, Some(userAnswers))
+      setupAnswers(SessionId, Some(UserAnswers()))
 
       val res = SoftwareChoicesFrontend.postAccountingPeriodNotAligned
 

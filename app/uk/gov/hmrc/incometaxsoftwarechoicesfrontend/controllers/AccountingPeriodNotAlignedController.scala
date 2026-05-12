@@ -19,6 +19,7 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{RequireUserDataRefiner, SessionIdentifierAction}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.AccountingPeriodNotAlignedView
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.helpers.SoftwareProductHelper
 
 import javax.inject.{Inject, Singleton}
 
@@ -26,21 +27,16 @@ import javax.inject.{Inject, Singleton}
 class AccountingPeriodNotAlignedController @Inject()(view: AccountingPeriodNotAlignedView,
                                                      identify: SessionIdentifierAction,
                                                      requireData: RequireUserDataRefiner)
-                                                    (implicit mcc: MessagesControllerComponents) extends BaseFrontendController {
-
+                                                    (implicit mcc: MessagesControllerComponents) extends BaseFrontendController with SoftwareProductHelper  {
 
   def show(editMode: Boolean): Action[AnyContent] = (identify andThen requireData) { request =>
     given Request[AnyContent] = request
 
-    request.product match {
-      case Some(product) =>
-        Ok(view(
-          postAction = routes.AccountingPeriodNotAlignedController.submit(editMode),
-          backLink = routes.AccountingPeriodController.show(editMode).url,
-          softwareName = product.softwareName
-        ))
-      case None => InternalServerError("[AccountingPeriodNotAlignedController][show] - Could not find software product in answers")
-    }
+    Ok(view(
+      postAction = routes.AccountingPeriodNotAlignedController.submit(editMode),
+      backLink = routes.AccountingPeriodController.show(editMode).url,
+      softwareName = getSoftwareName(request.product)
+    ))
   }
 
   def submit(editMode: Boolean): Action[AnyContent] = (identify andThen requireData) { _ =>

@@ -42,7 +42,9 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
     }
     "display the page" when {
       "the accounting period question has not been answered previously" in {
-        val userAnswers = UserAnswers().set(EnterSoftwareNamePage, SoftwareProduct(0, "Bright", Recognised)).get
+        val softwareProduct = SoftwareProduct(0, "Bright", Recognised)
+        val userAnswers = UserAnswers()
+          .set(EnterSoftwareNamePage, softwareProduct).get
         setupAnswers(SessionId, Some(userAnswers))
 
         val res = SoftwareChoicesFrontend.getAccountingPeriod
@@ -62,7 +64,6 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
             .set(EnterSoftwareNamePage, softwareProduct).get
             .set(AccountingPeriodPage, SixthAprilToFifthApril).get
           setupAnswers(SessionId, Some(userAnswers))
-
           val res = SoftwareChoicesFrontend.getAccountingPeriod
 
           res should have(
@@ -76,10 +77,12 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
         }
         "was the 1st April to 31st March option" in {
           val softwareProduct = SoftwareProduct(0, "Bright", Recognised)
+
           val userAnswers = UserAnswers()
             .set(EnterSoftwareNamePage, softwareProduct).get
             .set(AccountingPeriodPage, FirstAprilToThirtyFirstMarch).get
           setupAnswers(SessionId, Some(userAnswers))
+
           val res = SoftwareChoicesFrontend.getAccountingPeriod
 
           res should have(
@@ -93,10 +96,12 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
         }
         "was the neither option" in {
           val softwareProduct = SoftwareProduct(0, "Bright", Recognised)
+
           val userAnswers = UserAnswers()
             .set(EnterSoftwareNamePage, softwareProduct).get
             .set(AccountingPeriodPage, OtherAccountingPeriod).get
           setupAnswers(SessionId, Some(userAnswers))
+          
           val res = SoftwareChoicesFrontend.getAccountingPeriod
 
           res should have(
@@ -126,8 +131,7 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
     "not in edit mode" should {
       "redirect to the check your answers page" when {
         "the user has selected the 6th April to 5th April radio button" in {
-          val userAnswers = UserAnswers().set(EnterSoftwareNamePage, SoftwareProduct(0, "Bright", Recognised)).get
-          setupAnswers(SessionId, Some(userAnswers))
+          setupAnswers(SessionId, None)
 
           val res = SoftwareChoicesFrontend.submitAccountingPeriod(Some(SixthAprilToFifthApril))
 
@@ -139,8 +143,7 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
           getPageData(SessionId, AccountingPeriodPage) shouldBe Some(SixthAprilToFifthApril)
         }
         "the user has selected the 1st April to 31st March radio button" in {
-          val userAnswers = UserAnswers().set(EnterSoftwareNamePage, SoftwareProduct(0, "Bright", Recognised)).get
-          setupAnswers(SessionId, Some(userAnswers))
+          setupAnswers(SessionId, None)
 
           val res = SoftwareChoicesFrontend.submitAccountingPeriod(Some(FirstAprilToThirtyFirstMarch))
 
@@ -154,8 +157,7 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
       }
       "redirect to the accounting period not aligned page" when {
         "the user selected the neither radio button" in {
-          val userAnswers = UserAnswers().set(EnterSoftwareNamePage, SoftwareProduct(0, "Bright", Recognised)).get
-          setupAnswers(SessionId, Some(userAnswers))
+          setupAnswers(SessionId, None)
 
           val res = SoftwareChoicesFrontend.submitAccountingPeriod(Some(OtherAccountingPeriod))
 
@@ -171,10 +173,7 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
     "in edit mode" should {
       "redirect to the check your answers page" when {
         "the user has selected the 6th April to 5th April radio button" in {
-          val userAnswers = UserAnswers()
-            .set(EnterSoftwareNamePage, SoftwareProduct(0, "Bright", Recognised)).get
-            .set(AccountingPeriodPage, FirstAprilToThirtyFirstMarch).get
-          setupAnswers(SessionId, Some(userAnswers))
+          setPageData(SessionId, AccountingPeriodPage, FirstAprilToThirtyFirstMarch)
 
           val res = SoftwareChoicesFrontend.submitAccountingPeriod(Some(SixthAprilToFifthApril))
 
@@ -186,10 +185,7 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
           getPageData(SessionId, AccountingPeriodPage) shouldBe Some(SixthAprilToFifthApril)
         }
         "the user has selected the 1st April to 31st March radio button" in {
-          val userAnswers = UserAnswers()
-            .set(EnterSoftwareNamePage, SoftwareProduct(0, "Bright", Recognised)).get
-            .set(AccountingPeriodPage, OtherAccountingPeriod).get
-          setupAnswers(SessionId, Some(userAnswers))
+          setPageData(SessionId, AccountingPeriodPage, OtherAccountingPeriod)
 
           val res = SoftwareChoicesFrontend.submitAccountingPeriod(Some(FirstAprilToThirtyFirstMarch))
 
@@ -203,10 +199,7 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
       }
       "redirect to the accounting period not aligned page" when {
         "the user selected the neither radio button" in {
-          val userAnswers = UserAnswers()
-            .set(EnterSoftwareNamePage, SoftwareProduct(0, "Bright", Recognised)).get
-            .set(AccountingPeriodPage, SixthAprilToFifthApril).get
-          setupAnswers(SessionId, Some(userAnswers))
+          setPageData(SessionId, AccountingPeriodPage, SixthAprilToFifthApril)
 
           val res = SoftwareChoicesFrontend.submitAccountingPeriod(Some(OtherAccountingPeriod))
 
@@ -221,8 +214,7 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
     }
     "no radio button has been selected" should {
       "return a bad request" in {
-        val userAnswers = UserAnswers().set(EnterSoftwareNamePage, SoftwareProduct(0, "Bright", Recognised)).get
-        setupAnswers(SessionId, Some(userAnswers))
+        setupAnswers(SessionId, None)
 
         val res = SoftwareChoicesFrontend.submitAccountingPeriod(None)
 

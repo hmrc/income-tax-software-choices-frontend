@@ -43,8 +43,7 @@ class AdditionalIncomeSourcesControllerISpec extends ComponentSpecBase with Befo
     }
     "display the page" when {
       "the additional income has not been answered previously" in {
-        val userAnswers = UserAnswers().set(EnterSoftwareNamePage, SoftwareProduct(0, "Bright", Recognised)).get
-        setupAnswers(SessionId, Some(userAnswers))
+        setupAnswers(SessionId, None)
         val res = SoftwareChoicesFrontend.getAdditionalIncome
 
         res should have(
@@ -125,8 +124,7 @@ class AdditionalIncomeSourcesControllerISpec extends ComponentSpecBase with Befo
     "not in edit mode" should {
       "save answers and redirect to the other items page" when {
         "they submit a single additional income" in {
-          val userAnswers = UserAnswers().set(EnterSoftwareNamePage, SoftwareProduct(0, "Bright", Recognised)).get
-          setupAnswers(SessionId, Some(userAnswers))
+          setupAnswers(SessionId, None)
 
           val res = SoftwareChoicesFrontend.submitAdditionalIncome(Some(Seq(UkInterest)))
 
@@ -138,8 +136,7 @@ class AdditionalIncomeSourcesControllerISpec extends ComponentSpecBase with Befo
           getPageData(SessionId, AdditionalIncomeSourcesPage) shouldBe Some(Seq(UkInterest))
         }
         "they submit multiple additional income" in {
-         val userAnswers = UserAnswers().set(EnterSoftwareNamePage, SoftwareProduct(0, "Bright", Recognised)).get
-          setupAnswers(SessionId, Some(userAnswers))
+          setupAnswers(SessionId, None)
 
           val res = SoftwareChoicesFrontend.submitAdditionalIncome(Some(additionalIncomeFilters.map(_.key)))
 
@@ -151,8 +148,7 @@ class AdditionalIncomeSourcesControllerISpec extends ComponentSpecBase with Befo
           getPageData(SessionId, AdditionalIncomeSourcesPage) shouldBe Some(additionalIncomeFilters)
         }
         "they submit none for their additional income" in {
-          val userAnswers = UserAnswers().set(EnterSoftwareNamePage, SoftwareProduct(0, "Bright", Recognised)).get
-          setupAnswers(SessionId, Some(userAnswers))
+          setupAnswers(SessionId, None)
 
           val res = SoftwareChoicesFrontend.submitAdditionalIncome(Some(Seq.empty))
 
@@ -168,10 +164,7 @@ class AdditionalIncomeSourcesControllerISpec extends ComponentSpecBase with Befo
     "in edit mode" should {
       "save answers and redirect to the check your answers page" when {
         "they submit a single additional income" in {
-          val userAnswers = UserAnswers()
-            .set(EnterSoftwareNamePage, SoftwareProduct(0, "Bright", Recognised)).get
-            .set(AdditionalIncomeSourcesPage, Seq.empty).get
-          setupAnswers(SessionId, Some(userAnswers))
+          setPageData(SessionId, AdditionalIncomeSourcesPage, Seq.empty)
 
           val res = SoftwareChoicesFrontend.submitAdditionalIncome(Some(Seq(UkInterest)), editMode = true)
 
@@ -183,10 +176,7 @@ class AdditionalIncomeSourcesControllerISpec extends ComponentSpecBase with Befo
           getPageData(SessionId, AdditionalIncomeSourcesPage) shouldBe Some(Seq(UkInterest))
         }
         "they submit multiple additional income" in {
-          val userAnswers = UserAnswers()
-            .set(EnterSoftwareNamePage, SoftwareProduct(0, "Bright", Recognised)).get
-            .set(AdditionalIncomeSourcesPage, Seq.empty).get
-          setupAnswers(SessionId, Some(userAnswers))
+          setPageData(SessionId, AdditionalIncomeSourcesPage, additionalIncomeFilters)
 
           val res = SoftwareChoicesFrontend.submitAdditionalIncome(Some(additionalIncomeFilters.map(_.key)), editMode = true)
 
@@ -198,10 +188,7 @@ class AdditionalIncomeSourcesControllerISpec extends ComponentSpecBase with Befo
           getPageData(SessionId, AdditionalIncomeSourcesPage) shouldBe Some(additionalIncomeFilters)
         }
         "they submit none for their additional income" in {
-          val userAnswers = UserAnswers()
-            .set(EnterSoftwareNamePage, SoftwareProduct(0, "Bright", Recognised)).get
-            .set(AdditionalIncomeSourcesPage, Seq.empty).get
-          setupAnswers(SessionId, Some(userAnswers))
+          setPageData(SessionId, AdditionalIncomeSourcesPage, additionalIncomeFilters)
 
           val res = SoftwareChoicesFrontend.submitAdditionalIncome(Some(Seq.empty), editMode = true)
 
@@ -217,7 +204,7 @@ class AdditionalIncomeSourcesControllerISpec extends ComponentSpecBase with Befo
     "the user has no checkboxes selected" should {
       "return a bad request" in {
         val userAnswers = UserAnswers().set(EnterSoftwareNamePage, SoftwareProduct(0, "Bright", Recognised)).get
-        setupAnswers(SessionId, Some(userAnswers))
+        setupAnswers(SessionId, None)
 
         val res = SoftwareChoicesFrontend.submitAdditionalIncome(None)
 
@@ -231,8 +218,7 @@ class AdditionalIncomeSourcesControllerISpec extends ComponentSpecBase with Befo
     }
     "the user has additional income and the none checkbox selected" should {
       "return a bad request" in {
-        val userAnswers = UserAnswers().set(EnterSoftwareNamePage, SoftwareProduct(0, "Bright", Recognised)).get
-        setupAnswers(SessionId, Some(userAnswers))
+        setupAnswers(SessionId, None)
 
         val res = SoftwareChoicesFrontend.submitAdditionalIncome(Some(additionalIncomeFilters.map(_.key) :+ AdditionalIncomeForm.noneKey))
 
