@@ -19,11 +19,11 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{RequireUserDataRefiner, SessionIdentifierAction}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.helpers.ControllerHelper
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.BusinessIncomeForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.BusinessIncomePage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.PageAnswersService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.BusinessIncomeView
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.helpers.SoftwareProductHelper
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
@@ -34,7 +34,7 @@ class BusinessIncomeController @Inject()(view: BusinessIncomeView,
                                          identify: SessionIdentifierAction,
                                          requireData: RequireUserDataRefiner)
                                         (implicit ec: ExecutionContext,
-                                         mcc: MessagesControllerComponents) extends BaseFrontendController with SoftwareProductHelper {
+                                         mcc: MessagesControllerComponents) extends BaseFrontendController {
 
 
   def show(editMode: Boolean): Action[AnyContent] = (identify andThen requireData) { request =>

@@ -203,7 +203,6 @@ class AdditionalIncomeSourcesControllerISpec extends ComponentSpecBase with Befo
     }
     "the user has no checkboxes selected" should {
       "return a bad request" in {
-        val userAnswers = UserAnswers().set(EnterSoftwareNamePage, SoftwareProduct(0, "Bright", Recognised)).get
         setupAnswers(SessionId, None)
 
         val res = SoftwareChoicesFrontend.submitAdditionalIncome(None)
