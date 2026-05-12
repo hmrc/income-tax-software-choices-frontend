@@ -24,7 +24,6 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.AccountingPeriod.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.AccountingPeriodPage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.PageAnswersService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.AccountingPeriodView
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.AccountingPeriodForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.AccountingPeriodForm.accountingPeriodForm
 import javax.inject.{Inject, Singleton}
@@ -45,16 +44,11 @@ class AccountingPeriodController @Inject()(view: AccountingPeriodView,
 
     request.product match {
       case Some(product) =>
-        val softwareName: Option[String] = product.softwareType match {
-          case SoftwareType.Recognised => Some(product.name)
-          case _ => None
-        }
-
         Ok(view(
           accountingPeriodForm = AccountingPeriodForm.accountingPeriodForm.fill(pageAnswers),
           postAction = routes.AccountingPeriodController.submit(editMode),
           backUrl = backUrl(editMode),
-          softwareName = softwareName
+          softwareName = product.softwareName
         ))
       case None => InternalServerError("[AccountingPeriodController][show] - Could not find software product in answers")
     }
@@ -65,10 +59,6 @@ class AccountingPeriodController @Inject()(view: AccountingPeriodView,
 
     request.product match {
       case Some(product) =>
-        val softwareName: Option[String] = product.softwareType match {
-          case SoftwareType.Recognised => Some(product.name)
-          case _ => None
-        }
         accountingPeriodForm.bindFromRequest().fold(
           formWithErrors => {
             Future.successful(
@@ -76,7 +66,7 @@ class AccountingPeriodController @Inject()(view: AccountingPeriodView,
                 accountingPeriodForm = formWithErrors,
                 postAction = routes.AccountingPeriodController.submit(editMode),
                 backUrl = backUrl(editMode),
-                softwareName = softwareName
+                softwareName = product.softwareName
               ))
             )
           },

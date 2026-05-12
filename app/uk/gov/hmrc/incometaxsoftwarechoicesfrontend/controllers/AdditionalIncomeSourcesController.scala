@@ -23,7 +23,6 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.AdditionalIncomeForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.AdditionalIncomeSourcesPage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.PageAnswersService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.AdditionalIncomeSourceView
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
@@ -42,16 +41,11 @@ class AdditionalIncomeSourcesController @Inject()(view: AdditionalIncomeSourceVi
     val pageAnswers = pageAnswersService.getPageAnswers(request.userFilters.answers, AdditionalIncomeSourcesPage)
     request.product match {
       case Some(product) =>
-        val softwareName: Option[String] = product.softwareType match {
-          case SoftwareType.Recognised => Some(product.name)
-          case _                       => None
-        }
-
         Ok(view(
           AdditionalIncomeForm.form.fill(pageAnswers),
           postAction = routes.AdditionalIncomeSourcesController.submit(editMode),
           backUrl = backUrl(editMode),
-          softwareName = softwareName
+          softwareName = product.softwareName
         ))
       case None => InternalServerError("[AdditionalIncomeSourcesController][show] - Could not find software product in answers")
     }
@@ -63,10 +57,6 @@ class AdditionalIncomeSourcesController @Inject()(view: AdditionalIncomeSourceVi
 
     request.product match {
       case Some(product) =>
-        val softwareName: Option[String] = product.softwareType match {
-          case SoftwareType.Recognised => Some(product.name)
-          case _                       => None
-        }
         AdditionalIncomeForm.form.bindFromRequest().fold(
           formWithErrors =>
             Future.successful(
@@ -74,7 +64,7 @@ class AdditionalIncomeSourcesController @Inject()(view: AdditionalIncomeSourceVi
                 additionalIncomeForm = formWithErrors,
                 postAction = routes.AdditionalIncomeSourcesController.submit(editMode),
                 backUrl = backUrl(editMode),
-                softwareName = softwareName
+                softwareName = product.softwareName
               ))
             ),
           answers => {

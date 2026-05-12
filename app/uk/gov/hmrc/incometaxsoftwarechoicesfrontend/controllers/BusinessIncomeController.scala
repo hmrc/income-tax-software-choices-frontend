@@ -23,7 +23,6 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.BusinessIncomeForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.BusinessIncomePage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.PageAnswersService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.BusinessIncomeView
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
@@ -43,16 +42,11 @@ class BusinessIncomeController @Inject()(view: BusinessIncomeView,
     val pageAnswers = pageAnswersService.getPageAnswers(request.userFilters.answers, BusinessIncomePage)
     request.product match {
       case Some(product) =>
-        val softwareName: Option[String] = product.softwareType match {
-          case SoftwareType.Recognised => Some(product.name)
-          case _                       => None
-        }
-
         Ok(view(
           businessIncomeForm = BusinessIncomeForm.form.fill(pageAnswers),
           postAction = routes.BusinessIncomeController.submit(editMode),
           backUrl = backUrl(editMode),
-          softwareName = softwareName
+          softwareName = product.softwareName
         ))
       case None => InternalServerError("[BusinessIncomeController][show] - Could not find software product in answers")
     }
@@ -63,11 +57,6 @@ class BusinessIncomeController @Inject()(view: BusinessIncomeView,
 
     request.product match {
       case Some(product) =>
-        val softwareName: Option[String] = product.softwareType match {
-          case SoftwareType.Recognised => Some(product.name)
-          case _                       => None
-        }
-
         BusinessIncomeForm.form.bindFromRequest().fold(
           formWithErrors => {
             Future.successful(
@@ -75,7 +64,7 @@ class BusinessIncomeController @Inject()(view: BusinessIncomeView,
                 businessIncomeForm = formWithErrors,
                 postAction = routes.BusinessIncomeController.submit(editMode),
                 backUrl = backUrl(editMode),
-                softwareName = softwareName
+                softwareName = product.softwareName
               ))
             )
           },

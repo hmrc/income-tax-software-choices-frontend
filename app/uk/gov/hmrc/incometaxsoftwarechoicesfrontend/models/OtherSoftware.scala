@@ -17,10 +17,17 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models
 
 import play.api.libs.json.{Format, JsString, Json, Reads, Writes, __}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.viewmodels.SoftwareNameViewModel
 
 case class SoftwareProduct(productId: Int,
                          name: String,
-                         softwareType: SoftwareType)
+                         softwareType: SoftwareType) extends SoftwareNameViewModel {
+  
+  override def softwareName: Option[String] = softwareType match {
+    case SoftwareType.Recognised => Some(name)
+    case _ => None
+  }
+}
 
 object SoftwareProduct {
   implicit val format: Format[SoftwareProduct] = Json.format[SoftwareProduct]

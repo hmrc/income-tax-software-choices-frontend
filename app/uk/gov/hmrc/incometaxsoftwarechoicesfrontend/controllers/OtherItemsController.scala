@@ -23,7 +23,6 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.OtherItemsForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.OtherItemsPage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.PageAnswersService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.OtherItemsView
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
@@ -43,16 +42,11 @@ class OtherItemsController @Inject()(view: OtherItemsView,
 
     request.product match {
       case Some(product) =>
-        val softwareName: Option[String] = product.softwareType match {
-          case SoftwareType.Recognised => Some(product.name)
-          case _                       => None
-        }
-
         Ok(view(
           otherItemsForm = OtherItemsForm.form.fill(pageAnswers),
           postAction = routes.OtherItemsController.submit(editMode),
           backLink = backUrl(editMode),
-          softwareName = softwareName
+          softwareName = product.softwareName
         ))
       case None => InternalServerError("[OtherItemsController][show] - Could not find software product in answers")
     }
@@ -63,11 +57,6 @@ class OtherItemsController @Inject()(view: OtherItemsView,
 
     request.product match {
      case Some(product) =>
-        val softwareName: Option[String] = product.softwareType match {
-          case SoftwareType.Recognised => Some(product.name)
-          case _                       => None
-        }
-
         OtherItemsForm.form.bindFromRequest().fold(
           formWithErrors => {
             Future.successful(
@@ -75,7 +64,7 @@ class OtherItemsController @Inject()(view: OtherItemsView,
                 otherItemsForm = formWithErrors,
                 postAction = routes.OtherItemsController.submit(editMode),
                 backLink = backUrl(editMode),
-                softwareName = softwareName
+                softwareName = product.softwareName
               ))
             )
           },

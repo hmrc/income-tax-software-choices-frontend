@@ -19,10 +19,8 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{RequireUserDataRefiner, SessionIdentifierAction}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.AccountingPeriodNotAlignedView
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType
 
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.Future
 
 @Singleton
 class AccountingPeriodNotAlignedController @Inject()(view: AccountingPeriodNotAlignedView,
@@ -36,15 +34,10 @@ class AccountingPeriodNotAlignedController @Inject()(view: AccountingPeriodNotAl
 
     request.product match {
       case Some(product) =>
-        val softwareName: Option[String] = product.softwareType match {
-          case SoftwareType.Recognised => Some(product.name)
-          case _                       => None
-        }
-
         Ok(view(
           postAction = routes.AccountingPeriodNotAlignedController.submit(editMode),
           backLink = routes.AccountingPeriodController.show(editMode).url,
-          softwareName = softwareName
+          softwareName = product.softwareName
         ))
       case None => InternalServerError("[AccountingPeriodNotAlignedController][show] - Could not find software product in answers")
     }
