@@ -42,7 +42,7 @@ class BusinessIncomeControllerISpec extends ComponentSpecBase with BeforeAndAfte
     }
     "display the page" when {
       "the business income sources has not been answered previously" in {
-        val userAnswers = UserAnswers().set(EnterSoftwareNamePage, SoftwareProduct(0, "Some Software", Recognised)).get
+        val userAnswers = UserAnswers().set(EnterSoftwareNamePage, SoftwareProduct(0, "Bright", Recognised)).get
         setupAnswers(SessionId, Some(userAnswers))
 
         val res = SoftwareChoicesFrontend.getBusinessIncome
@@ -154,7 +154,7 @@ class BusinessIncomeControllerISpec extends ComponentSpecBase with BeforeAndAfte
     }
     "the user has no checkboxes selected" should {
       "return a bad request" in {
-        val userAnswers = UserAnswers().set(EnterSoftwareNamePage, SoftwareProduct(0, "Some Software", Recognised)).get
+        val userAnswers = UserAnswers().set(EnterSoftwareNamePage, SoftwareProduct(0, "Bright", Recognised)).get
         setupAnswers(SessionId, Some(userAnswers))
 
         val res = SoftwareChoicesFrontend.postBusinessIncome(Seq.empty)
