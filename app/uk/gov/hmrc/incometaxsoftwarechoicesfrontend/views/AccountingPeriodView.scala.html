@@ -24,6 +24,7 @@
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.helpers._
 @import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcNewTabLinkHelper
 @import uk.gov.hmrc.hmrcfrontend.views.viewmodels.newtablinkhelper.NewTabLinkHelper
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.helpers._
 
 @this(
         mainTemplate: MainTemplate,
@@ -31,16 +32,15 @@
         radioHelper: RadioHelper,
         hmrcNewTabLinkHelper: HmrcNewTabLinkHelper,
         govukPhaseBanner: GovukPhaseBanner,
+        captionHelper:CaptionHelper,
         govukButton: GovukButton
 )
 
-@(accountingPeriodForm: Form[AccountingPeriod], postAction: Call, backUrl: String,softwareName: Option[String])(implicit request: Request[_], messages: Messages)
+@(accountingPeriodForm: Form[AccountingPeriod], postAction: Call, backUrl: String, softwareName: Option[String])(implicit request: Request[_], messages: Messages)
 
 @mainTemplate(title = messages("accounting-period.heading"), optForm = Some(accountingPeriodForm), backLink = Some(backUrl)) {
 
-@softwareName.map(name =>
-      <span class="govuk-caption-l">{name}</span>
-       )
+@captionHelper(softwareName)
 
     <h1 class="govuk-heading-l">@messages("accounting-period.heading")</h1>
 
