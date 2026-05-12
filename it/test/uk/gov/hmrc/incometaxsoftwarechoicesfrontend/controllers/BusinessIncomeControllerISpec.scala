@@ -42,7 +42,6 @@ class BusinessIncomeControllerISpec extends ComponentSpecBase with BeforeAndAfte
     }
     "display the page" when {
       "the business income sources has not been answered previously" in {
-        //setupAnswers(SessionId, None)
         val userAnswers = UserAnswers().set(EnterSoftwareNamePage, SoftwareProduct(0, "Some Software", Recognised)).get
         setupAnswers(SessionId, Some(userAnswers))
 
@@ -90,7 +89,6 @@ class BusinessIncomeControllerISpec extends ComponentSpecBase with BeforeAndAfte
     "not in edit mode" should {
       "save answers and redirect to the additional income page" when {
         "they submit a single business income source" in {
-          //setupAnswers(SessionId, None)
           val userAnswers = UserAnswers()
             .set(EnterSoftwareNamePage, SoftwareProduct(0, "Bright", Recognised)).get
             .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
@@ -106,7 +104,6 @@ class BusinessIncomeControllerISpec extends ComponentSpecBase with BeforeAndAfte
           getPageData(SessionId, BusinessIncomePage) shouldBe Some(Seq(UkProperty))
         }
         "they submit multiple business income sources" in {
-          //setupAnswers(SessionId, None)
           val userAnswers = UserAnswers()
             .set(EnterSoftwareNamePage, SoftwareProduct(0, "Bright", Recognised)).get
             .set(BusinessIncomePage, Seq(UkProperty)).get
@@ -126,7 +123,6 @@ class BusinessIncomeControllerISpec extends ComponentSpecBase with BeforeAndAfte
     "in edit mode" should {
       "save answers and redirect to the check your answers page" when {
         "they submit a single business income source" in {
-          //setPageData(SessionId, BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty))
           val userAnswers = UserAnswers()
             .set(EnterSoftwareNamePage, SoftwareProduct(0, "Bright", Recognised)).get
             .set(BusinessIncomePage, Seq(UkProperty)).get
@@ -141,7 +137,6 @@ class BusinessIncomeControllerISpec extends ComponentSpecBase with BeforeAndAfte
           getPageData(SessionId, BusinessIncomePage) shouldBe Some(Seq(UkProperty))
         }
         "they submit multiple business income sources" in {
-          //setPageData(SessionId, BusinessIncomePage, Seq(UkProperty))
           val userAnswers = UserAnswers()
             .set(EnterSoftwareNamePage, SoftwareProduct(0, "Bright", Recognised)).get
             .set(BusinessIncomePage, Seq(UkProperty)).get
@@ -159,7 +154,6 @@ class BusinessIncomeControllerISpec extends ComponentSpecBase with BeforeAndAfte
     }
     "the user has no checkboxes selected" should {
       "return a bad request" in {
-        //setupAnswers(SessionId, None)
         val userAnswers = UserAnswers().set(EnterSoftwareNamePage, SoftwareProduct(0, "Some Software", Recognised)).get
         setupAnswers(SessionId, Some(userAnswers))
 

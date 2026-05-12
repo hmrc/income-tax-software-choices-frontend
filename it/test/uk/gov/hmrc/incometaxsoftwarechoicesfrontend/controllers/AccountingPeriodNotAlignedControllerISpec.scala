@@ -54,7 +54,6 @@ class AccountingPeriodNotAlignedControllerISpec
       res.body.contains(softwareProduct.name) shouldBe true
     }
     "have correct back link when not in edit mode" in {
-      //setupAnswers(SessionId, Some(UserAnswers()))
       val userAnswers = UserAnswers().set(EnterSoftwareNamePage, SoftwareProduct(0, "Some Software", Recognised)).get
       setupAnswers(SessionId, Some(userAnswers))
 
@@ -63,7 +62,6 @@ class AccountingPeriodNotAlignedControllerISpec
       res.body.contains("/accounting-period-check?editMode=true") shouldBe false
     }
     "have correct back link in edit mode" in {
-      //setupAnswers(SessionId, Some(UserAnswers()))
       val userAnswers = UserAnswers().set(EnterSoftwareNamePage, SoftwareProduct(0, "Some Software", Recognised)).get
       setupAnswers(SessionId, Some(userAnswers))
 
@@ -85,7 +83,6 @@ class AccountingPeriodNotAlignedControllerISpec
       }
     }
     "redirect to software results page" in {
-      //setupAnswers(SessionId, Some(UserAnswers()))
       val userAnswers = UserAnswers().set(EnterSoftwareNamePage, SoftwareProduct(0, "Some Software", Recognised)).get
       setupAnswers(SessionId, Some(userAnswers))
 

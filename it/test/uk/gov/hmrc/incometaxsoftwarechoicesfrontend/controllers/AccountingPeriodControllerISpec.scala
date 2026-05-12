@@ -42,7 +42,6 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
     }
     "display the page" when {
       "the accounting period question has not been answered previously" in {
-        //setupAnswers(SessionId, None)
         val userAnswers = UserAnswers().set(EnterSoftwareNamePage, SoftwareProduct(0, "Bright", Recognised)).get
         setupAnswers(SessionId, Some(userAnswers))
 
@@ -127,7 +126,6 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
     "not in edit mode" should {
       "redirect to the check your answers page" when {
         "the user has selected the 6th April to 5th April radio button" in {
-          //setupAnswers(SessionId, None)
           val userAnswers = UserAnswers().set(EnterSoftwareNamePage, SoftwareProduct(0, "Bright", Recognised)).get
           setupAnswers(SessionId, Some(userAnswers))
 
@@ -141,7 +139,6 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
           getPageData(SessionId, AccountingPeriodPage) shouldBe Some(SixthAprilToFifthApril)
         }
         "the user has selected the 1st April to 31st March radio button" in {
-          //setupAnswers(SessionId, None)
           val userAnswers = UserAnswers().set(EnterSoftwareNamePage, SoftwareProduct(0, "Bright", Recognised)).get
           setupAnswers(SessionId, Some(userAnswers))
 
@@ -157,7 +154,6 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
       }
       "redirect to the accounting period not aligned page" when {
         "the user selected the neither radio button" in {
-          //setupAnswers(SessionId, None)
           val userAnswers = UserAnswers().set(EnterSoftwareNamePage, SoftwareProduct(0, "Bright", Recognised)).get
           setupAnswers(SessionId, Some(userAnswers))
 
@@ -175,7 +171,6 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
     "in edit mode" should {
       "redirect to the check your answers page" when {
         "the user has selected the 6th April to 5th April radio button" in {
-          //setPageData(SessionId, AccountingPeriodPage, FirstAprilToThirtyFirstMarch)
           val userAnswers = UserAnswers()
             .set(EnterSoftwareNamePage, SoftwareProduct(0, "Bright", Recognised)).get
             .set(AccountingPeriodPage, FirstAprilToThirtyFirstMarch).get
@@ -191,7 +186,6 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
           getPageData(SessionId, AccountingPeriodPage) shouldBe Some(SixthAprilToFifthApril)
         }
         "the user has selected the 1st April to 31st March radio button" in {
-          //setPageData(SessionId, AccountingPeriodPage, OtherAccountingPeriod)
           val userAnswers = UserAnswers()
             .set(EnterSoftwareNamePage, SoftwareProduct(0, "Bright", Recognised)).get
             .set(AccountingPeriodPage, OtherAccountingPeriod).get
@@ -209,7 +203,6 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
       }
       "redirect to the accounting period not aligned page" when {
         "the user selected the neither radio button" in {
-          //setPageData(SessionId, AccountingPeriodPage, SixthAprilToFifthApril)
           val userAnswers = UserAnswers()
             .set(EnterSoftwareNamePage, SoftwareProduct(0, "Bright", Recognised)).get
             .set(AccountingPeriodPage, SixthAprilToFifthApril).get
@@ -228,7 +221,6 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
     }
     "no radio button has been selected" should {
       "return a bad request" in {
-        //setupAnswers(SessionId, None)
         val userAnswers = UserAnswers().set(EnterSoftwareNamePage, SoftwareProduct(0, "Bright", Recognised)).get
         setupAnswers(SessionId, Some(userAnswers))
 
