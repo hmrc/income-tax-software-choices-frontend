@@ -88,6 +88,36 @@ class EnterSoftwareNameControllerISpec extends ComponentSpecBase with BeforeAndA
     }
   }
 
+  s"GET ${routes.EnterSoftwareNameController.clearSelection()}" when {
+    "user has preexisting UserAnswers but CLEAR function" should {
+      "clears the pre-selected product for the page and reset journey type" in {
+        val preUserAnswers = UserAnswers().set(HowYouFindSoftwarePage, Find).get
+          .set(EnterSoftwareNamePage, firstOtherSpreadsheetProduct).get
+        await(userFiltersRepository.set(testUserFilters(preUserAnswers)))
+
+        val res = SoftwareChoicesFrontend.getEnterSoftwareName()
+
+        res should have(
+          httpStatus(OK),
+          pageTitle(s"${messages("enter-software-name.heading")} - ${PageContentBase.title} - GOV.UK"),
+          autocompleteSelected(firstOtherSpreadsheetProduct.name)
+        )
+
+        SoftwareChoicesFrontend.clearEnterSoftwareName()
+
+        val secondRes = SoftwareChoicesFrontend.getEnterSoftwareName()
+
+        secondRes should have(
+          httpStatus(OK),
+          pageTitle(s"${messages("enter-software-name.heading")} - ${PageContentBase.title} - GOV.UK"),
+          autocompleteSelected("")
+        )
+
+        getPageData(SessionId, HowYouFindSoftwarePage) shouldBe Some(Check)
+      }
+    }
+  }
+
   s"POST ${routes.EnterSoftwareNameController.submit()}" when {
     "there is nothing saved in the database for this user" should {
       "redirect to the service index" in {
@@ -204,36 +234,6 @@ class EnterSoftwareNameControllerISpec extends ComponentSpecBase with BeforeAndA
           httpStatus(BAD_REQUEST)
         )
         getPageData(SessionId, EnterSoftwareNamePage.toString).size shouldBe 0
-      }
-    }
-  }
-
-  s"POST ${routes.EnterSoftwareNameController.clearSelection()}" when {
-    "user has preexisting UserAnswers but CLEAR function" should {
-      "clears the pre-selected product for the page and reset journey type" in {
-        val preUserAnswers = UserAnswers().set(HowYouFindSoftwarePage, Find).get
-          .set(EnterSoftwareNamePage, firstOtherSpreadsheetProduct).get
-        await(userFiltersRepository.set(testUserFilters(preUserAnswers)))
-
-        val res = SoftwareChoicesFrontend.getEnterSoftwareName()
-
-        res should have(
-          httpStatus(OK),
-          pageTitle(s"${messages("enter-software-name.heading")} - ${PageContentBase.title} - GOV.UK"),
-          autocompleteSelected(firstOtherSpreadsheetProduct.name)
-        )
-
-        SoftwareChoicesFrontend.clearEnterSoftwareName()
-
-        val secondRes = SoftwareChoicesFrontend.getEnterSoftwareName()
-
-        secondRes should have(
-          httpStatus(OK),
-          pageTitle(s"${messages("enter-software-name.heading")} - ${PageContentBase.title} - GOV.UK"),
-          autocompleteSelected("")
-        )
-
-        getPageData(SessionId, HowYouFindSoftwarePage) shouldBe Some(Check)
       }
     }
   }
