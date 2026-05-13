@@ -20,12 +20,16 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.{Document, Element}
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.NotCompatibleView
+import play.api.mvc.Call
+
 
 class NotCompatibleViewSpec extends ViewSpec {
 
+  val softwareResultsUrl: String = Call("GET", "/software-results").toString
+
   private val softwareName = "A1 Tax Stuff"
   private val view = app.injector.instanceOf[NotCompatibleView]
-  val page: HtmlFormat.Appendable = view(continueURL = testCall.url, backLink = testBackUrl, chosenSoftware = softwareName)
+  val page: HtmlFormat.Appendable = view(continueURL = softwareResultsUrl, backLink = testBackUrl, chosenSoftware = softwareName)
   val document: Document = Jsoup.parse(page.body)
   "NotCompatible view" must {
 
@@ -49,7 +53,7 @@ class NotCompatibleViewSpec extends ViewSpec {
     "have a link button" in {
     val link: Element = document.selectHead("a.govuk-button")
     link.text() shouldBe NeedAdditionalSoftwareContent.button
-    link.attr("href") shouldBe testCall.url
+    link.attr("href") shouldBe softwareResultsUrl
     }
 
   }
