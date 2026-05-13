@@ -81,7 +81,7 @@ class EnterSoftwareNameController @Inject()(view: EnterSoftwareNameView,
             case (true, true) =>
               redirect(selectedProduct)
             case _ =>
-              InternalServerError("[EnterSoftwareNameController][submit] - Could not save journey type]")
+              InternalServerError("[EnterSoftwareNameController][submit] - Could not save product")
           }
         }
       }
@@ -91,10 +91,10 @@ class EnterSoftwareNameController @Inject()(view: EnterSoftwareNameView,
   def clearSelection(): Action[AnyContent] = (identify andThen requireData).async { request =>
     val unrecognisedProduct = SoftwareProduct(0, "", Unrecognised)
     for {
-      saveProducts <- pageAnswersService.setPageAnswers(request.sessionId, EnterSoftwareNamePage, unrecognisedProduct)
+      saveProduct <- pageAnswersService.setPageAnswers(request.sessionId, EnterSoftwareNamePage, unrecognisedProduct)
       saveJourneyType <- pageAnswersService.setPageAnswers(request.sessionId, HowYouFindSoftwarePage, Check)
     } yield {
-      (saveProducts, saveJourneyType) match {
+      (saveProduct, saveJourneyType) match {
         case (true, true) =>
           redirect(unrecognisedProduct)
         case _ =>

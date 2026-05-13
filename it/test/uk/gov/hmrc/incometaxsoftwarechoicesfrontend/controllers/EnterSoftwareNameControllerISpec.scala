@@ -191,6 +191,24 @@ class EnterSoftwareNameControllerISpec extends ComponentSpecBase with BeforeAndA
       }
     }
 
+    "return BAD_REQUEST" when {
+      "no answer is given" in {
+        val userAnswers = UserAnswers()
+          .set(HowYouFindSoftwarePage, Check).get
+
+        await(userFiltersRepository.set(testUserFilters(userAnswers)))
+
+        val res = SoftwareChoicesFrontend.postEnterSoftwareName(None)
+
+        res should have(
+          httpStatus(BAD_REQUEST)
+        )
+        getPageData(SessionId, EnterSoftwareNamePage.toString).size shouldBe 0
+      }
+    }
+  }
+
+  s"POST ${routes.EnterSoftwareNameController.clearSelection()}" when {
     "user has preexisting UserAnswers but CLEAR function" should {
       "clears the pre-selected product for the page and reset journey type" in {
         val preUserAnswers = UserAnswers().set(HowYouFindSoftwarePage, Find).get
@@ -216,22 +234,6 @@ class EnterSoftwareNameControllerISpec extends ComponentSpecBase with BeforeAndA
         )
 
         getPageData(SessionId, HowYouFindSoftwarePage) shouldBe Some(Check)
-      }
-    }
-
-    "return BAD_REQUEST" when {
-      "no answer is given" in {
-        val userAnswers = UserAnswers()
-          .set(HowYouFindSoftwarePage, Check).get
-
-        await(userFiltersRepository.set(testUserFilters(userAnswers)))
-
-        val res = SoftwareChoicesFrontend.postEnterSoftwareName(None)
-
-        res should have(
-          httpStatus(BAD_REQUEST)
-        )
-        getPageData(SessionId, EnterSoftwareNamePage.toString).size shouldBe 0
       }
     }
   }
