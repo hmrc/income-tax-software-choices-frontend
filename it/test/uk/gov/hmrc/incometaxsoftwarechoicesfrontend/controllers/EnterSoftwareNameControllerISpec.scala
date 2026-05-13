@@ -21,7 +21,7 @@ import play.api.http.Status.{BAD_REQUEST, OK, SEE_OTHER}
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.SessionId
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, DatabaseHelper}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.Check
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.{Check, Find}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{JourneyType, SoftwareProduct, UserAnswers, UserFilters}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.*
@@ -83,32 +83,6 @@ class EnterSoftwareNameControllerISpec extends ComponentSpecBase with BeforeAndA
           httpStatus(OK),
           pageTitle(s"${messages("enter-software-name.heading")} - ${PageContentBase.title} - GOV.UK"),
           autocompleteSelected(firstOtherSpreadsheetProduct.name)
-        )
-      }
-    }
-
-    "the pre-existing software name is cleared for this page" should {
-      "display the page with the pre-selected product cleared" in {
-        val preUserAnswers = UserAnswers().set(HowYouFindSoftwarePage, Check).get
-           .set(EnterSoftwareNamePage, firstOtherSpreadsheetProduct).get
-        await(userFiltersRepository.set(testUserFilters(preUserAnswers)))
-
-        val res = SoftwareChoicesFrontend.getEnterSoftwareName()
-
-        res should have(
-          httpStatus(OK),
-          pageTitle(s"${messages("enter-software-name.heading")} - ${PageContentBase.title} - GOV.UK"),
-          autocompleteSelected(firstOtherSpreadsheetProduct.name)
-        )
-
-        SoftwareChoicesFrontend.clearEnterSoftwareName()
-
-        val secondRes = SoftwareChoicesFrontend.getEnterSoftwareName()
-
-        secondRes should have(
-          httpStatus(OK),
-          pageTitle(s"${messages("enter-software-name.heading")} - ${PageContentBase.title} - GOV.UK"),
-          autocompleteSelected("")
         )
       }
     }
@@ -198,10 +172,10 @@ class EnterSoftwareNameControllerISpec extends ComponentSpecBase with BeforeAndA
       }
     }
 
-    "user has preexisting UserAnswers but updates software choice" must {
-      s"return $SEE_OTHER and update page answer" in {
+    "user has preexisting UserAnswers but SUBMIT function" must {
+      s"return $SEE_OTHER, update page answer and reset journey type" in {
         val userAnswers = UserAnswers()
-          .set(HowYouFindSoftwarePage, Check).get
+          .set(HowYouFindSoftwarePage, Find).get
           .set(EnterSoftwareNamePage, recognisedProducts.head).get
         await(userFiltersRepository.set(testUserFilters(userAnswers)))
 
@@ -213,6 +187,35 @@ class EnterSoftwareNameControllerISpec extends ComponentSpecBase with BeforeAndA
         )
 
         getPageData(SessionId, EnterSoftwareNamePage).map(_.name) shouldBe Some(spreadsheetProducts.head.name)
+        getPageData(SessionId, HowYouFindSoftwarePage) shouldBe Some(Check)
+      }
+    }
+
+    "user has preexisting UserAnswers but CLEAR function" should {
+      "clears the pre-selected product for the page and reset journey type" in {
+        val preUserAnswers = UserAnswers().set(HowYouFindSoftwarePage, Find).get
+          .set(EnterSoftwareNamePage, firstOtherSpreadsheetProduct).get
+        await(userFiltersRepository.set(testUserFilters(preUserAnswers)))
+
+        val res = SoftwareChoicesFrontend.getEnterSoftwareName()
+
+        res should have(
+          httpStatus(OK),
+          pageTitle(s"${messages("enter-software-name.heading")} - ${PageContentBase.title} - GOV.UK"),
+          autocompleteSelected(firstOtherSpreadsheetProduct.name)
+        )
+
+        SoftwareChoicesFrontend.clearEnterSoftwareName()
+
+        val secondRes = SoftwareChoicesFrontend.getEnterSoftwareName()
+
+        secondRes should have(
+          httpStatus(OK),
+          pageTitle(s"${messages("enter-software-name.heading")} - ${PageContentBase.title} - GOV.UK"),
+          autocompleteSelected("")
+        )
+
+        getPageData(SessionId, HowYouFindSoftwarePage) shouldBe Some(Check)
       }
     }
 
@@ -232,6 +235,4 @@ class EnterSoftwareNameControllerISpec extends ComponentSpecBase with BeforeAndA
       }
     }
   }
-
-
 }

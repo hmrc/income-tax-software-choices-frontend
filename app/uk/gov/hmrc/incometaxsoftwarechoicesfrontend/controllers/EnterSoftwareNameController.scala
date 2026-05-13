@@ -19,9 +19,10 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{RequireUserDataRefiner, SessionIdentifierAction}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.EnterSoftwareNameForm
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareProduct
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.Check
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{JourneyType, SoftwareProduct}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.*
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.EnterSoftwareNamePage
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.{EnterSoftwareNamePage, HowYouFindSoftwarePage}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.{DataService, PageAnswersService}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.helpers.SelectBuilder
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.EnterSoftwareNameView
@@ -72,10 +73,16 @@ class EnterSoftwareNameController @Inject()(view: EnterSoftwareNameView,
       },
       productId => {
         val selectedProduct  = allProducts.find(_.productId == productId).getOrElse(SoftwareProduct(productId, "Unknown", Unrecognised))
-
-        pageAnswersService.setPageAnswers(request.sessionId, EnterSoftwareNamePage, selectedProduct).map {
-          case true => redirect(selectedProduct)
-          case false => InternalServerError("[EnterSoftwareNameController][submit] - Could not save product")
+        for {
+         saveProducts <- pageAnswersService.setPageAnswers(request.sessionId, EnterSoftwareNamePage, selectedProduct)
+         saveJourneyType <- pageAnswersService.setPageAnswers(request.sessionId, HowYouFindSoftwarePage, Check)
+        } yield {
+          (saveProducts, saveJourneyType) match {
+            case (true, true) =>
+              redirect(selectedProduct)
+            case _ =>
+              InternalServerError("[EnterSoftwareNameController][submit] - Could not save journey type]")
+          }
         }
       }
     )
@@ -83,10 +90,16 @@ class EnterSoftwareNameController @Inject()(view: EnterSoftwareNameView,
 
   def clearSelection(): Action[AnyContent] = (identify andThen requireData).async { request =>
     val unrecognisedProduct = SoftwareProduct(0, "", Unrecognised)
-
-    pageAnswersService.setPageAnswers(request.sessionId, EnterSoftwareNamePage, unrecognisedProduct).map {
-      case true => redirect(unrecognisedProduct)
-      case false => InternalServerError("[EnterSoftwareNameController][clearSelection] - Could not clear product")
+    for {
+      saveProducts <- pageAnswersService.setPageAnswers(request.sessionId, EnterSoftwareNamePage, unrecognisedProduct)
+      saveJourneyType <- pageAnswersService.setPageAnswers(request.sessionId, HowYouFindSoftwarePage, Check)
+    } yield {
+      (saveProducts, saveJourneyType) match {
+        case (true, true) =>
+          redirect(unrecognisedProduct)
+        case _ =>
+          InternalServerError("[EnterSoftwareNameController][clearSelection] - Could not clear product")
+      }
     }
   }
 
