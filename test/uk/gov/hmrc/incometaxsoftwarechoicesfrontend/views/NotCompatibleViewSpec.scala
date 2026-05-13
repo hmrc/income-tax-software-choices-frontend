@@ -52,7 +52,7 @@ class NotCompatibleViewSpec extends ViewSpec {
 
     "have a link button" in {
     val link: Element = document.selectHead("a.govuk-button")
-    link.text() shouldBe NeedAdditionalSoftwareContent.button
+    link.text() shouldBe NotCompatibleContent.button
     link.attr("href") shouldBe softwareResultsUrl
     }
 
