@@ -193,7 +193,7 @@ class UserTypeControllerISpec extends ComponentSpecBase with BeforeAndAfterEach 
   }
 
   "POST /how-will-you-use-it" when {
-    "user without Journey (Check feature off) selects sole trader and landlord" must {
+    "user without Journey (Check feature off) selects sole trader or landlord" must {
       s"return $SEE_OTHER and save page answer" in {
         val res = SoftwareChoicesFrontend.submitUserType(Some(SoleTraderOrLandlord))
 
@@ -257,7 +257,7 @@ class UserTypeControllerISpec extends ComponentSpecBase with BeforeAndAfterEach 
 
         getPageData(SessionId, UserTypePage.toString).size shouldBe 1
         getAllPageData(SessionId).size shouldBe 2
-        getFinalFilters(SessionId) shouldBe Seq(Individual, QuarterlyUpdates, TaxReturn)
+        getFinalFilters(SessionId) shouldBe Seq(Individual)
       }
     }
     "user without Journey (Check feature off) selects agent working on behalf of client" must {
