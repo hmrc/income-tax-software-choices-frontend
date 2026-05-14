@@ -12,6 +12,7 @@ base.find.compatible        = Find compatible software
 how-you-find-software.heading = How would you like to find software?
 how-you-find-software.find = Find software based on my answers to questions
 how-you-find-software.find.hint = We will ask you questions about your income sources to show you the best software for your needs
+how-you-find-software.view-all = Show a list of all available software and let me select filters for my needs
 how-you-find-software.check = Check if my current software is compatible
 how-you-find-software.check.hint = This includes using spreadsheets
 how-you-find-software.error = Select an option
@@ -112,8 +113,8 @@ search-software.heading.many                              = You have {0} softwar
 search-software.heading.one                               = You have 1 software result
 search-software.p1                                        = All of this software has been through a recognition process where HMRC checks it’s capable of filing your taxes. HMRC does not endorse or recommend any one product or software provider.
 search-software.p2                                        = Some of the listed products may have free trials or free versions, but you’ll have to pay for others.
-search-software.p3.agent.intent                           = Some of the features you’ll need to submit your client’s tax returns are still being developed.
-search-software.inset.agent.intent                        = HMRC is not responsible for the availability of products or making sure that the product you chose meets the current and future needs of your clients. We recommend that you visit software providers’ websites to do more research before choosing a product.
+search-software.p3.unguided.intent                           = Some of the features you’ll need to submit your client’s tax returns are still being developed.
+search-software.inset.unguided.intent                        = HMRC is not responsible for the availability of products or making sure that the product you chose meets the current and future needs of your clients. We recommend that you visit software providers’ websites to do more research before choosing a product.
 search-software.check-answers                             = Change answers
 search-software.skip-to-results                           = Skip to results
 
@@ -137,9 +138,9 @@ search-software.filters.readiness = Software readiness
 
 search-software.intent.vendor-visit-link        = Find out what {0} provide now and what they’re developing
 
-search-software.vendor-count.agent.heading.many     = Based on your answers, we’ve found {0} results
-search-software.vendor-count.agent.heading.one      = Based on your answers, we’ve found 1 result
-search-software.vendor-count.agent.heading.none     = Based on your answers, there are no results
+search-software.vendor-count.unguided.heading.many     = Based on your answers, we’ve found {0} results
+search-software.vendor-count.unguided.heading.one      = Based on your answers, we’ve found 1 result
+search-software.vendor-count.unguided.heading.none     = Based on your answers, there are no results
 
 search-software.vendor-count.intent.heading.many    = Based on your filters and answers, we’ve found {0} results
 search-software.vendor-count.intent.heading.one     = Based on your filters and answers, we’ve found 1 result

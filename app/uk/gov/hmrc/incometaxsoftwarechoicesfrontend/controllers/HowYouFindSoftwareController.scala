@@ -21,7 +21,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.SessionIdentifierAction
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.HowYouFindSoftwareForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.{Check, Find}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.{Check, Find, ViewAll}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.HowYouFindSoftwarePage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.PageAnswersService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.HowYouFindSoftwareView
@@ -60,16 +60,29 @@ class HowYouFindSoftwareController @Inject()(view: HowYouFindSoftwareView,
           postAction = routes.HowYouFindSoftwareController.submit(),
           backUrl = appConfig.guidance
         ))),
-      journeyType =>
-        pageAnswersService.setPageAnswers(request.sessionId, HowYouFindSoftwarePage, journeyType).map {
-          case true => redirect(journeyType)
-          case false => InternalServerError("[HowYouFindSoftwareController][submit] - Could not save journey type]")
-        }
+      journeyType => journeyType match {
+        case Find | Check =>
+          pageAnswersService.setPageAnswers(request.sessionId, HowYouFindSoftwarePage, journeyType).map {
+            case true => redirect(journeyType)
+            case false => InternalServerError("[HowYouFindSoftwareController][submit] - Could not save journey type")
+          }
+        case ViewAll =>
+          for {
+            resetUserAnswers <- pageAnswersService.resetUserAnswers(request.sessionId)
+            setPageAnswers <- pageAnswersService.setPageAnswers(request.sessionId, HowYouFindSoftwarePage, journeyType)
+          } yield {
+            if (resetUserAnswers && setPageAnswers)
+              redirect(journeyType)
+            else
+              InternalServerError("[HowYouFindSoftwareController][submit] - Could not reset user answers or save journey type")
+          }
+      }
     )
   }
   
   private def redirect(journeyType: JourneyType) = journeyType match {
     case Find => Redirect(routes.UserTypeController.show())
+    case ViewAll => Redirect(routes.UserTypeController.show())
     case Check => Redirect(routes.EnterSoftwareNameController.show())
   }
 }

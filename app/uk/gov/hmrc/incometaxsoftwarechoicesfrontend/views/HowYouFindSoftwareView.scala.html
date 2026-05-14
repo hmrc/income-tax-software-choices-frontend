@@ -43,6 +43,11 @@
                     hint = Some(Hint(content = Text(messages("how-you-find-software.find.hint"))))
                 ),
                 RadioItem(
+                    content = Text(messages("how-you-find-software.view-all")),
+                    value = Some(JourneyType.ViewAll.key),
+                    hint = None
+                ),
+                RadioItem(
                     content = Text(messages("how-you-find-software.check")),
                     value = Some(JourneyType.Check.key),
                     hint = Some(Hint(content = Text(messages("how-you-find-software.check.hint"))))

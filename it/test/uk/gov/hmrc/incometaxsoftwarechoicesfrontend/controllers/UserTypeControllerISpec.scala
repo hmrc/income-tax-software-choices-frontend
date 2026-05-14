@@ -23,9 +23,10 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.Feature
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.SessionId
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, DatabaseHelper}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.{Agent, SoleTraderOrLandlord}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.*
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{UserAnswers, UserFilters, VendorFilter}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{UserAnswers, UserFilters, UserType, VendorFilter}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
 
@@ -81,7 +82,7 @@ class UserTypeControllerISpec extends ComponentSpecBase with BeforeAndAfterEach 
   }
 
   "POST /how-will-you-use-it" when {
-    "user selects sole trader and landlord" must {
+    "user without Journey (Check feature off) selects sole trader and landlord" must {
       s"return $SEE_OTHER and save page answer" in {
         val res = SoftwareChoicesFrontend.submitUserType(Some(SoleTraderOrLandlord))
 
@@ -94,7 +95,61 @@ class UserTypeControllerISpec extends ComponentSpecBase with BeforeAndAfterEach 
         getFinalFilters(SessionId) shouldBe Seq.empty
       }
     }
-    "user selects agent working on behalf of client" must {
+    "user in Find journey selects agent" must {
+      s"return $SEE_OTHER and save page answer" in {
+        await(userFiltersRepository.set(testUserFilters(UserAnswers()
+          .set(HowYouFindSoftwarePage, Find).get
+        )))
+
+        val res = SoftwareChoicesFrontend.submitUserType(Some(UserType.Agent))
+
+        res should have(
+          httpStatus(SEE_OTHER),
+          redirectURI(routes.BusinessIncomeController.show().url)
+        )
+
+        getPageData(SessionId, UserTypePage.toString).size shouldBe 1
+        getAllPageData(SessionId).size shouldBe 2
+        getFinalFilters(SessionId) shouldBe Seq.empty
+      }
+    }
+    "user in Check journey selects sole trader and landlord" must {
+      s"return $SEE_OTHER and save page answer" in {
+        await(userFiltersRepository.set(testUserFilters(UserAnswers()
+          .set(HowYouFindSoftwarePage, Check).get
+        )))
+
+        val res = SoftwareChoicesFrontend.submitUserType(Some(SoleTraderOrLandlord))
+
+        res should have(
+          httpStatus(SEE_OTHER),
+          redirectURI(routes.BusinessIncomeController.show().url)
+        )
+
+        getPageData(SessionId, UserTypePage.toString).size shouldBe 1
+        getAllPageData(SessionId).size shouldBe 2
+        getFinalFilters(SessionId) shouldBe Seq.empty
+      }
+    }
+    "user in ViewAll journey selects sole trader and landlord" must {
+      s"return $SEE_OTHER and save page answer" in {
+        await(userFiltersRepository.set(testUserFilters(UserAnswers()
+          .set(HowYouFindSoftwarePage, ViewAll).get
+        )))
+
+        val res = SoftwareChoicesFrontend.submitUserType(Some(SoleTraderOrLandlord))
+
+        res should have(
+          httpStatus(SEE_OTHER),
+          redirectURI(routes.SearchSoftwareController.show().url)
+        )
+
+        getPageData(SessionId, UserTypePage.toString).size shouldBe 1
+        getAllPageData(SessionId).size shouldBe 2
+        getFinalFilters(SessionId) shouldBe Seq(Individual, QuarterlyUpdates, TaxReturn)
+      }
+    }
+    "user without Journey (Check feature off) selects agent working on behalf of client" must {
       s"return $SEE_OTHER, reset user filters and save page answer" in {
         await(userFiltersRepository.set(testUserFilters(UserAnswers()
           .set(UserTypePage, SoleTraderOrLandlord).get
