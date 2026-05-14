@@ -64,7 +64,7 @@ class HowYouFindSoftwareController @Inject()(view: HowYouFindSoftwareView,
         case Find | Check =>
           pageAnswersService.setPageAnswers(request.sessionId, HowYouFindSoftwarePage, journeyType).map {
             case true => redirect(journeyType)
-            case false => InternalServerError("[HowYouFindSoftwareController][submit] - Could not save journey type]")
+            case false => InternalServerError("[HowYouFindSoftwareController][submit] - Could not save journey type")
           }
         case ViewAll =>
           for {
@@ -74,7 +74,7 @@ class HowYouFindSoftwareController @Inject()(view: HowYouFindSoftwareView,
             if (resetUserAnswers && setPageAnswers)
               redirect(journeyType)
             else
-              InternalServerError("[HowYouFindSoftwareController][submit] - Could not reset user answers or save journey type]")
+              InternalServerError("[HowYouFindSoftwareController][submit] - Could not reset user answers or save journey type")
           }
       }
     )

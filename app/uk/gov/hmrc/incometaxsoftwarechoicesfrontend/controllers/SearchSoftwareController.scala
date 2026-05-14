@@ -54,15 +54,10 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
 
     val finalFilters = request.userFilters.finalFilters
     val isAgent = pageAnswersService.getPageAnswers(request.userFilters.answers, UserTypePage).contains(Agent)
-    val isUnguided = (request.journey, isAgent) match {
-      case (Some(ViewAll), _) => true
-      case (None, true) => true
-      case _ => false
-    }
 
     val model = SoftwareChoicesResultsViewModel(
       vendorsWithIntent = softwareChoicesService.getVendorsWithIntent(finalFilters),
-      isUnguided = isUnguided
+      isUnguided = isUnguided(request.journey, isAgent)
     )
 
     if (isEnabled(ExplicitAudits)) auditService.auditSearchResults(request.userFilters, model.vendorsWithIntent.map(_.vendor.name))
@@ -77,15 +72,10 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
       updatedUserFilters <- update(filters)(request).flatMap(_ => userFiltersRepository.get(request.sessionId))
     } yield {
       val isAgent = pageAnswersService.getPageAnswers(request.userFilters.answers, UserTypePage).contains(Agent)
-      val isUnguided = (request.journey, isAgent) match {
-        case (Some(ViewAll), _) => true
-        case (None, true) => true
-        case _ => false
-      }
       val userFilters = updatedUserFilters.getOrElse(UserFilters(request.sessionId, None, filters.filters))
       val model = SoftwareChoicesResultsViewModel(
         vendorsWithIntent = softwareChoicesService.getVendorsWithIntent(userFilters.finalFilters),
-        isUnguided = isUnguided
+        isUnguided = isUnguided(request.journey, isAgent)
       )
 
       if (isEnabled(ExplicitAudits)) auditService.auditSearchResults(userFilters, model.vendorsWithIntent.map(_.vendor.name))
@@ -123,6 +113,12 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
   def backLinkUrl(isUnguided: Boolean): String = {
     if (isUnguided) routes.UserTypeController.show().url
     else routes.ChoosingSoftwareController.show().url
+  }
+
+  private def isUnguided(journey: Option[JourneyType], isAgent: Boolean) = (journey, isAgent) match {
+    case (Some(ViewAll), _) => true
+    case (None, true) => true
+    case _ => false
   }
 
 }

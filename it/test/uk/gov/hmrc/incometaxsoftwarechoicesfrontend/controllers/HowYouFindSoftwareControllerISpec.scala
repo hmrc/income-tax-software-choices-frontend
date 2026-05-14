@@ -144,6 +144,21 @@ class HowYouFindSoftwareControllerISpec extends ComponentSpecBase with BeforeAnd
         )
         getAllPageData(SessionId).size shouldBe 2
       }
+
+      s"return $SEE_OTHER and reset user answers for ViewAll journey" in {
+        val userAnswers = UserAnswers()
+          .set(HowYouFindSoftwarePage, Find).get
+          .set(UserTypePage, SoleTraderOrLandlord).get
+        await(userFiltersRepository.set(testUserFilters(userAnswers)))
+
+        val res = SoftwareChoicesFrontend.postHowYouFindSoftware(Some(ViewAll))
+
+        res should have(
+          httpStatus(SEE_OTHER),
+          redirectURI(routes.UserTypeController.show().url)
+        )
+        getAllPageData(SessionId).size shouldBe 1
+      }
     }
 
     "return BAD_REQUEST" when {

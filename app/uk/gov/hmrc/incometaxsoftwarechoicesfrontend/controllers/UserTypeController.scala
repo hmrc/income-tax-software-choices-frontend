@@ -95,7 +95,7 @@ class UserTypeController @Inject()(view: UserTypeView,
             }
           case None if userType == Agent =>
             for {
-              resetUserAnswers <- pageAnswersService.resetUserAnswers(request.sessionId) // don't delete JourneyType
+              resetUserAnswers <- pageAnswersService.resetUserAnswers(request.sessionId)
               setPageAnswers <- pageAnswersService.setPageAnswers(request.sessionId, UserTypePage, userType)
               saveFiltersFromAnswers <- pageAnswersService.saveFiltersFromAnswers(request.sessionId)
             } yield {

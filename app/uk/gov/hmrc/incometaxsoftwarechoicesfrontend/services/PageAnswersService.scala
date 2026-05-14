@@ -90,11 +90,7 @@ class PageAnswersService @Inject()(userFiltersRepository: UserFiltersRepository,
   def resetUserAnswers(id: String): Future[Boolean] = {
     userFiltersRepository.get(id).flatMap {
       case Some(userFilters) =>
-        val journeyType = userFilters.answers.flatMap(_.get(HowYouFindSoftwarePage))
-        val newAnswersWithJourney = journeyType.map{ journey =>
-          UserAnswers().set(HowYouFindSoftwarePage, journey).get
-        }.getOrElse(UserAnswers())
-        userFiltersRepository.set(userFilters.copy(answers = Some(newAnswersWithJourney),finalFilters = Seq.empty))
+        userFiltersRepository.set(userFilters.copy(answers = Some(UserAnswers()), finalFilters = Seq.empty))
       case None =>
         userFiltersRepository.set(UserFilters(id, Some(UserAnswers()), Seq.empty))
     }
