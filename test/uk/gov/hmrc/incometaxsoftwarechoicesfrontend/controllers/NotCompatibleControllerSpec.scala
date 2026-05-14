@@ -26,25 +26,25 @@ import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.mocks.{MockRequireUserDataRefiner, MockSessionIdentifierAction}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareProduct
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.Recognised
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SoftwareInDevelopmentView
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.NotCompatibleView
 
 import scala.concurrent.Future
 
-class SoftwareInDevelopmentControllerSpec extends ControllerBaseSpec
+class NotCompatibleControllerSpec extends ControllerBaseSpec
   with MockSessionIdentifierAction
   with MockRequireUserDataRefiner {
 
-  val mockSoftwareInDevelopmentView: SoftwareInDevelopmentView = mock[SoftwareInDevelopmentView]
+  val mockNotCompatibleView: NotCompatibleView = mock[NotCompatibleView]
 
-  def controller(product: Option[SoftwareProduct]): SoftwareInDevelopmentController = new SoftwareInDevelopmentController(
-    view        = mockSoftwareInDevelopmentView,
+  def controller(product: Option[SoftwareProduct]): NotCompatibleController = new NotCompatibleController(
+    view        = mockNotCompatibleView,
     identify    = fakeSessionIdentifierAction,
     requireData = fakeRequireUserDataRefiner(product = product)
   )
 
   "show" must {
-    "return OK and display the software in development page" in {
-      when(mockSoftwareInDevelopmentView(any(), any(), any())(any(), any()))
+    "return OK and display the not compatible page" in {
+      when(mockNotCompatibleView(any(), any(), any())(any(), any()))
         .thenReturn(HtmlFormat.empty)
       val testProduct = SoftwareProduct(1234, "test-software", Recognised)
 
@@ -54,13 +54,14 @@ class SoftwareInDevelopmentControllerSpec extends ControllerBaseSpec
       contentType(result) shouldBe Some(HTML)
     }
 
-    "return INTERNAL_SERVER_ERROR when the software name is missing" in {
-      when(mockSoftwareInDevelopmentView(any(), any(), any())(any(), any()))
+    "return INTERNAL_SERVER_ERROR when the software product is missing" in {
+      when(mockNotCompatibleView(any(), any(), any())(any(), any()))
         .thenReturn(HtmlFormat.empty)
 
       val result: Future[Result] = controller(None).show()(fakeRequest)
 
       status(result) shouldBe INTERNAL_SERVER_ERROR
     }
+    
   }
 }

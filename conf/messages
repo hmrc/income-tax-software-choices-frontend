@@ -349,3 +349,8 @@ partially-compatible.heading2 = What you should do next
 partially-compatible.para3 = If you have not done so already, you now need to:
 partially-compatible.bullet1 = sign up for Making Tax Digital for Income Tax
 partially-compatible.bullet2 = authorise your software for HMRC
+
+#Not Compatible page
+not-compatible.heading = {0} is not currently compatible
+not-compatible.para1 = You may want to contact your current software provider to see if they are going to support Making Tax Digital for Income Tax for your circumstances.
+not-compatible.para2 = You can also search for other software packages that are currently ready for Making Tax Digital for Income Tax to see if they are suitable.

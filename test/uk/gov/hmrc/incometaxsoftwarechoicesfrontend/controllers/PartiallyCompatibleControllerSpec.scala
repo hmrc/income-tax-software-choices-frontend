@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,7 +43,7 @@ class PartiallyCompatibleControllerSpec extends ControllerBaseSpec
   )
 
   "show" must {
-    "return OK and display the fully compatible page" in {
+    "return OK and display the partially compatible page" in {
       when(mockPartiallyCompatibleView(any(), any(), any())(any(), any()))
         .thenReturn(HtmlFormat.empty)
       val testProduct = SoftwareProduct(1234, "test-software", Recognised)

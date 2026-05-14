@@ -350,3 +350,8 @@ partially-compatible.heading2 = *** MISSING WELSH ***
 partially-compatible.para3 = *** MISSING WELSH ***
 partially-compatible.bullet1 = *** MISSING WELSH ***
 partially-compatible.bullet2 = *** MISSING WELSH ***
+
+#Not Compatible page
+not-compatible.heading = *** MISSING WELSH ***
+not-compatible.para1 = *** MISSING WELSH ***
+not-compatible.para2 = *** MISSING WELSH ***

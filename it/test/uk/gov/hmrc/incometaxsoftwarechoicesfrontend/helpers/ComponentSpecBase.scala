@@ -172,6 +172,8 @@ trait ComponentSpecBase extends AnyWordSpec
     
     def getPartiallyCompatible(): WSResponse = get("/partly-compatible")
 
+    def getNotCompatible(): WSResponse = get("/not-compatible")
+
     def healthcheck(): WSResponse =
       wsClient
         .url(s"$baseUrl/ping/ping")
