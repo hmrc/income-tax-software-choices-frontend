@@ -17,17 +17,27 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.helpers
 
 import play.api.i18n.Messages
-import uk.gov.hmrc.govukfrontend.views.viewmodels.content._
-import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.*
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.*
 import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserAnswers
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages._
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.{Check, Find}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{JourneyType, UserAnswers}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.*
 
 trait SummaryListBuilder {
   def buildSummaryList(userAnswersOpt: Option[UserAnswers])(implicit messages: Messages): SummaryList = {
     val userAnswers = userAnswersOpt.getOrElse(throw new InternalServerException("[SummaryListBuilder][buildSummaryList] - User answers is empty found"))
+    val journeyTypePageAnswers = userAnswers.get(HowYouFindSoftwarePage)
+
+    val userTypeRow = if (journeyTypePageAnswers == Some(Check) || journeyTypePageAnswers == Some(Find)) {
+      Seq(userTypeSummaryListRow(userAnswers))
+    } else {
+      Seq.empty
+    }
+
     SummaryList(
+      userTypeRow ++
       Seq(
         businessIncomeSummaryListRow(userAnswers),
         otherIncomeSummaryListRow(userAnswers),
@@ -37,7 +47,16 @@ trait SummaryListBuilder {
     )
   }
 
-  private def businessIncomeSummaryListRow(userAnswers: UserAnswers)(implicit messages: Messages): SummaryListRow = {
+  private def userTypeSummaryListRow(userAnswers: UserAnswers)(implicit messages: Messages): SummaryListRow = {
+    val filterList: String = userAnswers.get(UserTypePage) match {
+      case Some(f) => messages(s"check-your-answers.user-type.${f.key}")
+      case _ => throw new InternalServerException("[SummaryListBuilder][userTypeSummaryListRow] - User type data not found")
+    }
+
+    summaryListRow(filterList, routes.UserTypeController.show().url, "user-type")
+  }
+
+private def businessIncomeSummaryListRow(userAnswers: UserAnswers)(implicit messages: Messages): SummaryListRow = {
     val filterList: String = userAnswers.get(BusinessIncomePage) match {
       case Some(vf) if vf.size == 1 => vf.map(f => messages(s"business-income.${f.key}")).mkString("<br>")
       case Some(vf) if vf.size > 1 =>
