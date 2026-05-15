@@ -28,8 +28,8 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.Feature
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.mocks.{MockRequireUserDataRefiner, MockSessionIdentifierAction}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.UserTypeForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{JourneyType, UserType, VendorFilter}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.{Agent, SoleTraderOrLandlord}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{Agent, Individual}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.SoleTraderOrLandlord
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.Individual
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.{HowYouFindSoftwarePage, UserTypePage}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
@@ -53,6 +53,21 @@ class UserTypeControllerSpec extends ControllerBaseSpec with MockSessionIdentifi
           .thenReturn(Future.successful(Some(SoleTraderOrLandlord)))
 
         val result: Future[Result] = controller().show()(fakeRequest)
+
+        status(result) shouldBe OK
+        contentType(result) shouldBe Some(HTML)
+      }
+      "user has previously selected a user type and is in edit mode" in new Setup {
+        when(mockUserTypeView(
+          eqTo(UserTypeForm.userTypeForm.fill(SoleTraderOrLandlord)),
+          any(), any()
+        )(any(), any()))
+          .thenReturn(HtmlFormat.empty)
+
+        when(mockPageAnswersService.getPageAnswers(eqTo(sessionId), eqTo(UserTypePage))(any()))
+          .thenReturn(Future.successful(Some(SoleTraderOrLandlord)))
+
+        val result: Future[Result] = controller().show(true)(fakeRequest)
 
         status(result) shouldBe OK
         contentType(result) shouldBe Some(HTML)
@@ -88,6 +103,19 @@ class UserTypeControllerSpec extends ControllerBaseSpec with MockSessionIdentifi
         redirectLocation(result) shouldBe Some(routes.BusinessIncomeController.show().url)
       }
     }
+    "user in Find journey and edit mode selects Agent" must {
+      "save page answers and redirect to Check Your Answers page" in new Setup {
+        when(mockPageAnswersService.setPageAnswers(eqTo(sessionId), eqTo(UserTypePage), eqTo(UserType.Agent))(any()))
+          .thenReturn(Future.successful(true))
+        when(mockPageAnswersService.getPageAnswers(eqTo(sessionId), eqTo(HowYouFindSoftwarePage))(any()))
+          .thenReturn(Future.successful(Some(Find)))
+
+        val result: Future[Result] = controller(journey = Some(Find)).submit(true)(fakeRequest.post(UserTypeForm.userTypeForm, UserType.Agent))
+
+        status(result) shouldBe SEE_OTHER
+        redirectLocation(result) shouldBe Some(routes.CheckYourAnswersController.show().url)
+      }
+    }
     "user in Check journey selects Agent" must {
       "save page answers and redirect to Business Income page" in new Setup {
         when(mockPageAnswersService.setPageAnswers(eqTo(sessionId), eqTo(UserTypePage), eqTo(UserType.Agent))(any()))
@@ -99,6 +127,19 @@ class UserTypeControllerSpec extends ControllerBaseSpec with MockSessionIdentifi
 
         status(result) shouldBe SEE_OTHER
         redirectLocation(result) shouldBe Some(routes.BusinessIncomeController.show().url)
+      }
+    }
+    "user in Check journey and edit mode selects Sole Trader or Landlord" must {
+      "save page answers and redirect to Check Your Answers page" in new Setup {
+        when(mockPageAnswersService.setPageAnswers(eqTo(sessionId), eqTo(UserTypePage), eqTo(SoleTraderOrLandlord))(any()))
+          .thenReturn(Future.successful(true))
+        when(mockPageAnswersService.getPageAnswers(eqTo(sessionId), eqTo(HowYouFindSoftwarePage))(any()))
+          .thenReturn(Future.successful(Some(Check)))
+
+        val result: Future[Result] = controller(journey = Some(Check)).submit(true)(fakeRequest.post(UserTypeForm.userTypeForm, SoleTraderOrLandlord))
+
+        status(result) shouldBe SEE_OTHER
+        redirectLocation(result) shouldBe Some(routes.CheckYourAnswersController.show().url)
       }
     }
     "user in ViewAll journey selects Sole Trader or Landlord" must {
@@ -246,11 +287,11 @@ class UserTypeControllerSpec extends ControllerBaseSpec with MockSessionIdentifi
   "backUrl" should {
     "return the guidance page url when CheckJourney feature switch is disabled" in new Setup {
       disable(CheckJourney)
-      controller().backUrl shouldBe appConfig.guidance
+      controller().backUrl() shouldBe appConfig.guidance
     }
     "return the HowYouFindSoftware page url when CheckJourney feature switch is enabled" in new Setup {
       enable(CheckJourney)
-      controller().backUrl shouldBe routes.HowYouFindSoftwareController.show().url
+      controller().backUrl() shouldBe routes.HowYouFindSoftwareController.show().url
     }
   }
 

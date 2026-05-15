@@ -170,6 +170,20 @@ class UserTypeControllerISpec extends ComponentSpecBase with BeforeAndAfterEach 
       }
     }
 
+    "user in edit mode selects sole trader and landlord" must {
+        s"return $SEE_OTHER and save page answer" in {
+          val res = SoftwareChoicesFrontend.submitUserType(Some(SoleTraderOrLandlord), true)
+
+          res should have(
+            httpStatus(SEE_OTHER),
+            redirectURI(routes.CheckYourAnswersController.show().url)
+          )
+
+          getPageData(SessionId, UserTypePage.toString).size shouldBe 1
+          getFinalFilters(SessionId) shouldBe Seq.empty
+        }
+      }
+
     "return BAD_REQUEST" when {
       "no answer is given" in {
         val res = SoftwareChoicesFrontend.submitUserType(None)

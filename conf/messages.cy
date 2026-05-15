@@ -80,12 +80,15 @@ other-items.error.non-empty = Dewiswch un eitem arall neu eitemau eraill
 other-items.error.invalid-selection = Dewiswch un eitem arall, eitemau eraill, neu ‘dim un o’r rhain’
 
 # Check Your Answers view
-check-your-answers.heading              = Gwiriwch eich atebion cyn edrych ar feddalwedd sy’n cydweddu
-check-your-answers.business-income      = Ffynonellau incwm (diweddariadau chwarterol a Ffurflen Dreth)
-check-your-answers.additional-income    = Ffynonellau eraill o incwm (Ffurflen Dreth yn unig)
-check-your-answers.other-items          = Eitemau eraill (Ffurflen Dreth yn unig)
-check-your-answers.accounting-period    = Cyfnod cyfrifyddu
-check-your-answers.none-selected        = Dim wedi’i ddewis
+check-your-answers.heading                             = Gwiriwch eich atebion cyn edrych ar feddalwedd sy’n cydweddu
+check-your-answers.user-type                           = Math o Ddefnyddiwr
+check-your-answers.user-type.sole-trader-or-landlord   = Unig fasnachwr neu landlord
+check-your-answers.user-type.agent                     = Asiant
+check-your-answers.business-income                     = Ffynonellau incwm (diweddariadau chwarterol a Ffurflen Dreth)
+check-your-answers.additional-income                   = Ffynonellau eraill o incwm (Ffurflen Dreth yn unig)
+check-your-answers.other-items                         = Eitemau eraill (Ffurflen Dreth yn unig)
+check-your-answers.accounting-period                   = Cyfnod cyfrifyddu
+check-your-answers.none-selected                       = Dim wedi’i ddewis
 
 # Choosing Software from Your Results view
 choosing-software.heading                   = Dewis meddalwedd o’ch canlyniadau

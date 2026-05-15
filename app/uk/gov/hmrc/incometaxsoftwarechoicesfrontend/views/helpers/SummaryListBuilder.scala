@@ -53,10 +53,10 @@ trait SummaryListBuilder {
       case _ => throw new InternalServerException("[SummaryListBuilder][userTypeSummaryListRow] - User type data not found")
     }
 
-    summaryListRow(filterList, routes.UserTypeController.show().url, "user-type")
+    summaryListRow(filterList, routes.UserTypeController.show(editMode = true).url, "user-type")
   }
 
-private def businessIncomeSummaryListRow(userAnswers: UserAnswers)(implicit messages: Messages): SummaryListRow = {
+  private def businessIncomeSummaryListRow(userAnswers: UserAnswers)(implicit messages: Messages): SummaryListRow = {
     val filterList: String = userAnswers.get(BusinessIncomePage) match {
       case Some(vf) if vf.size == 1 => vf.map(f => messages(s"business-income.${f.key}")).mkString("<br>")
       case Some(vf) if vf.size > 1 =>
