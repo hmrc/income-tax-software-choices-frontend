@@ -24,7 +24,7 @@ import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.govukfrontend.views.Aliases.{Hint, RadioItem, Text}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.HowYouFindSoftwareForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.{Check, Find}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.HowYouFindSoftwareView
 
 class HowYouFindSoftwareViewSpec extends ViewSpec {
@@ -84,10 +84,14 @@ class HowYouFindSoftwareViewSpec extends ViewSpec {
                 hint = Some(Hint(content = Text(HowYouFindSoftwareContent.findHint)))
               ),
               RadioItem(
+                content = Text(HowYouFindSoftwareContent.viewAll),
+                value = Some(ViewAll.key),
+                hint = None
+              ),
+              RadioItem(
                 content = Text(HowYouFindSoftwareContent.check),
                 value = Some(Check.key),
                 hint = Some(Hint(content = Text(HowYouFindSoftwareContent.checkHint)))
-
               )
             )
           )
@@ -106,6 +110,7 @@ private object HowYouFindSoftwareContent {
   val legend = "How would you like to find software?"
   val find = "Find software based on my answers to questions"
   val findHint = "We will ask you questions about your income sources to show you the best software for your needs"
+  val viewAll = "Show a list of all available software and let me select filters for my needs"
   val check = "Check if my current software is compatible"
   val checkHint = "This includes using spreadsheets"
   val guidanceLink = "https://www.gov.uk/guidance/find-software-thats-compatible-with-making-tax-digital-for-income-tax"

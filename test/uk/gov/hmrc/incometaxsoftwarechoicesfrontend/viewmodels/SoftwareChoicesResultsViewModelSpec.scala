@@ -29,7 +29,7 @@ class SoftwareChoicesResultsViewModelSpec extends PlaySpec {
       }
 
       "has agent set false" in {
-        model.isAgent mustBe false
+        model.isUnguided mustBe false
       }
     }
   }

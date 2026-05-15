@@ -15,19 +15,19 @@
  *@
 
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.viewmodels.SoftwareChoicesResultsViewModel
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.SoftwareVendorsAgentIntentTemplate
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.SoftwareVendorsUnguidedIntentTemplate
 
 @this(
-        softwareVendorsAgentIntentTemplate: SoftwareVendorsAgentIntentTemplate
+        softwareVendorsUnguidedIntentTemplate: SoftwareVendorsUnguidedIntentTemplate
 )
 
 @(viewModel: SoftwareChoicesResultsViewModel)(implicit messages: Messages)
 
 @resultsHeading(count: Int) = @{
     count match {
-        case 0 => <h2 class="govuk-heading-l">{messages("search-software.vendor-count.agent.heading.none")}</h2>
-        case 1 => <h2 class="govuk-heading-l">{messages("search-software.vendor-count.agent.heading.one")}</h2>
-        case _ => <h2 class="govuk-heading-l">{messages("search-software.vendor-count.agent.heading.many", count)}</h2>
+        case 0 => <h2 class="govuk-heading-l">{messages("search-software.vendor-count.unguided.heading.none")}</h2>
+        case 1 => <h2 class="govuk-heading-l">{messages("search-software.vendor-count.unguided.heading.one")}</h2>
+        case _ => <h2 class="govuk-heading-l">{messages("search-software.vendor-count.unguided.heading.many", count)}</h2>
     }
 }
 
@@ -36,5 +36,5 @@
 </div>
 
 <div id="software-vendor-list">
-    @softwareVendorsAgentIntentTemplate(viewModel.vendorsWithIntent)
+    @softwareVendorsUnguidedIntentTemplate(viewModel.vendorsWithIntent)
 </div>
