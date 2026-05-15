@@ -24,7 +24,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.Feature
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{RequireUserDataRefiner, SessionIdentifierAction}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.*
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{VendorFilter, *}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.ViewAll
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.Agent
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.requests.SessionDataRequest
@@ -91,11 +91,18 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
   }
 
   private def update(search: FiltersFormModel)(implicit request: SessionDataRequest[_]): Future[Boolean] = {
-    val filtersFromAnswers = pageAnswersService
+    val originalFiltersFromAnswers = pageAnswersService
       .getFiltersFromAnswers(request.userFilters.answers)
-      .filterNot(_ == VendorFilter.Agent)
 
-    userFiltersRepository.set(request.userFilters.copy(finalFilters = filtersFromAnswers ++ search.filters))
+    // Remove user type filters for unguided journey in case they are overwritten by preferences
+    // Also remove Agent filter for existing (pre-check feature) to maintain existing functionality
+    val newFiltersFromAnswers = request.journey match {
+      case Some(ViewAll) => originalFiltersFromAnswers.filterNot(Set(VendorFilter.Agent, VendorFilter.Individual).contains(_))
+      case None => originalFiltersFromAnswers.filterNot(_ == VendorFilter.Agent)
+      case _ => originalFiltersFromAnswers
+    }
+
+    userFiltersRepository.set(request.userFilters.copy(finalFilters = newFiltersFromAnswers ++ search.filters))
   }
 
   private def view(model: SoftwareChoicesResultsViewModel, form: Form[FiltersFormModel])
