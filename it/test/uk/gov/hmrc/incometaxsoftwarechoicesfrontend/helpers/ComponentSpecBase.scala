@@ -118,10 +118,12 @@ trait ComponentSpecBase extends AnyWordSpec
       )
     }
 
-    def getUserType: WSResponse = get("/how-will-you-use-it")
+    def getUserType( editMode: Boolean = false): WSResponse =  {
+      get(s"/how-will-you-use-it?editMode=$editMode")
+    }
 
-    def submitUserType(request: Option[UserType]): WSResponse = {
-      post("/how-will-you-use-it")(
+    def submitUserType(request: Option[UserType], editMode: Boolean = false): WSResponse = {
+      post(s"/how-will-you-use-it?editMode=$editMode")(
         request.fold(Map.empty[String, Seq[String]])(
           model => UserTypeForm.userTypeForm.fill(model).data.map { case (k, v) => (k, Seq(v)) }
         )
