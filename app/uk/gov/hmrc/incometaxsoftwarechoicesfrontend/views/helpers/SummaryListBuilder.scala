@@ -27,13 +27,11 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.*
 
 trait SummaryListBuilder {
   def buildSummaryList(userAnswersOpt: Option[UserAnswers])(implicit messages: Messages): SummaryList = {
-    val userAnswers = userAnswersOpt.getOrElse(throw new InternalServerException("[SummaryListBuilder][buildSummaryList] - User answers is empty found"))
-    val journeyTypePageAnswers = userAnswers.get(HowYouFindSoftwarePage)
+    val userAnswers = userAnswersOpt.getOrElse(throw new InternalServerException("[SummaryListBuilder][buildSummaryList] - User answers is empty"))
 
-    val userTypeRow = if (journeyTypePageAnswers == Some(Check) || journeyTypePageAnswers == Some(Find)) {
-      Seq(userTypeSummaryListRow(userAnswers))
-    } else {
-      Seq.empty
+    val userTypeRow = userAnswers.get(HowYouFindSoftwarePage) match {
+      case Some(Check) | Some(Find) => Seq(userTypeSummaryListRow(userAnswers))
+      case _ => Seq.empty
     }
 
     SummaryList(

@@ -118,7 +118,9 @@ trait ComponentSpecBase extends AnyWordSpec
       )
     }
 
-    def getUserType: WSResponse = get("/how-will-you-use-it")
+    def getUserType( editMode: Boolean = false): WSResponse =  {
+      get(s"/how-will-you-use-it?editMode=$editMode")
+    }
 
     def submitUserType(request: Option[UserType], editMode: Boolean = false): WSResponse = {
       post(s"/how-will-you-use-it?editMode=$editMode")(

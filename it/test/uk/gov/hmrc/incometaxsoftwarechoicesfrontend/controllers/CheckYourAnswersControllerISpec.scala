@@ -25,9 +25,10 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, 
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.AccountingPeriod.{OtherAccountingPeriod, SixthAprilToFifthApril}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.{Check, Find}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.Recognised
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.SoleTraderOrLandlord
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareProduct, UserAnswers, UserFilters}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.{AccountingPeriodPage, AdditionalIncomeSourcesPage, BusinessIncomePage, EnterSoftwareNamePage, HowYouFindSoftwarePage, OtherItemsPage}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.DataService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
 
@@ -44,9 +45,21 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
         )
       }
     }
+    "user answers is empty" should {
+      "redirect to the service index" in {
+        await(userFiltersRepository.set(testUserFilters(None)))
+
+        val res = SoftwareChoicesFrontend.getCheckYourAnswers
+
+        res.status shouldBe INTERNAL_SERVER_ERROR
+        res.body.contains("Sorry, there is a problem with the service") shouldBe true
+      }
+    }
     "there is pre-filled data" should {
       "display the page with appropriate summary lists with answers organised as lists" in {
         val userAnswers = UserAnswers()
+          .set(HowYouFindSoftwarePage, Find).get
+          .set(UserTypePage, SoleTraderOrLandlord).get
           .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
           .set(AdditionalIncomeSourcesPage, Seq(UkInterest, ConstructionIndustryScheme, Employment, UkDividends, StatePensionIncome,
             PrivatePensionIncome, ForeignDividends, ForeignInterest)).get
@@ -60,6 +73,9 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
         res should have(
           httpStatus(OK),
           pageTitle(s"${messages("check-your-answers.heading")} - ${PageContentBase.title} - GOV.UK"),
+//          summaryListRow(SummaryListKeys.userType, Set(SoleTraderOrLandlord)
+//            .map(vf => messages(s"check-your-answers.user-type.${SoleTraderOrLandlord.key}")).mkString(" ")),
+          summaryListRow(SummaryListKeys.userType, messages(s"check-your-answers.user-type.${SoleTraderOrLandlord.key}")),
           summaryListRow(SummaryListKeys.incomeSources, Seq(SoleTrader, UkProperty, OverseasProperty)
             .map(vf => messages(s"business-income.$vf")).mkString(" ")),
           summaryListRow(SummaryListKeys.otherIncome, Seq(UkInterest, ConstructionIndustryScheme, Employment, UkDividends, StatePensionIncome,
@@ -68,8 +84,9 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
           summaryListRow(SummaryListKeys.otherItems, Seq(PaymentsIntoAPrivatePension, CharitableGiving, CapitalGainsTax, StudentLoans,
             MarriageAllowance, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge)
             .map(vf => messages(s"other-items.$vf")).mkString(" ")),
-          summaryListRow(SummaryListKeys.accountingPeriod, Set(OtherAccountingPeriod)
-            .map(vf => messages(s"accounting-period.${vf.key}")).mkString(" "))
+//          summaryListRow(SummaryListKeys.accountingPeriod, Set(OtherAccountingPeriod)
+//            .map(vf => messages(s"accounting-period.${vf.key}")).mkString(" "))
+           summaryListRow(SummaryListKeys.accountingPeriod, messages(s"accounting-period.${OtherAccountingPeriod.key}"))
         )
 
         Jsoup.parse(res.body).select("main li").size() shouldBe 18
@@ -119,6 +136,18 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
           summaryListRow(SummaryListKeys.accountingPeriod, Set(OtherAccountingPeriod)
             .map(vf => messages(s"accounting-period.${vf.key}")).mkString(" "))
         )
+      }
+      "In the Check journey, user type is not set" in {
+        val userAnswers = UserAnswers()
+          .set(HowYouFindSoftwarePage, Check).get
+          .set(AdditionalIncomeSourcesPage, Seq.empty).get
+          .set(OtherItemsPage, Seq.empty).get
+          .set(AccountingPeriodPage, OtherAccountingPeriod).get
+        await(userFiltersRepository.set(testUserFilters(Some(userAnswers))))
+
+        val res = SoftwareChoicesFrontend.getCheckYourAnswers
+        res.status shouldBe INTERNAL_SERVER_ERROR
+        res.body.contains("Sorry, there is a problem with the service") shouldBe true
       }
       "Business Incomes sources is not set" in {
         val userAnswers = UserAnswers()
@@ -367,6 +396,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
   )
 
   object SummaryListKeys {
+    val userType = "User type"
     val incomeSources = "Income sources (quarterly updates and tax return)"
     val otherIncome = "Other incomes (tax return only)"
     val otherItems = "Other items (tax return only)"

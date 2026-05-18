@@ -257,6 +257,18 @@ class UserTypeControllerSpec extends ControllerBaseSpec with MockSessionIdentifi
         intercept[InternalServerException](await(result)).message shouldBe "[UserTypeController][submit] - Could not save user type for find or check journey"
       }
 
+      "user in Check journey in edit mode failed to save answers to Filters" in new Setup {
+        when(mockPageAnswersService.setPageAnswers(eqTo(sessionId), eqTo(UserTypePage), eqTo(UserType.Agent))(any()))
+          .thenReturn(Future.successful(false))
+        when(mockPageAnswersService.getPageAnswers(eqTo(sessionId), eqTo(HowYouFindSoftwarePage))(any()))
+          .thenReturn(Future.successful(Some(Check)))
+
+        val result: Future[Result] = controller(journey = None).submit(editMode = true)(fakeRequest.post(UserTypeForm.userTypeForm, UserType.Agent))
+
+        intercept[InternalServerException](await(result)).message shouldBe "[UserTypeController][submit] - Could not save user type for edit mode"
+      }
+
+
       "user in Find journey failed to save answers to Filters" in new Setup {
         when(mockPageAnswersService.setPageAnswers(eqTo(sessionId), eqTo(UserTypePage), eqTo(UserType.Agent))(any()))
           .thenReturn(Future.successful(false))
@@ -292,6 +304,9 @@ class UserTypeControllerSpec extends ControllerBaseSpec with MockSessionIdentifi
     "return the HowYouFindSoftware page url when CheckJourney feature switch is enabled" in new Setup {
       enable(CheckJourney)
       controller().backUrl() shouldBe routes.HowYouFindSoftwareController.show().url
+    }
+    "return the CheckYourAnswers page url when in edit mode" in new Setup {
+      controller().backUrl(editMode = true) shouldBe routes.CheckYourAnswersController.show().url
     }
   }
 
