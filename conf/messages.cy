@@ -81,7 +81,7 @@ other-items.error.invalid-selection = Dewiswch un eitem arall, eitemau eraill, n
 
 # Check Your Answers view
 check-your-answers.heading                             = Gwiriwch eich atebion cyn edrych ar feddalwedd sy’n cydweddu
-check-your-answers.user-type                           = Math o Ddefnyddiwr
+check-your-answers.user-type                           = Math o ddefnyddiwr
 check-your-answers.user-type.sole-trader-or-landlord   = Unig fasnachwr neu landlord
 check-your-answers.user-type.agent                     = Asiant
 check-your-answers.business-income                     = Ffynonellau incwm (diweddariadau chwarterol a Ffurflen Dreth)

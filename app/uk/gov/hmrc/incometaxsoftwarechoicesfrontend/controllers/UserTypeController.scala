@@ -73,14 +73,11 @@ class UserTypeController @Inject()(view: UserTypeView,
         )
       },
       userType => journey.flatMap {
-          case _ if editMode =>
-            pageAnswersService.setPageAnswers(request.sessionId, UserTypePage, userType).map {
-              case true => Redirect(routes.CheckYourAnswersController.show())
-              case false => throw new InternalServerException("[UserTypeController][submit] - Could not save user type for edit mode")
-            }
           case Some(Find) | Some(Check) =>
             pageAnswersService.setPageAnswers(request.sessionId, UserTypePage, userType).map {
-              case true => Redirect(routes.BusinessIncomeController.show())
+              case true =>
+                if (editMode) Redirect(routes.CheckYourAnswersController.show())
+                else Redirect(routes.BusinessIncomeController.show())
               case false => throw new InternalServerException("[UserTypeController][submit] - Could not save user type for find or check journey")
             }
           case Some(ViewAll) =>
