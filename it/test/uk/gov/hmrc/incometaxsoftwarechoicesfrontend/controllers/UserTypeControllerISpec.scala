@@ -185,8 +185,15 @@ class UserTypeControllerISpec extends ComponentSpecBase with BeforeAndAfterEach 
       }
     }
 
-    "user in edit mode selects sole trader or landlord" must {
+    "user in edit mode selects agent then changes to sole trader or landlord" must {
         s"return $SEE_OTHER and save page answer" in {
+          await(userFiltersRepository.set(testUserFilters(UserAnswers()
+            .set(HowYouFindSoftwarePage, Find).get
+            .set(UserTypePage, UserType.Agent).get
+            .set(BusinessIncomePage, Seq(SoleTrader, UkProperty)).get
+          )))
+          getAllPageData(SessionId).size shouldBe 3 //verify existing user answers
+
           val res = SoftwareChoicesFrontend.submitUserType(Some(SoleTraderOrLandlord), true)
 
           res should have(
@@ -194,7 +201,7 @@ class UserTypeControllerISpec extends ComponentSpecBase with BeforeAndAfterEach 
             redirectURI(routes.CheckYourAnswersController.show().url)
           )
 
-          getPageData(SessionId, UserTypePage.toString).size shouldBe 1
+          getPageData(SessionId, UserTypePage) shouldBe Some(SoleTraderOrLandlord)
           getFinalFilters(SessionId) shouldBe Seq.empty
         }
       }

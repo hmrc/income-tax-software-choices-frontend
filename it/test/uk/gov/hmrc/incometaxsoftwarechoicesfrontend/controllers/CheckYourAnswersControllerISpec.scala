@@ -73,9 +73,8 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
         res should have(
           httpStatus(OK),
           pageTitle(s"${messages("check-your-answers.heading")} - ${PageContentBase.title} - GOV.UK"),
-//          summaryListRow(SummaryListKeys.userType, Set(SoleTraderOrLandlord)
-//            .map(vf => messages(s"check-your-answers.user-type.${SoleTraderOrLandlord.key}")).mkString(" ")),
-          summaryListRow(SummaryListKeys.userType, messages(s"check-your-answers.user-type.${SoleTraderOrLandlord.key}")),
+          summaryListRow(SummaryListKeys.userType, Set(SoleTraderOrLandlord)
+            .map(vf => messages(s"check-your-answers.user-type.${vf.key}")).mkString(" ")),
           summaryListRow(SummaryListKeys.incomeSources, Seq(SoleTrader, UkProperty, OverseasProperty)
             .map(vf => messages(s"business-income.$vf")).mkString(" ")),
           summaryListRow(SummaryListKeys.otherIncome, Seq(UkInterest, ConstructionIndustryScheme, Employment, UkDividends, StatePensionIncome,
@@ -84,9 +83,8 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
           summaryListRow(SummaryListKeys.otherItems, Seq(PaymentsIntoAPrivatePension, CharitableGiving, CapitalGainsTax, StudentLoans,
             MarriageAllowance, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge)
             .map(vf => messages(s"other-items.$vf")).mkString(" ")),
-//          summaryListRow(SummaryListKeys.accountingPeriod, Set(OtherAccountingPeriod)
-//            .map(vf => messages(s"accounting-period.${vf.key}")).mkString(" "))
-           summaryListRow(SummaryListKeys.accountingPeriod, messages(s"accounting-period.${OtherAccountingPeriod.key}"))
+          summaryListRow(SummaryListKeys.accountingPeriod, Set(OtherAccountingPeriod)
+            .map(vf => messages(s"accounting-period.${vf.key}")).mkString(" "))
         )
 
         Jsoup.parse(res.body).select("main li").size() shouldBe 18
