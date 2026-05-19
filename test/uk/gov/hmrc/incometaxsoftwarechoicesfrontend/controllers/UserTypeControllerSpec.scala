@@ -265,7 +265,7 @@ class UserTypeControllerSpec extends ControllerBaseSpec with MockSessionIdentifi
 
         val result: Future[Result] = controller(journey = None).submit(editMode = true)(fakeRequest.post(UserTypeForm.userTypeForm, UserType.Agent))
 
-        intercept[InternalServerException](await(result)).message shouldBe "[UserTypeController][submit] - Could not save user type for edit mode"
+        intercept[InternalServerException](await(result)).message shouldBe "[UserTypeController][submit] - Could not save user type for find or check journey"
       }
 
 
@@ -275,7 +275,7 @@ class UserTypeControllerSpec extends ControllerBaseSpec with MockSessionIdentifi
         when(mockPageAnswersService.getPageAnswers(eqTo(sessionId), eqTo(HowYouFindSoftwarePage))(any()))
           .thenReturn(Future.successful(Some(Find)))
 
-        val result: Future[Result] = controller(journey = Some(Find)).submit()(fakeRequest.post(UserTypeForm.userTypeForm, UserType.Agent))
+        val result: Future[Result] = controller(journey = None).submit()(fakeRequest.post(UserTypeForm.userTypeForm, UserType.Agent))
 
         intercept[InternalServerException](await(result)).message shouldBe "[UserTypeController][submit] - Could not save user type for find or check journey"
       }
