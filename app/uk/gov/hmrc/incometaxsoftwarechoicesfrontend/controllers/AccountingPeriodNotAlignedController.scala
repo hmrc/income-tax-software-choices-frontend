@@ -18,7 +18,6 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{RequireUserDataRefiner, SessionIdentifierAction}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.helpers.ControllerHelper
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.AccountingPeriodNotAlignedView
 
 import javax.inject.{Inject, Singleton}

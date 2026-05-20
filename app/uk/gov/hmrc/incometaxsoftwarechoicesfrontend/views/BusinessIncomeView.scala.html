@@ -28,8 +28,7 @@
         mainTemplate: MainTemplate,
         govukCheckboxes: GovukCheckboxes,
         govukButton: GovukButton,
-        govukPhaseBanner: GovukPhaseBanner,
-        captionHelper:CaptionHelper,
+        captionHelper: CaptionHelper,
         form: FormWithCSRF
 )(implicit appConfig: AppConfig)
 
@@ -37,7 +36,7 @@
 
 @mainTemplate(title = messages("business-income.title"), backLink = Some(backUrl), optForm = Some(businessIncomeForm)) {
 
-@captionHelper(softwareName)
+    @captionHelper(softwareName)
 
     <h1 class="govuk-heading-l">@messages("business-income.legend")</h1>
 

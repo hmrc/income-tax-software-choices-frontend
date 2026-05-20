@@ -28,8 +28,7 @@
         mainTemplate: MainTemplate,
         govukCheckboxes: GovukCheckboxes,
         govukButton: GovukButton,
-        govukPhaseBanner: GovukPhaseBanner,
-        captionHelper:CaptionHelper,
+        captionHelper: CaptionHelper,
         form: FormWithCSRF
 )(implicit appConfig: AppConfig)
 
@@ -37,7 +36,7 @@
 
 @mainTemplate(title = messages("other-items.title"), backLink = Some(backLink), optForm = Some(otherItemsForm)) {
 
-@captionHelper(softwareName)
+    @captionHelper(softwareName)
 
     @form(action = postAction) {
 

@@ -25,12 +25,13 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, 
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.Recognised
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.EnterSoftwareNamePage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.{EnterSoftwareNamePage, AccountingPeriodPage}
 
 
 class AccountingPeriodNotAlignedControllerISpec
   extends ComponentSpecBase with BeforeAndAfterEach with DatabaseHelper {
-
+  
+  private val RecognisedSoftwareProduct = SoftwareProduct(0, "Bright", Recognised)
+  
   s"GET ${routes.AccountingPeriodNotAlignedController.show().url}" should {
     "redirect to the service index" when {
       "there is nothing saved in the database for this user" in {
@@ -43,9 +44,8 @@ class AccountingPeriodNotAlignedControllerISpec
       }
     }
     "display the page" in {
-      val softwareProduct = SoftwareProduct(0, "Bright", Recognised)
       val userAnswers = UserAnswers()
-        .set(EnterSoftwareNamePage, softwareProduct).get
+        .set(EnterSoftwareNamePage, RecognisedSoftwareProduct).get
       setupAnswers(SessionId, Some(userAnswers))
 
       val res = SoftwareChoicesFrontend.getAccountingPeriodNotAligned
@@ -54,7 +54,7 @@ class AccountingPeriodNotAlignedControllerISpec
         httpStatus(OK),
         pageTitle(s"${messages("accounting-period-not-aligned.heading")} - ${PageContentBase.title} - GOV.UK"),
       )
-      res.body.contains(softwareProduct.name) shouldBe true
+      res.body.contains(RecognisedSoftwareProduct.name) shouldBe true
     }
     "have correct back link when not in edit mode" in {
       setupAnswers(SessionId, Some(UserAnswers()))

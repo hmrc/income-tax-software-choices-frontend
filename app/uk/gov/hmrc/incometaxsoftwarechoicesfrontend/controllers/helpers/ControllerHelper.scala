@@ -16,7 +16,6 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.helpers
 
-import uk.gov.hmrc.govukfrontend.views.viewmodels.select.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareProduct
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.Recognised
 
@@ -24,7 +23,7 @@ trait ControllerHelper {
 
   def getSoftwareName(product: Option[SoftwareProduct]): Option[String] = {
     product match {
-        case Some(product) if product.softwareType == Recognised => product.softwareName
+        case Some(p) if p.softwareType == Recognised => Some(p.name)
         case _ => None
      }
   }

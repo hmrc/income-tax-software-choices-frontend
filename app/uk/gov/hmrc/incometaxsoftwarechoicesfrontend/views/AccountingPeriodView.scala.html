@@ -31,8 +31,7 @@
         form: FormWithCSRF,
         radioHelper: RadioHelper,
         hmrcNewTabLinkHelper: HmrcNewTabLinkHelper,
-        govukPhaseBanner: GovukPhaseBanner,
-        captionHelper:CaptionHelper,
+        captionHelper: CaptionHelper,
         govukButton: GovukButton
 )
 
@@ -40,7 +39,7 @@
 
 @mainTemplate(title = messages("accounting-period.heading"), optForm = Some(accountingPeriodForm), backLink = Some(backUrl)) {
 
-@captionHelper(softwareName)
+    @captionHelper(softwareName)
 
     <h1 class="govuk-heading-l">@messages("accounting-period.heading")</h1>
 

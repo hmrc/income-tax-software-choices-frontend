@@ -20,7 +20,6 @@ import play.api.i18n.I18nSupport
 import uk.gov.hmrc.http.InternalServerException
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{RequireUserDataRefiner, SessionIdentifierAction}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.helpers.ControllerHelper
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.AccountingPeriodPage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.PageAnswersService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.AccountingPeriodView

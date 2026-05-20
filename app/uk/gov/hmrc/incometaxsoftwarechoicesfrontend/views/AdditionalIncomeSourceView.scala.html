@@ -27,8 +27,7 @@
     mainTemplate: MainTemplate,
     form: FormWithCSRF,
     govukCheckboxes: GovukCheckboxes, 
-    govukPhaseBanner: GovukPhaseBanner,
-    captionHelper:CaptionHelper,
+    captionHelper: CaptionHelper,
     govukButton: GovukButton
 )(implicit appConfig: AppConfig)
 
@@ -36,7 +35,7 @@
 
 @mainTemplate(messages("additional.income.source-heading"), optForm = Some(additionalIncomeForm), backLink = Some(backUrl)) {
 
-@captionHelper(softwareName)
+    @captionHelper(softwareName)
 
 @form(action = postAction) {
 

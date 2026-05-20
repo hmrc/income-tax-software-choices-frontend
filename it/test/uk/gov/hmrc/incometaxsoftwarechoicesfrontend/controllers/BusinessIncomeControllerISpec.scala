@@ -28,7 +28,9 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.{BusinessIncomePage, E
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
 
 class BusinessIncomeControllerISpec extends ComponentSpecBase with BeforeAndAfterEach with DatabaseHelper {
-
+  
+  private val RecognisedSoftwareProduct = SoftwareProduct(0, "Bright", Recognised)
+  
   s"GET ${routes.BusinessIncomeController.show().url}" should {
     "redirect to the service index" when {
       "there is nothing saved in the database for this user" in {
@@ -55,9 +57,8 @@ class BusinessIncomeControllerISpec extends ComponentSpecBase with BeforeAndAfte
         )
       }
       "the business income sources has been answered previously" in {
-        val softwareProduct = SoftwareProduct(0, "Bright", Recognised)
         val userAnswers = UserAnswers()
-          .set(EnterSoftwareNamePage, softwareProduct).get
+          .set(EnterSoftwareNamePage, RecognisedSoftwareProduct).get
           .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
         setupAnswers(SessionId, Some(userAnswers))
         val res = SoftwareChoicesFrontend.getBusinessIncome
@@ -69,7 +70,7 @@ class BusinessIncomeControllerISpec extends ComponentSpecBase with BeforeAndAfte
           checkboxSelected("businessIncome-2", Some(UkProperty.key)),
           checkboxSelected("businessIncome-3", Some(OverseasProperty.key))
         )
-        res.body.contains(softwareProduct.name) shouldBe true
+        res.body.contains(RecognisedSoftwareProduct.name) shouldBe true
       }
     }
   }

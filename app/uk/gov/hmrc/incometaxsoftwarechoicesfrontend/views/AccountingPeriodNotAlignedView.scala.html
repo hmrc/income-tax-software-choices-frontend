@@ -23,8 +23,7 @@
 @this(
     mainTemplate: MainTemplate,
     govukButton: GovukButton,
-    govukPhaseBanner: GovukPhaseBanner,
-    captionHelper:CaptionHelper,
+    captionHelper: CaptionHelper,
     form: FormWithCSRF
 )
 
@@ -32,7 +31,7 @@
 
 @mainTemplate(title = messages("accounting-period-not-aligned.heading"), backLink = Some(backLink)) {
 
-@captionHelper(softwareName)
+    @captionHelper(softwareName)
 
     <h1 class="govuk-heading-l">@messages("accounting-period-not-aligned.heading")</h1>
 

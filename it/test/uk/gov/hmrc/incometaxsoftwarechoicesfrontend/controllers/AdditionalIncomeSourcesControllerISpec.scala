@@ -30,6 +30,8 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
 
 class AdditionalIncomeSourcesControllerISpec extends ComponentSpecBase with BeforeAndAfterEach with DatabaseHelper {
 
+  private val RecognisedSoftwareProduct = SoftwareProduct(0, "Bright", Recognised)
+
   s"GET ${routes.AdditionalIncomeSourcesController.show().url}" should {
     "redirect to the service index" when {
       "there is nothing saved in the database for this user" in {
@@ -62,9 +64,8 @@ class AdditionalIncomeSourcesControllerISpec extends ComponentSpecBase with Befo
         )
       }
       "the additional income has been answered previously with additional income selections" in {
-        val softwareProduct = SoftwareProduct(0, "Bright", Recognised)
         val userAnswers = UserAnswers()
-          .set(EnterSoftwareNamePage, softwareProduct).get
+          .set(EnterSoftwareNamePage, RecognisedSoftwareProduct).get
           .set(AdditionalIncomeSourcesPage, additionalIncomeFilters).get
         setupAnswers(SessionId, Some(userAnswers))
         val res = SoftwareChoicesFrontend.getAdditionalIncome
@@ -82,12 +83,11 @@ class AdditionalIncomeSourcesControllerISpec extends ComponentSpecBase with Befo
           checkboxSelected("additionalIncome-8", Some(ForeignInterest.key)),
           checkboxSelected("additionalIncome-10", None)
         )
-        res.body.contains(softwareProduct.name) shouldBe true
+        res.body.contains(RecognisedSoftwareProduct.name) shouldBe true
       }
       "the additional income has been answered previously with none selected" in {
-        val softwareProduct = SoftwareProduct(0, "Bright", Recognised)
         val userAnswers = UserAnswers()
-          .set(EnterSoftwareNamePage, softwareProduct).get
+          .set(EnterSoftwareNamePage, RecognisedSoftwareProduct).get
           .set(AdditionalIncomeSourcesPage, Seq.empty).get
         setupAnswers(SessionId, Some(userAnswers))
         val res = SoftwareChoicesFrontend.getAdditionalIncome
@@ -105,7 +105,7 @@ class AdditionalIncomeSourcesControllerISpec extends ComponentSpecBase with Befo
           checkboxSelected("additionalIncome-8", None),
           checkboxSelected("additionalIncome-10", Some("none"))
         )
-        res.body.contains(softwareProduct.name) shouldBe true
+        res.body.contains(RecognisedSoftwareProduct.name) shouldBe true
       }
     }
   }
