@@ -44,7 +44,7 @@ class UserTypeControllerISpec extends ComponentSpecBase with BeforeAndAfterEach 
     "there is nothing saved in the database for this user" should {
       "redirect to the index page when Check feature switch is enabled" in {
         enable(CheckJourney)
-        val res = SoftwareChoicesFrontend.getUserType
+        val res = SoftwareChoicesFrontend.getUserType()
 
         res should have(
           httpStatus(SEE_OTHER),
@@ -54,7 +54,7 @@ class UserTypeControllerISpec extends ComponentSpecBase with BeforeAndAfterEach 
     }
     "there are no existing page answers" should {
       "display the page with an empty form" in {
-        val res = SoftwareChoicesFrontend.getUserType
+        val res = SoftwareChoicesFrontend.getUserType()
 
         res should have(
           httpStatus(OK),
@@ -70,12 +70,27 @@ class UserTypeControllerISpec extends ComponentSpecBase with BeforeAndAfterEach 
         val userAnswers = UserAnswers().set(UserTypePage, SoleTraderOrLandlord).get
         await(userFiltersRepository.set(testUserFilters(userAnswers)))
 
-        val res = SoftwareChoicesFrontend.getUserType
+        val res = SoftwareChoicesFrontend.getUserType()
 
         res should have(
           httpStatus(OK),
           pageTitle(s"${messages("type-of-user.heading")} - ${PageContentBase.title} - GOV.UK"),
           radioButtonSelected(id = "type-of-user", selectedRadioButton = Some(SoleTraderOrLandlord.key))
+        )
+      }
+    }
+
+    "there are pre-existing page answers in edit mode" should {
+      "display the page with the previously chosen radio checked" in {
+        val userAnswers = UserAnswers().set(UserTypePage, Agent).get
+        await(userFiltersRepository.set(testUserFilters(userAnswers)))
+
+        val res = SoftwareChoicesFrontend.getUserType(editMode = true)
+
+        res should have(
+          httpStatus(OK),
+          pageTitle(s"${messages("type-of-user.heading")} - ${PageContentBase.title} - GOV.UK"),
+          radioButtonSelected(id = "type-of-user-2", selectedRadioButton = Some(Agent.key))
         )
       }
     }
@@ -169,6 +184,27 @@ class UserTypeControllerISpec extends ComponentSpecBase with BeforeAndAfterEach 
 
       }
     }
+
+    "user in edit mode selects agent then changes to sole trader or landlord" must {
+        s"return $SEE_OTHER and save page answer" in {
+          await(userFiltersRepository.set(testUserFilters(UserAnswers()
+            .set(HowYouFindSoftwarePage, Find).get
+            .set(UserTypePage, UserType.Agent).get
+            .set(BusinessIncomePage, Seq(SoleTrader, UkProperty)).get
+          )))
+          getAllPageData(SessionId).size shouldBe 3 //verify existing user answers
+
+          val res = SoftwareChoicesFrontend.submitUserType(Some(SoleTraderOrLandlord), true)
+
+          res should have(
+            httpStatus(SEE_OTHER),
+            redirectURI(routes.CheckYourAnswersController.show().url)
+          )
+
+          getPageData(SessionId, UserTypePage) shouldBe Some(SoleTraderOrLandlord)
+          getFinalFilters(SessionId) shouldBe Seq.empty
+        }
+      }
 
     "return BAD_REQUEST" when {
       "no answer is given" in {

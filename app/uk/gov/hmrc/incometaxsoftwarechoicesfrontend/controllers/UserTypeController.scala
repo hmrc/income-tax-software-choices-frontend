@@ -44,21 +44,22 @@ class UserTypeController @Inject()(view: UserTypeView,
                                   (implicit ec: ExecutionContext,
                                    mcc: MessagesControllerComponents) extends BaseFrontendController with FeatureSwitching {
 
-  def show(): Action[AnyContent] = identifyAndRequireData.async { request =>
+  def show(editMode: Boolean = false): Action[AnyContent] = identifyAndRequireData.async { request =>
     given Request[AnyContent] = request
     for {
       pageAnswers <- pageAnswersService.getPageAnswers(request.sessionId, UserTypePage)
     } yield {
       Ok(view(
         userTypeForm = UserTypeForm.userTypeForm.fill(pageAnswers),
-        postAction = routes.UserTypeController.submit(),
-        backUrl = backUrl
+        postAction = routes.UserTypeController.submit(editMode),
+        backUrl = backUrl(editMode)
       ))
     }
   }
 
-  def submit(): Action[AnyContent] = identifyAndRequireData.async { request =>
+  def submit(editMode: Boolean = false): Action[AnyContent] = identifyAndRequireData.async { request =>
     given Request[AnyContent] = request
+
     val journey = pageAnswersService.getPageAnswers(request.sessionId, HowYouFindSoftwarePage)
 
     userTypeForm.bindFromRequest().fold(
@@ -66,15 +67,17 @@ class UserTypeController @Inject()(view: UserTypeView,
         Future.successful(
           BadRequest(view(
             userTypeForm = formWithErrors,
-            postAction = routes.UserTypeController.submit(),
-            backUrl = backUrl
+            postAction = routes.UserTypeController.submit(editMode),
+            backUrl = backUrl(editMode)
           ))
         )
       },
       userType => journey.flatMap {
           case Some(Find) | Some(Check) =>
             pageAnswersService.setPageAnswers(request.sessionId, UserTypePage, userType).map {
-              case true => Redirect(routes.BusinessIncomeController.show())
+              case true =>
+                if (editMode) Redirect(routes.CheckYourAnswersController.show())
+                else Redirect(routes.BusinessIncomeController.show())
               case false => throw new InternalServerException("[UserTypeController][submit] - Could not save user type for find or check journey")
             }
           case Some(ViewAll) =>
@@ -114,8 +117,9 @@ class UserTypeController @Inject()(view: UserTypeView,
     else identify
   }
 
-  def backUrl: String = {
-    if (isEnabled(CheckJourney)) routes.HowYouFindSoftwareController.show().url
+  def backUrl(editMode: Boolean = false): String = {
+    if (editMode) routes.CheckYourAnswersController.show().url
+    else if (isEnabled(CheckJourney)) routes.HowYouFindSoftwareController.show().url
     else appConfig.guidance
   }
   
