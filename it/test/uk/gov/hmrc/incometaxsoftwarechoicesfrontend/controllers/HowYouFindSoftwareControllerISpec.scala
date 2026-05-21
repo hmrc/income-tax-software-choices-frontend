@@ -23,7 +23,8 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConst
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, DatabaseHelper}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.SoleTraderOrLandlord
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{JourneyType, UserAnswers, UserFilters}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.*
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
 
@@ -129,8 +130,8 @@ class HowYouFindSoftwareControllerISpec extends ComponentSpecBase with BeforeAnd
       }
     }
 
-    "user has preexisting UserAnswers" must {
-      s"return $SEE_OTHER and update page answer" in {
+    "user has preexisting UserAnswers which must be cleared" must {
+      s"return $SEE_OTHER and update page answer for Find journey" in {
         val userAnswers = UserAnswers()
           .set(HowYouFindSoftwarePage, Find).get
           .set(UserTypePage, SoleTraderOrLandlord).get
@@ -142,7 +143,23 @@ class HowYouFindSoftwareControllerISpec extends ComponentSpecBase with BeforeAnd
           httpStatus(SEE_OTHER),
           redirectURI(routes.EnterSoftwareNameController.show().url)
         )
-        getAllPageData(SessionId).size shouldBe 2
+        getAllPageData(SessionId).size shouldBe 1
+      }
+
+      s"return $SEE_OTHER and update page answer for Check journey" in {
+        val recognisedSoftwareProduct = SoftwareProduct(3000, "Dummy", Recognised)
+        val userAnswers = UserAnswers()
+          .set(HowYouFindSoftwarePage, Check).get
+          .set(EnterSoftwareNamePage, recognisedSoftwareProduct).get
+        await(userFiltersRepository.set(testUserFilters(userAnswers)))
+
+        val res = SoftwareChoicesFrontend.postHowYouFindSoftware(Some(Check))
+
+        res should have(
+          httpStatus(SEE_OTHER),
+          redirectURI(routes.EnterSoftwareNameController.show().url)
+        )
+        getAllPageData(SessionId).size shouldBe 1
       }
 
       s"return $SEE_OTHER and reset user answers for ViewAll journey" in {
