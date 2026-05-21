@@ -35,6 +35,8 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
 
 class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAfterEach with DatabaseHelper {
 
+  private val recognisedProduct = SoftwareProduct(3, "Vendor 3", Recognised)
+
   s"GET ${routes.CheckYourAnswersController.show().url}" when {
     "there are no existing page answers" should {
       "redirect to the service index" in {
@@ -93,6 +95,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
       }
       "display the page with minimal summary lists" in {
         val userAnswers = UserAnswers()
+          .set(EnterSoftwareNamePage, recognisedProduct).get
           .set(BusinessIncomePage, Seq(SoleTrader)).get
           .set(AdditionalIncomeSourcesPage, Seq(UkInterest)).get
           .set(OtherItemsPage, Seq(PaymentsIntoAPrivatePension)).get
@@ -118,6 +121,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
       }
       "'None of these' is selected for other income and other items sources" in {
         val userAnswers = UserAnswers()
+          .set(EnterSoftwareNamePage, recognisedProduct).get
           .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
           .set(AdditionalIncomeSourcesPage, Seq.empty).get
           .set(OtherItemsPage, Seq.empty).get
