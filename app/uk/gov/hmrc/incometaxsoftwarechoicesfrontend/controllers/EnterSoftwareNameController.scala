@@ -104,22 +104,14 @@ class EnterSoftwareNameController @Inject()(view: EnterSoftwareNameView,
   }
   
   private def redirect(editMode: Boolean, selectedProduct: SoftwareProduct) = {
-    if (editMode)
-      selectedProduct match {
-        case product if product.softwareType == Recognised => Redirect(routes.CheckYourAnswersController.show())
-        case product if product.softwareType == FutureVendor => Redirect(routes.SoftwareInDevelopmentController.show(editMode))
-        case product if product.softwareType == Spreadsheet => Redirect(routes.NeedAdditionalSoftwareController.show(editMode))
-        case product if product.softwareType == Unrecognised => Redirect(routes.CheckYourAnswersController.show())
-        case _ =>  Redirect(routes.EnterSoftwareNameController.show(editMode))
-      }
-    else
-      selectedProduct match {
-        case product if product.softwareType == Recognised => Redirect(routes.UserTypeController.show())
-        case product if product.softwareType == FutureVendor => Redirect(routes.SoftwareInDevelopmentController.show())
-        case product if product.softwareType == Spreadsheet => Redirect(routes.NeedAdditionalSoftwareController.show())
-        case product if product.softwareType == Unrecognised => Redirect(routes.NoSoftwareListedController.show())
-        case _ => Redirect(routes.EnterSoftwareNameController.show())
-      }
+    (editMode, selectedProduct.softwareType) match {
+      case (true, Recognised) => Redirect(routes.CheckYourAnswersController.show())
+      case (false, Recognised) => Redirect(routes.UserTypeController.show())
+      case (_, FutureVendor) => Redirect(routes.SoftwareInDevelopmentController.show(editMode))
+      case (_, Spreadsheet) => Redirect(routes.NeedAdditionalSoftwareController.show(editMode))
+      case (true, Unrecognised) => Redirect(routes.CheckYourAnswersController.show())
+      case _ => Redirect(routes.NoSoftwareListedController.show())
+    }
   }
 
   def backUrl(editMode: Boolean): String = {
