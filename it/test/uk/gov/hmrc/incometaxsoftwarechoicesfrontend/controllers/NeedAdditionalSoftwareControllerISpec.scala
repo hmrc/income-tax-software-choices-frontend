@@ -49,6 +49,7 @@ class NeedAdditionalSoftwareControllerISpec
       )
     }
   }
+  
   override def beforeEach(): Unit = {
     super.beforeEach()
     await(userFiltersRepository.collection.drop().toFuture())

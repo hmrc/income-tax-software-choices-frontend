@@ -22,7 +22,8 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.*
 import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.{Check, Find}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{JourneyType, UserAnswers}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.{FutureVendor, Recognised, Spreadsheet}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserAnswers
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.*
 
 trait SummaryListBuilder {
@@ -35,6 +36,9 @@ trait SummaryListBuilder {
     }
 
     SummaryList(
+      Seq(
+        softwareNameSummaryListRow(userAnswers)
+      ) ++
       userTypeRow ++
       Seq(
         businessIncomeSummaryListRow(userAnswers),
@@ -43,6 +47,19 @@ trait SummaryListBuilder {
         accountingPeriodSummaryListRow(userAnswers)
       )
     )
+  }
+
+  private def softwareNameSummaryListRow(userAnswers: UserAnswers)(implicit messages: Messages): SummaryListRow = {
+    val filterList: String = userAnswers.get(EnterSoftwareNamePage) match {
+      case Some(softwareProduct) =>
+        softwareProduct.softwareType match {
+          case Recognised | FutureVendor | Spreadsheet => softwareProduct.name
+          case _ => messages("check-your-answers.software-not-listed")
+        }
+      case _ => throw new InternalServerException("[SummaryListBuilder][softwareNameSummaryListRow] - software product not found")
+    }
+
+    summaryListRow(filterList, routes.EnterSoftwareNameController.show(editMode = true).url, "software-name")
   }
 
   private def userTypeSummaryListRow(userAnswers: UserAnswers)(implicit messages: Messages): SummaryListRow = {

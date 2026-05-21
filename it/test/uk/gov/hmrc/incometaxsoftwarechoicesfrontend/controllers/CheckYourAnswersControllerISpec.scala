@@ -24,6 +24,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConst
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, DatabaseHelper}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.AccountingPeriod.{OtherAccountingPeriod, SixthAprilToFifthApril}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.{Check, Find}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.{Recognised, Unrecognised}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.Recognised
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.SoleTraderOrLandlord
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.*
@@ -58,6 +59,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
     "there is pre-filled data" should {
       "display the page with appropriate summary lists with answers organised as lists" in {
         val userAnswers = UserAnswers()
+          .set(EnterSoftwareNamePage, SoftwareProduct(3,"Vendor 3", Recognised)).get
           .set(HowYouFindSoftwarePage, Find).get
           .set(UserTypePage, SoleTraderOrLandlord).get
           .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
@@ -134,6 +136,18 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
           summaryListRow(SummaryListKeys.accountingPeriod, Set(OtherAccountingPeriod)
             .map(vf => messages(s"accounting-period.${vf.key}")).mkString(" "))
         )
+      }
+      "Software Product is not set" in {
+        val userAnswers = UserAnswers()
+          .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
+          .set(AdditionalIncomeSourcesPage, Seq(UkInterest)).get
+          .set(OtherItemsPage, Seq(StudentLoans)).get
+          .set(AccountingPeriodPage, OtherAccountingPeriod).get
+        await(userFiltersRepository.set(testUserFilters(Some(userAnswers))))
+
+        val res = SoftwareChoicesFrontend.getCheckYourAnswers
+        res.status shouldBe INTERNAL_SERVER_ERROR
+        res.body.contains("Sorry, there is a problem with the service") shouldBe true
       }
       "In the Check journey, user type is not set" in {
         val userAnswers = UserAnswers()

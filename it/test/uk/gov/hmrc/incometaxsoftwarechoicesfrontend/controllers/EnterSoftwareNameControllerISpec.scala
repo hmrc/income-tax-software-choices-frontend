@@ -119,6 +119,26 @@ class EnterSoftwareNameControllerISpec extends ComponentSpecBase with BeforeAndA
         getPageData(SessionId, HowYouFindSoftwarePage) shouldBe Some(Check)
       }
     }
+
+    "in edit mode" should {
+      "clear answers and redirect to the check your answers page" when {
+        "the software is not listed" in {
+
+          val userAnswers = UserAnswers()
+            .set(EnterSoftwareNamePage, recognisedProducts.head).get
+          await(userFiltersRepository.set(testUserFilters(userAnswers)))
+
+          val res = SoftwareChoicesFrontend.clearEnterSoftwareName(editMode = true)
+
+          res should have(
+            httpStatus(SEE_OTHER),
+            redirectURI(routes.CheckYourAnswersController.show().url)
+          )
+
+          getPageData(SessionId, EnterSoftwareNamePage).map(_.name) shouldBe Some("")
+        }
+      }
+    }
   }
   s"POST ${routes.EnterSoftwareNameController.submit()}" when {
     "there is nothing saved in the database for this user" should {
@@ -240,6 +260,60 @@ class EnterSoftwareNameControllerISpec extends ComponentSpecBase with BeforeAndA
           httpStatus(BAD_REQUEST)
         )
         getPageData(SessionId, EnterSoftwareNamePage.toString).size shouldBe 0
+      }
+    }
+
+    "in edit mode" should {
+      "save answers and redirect to the check your answers page" when {
+        "they submit a recognised product" in {
+
+          val userAnswers = UserAnswers()
+            .set(EnterSoftwareNamePage, recognisedProducts.head).get
+          await(userFiltersRepository.set(testUserFilters(userAnswers)))
+
+          val res = SoftwareChoicesFrontend.postEnterSoftwareName(Some(recognisedProducts.head.productId), editMode = true)
+
+          res should have(
+            httpStatus(SEE_OTHER),
+            redirectURI(routes.CheckYourAnswersController.show().url)
+          )
+
+          getPageData(SessionId, EnterSoftwareNamePage).map(_.name) shouldBe Some(recognisedProducts.head.name)
+        }
+      }
+      "redirects to future product warning page" when {
+        "they submit a future product" in {
+
+          val userAnswers = UserAnswers()
+            .set(EnterSoftwareNamePage, futureProducts.head).get
+          await(userFiltersRepository.set(testUserFilters(userAnswers)))
+
+          val res = SoftwareChoicesFrontend.postEnterSoftwareName(Some(futureProducts.head.productId), editMode = true)
+
+          res should have(
+            httpStatus(SEE_OTHER),
+            redirectURI(routes.SoftwareInDevelopmentController.show().url)
+          )
+
+          getPageData(SessionId, EnterSoftwareNamePage).map(_.name) shouldBe Some(futureProducts.head.name)
+        }
+      }
+      "redirects to spreadsheet product warning page" when {
+        "they submit a spreadsheet product" in {
+
+          val userAnswers = UserAnswers()
+            .set(EnterSoftwareNamePage, spreadsheetProducts.head).get
+          await(userFiltersRepository.set(testUserFilters(userAnswers)))
+
+          val res = SoftwareChoicesFrontend.postEnterSoftwareName(Some(spreadsheetProducts.head.productId), editMode = true)
+
+          res should have(
+            httpStatus(SEE_OTHER),
+            redirectURI(routes.NeedAdditionalSoftwareController.show().url)
+          )
+
+          getPageData(SessionId, EnterSoftwareNamePage).map(_.name) shouldBe Some(spreadsheetProducts.head.name)
+        }
       }
     }
   }

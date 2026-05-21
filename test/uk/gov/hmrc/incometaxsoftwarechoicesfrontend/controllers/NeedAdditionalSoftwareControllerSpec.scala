@@ -50,4 +50,19 @@ class NeedAdditionalSoftwareControllerSpec extends ControllerBaseSpec
       contentType(result) shouldBe Some(HTML)
     }
   }
+  
+  "continueUrl" should {
+    "return the user type page url when not in edit mode" in {
+      controller.continueUrl(false) shouldBe routes.UserTypeController.show().url
+    }
+    "return the check your answers page url when in edit mode" in {
+      controller.continueUrl(true) shouldBe routes.CheckYourAnswersController.show().url
+    }
+  }
+
+  "backUrl" should {
+    "return the enter software page url" in {
+      controller.backUrl(false) shouldBe routes.EnterSoftwareNameController.show().url
+    }
+  }
 }
