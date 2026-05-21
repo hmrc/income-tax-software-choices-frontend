@@ -44,18 +44,18 @@ POST        /no-all-in-one-product                  uk.gov.hmrc.incometaxsoftwar
 GET         /accounting-period-not-aligned          uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.AccountingPeriodNotAlignedController.show(editMode: Boolean ?= false)
 POST        /accounting-period-not-aligned          uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.AccountingPeriodNotAlignedController.submit(editMode: Boolean ?= false)
 
-GET         /enter-software-name                    uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.EnterSoftwareNameController.show()
-POST        /enter-software-name                    uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.EnterSoftwareNameController.submit()
-GET         /enter-software-name/clear              uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.EnterSoftwareNameController.clearSelection()
+GET         /enter-software-name                    uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.EnterSoftwareNameController.show(editMode: Boolean ?= false)
+POST        /enter-software-name                    uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.EnterSoftwareNameController.submit(editMode: Boolean ?= false)
+GET         /enter-software-name/clear              uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.EnterSoftwareNameController.clearSelection(editMode: Boolean ?= false)
 
 GET         /do-you-have-software                   uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.HowYouFindSoftwareController.show()
 POST        /do-you-have-software                   uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.HowYouFindSoftwareController.submit()
 
 GET         /no-software-listed                     uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.NoSoftwareListedController.show()
 
-GET         /need-additional-software               uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.NeedAdditionalSoftwareController.show()
+GET         /need-additional-software               uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.NeedAdditionalSoftwareController.show(editMode: Boolean ?= false)
 
-GET         /software-in-development                uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SoftwareInDevelopmentController.show()
+GET         /software-in-development                uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.SoftwareInDevelopmentController.show(editMode: Boolean ?= false)
 
 GET         /fully-compatible                       uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.FullyCompatibleController.show()
 

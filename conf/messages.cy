@@ -81,6 +81,7 @@ other-items.error.invalid-selection = Dewiswch un eitem arall, eitemau eraill, n
 
 # Check Your Answers view
 check-your-answers.heading                             = Gwiriwch eich atebion cyn edrych ar feddalwedd sy’n cydweddu
+check-your-answers.software-name                       = Enw'r feddalwedd
 check-your-answers.user-type                           = Math o ddefnyddiwr
 check-your-answers.user-type.sole-trader-or-landlord   = Unig fasnachwr neu landlord
 check-your-answers.user-type.agent                     = Asiant
@@ -89,6 +90,7 @@ check-your-answers.additional-income                   = Ffynonellau eraill o in
 check-your-answers.other-items                         = Eitemau eraill (Ffurflen Dreth yn unig)
 check-your-answers.accounting-period                   = Cyfnod cyfrifyddu
 check-your-answers.none-selected                       = Dim wedi’i ddewis
+check-your-answers.software-not-listed                 = Meddalwedd heb ei rhestru
 
 # Choosing Software from Your Results view
 choosing-software.heading                   = Dewis meddalwedd o’ch canlyniadau
