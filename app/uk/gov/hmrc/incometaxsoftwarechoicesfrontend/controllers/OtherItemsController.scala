@@ -39,22 +39,26 @@ class OtherItemsController @Inject()(view: OtherItemsView,
     given Request[AnyContent] = request
 
     val pageAnswers = pageAnswersService.getPageAnswers(request.userFilters.answers, OtherItemsPage)
+
     Ok(view(
       otherItemsForm = OtherItemsForm.form.fill(pageAnswers),
       postAction = routes.OtherItemsController.submit(editMode),
-      backLink = backUrl(editMode)
+      backLink = backUrl(editMode),
+      softwareName = getSoftwareName(request.product)
     ))
   }
 
   def submit(editMode: Boolean): Action[AnyContent] = (identify andThen requireData).async { request =>
     given Request[AnyContent] = request
+
     OtherItemsForm.form.bindFromRequest().fold(
       formWithErrors => {
         Future.successful(
           BadRequest(view(
             otherItemsForm = formWithErrors,
             postAction = routes.OtherItemsController.submit(editMode),
-            backLink = backUrl(editMode)
+            backLink = backUrl(editMode),
+            softwareName = getSoftwareName(request.product)
           ))
         )
       },

@@ -21,12 +21,16 @@ import play.api.http.Status.{BAD_REQUEST, OK, SEE_OTHER}
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.SessionId
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, DatabaseHelper}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareProduct, UserAnswers}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.Recognised
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{OverseasProperty, SoleTrader, UkProperty}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.BusinessIncomePage
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.{BusinessIncomePage, EnterSoftwareNamePage}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
 
 class BusinessIncomeControllerISpec extends ComponentSpecBase with BeforeAndAfterEach with DatabaseHelper {
-
+  
+  private val RecognisedSoftwareProduct = SoftwareProduct(0, "Bright", Recognised)
+  
   s"GET ${routes.BusinessIncomeController.show().url}" should {
     "redirect to the service index" when {
       "there is nothing saved in the database for this user" in {
@@ -53,8 +57,10 @@ class BusinessIncomeControllerISpec extends ComponentSpecBase with BeforeAndAfte
         )
       }
       "the business income sources has been answered previously" in {
-        setPageData(SessionId, BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty))
-
+        val userAnswers = UserAnswers()
+          .set(EnterSoftwareNamePage, RecognisedSoftwareProduct).get
+          .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
+        setupAnswers(SessionId, Some(userAnswers))
         val res = SoftwareChoicesFrontend.getBusinessIncome
 
         res should have(
@@ -62,8 +68,9 @@ class BusinessIncomeControllerISpec extends ComponentSpecBase with BeforeAndAfte
           pageTitle(s"${messages("business-income.title")} - ${PageContentBase.title} - GOV.UK"),
           checkboxSelected("businessIncome", Some(SoleTrader.key)),
           checkboxSelected("businessIncome-2", Some(UkProperty.key)),
-          checkboxSelected("businessIncome-3", Some(OverseasProperty.key)),
+          checkboxSelected("businessIncome-3", Some(OverseasProperty.key))
         )
+        res.body.contains(RecognisedSoftwareProduct.name) shouldBe true
       }
     }
   }
@@ -111,7 +118,6 @@ class BusinessIncomeControllerISpec extends ComponentSpecBase with BeforeAndAfte
       "save answers and redirect to the check your answers page" when {
         "they submit a single business income source" in {
           setPageData(SessionId, BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty))
-
           val res = SoftwareChoicesFrontend.postBusinessIncome(pageAnswers = Seq(UkProperty), editMode = true)
 
           res should have(
@@ -123,7 +129,6 @@ class BusinessIncomeControllerISpec extends ComponentSpecBase with BeforeAndAfte
         }
         "they submit multiple business income sources" in {
           setPageData(SessionId, BusinessIncomePage, Seq(UkProperty))
-
           val res = SoftwareChoicesFrontend.postBusinessIncome(pageAnswers = Seq(SoleTrader, UkProperty, OverseasProperty), editMode = true)
 
           res should have(

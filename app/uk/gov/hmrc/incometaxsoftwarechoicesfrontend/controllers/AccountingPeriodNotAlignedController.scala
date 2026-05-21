@@ -26,14 +26,15 @@ import javax.inject.{Inject, Singleton}
 class AccountingPeriodNotAlignedController @Inject()(view: AccountingPeriodNotAlignedView,
                                                      identify: SessionIdentifierAction,
                                                      requireData: RequireUserDataRefiner)
-                                                    (implicit mcc: MessagesControllerComponents)extends BaseFrontendController {
-
+                                                    (implicit mcc: MessagesControllerComponents) extends BaseFrontendController  {
 
   def show(editMode: Boolean): Action[AnyContent] = (identify andThen requireData) { request =>
     given Request[AnyContent] = request
+
     Ok(view(
       postAction = routes.AccountingPeriodNotAlignedController.submit(editMode),
-      backLink = routes.AccountingPeriodController.show(editMode).url
+      backLink = routes.AccountingPeriodController.show(editMode).url,
+      softwareName = getSoftwareName(request.product)
     ))
   }
 

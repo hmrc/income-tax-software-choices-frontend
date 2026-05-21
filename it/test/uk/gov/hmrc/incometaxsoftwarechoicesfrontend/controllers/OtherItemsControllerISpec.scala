@@ -22,12 +22,15 @@ import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.OtherItemsForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.SessionId
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, DatabaseHelper}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.OtherItemsPage
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.Recognised
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareProduct, UserAnswers, VendorFilter}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.*
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.{EnterSoftwareNamePage, OtherItemsPage}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
 
 class OtherItemsControllerISpec extends ComponentSpecBase with BeforeAndAfterEach with DatabaseHelper {
+
+  private val RecognisedSoftwareProduct = SoftwareProduct(0, "Bright", Recognised)
 
   s"GET ${routes.OtherItemsController.show().url}" should {
     "redirect to the service index" when {
@@ -42,8 +45,9 @@ class OtherItemsControllerISpec extends ComponentSpecBase with BeforeAndAfterEac
     }
     "display the page" when {
       "the other items page has not been answered previously" in {
-        setupAnswers(SessionId, None)
-
+        val userAnswers = UserAnswers()
+          .set(EnterSoftwareNamePage, RecognisedSoftwareProduct).get
+        setupAnswers(SessionId, Some(userAnswers))
         val res = SoftwareChoicesFrontend.getOtherItems
 
         res should have(
@@ -58,10 +62,13 @@ class OtherItemsControllerISpec extends ComponentSpecBase with BeforeAndAfterEac
           checkboxSelected("otherItems-7", None),
           checkboxSelected("otherItems-9", None)
         )
+        res.body.contains(RecognisedSoftwareProduct.name) shouldBe true
       }
       "the other items page has been answered previously with other items selections" in {
-        setPageData(SessionId, OtherItemsPage, otherItemsFilters)
-
+        val userAnswers = UserAnswers()
+          .set(EnterSoftwareNamePage, RecognisedSoftwareProduct).get
+          .set(OtherItemsPage, otherItemsFilters).get
+        setupAnswers(SessionId, Some(userAnswers))
         val res = SoftwareChoicesFrontend.getOtherItems
 
         res should have(
@@ -77,10 +84,13 @@ class OtherItemsControllerISpec extends ComponentSpecBase with BeforeAndAfterEac
           checkboxSelected("otherItems-8", Some(HighIncomeChildBenefitCharge.key)),
           checkboxSelected("otherItems-10", None)
         )
+        res.body.contains(RecognisedSoftwareProduct.name) shouldBe true
       }
       "the other items page has been answered previously with none selected" in {
-        setPageData(SessionId, OtherItemsPage, Seq.empty)
-
+        val userAnswers = UserAnswers()
+          .set(EnterSoftwareNamePage, RecognisedSoftwareProduct).get
+          .set(OtherItemsPage, Seq.empty).get
+        setupAnswers(SessionId, Some(userAnswers))
         val res = SoftwareChoicesFrontend.getOtherItems
 
         res should have(
@@ -96,6 +106,7 @@ class OtherItemsControllerISpec extends ComponentSpecBase with BeforeAndAfterEac
           checkboxSelected("otherItems-8", None),
           checkboxSelected("otherItems-10", Some("none"))
         )
+        res.body.contains(RecognisedSoftwareProduct.name) shouldBe true
       }
     }
   }

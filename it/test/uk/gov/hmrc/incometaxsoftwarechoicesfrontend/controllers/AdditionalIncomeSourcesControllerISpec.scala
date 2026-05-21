@@ -22,12 +22,15 @@ import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.AdditionalIncomeForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.SessionId
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, DatabaseHelper}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.AdditionalIncomeSourcesPage
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.Recognised
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareProduct, UserAnswers, VendorFilter}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.*
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.{AdditionalIncomeSourcesPage, EnterSoftwareNamePage}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
 
 class AdditionalIncomeSourcesControllerISpec extends ComponentSpecBase with BeforeAndAfterEach with DatabaseHelper {
+
+  private val RecognisedSoftwareProduct = SoftwareProduct(0, "Bright", Recognised)
 
   s"GET ${routes.AdditionalIncomeSourcesController.show().url}" should {
     "redirect to the service index" when {
@@ -43,7 +46,6 @@ class AdditionalIncomeSourcesControllerISpec extends ComponentSpecBase with Befo
     "display the page" when {
       "the additional income has not been answered previously" in {
         setupAnswers(SessionId, None)
-
         val res = SoftwareChoicesFrontend.getAdditionalIncome
 
         res should have(
@@ -62,8 +64,10 @@ class AdditionalIncomeSourcesControllerISpec extends ComponentSpecBase with Befo
         )
       }
       "the additional income has been answered previously with additional income selections" in {
-        setPageData(SessionId, AdditionalIncomeSourcesPage, additionalIncomeFilters)
-
+        val userAnswers = UserAnswers()
+          .set(EnterSoftwareNamePage, RecognisedSoftwareProduct).get
+          .set(AdditionalIncomeSourcesPage, additionalIncomeFilters).get
+        setupAnswers(SessionId, Some(userAnswers))
         val res = SoftwareChoicesFrontend.getAdditionalIncome
 
         res should have(
@@ -79,10 +83,13 @@ class AdditionalIncomeSourcesControllerISpec extends ComponentSpecBase with Befo
           checkboxSelected("additionalIncome-8", Some(ForeignInterest.key)),
           checkboxSelected("additionalIncome-10", None)
         )
+        res.body.contains(RecognisedSoftwareProduct.name) shouldBe true
       }
       "the additional income has been answered previously with none selected" in {
-        setPageData(SessionId, AdditionalIncomeSourcesPage, Seq.empty)
-
+        val userAnswers = UserAnswers()
+          .set(EnterSoftwareNamePage, RecognisedSoftwareProduct).get
+          .set(AdditionalIncomeSourcesPage, Seq.empty).get
+        setupAnswers(SessionId, Some(userAnswers))
         val res = SoftwareChoicesFrontend.getAdditionalIncome
 
         res should have(
@@ -98,6 +105,7 @@ class AdditionalIncomeSourcesControllerISpec extends ComponentSpecBase with Befo
           checkboxSelected("additionalIncome-8", None),
           checkboxSelected("additionalIncome-10", Some("none"))
         )
+        res.body.contains(RecognisedSoftwareProduct.name) shouldBe true
       }
     }
   }
@@ -168,7 +176,7 @@ class AdditionalIncomeSourcesControllerISpec extends ComponentSpecBase with Befo
           getPageData(SessionId, AdditionalIncomeSourcesPage) shouldBe Some(Seq(UkInterest))
         }
         "they submit multiple additional income" in {
-          setPageData(SessionId, AdditionalIncomeSourcesPage, Seq.empty)
+          setPageData(SessionId, AdditionalIncomeSourcesPage, additionalIncomeFilters)
 
           val res = SoftwareChoicesFrontend.submitAdditionalIncome(Some(additionalIncomeFilters.map(_.key)), editMode = true)
 

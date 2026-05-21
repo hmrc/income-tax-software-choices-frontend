@@ -16,16 +16,22 @@
 
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTemplate
 @import uk.gov.hmrc.govukfrontend.views.html.components._
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.helpers._
+
+
 
 @this(
     mainTemplate: MainTemplate,
     govukButton: GovukButton,
+    captionHelper: CaptionHelper,
     form: FormWithCSRF
 )
 
-@(postAction: Call, backLink: String)(implicit request: Request[_], messages: Messages)
+@(postAction: Call, backLink: String, softwareName: Option[String])(implicit request: Request[_], messages: Messages)
 
 @mainTemplate(title = messages("accounting-period-not-aligned.heading"), backLink = Some(backLink)) {
+
+    @captionHelper(softwareName)
 
     <h1 class="govuk-heading-l">@messages("accounting-period-not-aligned.heading")</h1>
 
