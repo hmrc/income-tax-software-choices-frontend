@@ -30,15 +30,18 @@ trait SummaryListBuilder {
   def buildSummaryList(userAnswersOpt: Option[UserAnswers])(implicit messages: Messages): SummaryList = {
     val userAnswers = userAnswersOpt.getOrElse(throw new InternalServerException("[SummaryListBuilder][buildSummaryList] - User answers is empty"))
 
+    val softwareNameRow = userAnswers.get(HowYouFindSoftwarePage) match {
+      case Some(Check) => Seq(softwareNameSummaryListRow(userAnswers))
+      case _ => Seq.empty
+    }
+
     val userTypeRow = userAnswers.get(HowYouFindSoftwarePage) match {
       case Some(Check) | Some(Find) => Seq(userTypeSummaryListRow(userAnswers))
       case _ => Seq.empty
     }
 
     SummaryList(
-      Seq(
-        softwareNameSummaryListRow(userAnswers)
-      ) ++
+      softwareNameRow ++
       userTypeRow ++
       Seq(
         businessIncomeSummaryListRow(userAnswers),

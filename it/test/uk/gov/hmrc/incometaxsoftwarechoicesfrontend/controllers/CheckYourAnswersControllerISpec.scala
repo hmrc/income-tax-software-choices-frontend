@@ -35,7 +35,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
 
 class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAfterEach with DatabaseHelper {
 
-  private val recognisedProduct = SoftwareProduct(3, "Vendor 3", Recognised)
+  private val recognisedProduct = SoftwareProduct(3, "Vendor 03", Recognised)
 
   s"GET ${routes.CheckYourAnswersController.show().url}" when {
     "there are no existing page answers" should {
@@ -61,7 +61,6 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
     "there is pre-filled data" should {
       "display the page with appropriate summary lists with answers organised as lists" in {
         val userAnswers = UserAnswers()
-          .set(EnterSoftwareNamePage, SoftwareProduct(3,"Vendor 3", Recognised)).get
           .set(HowYouFindSoftwarePage, Find).get
           .set(UserTypePage, SoleTraderOrLandlord).get
           .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
@@ -95,7 +94,9 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
       }
       "display the page with minimal summary lists" in {
         val userAnswers = UserAnswers()
+          .set(HowYouFindSoftwarePage, Check).get
           .set(EnterSoftwareNamePage, recognisedProduct).get
+          .set(UserTypePage, SoleTraderOrLandlord).get
           .set(BusinessIncomePage, Seq(SoleTrader)).get
           .set(AdditionalIncomeSourcesPage, Seq(UkInterest)).get
           .set(OtherItemsPage, Seq(PaymentsIntoAPrivatePension)).get
@@ -107,6 +108,8 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
         res should have(
           httpStatus(OK),
           pageTitle(s"${messages("check-your-answers.heading")} - ${PageContentBase.title} - GOV.UK"),
+          summaryListRow(SummaryListKeys.softwareName, Set(recognisedProduct)
+            .map(vf => vf.name).mkString(" ")),
           summaryListRow(SummaryListKeys.incomeSources, Seq(SoleTrader)
             .map(vf => messages(s"business-income.$vf")).mkString(" ")),
           summaryListRow(SummaryListKeys.otherIncome, Seq(UkInterest)
@@ -141,8 +144,9 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
             .map(vf => messages(s"accounting-period.${vf.key}")).mkString(" "))
         )
       }
-      "Software Product is not set" in {
+      "In the Check journey, Software Product is not set" in {
         val userAnswers = UserAnswers()
+          .set(HowYouFindSoftwarePage, Check).get
           .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
           .set(AdditionalIncomeSourcesPage, Seq(UkInterest)).get
           .set(OtherItemsPage, Seq(StudentLoans)).get
@@ -413,6 +417,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
 
   object SummaryListKeys {
     val userType = "User type"
+    val softwareName = "Software name"
     val incomeSources = "Income sources (quarterly updates and tax return)"
     val otherIncome = "Other incomes (tax return only)"
     val otherItems = "Other items (tax return only)"
