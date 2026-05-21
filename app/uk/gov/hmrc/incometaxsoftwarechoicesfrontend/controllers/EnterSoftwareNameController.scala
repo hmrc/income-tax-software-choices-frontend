@@ -44,7 +44,7 @@ class EnterSoftwareNameController @Inject()(view: EnterSoftwareNameView,
   private val spreadsheetProducts = dataService.getOtherSoftware().filter(_.softwareType.eq(Spreadsheet))
   private val allProducts = recognisedProducts ++ futureProducts ++ spreadsheetProducts
 
-  def show(): Action[AnyContent] = (identify andThen requireData) { request =>
+  def show(editMode: Boolean = false): Action[AnyContent] = (identify andThen requireData) { request =>
     given Request[AnyContent] = request
 
     val pageAnswers = pageAnswersService.getPageAnswers(request.userFilters.answers, EnterSoftwareNamePage)
@@ -52,13 +52,13 @@ class EnterSoftwareNameController @Inject()(view: EnterSoftwareNameView,
     Ok(view(
       enterSoftwareNameForm = EnterSoftwareNameForm.form.fill(pageAnswers.map(_.productId)),
       selectOptions = buildSelects(allProducts),
-      postAction = routes.EnterSoftwareNameController.submit(),
-      notListedLink = routes.EnterSoftwareNameController.clearSelection().url,
-      backLink = routes.HowYouFindSoftwareController.show().url
+      postAction = routes.EnterSoftwareNameController.submit(editMode),
+      notListedLink = routes.EnterSoftwareNameController.clearSelection(editMode).url,
+      backLink = backUrl(editMode)
     ))
   }
 
-  def submit(): Action[AnyContent] = (identify andThen requireData).async { request =>
+  def submit(editMode: Boolean = false): Action[AnyContent] = (identify andThen requireData).async { request =>
     given Request[AnyContent] = request
 
     EnterSoftwareNameForm.form.bindFromRequest().fold(
@@ -66,9 +66,9 @@ class EnterSoftwareNameController @Inject()(view: EnterSoftwareNameView,
         Future.successful(BadRequest(view(
           enterSoftwareNameForm = formWithErrors,
           selectOptions = buildSelects(allProducts),
-          postAction = routes.EnterSoftwareNameController.submit(),
-          notListedLink = routes.NoSoftwareListedController.show().url,
-          backLink = routes.HowYouFindSoftwareController.show().url
+          postAction = routes.EnterSoftwareNameController.submit(editMode),
+          notListedLink = routes.EnterSoftwareNameController.clearSelection(editMode).url,
+          backLink = backUrl(editMode)
         )))
       },
       productId => {
@@ -79,7 +79,7 @@ class EnterSoftwareNameController @Inject()(view: EnterSoftwareNameView,
         } yield {
           (saveProducts, saveJourneyType) match {
             case (true, true) =>
-              redirect(selectedProduct)
+             redirect(editMode, selectedProduct)
             case _ =>
               InternalServerError("[EnterSoftwareNameController][submit] - Could not save product")
           }
@@ -88,7 +88,7 @@ class EnterSoftwareNameController @Inject()(view: EnterSoftwareNameView,
     )
   }
 
-  def clearSelection(): Action[AnyContent] = (identify andThen requireData).async { request =>
+  def clearSelection(editMode: Boolean): Action[AnyContent] = (identify andThen requireData).async { request =>
     val unrecognisedProduct = SoftwareProduct(0, "", Unrecognised)
     for {
       saveProduct <- pageAnswersService.setPageAnswers(request.sessionId, EnterSoftwareNamePage, unrecognisedProduct)
@@ -96,21 +96,25 @@ class EnterSoftwareNameController @Inject()(view: EnterSoftwareNameView,
     } yield {
       (saveProduct, saveJourneyType) match {
         case (true, true) =>
-          redirect(unrecognisedProduct)
+          redirect(editMode, unrecognisedProduct)
         case _ =>
           InternalServerError("[EnterSoftwareNameController][clearSelection] - Could not clear product")
       }
     }
   }
-
-  private def redirect(selectedProduct: SoftwareProduct) = {
-    selectedProduct match {
-      case product if product.softwareType == Recognised => Redirect(routes.UserTypeController.show())
-      case product if product.softwareType == FutureVendor => Redirect(routes.SoftwareInDevelopmentController.show())
-      case product if product.softwareType == Spreadsheet => Redirect(routes.NeedAdditionalSoftwareController.show())
-      case _ => Redirect(routes.NoSoftwareListedController.show())
+  
+  private def redirect(editMode: Boolean, selectedProduct: SoftwareProduct) = {
+    (editMode, selectedProduct.softwareType) match {
+      case (true, Recognised) => Redirect(routes.CheckYourAnswersController.show())
+      case (false, Recognised) => Redirect(routes.UserTypeController.show())
+      case (_, FutureVendor) => Redirect(routes.SoftwareInDevelopmentController.show(editMode))
+      case (_, Spreadsheet) => Redirect(routes.NeedAdditionalSoftwareController.show(editMode))
+      case _ => Redirect(routes.NoSoftwareListedController.show(editMode))
     }
   }
 
+  def backUrl(editMode: Boolean): String = {
+    if (editMode) routes.CheckYourAnswersController.show().url
+    else routes.HowYouFindSoftwareController.show().url
+  }
 }
-

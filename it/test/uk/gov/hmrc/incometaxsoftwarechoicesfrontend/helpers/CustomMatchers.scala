@@ -152,6 +152,18 @@ trait CustomMatchers {
       )
     }
 
+  def elementHasHref(selector: String, expectedResult: String): HavePropertyMatcher[WSResponse, String] =
+      (response: WSResponse) => {
+        val body = Jsoup.parse(response.body)
+        val elementHref = body.select(selector).attr("href")
+        HavePropertyMatchResult(
+          elementHref == expectedResult,
+          "elementHref",
+          expectedResult,
+          elementHref
+        )
+      }
+  
   def autocompleteSelected(expectedValue: String): HavePropertyMatcher[WSResponse, String] =
     (response: WSResponse) => {
       val body = Jsoup.parse(response.body)
