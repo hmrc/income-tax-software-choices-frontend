@@ -342,16 +342,16 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
         }
       }
       "have first paragraph" in {
-        documentManyResults.mainContent.selectNth("p", 1).text shouldBe SearchSoftwareWithIntentPageContent.Para1
+        documentManyResults.mainContent.selectNth("p", 1).text shouldBe SearchSoftwareWithIntentPageContent.para1
       }
       "have a second paragraph" in {
-        documentManyResults.mainContent.selectNth("p", 2).text shouldBe SearchSoftwareWithIntentPageContent.Para2
+        documentManyResults.mainContent.selectNth("p", 2).text shouldBe SearchSoftwareWithIntentPageContent.para2
       }
       "have third paragraph" in {
-        documentManyResults.mainContent.selectNth("p", 3).text shouldBe SearchSoftwareWithIntentPageContent.Para3
+        documentManyResults.mainContent.selectNth("p", 3).text shouldBe SearchSoftwareWithIntentPageContent.para3
       }
       "have a fourth paragraph" in {
-        documentManyResults.mainContent.selectNth("p", 4).text shouldBe SearchSoftwareWithIntentPageContent.Para4
+        documentManyResults.mainContent.selectNth("p", 4).text shouldBe SearchSoftwareWithIntentPageContent.para4
       }
       "have a button to Change answers" in {
         documentManyResults.mainContent.selectHead(".govuk-button.govuk-button--secondary").text shouldBe SearchSoftwareWithIntentPageContent.changeAnswers
@@ -490,16 +490,16 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
         }
       }
         "has first paragraph" in {
-          documentAgentMany.mainContent.selectNth("p", 1).text shouldBe SearchSoftwareWithIntentPageContent.Para1
+          documentAgentMany.mainContent.selectNth("p", 1).text shouldBe SearchSoftwareWithIntentPageContent.para1
         }
         "has second paragraph" in {
-          documentAgentMany.mainContent.selectNth("p", 2).text shouldBe SearchSoftwareWithIntentPageContent.Para2
+          documentAgentMany.mainContent.selectNth("p", 2).text shouldBe SearchSoftwareWithIntentPageContent.para2
         }
         "has third paragraph" in {
-          documentAgentMany.mainContent.selectNth("p", 3).text shouldBe SearchSoftwareWithIntentPageContent.Para3
+          documentAgentMany.mainContent.selectNth("p", 3).text shouldBe SearchSoftwareWithIntentPageContent.para3
         }
         "has fourth paragraph" in {
-          documentAgentMany.mainContent.selectNth("p", 4).text shouldBe SearchSoftwareWithIntentPageContent.Para4
+          documentAgentMany.mainContent.selectNth("p", 4).text shouldBe SearchSoftwareWithIntentPageContent.para4
         }
       "does not have a 'Change answers' button" in {
         documentAgentMany.mainContent.selectOptionally(".govuk-button--secondary") shouldBe None
@@ -677,10 +677,10 @@ private object SearchSoftwareWithIntentPageContent {
   val agentHeadingOne = "Based on your answers, we’ve found 1 result"
   val agentHeadingNone = "Based on your answers, there are no results"
 
-  val Para1 = "All software has passed HMRC’s recognition process. HMRC does not recommend any specific product and is not responsible for availability or whether the software meets a particular current or future need."
-  val Para2 = "Some of the listed products may have free trials or free versions, but others require payment."
-  val Para3 = "We recommend that you visit software providers’ websites to do more research before choosing a product."
-  val Para4 = "Results have been put in random order to ensure fairness when displaying software choices."
+  val para1 = "All software has passed HMRC’s recognition process. HMRC does not recommend any specific product and is not responsible for availability or whether the software meets a particular current or future need."
+  val para2 = "Some of the listed products may have free trials or free versions, but others require payment."
+  val para3 = "We recommend that you visit software providers’ websites to do more research before choosing a product."
+  val para4 = "Results have been put in random order to ensure fairness when displaying software choices."
 
   val agent = "Agent"
   val individual = "Individual"
