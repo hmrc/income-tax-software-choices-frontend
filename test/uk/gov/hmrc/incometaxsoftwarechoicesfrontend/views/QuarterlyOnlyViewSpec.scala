@@ -69,7 +69,7 @@ class QuarterlyOnlyViewSpec extends ViewSpec {
     }
 
     "display the exit survey link" in {
-      val link = document.mainContent.select(".govuk-link").get(3)
+      val link = document.mainContent.select(".govuk-link").get(4)
       link.text shouldBe QuarterlyOnlyContent.exitSurveyLinkTitle
       link.attr("href") shouldBe QuarterlyOnlyContent.exitSurveyLink
     }
@@ -84,7 +84,7 @@ private object QuarterlyOnlyContent {
   val heading2 = "What you should do next"
   val title = s"$heading1 - ${PageContentBase.title} - GOV.UK"
   val para1 = "This software does not have the ability to submit a tax return."
-  val para2 = "You can view more information about your software and the features they are planning to provide."
+  val para2 = "You can view more information about your software provider and the features they are planning to provide."
   val para3 = "If you intend to do your tax returns via software, you will need additional software to do this."
   val para4 = "If you have not done so already, you now need to:"
   val bullet1Text = "sign up for Making Tax Digital for Income Tax (opens in new tab)"
