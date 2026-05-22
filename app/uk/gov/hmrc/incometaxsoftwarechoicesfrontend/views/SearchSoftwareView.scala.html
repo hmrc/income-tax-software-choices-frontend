@@ -56,15 +56,11 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <h1 class="govuk-heading-xl">@title</h1>
-        @if(viewModel.isUnguided) {
-            <p class="govuk-body">@messages("search-software.p1")</p>
-            <p class="govuk-body">@messages("search-software.p2")</p>
-            <p class="govuk-body">@messages("search-software.p3.unguided.intent")</p>
-            <p class="govuk-inset-text">@messages("search-software.inset.unguided.intent")</p>
-        } else {
-            <h2 class="govuk-heading-l">@messages("search-software.intent.h2")</h2>
-            <p class="govuk-body">@messages("search-software.intent.p1")</p>
-            <p class="govuk-body">@messages("search-software.intent.p2")</p>
+        <p class="govuk-body">@messages("search-software.p1")</p>
+        <p class="govuk-body">@messages("search-software.p2")</p>
+        <p class="govuk-body">@messages("search-software.p3")</p>
+        <p class="govuk-body">@messages("search-software.p4")</p>
+        @if(!viewModel.isUnguided) {
             @govukButton(Button(
                content = Text(messages("search-software.check-answers")),
                href = Some(routes.CheckYourAnswersController.show().url),

@@ -114,16 +114,12 @@ choosing-software.button.view-your-results  = Gweld eich canlyniadau
 # Search software page
 search-software.heading.many                              = Mae gennych {0} canlyniad meddalwedd
 search-software.heading.one                               = Mae gennych 1 canlyniad meddalwedd
-search-software.p1                                        = Mae pob meddalwedd yma wedi bod drwy broses gydnabod ble mae CThEF yn gwirio ayw’n gallu cyflwyno eich trethi. Nid yw CThEF yn argymell nac yn cymeradwyo unrhyw gynnyrch neu ddarparwr meddalwedd penodol.
-search-software.p2                                        = Efallai bydd rhai o’r cynhyrchion sy’n cael eu rhestru yn cynnig cyfnod prawf am ddim, neu fersiynau am ddim, ond bydd yn rhaid i chi dalu am rhai eraill.
-search-software.p3.unguided.intent                           = Mae rhai o’r nodweddion y bydd eu hangen arnoch er mwyn cyflwyno Ffurflen Dreth eich cleient yn parhau o dan ddatblygiad.
-search-software.inset.unguided.intent                        = Nid yw CThEF yn gyfrifol am argaeledd cynnyrch nag am sicrhau bod y cynnyrch yr ydych yn ei ddewis yn bodloni anghenion presennol eich cleient, a’i anghenion yn y dyfodol. Rydym yn argymell eich bod yn ymweld â gwefan darparwyr meddalwedd i wneud ymchwil cyn dewis cynnyrch.
+search-software.p1                                        = Mae’r holl feddalwedd wedi pasio proses gydnabod CThEF. Nid yw CThEF yn argymell unrhyw gynnyrch penodol ac nid yw’n gyfrifol am argaeledd y feddalwedd neu p’un a yw’r feddalwedd yn bodloni anghenion penodol presennol, neu anghenion penodol yn y dyfodol.
+search-software.p2                                        = Efallai y bydd rhai o’r cynhyrchion sy’n cael eu rhestru yn cynnig cyfnod prawf am ddim, neu fersiynau am ddim, ond mae angen talu am rai eraill.
+search-software.p3                                        = Rydym yn argymell eich bod yn ymweld â gwefan darparwyr meddalwedd i wneud ymchwil cyn dewis cynnyrch.
+search-software.p4                                        = Mae’r canlyniadau wedi’u rhoi mewn trefn ar hap i sicrhau tegwch wrth ddangos y feddalwedd sydd ar gael.
 search-software.check-answers                             = Gwirio atebion
 search-software.skip-to-results                           = Ewch yn syth i’r canlyniadau
-
-search-software.intent.h2                                 = Bydd rhai meddalwedd yn cael eu rhestru fel eu bod ‘o dan ddatblygiad’
-search-software.intent.p1                                 = Bydd pob cynnyrch sy’n ymddangos yn y rhestr hidlo yn eich caniatáu chi i gyflwyno eich diweddariadau chwarterol.
-search-software.intent.p2                                 = Mae ‘o dan ddatblygiad’ yn golygu bod un neu fwy o’r nodweddion sydd eu hangen arnoch er mwyn llenwi eich Ffurflen Dreth yn cael eu hadeiladu o hyd. Rydym yn disgwyl y bydd y nodweddion hyn yn barod ar eich cyfer erbyn y bydd angen i chi lenwi eich Ffurflen Dreth 2026 i 2027.
 
 search-software.filters.heading = Opsiynau hidlo
 search-software.filters.paragraph = Gallwch ddefnyddio hidlyddion er mwyn dod o hyd i feddalwedd benodol. Mae pob maes yn ddewisol.
