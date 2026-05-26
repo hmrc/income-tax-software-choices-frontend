@@ -323,7 +323,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
 
         res should have(
           httpStatus(SEE_OTHER),
-          redirectURI(routes.CheckYourAnswersController.show().url)
+          redirectURI(routes.QuarterlyOnlyController.show().url)
         )
 
         await(userFiltersRepository.get(SessionId)) match {
