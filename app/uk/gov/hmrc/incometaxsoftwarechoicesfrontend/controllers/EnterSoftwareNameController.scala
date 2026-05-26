@@ -67,7 +67,7 @@ class EnterSoftwareNameController @Inject()(view: EnterSoftwareNameView,
           enterSoftwareNameForm = formWithErrors,
           selectOptions = buildSelects(allProducts),
           postAction = routes.EnterSoftwareNameController.submit(editMode),
-          notListedLink = notListedUrl(editMode),
+          notListedLink = routes.EnterSoftwareNameController.clearSelection(editMode).url,
           backLink = backUrl(editMode)
         )))
       },
@@ -109,18 +109,12 @@ class EnterSoftwareNameController @Inject()(view: EnterSoftwareNameView,
       case (false, Recognised) => Redirect(routes.UserTypeController.show())
       case (_, FutureVendor) => Redirect(routes.SoftwareInDevelopmentController.show(editMode))
       case (_, Spreadsheet) => Redirect(routes.NeedAdditionalSoftwareController.show(editMode))
-      case (true, Unrecognised) => Redirect(routes.CheckYourAnswersController.show())
-      case _ => Redirect(routes.NoSoftwareListedController.show())
+      case _ => Redirect(routes.NoSoftwareListedController.show(editMode))
     }
   }
 
   def backUrl(editMode: Boolean): String = {
     if (editMode) routes.CheckYourAnswersController.show().url
     else routes.HowYouFindSoftwareController.show().url
-  }
-
-  private def notListedUrl(editMode: Boolean): String = {
-    if (editMode) routes.CheckYourAnswersController.show().url
-    else routes.NoSoftwareListedController.show().url
   }
 }

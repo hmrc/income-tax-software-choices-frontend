@@ -25,7 +25,7 @@
       govukButton: GovukButton
 )(implicit appConfig: AppConfig)
 
-@(backLink: String)(implicit request: Request[_], messages: Messages)
+@(continueUrl: String, backLink: String)(implicit request: Request[_], messages: Messages)
 
 @mainTemplate(title = messages("not-listed-software.title"), backLink = Some(backLink)) {
 
@@ -35,7 +35,7 @@
     <p class ="govuk-body">
         @govukButton(Button(
             content = Text(messages("base.find.compatible")),
-            href = Some(routes.UserTypeController.show().url),
+            href = Some(continueUrl),
             classes = "govuk-!-display-none-print"
         ))
     </p>

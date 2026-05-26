@@ -17,13 +17,23 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import play.api.http.Status.OK
+import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, DatabaseHelper}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.SessionId
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.Check
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.{Spreadsheet, Unrecognised}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareProduct, UserAnswers, UserFilters}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.{EnterSoftwareNamePage, HowYouFindSoftwarePage}
 
 class NoSoftwareListedControllerISpec extends ComponentSpecBase  with DatabaseHelper {
 
   lazy val noSoftwareListedController: NoSoftwareListedController = app.injector.instanceOf[NoSoftwareListedController]
+
+  def testUserFilters(answers: UserAnswers): UserFilters = UserFilters(SessionId, Some(answers))
+
+  private val unrecognisedProduct = SoftwareProduct(0, "", Unrecognised)
+
 
   s"GET ${routes.NoSoftwareListedController.show().url}" should {
     s"return $OK" in {
@@ -35,6 +45,34 @@ class NoSoftwareListedControllerISpec extends ComponentSpecBase  with DatabaseHe
         httpStatus(OK),
         pageTitle(s"${messages("not-listed-software.title")} - ${PageContentBase.title} - GOV.UK")
       )
+    }
+    "in edit mode" should {
+      "have a back link to enter software name" in {
+        val userAnswers = UserAnswers().set(HowYouFindSoftwarePage, Check).get
+          .set(EnterSoftwareNamePage, unrecognisedProduct).get
+        await(userFiltersRepository.set(testUserFilters(userAnswers)))
+
+        val res = SoftwareChoicesFrontend.getNoListedSoftware(editMode = true)
+
+        res should have(
+          httpStatus(OK),
+          pageTitle(s"${messages("not-listed-software.title")} - ${PageContentBase.title} - GOV.UK"),
+          elementHasHref(".govuk-back-link", routes.EnterSoftwareNameController.show(editMode = true).url)
+        )
+      }
+      "have a continue link to check your answers" in {
+        val userAnswers = UserAnswers().set(HowYouFindSoftwarePage, Check).get
+          .set(EnterSoftwareNamePage, unrecognisedProduct).get
+        await(userFiltersRepository.set(testUserFilters(userAnswers)))
+
+        val res = SoftwareChoicesFrontend.getNoListedSoftware(editMode = true)
+
+        res should have(
+          httpStatus(OK),
+          pageTitle(s"${messages("not-listed-software.title")} - ${PageContentBase.title} - GOV.UK"),
+          elementHasHref(".govuk-button", routes.CheckYourAnswersController.show().url)
+        )
+      }
     }
   }
 }

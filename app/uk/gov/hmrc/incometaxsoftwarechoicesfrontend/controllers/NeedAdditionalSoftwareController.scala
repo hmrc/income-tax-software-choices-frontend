@@ -33,16 +33,12 @@ class NeedAdditionalSoftwareController @Inject()(view: NeedAdditionalSoftwareVie
   
     Ok(view(
       continueURL = continueUrl(editMode),
-      backLink = backUrl(editMode)
+      backLink = routes.EnterSoftwareNameController.show(editMode).url
     ))
   }
 
   def continueUrl(editMode: Boolean): String = {
     if (editMode) routes.CheckYourAnswersController.show().url
     else routes.UserTypeController.show().url
-  }
-
-  def backUrl(editMode: Boolean): String = {
-    routes.EnterSoftwareNameController.show(editMode).url
   }
 }

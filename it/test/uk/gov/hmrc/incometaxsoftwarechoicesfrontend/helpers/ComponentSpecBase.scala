@@ -156,7 +156,13 @@ trait ComponentSpecBase extends AnyWordSpec
 
     def postZeroSoftwareResults(): WSResponse = post("/no-all-in-one-product")(Map.empty)
 
-    def getNoListedSoftware(): WSResponse = get("/no-software-listed")
+    def getNoListedSoftware(editMode: Boolean = false): WSResponse =  {
+      val url = editMode match {
+        case true => "/no-software-listed?editMode=true"
+        case false => "/no-software-listed"
+      }
+      get(url)
+    }
     
     def getHowYouFindSoftware(): WSResponse = get("/do-you-have-software")
     
@@ -168,7 +174,13 @@ trait ComponentSpecBase extends AnyWordSpec
       )
     }
 
-    def getEnterSoftwareName(): WSResponse = get("/enter-software-name")
+    def getEnterSoftwareName(editMode: Boolean = false): WSResponse = {
+      val url = editMode match {
+        case true => "/enter-software-name?editMode=true"
+        case false => "/enter-software-name"
+      }
+      get(url)
+    }
 
     def postEnterSoftwareName(pageAnswer: Option[Int], editMode: Boolean = false): WSResponse = {
       val url = editMode match {

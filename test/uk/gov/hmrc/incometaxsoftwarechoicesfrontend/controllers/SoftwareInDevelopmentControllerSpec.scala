@@ -72,10 +72,5 @@ class SoftwareInDevelopmentControllerSpec extends ControllerBaseSpec
       controller(None).continueUrl(true) shouldBe routes.CheckYourAnswersController .show().url
     }
   }
-
-  "backUrl" should {
-    "return the enter software page url" in {
-      controller(None).backUrl(false) shouldBe routes.EnterSoftwareNameController.show().url
-    }
-  }
+  
 }

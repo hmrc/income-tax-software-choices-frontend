@@ -60,9 +60,4 @@ class NeedAdditionalSoftwareControllerSpec extends ControllerBaseSpec
     }
   }
 
-  "backUrl" should {
-    "return the enter software page url" in {
-      controller.backUrl(false) shouldBe routes.EnterSoftwareNameController.show().url
-    }
-  }
 }

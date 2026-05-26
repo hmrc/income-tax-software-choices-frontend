@@ -36,6 +36,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
 class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAfterEach with DatabaseHelper {
 
   private val recognisedProduct = SoftwareProduct(3, "Vendor 03", Recognised)
+  private val unrecognisedProduct = SoftwareProduct(0, "", Unrecognised)
 
   s"GET ${routes.CheckYourAnswersController.show().url}" when {
     "there are no existing page answers" should {
@@ -144,6 +145,30 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
             .map(vf => messages(s"accounting-period.${vf.key}")).mkString(" "))
         )
       }
+      "'Software not listed' is displayed when software not recognised" in {
+        val userAnswers = UserAnswers()
+          .set(EnterSoftwareNamePage, unrecognisedProduct).get
+          .set(HowYouFindSoftwarePage, Check).get
+          .set(UserTypePage, SoleTraderOrLandlord).get
+          .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
+          .set(AdditionalIncomeSourcesPage, Seq.empty).get
+          .set(OtherItemsPage, Seq.empty).get
+          .set(AccountingPeriodPage, OtherAccountingPeriod).get
+        await(userFiltersRepository.set(testUserFilters(Some(userAnswers))))
+
+        val res = SoftwareChoicesFrontend.getCheckYourAnswers
+
+        res should have(
+          httpStatus(OK),
+          pageTitle(s"${messages("check-your-answers.heading")} - ${PageContentBase.title} - GOV.UK"),
+          summaryListRow(SummaryListKeys.incomeSources, Seq(SoleTrader, UkProperty, OverseasProperty)
+            .map(vf => messages(s"business-income.$vf")).mkString(" ")),
+          summaryListRow(SummaryListKeys.otherIncome, messages(s"check-your-answers.none-selected")),
+          summaryListRow(SummaryListKeys.otherItems, messages(s"check-your-answers.none-selected")),
+          summaryListRow(SummaryListKeys.accountingPeriod, Set(OtherAccountingPeriod)
+            .map(vf => messages(s"accounting-period.${vf.key}")).mkString(" "))
+        )
+      }
       "In the Check journey, Software Product is not set" in {
         val userAnswers = UserAnswers()
           .set(HowYouFindSoftwarePage, Check).get
@@ -160,6 +185,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
       "In the Check journey, user type is not set" in {
         val userAnswers = UserAnswers()
           .set(HowYouFindSoftwarePage, Check).get
+          .set(EnterSoftwareNamePage, recognisedProduct).get
           .set(AdditionalIncomeSourcesPage, Seq.empty).get
           .set(OtherItemsPage, Seq.empty).get
           .set(AccountingPeriodPage, OtherAccountingPeriod).get

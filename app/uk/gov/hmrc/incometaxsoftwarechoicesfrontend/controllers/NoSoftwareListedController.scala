@@ -29,10 +29,15 @@ class NoSoftwareListedController @Inject()(view: NoSoftwareListedView ,
                                              (implicit mcc: MessagesControllerComponents) extends BaseFrontendController {
 
 
-  def show(): Action[AnyContent] = (identify andThen requireData) { request =>
+  def show(editMode: Boolean = false): Action[AnyContent] = (identify andThen requireData) { request =>
     given Request[AnyContent] = request
     Ok(view(
-      backLink = routes.EnterSoftwareNameController.show().url
+      continueUrl = continueUrl(editMode),
+      backLink = routes.EnterSoftwareNameController.show(editMode).url
     ))
+  }
+
+  private def continueUrl(editMode: Boolean): String = {
+    if (editMode) routes.CheckYourAnswersController.show().url else routes.UserTypeController.show().url
   }
 }

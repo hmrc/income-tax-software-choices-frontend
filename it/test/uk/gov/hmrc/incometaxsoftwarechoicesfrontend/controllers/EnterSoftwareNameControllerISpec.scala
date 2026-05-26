@@ -89,6 +89,22 @@ class EnterSoftwareNameControllerISpec extends ComponentSpecBase with BeforeAndA
         )
       }
     }
+
+    "in edit mode" should {
+      "have a back link to check your answers" in {
+        val userAnswers = UserAnswers().set(HowYouFindSoftwarePage, Check).get
+          .set(EnterSoftwareNamePage, firstOtherSpreadsheetProduct).get
+        await(userFiltersRepository.set(testUserFilters(userAnswers)))
+
+        val res = SoftwareChoicesFrontend.getEnterSoftwareName(editMode = true)
+
+        res should have(
+          httpStatus(OK),
+          pageTitle(s"${messages("enter-software-name.heading")} - ${PageContentBase.title} - GOV.UK"),
+          elementHasHref(".govuk-back-link", routes.CheckYourAnswersController.show().url)
+        )
+      }
+    }
   }
 
   s"GET ${routes.EnterSoftwareNameController.clearSelection()}" when {
@@ -132,7 +148,7 @@ class EnterSoftwareNameControllerISpec extends ComponentSpecBase with BeforeAndA
 
           res should have(
             httpStatus(SEE_OTHER),
-            redirectURI(routes.CheckYourAnswersController.show().url)
+            redirectURI(routes.NoSoftwareListedController.show(editMode = true).url)
           )
 
           getPageData(SessionId, EnterSoftwareNamePage).map(_.name) shouldBe Some("")

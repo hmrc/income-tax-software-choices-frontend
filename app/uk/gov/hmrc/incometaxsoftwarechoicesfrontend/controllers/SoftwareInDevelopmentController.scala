@@ -35,7 +35,7 @@ class SoftwareInDevelopmentController @Inject()(view: SoftwareInDevelopmentView,
       case Some(product) => {
         Ok(view(
           continueURL = continueUrl(editMode),
-          backLink = backUrl(editMode),
+          backLink = routes.EnterSoftwareNameController.show(editMode).url,
           chosenSoftware = product.name
         ))
       }
@@ -46,9 +46,5 @@ class SoftwareInDevelopmentController @Inject()(view: SoftwareInDevelopmentView,
   def continueUrl(editMode: Boolean): String = {
     if (editMode) routes.CheckYourAnswersController.show().url
     else routes.UserTypeController.show().url
-  }
-
-  def backUrl(editMode: Boolean): String = {
-    routes.EnterSoftwareNameController.show(editMode).url
   }
 }
