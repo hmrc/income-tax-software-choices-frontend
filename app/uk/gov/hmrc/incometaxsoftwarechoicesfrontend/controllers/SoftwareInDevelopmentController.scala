@@ -28,19 +28,23 @@ class SoftwareInDevelopmentController @Inject()(view: SoftwareInDevelopmentView,
                                                 requireData: RequireUserDataRefiner)
                                                (implicit mcc: MessagesControllerComponents) extends BaseFrontendController {
 
-  def show(): Action[AnyContent] = (identify andThen requireData) { request =>
+  def show(editMode: Boolean = false): Action[AnyContent] = (identify andThen requireData) { request =>
     given Request[AnyContent] = request
 
     request.product match {
       case Some(product) => {
         Ok(view(
-          continueURL = routes.UserTypeController.show().url,
-          backLink = routes.EnterSoftwareNameController.show().url,
+          continueURL = continueUrl(editMode),
+          backLink = routes.EnterSoftwareNameController.show(editMode).url,
           chosenSoftware = product.name
         ))
       }
       case None => InternalServerError("[SoftwareInDevelopmentController][show] - Could not find software name in answers]")
     }
+  }
 
+  def continueUrl(editMode: Boolean): String = {
+    if (editMode) routes.CheckYourAnswersController.show().url
+    else routes.UserTypeController.show().url
   }
 }

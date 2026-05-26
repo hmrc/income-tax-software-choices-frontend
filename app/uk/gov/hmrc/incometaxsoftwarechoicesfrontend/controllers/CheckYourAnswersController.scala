@@ -75,5 +75,4 @@ class CheckYourAnswersController @Inject()(view: CheckYourAnswersView,
       }
     }
   }
-
 }

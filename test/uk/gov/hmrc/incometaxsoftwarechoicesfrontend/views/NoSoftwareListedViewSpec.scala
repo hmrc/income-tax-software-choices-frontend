@@ -26,7 +26,7 @@ class NoSoftwareListedViewSpec extends ViewSpec {
   private val view = app.injector.instanceOf[NoSoftwareListedView]
 
   def page(): HtmlFormat.Appendable = {
-    view(backLink = testBackUrl)
+    view(continueUrl = continueLink.url, backLink = testBackUrl)
   }
 
   def document(): Document = Jsoup.parse(page().body)
@@ -43,6 +43,14 @@ class NoSoftwareListedViewSpec extends ViewSpec {
 
     "have a find compatible software button" in {
       document().select(".govuk-button").text() shouldBe NoSoftwareListedViewContent.compatibleSoftwareButton
+    }
+
+    "have a back link" in {
+      document().selectHead(".govuk-back-link").attr("href") shouldBe testBackUrl
+    }
+
+    "have a continue link" in {
+      document().selectHead(".govuk-button").attr("href") shouldBe continueLink.url
     }
   }
 }

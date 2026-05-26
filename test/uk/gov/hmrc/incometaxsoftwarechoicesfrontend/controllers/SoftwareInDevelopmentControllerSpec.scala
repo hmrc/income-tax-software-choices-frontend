@@ -63,4 +63,14 @@ class SoftwareInDevelopmentControllerSpec extends ControllerBaseSpec
       status(result) shouldBe INTERNAL_SERVER_ERROR
     }
   }
+
+  "continueUrl" should {
+    "return the user type page url when not in edit mode" in {
+      controller(None).continueUrl(false) shouldBe routes.UserTypeController.show().url
+    }
+    "return the check your answers page url when in edit mode" in {
+      controller(None).continueUrl(true) shouldBe routes.CheckYourAnswersController .show().url
+    }
+  }
+  
 }

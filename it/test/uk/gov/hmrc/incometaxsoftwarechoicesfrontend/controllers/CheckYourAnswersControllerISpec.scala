@@ -24,6 +24,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConst
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, DatabaseHelper}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.AccountingPeriod.{OtherAccountingPeriod, SixthAprilToFifthApril}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.{Check, Find}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.{Recognised, Unrecognised}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.Recognised
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.SoleTraderOrLandlord
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.*
@@ -33,6 +34,9 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.DataService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
 
 class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAfterEach with DatabaseHelper {
+
+  private val recognisedProduct = SoftwareProduct(3, "Vendor 03", Recognised)
+  private val unrecognisedProduct = SoftwareProduct(0, "", Unrecognised)
 
   s"GET ${routes.CheckYourAnswersController.show().url}" when {
     "there are no existing page answers" should {
@@ -91,6 +95,9 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
       }
       "display the page with minimal summary lists" in {
         val userAnswers = UserAnswers()
+          .set(HowYouFindSoftwarePage, Check).get
+          .set(EnterSoftwareNamePage, recognisedProduct).get
+          .set(UserTypePage, SoleTraderOrLandlord).get
           .set(BusinessIncomePage, Seq(SoleTrader)).get
           .set(AdditionalIncomeSourcesPage, Seq(UkInterest)).get
           .set(OtherItemsPage, Seq(PaymentsIntoAPrivatePension)).get
@@ -102,6 +109,8 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
         res should have(
           httpStatus(OK),
           pageTitle(s"${messages("check-your-answers.heading")} - ${PageContentBase.title} - GOV.UK"),
+          summaryListRow(SummaryListKeys.softwareName, Set(recognisedProduct)
+            .map(vf => vf.name).mkString(" ")),
           summaryListRow(SummaryListKeys.incomeSources, Seq(SoleTrader)
             .map(vf => messages(s"business-income.$vf")).mkString(" ")),
           summaryListRow(SummaryListKeys.otherIncome, Seq(UkInterest)
@@ -116,6 +125,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
       }
       "'None of these' is selected for other income and other items sources" in {
         val userAnswers = UserAnswers()
+          .set(EnterSoftwareNamePage, recognisedProduct).get
           .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
           .set(AdditionalIncomeSourcesPage, Seq.empty).get
           .set(OtherItemsPage, Seq.empty).get
@@ -129,15 +139,54 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
           pageTitle(s"${messages("check-your-answers.heading")} - ${PageContentBase.title} - GOV.UK"),
           summaryListRow(SummaryListKeys.incomeSources, Seq(SoleTrader, UkProperty, OverseasProperty)
             .map(vf => messages(s"business-income.$vf")).mkString(" ")),
-          summaryListRow(SummaryListKeys.otherIncome, messages(s"check-your-answers.none-selected")),
-          summaryListRow(SummaryListKeys.otherItems, messages(s"check-your-answers.none-selected")),
+          summaryListRow(SummaryListKeys.otherIncome, messages("check-your-answers.none-selected")),
+          summaryListRow(SummaryListKeys.otherItems, messages("check-your-answers.none-selected")),
           summaryListRow(SummaryListKeys.accountingPeriod, Set(OtherAccountingPeriod)
             .map(vf => messages(s"accounting-period.${vf.key}")).mkString(" "))
         )
       }
+      "'Software not listed' is displayed when software not recognised" in {
+        val userAnswers = UserAnswers()
+          .set(EnterSoftwareNamePage, unrecognisedProduct).get
+          .set(HowYouFindSoftwarePage, Check).get
+          .set(UserTypePage, SoleTraderOrLandlord).get
+          .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
+          .set(AdditionalIncomeSourcesPage, Seq.empty).get
+          .set(OtherItemsPage, Seq.empty).get
+          .set(AccountingPeriodPage, OtherAccountingPeriod).get
+        await(userFiltersRepository.set(testUserFilters(Some(userAnswers))))
+
+        val res = SoftwareChoicesFrontend.getCheckYourAnswers
+
+        res should have(
+          httpStatus(OK),
+          pageTitle(s"${messages("check-your-answers.heading")} - ${PageContentBase.title} - GOV.UK"),
+          summaryListRow(SummaryListKeys.softwareName, messages("check-your-answers.software-not-listed")),
+          summaryListRow(SummaryListKeys.incomeSources, Seq(SoleTrader, UkProperty, OverseasProperty)
+            .map(vf => messages(s"business-income.$vf")).mkString(" ")),
+          summaryListRow(SummaryListKeys.otherIncome, messages("check-your-answers.none-selected")),
+          summaryListRow(SummaryListKeys.otherItems, messages("check-your-answers.none-selected")),
+          summaryListRow(SummaryListKeys.accountingPeriod, Set(OtherAccountingPeriod)
+            .map(vf => messages(s"accounting-period.${vf.key}")).mkString(" "))
+        )
+      }
+      "In the Check journey, Software Product is not set" in {
+        val userAnswers = UserAnswers()
+          .set(HowYouFindSoftwarePage, Check).get
+          .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
+          .set(AdditionalIncomeSourcesPage, Seq(UkInterest)).get
+          .set(OtherItemsPage, Seq(StudentLoans)).get
+          .set(AccountingPeriodPage, OtherAccountingPeriod).get
+        await(userFiltersRepository.set(testUserFilters(Some(userAnswers))))
+
+        val res = SoftwareChoicesFrontend.getCheckYourAnswers
+        res.status shouldBe INTERNAL_SERVER_ERROR
+        res.body.contains("Sorry, there is a problem with the service") shouldBe true
+      }
       "In the Check journey, user type is not set" in {
         val userAnswers = UserAnswers()
           .set(HowYouFindSoftwarePage, Check).get
+          .set(EnterSoftwareNamePage, recognisedProduct).get
           .set(AdditionalIncomeSourcesPage, Seq.empty).get
           .set(OtherItemsPage, Seq.empty).get
           .set(AccountingPeriodPage, OtherAccountingPeriod).get
@@ -395,6 +444,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
 
   object SummaryListKeys {
     val userType = "User type"
+    val softwareName = "Software name"
     val incomeSources = "Income sources (quarterly updates and tax return)"
     val otherIncome = "Other incomes (tax return only)"
     val otherItems = "Other items (tax return only)"

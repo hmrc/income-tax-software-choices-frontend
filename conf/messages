@@ -81,6 +81,7 @@ other-items.error.invalid-selection = Select one other item, other items, or ‘
 
 # Check Your Answers view
 check-your-answers.heading                             = Check your answers before viewing compatible software
+check-your-answers.software-name                       = Software name
 check-your-answers.user-type                           = User type
 check-your-answers.user-type.sole-trader-or-landlord   = Sole trader or landlord
 check-your-answers.user-type.agent                     = Agent
@@ -89,6 +90,7 @@ check-your-answers.additional-income                   = Other incomes (tax retu
 check-your-answers.other-items                         = Other items (tax return only)
 check-your-answers.accounting-period                   = Accounting period
 check-your-answers.none-selected                       = None selected
+check-your-answers.software-not-listed                 = Software not listed
 
 # Choosing Software from Your Results view
 choosing-software.heading                   = Choosing software from your results

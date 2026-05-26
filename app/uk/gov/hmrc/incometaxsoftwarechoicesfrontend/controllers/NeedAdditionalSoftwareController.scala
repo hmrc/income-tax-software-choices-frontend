@@ -28,12 +28,17 @@ class NeedAdditionalSoftwareController @Inject()(view: NeedAdditionalSoftwareVie
                                                        requireData: RequireUserDataRefiner)
                                                       (implicit mcc: MessagesControllerComponents) extends BaseFrontendController {
 
-  def show(): Action[AnyContent] = (identify andThen requireData) { request =>
+  def show(editMode: Boolean = false): Action[AnyContent] = (identify andThen requireData) { request =>
     given Request[AnyContent] = request
   
     Ok(view(
-      continueURL = routes.UserTypeController.show().url,
-      backLink = routes.EnterSoftwareNameController.show().url
+      continueURL = continueUrl(editMode),
+      backLink = routes.EnterSoftwareNameController.show(editMode).url
     ))
+  }
+
+  def continueUrl(editMode: Boolean): String = {
+    if (editMode) routes.CheckYourAnswersController.show().url
+    else routes.UserTypeController.show().url
   }
 }

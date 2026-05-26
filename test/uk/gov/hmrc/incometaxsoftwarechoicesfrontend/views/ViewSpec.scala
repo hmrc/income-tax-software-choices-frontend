@@ -46,6 +46,7 @@ trait ViewSpec extends AnyWordSpecLike with Matchers with GuiceOneAppPerSuite {
   val testBackUrl = "/test-back-url"
 
   val backLink: Call = Call("GET", "/back")
+  val continueLink: Call = Call("GET", "/continue")
 
   implicit class CustomSelectors(element: Element) {
 

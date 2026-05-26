@@ -77,7 +77,13 @@ trait ComponentSpecBase extends AnyWordSpec
       BusinessIncomeForm.form.fill(pageAnswers).data.map { case (k, v) => (k, Seq(v)) }
     )
 
-    def getNeedAdditionalSoftware: WSResponse = get("/need-additional-software")
+    def getNeedAdditionalSoftware(editMode: Boolean = false): WSResponse = {
+      val url = editMode match {
+        case true => "/need-additional-software?editMode=true"
+        case false => "/need-additional-software"
+      }
+      get(url)
+    }
 
     def getSoftwareInDevelopment: WSResponse = get("/software-in-development")
 
@@ -156,7 +162,13 @@ trait ComponentSpecBase extends AnyWordSpec
 
     def postZeroSoftwareResults(): WSResponse = post("/no-all-in-one-product")(Map.empty)
 
-    def getNoListedSoftware(): WSResponse = get("/no-software-listed")
+    def getNoListedSoftware(editMode: Boolean = false): WSResponse =  {
+      val url = editMode match {
+        case true => "/no-software-listed?editMode=true"
+        case false => "/no-software-listed"
+      }
+      get(url)
+    }
     
     def getHowYouFindSoftware(): WSResponse = get("/do-you-have-software")
     
@@ -168,15 +180,33 @@ trait ComponentSpecBase extends AnyWordSpec
       )
     }
 
-    def getEnterSoftwareName(): WSResponse = get("/enter-software-name")
+    def getEnterSoftwareName(editMode: Boolean = false): WSResponse = {
+      val url = editMode match {
+        case true => "/enter-software-name?editMode=true"
+        case false => "/enter-software-name"
+      }
+      get(url)
+    }
 
-    def postEnterSoftwareName(pageAnswer: Option[Int]): WSResponse = post("/enter-software-name")(
-      pageAnswer.fold(Map.empty[String, Seq[String]])(
+    def postEnterSoftwareName(pageAnswer: Option[Int], editMode: Boolean = false): WSResponse = {
+      val url = editMode match {
+        case true => "/enter-software-name?editMode=true"
+        case false => "/enter-software-name"
+      }
+      post(url)(
+        pageAnswer.fold(Map.empty[String, Seq[String]])(
         productId => EnterSoftwareNameForm.form.fill(productId).data.map { case (k, v) => (k, Seq(v)) }
+        )
       )
-    )
+    }
 
-    def clearEnterSoftwareName(): WSResponse = get("/enter-software-name/clear")
+    def clearEnterSoftwareName(editMode: Boolean = false): WSResponse = {
+      val url = editMode match {
+        case true => "/enter-software-name/clear?editMode=true"
+        case false => "/enter-software-name/clear"
+      }
+      get(url)
+    }
 
     def getFullyCompatible(): WSResponse = get("/fully-compatible")
     
