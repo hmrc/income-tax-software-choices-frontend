@@ -77,7 +77,13 @@ trait ComponentSpecBase extends AnyWordSpec
       BusinessIncomeForm.form.fill(pageAnswers).data.map { case (k, v) => (k, Seq(v)) }
     )
 
-    def getNeedAdditionalSoftware: WSResponse = get("/need-additional-software")
+    def getNeedAdditionalSoftware(editMode: Boolean = false): WSResponse = {
+      val url = editMode match {
+        case true => "/need-additional-software?editMode=true"
+        case false => "/need-additional-software"
+      }
+      get(url)
+    }
 
     def getSoftwareInDevelopment: WSResponse = get("/software-in-development")
 

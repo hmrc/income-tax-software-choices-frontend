@@ -139,8 +139,8 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
           pageTitle(s"${messages("check-your-answers.heading")} - ${PageContentBase.title} - GOV.UK"),
           summaryListRow(SummaryListKeys.incomeSources, Seq(SoleTrader, UkProperty, OverseasProperty)
             .map(vf => messages(s"business-income.$vf")).mkString(" ")),
-          summaryListRow(SummaryListKeys.otherIncome, messages(s"check-your-answers.none-selected")),
-          summaryListRow(SummaryListKeys.otherItems, messages(s"check-your-answers.none-selected")),
+          summaryListRow(SummaryListKeys.otherIncome, messages("check-your-answers.none-selected")),
+          summaryListRow(SummaryListKeys.otherItems, messages("check-your-answers.none-selected")),
           summaryListRow(SummaryListKeys.accountingPeriod, Set(OtherAccountingPeriod)
             .map(vf => messages(s"accounting-period.${vf.key}")).mkString(" "))
         )
@@ -161,10 +161,11 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
         res should have(
           httpStatus(OK),
           pageTitle(s"${messages("check-your-answers.heading")} - ${PageContentBase.title} - GOV.UK"),
+          summaryListRow(SummaryListKeys.softwareName, messages("check-your-answers.software-not-listed")),
           summaryListRow(SummaryListKeys.incomeSources, Seq(SoleTrader, UkProperty, OverseasProperty)
             .map(vf => messages(s"business-income.$vf")).mkString(" ")),
-          summaryListRow(SummaryListKeys.otherIncome, messages(s"check-your-answers.none-selected")),
-          summaryListRow(SummaryListKeys.otherItems, messages(s"check-your-answers.none-selected")),
+          summaryListRow(SummaryListKeys.otherIncome, messages("check-your-answers.none-selected")),
+          summaryListRow(SummaryListKeys.otherItems, messages("check-your-answers.none-selected")),
           summaryListRow(SummaryListKeys.accountingPeriod, Set(OtherAccountingPeriod)
             .map(vf => messages(s"accounting-period.${vf.key}")).mkString(" "))
         )

@@ -31,14 +31,14 @@ class NeedAdditionalSoftwareControllerISpec
   extends ComponentSpecBase with BeforeAndAfterEach with DatabaseHelper {
   
   def testUserFilters(answers: UserAnswers): UserFilters = UserFilters(SessionId, Some(answers))
-  
+
   private val firstOtherSpreadsheetProduct = SoftwareProduct(1001, "Microsoft Excel", Spreadsheet)
 
 
   s"GET ${routes.NeedAdditionalSoftwareController.show().url}" should {
     "redirect to the service index" when {
       "there is nothing saved in the database for this user" in {
-        val res = SoftwareChoicesFrontend.getNeedAdditionalSoftware
+        val res = SoftwareChoicesFrontend.getNeedAdditionalSoftware()
 
         res should have(
           httpStatus(SEE_OTHER),
@@ -49,7 +49,7 @@ class NeedAdditionalSoftwareControllerISpec
     "display the page" in {
       setupAnswers(SessionId, Some(UserAnswers()))
 
-      val res = SoftwareChoicesFrontend.getNeedAdditionalSoftware
+      val res = SoftwareChoicesFrontend.getNeedAdditionalSoftware()
 
       res should have(
         httpStatus(OK),
@@ -62,17 +62,17 @@ class NeedAdditionalSoftwareControllerISpec
           .set(EnterSoftwareNamePage, firstOtherSpreadsheetProduct).get
         await(userFiltersRepository.set(testUserFilters(userAnswers)))
 
-        val res = SoftwareChoicesFrontend.getEnterSoftwareName(editMode = true)
+        val res = SoftwareChoicesFrontend.getNeedAdditionalSoftware(editMode = true)
 
         res should have(
           httpStatus(OK),
-          pageTitle(s"${messages("enter-software-name.heading")} - ${PageContentBase.title} - GOV.UK"),
-          elementHasHref(".govuk-back-link", routes.CheckYourAnswersController.show().url)
+          pageTitle(s"${messages("need-additional-software.heading")} - ${PageContentBase.title} - GOV.UK"),
+          elementHasHref(".govuk-back-link", routes.EnterSoftwareNameController.show(editMode = true).url)
         )
       }
     }
   }
-  
+
   override def beforeEach(): Unit = {
     super.beforeEach()
     await(userFiltersRepository.collection.drop().toFuture())

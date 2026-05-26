@@ -137,7 +137,7 @@ class EnterSoftwareNameControllerISpec extends ComponentSpecBase with BeforeAndA
     }
 
     "in edit mode" should {
-      "clear answers and redirect to the check your answers page" when {
+      "clear answers and redirect to the no software listed" when {
         "the software is not listed" in {
 
           val userAnswers = UserAnswers()

@@ -158,7 +158,7 @@ trait CustomMatchers {
         val elementHref = body.select(selector).attr("href")
         HavePropertyMatchResult(
           elementHref == expectedResult,
-          "elementExists",
+          "elementHref",
           expectedResult,
           elementHref
         )
