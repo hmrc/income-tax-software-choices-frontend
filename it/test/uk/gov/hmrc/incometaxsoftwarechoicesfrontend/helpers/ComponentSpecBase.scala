@@ -171,14 +171,24 @@ trait ComponentSpecBase extends AnyWordSpec
     def getEnterSoftwareName(): WSResponse = get("/enter-software-name")
 
     def postEnterSoftwareName(pageAnswer: Option[Int], editMode: Boolean = false): WSResponse = {
-      post(s"/enter-software-name?editMode=$editMode")(
+      val url = editMode match {
+        case true => "/enter-software-name?editMode=true"
+        case false => "/enter-software-name"
+      }
+      post(url)(
         pageAnswer.fold(Map.empty[String, Seq[String]])(
         productId => EnterSoftwareNameForm.form.fill(productId).data.map { case (k, v) => (k, Seq(v)) }
         )
       )
     }
 
-    def clearEnterSoftwareName(editMode: Boolean = false): WSResponse = get(s"/enter-software-name/clear?editMode=$editMode")
+    def clearEnterSoftwareName(editMode: Boolean = false): WSResponse = {
+      val url = editMode match {
+        case true => "/enter-software-name/clear?editMode=true"
+        case false => "/enter-software-name/clear"
+      }
+      get(url)
+    }
 
     def getFullyCompatible(): WSResponse = get("/fully-compatible")
     
