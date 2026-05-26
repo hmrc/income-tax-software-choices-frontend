@@ -354,6 +354,18 @@ partially-compatible.para3 = If you have not done so already, you now need to:
 partially-compatible.bullet1 = sign up for Making Tax Digital for Income Tax
 partially-compatible.bullet2 = authorise your software for HMRC
 
+#Quarterly Only page
+quarterly-only.heading1 = {0} is ready to send quarterly updates only
+quarterly-only.para1 = This software does not have the ability to submit a tax return.
+quarterly-only.para2 = You can {0} and the features they are planning to provide.
+quarterly-only.para2.link.text = view more information about your software provider
+quarterly-only.para3 = If you intend to do your tax returns via software, {0} to do this.
+quarterly-only.para3.link.text = you will need additional software
+quarterly-only.heading2 = What you should do next
+quarterly-only.para4 = If you have not done so already, you now need to:
+quarterly-only.bullet1 = sign up for Making Tax Digital for Income Tax
+quarterly-only.bullet2 = authorise your software for HMRC
+
 #Not Compatible page
 not-compatible.heading = {0} is not currently compatible
 not-compatible.para1 = You may want to contact your current software provider to see if they are going to support Making Tax Digital for Income Tax for your circumstances.

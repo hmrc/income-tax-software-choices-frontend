@@ -26,10 +26,10 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareProduct, Use
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.EnterSoftwareNamePage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
 
-class PartiallyCompatibleControllerISpec
+class QuarterlyOnlyControllerISpec
   extends ComponentSpecBase with BeforeAndAfterEach with DatabaseHelper {
 
-  s"GET ${routes.PartiallyCompatibleController.show().url}" should {
+  s"GET ${routes.QuarterlyOnlyController.show().url}" should {
     "redirect to the service index" when {
       "there is nothing saved in the database for this user" in {
         val res = SoftwareChoicesFrontend.getSoftwareInDevelopment
@@ -47,11 +47,11 @@ class PartiallyCompatibleControllerISpec
 
       setupAnswers(SessionId, Some(userAnswers))
 
-      val res = SoftwareChoicesFrontend.getPartiallyCompatible()
+      val res = SoftwareChoicesFrontend.getQuarterlyOnly()
 
       res should have(
         httpStatus(OK),
-        pageTitle(s"${messages("partially-compatible.heading1", softwareProduct.name)} - ${PageContentBase.title} - GOV.UK"),
+        pageTitle(s"${messages("quarterly-only.heading1", softwareProduct.name)} - ${PageContentBase.title} - GOV.UK"),
       )
     }
     "display an error for a non-recognised product" in {
@@ -61,7 +61,7 @@ class PartiallyCompatibleControllerISpec
 
       setupAnswers(SessionId, Some(userAnswers))
 
-      val res = SoftwareChoicesFrontend.getPartiallyCompatible()
+      val res = SoftwareChoicesFrontend.getQuarterlyOnly()
 
       res should have(
         httpStatus(INTERNAL_SERVER_ERROR)

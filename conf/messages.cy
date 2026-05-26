@@ -355,6 +355,18 @@ partially-compatible.para3 = *** MISSING WELSH ***
 partially-compatible.bullet1 = *** MISSING WELSH ***
 partially-compatible.bullet2 = *** MISSING WELSH ***
 
+#Quarterly Only page
+quarterly-only.heading1 = *** MISSING WELSH ***
+quarterly-only.para1 = *** MISSING WELSH ***
+quarterly-only.para2 = *** MISSING WELSH ***
+quarterly-only.para2.link.text = *** MISSING WELSH ***
+quarterly-only.para3 = *** MISSING WELSH ***
+quarterly-only.para3.link.text = *** MISSING WELSH ***
+quarterly-only.heading2 = *** MISSING WELSH ***
+quarterly-only.para4 = *** MISSING WELSH ***
+quarterly-only.bullet1 = *** MISSING WELSH ***
+quarterly-only.bullet2 = *** MISSING WELSH ***
+
 #Not Compatible page
 not-compatible.heading = *** MISSING WELSH ***
 not-compatible.para1 = *** MISSING WELSH ***

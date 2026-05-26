@@ -182,6 +182,8 @@ trait ComponentSpecBase extends AnyWordSpec
     
     def getPartiallyCompatible(): WSResponse = get("/partly-compatible")
 
+    def getQuarterlyOnly(): WSResponse = get("/quarterly-updates-only")
+    
     def getNotCompatible(): WSResponse = get("/not-compatible")
 
     def healthcheck(): WSResponse =

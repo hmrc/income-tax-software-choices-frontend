@@ -61,4 +61,6 @@ GET         /fully-compatible                       uk.gov.hmrc.incometaxsoftwar
 
 GET         /partly-compatible                      uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.PartiallyCompatibleController.show()
 
+GET         /quarterly-updates-only                 uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.QuarterlyOnlyController.show()
+
 GET         /not-compatible                         uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.NotCompatibleController.show()
