@@ -55,11 +55,6 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
       table.selectHead(s"tbody > tr:nth-child($row) > td:nth-child(2)").text shouldBe status
     }
 
-    def checkRowWithMeaning(table: Element, row: Int, status: String,meaning: String): Assertion = {
-      table.selectHead(s"tbody > tr:nth-child($row) > td:nth-child(1)").text shouldBe status
-      table.selectHead(s"tbody > tr:nth-child($row) > td:nth-child(2)").text shouldBe meaning
-    }
-
     "the vendor has everything ready now" which {
 
       val document: Document = createAndParseDocument(softwareVendorModelFull)
@@ -114,9 +109,9 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
         }
 
         "displays all the rows" in {
-          checkRowWithMeaning(table(1), 1, ProductDetailsPage.readyNow, meaning = s"${ProductDetailsPage.readyNowDescription}")
-          checkRowWithMeaning(table(1), 2, ProductDetailsPage.inDevelopment, meaning = s"${ProductDetailsPage.inDevelopmentDescription}")
-          checkRowWithMeaning(table(1), 3, ProductDetailsPage.notIncluded, meaning = s"${ProductDetailsPage.notIncludedDescription}")
+          checkRow(table(1), 1, ProductDetailsPage.readyNow, status = s"${ProductDetailsPage.readyNowDescription}")
+          checkRow(table(1), 2, ProductDetailsPage.inDevelopment, status = s"${ProductDetailsPage.inDevelopmentDescription}")
+          checkRow(table(1), 3, ProductDetailsPage.notIncluded, status = s"${ProductDetailsPage.notIncludedDescription}")
           checkRow(table(2), 1, ProductDetailsPage.freeVersion, status = s"${ProductDetailsPage.readyNow}")
           checkRow(table(2), 2, ProductDetailsPage.recordKeeping, status = s"${ProductDetailsPage.readyNow}")
           checkRow(table(2), 3, ProductDetailsPage.bridging, status = s"${ProductDetailsPage.readyNow}")
@@ -199,9 +194,9 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
         }
 
         "displays the correct statuses" in {
-          checkRowWithMeaning(table(1), 1, ProductDetailsPage.readyNow, meaning = s"${ProductDetailsPage.readyNowDescription}")
-          checkRowWithMeaning(table(1), 2, ProductDetailsPage.inDevelopment, meaning = s"${ProductDetailsPage.inDevelopmentDescription}")
-          checkRowWithMeaning(table(1), 3, ProductDetailsPage.notIncluded, meaning = s"${ProductDetailsPage.notIncludedDescription}")
+          checkRow(table(1), 1, ProductDetailsPage.readyNow, status = s"${ProductDetailsPage.readyNowDescription}")
+          checkRow(table(1), 2, ProductDetailsPage.inDevelopment, status = s"${ProductDetailsPage.inDevelopmentDescription}")
+          checkRow(table(1), 3, ProductDetailsPage.notIncluded, status = s"${ProductDetailsPage.notIncludedDescription}")
           checkRow(table(2), 1, ProductDetailsPage.freeVersion, status = s"${ProductDetailsPage.notIncluded}")
           checkRow(table(2), 2, ProductDetailsPage.recordKeeping, status = s"${ProductDetailsPage.notIncluded}")
           checkRow(table(2), 3, ProductDetailsPage.bridging, status = s"${ProductDetailsPage.notIncluded}")
@@ -288,9 +283,9 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
         }
 
         "displays all the rows" in {
-          checkRowWithMeaning(table(1), 1, ProductDetailsPage.readyNow, meaning = s"${ProductDetailsPage.readyNowDescription}")
-          checkRowWithMeaning(table(1), 2, ProductDetailsPage.inDevelopment, meaning = s"${ProductDetailsPage.inDevelopmentDescription}")
-          checkRowWithMeaning(table(1), 3, ProductDetailsPage.notIncluded, meaning = s"${ProductDetailsPage.notIncludedDescription}")
+          checkRow(table(1), 1, ProductDetailsPage.readyNow, status = s"${ProductDetailsPage.readyNowDescription}")
+          checkRow(table(1), 2, ProductDetailsPage.inDevelopment, status = s"${ProductDetailsPage.inDevelopmentDescription}")
+          checkRow(table(1), 3, ProductDetailsPage.notIncluded, status = s"${ProductDetailsPage.notIncludedDescription}")
           checkRow(table(2), 1, ProductDetailsPage.freeVersion, status = s"${ProductDetailsPage.notIncluded}")
           checkRow(table(2), 2, ProductDetailsPage.recordKeeping, status = s"${ProductDetailsPage.notIncluded}")
           checkRow(table(2), 3, ProductDetailsPage.bridging, status = s"${ProductDetailsPage.notIncluded}")

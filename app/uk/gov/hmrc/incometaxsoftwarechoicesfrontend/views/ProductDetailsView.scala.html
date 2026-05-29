@@ -167,53 +167,39 @@
         case _ => Seq.empty
     }
 }
+
 @statusKeyTable = @{
-  govukTable(
-    Table(
+  govukTable(Table(
       rows = Seq(
         Seq(
           TableRow(
             content = Text(messages("product-details.status.ready")),
-            classes = "govuk-!-width-one-third"
-          ),
+            classes = "govuk-!-width-one-third"),
           TableRow(
             content = Text(messages("product-details.meaning.ready")),
-            classes = "govuk-!-width-two-thirds"
-          )
+            classes = "govuk-!-width-two-thirds")
         ),
         Seq(
           TableRow(
             content = HtmlContent(
-              govukTag(
-                Tag(
+              govukTag(Tag(
                   content = Text(messages("product-details.status.development")),
-                  classes = "govuk-tag--yellow govuk-!-display-inline"
-                )
-              )
-            ),
-            classes = "govuk-!-width-one-third"
-          ),
+                  classes = "govuk-tag--yellow govuk-!-display-inline"))),
+            classes = "govuk-!-width-one-third"),
           TableRow(
             content = Text(messages("product-details.meaning.development")),
-            classes = "govuk-!-width-two-thirds"
-          )
+            classes = "govuk-!-width-two-thirds")
         ),
         Seq(
           TableRow(
             content = HtmlContent(
-              govukTag(
-                Tag(
+              govukTag(Tag(
                   content = Text(messages("product-details.status.not-included")),
-                  classes = "govuk-tag--red govuk-!-display-inline"
-                )
-              )
-            ),
-            classes = "govuk-!-width-one-third"
-          ),
+                  classes = "govuk-tag--red govuk-!-display-inline"))),
+            classes = "govuk-!-width-one-third"),
           TableRow(
             content = Text(messages("product-details.meaning.not-included")),
-            classes = "govuk-!-width-two-thirds"
-          )
+            classes = "govuk-!-width-two-thirds")
         )
       ),
       head = Some(
