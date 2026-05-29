@@ -25,10 +25,11 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{Require
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.UserTypeForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.UserTypeForm.userTypeForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.{Check, Find, ViewAll}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.{FutureVendor, Recognised, Spreadsheet, Unrecognised}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{JourneyType, UserType}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.{Agent, SoleTraderOrLandlord}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.requests.SessionRequest
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.{HowYouFindSoftwarePage, UserTypePage}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.{EnterSoftwareNamePage, HowYouFindSoftwarePage, UserTypePage}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.PageAnswersService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.UserTypeView
 
@@ -52,7 +53,7 @@ class UserTypeController @Inject()(view: UserTypeView,
       Ok(view(
         userTypeForm = UserTypeForm.userTypeForm.fill(pageAnswers),
         postAction = routes.UserTypeController.submit(editMode),
-        backUrl = backUrl(editMode)
+        backUrl = backUrl(editMode, request)
       ))
     }
   }
@@ -68,7 +69,7 @@ class UserTypeController @Inject()(view: UserTypeView,
           BadRequest(view(
             userTypeForm = formWithErrors,
             postAction = routes.UserTypeController.submit(editMode),
-            backUrl = backUrl(editMode)
+            backUrl = backUrl(editMode, request)
           ))
         )
       },
@@ -117,10 +118,25 @@ class UserTypeController @Inject()(view: UserTypeView,
     else identify
   }
 
-  def backUrl(editMode: Boolean = false): String = {
-    if (editMode) routes.CheckYourAnswersController.show().url
-    else if (isEnabled(CheckJourney)) routes.HowYouFindSoftwareController.show().url
-    else appConfig.guidance
+  def backUrl(editMode: Boolean = false, request: SessionRequest[AnyContent]): String = {
+    for {
+      journey <- pageAnswersService.getPageAnswers(request.sessionId, HowYouFindSoftwarePage)
+      product <- pageAnswersService.getPageAnswers(request.sessionId, EnterSoftwareNamePage)
+    } yield {
+      if (editMode) routes.CheckYourAnswersController.show().url
+      else
+        journey match {
+          case Some(Find) | Some(ViewAll) => routes.HowYouFindSoftwareController.show().url
+          case Some(Check) =>
+            product.getOrElse(throw new InternalServerException("[UserTypeController][backUrl] - Check journey with no answer from HowYouFindSoftwarePage")).softwareType match {
+              case Recognised => routes.EnterSoftwareNameController.show().url
+              case Spreadsheet => routes.NeedAdditionalSoftwareController.show().url
+              case FutureVendor => routes.SoftwareInDevelopmentController.show().url
+              case Unrecognised => routes.NoSoftwareListedController.show().url
+            }
+          case None => appConfig.guidance
+        }
+    }
+    
   }
-  
 }
