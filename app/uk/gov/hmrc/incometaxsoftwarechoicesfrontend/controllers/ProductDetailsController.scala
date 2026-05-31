@@ -21,12 +21,11 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.SessionIdentifierAction
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.Check
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.Recognised
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.requests.SessionRequest
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareVendorModel, UserAnswers, VendorFilter}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.{PageAnswersService, SoftwareChoicesService}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.{EnterSoftwareNamePage, HowYouFindSoftwarePage}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.{NotFoundView, ProductDetailsPersonalisedView, ProductDetailsView}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.{NotFoundView, ProductDetailsView}
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
@@ -37,7 +36,6 @@ class ProductDetailsController @Inject()(softwareChoicesService: SoftwareChoices
                                          pageAnswersService: PageAnswersService,
                                          identify: SessionIdentifierAction,
                                          productDetailsView: ProductDetailsView,
-                                         personalisedView: ProductDetailsPersonalisedView,
                                          notFoundView: NotFoundView)
                                         (implicit mcc: MessagesControllerComponents, appConfig: AppConfig, val executionContext: ExecutionContext) extends BaseFrontendController {
 
@@ -49,19 +47,19 @@ class ProductDetailsController @Inject()(softwareChoicesService: SoftwareChoices
     userFiltersRepository.get(request.sessionId) map {
       case Some(userFilters) =>
         vendorOpt match {
-          case Some(softwareVendor) => Ok(personalisedView(softwareVendor, backLink(userFilters.answers, userFilters.finalFilters, softwareVendor)))
+          case Some(softwareVendor) => Ok(productDetailsView(softwareVendor, backLink(userFilters.answers, userFilters.finalFilters, softwareVendor)))
           case _ => NotFound(notFoundView(routes.ProductDetailsController.show(productId).url))
         }
       case None =>
         vendorOpt match {
-          case Some(softwareVendor) => Ok(productDetailsView(softwareVendor))
+          case Some(softwareVendor) => Ok(productDetailsView(softwareVendor, routes.SearchSoftwareController.show().url))
           case _ => NotFound(notFoundView(routes.ProductDetailsController.show(productId).url))
         }
     }
   }
 
   private def backLink(answers: Option[UserAnswers], filters: Seq[VendorFilter], softwareVendor: SoftwareVendorModel)
-                      (implicit appConfig: AppConfig, request: SessionRequest[_]): String = {
+                      (implicit appConfig: AppConfig): String = {
     val journey     = pageAnswersService.getPageAnswers(answers, HowYouFindSoftwarePage)
     val productId   = pageAnswersService.getPageAnswers(answers, EnterSoftwareNamePage).map(_.productId).getOrElse(-1)
     val productType = pageAnswersService.getPageAnswers(answers, EnterSoftwareNamePage).map(_.softwareType)
@@ -76,7 +74,6 @@ class ProductDetailsController @Inject()(softwareChoicesService: SoftwareChoices
       case (Some(Check), false, Some(Recognised), Some(true), Some(true))   => routes.FullyCompatibleController.show().url
       case (Some(Check), false, Some(Recognised), Some(true), Some(false))  => routes.PartiallyCompatibleController.show().url
       case (Some(Check), false, Some(Recognised), Some(true), None)         => routes.QuarterlyOnlyController.show().url
-      case (Some(Check), false, Some(Recognised), Some(false), None)        => routes.NotCompatibleController.show().url
       case _                                                                => routes.SearchSoftwareController.show().url
     }
   }

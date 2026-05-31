@@ -18,32 +18,169 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import org.scalatest.BeforeAndAfterEach
 import play.api.http.Status.{NOT_FOUND, OK}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.ComponentSpecBase
+import play.api.test.Helpers.{await, defaultAwaitTimeout}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, DatabaseHelper}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.SessionId
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareProduct, UserAnswers, UserFilters, VendorFilter}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.*
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.*
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.Recognised
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.SoleTraderOrLandlord
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.SoleTrader
 
-class ProductDetailsControllerISpec extends ComponentSpecBase with BeforeAndAfterEach {
+import java.time.Instant
 
-  val address = "/product-details"
+class ProductDetailsControllerISpec extends ComponentSpecBase with BeforeAndAfterEach with DatabaseHelper {
+  private val testTime = Instant.now()
+  private val address = "/product-details"
+
+  def testUserFilters(answers: Option[UserAnswers], filters: Seq[VendorFilter] = Seq.empty): UserFilters =
+    UserFilters(
+      SessionId,
+      answers,
+      finalFilters = filters,
+      randomVendorOrder = (for (x <- 100 to 200) yield x).toList, // range of productId in local test data
+      lastUpdated = testTime
+    )
+
+  override def beforeEach(): Unit = {
+    await(userFiltersRepository.collection.drop().toFuture())
+    super.beforeEach()
+  }
+
 
   s"GET /find-making-tax-digital-income-tax-software${address}" when {
 
-    "respond with 200 status for a real software name" in {
-      When(s"GET $address is called")
-      val response = SoftwareChoicesFrontend.productDetails("101")
+    "there are not UserAnswers" should {
+      "respond with 200 status for a real software name" in {
+        When(s"GET $address is called")
+        val response = SoftwareChoicesFrontend.productDetails("101")
 
-      Then("Should return OK with the software search page")
-      response should have(
-        httpStatus(OK)
-      )
-    }
-    "respond with 404 status for a non existent product id" in {
-      When(s"GET $address is called")
-      val response = SoftwareChoicesFrontend.productDetails("0")
+        Then("Should return OK with the software search page")
+        response should have(
+          httpStatus(OK)
+        )
+      }
+      "respond with 404 status for a non existent product id" in {
+        When(s"GET $address is called")
+        val response = SoftwareChoicesFrontend.productDetails("0")
 
-      Then("Should return Not Found")
-      response should have(
-        httpStatus(NOT_FOUND)
-      )
+        Then("Should return Not Found")
+        response should have(
+          httpStatus(NOT_FOUND)
+        )
+      }
     }
+    
+    "the user has come through Find Journey" should {
+      "respond with 200 status for a real software name" in {
+        val userAnswers = UserAnswers()
+          .set(HowYouFindSoftwarePage, Find).get
+          .set(UserTypePage, SoleTraderOrLandlord).get
+
+        await(userFiltersRepository.set(testUserFilters(Some(userAnswers))))
+
+        When(s"GET $address is called")
+        val response = SoftwareChoicesFrontend.productDetails("101")
+
+        Then("Should return OK with the software search page")
+        response should have(
+          httpStatus(OK),
+          elementExists(s""".govuk-back-link[href="${routes.SearchSoftwareController.show().url}"]""", true)
+        )
+      }
+      
+      "respond with 404 status for a non existent product id" in {
+        When(s"GET $address is called")
+        val response = SoftwareChoicesFrontend.productDetails("0")
+
+        Then("Should return Not Found")
+        response should have(
+          httpStatus(NOT_FOUND)
+        )
+      }
+    }
+
+    "the user has come through ViewAll Journey" should {
+      "respond with 200 status for a real software name" in {
+        val userAnswers = UserAnswers()
+          .set(HowYouFindSoftwarePage, ViewAll).get
+          .set(UserTypePage, SoleTraderOrLandlord).get
+
+        await(userFiltersRepository.set(testUserFilters(Some(userAnswers))))
+
+        When(s"GET $address is called")
+        val response = SoftwareChoicesFrontend.productDetails("101")
+
+        Then("Should return OK with the software search page")
+        response should have(
+          httpStatus(OK),
+          elementExists(s""".govuk-back-link[href="${routes.SearchSoftwareController.show().url}"]""", true)
+        )
+      }
+    }
+
+    "the user has come through Check Journey" should {
+      "respond with 200 status for Fully Compatible Software" in {
+        val userAnswers = UserAnswers()
+          .set(HowYouFindSoftwarePage, Check).get
+          .set(EnterSoftwareNamePage, SoftwareProduct(101,"", Recognised)).get
+          .set(UserTypePage, SoleTraderOrLandlord).get
+          .set(BusinessIncomePage, Seq(SoleTrader)).get
+
+        await(userFiltersRepository.set(testUserFilters(Some(userAnswers))))
+
+        When(s"GET $address is called")
+        val response = SoftwareChoicesFrontend.productDetails("101")
+
+        Then("Should return OK with the software search page")
+        response should have(
+          httpStatus(OK),
+          elementExists(s""".govuk-back-link[href="${routes.FullyCompatibleController.show().url}"]""", true)
+        )
+      }
+
+      "respond with 200 status for Partially Compatible Software" in {
+        val userAnswers = UserAnswers()
+          .set(HowYouFindSoftwarePage, Check).get
+          .set(EnterSoftwareNamePage, SoftwareProduct(104,"", Recognised)).get
+          .set(UserTypePage, SoleTraderOrLandlord).get
+          .set(BusinessIncomePage, Seq(SoleTrader)).get
+
+        await(userFiltersRepository.set(testUserFilters(Some(userAnswers))))
+
+        When(s"GET $address is called")
+        val response = SoftwareChoicesFrontend.productDetails("104")
+
+        Then("Should return OK with the software search page")
+        response should have(
+          httpStatus(OK),
+          elementExists(s""".govuk-back-link[href="${routes.PartiallyCompatibleController.show().url}"]""", true)
+        )
+      }
+
+      "respond with 200 status for Quarterly Compatible Only Software" in {
+        val userAnswers = UserAnswers()
+          .set(HowYouFindSoftwarePage, Check).get
+          .set(EnterSoftwareNamePage, SoftwareProduct(102,"", Recognised)).get
+          .set(UserTypePage, SoleTraderOrLandlord).get
+          .set(BusinessIncomePage, Seq(SoleTrader)).get
+
+        await(userFiltersRepository.set(testUserFilters(Some(userAnswers))))
+
+        When(s"GET $address is called")
+        val response = SoftwareChoicesFrontend.productDetails("102")
+
+        Then("Should return OK with the software search page")
+        response should have(
+          httpStatus(OK),
+          elementExists(s""".govuk-back-link[href="${routes.QuarterlyOnlyController.show().url}"]""", true)
+        )
+      }
+
+    }
+
+
   }
 
 }

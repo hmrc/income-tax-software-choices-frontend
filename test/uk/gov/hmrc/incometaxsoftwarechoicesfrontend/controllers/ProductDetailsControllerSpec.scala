@@ -30,7 +30,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.SoleTraderOr
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.{PageAnswersService, SoftwareChoicesService}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.{NotFoundView, ProductDetailsPersonalisedView, ProductDetailsView}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.{NotFoundView, ProductDetailsView}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 
 import scala.concurrent.Future
@@ -38,13 +38,6 @@ import scala.concurrent.Future
 class ProductDetailsControllerSpec extends ControllerBaseSpec
   with MockSessionIdentifierAction
   with BeforeAndAfterEach {
-
-  private val productDetailsView = app.injector.instanceOf[ProductDetailsView]
-  private val personalisedView = app.injector.instanceOf[ProductDetailsPersonalisedView]
-  private val notFoundView = app.injector.instanceOf[NotFoundView]
-  private val softwareChoicesService = app.injector.instanceOf[SoftwareChoicesService]
-  private val pageAnswersService = app.injector.instanceOf[PageAnswersService]
-  val mockUserFiltersRepo = mock[UserFiltersRepository]
 
   private val recognisedProduct = SoftwareProduct(3, "Vendor 03", Recognised)
   private val fullUserAnswers: UserAnswers = UserAnswers()
@@ -62,24 +55,22 @@ class ProductDetailsControllerSpec extends ControllerBaseSpec
 
   "Show" when {
     "there are no user answers" should {
-      when(mockUserFiltersRepo.get(any())).thenReturn(Future.successful(None))
-
       "a valid param has been passed" should {
-        "return OK status with the product details page" in withController { controller =>
+        "return OK status with the product details page" in new Setup(userFilters = None) {
           val result = controller.show("101")(fakeRequest)
 
           status(result) shouldBe Status.OK
         }
       }
       "an invalid param has been passed" when {
-        "return NotFound status with the Not Found view" in withController { controller =>
+        "return NotFound status with the Not Found view" in new Setup(userFilters = None) {
           val result = controller.show("vendor1")(fakeRequest)
 
           status(result) shouldBe Status.NOT_FOUND
         }
       }
       "a non existent vendor id has been passed" when {
-        "return NotFound status with the Not Found view" in withController { controller =>
+        "return NotFound status with the Not Found view" in new Setup(userFilters = None) {
           val result = controller.show("2")(fakeRequest)
 
           status(result) shouldBe Status.NOT_FOUND
@@ -87,24 +78,22 @@ class ProductDetailsControllerSpec extends ControllerBaseSpec
       }
     }
     "there are User answers for Product and Journey" should {
-      when(mockUserFiltersRepo.get(any())).thenReturn(Future.successful(Some(userFilterWithFullAnswersForPage)))
-
       "a valid param has been passed" should {
-        "return OK status with the product details page" in withController { controller =>
+        "return OK status with the product details page" in new Setup(userFilters = Some(userFilterWithFullAnswersForPage)) {
           val result = controller.show("101")(fakeRequest)
 
           status(result) shouldBe Status.OK
         }
       }
       "an invalid param has been passed" when {
-        "return NotFound status with the Not Found view" in withController { controller =>
+        "return NotFound status with the Not Found view" in new Setup(userFilters = Some(userFilterWithFullAnswersForPage)) {
           val result = controller.show("vendor1")(fakeRequest)
 
           status(result) shouldBe Status.NOT_FOUND
         }
       }
       "a non existent vendor id has been passed" when {
-        "return NotFound status with the Not Found view" in withController { controller =>
+        "return NotFound status with the Not Found view" in new Setup(userFilters = Some(userFilterWithFullAnswersForPage)) {
           val result = controller.show("2")(fakeRequest)
 
           status(result) shouldBe Status.NOT_FOUND
@@ -113,18 +102,26 @@ class ProductDetailsControllerSpec extends ControllerBaseSpec
     }
   }
 
-  private def withController(testCode: ProductDetailsController => Any): Unit = {
-    val controller = new ProductDetailsController(
+
+  class Setup(userFilters: Option[UserFilters] = None) {
+    private val productDetailsView = app.injector.instanceOf[ProductDetailsView]
+    private val notFoundView = app.injector.instanceOf[NotFoundView]
+    private val softwareChoicesService = app.injector.instanceOf[SoftwareChoicesService]
+    private val pageAnswersService = app.injector.instanceOf[PageAnswersService]
+
+    val mockUserFiltersRepo: UserFiltersRepository = mock[UserFiltersRepository]
+
+    when(mockUserFiltersRepo.get(any())).thenReturn(Future.successful(userFilters))
+
+    val controller: ProductDetailsController = new ProductDetailsController(
       softwareChoicesService,
       mockUserFiltersRepo,
       pageAnswersService,
       fakeSessionIdentifierAction,
       productDetailsView,
-      personalisedView,
       notFoundView
     )(mcc, appConfig, ec)
 
-    testCode(controller)
   }
 
 }
