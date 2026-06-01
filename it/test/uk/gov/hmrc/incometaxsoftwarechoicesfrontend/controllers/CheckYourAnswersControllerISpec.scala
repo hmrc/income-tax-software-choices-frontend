@@ -267,7 +267,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
           case None => fail("No user filters found")
         }
       }
-      "redirect to the choosing software page when there are all-in-one vendors and no journey has been set" in {
+      "redirect to the software results page when there are all-in-one vendors and no journey has been set" in {
         val userAnswers = UserAnswers()
           .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
           .set(AdditionalIncomeSourcesPage, Seq.empty).get
@@ -279,7 +279,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
 
         res should have(
           httpStatus(SEE_OTHER),
-          redirectURI(routes.ChoosingSoftwareController.show().url)
+          redirectURI(routes.SearchSoftwareController.show().url)
         )
 
         await(userFiltersRepository.get(SessionId)) match {
@@ -287,7 +287,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
           case None => fail("No user filters found")
         }
       }
-      "redirect to the choosing software page when there are all-in-one vendors in the find journey" in {
+      "redirect to the software results page when there are all-in-one vendors in the find journey" in {
         val userAnswers = UserAnswers()
           .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
           .set(AdditionalIncomeSourcesPage, Seq.empty).get
@@ -300,7 +300,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
 
         res should have(
           httpStatus(SEE_OTHER),
-          redirectURI(routes.ChoosingSoftwareController.show().url)
+          redirectURI(routes.SearchSoftwareController.show().url)
         )
 
         await(userFiltersRepository.get(SessionId)) match {
@@ -405,7 +405,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
         }
       }
 
-      "redirect to the choosing software page when there are all-in-one vendors in the check journey when software type is not set to recognised" in {
+      "redirect to the software results page when there are all-in-one vendors in the check journey when software type is not set to recognised" in {
         val userAnswers = UserAnswers()
           .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
           .set(AdditionalIncomeSourcesPage, Seq.empty).get
@@ -418,7 +418,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
 
         res should have(
           httpStatus(SEE_OTHER),
-          redirectURI(routes.ChoosingSoftwareController.show().url)
+          redirectURI(routes.SearchSoftwareController.show().url)
         )
 
         await(userFiltersRepository.get(SessionId)) match {

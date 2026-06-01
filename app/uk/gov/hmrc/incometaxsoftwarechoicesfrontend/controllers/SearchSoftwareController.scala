@@ -112,7 +112,7 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
 
   def backLinkUrl(isUnguided: Boolean): String = {
     if (isUnguided) routes.UserTypeController.show().url
-    else routes.ChoosingSoftwareController.show().url
+    else routes.CheckYourAnswersController.show().url
   }
 
   private def isUnguided(journey: Option[JourneyType], isAgent: Boolean) = (journey, isAgent) match {

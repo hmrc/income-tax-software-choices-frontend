@@ -104,7 +104,7 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec
   "backLinkUrl" when {
     "user type is sole trader or landlord" when {
       "redirect to the choosing software page" in withController { controller =>
-        controller.backLinkUrl(isUnguided = false) shouldBe routes.ChoosingSoftwareController.show().url
+        controller.backLinkUrl(isUnguided = false) shouldBe routes.CheckYourAnswersController.show().url
       }
     }
     "user type is Agent" should {
