@@ -246,6 +246,11 @@ product-details.status.heading = Statws
 product-details.status.ready = Yn barod nawr
 product-details.status.development = O dan ddatblygiad
 product-details.status.not-included = Ddim ar gael
+product-details.meaning.heading = Ystyr
+
+product-details.meaning.ready = Mae’r nodwedd hon nawr yn barod i’w defnyddio.
+product-details.meaning.development = Mae’r darparwr meddalwedd wedi ymrwymo i adeiladu’r nodwedd hon mewn pryd ar gyfer Ffurflen Dreth 2026 i 2027.
+product-details.meaning.not-included = Nid yw’r nodwedd hon ar gael yn y cynnyrch meddalwedd hwn. Dewiswch gynnyrch gwahanol os yw’n debygol bod angen y nodwedd hon.
 
 
 product-details.software-spec.heading = Manylebau’r feddalwedd

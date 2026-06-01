@@ -245,6 +245,11 @@ product-details.status.heading = Status
 product-details.status.ready = Ready now
 product-details.status.development = In development
 product-details.status.not-included = Not included
+product-details.meaning.heading = Meaning
+
+product-details.meaning.ready = This feature is ready to use now.
+product-details.meaning.development = The software provider has committed to building this feature in time for the 2026 to 2027 tax return.
+product-details.meaning.not-included = This feature is not available in this software product. Choose a different product if this is likely to be needed.
 
 
 product-details.software-spec.heading = Software specifications

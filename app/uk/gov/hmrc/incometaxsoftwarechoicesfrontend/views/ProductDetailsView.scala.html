@@ -47,6 +47,8 @@
     <div class="govuk-!-width-three-quarters govuk-!-padding-0">
         @contactDetailsList
 
+        @statusKeyTable
+
         <h2 class="govuk-heading-m">@messages("product-details.details.heading")</h2>
         @table(featuresProvidedGroup, "features-provided", displayIntent = false)
 
@@ -164,4 +166,57 @@
             ))))
         case _ => Seq.empty
     }
+}
+
+@statusKeyTable = @{
+  govukTable(Table(
+      rows = Seq(
+        Seq(
+          TableRow(
+            content = Text(messages("product-details.status.ready")),
+            classes = "govuk-!-width-one-third"),
+          TableRow(
+            content = Text(messages("product-details.meaning.ready")),
+            classes = "govuk-!-width-two-thirds")
+        ),
+        Seq(
+          TableRow(
+            content = HtmlContent(
+              govukTag(Tag(
+                  content = Text(messages("product-details.status.development")),
+                  classes = "govuk-tag--yellow govuk-!-display-inline"))),
+            classes = "govuk-!-width-one-third"),
+          TableRow(
+            content = Text(messages("product-details.meaning.development")),
+            classes = "govuk-!-width-two-thirds")
+        ),
+        Seq(
+          TableRow(
+            content = HtmlContent(
+              govukTag(Tag(
+                  content = Text(messages("product-details.status.not-included")),
+                  classes = "govuk-tag--red govuk-!-display-inline"))),
+            classes = "govuk-!-width-one-third"),
+          TableRow(
+            content = Text(messages("product-details.meaning.not-included")),
+            classes = "govuk-!-width-two-thirds")
+        )
+      ),
+      head = Some(
+        Seq(
+          HeadCell(
+            content = Text(messages("product-details.status.heading")),
+            classes = "govuk-!-font-weight-bold"
+          ),
+          HeadCell(
+            content = Text(messages("product-details.meaning.heading")),
+            classes = "govuk-!-font-weight-bold"
+          )
+        )
+      ),
+      firstCellIsHeader = false,
+      caption = Some(messages("product-details.status.heading")),
+      captionClasses = "govuk-visually-hidden"
+    )
+  )
 }
