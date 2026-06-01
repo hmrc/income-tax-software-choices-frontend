@@ -25,11 +25,12 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{Require
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.UserTypeForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.UserTypeForm.userTypeForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.{Check, Find, ViewAll}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.{FutureVendor, Recognised, Spreadsheet, Unrecognised}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{JourneyType, SoftwareProduct, UserType}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.{FutureVendor, Spreadsheet, Unrecognised}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{JourneyType, SoftwareProduct, UserAnswers, UserType}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.{Agent, SoleTraderOrLandlord}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.requests.SessionRequest
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.{EnterSoftwareNamePage, HowYouFindSoftwarePage, UserTypePage}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.PageAnswersService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.UserTypeView
 
@@ -39,6 +40,7 @@ import scala.concurrent.{ExecutionContext, Future}
 @Singleton
 class UserTypeController @Inject()(view: UserTypeView,
                                    pageAnswersService: PageAnswersService,
+                                   userFiltersRepository: UserFiltersRepository,
                                    identify: SessionIdentifierAction,
                                    requireData: RequireUserDataRefiner,
                                    val appConfig: AppConfig)
@@ -49,34 +51,34 @@ class UserTypeController @Inject()(view: UserTypeView,
     given Request[AnyContent] = request
     for {
       pageAnswers <- pageAnswersService.getPageAnswers(request.sessionId, UserTypePage)
-      journey <- pageAnswersService.getPageAnswers(request.sessionId, HowYouFindSoftwarePage)
-      product <- pageAnswersService.getPageAnswers(request.sessionId, EnterSoftwareNamePage)
+      userFilters <- userFiltersRepository.get(request.sessionId)
     } yield {
-      val journeyTypeString = journey.map(value => value.key).getOrElse("none")
-      val softwareTypeString = product.map(value => value.softwareType.key).getOrElse("none")
       Ok(view(
         userTypeForm = UserTypeForm.userTypeForm.fill(pageAnswers),
-        postAction = routes.UserTypeController.submit(editMode, journeyTypeString, softwareTypeString),
-        backUrl = backUrl(editMode,  journeyTypeString, softwareTypeString)
+        postAction = routes.UserTypeController.submit(editMode),
+        backUrl = backUrl(userFilters.flatMap(_.answers), editMode)
       ))
     }
   }
 
-  def submit(editMode: Boolean = false, journey: String, softwareType: String): Action[AnyContent] = identifyAndRequireData.async { request =>
+  def submit(editMode: Boolean = false): Action[AnyContent] = identifyAndRequireData.async { request =>
     given Request[AnyContent] = request
 
-    val journeyFuture = pageAnswersService.getPageAnswers(request.sessionId, HowYouFindSoftwarePage)
+    val journey = pageAnswersService.getPageAnswers(request.sessionId, HowYouFindSoftwarePage)
 
     userTypeForm.bindFromRequest().fold(
       formWithErrors => {
-        Future.successful(
+        for {
+          userFilters <- userFiltersRepository.get(request.sessionId)
+        } yield {
           BadRequest(view(
             userTypeForm = formWithErrors,
-            postAction = routes.UserTypeController.submit(editMode, journey, softwareType),
-            backUrl = backUrl(editMode, journey, softwareType))
-          ))
+            postAction = routes.UserTypeController.submit(editMode),
+            backUrl = backUrl(userFilters.flatMap(_.answers), editMode))
+          )
+        }
       },
-      userType => journeyFuture.flatMap {
+      userType => journey.flatMap {
         case Some(Find) | Some(Check) =>
           pageAnswersService.setPageAnswers(request.sessionId, UserTypePage, userType).map {
             case true =>
@@ -121,30 +123,22 @@ class UserTypeController @Inject()(view: UserTypeView,
     else identify
   }
 
-  def backUrl(editMode: Boolean = false, journeyType: String, softwareType: String): String = {
-    println(Console.RED + "==============================" + Console.RESET)
-    println(Console.RED + "==============================" + Console.RESET)
-    println(Console.RED + "==============================" + Console.RESET)
-    println(Console.RED + s"journeyType + $journeyType" + Console.RESET)
-    println(Console.RED + s"softwareType + $softwareType" + Console.RESET)
-    println(Console.RED + "==============================" + Console.RESET)
-    println(Console.RED + "==============================" + Console.RESET)
-    println(Console.RED + "==============================" + Console.RESET)
+  def backUrl(answers: Option[UserAnswers], editMode: Boolean = false): String = {
+    val journeyOpt = pageAnswersService.getPageAnswers(answers, HowYouFindSoftwarePage)
+    val productType = pageAnswersService.getPageAnswers(answers, EnterSoftwareNamePage).map(_.softwareType)
 
-    if (editMode) routes.CheckYourAnswersController.show().url
-    else
-      journeyType match {
-        case "find" | "view-all" => routes.HowYouFindSoftwareController.show().url
-        case "check" =>
-          softwareType match {
-            case "recognised" => routes.EnterSoftwareNameController.show().url
-            case "spreadsheet" => routes.NeedAdditionalSoftwareController.show().url
-            case "future-vendor" => routes.SoftwareInDevelopmentController.show().url
-            case "unrecognised" => routes.NoSoftwareListedController.show().url
-            case "none" => throw new InternalServerException("[UserTypeController][backUrl] - Check journey with no answer from HowYouFindSoftwarePage")
-          }
-        case "none" => appConfig.guidance
-      }
+    (editMode, journeyOpt) match {
+      case (true, _) => routes.CheckYourAnswersController.show().url
+      case (false, Some(Find) | Some(ViewAll)) => routes.HowYouFindSoftwareController.show().url
+      case (false, Some(Check)) =>
+        productType match {
+          case Some(Spreadsheet) => routes.NeedAdditionalSoftwareController.show().url
+          case Some(FutureVendor) => routes.SoftwareInDevelopmentController.show().url
+          case Some(Unrecognised) => routes.NoSoftwareListedController.show().url
+          case _ => routes.EnterSoftwareNameController.show().url
+        }
+      case (_, None) => appConfig.guidance
+    }
   }
 
 }
