@@ -18,7 +18,7 @@ POST        /session-expired                     uk.gov.hmrc.incometaxsoftwarech
 GET         /keep-alive                          uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.KeepAliveController.keepAlive()
 
 GET         /how-will-you-use-it                 uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.UserTypeController.show(editMode: Boolean ?= false)
-POST        /how-will-you-use-it                 uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.UserTypeController.submit(editMode: Boolean ?= false)
+POST        /how-will-you-use-it                 uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.UserTypeController.submit(editMode: Boolean ?= false, journey: String, softwareType: String)
 
 GET         /which-income-source-quarterly-updates  uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.BusinessIncomeController.show(editMode: Boolean ?= false)
 POST        /which-income-source-quarterly-updates  uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.BusinessIncomeController.submit(editMode: Boolean ?= false)

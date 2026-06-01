@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.UserTypeForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.UserTypeForm.userTypeForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.{Check, Find, ViewAll}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.{FutureVendor, Recognised, Spreadsheet, Unrecognised}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{JourneyType, UserType}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{JourneyType, SoftwareProduct, UserType}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.{Agent, SoleTraderOrLandlord}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.requests.SessionRequest
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.{EnterSoftwareNamePage, HowYouFindSoftwarePage, UserTypePage}
@@ -49,67 +49,70 @@ class UserTypeController @Inject()(view: UserTypeView,
     given Request[AnyContent] = request
     for {
       pageAnswers <- pageAnswersService.getPageAnswers(request.sessionId, UserTypePage)
+      journey <- pageAnswersService.getPageAnswers(request.sessionId, HowYouFindSoftwarePage)
+      product <- pageAnswersService.getPageAnswers(request.sessionId, EnterSoftwareNamePage)
     } yield {
+      val journeyTypeString = journey.map(value => value.key).getOrElse("none")
+      val softwareTypeString = product.map(value => value.softwareType.key).getOrElse("none")
       Ok(view(
         userTypeForm = UserTypeForm.userTypeForm.fill(pageAnswers),
-        postAction = routes.UserTypeController.submit(editMode),
-        backUrl = backUrl(editMode, request)
+        postAction = routes.UserTypeController.submit(editMode, journeyTypeString, softwareTypeString),
+        backUrl = backUrl(editMode,  journeyTypeString, softwareTypeString)
       ))
     }
   }
 
-  def submit(editMode: Boolean = false): Action[AnyContent] = identifyAndRequireData.async { request =>
+  def submit(editMode: Boolean = false, journey: String, softwareType: String): Action[AnyContent] = identifyAndRequireData.async { request =>
     given Request[AnyContent] = request
 
-    val journey = pageAnswersService.getPageAnswers(request.sessionId, HowYouFindSoftwarePage)
+    val journeyFuture = pageAnswersService.getPageAnswers(request.sessionId, HowYouFindSoftwarePage)
 
     userTypeForm.bindFromRequest().fold(
       formWithErrors => {
         Future.successful(
           BadRequest(view(
             userTypeForm = formWithErrors,
-            postAction = routes.UserTypeController.submit(editMode),
-            backUrl = backUrl(editMode, request)
+            postAction = routes.UserTypeController.submit(editMode, journey, softwareType),
+            backUrl = backUrl(editMode, journey, softwareType))
           ))
-        )
       },
-      userType => journey.flatMap {
-          case Some(Find) | Some(Check) =>
-            pageAnswersService.setPageAnswers(request.sessionId, UserTypePage, userType).map {
-              case true =>
-                if (editMode) Redirect(routes.CheckYourAnswersController.show())
-                else Redirect(routes.BusinessIncomeController.show())
-              case false => throw new InternalServerException("[UserTypeController][submit] - Could not save user type for find or check journey")
+      userType => journeyFuture.flatMap {
+        case Some(Find) | Some(Check) =>
+          pageAnswersService.setPageAnswers(request.sessionId, UserTypePage, userType).map {
+            case true =>
+              if (editMode) Redirect(routes.CheckYourAnswersController.show())
+              else Redirect(routes.BusinessIncomeController.show())
+            case false => throw new InternalServerException("[UserTypeController][submit] - Could not save user type for find or check journey")
+          }
+        case Some(ViewAll) =>
+          for {
+            setPageAnswers <- pageAnswersService.setPageAnswers(request.sessionId, UserTypePage, userType)
+            saveFiltersFromAnswers <- pageAnswersService.saveFiltersFromAnswers(request.sessionId)
+          } yield {
+            if (setPageAnswers && saveFiltersFromAnswers.nonEmpty) {
+              Redirect(routes.SearchSoftwareController.show())
+            } else {
+              throw new InternalServerException("[UserTypeController][submit] - Could not save user type for view all journey")
             }
-          case Some(ViewAll) =>
-            for {
-              setPageAnswers <- pageAnswersService.setPageAnswers(request.sessionId, UserTypePage, userType)
-              saveFiltersFromAnswers <- pageAnswersService.saveFiltersFromAnswers(request.sessionId)
-            } yield {
-              if (setPageAnswers && saveFiltersFromAnswers.nonEmpty) {
-                Redirect(routes.SearchSoftwareController.show())
-              } else {
-                throw new InternalServerException("[UserTypeController][submit] - Could not save user type for view all journey")
-              }
+          }
+        case None if userType == SoleTraderOrLandlord =>
+          pageAnswersService.setPageAnswers(request.sessionId, UserTypePage, userType).map {
+            case true => Redirect(routes.BusinessIncomeController.show())
+            case false => throw new InternalServerException("[UserTypeController][submit] - Could not save sole trader or landlord user type")
+          }
+        case None if userType == Agent =>
+          for {
+            resetUserAnswers <- pageAnswersService.resetUserAnswers(request.sessionId)
+            setPageAnswers <- pageAnswersService.setPageAnswers(request.sessionId, UserTypePage, userType)
+            saveFiltersFromAnswers <- pageAnswersService.saveFiltersFromAnswers(request.sessionId)
+          } yield {
+            if (resetUserAnswers && setPageAnswers && saveFiltersFromAnswers.nonEmpty) {
+              Redirect(routes.SearchSoftwareController.show())
+            } else {
+              throw new InternalServerException("[UserTypeController][submit] - Could not save agent user type")
             }
-          case None if userType == SoleTraderOrLandlord =>
-            pageAnswersService.setPageAnswers(request.sessionId, UserTypePage, userType).map {
-              case true => Redirect(routes.BusinessIncomeController.show())
-              case false => throw new InternalServerException("[UserTypeController][submit] - Could not save sole trader or landlord user type")
-            }
-          case None if userType == Agent =>
-            for {
-              resetUserAnswers <- pageAnswersService.resetUserAnswers(request.sessionId)
-              setPageAnswers <- pageAnswersService.setPageAnswers(request.sessionId, UserTypePage, userType)
-              saveFiltersFromAnswers <- pageAnswersService.saveFiltersFromAnswers(request.sessionId)
-            } yield {
-              if (resetUserAnswers && setPageAnswers && saveFiltersFromAnswers.nonEmpty) {
-                Redirect(routes.SearchSoftwareController.show())
-              } else {
-                throw new InternalServerException("[UserTypeController][submit] - Could not save agent user type")
-              }
-            }
-        }
+          }
+      }
     )
   }
 
@@ -118,25 +121,30 @@ class UserTypeController @Inject()(view: UserTypeView,
     else identify
   }
 
-  def backUrl(editMode: Boolean = false, request: SessionRequest[AnyContent]): String = {
-    for {
-      journey <- pageAnswersService.getPageAnswers(request.sessionId, HowYouFindSoftwarePage)
-      product <- pageAnswersService.getPageAnswers(request.sessionId, EnterSoftwareNamePage)
-    } yield {
-      if (editMode) routes.CheckYourAnswersController.show().url
-      else
-        journey match {
-          case Some(Find) | Some(ViewAll) => routes.HowYouFindSoftwareController.show().url
-          case Some(Check) =>
-            product.getOrElse(throw new InternalServerException("[UserTypeController][backUrl] - Check journey with no answer from HowYouFindSoftwarePage")).softwareType match {
-              case Recognised => routes.EnterSoftwareNameController.show().url
-              case Spreadsheet => routes.NeedAdditionalSoftwareController.show().url
-              case FutureVendor => routes.SoftwareInDevelopmentController.show().url
-              case Unrecognised => routes.NoSoftwareListedController.show().url
-            }
-          case None => appConfig.guidance
-        }
-    }
-    
+  def backUrl(editMode: Boolean = false, journeyType: String, softwareType: String): String = {
+    println(Console.RED + "==============================" + Console.RESET)
+    println(Console.RED + "==============================" + Console.RESET)
+    println(Console.RED + "==============================" + Console.RESET)
+    println(Console.RED + s"journeyType + $journeyType" + Console.RESET)
+    println(Console.RED + s"softwareType + $softwareType" + Console.RESET)
+    println(Console.RED + "==============================" + Console.RESET)
+    println(Console.RED + "==============================" + Console.RESET)
+    println(Console.RED + "==============================" + Console.RESET)
+
+    if (editMode) routes.CheckYourAnswersController.show().url
+    else
+      journeyType match {
+        case "find" | "view-all" => routes.HowYouFindSoftwareController.show().url
+        case "check" =>
+          softwareType match {
+            case "recognised" => routes.EnterSoftwareNameController.show().url
+            case "spreadsheet" => routes.NeedAdditionalSoftwareController.show().url
+            case "future-vendor" => routes.SoftwareInDevelopmentController.show().url
+            case "unrecognised" => routes.NoSoftwareListedController.show().url
+            case "none" => throw new InternalServerException("[UserTypeController][backUrl] - Check journey with no answer from HowYouFindSoftwarePage")
+          }
+        case "none" => appConfig.guidance
+      }
   }
+
 }
