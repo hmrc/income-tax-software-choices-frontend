@@ -42,19 +42,18 @@ class ProductDetailsController @Inject()(softwareChoicesService: SoftwareChoices
   def show(productId: String): Action[AnyContent] = identify.async { implicit request =>
     given Request[AnyContent] = request
 
-    val vendorOpt = productId.toIntOption.flatMap(softwareChoicesService.getSoftwareVendor)
-
-    userFiltersRepository.get(request.sessionId) map {
-      case Some(userFilters) =>
-        vendorOpt match {
-          case Some(softwareVendor) => Ok(productDetailsView(softwareVendor, backLink(userFilters.answers, userFilters.finalFilters, softwareVendor)))
-          case _ => NotFound(notFoundView(routes.ProductDetailsController.show(productId).url))
-        }
-      case None =>
-        vendorOpt match {
-          case Some(softwareVendor) => Ok(productDetailsView(softwareVendor, routes.SearchSoftwareController.show().url))
-          case _ => NotFound(notFoundView(routes.ProductDetailsController.show(productId).url))
-        }
+    for {
+      userFilters <- userFiltersRepository.get(request.sessionId)
+      vendorOpt = productId.toIntOption.flatMap(softwareChoicesService.getSoftwareVendor)
+    } yield {
+      (userFilters, vendorOpt) match {
+        case (Some(userFilters), Some(softwareVendor)) =>
+          Ok(productDetailsView(softwareVendor, backLink(userFilters.answers, userFilters.finalFilters, softwareVendor)))
+        case (None, Some(softwareVendor)) =>
+          Ok(productDetailsView(softwareVendor, routes.SearchSoftwareController.show().url))
+        case _ =>
+          NotFound(notFoundView(routes.ProductDetailsController.show(productId).url))
+      }
     }
   }
 
