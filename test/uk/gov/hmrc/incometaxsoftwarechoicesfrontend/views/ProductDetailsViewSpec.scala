@@ -380,7 +380,7 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
   }
 
   private def page(vendorModel: SoftwareVendorModel) =
-    productDetailsPage(vendorModel)
+    productDetailsPage(vendorModel, testBackUrl)
 
   private def createAndParseDocument(vendorModel: SoftwareVendorModel): Document =
     Jsoup.parse(page(vendorModel).body)

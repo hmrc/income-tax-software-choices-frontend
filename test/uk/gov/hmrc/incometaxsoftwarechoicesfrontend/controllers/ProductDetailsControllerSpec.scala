@@ -18,48 +18,110 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import org.scalatest.BeforeAndAfterEach
 import play.api.http.Status
-import play.api.test.Helpers._
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.SoftwareChoicesService
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.{ProductDetailsView, NotFoundView}
+import play.api.test.Helpers.*
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.mocks.MockSessionIdentifierAction
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.AccountingPeriod.*
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.Check
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.Recognised
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareProduct, UserAnswers, UserFilters}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.SoleTraderOrLandlord
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.*
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.*
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.{PageAnswersService, SoftwareChoicesService}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.{NotFoundView, ProductDetailsView}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 
-class ProductDetailsControllerSpec extends ControllerBaseSpec with BeforeAndAfterEach {
+import scala.concurrent.Future
 
-  private val productDetailsPage = app.injector.instanceOf[ProductDetailsView]
-  private val notFoundView = app.injector.instanceOf[NotFoundView]
-  private val softwareChoicesService = app.injector.instanceOf[SoftwareChoicesService]
+class ProductDetailsControllerSpec extends ControllerBaseSpec
+  with MockSessionIdentifierAction
+  with BeforeAndAfterEach {
+
+  private val recognisedProduct = SoftwareProduct(3, "Vendor 03", Recognised)
+  private val fullUserAnswers: UserAnswers = UserAnswers()
+    .set(HowYouFindSoftwarePage, Check).get
+    .set(EnterSoftwareNamePage, recognisedProduct).get
+    .set(UserTypePage, SoleTraderOrLandlord).get
+    .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
+    .set(AdditionalIncomeSourcesPage, Seq(UkInterest, ConstructionIndustryScheme, Employment, UkDividends, StatePensionIncome,
+      PrivatePensionIncome, ForeignDividends, ForeignInterest)).get
+    .set(OtherItemsPage, Seq(PaymentsIntoAPrivatePension, CharitableGiving, CapitalGainsTax, StudentLoans,
+      MarriageAllowance, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge)).get
+    .set(AccountingPeriodPage, FirstAprilToThirtyFirstMarch).get
+  private val userFilterWithFullAnswersForPage = UserFilters(sessionId, Some(fullUserAnswers), Seq.empty)
+
 
   "Show" when {
-    "a valid param has been passed" should {
-      "return OK status with the product details page" in withController { controller =>
-        val result = controller.show("101")(fakeRequest)
+    "there are no user answers" should {
+      "a valid param has been passed" should {
+        "return OK status with the product details page" in new Setup(userFilters = None) {
+          val result = controller.show("101")(fakeRequest)
 
-        status(result) shouldBe Status.OK
+          status(result) shouldBe Status.OK
+        }
+      }
+      "an invalid param has been passed" when {
+        "return NotFound status with the Not Found view" in new Setup(userFilters = None) {
+          val result = controller.show("vendor1")(fakeRequest)
+
+          status(result) shouldBe Status.NOT_FOUND
+        }
+      }
+      "a non existent vendor id has been passed" when {
+        "return NotFound status with the Not Found view" in new Setup(userFilters = None) {
+          val result = controller.show("2")(fakeRequest)
+
+          status(result) shouldBe Status.NOT_FOUND
+        }
       }
     }
-    "an invalid param has been passed" when {
-      "return NotFound status with the Not Found view" in withController { controller =>
-        val result = controller.show("vendor1")(fakeRequest)
+    "there are User answers for Product and Journey" should {
+      "a valid param has been passed" should {
+        "return OK status with the product details page" in new Setup(userFilters = Some(userFilterWithFullAnswersForPage)) {
+          val result = controller.show("101")(fakeRequest)
 
-        status(result) shouldBe Status.NOT_FOUND
+          status(result) shouldBe Status.OK
+        }
       }
-    }
-    "a non existent vendor id has been passed" when {
-      "return NotFound status with the Not Found view" in withController { controller =>
-        val result = controller.show("2")(fakeRequest)
+      "an invalid param has been passed" when {
+        "return NotFound status with the Not Found view" in new Setup(userFilters = Some(userFilterWithFullAnswersForPage)) {
+          val result = controller.show("vendor1")(fakeRequest)
 
-        status(result) shouldBe Status.NOT_FOUND
+          status(result) shouldBe Status.NOT_FOUND
+        }
+      }
+      "a non existent vendor id has been passed" when {
+        "return NotFound status with the Not Found view" in new Setup(userFilters = Some(userFilterWithFullAnswersForPage)) {
+          val result = controller.show("2")(fakeRequest)
+
+          status(result) shouldBe Status.NOT_FOUND
+        }
       }
     }
   }
 
-  private def withController(testCode: ProductDetailsController => Any): Unit = {
-    val controller = new ProductDetailsController(
-      softwareChoicesService,
-      productDetailsPage,
-      notFoundView
-    )
 
-    testCode(controller)
+  class Setup(userFilters: Option[UserFilters] = None) {
+    private val productDetailsView = app.injector.instanceOf[ProductDetailsView]
+    private val notFoundView = app.injector.instanceOf[NotFoundView]
+    private val softwareChoicesService = app.injector.instanceOf[SoftwareChoicesService]
+    private val pageAnswersService = app.injector.instanceOf[PageAnswersService]
+
+    val mockUserFiltersRepo: UserFiltersRepository = mock[UserFiltersRepository]
+
+    when(mockUserFiltersRepo.get(any())).thenReturn(Future.successful(userFilters))
+
+    val controller: ProductDetailsController = new ProductDetailsController(
+      softwareChoicesService,
+      mockUserFiltersRepo,
+      pageAnswersService,
+      fakeSessionIdentifierAction,
+      productDetailsView,
+      notFoundView
+    )(mcc, appConfig, ec)
+
   }
 
 }
