@@ -35,9 +35,6 @@ POST        /accounting-period-check                uk.gov.hmrc.incometaxsoftwar
 GET         /check-answers                          uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.CheckYourAnswersController.show()
 POST        /check-answers                          uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.CheckYourAnswersController.submit()
 
-GET         /choosing-software-from-your-results    uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.ChoosingSoftwareController.show()
-POST        /choosing-software-from-your-results    uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.ChoosingSoftwareController.submit()
-
 GET         /no-all-in-one-product                  uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.ZeroSoftwareResultsController.show()
 POST        /no-all-in-one-product                  uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.ZeroSoftwareResultsController.submit()
 

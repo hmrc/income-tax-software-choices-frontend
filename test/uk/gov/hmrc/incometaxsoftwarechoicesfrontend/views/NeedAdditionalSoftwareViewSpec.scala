@@ -19,7 +19,7 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views
 import org.jsoup.Jsoup
 import org.jsoup.nodes.{Document, Element}
 import play.twirl.api.HtmlFormat
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.{ChoosingSoftwareView, NeedAdditionalSoftwareView}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.NeedAdditionalSoftwareView
 
 class NeedAdditionalSoftwareViewSpec extends ViewSpec {
 
