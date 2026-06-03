@@ -27,13 +27,12 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.Feature
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.mocks.{MockRequireUserDataRefiner, MockSessionIdentifierAction}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.UserTypeForm
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.AccountingPeriod.FirstAprilToThirtyFirstMarch
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{JourneyType, SoftwareProduct, UserAnswers, UserFilters, UserType, VendorFilter}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.*
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.{Check, Find, ViewAll}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.{FutureVendor, Recognised, Spreadsheet, Unrecognised}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.SoleTraderOrLandlord
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{CapitalGainsTax, CharitableGiving, ConstructionIndustryScheme, Employment, ForeignDividends, ForeignInterest, HighIncomeChildBenefitCharge, Individual, MarriageAllowance, OverseasProperty, PaymentsIntoAPrivatePension, PrivatePensionIncome, SoleTrader, StatePensionIncome, StudentLoans, UkDividends, UkInterest, UkProperty, VoluntaryClass2NationalInsurance}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.*
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.Recognised
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.{AccountingPeriodPage, AdditionalIncomeSourcesPage, BusinessIncomePage, EnterSoftwareNamePage, HowYouFindSoftwarePage, OtherItemsPage, UserTypePage}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.Individual
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.{EnterSoftwareNamePage, HowYouFindSoftwarePage, UserTypePage}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.PageAnswersService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.UserTypeView
@@ -43,17 +42,8 @@ import scala.concurrent.Future
 class UserTypeControllerSpec extends ControllerBaseSpec with MockSessionIdentifierAction with MockRequireUserDataRefiner with FeatureSwitching{
 
   private val recognisedProduct = SoftwareProduct(3, "Vendor 03", Recognised)
-  private val fullUserAnswers: UserAnswers = UserAnswers()
-    .set(HowYouFindSoftwarePage, Check).get
-    .set(EnterSoftwareNamePage, recognisedProduct).get
-    .set(UserTypePage, SoleTraderOrLandlord).get
-    .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
-    .set(AdditionalIncomeSourcesPage, Seq(UkInterest, ConstructionIndustryScheme, Employment, UkDividends, StatePensionIncome,
-      PrivatePensionIncome, ForeignDividends, ForeignInterest)).get
-    .set(OtherItemsPage, Seq(PaymentsIntoAPrivatePension, CharitableGiving, CapitalGainsTax, StudentLoans,
-      MarriageAllowance, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge)).get
-    .set(AccountingPeriodPage, FirstAprilToThirtyFirstMarch).get
-  private val userFilterWithFullAnswersForPage = UserFilters(sessionId, Some(fullUserAnswers), Seq.empty)
+  private val userAnswers: UserAnswers = UserAnswers()
+  private val userFilterWithFullAnswersForPage = UserFilters(sessionId, Some(userAnswers), Seq.empty)
 
 
   "show" must {
@@ -68,9 +58,9 @@ class UserTypeControllerSpec extends ControllerBaseSpec with MockSessionIdentifi
         when(mockPageAnswersService.getPageAnswers(eqTo(sessionId), eqTo(UserTypePage))(any()))
           .thenReturn(Future.successful(Some(SoleTraderOrLandlord)))
 
-        when(mockPageAnswersService.getPageAnswers(eqTo(Some(fullUserAnswers)), eqTo(EnterSoftwareNamePage))(any()))
+        when(mockPageAnswersService.getPageAnswers(eqTo(Some(userAnswers)), eqTo(EnterSoftwareNamePage))(any()))
           .thenReturn(Some(recognisedProduct))
-        when(mockPageAnswersService.getPageAnswers(eqTo(Some(fullUserAnswers)), eqTo(HowYouFindSoftwarePage))(any()))
+        when(mockPageAnswersService.getPageAnswers(eqTo(Some(userAnswers)), eqTo(HowYouFindSoftwarePage))(any()))
           .thenReturn(None)
 
         val result: Future[Result] = controller().show()(fakeRequest)
@@ -87,7 +77,7 @@ class UserTypeControllerSpec extends ControllerBaseSpec with MockSessionIdentifi
 
         when(mockPageAnswersService.getPageAnswers(eqTo(sessionId), eqTo(UserTypePage))(any()))
           .thenReturn(Future.successful(Some(SoleTraderOrLandlord)))
-        when(mockPageAnswersService.getPageAnswers(eqTo(Some(fullUserAnswers)), eqTo(EnterSoftwareNamePage))(any()))
+        when(mockPageAnswersService.getPageAnswers(eqTo(Some(userAnswers)), eqTo(EnterSoftwareNamePage))(any()))
           .thenReturn(Some(recognisedProduct))
 
         val result: Future[Result] = controller().show(true)(fakeRequest)
@@ -295,7 +285,6 @@ class UserTypeControllerSpec extends ControllerBaseSpec with MockSessionIdentifi
         intercept[InternalServerException](await(result)).message shouldBe "[UserTypeController][submit] - Could not save user type for find or check journey"
       }
 
-
       "user in Find journey failed to save answers to Filters" in new Setup {
         when(mockPageAnswersService.setPageAnswers(eqTo(sessionId), eqTo(UserTypePage), eqTo(UserType.Agent))(any()))
           .thenReturn(Future.successful(false))
@@ -324,31 +313,81 @@ class UserTypeControllerSpec extends ControllerBaseSpec with MockSessionIdentifi
   }
 
   "backUrl" should {
+    "return the CheckYourAnswers page url when in edit mode" in new Setup(userFilters = Some(userFilterWithFullAnswersForPage)) {
+      when(mockPageAnswersService.getPageAnswers(eqTo(Some(userAnswers)), eqTo(EnterSoftwareNamePage))(any()))
+        .thenReturn(None)
+
+      controller().backUrl(answers = Some(userAnswers), editMode = true) shouldBe routes.CheckYourAnswersController.show().url
+    }
+    "return the HowYouFindSoftware page url when in the Find journey" in new Setup(userFilters = Some(userFilterWithFullAnswersForPage)) {
+      enable(CheckJourney)
+
+      when(mockPageAnswersService.getPageAnswers(eqTo(Some(userAnswers)), eqTo(EnterSoftwareNamePage))(any()))
+        .thenReturn(None)
+      when(mockPageAnswersService.getPageAnswers(eqTo(Some(userAnswers)), eqTo(HowYouFindSoftwarePage))(any()))
+        .thenReturn(Some(Find))
+
+      controller().backUrl(answers = Some(userAnswers)) shouldBe routes.HowYouFindSoftwareController.show().url
+    }
+    "return the HowYouFindSoftware page url when in the ViewAll journey" in new Setup(userFilters = Some(userFilterWithFullAnswersForPage)) {
+      enable(CheckJourney)
+
+      when(mockPageAnswersService.getPageAnswers(eqTo(Some(userAnswers)), eqTo(EnterSoftwareNamePage))(any()))
+        .thenReturn(None)
+      when(mockPageAnswersService.getPageAnswers(eqTo(Some(userAnswers)), eqTo(HowYouFindSoftwarePage))(any()))
+        .thenReturn(Some(ViewAll))
+
+      controller().backUrl(answers = Some(userAnswers)) shouldBe routes.HowYouFindSoftwareController.show().url
+    }
+    "return the NeedAdditionalSoftware page url when in the Check journey with a spreadsheet product" in new Setup(userFilters = Some(userFilterWithFullAnswersForPage)) {
+      enable(CheckJourney)
+
+      when(mockPageAnswersService.getPageAnswers(eqTo(Some(userAnswers)), eqTo(EnterSoftwareNamePage))(any()))
+        .thenReturn(Some(SoftwareProduct(1, "Spreadsheet100", Spreadsheet)))
+      when(mockPageAnswersService.getPageAnswers(eqTo(Some(userAnswers)), eqTo(HowYouFindSoftwarePage))(any()))
+        .thenReturn(Some(Check))
+
+      controller().backUrl(answers = Some(userAnswers)) shouldBe routes.NeedAdditionalSoftwareController.show().url
+    }
+    "return the SoftwareInDevelopment page url when in the Check journey with a future product" in new Setup(userFilters = Some(userFilterWithFullAnswersForPage)) {
+      enable(CheckJourney)
+
+      when(mockPageAnswersService.getPageAnswers(eqTo(Some(userAnswers)), eqTo(EnterSoftwareNamePage))(any()))
+        .thenReturn(Some(SoftwareProduct(1, "Future100", FutureVendor)))
+      when(mockPageAnswersService.getPageAnswers(eqTo(Some(userAnswers)), eqTo(HowYouFindSoftwarePage))(any()))
+        .thenReturn(Some(Check))
+
+      controller().backUrl(answers = Some(userAnswers)) shouldBe routes.SoftwareInDevelopmentController.show().url
+    }
+    "return the NoSoftwareListed page url when in the Check journey with an unrecognised product" in new Setup(userFilters = Some(userFilterWithFullAnswersForPage)) {
+      enable(CheckJourney)
+
+      when(mockPageAnswersService.getPageAnswers(eqTo(Some(userAnswers)), eqTo(EnterSoftwareNamePage))(any()))
+        .thenReturn(Some(SoftwareProduct(1, "Unrecognised100", Unrecognised)))
+      when(mockPageAnswersService.getPageAnswers(eqTo(Some(userAnswers)), eqTo(HowYouFindSoftwarePage))(any()))
+        .thenReturn(Some(Check))
+
+      controller().backUrl(answers = Some(userAnswers)) shouldBe routes.NoSoftwareListedController.show().url
+    }
+    "return the EnterSoftwareName page url when in the Check journey with a recognised product" in new Setup(userFilters = Some(userFilterWithFullAnswersForPage)) {
+      enable(CheckJourney)
+
+      when(mockPageAnswersService.getPageAnswers(eqTo(Some(userAnswers)), eqTo(EnterSoftwareNamePage))(any()))
+        .thenReturn(Some(recognisedProduct))
+      when(mockPageAnswersService.getPageAnswers(eqTo(Some(userAnswers)), eqTo(HowYouFindSoftwarePage))(any()))
+        .thenReturn(Some(Check))
+
+      controller().backUrl(answers = Some(userAnswers)) shouldBe routes.EnterSoftwareNameController.show().url
+    }
     "return the guidance page url when CheckJourney feature switch is disabled" in new Setup(userFilters = Some(userFilterWithFullAnswersForPage)) {
       disable(CheckJourney)
 
-      when(mockPageAnswersService.getPageAnswers(eqTo(Some(fullUserAnswers)), eqTo(EnterSoftwareNamePage))(any()))
-        .thenReturn(Some(recognisedProduct))
-      when(mockPageAnswersService.getPageAnswers(eqTo(Some(fullUserAnswers)), eqTo(HowYouFindSoftwarePage))(any()))
+      when(mockPageAnswersService.getPageAnswers(eqTo(Some(userAnswers)), eqTo(EnterSoftwareNamePage))(any()))
+        .thenReturn(None)
+      when(mockPageAnswersService.getPageAnswers(eqTo(Some(userAnswers)), eqTo(HowYouFindSoftwarePage))(any()))
         .thenReturn(None)
 
-      controller().backUrl(answers = Some(fullUserAnswers)) shouldBe appConfig.guidance
-    }
-    "return the HowYouFindSoftware page url when CheckJourney feature switch is enabled" in new Setup(userFilters = Some(userFilterWithFullAnswersForPage)) {
-      enable(CheckJourney)
-
-      when(mockPageAnswersService.getPageAnswers(eqTo(Some(fullUserAnswers)), eqTo(EnterSoftwareNamePage))(any()))
-        .thenReturn(Some(recognisedProduct))
-      when(mockPageAnswersService.getPageAnswers(eqTo(Some(fullUserAnswers)), eqTo(HowYouFindSoftwarePage))(any()))
-        .thenReturn(Some(Find))
-
-      controller().backUrl(answers = Some(fullUserAnswers)) shouldBe routes.HowYouFindSoftwareController.show().url
-    }
-    "return the CheckYourAnswers page url when in edit mode" in new Setup(userFilters = Some(userFilterWithFullAnswersForPage)) {
-      when(mockPageAnswersService.getPageAnswers(eqTo(Some(fullUserAnswers)), eqTo(EnterSoftwareNamePage))(any()))
-        .thenReturn(Some(recognisedProduct))
-
-      controller().backUrl(answers = Some(fullUserAnswers), editMode = true) shouldBe routes.CheckYourAnswersController.show().url
+      controller().backUrl(answers = Some(userAnswers)) shouldBe appConfig.guidance
     }
   }
 
@@ -358,7 +397,6 @@ class UserTypeControllerSpec extends ControllerBaseSpec with MockSessionIdentifi
     val mockUserFiltersRepository: UserFiltersRepository = mock[UserFiltersRepository]
 
     when(mockUserFiltersRepository.get(any())).thenReturn(Future.successful(userFilters))
-
 
     def controller(journey: Option[JourneyType] = None): UserTypeController = new UserTypeController(
       mockUserTypeView,
