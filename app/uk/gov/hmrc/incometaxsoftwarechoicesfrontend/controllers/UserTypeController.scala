@@ -71,11 +71,12 @@ class UserTypeController @Inject()(view: UserTypeView,
       formWithErrors => {
         for {
           userFilters <- userFiltersRepository.get(request.sessionId)
+          answers = userFilters.flatMap(_.answers)
         } yield {
           BadRequest(view(
             userTypeForm = formWithErrors,
             postAction = routes.UserTypeController.submit(editMode),
-            backUrl = backUrl(userFilters.flatMap(_.answers), editMode))
+            backUrl = backUrl(answers, editMode))
           )
         }
       },
