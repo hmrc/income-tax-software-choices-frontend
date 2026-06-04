@@ -24,9 +24,10 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.Feature
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.SessionId
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, DatabaseHelper}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.*
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.{Agent, SoleTraderOrLandlord}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.*
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{UserAnswers, UserFilters, UserType, VendorFilter}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
 
@@ -66,7 +67,7 @@ class UserTypeControllerISpec extends ComponentSpecBase with BeforeAndAfterEach 
     }
 
     "there are pre-existing page answers with radio option selected" should {
-      "display the page with the previously chosen radio checked" in {
+      "display the page with the previously chosen radio checked and the guidance page as the back link" in {
         val userAnswers = UserAnswers().set(UserTypePage, SoleTraderOrLandlord).get
         await(userFiltersRepository.set(testUserFilters(userAnswers)))
 
@@ -75,13 +76,14 @@ class UserTypeControllerISpec extends ComponentSpecBase with BeforeAndAfterEach 
         res should have(
           httpStatus(OK),
           pageTitle(s"${messages("type-of-user.heading")} - ${PageContentBase.title} - GOV.UK"),
-          radioButtonSelected(id = "type-of-user", selectedRadioButton = Some(SoleTraderOrLandlord.key))
+          radioButtonSelected(id = "type-of-user", selectedRadioButton = Some(SoleTraderOrLandlord.key)),
+          elementExists(s""".govuk-back-link[href="${appConfig.guidance}"]""", true)
         )
       }
     }
 
     "there are pre-existing page answers in edit mode" should {
-      "display the page with the previously chosen radio checked" in {
+      "display the page with the previously chosen radio checked and the check your answers page as the back link" in {
         val userAnswers = UserAnswers().set(UserTypePage, Agent).get
         await(userFiltersRepository.set(testUserFilters(userAnswers)))
 
@@ -90,7 +92,101 @@ class UserTypeControllerISpec extends ComponentSpecBase with BeforeAndAfterEach 
         res should have(
           httpStatus(OK),
           pageTitle(s"${messages("type-of-user.heading")} - ${PageContentBase.title} - GOV.UK"),
-          radioButtonSelected(id = "type-of-user-2", selectedRadioButton = Some(Agent.key))
+          radioButtonSelected(id = "type-of-user-2", selectedRadioButton = Some(Agent.key)),
+          elementExists(s""".govuk-back-link[href="${routes.CheckYourAnswersController.show().url}"]""", true)
+        )
+      }
+    }
+
+    "the user is in the Find journey" should {
+      "display the page with how you find software page as the back link" in {
+        val userAnswers = UserAnswers().set(HowYouFindSoftwarePage, Find).get
+        await(userFiltersRepository.set(testUserFilters(userAnswers)))
+
+        val res = SoftwareChoicesFrontend.getUserType()
+
+        res should have(
+          httpStatus(OK),
+          pageTitle(s"${messages("type-of-user.heading")} - ${PageContentBase.title} - GOV.UK"),
+          elementExists(s""".govuk-back-link[href="${routes.HowYouFindSoftwareController.show().url}"]""", true)
+        )
+      }
+    }
+    "the user is in the View All journey" should {
+      "display the page with how you find software page as the back link" in {
+        val userAnswers = UserAnswers().set(HowYouFindSoftwarePage, ViewAll).get
+        await(userFiltersRepository.set(testUserFilters(userAnswers)))
+
+        val res = SoftwareChoicesFrontend.getUserType()
+
+        res should have(
+          httpStatus(OK),
+          pageTitle(s"${messages("type-of-user.heading")} - ${PageContentBase.title} - GOV.UK"),
+          elementExists(s""".govuk-back-link[href="${routes.HowYouFindSoftwareController.show().url}"]""", true)
+        )
+      }
+    }
+    "the user is in the Check journey and has selected a spreadsheet as their product" should {
+      "display the page with need additional software page as the back link" in {
+        val userAnswers = UserAnswers()
+          .set(HowYouFindSoftwarePage, Check).get
+          .set(EnterSoftwareNamePage, SoftwareProduct(1, "Spreadsheet100", Spreadsheet)).get
+        await(userFiltersRepository.set(testUserFilters(userAnswers)))
+
+        val res = SoftwareChoicesFrontend.getUserType()
+
+        res should have(
+          httpStatus(OK),
+          pageTitle(s"${messages("type-of-user.heading")} - ${PageContentBase.title} - GOV.UK"),
+          elementExists(s""".govuk-back-link[href="${routes.NeedAdditionalSoftwareController.show().url}"]""", true)
+        )
+      }
+    }
+    "the user is in the Check journey and has selected a future vendor as their product" should {
+      "display the page with software in development page as the back link" in {
+        val userAnswers = UserAnswers()
+          .set(HowYouFindSoftwarePage, Check).get
+          .set(EnterSoftwareNamePage, SoftwareProduct(1, "Future100", FutureVendor)).get
+        await(userFiltersRepository.set(testUserFilters(userAnswers)))
+
+        val res = SoftwareChoicesFrontend.getUserType()
+
+        res should have(
+          httpStatus(OK),
+          pageTitle(s"${messages("type-of-user.heading")} - ${PageContentBase.title} - GOV.UK"),
+          elementExists(s""".govuk-back-link[href="${routes.SoftwareInDevelopmentController.show().url}"]""", true)
+        )
+      }
+    }
+    "the user is in the Check journey and has selected an unrecognised product" should {
+      "display the page with no software listed page as the back link" in {
+        val userAnswers = UserAnswers()
+          .set(HowYouFindSoftwarePage, Check).get
+          .set(EnterSoftwareNamePage, SoftwareProduct(1, "Unrecognised100", Unrecognised)).get
+        await(userFiltersRepository.set(testUserFilters(userAnswers)))
+
+        val res = SoftwareChoicesFrontend.getUserType()
+
+        res should have(
+          httpStatus(OK),
+          pageTitle(s"${messages("type-of-user.heading")} - ${PageContentBase.title} - GOV.UK"),
+          elementExists(s""".govuk-back-link[href="${routes.NoSoftwareListedController.show().url}"]""", true)
+        )
+      }
+    }
+    "the user is in the Check journey and has selected an recognised product" should {
+      "display the page with enter software name page as the back link" in {
+        val userAnswers = UserAnswers()
+          .set(HowYouFindSoftwarePage, Check).get
+          .set(EnterSoftwareNamePage, SoftwareProduct(1, "Recognised100", Recognised)).get
+        await(userFiltersRepository.set(testUserFilters(userAnswers)))
+
+        val res = SoftwareChoicesFrontend.getUserType()
+
+        res should have(
+          httpStatus(OK),
+          pageTitle(s"${messages("type-of-user.heading")} - ${PageContentBase.title} - GOV.UK"),
+          elementExists(s""".govuk-back-link[href="${routes.EnterSoftwareNameController.show().url}"]""", true)
         )
       }
     }

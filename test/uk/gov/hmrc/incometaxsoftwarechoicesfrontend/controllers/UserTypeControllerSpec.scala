@@ -23,13 +23,12 @@ import play.api.mvc.Result
 import play.api.test.Helpers.{HTML, await, contentType, defaultAwaitTimeout, redirectLocation, status}
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.http.InternalServerException
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.CheckJourney
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.mocks.{MockRequireUserDataRefiner, MockSessionIdentifierAction}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.UserTypeForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.{Check, Find, ViewAll}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.{FutureVendor, Recognised, Spreadsheet, Unrecognised}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.Recognised
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.SoleTraderOrLandlord
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.Individual
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.{EnterSoftwareNamePage, HowYouFindSoftwarePage, UserTypePage}
@@ -309,85 +308,6 @@ class UserTypeControllerSpec extends ControllerBaseSpec with MockSessionIdentifi
         intercept[InternalServerException](await(result)).message shouldBe "[UserTypeController][submit] - Could not save user type for view all journey"
       }
 
-    }
-  }
-
-  "backUrl" should {
-    "return the CheckYourAnswers page url when in edit mode" in new Setup(userFilters = Some(userFilterWithFullAnswersForPage)) {
-      when(mockPageAnswersService.getPageAnswers(eqTo(Some(userAnswers)), eqTo(EnterSoftwareNamePage))(any()))
-        .thenReturn(None)
-
-      controller().backUrl(answers = Some(userAnswers), editMode = true) shouldBe routes.CheckYourAnswersController.show().url
-    }
-    "return the HowYouFindSoftware page url when in the Find journey" in new Setup(userFilters = Some(userFilterWithFullAnswersForPage)) {
-      enable(CheckJourney)
-
-      when(mockPageAnswersService.getPageAnswers(eqTo(Some(userAnswers)), eqTo(EnterSoftwareNamePage))(any()))
-        .thenReturn(None)
-      when(mockPageAnswersService.getPageAnswers(eqTo(Some(userAnswers)), eqTo(HowYouFindSoftwarePage))(any()))
-        .thenReturn(Some(Find))
-
-      controller().backUrl(answers = Some(userAnswers)) shouldBe routes.HowYouFindSoftwareController.show().url
-    }
-    "return the HowYouFindSoftware page url when in the ViewAll journey" in new Setup(userFilters = Some(userFilterWithFullAnswersForPage)) {
-      enable(CheckJourney)
-
-      when(mockPageAnswersService.getPageAnswers(eqTo(Some(userAnswers)), eqTo(EnterSoftwareNamePage))(any()))
-        .thenReturn(None)
-      when(mockPageAnswersService.getPageAnswers(eqTo(Some(userAnswers)), eqTo(HowYouFindSoftwarePage))(any()))
-        .thenReturn(Some(ViewAll))
-
-      controller().backUrl(answers = Some(userAnswers)) shouldBe routes.HowYouFindSoftwareController.show().url
-    }
-    "return the NeedAdditionalSoftware page url when in the Check journey with a spreadsheet product" in new Setup(userFilters = Some(userFilterWithFullAnswersForPage)) {
-      enable(CheckJourney)
-
-      when(mockPageAnswersService.getPageAnswers(eqTo(Some(userAnswers)), eqTo(EnterSoftwareNamePage))(any()))
-        .thenReturn(Some(SoftwareProduct(1, "Spreadsheet100", Spreadsheet)))
-      when(mockPageAnswersService.getPageAnswers(eqTo(Some(userAnswers)), eqTo(HowYouFindSoftwarePage))(any()))
-        .thenReturn(Some(Check))
-
-      controller().backUrl(answers = Some(userAnswers)) shouldBe routes.NeedAdditionalSoftwareController.show().url
-    }
-    "return the SoftwareInDevelopment page url when in the Check journey with a future product" in new Setup(userFilters = Some(userFilterWithFullAnswersForPage)) {
-      enable(CheckJourney)
-
-      when(mockPageAnswersService.getPageAnswers(eqTo(Some(userAnswers)), eqTo(EnterSoftwareNamePage))(any()))
-        .thenReturn(Some(SoftwareProduct(1, "Future100", FutureVendor)))
-      when(mockPageAnswersService.getPageAnswers(eqTo(Some(userAnswers)), eqTo(HowYouFindSoftwarePage))(any()))
-        .thenReturn(Some(Check))
-
-      controller().backUrl(answers = Some(userAnswers)) shouldBe routes.SoftwareInDevelopmentController.show().url
-    }
-    "return the NoSoftwareListed page url when in the Check journey with an unrecognised product" in new Setup(userFilters = Some(userFilterWithFullAnswersForPage)) {
-      enable(CheckJourney)
-
-      when(mockPageAnswersService.getPageAnswers(eqTo(Some(userAnswers)), eqTo(EnterSoftwareNamePage))(any()))
-        .thenReturn(Some(SoftwareProduct(1, "Unrecognised100", Unrecognised)))
-      when(mockPageAnswersService.getPageAnswers(eqTo(Some(userAnswers)), eqTo(HowYouFindSoftwarePage))(any()))
-        .thenReturn(Some(Check))
-
-      controller().backUrl(answers = Some(userAnswers)) shouldBe routes.NoSoftwareListedController.show().url
-    }
-    "return the EnterSoftwareName page url when in the Check journey with a recognised product" in new Setup(userFilters = Some(userFilterWithFullAnswersForPage)) {
-      enable(CheckJourney)
-
-      when(mockPageAnswersService.getPageAnswers(eqTo(Some(userAnswers)), eqTo(EnterSoftwareNamePage))(any()))
-        .thenReturn(Some(recognisedProduct))
-      when(mockPageAnswersService.getPageAnswers(eqTo(Some(userAnswers)), eqTo(HowYouFindSoftwarePage))(any()))
-        .thenReturn(Some(Check))
-
-      controller().backUrl(answers = Some(userAnswers)) shouldBe routes.EnterSoftwareNameController.show().url
-    }
-    "return the guidance page url when CheckJourney feature switch is disabled" in new Setup(userFilters = Some(userFilterWithFullAnswersForPage)) {
-      disable(CheckJourney)
-
-      when(mockPageAnswersService.getPageAnswers(eqTo(Some(userAnswers)), eqTo(EnterSoftwareNamePage))(any()))
-        .thenReturn(None)
-      when(mockPageAnswersService.getPageAnswers(eqTo(Some(userAnswers)), eqTo(HowYouFindSoftwarePage))(any()))
-        .thenReturn(None)
-
-      controller().backUrl(answers = Some(userAnswers)) shouldBe appConfig.guidance
     }
   }
 
