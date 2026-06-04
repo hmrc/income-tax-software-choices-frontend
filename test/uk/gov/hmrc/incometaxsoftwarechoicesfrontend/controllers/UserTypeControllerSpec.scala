@@ -54,8 +54,8 @@ class UserTypeControllerSpec extends ControllerBaseSpec with MockSessionIdentifi
         )(any(), any()))
           .thenReturn(HtmlFormat.empty)
 
-        when(mockPageAnswersService.getPageAnswers(eqTo(sessionId), eqTo(UserTypePage))(any()))
-          .thenReturn(Future.successful(Some(SoleTraderOrLandlord)))
+        when(mockPageAnswersService.getPageAnswers(eqTo(Some(userAnswers)), eqTo(UserTypePage))(any()))
+          .thenReturn(Some(SoleTraderOrLandlord))
 
         when(mockPageAnswersService.getPageAnswers(eqTo(Some(userAnswers)), eqTo(EnterSoftwareNamePage))(any()))
           .thenReturn(Some(recognisedProduct))
@@ -74,8 +74,8 @@ class UserTypeControllerSpec extends ControllerBaseSpec with MockSessionIdentifi
         )(any(), any()))
           .thenReturn(HtmlFormat.empty)
 
-        when(mockPageAnswersService.getPageAnswers(eqTo(sessionId), eqTo(UserTypePage))(any()))
-          .thenReturn(Future.successful(Some(SoleTraderOrLandlord)))
+        when(mockPageAnswersService.getPageAnswers(eqTo(Some(userAnswers)), eqTo(UserTypePage))(any()))
+          .thenReturn(Some(SoleTraderOrLandlord))
         when(mockPageAnswersService.getPageAnswers(eqTo(Some(userAnswers)), eqTo(EnterSoftwareNamePage))(any()))
           .thenReturn(Some(recognisedProduct))
 
@@ -90,8 +90,8 @@ class UserTypeControllerSpec extends ControllerBaseSpec with MockSessionIdentifi
           any(), any()
         )(any(), any()))
           .thenReturn(HtmlFormat.empty)
-        when(mockPageAnswersService.getPageAnswers(eqTo(sessionId), eqTo(UserTypePage))(any()))
-          .thenReturn(Future.successful(None))
+        when(mockPageAnswersService.getPageAnswers(eqTo(None), eqTo(UserTypePage))(any()))
+          .thenReturn(None)
         when(mockPageAnswersService.getPageAnswers(eqTo(None), eqTo(EnterSoftwareNamePage))(any()))
           .thenReturn(None)
         when(mockPageAnswersService.getPageAnswers(eqTo(None), eqTo(HowYouFindSoftwarePage))(any()))
