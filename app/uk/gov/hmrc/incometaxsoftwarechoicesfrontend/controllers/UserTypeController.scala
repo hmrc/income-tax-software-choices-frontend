@@ -50,13 +50,14 @@ class UserTypeController @Inject()(view: UserTypeView,
   def show(editMode: Boolean = false): Action[AnyContent] = identifyAndRequireData.async { request =>
     given Request[AnyContent] = request
     for {
-      pageAnswers <- pageAnswersService.getPageAnswers(request.sessionId, UserTypePage)
       userFilters <- userFiltersRepository.get(request.sessionId)
+      answers = userFilters.flatMap(_.answers)
+      userTypeAnswer = pageAnswersService.getPageAnswers(answers, UserTypePage)
     } yield {
       Ok(view(
-        userTypeForm = UserTypeForm.userTypeForm.fill(pageAnswers),
+        userTypeForm = UserTypeForm.userTypeForm.fill(userTypeAnswer),
         postAction = routes.UserTypeController.submit(editMode),
-        backUrl = backUrl(userFilters.flatMap(_.answers), editMode)
+        backUrl = backUrl(answers, editMode)
       ))
     }
   }
