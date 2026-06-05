@@ -25,6 +25,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.PageAnswersService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.AccountingPeriodView
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.AccountingPeriodForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.AccountingPeriodForm.accountingPeriodForm
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.AccountingPeriod
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.AccountingPeriod.*
 
 import javax.inject.{Inject, Singleton}
@@ -45,21 +46,22 @@ class AccountingPeriodController @Inject()(view: AccountingPeriodView,
         Ok(view(
           accountingPeriodForm = AccountingPeriodForm.accountingPeriodForm.fill(pageAnswers),
           postAction = routes.AccountingPeriodController.submit(editMode),
-          backUrl = backUrl(editMode),
+          backUrl = backUrl(editMode, pageAnswers),
           softwareName = getSoftwareName(request.product)
         ))
     }
 
   def submit(editMode: Boolean): Action[AnyContent] = (identify andThen requireData).async { request =>
     given Request[AnyContent] = request
-
-        accountingPeriodForm.bindFromRequest().fold(
+    
+    val pageAnswers = pageAnswersService.getPageAnswers(request.userFilters.answers, AccountingPeriodPage)
+    accountingPeriodForm.bindFromRequest().fold(
           formWithErrors => {
             Future.successful(
               BadRequest(view(
                 accountingPeriodForm = formWithErrors,
                 postAction = routes.AccountingPeriodController.submit(editMode),
-                backUrl = backUrl(editMode),
+                backUrl = backUrl(editMode, pageAnswers),
                 softwareName = getSoftwareName(request.product)
               ))
             )
@@ -79,8 +81,11 @@ class AccountingPeriodController @Inject()(view: AccountingPeriodView,
         )
     }
 
-  def backUrl(editMode: Boolean): String = {
-    if (editMode) routes.CheckYourAnswersController.show().url
-    else routes.OtherItemsController.show().url
+  private def backUrl(editMode: Boolean, accountingPeriod: Option[AccountingPeriod]): String = {
+    (editMode, accountingPeriod) match {
+      case (true, _) => routes.CheckYourAnswersController.show().url
+      case (false, Some(OtherAccountingPeriod)) => routes.AccountingPeriodNotAlignedController.show().url
+      case _ => routes.OtherItemsController.show().url
+    }
   }
 }
