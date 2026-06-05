@@ -25,19 +25,22 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{Require
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.UserTypeForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.UserTypeForm.userTypeForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.{Check, Find, ViewAll}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.{FutureVendor, Spreadsheet, Unrecognised}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.{Agent, SoleTraderOrLandlord}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.requests.SessionRequest
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.{HowYouFindSoftwarePage, UserTypePage}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{JourneyType, SoftwareProduct, UserAnswers, UserType}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.{EnterSoftwareNamePage, HowYouFindSoftwarePage, UserTypePage}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.PageAnswersService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.UserTypeView
 
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.ExecutionContext
 
 @Singleton
 class UserTypeController @Inject()(view: UserTypeView,
                                    pageAnswersService: PageAnswersService,
+                                   userFiltersRepository: UserFiltersRepository,
                                    identify: SessionIdentifierAction,
                                    requireData: RequireUserDataRefiner,
                                    val appConfig: AppConfig)
@@ -47,12 +50,14 @@ class UserTypeController @Inject()(view: UserTypeView,
   def show(editMode: Boolean = false): Action[AnyContent] = identifyAndRequireData.async { request =>
     given Request[AnyContent] = request
     for {
-      pageAnswers <- pageAnswersService.getPageAnswers(request.sessionId, UserTypePage)
+      userFilters <- userFiltersRepository.get(request.sessionId)
+      answers = userFilters.flatMap(_.answers)
+      userTypeAnswer = pageAnswersService.getPageAnswers(answers, UserTypePage)
     } yield {
       Ok(view(
-        userTypeForm = UserTypeForm.userTypeForm.fill(pageAnswers),
+        userTypeForm = UserTypeForm.userTypeForm.fill(userTypeAnswer),
         postAction = routes.UserTypeController.submit(editMode),
-        backUrl = backUrl(editMode)
+        backUrl = backUrl(answers, editMode)
       ))
     }
   }
@@ -64,51 +69,54 @@ class UserTypeController @Inject()(view: UserTypeView,
 
     userTypeForm.bindFromRequest().fold(
       formWithErrors => {
-        Future.successful(
+        for {
+          userFilters <- userFiltersRepository.get(request.sessionId)
+          answers = userFilters.flatMap(_.answers)
+        } yield {
           BadRequest(view(
             userTypeForm = formWithErrors,
             postAction = routes.UserTypeController.submit(editMode),
-            backUrl = backUrl(editMode)
-          ))
-        )
+            backUrl = backUrl(answers, editMode))
+          )
+        }
       },
       userType => journey.flatMap {
-          case Some(Find) | Some(Check) =>
-            pageAnswersService.setPageAnswers(request.sessionId, UserTypePage, userType).map {
-              case true =>
-                if (editMode) Redirect(routes.CheckYourAnswersController.show())
-                else Redirect(routes.BusinessIncomeController.show())
-              case false => throw new InternalServerException("[UserTypeController][submit] - Could not save user type for find or check journey")
+        case Some(Find) | Some(Check) =>
+          pageAnswersService.setPageAnswers(request.sessionId, UserTypePage, userType).map {
+            case true =>
+              if (editMode) Redirect(routes.CheckYourAnswersController.show())
+              else Redirect(routes.BusinessIncomeController.show())
+            case false => throw new InternalServerException("[UserTypeController][submit] - Could not save user type for find or check journey")
+          }
+        case Some(ViewAll) =>
+          for {
+            setPageAnswers <- pageAnswersService.setPageAnswers(request.sessionId, UserTypePage, userType)
+            saveFiltersFromAnswers <- pageAnswersService.saveFiltersFromAnswers(request.sessionId)
+          } yield {
+            if (setPageAnswers && saveFiltersFromAnswers.nonEmpty) {
+              Redirect(routes.SearchSoftwareController.show())
+            } else {
+              throw new InternalServerException("[UserTypeController][submit] - Could not save user type for view all journey")
             }
-          case Some(ViewAll) =>
-            for {
-              setPageAnswers <- pageAnswersService.setPageAnswers(request.sessionId, UserTypePage, userType)
-              saveFiltersFromAnswers <- pageAnswersService.saveFiltersFromAnswers(request.sessionId)
-            } yield {
-              if (setPageAnswers && saveFiltersFromAnswers.nonEmpty) {
-                Redirect(routes.SearchSoftwareController.show())
-              } else {
-                throw new InternalServerException("[UserTypeController][submit] - Could not save user type for view all journey")
-              }
+          }
+        case None if userType == SoleTraderOrLandlord =>
+          pageAnswersService.setPageAnswers(request.sessionId, UserTypePage, userType).map {
+            case true => Redirect(routes.BusinessIncomeController.show())
+            case false => throw new InternalServerException("[UserTypeController][submit] - Could not save sole trader or landlord user type")
+          }
+        case None if userType == Agent =>
+          for {
+            resetUserAnswers <- pageAnswersService.resetUserAnswers(request.sessionId)
+            setPageAnswers <- pageAnswersService.setPageAnswers(request.sessionId, UserTypePage, userType)
+            saveFiltersFromAnswers <- pageAnswersService.saveFiltersFromAnswers(request.sessionId)
+          } yield {
+            if (resetUserAnswers && setPageAnswers && saveFiltersFromAnswers.nonEmpty) {
+              Redirect(routes.SearchSoftwareController.show())
+            } else {
+              throw new InternalServerException("[UserTypeController][submit] - Could not save agent user type")
             }
-          case None if userType == SoleTraderOrLandlord =>
-            pageAnswersService.setPageAnswers(request.sessionId, UserTypePage, userType).map {
-              case true => Redirect(routes.BusinessIncomeController.show())
-              case false => throw new InternalServerException("[UserTypeController][submit] - Could not save sole trader or landlord user type")
-            }
-          case None if userType == Agent =>
-            for {
-              resetUserAnswers <- pageAnswersService.resetUserAnswers(request.sessionId)
-              setPageAnswers <- pageAnswersService.setPageAnswers(request.sessionId, UserTypePage, userType)
-              saveFiltersFromAnswers <- pageAnswersService.saveFiltersFromAnswers(request.sessionId)
-            } yield {
-              if (resetUserAnswers && setPageAnswers && saveFiltersFromAnswers.nonEmpty) {
-                Redirect(routes.SearchSoftwareController.show())
-              } else {
-                throw new InternalServerException("[UserTypeController][submit] - Could not save agent user type")
-              }
-            }
-        }
+          }
+      }
     )
   }
 
@@ -117,10 +125,22 @@ class UserTypeController @Inject()(view: UserTypeView,
     else identify
   }
 
-  def backUrl(editMode: Boolean = false): String = {
-    if (editMode) routes.CheckYourAnswersController.show().url
-    else if (isEnabled(CheckJourney)) routes.HowYouFindSoftwareController.show().url
-    else appConfig.guidance
+  private def backUrl(answers: Option[UserAnswers], editMode: Boolean = false): String = {
+    val journeyOpt = pageAnswersService.getPageAnswers(answers, HowYouFindSoftwarePage)
+    val productType = pageAnswersService.getPageAnswers(answers, EnterSoftwareNamePage).map(_.softwareType)
+
+    (editMode, journeyOpt) match {
+      case (true, _) => routes.CheckYourAnswersController.show().url
+      case (false, Some(Find) | Some(ViewAll)) => routes.HowYouFindSoftwareController.show().url
+      case (false, Some(Check)) =>
+        productType match {
+          case Some(Spreadsheet) => routes.NeedAdditionalSoftwareController.show().url
+          case Some(FutureVendor) => routes.SoftwareInDevelopmentController.show().url
+          case Some(Unrecognised) => routes.NoSoftwareListedController.show().url
+          case _ => routes.EnterSoftwareNameController.show().url
+        }
+      case (_, None) => appConfig.guidance
+    }
   }
-  
+
 }

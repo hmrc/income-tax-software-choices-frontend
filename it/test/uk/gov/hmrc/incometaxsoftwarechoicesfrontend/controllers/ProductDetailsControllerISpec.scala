@@ -83,7 +83,7 @@ class ProductDetailsControllerISpec extends ComponentSpecBase with BeforeAndAfte
         When(s"GET $address is called")
         val response = SoftwareChoicesFrontend.productDetails("101")
 
-        Then("Should return OK with the software search page")
+        Then("Should return OK with the software search page as the back link")
         response should have(
           httpStatus(OK),
           elementExists(s""".govuk-back-link[href="${routes.SearchSoftwareController.show().url}"]""", true)
@@ -112,7 +112,7 @@ class ProductDetailsControllerISpec extends ComponentSpecBase with BeforeAndAfte
         When(s"GET $address is called")
         val response = SoftwareChoicesFrontend.productDetails("101")
 
-        Then("Should return OK with the software search page")
+        Then("Should return OK with the software search page as the back link")
         response should have(
           httpStatus(OK),
           elementExists(s""".govuk-back-link[href="${routes.SearchSoftwareController.show().url}"]""", true)
@@ -133,7 +133,7 @@ class ProductDetailsControllerISpec extends ComponentSpecBase with BeforeAndAfte
         When(s"GET $address is called")
         val response = SoftwareChoicesFrontend.productDetails("101")
 
-        Then("Should return OK with the software search page")
+        Then("Should return OK with the fully compatible page as the back link")
         response should have(
           httpStatus(OK),
           elementExists(s""".govuk-back-link[href="${routes.FullyCompatibleController.show().url}"]""", true)
@@ -152,7 +152,7 @@ class ProductDetailsControllerISpec extends ComponentSpecBase with BeforeAndAfte
         When(s"GET $address is called")
         val response = SoftwareChoicesFrontend.productDetails("104")
 
-        Then("Should return OK with the software search page")
+        Then("Should return OK with the partially compatible page as the back link")
         response should have(
           httpStatus(OK),
           elementExists(s""".govuk-back-link[href="${routes.PartiallyCompatibleController.show().url}"]""", true)
@@ -171,7 +171,7 @@ class ProductDetailsControllerISpec extends ComponentSpecBase with BeforeAndAfte
         When(s"GET $address is called")
         val response = SoftwareChoicesFrontend.productDetails("102")
 
-        Then("Should return OK with the software search page")
+        Then("Should return OK with the quarterly only page as the back link")
         response should have(
           httpStatus(OK),
           elementExists(s""".govuk-back-link[href="${routes.QuarterlyOnlyController.show().url}"]""", true)

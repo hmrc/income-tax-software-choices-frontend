@@ -18,13 +18,13 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import play.api.http.Status.OK
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, DatabaseHelper}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.SessionId
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, DatabaseHelper}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.Check
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.{Spreadsheet, Unrecognised}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.Unrecognised
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareProduct, UserAnswers, UserFilters}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.{EnterSoftwareNamePage, HowYouFindSoftwarePage}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
 
 class NoSoftwareListedControllerISpec extends ComponentSpecBase  with DatabaseHelper {
 
