@@ -34,7 +34,7 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
   s"GET ${routes.AccountingPeriodController.show().url}" should {
     "redirect to the service index" when {
       "there is nothing saved in the database for this user" in {
-        val res = SoftwareChoicesFrontend.getAccountingPeriod
+        val res = SoftwareChoicesFrontend.getAccountingPeriod()
 
         res should have(
           httpStatus(SEE_OTHER),
@@ -48,7 +48,7 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
           .set(EnterSoftwareNamePage, RecognisedSoftwareProduct).get
         setupAnswers(SessionId, Some(userAnswers))
 
-        val res = SoftwareChoicesFrontend.getAccountingPeriod
+        val res = SoftwareChoicesFrontend.getAccountingPeriod()
 
         res should have(
           httpStatus(OK),
@@ -59,20 +59,21 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
         )
       }
       "the accounting period question has been answered previously" which {
-        "was the 6th April to 5th April option" in {
+        "was the 6th April to 5th April option, and the user is in edit mode" in {
           val userAnswers = UserAnswers()
             .set(EnterSoftwareNamePage, RecognisedSoftwareProduct).get
             .set(AccountingPeriodPage, SixthAprilToFifthApril).get
           setupAnswers(SessionId, Some(userAnswers))
 
-          val res = SoftwareChoicesFrontend.getAccountingPeriod
+          val res = SoftwareChoicesFrontend.getAccountingPeriod(editMode = true)
 
           res should have(
             httpStatus(OK),
             pageTitle(s"${messages("accounting-period.heading")} - ${PageContentBase.title} - GOV.UK"),
             radioButtonSelected(id = "accounting-period", Some(SixthAprilToFifthApril.key)),
             radioButtonSelected(id = "accounting-period-2", None),
-            radioButtonSelected(id = "accounting-period-4", None)
+            radioButtonSelected(id = "accounting-period-4", None),
+            elementExists(s""".govuk-back-link[href="${routes.CheckYourAnswersController.show().url}"]""", true)
           )
           res.body.contains(RecognisedSoftwareProduct.name) shouldBe true
         }
@@ -82,7 +83,7 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
             .set(AccountingPeriodPage, FirstAprilToThirtyFirstMarch).get
           setupAnswers(SessionId, Some(userAnswers))
 
-          val res = SoftwareChoicesFrontend.getAccountingPeriod
+          val res = SoftwareChoicesFrontend.getAccountingPeriod()
 
           res should have(
             httpStatus(OK),
@@ -99,7 +100,7 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
             .set(AccountingPeriodPage, OtherAccountingPeriod).get
           setupAnswers(SessionId, Some(userAnswers))
           
-          val res = SoftwareChoicesFrontend.getAccountingPeriod
+          val res = SoftwareChoicesFrontend.getAccountingPeriod()
 
           res should have(
             httpStatus(OK),
@@ -220,15 +221,6 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
           pageTitle(s"Error: ${messages("accounting-period.heading")} - ${PageContentBase.title} - GOV.UK")
         )
       }
-    }
-  }
-
-  "backUrl" must {
-    "return to additional income page when not in edit mode" in {
-      accountingPeriodController.backUrl(editMode = false) shouldBe routes.OtherItemsController.show().url
-    }
-    "return to check your answers when in edit mode" in {
-      accountingPeriodController.backUrl(editMode = true) shouldBe routes.CheckYourAnswersController.show().url
     }
   }
 
