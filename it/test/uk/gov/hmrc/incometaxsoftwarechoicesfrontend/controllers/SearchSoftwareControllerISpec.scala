@@ -22,6 +22,8 @@ import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.SessionId
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, DatabaseHelper}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.AccountingPeriod.SixthAprilToFifthApril
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.{Check, Find, ViewAll}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.Recognised
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.{Agent, SoleTraderOrLandlord}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{VendorFilter, *}
@@ -78,6 +80,80 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
         response should have(
           httpStatus(OK),
           elementExists("#agent-filter", true)
+        )
+      }
+    }
+    "have a back link that returns to the user type page" when {
+      "the user type is View All" in {
+        val userAnswers = UserAnswers()
+          .set(UserTypePage, Agent).get
+          .set(HowYouFindSoftwarePage, ViewAll).get
+        setupAnswers(SessionId, Some(userAnswers), Seq(VendorFilter.Agent))
+
+        val res = SoftwareChoicesFrontend.getSoftwareResults
+
+        res should have(
+          httpStatus(OK),
+          elementExists(s""".govuk-back-link[href="${routes.UserTypeController.show().url}"]""", true)
+        )
+      }
+
+      "the user type is Check and has a quarterly only product" in {
+
+      }
+    }
+    "have a back link that returns to the check your answers page" when {
+      "the user type is Find" in {
+        val userAnswers = UserAnswers()
+          .set(UserTypePage, Agent).get
+          .set(HowYouFindSoftwarePage, Find).get
+        setupAnswers(SessionId, Some(userAnswers), Seq(VendorFilter.Agent))
+
+        val res = SoftwareChoicesFrontend.getSoftwareResults
+
+        res should have(
+          httpStatus(OK),
+          elementExists(s""".govuk-back-link[href="${routes.CheckYourAnswersController.show().url}"]""", true)
+        )
+      }
+    }
+    "have a back link that returns to the not compatible page" when {
+      "the user type is Check and has a non compatible product" in {
+        val softwareProduct = SoftwareProduct(2001, "Not Compatible Product", Recognised)
+        val userAnswers = UserAnswers()
+          .set(UserTypePage, Agent).get
+          .set(HowYouFindSoftwarePage, Check).get
+          .set(EnterSoftwareNamePage, softwareProduct).get
+          .set(BusinessIncomePage, Seq(SoleTrader)).get
+          .set(AccountingPeriodPage, SixthAprilToFifthApril).get
+        setupAnswers(SessionId, Some(userAnswers), Seq(VendorFilter.Agent))
+
+        val res = SoftwareChoicesFrontend.getSoftwareResults
+
+        res should have(
+          httpStatus(OK),
+          elementExists(s""".govuk-back-link[href="${routes.NotCompatibleController.show().url}"]""", true)
+        )
+      }
+    }
+    "have a back link that returns to the quarterly updates only page" when {
+      "the user type is Check and has a quarterly quarterly-updates-only product" in {
+        val softwareProduct = SoftwareProduct(102, "Quarterly only product", Recognised)
+        val userAnswers = UserAnswers()
+          .set(UserTypePage, Agent).get
+          .set(HowYouFindSoftwarePage, Check).get
+          .set(EnterSoftwareNamePage, softwareProduct).get
+          .set(BusinessIncomePage, Seq(SoleTrader)).get
+          .set(AdditionalIncomeSourcesPage, Seq(Employment)).get
+          .set(OtherItemsPage, Seq(StudentLoans)).get
+          .set(AccountingPeriodPage, SixthAprilToFifthApril).get
+        setupAnswers(SessionId, Some(userAnswers), Seq(VendorFilter.Agent))
+
+        val res = SoftwareChoicesFrontend.getSoftwareResults
+
+        res should have(
+          httpStatus(OK),
+          elementExists(s""".govuk-back-link[href="${routes.QuarterlyOnlyController.show().url}"]""", true)
         )
       }
     }

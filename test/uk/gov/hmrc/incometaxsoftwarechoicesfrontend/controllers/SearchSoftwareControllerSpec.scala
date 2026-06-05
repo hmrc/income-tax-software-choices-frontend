@@ -20,6 +20,7 @@ import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.{any, eq as eqTo}
 import org.mockito.Mockito.*
 import org.scalatest.BeforeAndAfterEach
+import org.scalatestplus.mockito.MockitoSugar.mock
 import play.api.Environment
 import play.api.http.Status
 import play.api.mvc.Codec
@@ -98,19 +99,6 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec
       status(result) shouldBe Status.OK
       contentType(result) shouldBe Some(HTML)
       verify(auditService, times(1)).auditSearchResults(any(), any())(any())
-    }
-  }
-
-  "backLinkUrl" when {
-    "user type is sole trader or landlord" when {
-      "redirect to the choosing software page" in withController { controller =>
-        controller.backLinkUrl(isUnguided = false) shouldBe routes.CheckYourAnswersController.show().url
-      }
-    }
-    "user type is Agent" should {
-      "return to the user type page" in withController { controller =>
-        controller.backLinkUrl(isUnguided = true) shouldBe routes.UserTypeController.show().url
-      }
     }
   }
 
