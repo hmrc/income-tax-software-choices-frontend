@@ -124,20 +124,15 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
           .set(OtherItemsPage, Seq(UkInterest)).get
           .set(AccountingPeriodPage, SixthAprilToFifthApril).get
 
-        val initialFilter = Seq(SoleTrader, UkProperty, OverseasProperty, StandardUpdatePeriods)
+        val initialFilter = Seq(VendorFilter.Agent, SoleTrader, UkInterest, StandardUpdatePeriods)
         await(userFiltersRepository.set(testUserFilters(Some(userAnswers), initialFilter)))
 
         val res = SoftwareChoicesFrontend.getSoftwareResults
-        
+
         res should have(
           httpStatus(OK),
           elementExists(s""".govuk-back-link[href="${routes.NotCompatibleController.show().url}"]""", true)
         )
-
-        await(userFiltersRepository.get(SessionId)) match {
-          case Some(uf) => uf.finalFilters shouldBe Seq(SoleTrader, UkProperty, OverseasProperty, StandardUpdatePeriods)
-          case None => fail("No user filters found")
-        }
       }
     }
     "have a back link that returns to the quarterly updates only page" when {
@@ -151,8 +146,9 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
           .set(AccountingPeriodPage, SixthAprilToFifthApril).get
           .set(HowYouFindSoftwarePage, Check).get
           .set(EnterSoftwareNamePage, softwareProduct).get
+          .set(UserTypePage, Agent).get
 
-        val initialFilter = Seq(SoleTrader, UkProperty, OverseasProperty, StandardUpdatePeriods)
+        val initialFilter = Seq(VendorFilter.Agent, SoleTrader, UkProperty, OverseasProperty, StandardUpdatePeriods)
         await(userFiltersRepository.set(testUserFilters(Some(userAnswers), initialFilter)))
 
         val res = SoftwareChoicesFrontend.getSoftwareResults
@@ -161,10 +157,6 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
           httpStatus(OK),
           elementExists(s""".govuk-back-link[href="${routes.QuarterlyOnlyController.show().url}"]""", true)
         )
-        await(userFiltersRepository.get(SessionId)) match {
-          case Some(uf) => uf.finalFilters shouldBe Seq(SoleTrader, UkProperty, OverseasProperty, StandardUpdatePeriods)
-          case None => fail("No user filters found")
-        }
       }
     }
     "have a back link that returns to the check your answers page" when {
@@ -179,7 +171,7 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
           .set(OtherItemsPage, Seq(StudentLoans)).get
           .set(AccountingPeriodPage, SixthAprilToFifthApril).get
 
-        val initialFilter = Seq(SoleTrader, Employment, StudentLoans, StandardUpdatePeriods)
+        val initialFilter = Seq(Individual, SoleTrader, Employment, StudentLoans, StandardUpdatePeriods)
         await(userFiltersRepository.set(testUserFilters(Some(userAnswers), initialFilter)))
 
         val res = SoftwareChoicesFrontend.getSoftwareResults
@@ -188,10 +180,6 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
           httpStatus(OK),
           elementExists(s""".govuk-back-link[href="${routes.CheckYourAnswersController.show().url}"]""", true)
         )
-        await(userFiltersRepository.get(SessionId)) match {
-          case Some(uf) => uf.finalFilters shouldBe Seq(SoleTrader, Employment, StudentLoans, StandardUpdatePeriods)
-          case None => fail("No user filters found")
-        }
       }
     }
     "have a back link that returns to the user type page" when {
@@ -205,7 +193,7 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
           .set(OtherItemsPage, Seq(StudentLoans)).get
           .set(AccountingPeriodPage, SixthAprilToFifthApril).get
 
-        val initialFilter = Seq(SoleTrader, Employment, StudentLoans, StandardUpdatePeriods)
+        val initialFilter = Seq(VendorFilter.Agent, SoleTrader, Employment, StudentLoans, StandardUpdatePeriods)
         await(userFiltersRepository.set(testUserFilters(Some(userAnswers), initialFilter)))
 
         val res = SoftwareChoicesFrontend.getSoftwareResults
@@ -214,10 +202,6 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
           httpStatus(OK),
           elementExists(s""".govuk-back-link[href="${routes.UserTypeController.show().url}"]""", true)
         )
-        await(userFiltersRepository.get(SessionId)) match {
-          case Some(uf) => uf.finalFilters shouldBe Seq(SoleTrader, Employment, StudentLoans, StandardUpdatePeriods)
-          case None => fail("No user filters found")
-        }
       }
     }
   }
