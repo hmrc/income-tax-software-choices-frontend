@@ -29,7 +29,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.{Check, F
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.Recognised
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.Agent
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.requests.SessionDataRequest
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.{EnterSoftwareNamePage, UserTypePage}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.UserTypePage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.viewmodels.SoftwareChoicesResultsViewModel
@@ -115,15 +115,14 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
     val productId = request.product.map(vf => vf.productId).getOrElse(-1)
     val productType = request.product.map(vf => vf.softwareType)
     val foundVendor = model.vendorsWithIntent.find(_.vendor.productId == productId)
-    val isVendorsEmpty = model.vendorsWithIntent.isEmpty
     val isQuarterlyReady = foundVendor.flatMap(_.quarterlyReady)
     val isEoyReady = foundVendor.flatMap(_.eoyReady)
 
-    (model.isUnguided, journey, productType, isVendorsEmpty, isQuarterlyReady, isEoyReady) match {
-      case (true, _, _, _, _, _) => routes.UserTypeController.show().url
-      case (_, Some(Find), _, _, _, _) => routes.CheckYourAnswersController.show().url
-      case (_, Some(Check), Some(Recognised), false, Some(true), None) => routes.QuarterlyOnlyController.show().url
-      case (_, Some(Check), Some(Recognised), false, None, None) => routes.NotCompatibleController.show().url
+    (model.isUnguided, journey, productType, isQuarterlyReady, isEoyReady) match {
+      case (true, _, _, _, _) => routes.UserTypeController.show().url
+      case (_, Some(Find), _, _, _) => routes.CheckYourAnswersController.show().url
+      case (_, Some(Check), Some(Recognised), Some(true), None) => routes.QuarterlyOnlyController.show().url
+      case (_, Some(Check), Some(Recognised), None, None) => routes.NotCompatibleController.show().url
       case _ => routes.CheckYourAnswersController.show().url
     }
   }
