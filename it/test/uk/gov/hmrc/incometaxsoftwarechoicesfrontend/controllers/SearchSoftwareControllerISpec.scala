@@ -28,13 +28,11 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.{Agent, Sole
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{VendorFilter, *}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.*
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.DataService
 
 import java.time.Instant
 
 class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfterEach with DatabaseHelper {
   private val testTime = Instant.now()
-  val dataService: DataService = app.injector.instanceOf[DataService]
 
   def testUserFilters(answers: Option[UserAnswers], filters: Seq[VendorFilter]): UserFilters =
     UserFilters(
@@ -117,7 +115,7 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
     }
     "have a back link that returns to the not compatible page" when {
       "the journey type is Check and has a non compatible product" in {
-        val softwareProduct = dataService.getSoftwareVendors().vendors.map(v => SoftwareProduct(v.productId, v.name, Recognised)).head
+        val softwareProduct = SoftwareProduct(101, "Product 101", Recognised)
         val userAnswers = UserAnswers()
           .set(HowYouFindSoftwarePage, Check).get
           .set(EnterSoftwareNamePage, softwareProduct).get
@@ -144,7 +142,7 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
     }
     "have a back link that returns to the quarterly updates only page" when {
       "the journey type is Check and has a quarterly quarterly-updates-only product" in {
-        val softwareProduct = dataService.getSoftwareVendors().vendors.find(_.productId == 102).map(v => SoftwareProduct(v.productId, v.name, Recognised)).head
+        val softwareProduct = SoftwareProduct(102, "Product 102", Recognised)
 
         val userAnswers = UserAnswers()
           .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
@@ -171,7 +169,7 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
     }
     "have a back link that returns to the check your answers page" when {
       "the journey type is not set and the user type is sole trader" in {
-        val softwareProduct = dataService.getSoftwareVendors().vendors.map(v => SoftwareProduct(v.productId, v.name, Recognised)).head
+        val softwareProduct = SoftwareProduct(101, "Product 101", Recognised)
 
         val userAnswers = UserAnswers()
           .set(UserTypePage, SoleTraderOrLandlord).get
@@ -181,7 +179,7 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
           .set(OtherItemsPage, Seq(StudentLoans)).get
           .set(AccountingPeriodPage, SixthAprilToFifthApril).get
 
-        val initialFilter = Seq()
+        val initialFilter = Seq(SoleTrader, Employment, StudentLoans, StandardUpdatePeriods)
         await(userFiltersRepository.set(testUserFilters(Some(userAnswers), initialFilter)))
 
         val res = SoftwareChoicesFrontend.getSoftwareResults
@@ -190,12 +188,15 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
           httpStatus(OK),
           elementExists(s""".govuk-back-link[href="${routes.CheckYourAnswersController.show().url}"]""", true)
         )
+        await(userFiltersRepository.get(SessionId)) match {
+          case Some(uf) => uf.finalFilters shouldBe Seq(SoleTrader, Employment, StudentLoans, StandardUpdatePeriods)
+          case None => fail("No user filters found")
+        }
       }
     }
     "have a back link that returns to the user type page" when {
       "the journey type is not set and the user type is agent" in {
-        val softwareProduct = dataService.getSoftwareVendors().vendors.map(v => SoftwareProduct(v.productId, v.name, Recognised)).head
-
+        val softwareProduct = SoftwareProduct(101, "Product 101", Recognised)
         val userAnswers = UserAnswers()
           .set(UserTypePage, Agent).get
           .set(EnterSoftwareNamePage, softwareProduct).get
@@ -204,7 +205,7 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
           .set(OtherItemsPage, Seq(StudentLoans)).get
           .set(AccountingPeriodPage, SixthAprilToFifthApril).get
 
-        val initialFilter = Seq()
+        val initialFilter = Seq(SoleTrader, Employment, StudentLoans, StandardUpdatePeriods)
         await(userFiltersRepository.set(testUserFilters(Some(userAnswers), initialFilter)))
 
         val res = SoftwareChoicesFrontend.getSoftwareResults
@@ -213,6 +214,10 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
           httpStatus(OK),
           elementExists(s""".govuk-back-link[href="${routes.UserTypeController.show().url}"]""", true)
         )
+        await(userFiltersRepository.get(SessionId)) match {
+          case Some(uf) => uf.finalFilters shouldBe Seq(SoleTrader, Employment, StudentLoans, StandardUpdatePeriods)
+          case None => fail("No user filters found")
+        }
       }
     }
   }
