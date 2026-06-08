@@ -20,7 +20,6 @@ import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.{any, eq as eqTo}
 import org.mockito.Mockito.*
 import org.scalatest.BeforeAndAfterEach
-import org.scalatestplus.mockito.MockitoSugar.mock
 import play.api.Environment
 import play.api.http.Status
 import play.api.mvc.Codec
