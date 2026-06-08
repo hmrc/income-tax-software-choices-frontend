@@ -113,11 +113,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
     "has a heading" in {
       filterSection.selectHead("h2").text shouldBe SearchSoftwareWithIntentPageContent.Filters.filterHeading
     }
-
-    "has a paragraph" in {
-      filterSection.selectHead("p").text shouldBe SearchSoftwareWithIntentPageContent.Filters.filterParagraph
-    }
-
+    
     "has a clear filters link" in {
       filterSection.selectHead("a").text shouldBe SearchSoftwareWithIntentPageContent.Filters.clearFilters
     }
@@ -132,7 +128,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
       val checkboxGroup = getCheckboxGroup(document, 1)
 
       "contains a fieldset legend" in {
-        checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwareWithIntentPageContent.Filters.pricing
+        checkboxGroup.selectHead(".govuk-accordion__section-button").text shouldBe SearchSoftwareWithIntentPageContent.Filters.pricing
       }
 
       "contains a Free version checkbox" in {
@@ -150,7 +146,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
       val checkboxGroup = getCheckboxGroup(document, 2)
 
       "contains a fieldset legend" in {
-        checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwareWithIntentPageContent.Filters.readiness
+        checkboxGroup.selectHead(".govuk-accordion__section-button").text shouldBe SearchSoftwareWithIntentPageContent.Filters.readiness
       }
 
       "contains a Ready for QU and TR checkbox" in {
@@ -167,7 +163,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
       val checkboxGroup = getCheckboxGroup(document, 3)
 
       "contains a fieldset legend" in {
-        checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwareWithIntentPageContent.Filters.softwareFor
+        checkboxGroup.selectHead(".govuk-accordion__section-button").text shouldBe SearchSoftwareWithIntentPageContent.Filters.softwareFor
       }
 
       "contains a Bridging checkbox" in {
@@ -184,7 +180,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
       val checkboxGroup = getCheckboxGroup(document, 4)
 
       "contains a fieldset legend" in {
-        checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwareWithIntentPageContent.Filters.softwareCompatibility
+        checkboxGroup.selectHead(".govuk-accordion__section-button").text shouldBe SearchSoftwareWithIntentPageContent.Filters.softwareCompatibility
       }
 
       "contains an VAT checkbox" in {
@@ -202,7 +198,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
       val checkboxGroup = getCheckboxGroup(document, 5)
 
       "contains a fieldset legend" in {
-        checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwareWithIntentPageContent.Filters.accessibilityFeatures
+        checkboxGroup.selectHead(".govuk-accordion__section-button").text shouldBe SearchSoftwareWithIntentPageContent.Filters.accessibilityFeatures
       }
 
       "contains an Visual checkbox" in {
@@ -226,7 +222,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
       val checkboxGroup = getCheckboxGroup(document, 6)
 
       "contains a fieldset legend" in {
-        checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwareWithIntentPageContent.Filters.language
+        checkboxGroup.selectHead(".govuk-accordion__section-button").text shouldBe SearchSoftwareWithIntentPageContent.Filters.language
       }
 
       "contains a Welsh Language checkbox" in {
@@ -244,7 +240,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
       val checkboxGroup = getCheckboxGroup(document, 7)
 
       "contains a fieldset legend" in {
-        checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwareWithIntentPageContent.Filters.extraFeatures
+        checkboxGroup.selectHead(".govuk-accordion__section-button").text shouldBe SearchSoftwareWithIntentPageContent.Filters.extraFeatures
       }
 
       "contains an HMRC Assist checkbox" in {
@@ -270,7 +266,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
         val checkboxGroup = getCheckboxGroup(document, 1)
 
         "contains a fieldset legend" in {
-          checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwareWithIntentPageContent.Filters.userType
+          checkboxGroup.selectHead(".govuk-accordion__section-button").text shouldBe SearchSoftwareWithIntentPageContent.Filters.userType
         }
 
         "contains a checkbox for Agent" in {
@@ -293,7 +289,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
       }
 
       "has the correct order of filters with no readiness section" in {
-        val filterGroups = getFilterSection(document).selectSeq(".govuk-form-group > fieldset > legend").map(_.text)
+        val filterGroups = getFilterSection(document).selectSeq(".govuk-accordion__section-button").map(_.text)
         filterGroups shouldBe Seq(
           SearchSoftwareWithIntentPageContent.Filters.userType,
           SearchSoftwareWithIntentPageContent.Filters.pricing,
@@ -631,8 +627,7 @@ object SearchSoftwareWithIntentViewSpec extends ViewSpec {
 
   def getCheckboxGroup(document: Document, n: Int): Element = {
     getFilterSection(document)
-      .selectNth(".govuk-form-group", n)
-      .selectNth(".govuk-fieldset", 1)
+      .selectSeq(".govuk-accordion__section")(n - 1)
   }
 
   def getFilterSection(document: Document): Element = document.mainContent.selectHead("#software-section").selectNth(".filters-section", 1)
@@ -655,7 +650,6 @@ private object SearchSoftwareWithIntentPageContent {
 
   object Filters {
     val filterHeading = "Filter options"
-    val filterParagraph = "You can use filters to find specific software. All fields are optional."
     val clearFilters = "Clear filters"
     val userType = "User type"
     val pricing = "Price"

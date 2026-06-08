@@ -14,16 +14,17 @@
  * limitations under the License.
  *@
 
+@import uk.gov.hmrc.govukfrontend.views.Implicits.RichCheckboxes
+@import uk.gov.hmrc.govukfrontend.views.html.components._
 @import uk.gov.hmrc.govukfrontend.views.viewmodels.checkboxes.CheckboxItem
-@import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 @import uk.gov.hmrc.govukfrontend.views.viewmodels.hint.Hint
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilterGroups
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.helpers.CheckboxGroupHelper
 
 @this(
-        checkboxGroup: CheckboxGroupHelper
+govukAccordion: GovukAccordion,
+govukCheckboxes: GovukCheckboxes
 )
 
 @(checkboxField: Field, isUnguided: Boolean)(implicit messages: Messages)
@@ -40,14 +41,17 @@
     )
 }
 
-@{
-    VendorFilterGroups.preferenceFilters(isUnguided).map { case (group, label) =>
-
-        checkboxGroup(
-            field = checkboxField,
-            fieldsetLegend = messages(s"search-software.filters.$label"),
-            checkboxes = buildCheckBoxes(group, label)
+@govukAccordion(Accordion(
+    id = "filters-accordion",
+    items = VendorFilterGroups.preferenceFilters(isUnguided).map { case (group, label) =>
+        Section(
+            headingContent = Text(messages(s"search-software.filters.$label")),
+            content = HtmlContent(govukCheckboxes(
+                Checkboxes(
+                    classes = "govuk-checkboxes--small",
+                    items = buildCheckBoxes(group, label)
+                ).withFormField(checkboxField)
+            ))
         )
-
     }
-}
+))
