@@ -25,7 +25,8 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.Feature
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{RequireUserDataRefiner, SessionIdentifierAction}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.*
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.ViewAll
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.{Check, Find, ViewAll}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.Recognised
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.Agent
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.requests.SessionDataRequest
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.UserTypePage
@@ -77,7 +78,6 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
         vendorsWithIntent = softwareChoicesService.getVendorsWithIntent(userFilters.finalFilters),
         isUnguided = isUnguided(request.journey, isAgent)
       )
-
       if (isEnabled(ExplicitAudits)) auditService.auditSearchResults(userFilters, model.vendorsWithIntent.map(_.vendor.name))
       Ok(view(model, FiltersForm.form.fill(filters)))
     }
@@ -99,20 +99,32 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
   }
 
   private def view(model: SoftwareChoicesResultsViewModel, form: Form[FiltersFormModel])
-                  (implicit request: Request[_]): Html = {
+                  (implicit request: SessionDataRequest[_]): Html = {
 
     searchSoftwareView(
       viewModel = model,
       searchForm = form,
       postAction = routes.SearchSoftwareController.search(),
       clearAction = routes.SearchSoftwareController.clear(),
-      backUrl = backLinkUrl(model.isUnguided)
+      backUrl = backLinkUrl(model)
     )
   }
 
-  def backLinkUrl(isUnguided: Boolean): String = {
-    if (isUnguided) routes.UserTypeController.show().url
-    else routes.CheckYourAnswersController.show().url
+  private def backLinkUrl(model: SoftwareChoicesResultsViewModel)(implicit request: SessionDataRequest[_]): String = {
+    val journey = request.journey
+    val productId = request.product.map(vf => vf.productId).getOrElse(-1)
+    val productType = request.product.map(vf => vf.softwareType)
+    val foundVendor = model.vendorsWithIntent.find(_.vendor.productId == productId)
+    val isQuarterlyReady = foundVendor.flatMap(_.quarterlyReady)
+    val isEoyReady = foundVendor.flatMap(_.eoyReady)
+
+    (model.isUnguided, journey, productType, isQuarterlyReady, isEoyReady) match {
+      case (true, _, _, _, _) => routes.UserTypeController.show().url
+      case (_, Some(Find), _, _, _) => routes.CheckYourAnswersController.show().url
+      case (_, Some(Check), Some(Recognised), Some(true), None) => routes.QuarterlyOnlyController.show().url
+      case (_, Some(Check), Some(Recognised), None, None) => routes.NotCompatibleController.show().url
+      case _ => routes.CheckYourAnswersController.show().url
+    }
   }
 
   private def isUnguided(journey: Option[JourneyType], isAgent: Boolean) = (journey, isAgent) match {

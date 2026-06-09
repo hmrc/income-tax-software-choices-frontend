@@ -22,6 +22,8 @@ import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.SessionId
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, DatabaseHelper}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.AccountingPeriod.SixthAprilToFifthApril
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.{Check, Find, ViewAll}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.Recognised
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.{Agent, SoleTraderOrLandlord}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{VendorFilter, *}
@@ -78,6 +80,127 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
         response should have(
           httpStatus(OK),
           elementExists("#agent-filter", true)
+        )
+      }
+    }
+    "have a back link that returns to the user type page" when {
+      "the journey type is View All" in {
+        val userAnswers = UserAnswers()
+          .set(UserTypePage, Agent).get
+          .set(HowYouFindSoftwarePage, ViewAll).get
+        setupAnswers(SessionId, Some(userAnswers), Seq(VendorFilter.Agent))
+
+        val res = SoftwareChoicesFrontend.getSoftwareResults
+
+        res should have(
+          httpStatus(OK),
+          elementExists(s""".govuk-back-link[href="${routes.UserTypeController.show().url}"]""", true)
+        )
+      }
+    }
+    "have a back link that returns to the check your answers page" when {
+      "the journey type is Find" in {
+        val userAnswers = UserAnswers()
+          .set(UserTypePage, Agent).get
+          .set(HowYouFindSoftwarePage, Find).get
+        setupAnswers(SessionId, Some(userAnswers), Seq(VendorFilter.Agent))
+
+        val res = SoftwareChoicesFrontend.getSoftwareResults
+
+        res should have(
+          httpStatus(OK),
+          elementExists(s""".govuk-back-link[href="${routes.CheckYourAnswersController.show().url}"]""", true)
+        )
+      }
+    }
+    "have a back link that returns to the not compatible page" when {
+      "the journey type is Check and has a non compatible product" in {
+        val softwareProduct = SoftwareProduct(101, "Product 101", Recognised)
+        val userAnswers = UserAnswers()
+          .set(HowYouFindSoftwarePage, Check).get
+          .set(EnterSoftwareNamePage, softwareProduct).get
+          .set(UserTypePage, Agent).get
+          .set(BusinessIncomePage, Seq(SoleTrader)).get
+          .set(OtherItemsPage, Seq(UkInterest)).get
+          .set(AccountingPeriodPage, SixthAprilToFifthApril).get
+
+        val initialFilter = Seq(VendorFilter.Agent, SoleTrader, UkInterest, StandardUpdatePeriods)
+        await(userFiltersRepository.set(testUserFilters(Some(userAnswers), initialFilter)))
+
+        val res = SoftwareChoicesFrontend.getSoftwareResults
+
+        res should have(
+          httpStatus(OK),
+          elementExists(s""".govuk-back-link[href="${routes.NotCompatibleController.show().url}"]""", true)
+        )
+      }
+    }
+    "have a back link that returns to the quarterly updates only page" when {
+      "the journey type is Check and has a quarterly quarterly-updates-only product" in {
+        val softwareProduct = SoftwareProduct(102, "Product 102", Recognised)
+
+        val userAnswers = UserAnswers()
+          .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
+          .set(AdditionalIncomeSourcesPage, Seq.empty).get
+          .set(OtherItemsPage, Seq.empty).get
+          .set(AccountingPeriodPage, SixthAprilToFifthApril).get
+          .set(HowYouFindSoftwarePage, Check).get
+          .set(EnterSoftwareNamePage, softwareProduct).get
+          .set(UserTypePage, Agent).get
+
+        val initialFilter = Seq(VendorFilter.Agent, SoleTrader, UkProperty, OverseasProperty, StandardUpdatePeriods)
+        await(userFiltersRepository.set(testUserFilters(Some(userAnswers), initialFilter)))
+
+        val res = SoftwareChoicesFrontend.getSoftwareResults
+
+        res should have(
+          httpStatus(OK),
+          elementExists(s""".govuk-back-link[href="${routes.QuarterlyOnlyController.show().url}"]""", true)
+        )
+      }
+    }
+    "have a back link that returns to the check your answers page" when {
+      "the journey type is not set and the user type is sole trader" in {
+        val softwareProduct = SoftwareProduct(101, "Product 101", Recognised)
+
+        val userAnswers = UserAnswers()
+          .set(UserTypePage, SoleTraderOrLandlord).get
+          .set(EnterSoftwareNamePage, softwareProduct).get
+          .set(BusinessIncomePage, Seq(SoleTrader)).get
+          .set(AdditionalIncomeSourcesPage, Seq(Employment)).get
+          .set(OtherItemsPage, Seq(StudentLoans)).get
+          .set(AccountingPeriodPage, SixthAprilToFifthApril).get
+
+        val initialFilter = Seq(Individual, SoleTrader, Employment, StudentLoans, StandardUpdatePeriods)
+        await(userFiltersRepository.set(testUserFilters(Some(userAnswers), initialFilter)))
+
+        val res = SoftwareChoicesFrontend.getSoftwareResults
+
+        res should have(
+          httpStatus(OK),
+          elementExists(s""".govuk-back-link[href="${routes.CheckYourAnswersController.show().url}"]""", true)
+        )
+      }
+    }
+    "have a back link that returns to the user type page" when {
+      "the journey type is not set and the user type is agent" in {
+        val softwareProduct = SoftwareProduct(101, "Product 101", Recognised)
+        val userAnswers = UserAnswers()
+          .set(UserTypePage, Agent).get
+          .set(EnterSoftwareNamePage, softwareProduct).get
+          .set(BusinessIncomePage, Seq(SoleTrader)).get
+          .set(AdditionalIncomeSourcesPage, Seq(Employment)).get
+          .set(OtherItemsPage, Seq(StudentLoans)).get
+          .set(AccountingPeriodPage, SixthAprilToFifthApril).get
+
+        val initialFilter = Seq(VendorFilter.Agent, SoleTrader, Employment, StudentLoans, StandardUpdatePeriods)
+        await(userFiltersRepository.set(testUserFilters(Some(userAnswers), initialFilter)))
+
+        val res = SoftwareChoicesFrontend.getSoftwareResults
+
+        res should have(
+          httpStatus(OK),
+          elementExists(s""".govuk-back-link[href="${routes.UserTypeController.show().url}"]""", true)
         )
       }
     }

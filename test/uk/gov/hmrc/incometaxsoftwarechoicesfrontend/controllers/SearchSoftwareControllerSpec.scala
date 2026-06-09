@@ -101,19 +101,6 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec
     }
   }
 
-  "backLinkUrl" when {
-    "user type is sole trader or landlord" when {
-      "redirect to the choosing software page" in withController { controller =>
-        controller.backLinkUrl(isUnguided = false) shouldBe routes.CheckYourAnswersController.show().url
-      }
-    }
-    "user type is Agent" should {
-      "return to the user type page" in withController { controller =>
-        controller.backLinkUrl(isUnguided = true) shouldBe routes.UserTypeController.show().url
-      }
-    }
-  }
-
   private def withController(testCode: SearchSoftwareController => Any): Unit = {
     val mockEnvironment: Environment = mock[Environment]
     val mockUserFiltersRepo: UserFiltersRepository = mock[UserFiltersRepository]
