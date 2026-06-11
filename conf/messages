@@ -15,7 +15,7 @@ how-you-find-software.find.hint = We will ask you questions about your income so
 how-you-find-software.view-all = Show a list of all available software and let me select filters for my needs
 how-you-find-software.check = Check if my current software is compatible
 how-you-find-software.check.hint = This includes using spreadsheets
-how-you-find-software.error = Select an option
+how-you-find-software.error = Select how you would like to find software
 
 ## User type page
 type-of-user.heading                                              = How will you use Making Tax Digital for Income Tax software?

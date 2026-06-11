@@ -9,13 +9,13 @@ base.change                 = Newid
 base.find.compatible        = *** MISSING WELSH ***
 
 ## How you find software page
-how-you-find-software.heading = *** MISSING WELSH ***
-how-you-find-software.find = *** MISSING WELSH ***
-how-you-find-software.find.hint = *** MISSING WELSH ***
-how-you-find-software.view-all = *** MISSING WELSH ***
-how-you-find-software.check = *** MISSING WELSH ***
-how-you-find-software.check.hint = *** MISSING WELSH ***
-how-you-find-software.error = *** MISSING WELSH ***
+how-you-find-software.heading = Sut yr hoffech chi ddod o hyd i feddalwedd?
+how-you-find-software.find = Dod o hyd i feddalwedd yn seiliedig ar fy atebion i’r cwestiynau
+how-you-find-software.find.hint = Byddwn yn gofyn cwestiynau i chi ynghylch eich ffynonellau incwm er mwyn dangos y feddalwedd orau ar gyfer eich anghenion
+how-you-find-software.view-all = Dangos rhestr o’r holl feddalwedd sydd ar gael, a gadewch i mi ddewis hidlyddion ar gyfer fy anghenion
+how-you-find-software.check = Gwirio a yw fy meddalwedd gyfredol yn cydweddu
+how-you-find-software.check.hint = Mae hyn yn cynnwys defnyddio taenlenni
+how-you-find-software.error = Dewiswch sut yr hoffech chi ddod o hyd i feddalwedd
 
 ## User type page
 type-of-user.heading                                              = Sut y byddwch yn defnyddio Meddalwedd ar gyfer y cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm?
