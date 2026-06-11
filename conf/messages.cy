@@ -308,10 +308,10 @@ not-listed-software.title = *** MISSING WELSH ***
 not-listed-software.para1 = *** MISSING WELSH ***
 
 # Enter Software Name
-enter-software-name.heading = *** MISSING WELSH ***
-enter-software-name.hint = *** MISSING WELSH ***
+enter-software-name.heading = Beth yw enw eich meddalwedd?
+enter-software-name.hint = Dechreuwch deipio a dewis o’r rhestr
 enter-software-name.error.empty = *** MISSING WELSH ***
-enter-software-name.software-not-listed = *** MISSING WELSH ***
+enter-software-name.software-not-listed = Nid yw fy meddalwedd wedi’i restru
 
 #Software In Development page
 software-in-development.heading = *** MISSING WELSH ***
