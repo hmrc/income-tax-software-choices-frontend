@@ -24,9 +24,9 @@
 
 @(continueURL: String, backLink: String, chosenSoftware: String)(implicit request: Request[_], messages: Messages)
 
-@mainTemplate(title = s"$chosenSoftware ${messages("software-in-development.heading")}", backLink = Some(backLink)) {
+@mainTemplate(title = messages("software-in-development.heading", chosenSoftware), backLink = Some(backLink)) {
 
-    <h1 class="govuk-heading-l">@chosenSoftware @messages("software-in-development.heading")</h1>
+    <h1 class="govuk-heading-l">@messages("software-in-development.heading" , chosenSoftware)</h1>
 
     <p class="govuk-body">@messages("software-in-development.para1")</p>
     <p class="govuk-body">@messages("software-in-development.para2")</p>
