@@ -304,8 +304,8 @@ phase-banner.feedback = rhoi eich adborth
 exit-survey.link = Rhoi adborth ar y gwasanaeth hwn
 
 # Not Listed Software
-not-listed-software.title = *** MISSING WELSH ***
-not-listed-software.para1 = *** MISSING WELSH ***
+not-listed-software.title = Nid yw’r feddalwedd hon yn cael ei chydnabod ar gyfer Troi Treth yn Ddigidol ar gyfer Treth Incwm
+not-listed-software.para1 = Mae’n bosibl y byddwch eisiau cysylltu â’ch darparwr meddalwedd presennol er mwyn gweld a ydynt am fod yn cefnogi Troi Treth yn Ddigidol ar gyfer Treth Incwm. Gallwch hefyd chwilio am becynnau meddalwedd eraill er mwyn gweld a ydynt yn addas.
 
 # Enter Software Name
 enter-software-name.heading = *** MISSING WELSH ***
