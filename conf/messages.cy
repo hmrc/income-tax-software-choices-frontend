@@ -319,14 +319,14 @@ software-in-development.para1 = *** MISSING WELSH ***
 software-in-development.para2 = *** MISSING WELSH ***
 
 #Fully Compatible page
-fully-compatible.heading1 = *** MISSING WELSH ***
-fully-compatible.para1 = *** MISSING WELSH ***
-fully-compatible.para2 = *** MISSING WELSH ***
-fully-compatible.para2.link.text = *** MISSING WELSH ***
-fully-compatible.heading2 = *** MISSING WELSH ***
-fully-compatible.para3 = *** MISSING WELSH ***
-fully-compatible.bullet1 = *** MISSING WELSH ***
-fully-compatible.bullet2 = *** MISSING WELSH ***
+fully-compatible.heading1 = Mae {0} yn cydweddu’n llwyr â Throi Treth yn Ddigidol ar gyfer Treth Incwm
+fully-compatible.para1 = Ar hyn o bryd, mae’ch meddalwedd yn cefnogi’r holl nodweddion sydd eu hangen arnoch ar gyfer Troi Treth yn Ddigidol ar gyfer Treth Incwm. Mae’r manylion hyn yn barod ar gyfer eich Ffurflen Dreth 2026 i 2027.
+fully-compatible.para2 = Gallwch {0} a’r nodweddion sy’n cael eu cynllunio i’w darparu.
+fully-compatible.para2.link.text = weld rhagor o wybodaeth ynglŷn â’ch meddalwedd
+fully-compatible.heading2 = Yr hyn y dylech ei wneud nesaf
+fully-compatible.para3 = Os nad ydych chi wedi gwneud hyn eisoes, mae angen i chi wneud y canlynol:
+fully-compatible.bullet1 = cofrestru ar gyfer y cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm
+fully-compatible.bullet2 = awdurdodi’ch meddalwedd i CThEF
 
 #Partially Compatible page
 partially-compatible.heading1 = *** MISSING WELSH ***
