@@ -339,16 +339,16 @@ partially-compatible.bullet1 = *** MISSING WELSH ***
 partially-compatible.bullet2 = *** MISSING WELSH ***
 
 #Quarterly Only page
-quarterly-only.heading1 = *** MISSING WELSH ***
-quarterly-only.para1 = *** MISSING WELSH ***
-quarterly-only.para2 = *** MISSING WELSH ***
-quarterly-only.para2.link.text = *** MISSING WELSH ***
-quarterly-only.para3 = *** MISSING WELSH ***
-quarterly-only.para3.link.text = *** MISSING WELSH ***
-quarterly-only.heading2 = *** MISSING WELSH ***
-quarterly-only.para4 = *** MISSING WELSH ***
-quarterly-only.bullet1 = *** MISSING WELSH ***
-quarterly-only.bullet2 = *** MISSING WELSH ***
+quarterly-only.heading1 = Mae {0} yn barod i anfon diweddariadau chwarterolyn unig
+quarterly-only.para1 = Nid oes gan y feddalwedd hon y gallu i gyflwyno Ffurflen Dreth.
+quarterly-only.para2 = Gallwch {0} a’r nodweddion sy’n cael eu cynllunio i’w darparu.
+quarterly-only.para2.link.text = weld rhagor o wybodaeth ynglŷn â’ch darparwr meddalwedd
+quarterly-only.para3 = Os ydych yn bwriadu llenwi eich Ffurflen Dreth drwy ddefnyddio meddalwedd, {0} er mwyn gwneud hyn.
+quarterly-only.para3.link.text = bydd angen i chi gael meddalwedd ychwanegol
+quarterly-only.heading2 = Yr hyn y dylech ei wneud nesaf
+quarterly-only.para4 = Os nad ydych chi wedi gwneud hyn eisoes, mae angen i chi wneud y canlynol:
+quarterly-only.bullet1 = cofrestru ar gyfer y cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm
+quarterly-only.bullet2 = awdurdodi’ch meddalwedd i CThEF
 
 #Not Compatible page
 not-compatible.heading = *** MISSING WELSH ***
