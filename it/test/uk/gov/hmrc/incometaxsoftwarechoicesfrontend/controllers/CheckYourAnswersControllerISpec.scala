@@ -29,7 +29,6 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.SoleTraderOr
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareProduct, UserAnswers, UserFilters}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.*
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.DataService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
 
 class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAfterEach with DatabaseHelper {
@@ -244,8 +243,6 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
 
   "POST /check-your-answers" must {
     s"return $SEE_OTHER" when {
-      val dataService: DataService = app.injector.instanceOf[DataService]
-
       "redirect to the zero results page when there are no all-in-one vendors" in {
         val userAnswers = UserAnswers()
           .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
@@ -308,7 +305,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
         }
       }
       "redirect to the fully compatible page when in the check journey when software type is recognised and fully compatible" in {
-        val fullyCompatibleProduct = dataService.getSoftwareVendors().vendors.map(v => SoftwareProduct(v.productId, "vendor 05", Recognised)).head
+        val fullyCompatibleProduct = SoftwareProduct(105, "vendor 05", Recognised)
 
         val userAnswers = UserAnswers()
           .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
@@ -332,7 +329,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
         }
       }
       "redirect to the check your answers page when in the check journey when software type is recognised and partially compatible" in {
-        val partiallyCompatibleProduct = dataService.getSoftwareVendors().vendors.map(v => SoftwareProduct(v.productId, "vendor 04", Recognised)).head
+        val partiallyCompatibleProduct = SoftwareProduct(104, "vendor 04", Recognised)
 
         val userAnswers = UserAnswers()
           .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
@@ -356,7 +353,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
         }
       }
       "redirect to the check your answers page when in the check journey when software type is recognised and quarterly only" in {
-        val quarterlyOnlyProduct = dataService.getSoftwareVendors().vendors.map(v => SoftwareProduct(v.productId, "vendor 02", Recognised)).head
+        val quarterlyOnlyProduct = SoftwareProduct(102, "vendor 02", Recognised)
 
         val userAnswers = UserAnswers()
           .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
@@ -380,7 +377,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
         }
       }
       "redirect to the check your answers page when in the check journey when software type is recognised and not compatible" in {
-        val nonCompatibleProduct = dataService.getSoftwareVendors().vendors.map(v => SoftwareProduct(v.productId, "vendor 01", Recognised)).head
+        val nonCompatibleProduct = SoftwareProduct(101, "vendor 01", Recognised)
 
         val userAnswers = UserAnswers()
           .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
