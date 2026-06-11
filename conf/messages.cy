@@ -6,7 +6,7 @@ base.continue               = Parhau
 base.confirm-continue       = Cadarnhau a pharhau
 base.or                     = neu
 base.change                 = Newid
-base.find.compatible        = *** MISSING WELSH ***
+base.find.compatible        = Dewch o hyd i feddalwedd sy’n cydweddu
 
 ## How you find software page
 how-you-find-software.heading = Sut yr hoffech chi ddod o hyd i feddalwedd?
@@ -351,6 +351,6 @@ quarterly-only.bullet1 = cofrestru ar gyfer y cynllun Troi Treth yn Ddigidol ar 
 quarterly-only.bullet2 = awdurdodi’ch meddalwedd i CThEF
 
 #Not Compatible page
-not-compatible.heading = *** MISSING WELSH ***
-not-compatible.para1 = *** MISSING WELSH ***
-not-compatible.para2 = *** MISSING WELSH ***
+not-compatible.heading = Ar hyn o bryd, nid yw {0} yn cydweddu
+not-compatible.para1 = Mae’n bosibl y byddwch eisiau cysylltu â’ch darparwr meddalwedd presennol er mwyn gofyn a ydynt am fod yn cefnogi Troi Treth yn Ddigidol ar gyfer Treth Incwm at eich dibenion chi.
+not-compatible.para2 = Gallwch hefyd chwilio am becynnau meddalwedd eraill sydd ar gael ar hyn o bryd sy’n barod ar gyfer Troi Treth yn Ddigidol ar gyfer Treth Incwm er mwyn gweld a ydynt yn addas.
