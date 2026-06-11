@@ -51,6 +51,7 @@ class HowYouFindSoftwareViewSpec extends ViewSpec {
       "have an error summary" in {
         document(hasError = true).selectSeq(".govuk-error-summary").size shouldBe 1
         document(hasError = true).selectHead(".govuk-error-summary").text() should include("There is a problem")
+        document(hasError = true).selectHead(".govuk-error-summary").text() should include(HowYouFindSoftwareContent.error)
         document(hasError = true).select(".govuk-error-summary__body > ul > li > a").attr("href") shouldBe "#how-you-find-software"
       }
     }
@@ -114,5 +115,5 @@ private object HowYouFindSoftwareContent {
   val check = "Check if my current software is compatible"
   val checkHint = "This includes using spreadsheets"
   val guidanceLink = "https://www.gov.uk/guidance/find-software-thats-compatible-with-making-tax-digital-for-income-tax"
-  val error = "Select an option"
+  val error = "Select how you would like to find software"
 }

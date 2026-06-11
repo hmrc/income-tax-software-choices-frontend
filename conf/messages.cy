@@ -9,7 +9,7 @@ base.change                 = Newid
 base.find.compatible        = *** MISSING WELSH ***
 
 ## How you find software page
-how-you-find-software.heading = *** MISSING WELSH ***
+how-you-find-software.heading = Sut yr hoffech chi ddod o hyd i feddalwedd?
 how-you-find-software.find = Dod o hyd i feddalwedd yn seiliedig ar fy atebion i’r cwestiynau
 how-you-find-software.find.hint = Byddwn yn gofyn cwestiynau i chi ynghylch eich ffynonellau incwm er mwyn dangos y feddalwedd orau ar gyfer eich anghenion
 how-you-find-software.view-all = Dangos rhestr o’r holl feddalwedd sydd ar gael, a gadewch i mi ddewis hidlyddion ar gyfer fy anghenion
