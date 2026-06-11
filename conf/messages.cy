@@ -15,7 +15,7 @@ how-you-find-software.find.hint = *** MISSING WELSH ***
 how-you-find-software.view-all = *** MISSING WELSH ***
 how-you-find-software.check = *** MISSING WELSH ***
 how-you-find-software.check.hint = *** MISSING WELSH ***
-how-you-find-software.error = *** MISSING WELSH ***
+how-you-find-software.error = Dewiswch sut yr hoffech chi ddod o hyd i feddalwedd
 
 ## User type page
 type-of-user.heading                                              = Sut y byddwch yn defnyddio Meddalwedd ar gyfer y cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm?
