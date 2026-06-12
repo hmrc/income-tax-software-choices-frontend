@@ -314,7 +314,7 @@ enter-software-name.error.empty = The software you entered is not on the list. S
 enter-software-name.software-not-listed = My software is not listed
 
 #Software In Development page
-software-in-development.heading = is not recognised for Making Tax Digital for Income Tax yet
+software-in-development.heading = {0} is not recognised for Making Tax Digital for Income Tax yet
 software-in-development.para1 = You may want to contact your current software provider to ask if they are going to support Making Tax Digital for Income Tax for your circumstances.
 software-in-development.para2 = You can also search for other software packages that are currently ready for Making Tax Digital for Income Tax to see if they are suitable.
 

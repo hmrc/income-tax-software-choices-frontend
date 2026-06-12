@@ -51,7 +51,7 @@ class SoftwareInDevelopmentControllerISpec
 
       res should have(
         httpStatus(OK),
-        pageTitle(s"${softwareProduct.name} ${messages("software-in-development.heading")} - ${PageContentBase.title} - GOV.UK"),
+        pageTitle(s"${messages("software-in-development.heading", softwareProduct.name)} - ${PageContentBase.title} - GOV.UK"),
       )
     }
   }

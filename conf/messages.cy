@@ -314,9 +314,9 @@ enter-software-name.error.empty = *** MISSING WELSH ***
 enter-software-name.software-not-listed = *** MISSING WELSH ***
 
 #Software In Development page
-software-in-development.heading = *** MISSING WELSH ***
-software-in-development.para1 = *** MISSING WELSH ***
-software-in-development.para2 = *** MISSING WELSH ***
+software-in-development.heading = Nid yw {0} yn cael ei chydnabod ar gyfer Troi Treth yn Ddigidol ar gyfer Treth Incwm eto
+software-in-development.para1 = Mae’n bosibl y byddwch eisiau cysylltu â’ch darparwr meddalwedd presennol er mwyn gofyn a ydynt am fod yn cefnogi Troi Treth yn Ddigidol ar gyfer Treth Incwm at eich dibenion chi.
+software-in-development.para2 = Gallwch hefyd chwilio am becynnau meddalwedd eraill sydd ar gael ar hyn o bryd sy’n barod ar gyfer Troi Treth yn Ddigidol ar gyfer Treth Incwm er mwyn gweld a ydynt yn addas.
 
 #Fully Compatible page
 fully-compatible.heading1 = Mae {0} yn cydweddu’n llwyr â Throi Treth yn Ddigidol ar gyfer Treth Incwm
