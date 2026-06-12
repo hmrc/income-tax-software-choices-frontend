@@ -54,9 +54,9 @@ class CheckYourAnswersController @Inject()(view: CheckYourAnswersView,
       vendorFilters <- pageAnswersService.saveFiltersFromAnswers(request.sessionId)
       vendors = softwareChoicesService.getVendorsWithIntent(vendorFilters)
     } yield {
-      val softwareName = request.product.map(_.name).getOrElse("")
+      val productId = request.product.map(_.productId).getOrElse(-1)
       val softwareType = request.product.map(_.softwareType)
-      val foundVendor = vendors.find(v => softwareName == v.vendor.name)
+      val foundVendor = vendors.find(v => v.vendor.productId == productId)
       val isQuarterlyReady = foundVendor.flatMap(_.quarterlyReady)
       val isEoyReady = foundVendor.flatMap(_.eoyReady)
       (vendors.isEmpty, request.journey, softwareType, isQuarterlyReady, isEoyReady) match {
