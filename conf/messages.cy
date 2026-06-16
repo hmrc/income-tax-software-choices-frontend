@@ -278,6 +278,7 @@ session-expired.user = Rydych wedi dileu’ch atebion
 session-expired.timeout.heading = Sesiwn wedi dod i ben oherwydd anweithgarwch
 session-expired.timeout.para1 = Fe ddaeth eich sesiwn i ben ar ôl 15 munud o anweithgarwch, felly rydym wedi clirio eich gwybodaeth er mwyn ei chadw’n ddiogel. Bydd angen i chi ddechrau eto.
 session-expired.button = Dechrau eto
+session-expired.auto.heading = Er diogelwch, gwnaethom ddileu'ch atebion
 
 page-not-found.title = Heb ddod o hyd i’r dudalen
 page-not-found.p1 = Os gwnaethoch deipio’r cyfeiriad gwe, gwiriwch ei fod yn gywir.

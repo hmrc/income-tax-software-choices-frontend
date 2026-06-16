@@ -31,7 +31,7 @@ class SessionExpiredController @Inject()(repo: UserFiltersRepository,
                                         (implicit ec: ExecutionContext,
                                          mcc: MessagesControllerComponents) extends BaseFrontendController {
 
-  def show(timeout: Boolean = false): Action[AnyContent] = identify.async { request =>
+  def show(timeout: String = "expired"): Action[AnyContent] = identify.async { request =>
     given Request[AnyContent] = request
     for {
       _ <- repo.delete(request.sessionId)

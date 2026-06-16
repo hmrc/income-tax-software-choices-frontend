@@ -38,7 +38,7 @@ class ZeroSoftwareResultsController @Inject()(view: ZeroSoftwareResultsView,
   }
 
   def submit(): Action[AnyContent] = (identify andThen requireData) { _ =>
-    Redirect(routes.SessionExpiredController.show(timeout = true))
+    Redirect(routes.SessionExpiredController.show(timeout = "auto"))
   }
 
 }
