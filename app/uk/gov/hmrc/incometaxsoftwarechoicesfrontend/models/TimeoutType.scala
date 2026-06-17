@@ -16,8 +16,11 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models
 
+import play.api.libs.json.{JsString, Reads, Writes, __}
+import play.api.mvc.PathBindable
+
 enum TimeoutType(val key: String) {
-  case Expired extends TimeoutType("expired")
+  case Timeout extends TimeoutType("timeout")
   case Manual  extends TimeoutType("manual")
   case Auto    extends TimeoutType("auto")
 }
@@ -25,5 +28,16 @@ enum TimeoutType(val key: String) {
 object TimeoutType {
   private val keyToType = TimeoutType.values.map(value => value.key -> value).toMap
 
-  def fromKey(key: String): Option[TimeoutType] = keyToType.get(key)
+  implicit val reads: Reads[TimeoutType] = __.read[String] map keyToType
+
+  implicit val writes: Writes[TimeoutType] = Writes(timeoutType => JsString(timeoutType.key))
+
+  implicit val pathBindable: PathBindable[TimeoutType] = new PathBindable[TimeoutType] {
+    override def bind(key: String, value: String): Either[String, TimeoutType] =
+      keyToType.get(value).toRight(s"Invalid timeout type: $value")
+
+    override def unbind(key: String, value: TimeoutType): String =
+      value.key
+  }
+
 }

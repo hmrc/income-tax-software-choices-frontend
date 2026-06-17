@@ -20,7 +20,7 @@ import org.jsoup.Jsoup
 import org.scalatest.matchers.must.Matchers._
 import play.api.mvc.Call
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SessionExpiredView
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.TimeoutType
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.TimeoutType.*
 
 class SessionExpiredViewSpec extends ViewSpec {
 
@@ -28,14 +28,14 @@ class SessionExpiredViewSpec extends ViewSpec {
     app.injector.instanceOf[SessionExpiredView]
 
   private val document =
-    Jsoup.parse(view(postAction = Call("", ""), TimeoutType.Manual).body)
+    Jsoup.parse(view(postAction = Call("", ""), Manual).body)
 
   private val form =
     document.mainContent.selectHead("form")
 
   "SessionExpiredView" when {
     "user deletes answers (manual)" should {
-      val document = Jsoup.parse(view(postAction = Call("", ""), TimeoutType.Manual).body)
+      val document = Jsoup.parse(view(postAction = Call("", ""), Manual).body)
       "have the correct title" in {
         document.title() mustBe SessionExpiredContent.title
       }
@@ -49,7 +49,7 @@ class SessionExpiredViewSpec extends ViewSpec {
       }
     }
     "session expired due to inactivity (expired)" should {
-      val document = Jsoup.parse(view(postAction = Call("", ""), TimeoutType.Expired).body)
+      val document = Jsoup.parse(view(postAction = Call("", ""), Timeout).body)
       "have the correct title" in {
         document.title() mustBe SessionExpiredContent.title
       }
@@ -66,7 +66,7 @@ class SessionExpiredViewSpec extends ViewSpec {
       }
     }
     "no all-in-one product found (auto)" should {
-      val document = Jsoup.parse(view(postAction = Call("", ""), TimeoutType.Auto).body)
+      val document = Jsoup.parse(view(postAction = Call("", ""), Auto).body)
       "have the correct title" in {
         document.title() mustBe SessionExpiredContent.title
       }

@@ -18,7 +18,7 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import play.api.mvc.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{RequireUserDataRefiner, SessionIdentifierAction}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.TimeoutType
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.TimeoutType.Auto
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.ZeroSoftwareResultsView
 
 import javax.inject.{Inject, Singleton}
@@ -39,7 +39,7 @@ class ZeroSoftwareResultsController @Inject()(view: ZeroSoftwareResultsView,
   }
 
   def submit(): Action[AnyContent] = (identify andThen requireData) { _ =>
-    Redirect(routes.SessionExpiredController.show(timeoutType = TimeoutType.Auto.key))
+    Redirect(routes.SessionExpiredController.show(timeoutType = Auto))
   }
 
 }

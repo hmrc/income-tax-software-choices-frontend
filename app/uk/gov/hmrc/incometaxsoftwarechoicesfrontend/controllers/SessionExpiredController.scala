@@ -19,7 +19,6 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.SessionIdentifierAction
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.TimeoutType
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.TimeoutType.Expired
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SessionExpiredView
 
@@ -33,15 +32,14 @@ class SessionExpiredController @Inject()(repo: UserFiltersRepository,
                                         (implicit ec: ExecutionContext,
                                          mcc: MessagesControllerComponents) extends BaseFrontendController {
 
-  def show(timeoutType: String): Action[AnyContent] = identify.async { request =>
+  def show(timeoutType: TimeoutType): Action[AnyContent] = identify.async { request =>
     given Request[AnyContent] = request
-    val resolvedType = TimeoutType.fromKey(timeoutType).getOrElse(Expired)
     for {
       _ <- repo.delete(request.sessionId)
     } yield {
       Ok(view(
         postAction = routes.SessionExpiredController.submit(),
-        timeoutType = resolvedType
+        timeoutType = timeoutType
       ))
     }
   }

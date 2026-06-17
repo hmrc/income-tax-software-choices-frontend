@@ -19,6 +19,7 @@
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.TimeoutType
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTemplate
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.TimeoutType.{Manual, Timeout}
 
 @this(
         mainTemplate: MainTemplate,
@@ -32,11 +33,11 @@
 @mainTemplate(title = messages("session-expired.title"), backLink = None, showTimeoutDialog = false) {
 
     @timeoutType match {
-        case TimeoutType.Expired => {
+        case Timeout => {
             <h1 class="govuk-heading-l">@messages("session-expired.timeout.heading")</h1>
             <p class="govuk-body">@messages("session-expired.timeout.para1")</p>
         }
-        case TimeoutType.Manual => {
+        case Manual => {
             <h1 class="govuk-heading-l">@messages("session-expired.user")</h1>
         }
         case _ => {
