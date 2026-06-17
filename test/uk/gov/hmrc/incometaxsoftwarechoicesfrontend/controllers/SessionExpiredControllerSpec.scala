@@ -35,7 +35,23 @@ class SessionExpiredControllerSpec extends ControllerBaseSpec with MockSessionId
 
   "show" must {
     "delete answers and return OK" in new Setup {
-      val result: Future[Result] = controller.show()(fakeRequest)
+      val result: Future[Result] = controller.show("expired")(fakeRequest)
+
+      status(result) shouldBe OK
+      contentType(result) shouldBe Some(HTML)
+      verify(repo, times(1)).delete(any())
+    }
+
+    "delete answers and return OK for manual timeout" in new Setup {
+      val result: Future[Result] = controller.show("manual")(fakeRequest)
+
+      status(result) shouldBe OK
+      contentType(result) shouldBe Some(HTML)
+      verify(repo, times(1)).delete(any())
+    }
+
+    "delete answers and return OK for auto timeout" in new Setup {
+      val result: Future[Result] = controller.show("auto")(fakeRequest)
 
       status(result) shouldBe OK
       contentType(result) shouldBe Some(HTML)
@@ -43,7 +59,7 @@ class SessionExpiredControllerSpec extends ControllerBaseSpec with MockSessionId
     }
 
     "return OK without deleting answers" in new Setup(false) {
-      val result: Future[Result] = controller.show()(fakeRequest)
+      val result: Future[Result] = controller.show("expired")(fakeRequest)
 
       status(result) shouldBe OK
       contentType(result) shouldBe Some(HTML)
