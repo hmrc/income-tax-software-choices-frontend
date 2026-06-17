@@ -186,7 +186,8 @@ class UserTypeControllerISpec extends ComponentSpecBase with BeforeAndAfterEach 
         res should have(
           httpStatus(OK),
           pageTitle(s"${messages("type-of-user.heading")} - ${PageContentBase.title} - GOV.UK"),
-          elementExists(s""".govuk-back-link[href="${routes.EnterSoftwareNameController.show().url}"]""", true)
+          elementExists(s""".govuk-back-link[href="${routes.EnterSoftwareNameController.show().url}"]""", true),
+          elementHasValue(".govuk-caption-l", "Recognised100")
         )
       }
     }

@@ -50,7 +50,7 @@ class UserTypeControllerSpec extends ControllerBaseSpec with MockSessionIdentifi
       "user has previously selected a user type" in new Setup(userFilters = Some(userFilterWithFullAnswersForPage)) {
         when(mockUserTypeView(
           eqTo(UserTypeForm.userTypeForm.fill(SoleTraderOrLandlord)),
-          any(), any()
+          any(), any(), any()
         )(any(), any()))
           .thenReturn(HtmlFormat.empty)
 
@@ -70,7 +70,7 @@ class UserTypeControllerSpec extends ControllerBaseSpec with MockSessionIdentifi
       "user has previously selected a user type and is in edit mode" in new Setup(userFilters = Some(userFilterWithFullAnswersForPage)) {
         when(mockUserTypeView(
           eqTo(UserTypeForm.userTypeForm.fill(SoleTraderOrLandlord)),
-          any(), any()
+          any(), any(), any()
         )(any(), any()))
           .thenReturn(HtmlFormat.empty)
 
@@ -87,7 +87,7 @@ class UserTypeControllerSpec extends ControllerBaseSpec with MockSessionIdentifi
       "user has not previously selected a user type" in new Setup {
         when(mockUserTypeView(
           eqTo(UserTypeForm.userTypeForm),
-          any(), any()
+          any(), any(), any()
         )(any(), any()))
           .thenReturn(HtmlFormat.empty)
         when(mockPageAnswersService.getPageAnswers(eqTo(None), eqTo(UserTypePage))(any()))
