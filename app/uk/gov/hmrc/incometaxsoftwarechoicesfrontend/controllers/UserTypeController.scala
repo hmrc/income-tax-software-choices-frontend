@@ -53,11 +53,13 @@ class UserTypeController @Inject()(view: UserTypeView,
       userFilters <- userFiltersRepository.get(request.sessionId)
       answers = userFilters.flatMap(_.answers)
       userTypeAnswer = pageAnswersService.getPageAnswers(answers, UserTypePage)
+      product = pageAnswersService.getPageAnswers(answers, EnterSoftwareNamePage)
     } yield {
       Ok(view(
         userTypeForm = UserTypeForm.userTypeForm.fill(userTypeAnswer),
         postAction = routes.UserTypeController.submit(editMode),
-        backUrl = backUrl(answers, editMode)
+        backUrl = backUrl(answers, editMode),
+        softwareName = getSoftwareName(product)
       ))
     }
   }
@@ -72,12 +74,14 @@ class UserTypeController @Inject()(view: UserTypeView,
         for {
           userFilters <- userFiltersRepository.get(request.sessionId)
           answers = userFilters.flatMap(_.answers)
+          product = pageAnswersService.getPageAnswers(answers, EnterSoftwareNamePage)
         } yield {
           BadRequest(view(
             userTypeForm = formWithErrors,
             postAction = routes.UserTypeController.submit(editMode),
-            backUrl = backUrl(answers, editMode))
-          )
+            backUrl = backUrl(answers, editMode),
+            softwareName = getSoftwareName(product)
+          ))
         }
       },
       userType => journey.flatMap {

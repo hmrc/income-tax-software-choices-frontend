@@ -27,7 +27,6 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.FiltersForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.{Check, Find, ViewAll}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.Recognised
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{VendorFilter, *}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.Agent
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.requests.SessionDataRequest
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.UserTypePage

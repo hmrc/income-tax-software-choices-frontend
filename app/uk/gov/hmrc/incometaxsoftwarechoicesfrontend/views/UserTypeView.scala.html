@@ -30,12 +30,15 @@
         form: FormWithCSRF,
         radioHelper: RadioHelper,
         hmrcNewTabLinkHelper: HmrcNewTabLinkHelper,
-        govukButton: GovukButton
+        govukButton: GovukButton,
+        captionHelper: CaptionHelper
 )
 
-@(userTypeForm: Form[UserType], postAction: Call, backUrl: String)(implicit request: Request[_], messages: Messages)
+@(userTypeForm: Form[UserType], postAction: Call, backUrl: String, softwareName: Option[String])(implicit request: Request[_], messages: Messages)
 
 @mainTemplate(title = messages("type-of-user.heading"), optForm = Some(userTypeForm), backLink = Some(backUrl)) {
+
+    @captionHelper(softwareName)
 
     @form(action = postAction) {
         @radioHelper(
