@@ -330,12 +330,11 @@ fully-compatible.bullet1 = cofrestru ar gyfer y cynllun Troi Treth yn Ddigidol a
 fully-compatible.bullet2 = awdurdodi’ch meddalwedd i CThEF
 
 #Partially Compatible page
-partially-compatible.heading1 = Mae {0} yn barod i anfon diweddariadau chwarterol, ond mae’n dal i adeiladu eich nodweddion Ffurflenni Treth
-partially-compatible.para1 = Mae’ch darparwr meddalwedd wedi adeiladu’r nodweddion sydd eu hangen arnoch er mwyn i chi anfon eich diweddariadau chwarterol. Erbyn hyn, maent yn datblygu’r nodweddion sy’n weddill sydd eu hangen ar gyfer eich Ffurflen Dreth. Bydd y rhain ar gael ar amser ar gyfer eich Ffurflen Dreth 2026 i 2027.
-partially-compatible.para2 = Gallwch {0} a’r nodweddion sy’n cael eu cynllunio i’w darparu.
-partially-compatible.para2.link.text = weld rhagor o wybodaeth ynglŷn â’ch meddalwedd
+partially-compatible.heading1 = Gall {0} anfon diweddariadau chwarterol ac mae’n datblygu nodweddion ar gyfer cyflwyno’ch Ffurflen Dreth
+partially-compatible.para1 = Mae’ch darparwr meddalwedd wedi adeiladu’r nodweddion sydd eu hangen arnoch er mwyn i chi anfon eich diweddariadau chwarterol. Erbyn hyn, maent yn datblygu’r nodweddion sy’n weddill sydd eu hangen ar gyfer eich Ffurflen Dreth. Dylai’r rhain fod ar gael mewn pryd ar gyfer eich Ffurflen Dreth 2026 i 2027.
+partially-compatible.para2.link.text = Dysgwch ragor am eich meddalwedd a’i nodweddion sydd ar ddod.
 partially-compatible.heading2 = Yr hyn y dylech ei wneud nesaf
-partially-compatible.para3 = Os nad ydych chi wedi gwneud hyn eisoes, mae angen i chi wneud y canlynol:
+partially-compatible.para3 = Os ydych am ddefnyddio’r feddalwedd hon, bydd angen i chi wneud y canlynol:
 partially-compatible.bullet1 = cofrestru ar gyfer y cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm
 partially-compatible.bullet2 = awdurdodi’ch meddalwedd i CThEF
 

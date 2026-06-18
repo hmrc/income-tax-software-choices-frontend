@@ -71,12 +71,12 @@ class PartiallyCompatibleViewSpec extends ViewSpec {
 
 
 private object PartiallyCompatibleContent {
-  val heading1 = "A1 Tax Stuff is ready to send quarterly updates but is still building your tax return features"
+  val heading1 = "A1 Tax Stuff can send quarterly updates and is developing your tax return features"
   val heading2 = "What you should do next"
   val title = s"$heading1 - ${PageContentBase.title} - GOV.UK"
-  val para1 = "Your software provider has built the features you need to send your quarterly updates. They are now developing the remaining features required for your tax return. These will be available in time for your 2026 to 2027 tax return."
-  val para2 = "You can view more information about your software and the features they are planning to provide."
-  val para3 = "If you have not done so already, you now need to:"
+  val para1 = "Your software provider has built the features you need to send your quarterly updates. They are now developing the remaining features required for your tax return. These should be available in time for your 2026 to 2027 tax return."
+  val para2 = "Learn more about your software and its upcoming features."
+  val para3 = "If you want to use this software, you need to:"
   val bullet1Text = "sign up for Making Tax Digital for Income Tax (opens in new tab)"
   val bullet1Link = "https://www.gov.uk/guidance/sign-up-for-making-tax-digital-for-income-tax"
   val bullet2Text = "authorise your software for HMRC (opens in new tab)"
