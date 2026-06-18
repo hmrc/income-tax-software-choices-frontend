@@ -310,7 +310,7 @@ not-listed-software.para1 = Mae’n bosibl y byddwch eisiau cysylltu â’ch dar
 # Enter Software Name
 enter-software-name.heading = Beth yw enw eich meddalwedd?
 enter-software-name.hint = Dechreuwch deipio a dewis o’r rhestr
-enter-software-name.error.empty = *** MISSING WELSH ***
+enter-software-name.error.empty = Nodwch enw’r feddalwedd a’i dewis o’r rhestr, neu dewiswch “Nid yw fy meddalwedd wedi’i restru”
 enter-software-name.software-not-listed = Nid yw fy meddalwedd wedi’i restru
 
 #Software In Development page

@@ -116,5 +116,4 @@ private object EnterSoftwareNameViewContent {
   val hint = "Start typing and select from the list"
   val continue = "Continue"
   val softwareNotListed = "My software is not listed"
-  val emptyError = "The software you entered is not on the list. Select software from the list or click 'My software is not listed'"
 }
