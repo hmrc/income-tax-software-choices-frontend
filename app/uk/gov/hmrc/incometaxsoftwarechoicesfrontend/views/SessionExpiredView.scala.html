@@ -17,7 +17,9 @@
 @import uk.gov.hmrc.govukfrontend.views.html.components._
 @import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.TimeoutType
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTemplate
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.TimeoutType.{Manual, Timeout}
 
 @this(
         mainTemplate: MainTemplate,
@@ -26,15 +28,21 @@
         form: FormWithCSRF
 )
 
-@(postAction: Call, timeout: Boolean = false)(implicit request: Request[_], messages: Messages)
+@(postAction: Call, timeoutType: TimeoutType)(implicit request: Request[_], messages: Messages)
 
 @mainTemplate(title = messages("session-expired.title"), backLink = None, showTimeoutDialog = false) {
 
-    @if(timeout) {
-        <h1 class="govuk-heading-l">@messages("session-expired.timeout.heading")</h1>
-        <p class ="govuk-body">@messages("session-expired.timeout.para1")</p>
-    } else {
-        <h1 class="govuk-heading-l">@messages("session-expired.user")</h1>
+    @timeoutType match {
+        case Timeout => {
+            <h1 class="govuk-heading-l">@messages("session-expired.timeout.heading")</h1>
+            <p class="govuk-body">@messages("session-expired.timeout.para1")</p>
+        }
+        case Manual => {
+            <h1 class="govuk-heading-l">@messages("session-expired.user")</h1>
+        }
+        case _ => {
+            <h1 class="govuk-heading-l">@messages("session-expired.auto.heading")</h1>
+        }
     }
 
     @form(action = postAction) {

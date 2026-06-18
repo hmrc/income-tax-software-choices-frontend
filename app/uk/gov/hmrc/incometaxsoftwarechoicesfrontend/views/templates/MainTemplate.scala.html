@@ -21,6 +21,7 @@
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes
 @import uk.gov.hmrc.hmrcfrontend.views.viewmodels.newtablinkhelper.NewTabLinkHelper
 @import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcAccessibleAutocompleteCss
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.TimeoutType.{Manual, Timeout}
 
 @this(
     hmrcStandardPage: HmrcStandardPage,
@@ -67,8 +68,8 @@
         @hmrcTimeoutDialogHelper(
             timeout = Some(appConfig.timeoutInSeconds),
             countdown = Some(appConfig.timeoutWarningInSeconds),
-            signOutUrl = routes.SessionExpiredController.show(false).url,
-            timeoutUrl = Some(routes.SessionExpiredController.show(true).url),
+            signOutUrl = routes.SessionExpiredController.show(Manual).url,
+            timeoutUrl = Some(routes.SessionExpiredController.show(Timeout).url),
             keepAliveUrl = Some(routes.KeepAliveController.keepAlive().url),
             title = Some(messages("timeout.title")),
             message = Some(messages("timeout.message")),
