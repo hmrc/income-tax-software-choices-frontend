@@ -80,13 +80,13 @@ class QuarterlyOnlyViewSpec extends ViewSpec {
 
 
 private object QuarterlyOnlyContent {
-  val heading1 = "A1 Tax Stuff is ready to send quarterly updates only"
+  val heading1 = "A1 Tax Stuff can only send quarterly updates"
   val heading2 = "What you should do next"
   val title = s"$heading1 - ${PageContentBase.title} - GOV.UK"
   val para1 = "This software does not have the ability to submit a tax return."
-  val para2 = "You can view more information about your software provider and the features they are planning to provide."
+  val para2 = "Learn more about your software and its upcoming features."
   val para3 = "If you intend to do your tax returns via software, you will need additional software to do this."
-  val para4 = "If you have not done so already, you now need to:"
+  val para4 = "If you want to use this software, you need to:"
   val bullet1Text = "sign up for Making Tax Digital for Income Tax (opens in new tab)"
   val bullet1Link = "https://www.gov.uk/guidance/sign-up-for-making-tax-digital-for-income-tax"
   val bullet2Text = "authorise your software for HMRC (opens in new tab)"
