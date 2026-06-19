@@ -147,4 +147,16 @@ trait SummaryListBuilder {
     )
   }
 
+  def getCYAPageHeading(userAnswersOpt: Option[UserAnswers]): String = {
+    val userAnswers = userAnswersOpt.getOrElse(throw new InternalServerException("[SummaryListBuilder][getCYAPageHeading] - User answers is empty"))
+
+    (userAnswers.get(HowYouFindSoftwarePage), userAnswers.get(EnterSoftwareNamePage)) match {
+      case (Some(Check), Some(softwareProduct)) =>
+        softwareProduct.softwareType match {
+          case Recognised => "check-your-answers.checked-heading"
+          case _ => "check-your-answers.guided-heading"
+        }
+      case _ => "check-your-answers.guided-heading"
+    }
+  }
 }

@@ -43,6 +43,7 @@ class CheckYourAnswersController @Inject()(view: CheckYourAnswersView,
     given Request[AnyContent] = request
 
     Ok(view(
+      pageHeadingKey = getCYAPageHeading(request.userFilters.answers),
       summaryList = buildSummaryList(request.userFilters.answers),
       postAction = routes.CheckYourAnswersController.submit()
     ))

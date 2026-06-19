@@ -60,7 +60,7 @@ class CheckYourAnswersViewSpec extends ViewSpec {
     }
   }
 
-  def page: HtmlFormat.Appendable = view(summaryList, testCall)
+  def page: HtmlFormat.Appendable = view("check-your-answers.guided-heading", summaryList, testCall)
 
   def document: Document = Jsoup.parse(page.body)
 
