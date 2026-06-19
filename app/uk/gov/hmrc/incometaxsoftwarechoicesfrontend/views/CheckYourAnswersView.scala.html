@@ -31,11 +31,11 @@
         form: FormWithCSRF
 )(implicit appConfig: AppConfig)
 
-@(pageHeadingKey: String, summaryList: SummaryList, postAction: Call)(implicit request: Request[_], messages: Messages)
+@(pageHeading: String, summaryList: SummaryList, postAction: Call)(implicit request: Request[_], messages: Messages)
 
-@mainTemplate(title = messages(pageHeadingKey)) {
+@mainTemplate(title = pageHeading) {
 
-    <h1 class="govuk-heading-l">@messages(pageHeadingKey)</h1>
+    <h1 class="govuk-heading-l">@pageHeading</h1>
 
     @govukSummaryList(summaryList)
 

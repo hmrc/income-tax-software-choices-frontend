@@ -16,11 +16,15 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
+import play.api.i18n.Messages
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
+import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{RequireUserDataRefiner, SessionIdentifierAction}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.Check
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.Recognised
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserAnswers
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.{EnterSoftwareNamePage, HowYouFindSoftwarePage}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.{PageAnswersService, SoftwareChoicesService}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.helpers.SummaryListBuilder
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.CheckYourAnswersView
@@ -43,7 +47,7 @@ class CheckYourAnswersController @Inject()(view: CheckYourAnswersView,
     given Request[AnyContent] = request
 
     Ok(view(
-      pageHeadingKey = getCYAPageHeading(request.userFilters.answers),
+      pageHeading = getPageHeading(request.userFilters.answers),
       summaryList = buildSummaryList(request.userFilters.answers),
       postAction = routes.CheckYourAnswersController.submit()
     ))
@@ -74,6 +78,19 @@ class CheckYourAnswersController @Inject()(view: CheckYourAnswersView,
         case _ =>
           Redirect(routes.SearchSoftwareController.show())
       }
+    }
+  }
+
+  private def getPageHeading(userAnswersOpt: Option[UserAnswers])(implicit messages: Messages): String = {
+    val userAnswers = userAnswersOpt.getOrElse(throw new InternalServerException("[CheckYourAnswersController][getPageHeading] - User answers is empty"))
+
+    (userAnswers.get(HowYouFindSoftwarePage), userAnswers.get(EnterSoftwareNamePage)) match {
+      case (Some(Check), Some(softwareProduct)) =>
+        softwareProduct.softwareType match {
+          case Recognised => messages("check-your-answers.checked-heading")
+          case _ => messages("check-your-answers.guided-heading")
+        }
+      case _ => messages("check-your-answers.guided-heading")
     }
   }
 }

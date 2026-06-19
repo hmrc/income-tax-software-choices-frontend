@@ -35,7 +35,7 @@ class CheckYourAnswersViewSpec extends ViewSpec {
   )
 
   "CheckYourAnswersView" must {
-    def page: HtmlFormat.Appendable = view("check-your-answers.guided-heading", summaryList, testCall)
+    def page: HtmlFormat.Appendable = view("Check your answers before viewing compatible software", summaryList, testCall)
     def document: Document = Jsoup.parse(page.body)
 
     "have a title in guided journey" in {
@@ -64,7 +64,7 @@ class CheckYourAnswersViewSpec extends ViewSpec {
   }
 
   "CheckYourAnswersView" must {
-    def checkedJourneyPage: HtmlFormat.Appendable = view("check-your-answers.checked-heading", summaryList, testCall)
+    def checkedJourneyPage: HtmlFormat.Appendable = view("Check your answers before viewing your result", summaryList, testCall)
     def checkedJourneyDocument: Document = Jsoup.parse(checkedJourneyPage.body)
     "have a correct h1 title in checked journey" in {
       checkedJourneyDocument.title() shouldBe CheckYourAnswersViewContent.checkedTitle
