@@ -33,9 +33,7 @@
 
     <p class="govuk-body">@messages("quarterly-only.para1")</p>
     
-    <p class="govuk-body">
-        @Html(messages("quarterly-only.para2", s"""<a class="govuk-link govuk-!-display-none-print" href="$productDetailsUrl">${messages("quarterly-only.para2.link.text")}</a>"""))
-    </p>
+    <p class="govuk-body"><a class="govuk-link govuk-!-display-none-print" href="@productDetailsUrl">@messages("quarterly-only.para2.link.text")</a></p>
 
     <p class="govuk-body">
         @Html(messages("quarterly-only.para3", s"""<a class="govuk-link govuk-!-display-none-print" href="$softwareResultsUrl">${messages("quarterly-only.para3.link.text")}</a>"""))

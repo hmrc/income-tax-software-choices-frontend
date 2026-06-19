@@ -340,14 +340,13 @@ partially-compatible.bullet1 = cofrestru ar gyfer y cynllun Troi Treth yn Ddigid
 partially-compatible.bullet2 = awdurdodi’ch meddalwedd i CThEF
 
 #Quarterly Only page
-quarterly-only.heading1 = Mae {0} yn barod i anfon diweddariadau chwarterolyn unig
+quarterly-only.heading1 = Gall {0} anfon diweddariadau chwarterol yn unig
 quarterly-only.para1 = Nid oes gan y feddalwedd hon y gallu i gyflwyno Ffurflen Dreth.
-quarterly-only.para2 = Gallwch {0} a’r nodweddion sy’n cael eu cynllunio i’w darparu.
-quarterly-only.para2.link.text = weld rhagor o wybodaeth ynglŷn â’ch darparwr meddalwedd
+quarterly-only.para2.link.text = Dysgwch ragor am eich meddalwedd a’i nodweddion sydd ar ddod.
 quarterly-only.para3 = Os ydych yn bwriadu llenwi eich Ffurflen Dreth drwy ddefnyddio meddalwedd, {0} er mwyn gwneud hyn.
 quarterly-only.para3.link.text = bydd angen i chi gael meddalwedd ychwanegol
 quarterly-only.heading2 = Yr hyn y dylech ei wneud nesaf
-quarterly-only.para4 = Os nad ydych chi wedi gwneud hyn eisoes, mae angen i chi wneud y canlynol:
+quarterly-only.para4 = Os ydych am ddefnyddio’r feddalwedd hon, bydd angen i chi wneud y canlynol:
 quarterly-only.bullet1 = cofrestru ar gyfer y cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm
 quarterly-only.bullet2 = awdurdodi’ch meddalwedd i CThEF
 
