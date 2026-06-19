@@ -81,7 +81,7 @@ other-items.error.invalid-selection = Dewiswch un eitem arall, eitemau eraill, n
 
 # Check Your Answers view
 check-your-answers.guided-heading                      = Gwiriwch eich atebion cyn edrych ar feddalwedd sy’n cydweddu
-check-your-answers.checked-heading                     = Gwirio’r daith- Gwiriwch eich atebion cyn bwrw golwg dros eich canlyniadau
+check-your-answers.checked-heading                     = Gwiriwch eich atebion cyn bwrw golwg dros eich canlyniadau
 check-your-answers.software-name                       = Enw'r feddalwedd
 check-your-answers.user-type                           = Math o ddefnyddiwr
 check-your-answers.user-type.sole-trader-or-landlord   = Unig fasnachwr neu landlord

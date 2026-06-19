@@ -81,10 +81,12 @@ class CheckYourAnswersController @Inject()(view: CheckYourAnswersView,
     }
   }
 
-  private def getPageHeading(userAnswersOpt: Option[UserAnswers])(implicit messages: Messages): String = {
-    val userAnswers = userAnswersOpt.getOrElse(throw new InternalServerException("[CheckYourAnswersController][getPageHeading] - User answers is empty"))
+  private def getPageHeading(userAnswers: Option[UserAnswers])(implicit messages: Messages): String = {
 
-    (userAnswers.get(HowYouFindSoftwarePage), userAnswers.get(EnterSoftwareNamePage)) match {
+    val softwareProduct = pageAnswersService.getPageAnswers(userAnswers, EnterSoftwareNamePage)
+    val journeyType = pageAnswersService.getPageAnswers(userAnswers, HowYouFindSoftwarePage)
+
+    (journeyType, softwareProduct) match {
       case (Some(Check), Some(softwareProduct)) =>
         softwareProduct.softwareType match {
           case Recognised => messages("check-your-answers.checked-heading")
