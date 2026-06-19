@@ -83,15 +83,11 @@ class CheckYourAnswersController @Inject()(view: CheckYourAnswersView,
 
   private def getPageHeading(userAnswers: Option[UserAnswers])(implicit messages: Messages): String = {
 
-    val softwareProduct = pageAnswersService.getPageAnswers(userAnswers, EnterSoftwareNamePage)
+    val softwareType = pageAnswersService.getPageAnswers(userAnswers, EnterSoftwareNamePage).map(_.softwareType)
     val journeyType = pageAnswersService.getPageAnswers(userAnswers, HowYouFindSoftwarePage)
 
-    (journeyType, softwareProduct) match {
-      case (Some(Check), Some(softwareProduct)) =>
-        softwareProduct.softwareType match {
-          case Recognised => messages("check-your-answers.checked-heading")
-          case _ => messages("check-your-answers.guided-heading")
-        }
+    (journeyType, softwareType) match {
+      case (Some(Check), Some(Recognised)) => messages("check-your-answers.checked-heading")
       case _ => messages("check-your-answers.guided-heading")
     }
   }
