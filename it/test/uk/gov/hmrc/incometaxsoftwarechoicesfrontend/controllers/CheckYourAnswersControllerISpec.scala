@@ -74,7 +74,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
 
         res should have(
           httpStatus(OK),
-          pageTitle(s"${messages("check-your-answers.heading")} - ${PageContentBase.title} - GOV.UK"),
+          pageTitle(s"${messages("check-your-answers.guided-heading")} - ${PageContentBase.title} - GOV.UK"),
           summaryListRow(SummaryListKeys.userType, Set(SoleTraderOrLandlord)
             .map(vf => messages(s"check-your-answers.user-type.${vf.key}")).mkString(" ")),
           summaryListRow(SummaryListKeys.incomeSources, Seq(SoleTrader, UkProperty, OverseasProperty)
@@ -106,7 +106,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
 
         res should have(
           httpStatus(OK),
-          pageTitle(s"${messages("check-your-answers.heading")} - ${PageContentBase.title} - GOV.UK"),
+          pageTitle(s"${messages("check-your-answers.checked-heading")} - ${PageContentBase.title} - GOV.UK"),
           summaryListRow(SummaryListKeys.softwareName, Set(recognisedProduct)
             .map(vf => vf.name).mkString(" ")),
           summaryListRow(SummaryListKeys.incomeSources, Seq(SoleTrader)
@@ -134,7 +134,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
 
         res should have(
           httpStatus(OK),
-          pageTitle(s"${messages("check-your-answers.heading")} - ${PageContentBase.title} - GOV.UK"),
+          pageTitle(s"${messages("check-your-answers.guided-heading")} - ${PageContentBase.title} - GOV.UK"),
           summaryListRow(SummaryListKeys.incomeSources, Seq(SoleTrader, UkProperty, OverseasProperty)
             .map(vf => messages(s"business-income.$vf")).mkString(" ")),
           summaryListRow(SummaryListKeys.otherIncome, messages("check-your-answers.none-selected")),
@@ -158,7 +158,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
 
         res should have(
           httpStatus(OK),
-          pageTitle(s"${messages("check-your-answers.heading")} - ${PageContentBase.title} - GOV.UK"),
+          pageTitle(s"${messages("check-your-answers.guided-heading")} - ${PageContentBase.title} - GOV.UK"),
           summaryListRow(SummaryListKeys.softwareName, messages("check-your-answers.software-not-listed")),
           summaryListRow(SummaryListKeys.incomeSources, Seq(SoleTrader, UkProperty, OverseasProperty)
             .map(vf => messages(s"business-income.$vf")).mkString(" ")),

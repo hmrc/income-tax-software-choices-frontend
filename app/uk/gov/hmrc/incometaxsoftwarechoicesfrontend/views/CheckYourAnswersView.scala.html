@@ -31,11 +31,11 @@
         form: FormWithCSRF
 )(implicit appConfig: AppConfig)
 
-@(summaryList: SummaryList, postAction: Call)(implicit request: Request[_], messages: Messages)
+@(pageHeading: String, summaryList: SummaryList, postAction: Call)(implicit request: Request[_], messages: Messages)
 
-@mainTemplate(title = messages("check-your-answers.heading")) {
+@mainTemplate(title = pageHeading) {
 
-    <h1 class="govuk-heading-l">@messages("check-your-answers.heading")</h1>
+    <h1 class="govuk-heading-l">@pageHeading</h1>
 
     @govukSummaryList(summaryList)
 

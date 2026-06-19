@@ -80,7 +80,8 @@ other-items.error.non-empty = Dewiswch un eitem arall neu eitemau eraill
 other-items.error.invalid-selection = Dewiswch un eitem arall, eitemau eraill, neu ‘dim un o’r rhain’
 
 # Check Your Answers view
-check-your-answers.heading                             = Gwiriwch eich atebion cyn edrych ar feddalwedd sy’n cydweddu
+check-your-answers.guided-heading                      = Gwiriwch eich atebion cyn edrych ar feddalwedd sy’n cydweddu
+check-your-answers.checked-heading                     = Gwiriwch eich atebion cyn bwrw golwg dros eich canlyniadau
 check-your-answers.software-name                       = Enw'r feddalwedd
 check-your-answers.user-type                           = Math o ddefnyddiwr
 check-your-answers.user-type.sole-trader-or-landlord   = Unig fasnachwr neu landlord
