@@ -75,7 +75,7 @@ private object FullyCompatibleContent {
   val heading1 = "A1 Tax Stuff is fully compatible with Making Tax Digital for Income Tax"
   val heading2 = "What you should do next"
   val title = s"$heading1 - ${PageContentBase.title} - GOV.UK"
-  val para1 = "Your software currently supports all the features you need for Making Tax Digital for Income Tax. These features are ready for your 2026 to 2027 tax return."
+  val para1 = "Your software currently supports all the features you need for Making Tax Digital for Income Tax."
   val para2 = "Learn more about your software and its upcoming features."
   val para3 = "If you want to use this software, you need to:"
   val bullet1Text = "sign up for Making Tax Digital for Income Tax (opens in new tab)"
