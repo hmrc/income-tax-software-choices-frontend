@@ -41,16 +41,8 @@ class NeedAdditionalSoftwareViewSpec extends ViewSpec {
     "have the correct paragraphs" in {
       document.mainContent.selectNth("p", 1).text() shouldBe NeedAdditionalSoftwareContent.para1
       document.mainContent.selectNth("p", 2).text() shouldBe NeedAdditionalSoftwareContent.para2
-      document.mainContent.selectNth("p", 3).text() shouldBe NeedAdditionalSoftwareContent.para3
     }
-
-    "have the correct bullet points" in {
-      val bulletPoints: Seq[Element] = document.mainContent.selectSeq(".govuk-list.govuk-list--bullet li")
-      bulletPoints(0).text() shouldBe NeedAdditionalSoftwareContent.bullet1
-      bulletPoints(1).text() shouldBe NeedAdditionalSoftwareContent.bullet2
-      bulletPoints(2).text() shouldBe NeedAdditionalSoftwareContent.bullet3
-    }
-
+    
     "have a link button" in {
       val link: Element = document.selectHead("a.govuk-button")
       link.text() shouldBe NeedAdditionalSoftwareContent.button
@@ -64,9 +56,5 @@ private object NeedAdditionalSoftwareContent {
   val title = s"$heading - ${PageContentBase.title} - GOV.UK"
   val para1 = "If you want to keep using your spreadsheets to record your income and expenses, you will need to use new software that connects to your digital records."
   val para2 = "You can also choose software that creates digital records. This may be the better option if you want one product to meet all your needs."
-  val para3 = "This software is able to:"
-  val bullet1 = "create digital records"
-  val bullet2 = "send quarterly updates to HMRC"
-  val bullet3 = "submit tax returns"
   val button = "Find compatible software"
 }
