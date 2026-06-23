@@ -23,6 +23,7 @@ import play.api.mvc.Result
 import play.api.test.Helpers.{HTML, contentType, defaultAwaitTimeout, redirectLocation, status}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.mocks.MockSessionIdentifierAction
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.UserTypeForm
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.TimeoutType.Timeout
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.SoleTraderOrLandlord
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SessionExpiredView
@@ -35,15 +36,15 @@ class SessionExpiredControllerSpec extends ControllerBaseSpec with MockSessionId
 
   "show" must {
     "delete answers and return OK" in new Setup {
-      val result: Future[Result] = controller.show()(fakeRequest)
+      val result: Future[Result] = controller.show(Timeout)(fakeRequest)
 
       status(result) shouldBe OK
       contentType(result) shouldBe Some(HTML)
       verify(repo, times(1)).delete(any())
     }
-
+    
     "return OK without deleting answers" in new Setup(false) {
-      val result: Future[Result] = controller.show()(fakeRequest)
+      val result: Future[Result] = controller.show(Timeout)(fakeRequest)
 
       status(result) shouldBe OK
       contentType(result) shouldBe Some(HTML)

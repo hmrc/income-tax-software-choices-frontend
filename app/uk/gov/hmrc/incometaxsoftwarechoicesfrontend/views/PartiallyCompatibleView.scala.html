@@ -32,10 +32,8 @@
     <h1 class="govuk-heading-l">@messages("partially-compatible.heading1", chosenSoftware)</h1>
 
     <p class="govuk-body">@messages("partially-compatible.para1")</p>
-    
-    <p class="govuk-body">
-        @Html(messages("partially-compatible.para2", s"""<a class="govuk-link govuk-!-display-none-print" href="$productDetailsUrl">${messages("partially-compatible.para2.link.text")}</a>"""))
-    </p>
+
+    <p class="govuk-body"><a class="govuk-link govuk-!-display-none-print" href="@productDetailsUrl">@messages("partially-compatible.para2.link.text")</a></p>
 
     <h2 class="govuk-heading-m">@messages("partially-compatible.heading2")</h2>
 

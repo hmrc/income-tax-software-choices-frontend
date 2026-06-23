@@ -20,6 +20,7 @@ import org.jsoup.Jsoup
 import org.scalatest.matchers.must.Matchers._
 import play.api.mvc.Call
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SessionExpiredView
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.TimeoutType.*
 
 class SessionExpiredViewSpec extends ViewSpec {
 
@@ -27,14 +28,14 @@ class SessionExpiredViewSpec extends ViewSpec {
     app.injector.instanceOf[SessionExpiredView]
 
   private val document =
-    Jsoup.parse(view(postAction = Call("", "")).body)
+    Jsoup.parse(view(postAction = Call("", ""), Manual).body)
 
   private val form =
     document.mainContent.selectHead("form")
 
   "SessionExpiredView" when {
-    "user deletes answers" should {
-      val document = Jsoup.parse(view(postAction = Call("", "")).body)
+    "user deletes answers (manual)" should {
+      val document = Jsoup.parse(view(postAction = Call("", ""), Manual).body)
       "have the correct title" in {
         document.title() mustBe SessionExpiredContent.title
       }
@@ -47,8 +48,8 @@ class SessionExpiredViewSpec extends ViewSpec {
         form.selectNth(".govuk-button", 1).text mustBe SessionExpiredContent.continue
       }
     }
-    "user timed out" should {
-      val document = Jsoup.parse(view(postAction = Call("", ""), true).body)
+    "session expired due to inactivity (expired)" should {
+      val document = Jsoup.parse(view(postAction = Call("", ""), Timeout).body)
       "have the correct title" in {
         document.title() mustBe SessionExpiredContent.title
       }
@@ -64,6 +65,18 @@ class SessionExpiredViewSpec extends ViewSpec {
         form.selectNth(".govuk-button", 1).text mustBe SessionExpiredContent.continue
       }
     }
+    "no all-in-one product found (auto)" should {
+      val document = Jsoup.parse(view(postAction = Call("", ""), Auto).body)
+      "have the correct title" in {
+        document.title() mustBe SessionExpiredContent.title
+      }
+      "have the correct heading" in {
+        document.selectHead("h1").text mustBe SessionExpiredContent.autoHeading
+      }
+      "have a continue button" in {
+        form.selectNth(".govuk-button", 1).text mustBe SessionExpiredContent.continue
+      }
+    }
   }
 }
 
@@ -71,6 +84,7 @@ private object SessionExpiredContent {
   val title = s"Answers Deleted - ${PageContentBase.title} - GOV.UK"
   val userHeading = "You deleted your answers"
   val timeoutHeading = "Session timed out due to inactivity"
+  val autoHeading = "For security, we deleted your answers"
   val continue = "Start again"
   val timeoutparagraph = "Your session timed out after 15 minutes of inactivity, so we cleared your information to keep it secure. You will need to start again."
 

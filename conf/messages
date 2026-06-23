@@ -80,7 +80,8 @@ other-items.error.non-empty = Select one other item or other items
 other-items.error.invalid-selection = Select one other item, other items, or ‘none of these’
 
 # Check Your Answers view
-check-your-answers.heading                             = Check your answers before viewing compatible software
+check-your-answers.guided-heading                      = Check your answers before viewing compatible software
+check-your-answers.checked-heading                     = Check your answers before viewing your result
 check-your-answers.software-name                       = Software name
 check-your-answers.user-type                           = User type
 check-your-answers.user-type.sole-trader-or-landlord   = Sole trader or landlord
@@ -278,6 +279,7 @@ session-expired.user = You deleted your answers
 session-expired.timeout.heading = Session timed out due to inactivity
 session-expired.timeout.para1 = Your session timed out after 15 minutes of inactivity, so we cleared your information to keep it secure. You will need to start again.
 session-expired.button = Start again
+session-expired.auto.heading = For security, we deleted your answers
 
 page-not-found.title = Page not found
 page-not-found.p1 = If you typed the web address, check it is correct.
@@ -290,10 +292,6 @@ page-not-found.bullet2 = find software that works with Making Tax Digital for In
 need-additional-software.heading = You will need additional software
 need-additional-software.para1 = If you want to keep using your spreadsheets to record your income and expenses, you will need to use new software that connects to your digital records.
 need-additional-software.para2 = You can also choose software that creates digital records. This may be the better option if you want one product to meet all your needs.
-need-additional-software.para3 = This software is able to:
-need-additional-software.bullet1 = create digital records
-need-additional-software.bullet2 = send quarterly updates to HMRC
-need-additional-software.bullet3 = submit tax returns
 
 # Phase Banner
 phase-banner.tag = Beta
@@ -310,7 +308,7 @@ not-listed-software.para1 = You may want to contact your current software provid
 # Enter Software Name
 enter-software-name.heading = What is the name of your software?
 enter-software-name.hint = Start typing and select from the list
-enter-software-name.error.empty = The software you entered is not on the list. Select software from the list or click ‘My software is not listed’
+enter-software-name.error.empty = Enter a software name and choose it from the list, or select ‘My software is not listed’
 enter-software-name.software-not-listed = My software is not listed
 
 #Software In Development page
@@ -320,33 +318,30 @@ software-in-development.para2 = You can also search for other software packages 
 
 #Fully Compatible page
 fully-compatible.heading1 = {0} is fully compatible with Making Tax Digital for Income Tax
-fully-compatible.para1 = Your software currently supports all the features you need for Making Tax Digital for Income Tax. These features are ready for your 2026 to 2027 tax return.
-fully-compatible.para2 = You can {0} and the features they are planning to provide.
-fully-compatible.para2.link.text = view further information about your software
+fully-compatible.para1 = Your software currently supports all the features you need for Making Tax Digital for Income Tax.
+fully-compatible.para2.link.text = Learn more about your software and its upcoming features.
 fully-compatible.heading2 = What you should do next
-fully-compatible.para3 = If you have not done so already, you now need to:
+fully-compatible.para3 = If you want to use this software, you need to:
 fully-compatible.bullet1 = sign up for Making Tax Digital for Income Tax
 fully-compatible.bullet2 = authorise your software for HMRC
 
 #Partially Compatible page
-partially-compatible.heading1 = {0} is ready to send quarterly updates but is still building your tax return features
-partially-compatible.para1 = Your software provider has built the features you need to send your quarterly updates. They are now developing the remaining features required for your tax return. These will be available in time for your 2026 to 2027 tax return.
-partially-compatible.para2 = You can {0} and the features they are planning to provide.
-partially-compatible.para2.link.text = view more information about your software
+partially-compatible.heading1 = {0} can send quarterly updates and is developing your tax return features
+partially-compatible.para1 = Your software provider has built the features you need to send your quarterly updates. They are now developing the remaining features required for your tax return. These should be available in time for your 2026 to 2027 tax return.
+partially-compatible.para2.link.text = Learn more about your software and its upcoming features.
 partially-compatible.heading2 = What you should do next
-partially-compatible.para3 = If you have not done so already, you now need to:
+partially-compatible.para3 = If you want to use this software, you need to:
 partially-compatible.bullet1 = sign up for Making Tax Digital for Income Tax
 partially-compatible.bullet2 = authorise your software for HMRC
 
 #Quarterly Only page
-quarterly-only.heading1 = {0} is ready to send quarterly updates only
+quarterly-only.heading1 = {0} can only send quarterly updates
 quarterly-only.para1 = This software does not have the ability to submit a tax return.
-quarterly-only.para2 = You can {0} and the features they are planning to provide.
-quarterly-only.para2.link.text = view more information about your software provider
+quarterly-only.para2.link.text = Learn more about your software and its upcoming features.
 quarterly-only.para3 = If you intend to do your tax returns via software, {0} to do this.
 quarterly-only.para3.link.text = you will need additional software
 quarterly-only.heading2 = What you should do next
-quarterly-only.para4 = If you have not done so already, you now need to:
+quarterly-only.para4 = If you want to use this software, you need to:
 quarterly-only.bullet1 = sign up for Making Tax Digital for Income Tax
 quarterly-only.bullet2 = authorise your software for HMRC
 

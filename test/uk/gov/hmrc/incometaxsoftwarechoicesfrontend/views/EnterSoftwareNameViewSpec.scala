@@ -31,7 +31,7 @@ class EnterSoftwareNameViewSpec extends ViewSpec with SelectBuilder {
 
   private val view = app.injector.instanceOf[EnterSoftwareNameView]
 
-  private val formError: FormError = FormError("enterSoftwareName", "enterSoftwareName.error.nonEmpty")
+  private val formError: FormError = FormError("enterSoftwareName", "enter-software-name.error.empty")
 
   private val testProducts: Seq[SoftwareProduct] = Seq(
     SoftwareProduct(1, "Vendor One", Recognised),
@@ -64,6 +64,7 @@ class EnterSoftwareNameViewSpec extends ViewSpec with SelectBuilder {
         document(hasError = true).selectSeq(".govuk-error-summary").size shouldBe 1
         document(hasError = true).selectHead(".govuk-error-summary").text() should include("There is a problem")
         document(hasError = true).select(".govuk-error-summary__body > ul > li > a").attr("href") shouldBe "#enterSoftwareName"
+        document(hasError = true).select(".govuk-error-summary__body > ul > li > a").text() shouldBe EnterSoftwareNameViewContent.emptyError
       }
     }
     "there is no error" must {
@@ -116,5 +117,5 @@ private object EnterSoftwareNameViewContent {
   val hint = "Start typing and select from the list"
   val continue = "Continue"
   val softwareNotListed = "My software is not listed"
-  val emptyError = "The software you entered is not on the list. Select software from the list or click 'My software is not listed'"
+  val emptyError = "Enter a software name and choose it from the list, or select ‘My software is not listed’"
 }

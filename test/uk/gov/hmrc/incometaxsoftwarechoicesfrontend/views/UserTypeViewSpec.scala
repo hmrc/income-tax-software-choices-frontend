@@ -30,6 +30,7 @@ class UserTypeViewSpec extends ViewSpec {
 
   private val view = app.injector.instanceOf[UserTypeView]
   private val formError = FormError(UserTypeForm.fieldName, "type-of-user.error")
+  private val softwareName = "Test Software"
 
   def page(hasError: Boolean = false): HtmlFormat.Appendable = {
     val form = if (hasError) {
@@ -37,7 +38,7 @@ class UserTypeViewSpec extends ViewSpec {
     } else {
       UserTypeForm.userTypeForm
     }
-    view(userTypeForm = form, postAction = testCall, backUrl = testBackUrl)
+    view(userTypeForm = form, postAction = testCall, backUrl = testBackUrl, softwareName = Some(softwareName))
   }
 
   def document(hasError: Boolean = false): Document = Jsoup.parse(page(hasError).body)
@@ -56,6 +57,10 @@ class UserTypeViewSpec extends ViewSpec {
     "there is no error" should {
       "have the correct title" in {
         document().title() mustBe UserTypeContent.title
+      }
+
+      "have a software name caption" in {
+        document().mainContent.selectHead("span.govuk-caption-l").text() shouldBe softwareName
       }
 
       "have a form" which {

@@ -35,11 +35,14 @@ class CheckYourAnswersViewSpec extends ViewSpec {
   )
 
   "CheckYourAnswersView" must {
-    "have a title" in {
-      document.title() shouldBe CheckYourAnswersViewContent.title
+    def page: HtmlFormat.Appendable = view("Check your answers before viewing compatible software", summaryList, testCall)
+    def document: Document = Jsoup.parse(page.body)
+
+    "have a title in guided journey" in {
+      document.title() shouldBe CheckYourAnswersViewContent.guidedTitle
     }
-    "have a h1 heading" in {
-      document.selectHead("h1").text() shouldBe CheckYourAnswersViewContent.heading
+    "have a h1 heading in guided journey" in {
+      document.selectHead("h1").text() shouldBe CheckYourAnswersViewContent.guidedHeading
     }
     "render the summary list correctly" which {
       def getRow(index: Int): Element = document.getSummaryListRow(index)
@@ -60,9 +63,16 @@ class CheckYourAnswersViewSpec extends ViewSpec {
     }
   }
 
-  def page: HtmlFormat.Appendable = view(summaryList, testCall)
-
-  def document: Document = Jsoup.parse(page.body)
+  "CheckYourAnswersView" must {
+    def checkedJourneyPage: HtmlFormat.Appendable = view("Check your answers before viewing your result", summaryList, testCall)
+    def checkedJourneyDocument: Document = Jsoup.parse(checkedJourneyPage.body)
+    "have a correct h1 title in checked journey" in {
+      checkedJourneyDocument.title() shouldBe CheckYourAnswersViewContent.checkedTitle
+    }
+    "have a correct h1 heading in checked journey" in {
+      checkedJourneyDocument.selectHead("h1").text() shouldBe CheckYourAnswersViewContent.checkedHeading
+    }
+  }
 
   private val summaryList: SummaryList = SummaryList(
     rows = rowContent.map {
@@ -89,8 +99,10 @@ class CheckYourAnswersViewSpec extends ViewSpec {
   )
 
   object CheckYourAnswersViewContent {
-    val title = s"Check your answers before viewing compatible software - ${PageContentBase.title} - GOV.UK"
-    val heading = "Check your answers before viewing compatible software"
+    val guidedTitle = s"Check your answers before viewing compatible software - ${PageContentBase.title} - GOV.UK"
+    val guidedHeading = "Check your answers before viewing compatible software"
+    val checkedTitle = s"Check your answers before viewing your result - ${PageContentBase.title} - GOV.UK"
+    val checkedHeading = "Check your answers before viewing your result"
     val confirmContinue = "Confirm and continue"
   }
 

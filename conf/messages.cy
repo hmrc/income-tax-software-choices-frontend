@@ -80,7 +80,8 @@ other-items.error.non-empty = Dewiswch un eitem arall neu eitemau eraill
 other-items.error.invalid-selection = Dewiswch un eitem arall, eitemau eraill, neu ‘dim un o’r rhain’
 
 # Check Your Answers view
-check-your-answers.heading                             = Gwiriwch eich atebion cyn edrych ar feddalwedd sy’n cydweddu
+check-your-answers.guided-heading                      = Gwiriwch eich atebion cyn edrych ar feddalwedd sy’n cydweddu
+check-your-answers.checked-heading                     = Gwiriwch eich atebion cyn bwrw golwg dros eich canlyniadau
 check-your-answers.software-name                       = Enw'r feddalwedd
 check-your-answers.user-type                           = Math o ddefnyddiwr
 check-your-answers.user-type.sole-trader-or-landlord   = Unig fasnachwr neu landlord
@@ -278,6 +279,7 @@ session-expired.user = Rydych wedi dileu’ch atebion
 session-expired.timeout.heading = Sesiwn wedi dod i ben oherwydd anweithgarwch
 session-expired.timeout.para1 = Fe ddaeth eich sesiwn i ben ar ôl 15 munud o anweithgarwch, felly rydym wedi clirio eich gwybodaeth er mwyn ei chadw’n ddiogel. Bydd angen i chi ddechrau eto.
 session-expired.button = Dechrau eto
+session-expired.auto.heading = Er diogelwch, gwnaethom ddileu'ch atebion
 
 page-not-found.title = Heb ddod o hyd i’r dudalen
 page-not-found.p1 = Os gwnaethoch deipio’r cyfeiriad gwe, gwiriwch ei fod yn gywir.
@@ -290,10 +292,6 @@ page-not-found.bullet2 = dod o hyd i feddalwedd sy’n cydweddu â’r cynllun T
 need-additional-software.heading = Bydd angen i chi gael meddalwedd ychwanegol
 need-additional-software.para1 = Os ydych eisiau parhau i ddefnyddio eich taenlenni i gofnodi eich incwm a’ch treuliau, bydd angen i chi ddefnyddio meddalwedd newydd sy’n cysylltu i’ch cofnodion digidol.
 need-additional-software.para2 = Gallwch hefyd ddewis meddalwedd sy’n creu cofnodion digidol. Gall hyn fod y dewis gorau os ydych am gael un offeryn sy’n bodloni’ch holl ofynion.
-need-additional-software.para3 = Mae’r feddalwedd hon yn gallu gwneud y canlynol:
-need-additional-software.bullet1 = creu dogfennau digidol
-need-additional-software.bullet2 = anfon diweddariadau chwarterol at CThEF
-need-additional-software.bullet3 = cyflwyno Ffurflenni Treth
 
 # Phase Banner
 phase-banner.tag = Beta
@@ -310,7 +308,7 @@ not-listed-software.para1 = Mae’n bosibl y byddwch eisiau cysylltu â’ch dar
 # Enter Software Name
 enter-software-name.heading = Beth yw enw eich meddalwedd?
 enter-software-name.hint = Dechreuwch deipio a dewis o’r rhestr
-enter-software-name.error.empty = *** MISSING WELSH ***
+enter-software-name.error.empty = Nodwch enw’r feddalwedd a’i dewis o’r rhestr, neu dewiswch ‘Nid yw fy meddalwedd wedi’i restru’
 enter-software-name.software-not-listed = Nid yw fy meddalwedd wedi’i restru
 
 #Software In Development page
@@ -320,33 +318,30 @@ software-in-development.para2 = Gallwch hefyd chwilio am becynnau meddalwedd era
 
 #Fully Compatible page
 fully-compatible.heading1 = Mae {0} yn cydweddu’n llwyr â Throi Treth yn Ddigidol ar gyfer Treth Incwm
-fully-compatible.para1 = Ar hyn o bryd, mae’ch meddalwedd yn cefnogi’r holl nodweddion sydd eu hangen arnoch ar gyfer Troi Treth yn Ddigidol ar gyfer Treth Incwm. Mae’r manylion hyn yn barod ar gyfer eich Ffurflen Dreth 2026 i 2027.
-fully-compatible.para2 = Gallwch {0} a’r nodweddion sy’n cael eu cynllunio i’w darparu.
-fully-compatible.para2.link.text = weld rhagor o wybodaeth ynglŷn â’ch meddalwedd
+fully-compatible.para1 = Ar hyn o bryd, mae’ch meddalwedd yn cefnogi’r holl nodweddion sydd eu hangen arnoch ar gyfer Troi Treth yn Ddigidol ar gyfer Treth Incwm.
+fully-compatible.para2.link.text = Dysgwch ragor am eich meddalwedd a’i nodweddion sydd ar ddod.
 fully-compatible.heading2 = Yr hyn y dylech ei wneud nesaf
-fully-compatible.para3 = Os nad ydych chi wedi gwneud hyn eisoes, mae angen i chi wneud y canlynol:
+fully-compatible.para3 = Os ydych am ddefnyddio’r feddalwedd hon, bydd angen i chi wneud y canlynol:
 fully-compatible.bullet1 = cofrestru ar gyfer y cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm
 fully-compatible.bullet2 = awdurdodi’ch meddalwedd i CThEF
 
 #Partially Compatible page
-partially-compatible.heading1 = Mae {0} yn barod i anfon diweddariadau chwarterol, ond mae’n dal i adeiladu eich nodweddion Ffurflenni Treth
-partially-compatible.para1 = Mae’ch darparwr meddalwedd wedi adeiladu’r nodweddion sydd eu hangen arnoch er mwyn i chi anfon eich diweddariadau chwarterol. Erbyn hyn, maent yn datblygu’r nodweddion sy’n weddill sydd eu hangen ar gyfer eich Ffurflen Dreth. Bydd y rhain ar gael ar amser ar gyfer eich Ffurflen Dreth 2026 i 2027.
-partially-compatible.para2 = Gallwch {0} a’r nodweddion sy’n cael eu cynllunio i’w darparu.
-partially-compatible.para2.link.text = weld rhagor o wybodaeth ynglŷn â’ch meddalwedd
+partially-compatible.heading1 = Gall {0} anfon diweddariadau chwarterol ac mae’n datblygu nodweddion ar gyfer cyflwyno’ch Ffurflen Dreth
+partially-compatible.para1 = Mae’ch darparwr meddalwedd wedi adeiladu’r nodweddion sydd eu hangen arnoch er mwyn i chi anfon eich diweddariadau chwarterol. Erbyn hyn, maent yn datblygu’r nodweddion sy’n weddill sydd eu hangen ar gyfer eich Ffurflen Dreth. Dylai’r rhain fod ar gael mewn pryd ar gyfer eich Ffurflen Dreth 2026 i 2027.
+partially-compatible.para2.link.text = Dysgwch ragor am eich meddalwedd a’i nodweddion sydd ar ddod.
 partially-compatible.heading2 = Yr hyn y dylech ei wneud nesaf
-partially-compatible.para3 = Os nad ydych chi wedi gwneud hyn eisoes, mae angen i chi wneud y canlynol:
+partially-compatible.para3 = Os ydych am ddefnyddio’r feddalwedd hon, bydd angen i chi wneud y canlynol:
 partially-compatible.bullet1 = cofrestru ar gyfer y cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm
 partially-compatible.bullet2 = awdurdodi’ch meddalwedd i CThEF
 
 #Quarterly Only page
-quarterly-only.heading1 = Mae {0} yn barod i anfon diweddariadau chwarterolyn unig
+quarterly-only.heading1 = Gall {0} anfon diweddariadau chwarterol yn unig
 quarterly-only.para1 = Nid oes gan y feddalwedd hon y gallu i gyflwyno Ffurflen Dreth.
-quarterly-only.para2 = Gallwch {0} a’r nodweddion sy’n cael eu cynllunio i’w darparu.
-quarterly-only.para2.link.text = weld rhagor o wybodaeth ynglŷn â’ch darparwr meddalwedd
+quarterly-only.para2.link.text = Dysgwch ragor am eich meddalwedd a’i nodweddion sydd ar ddod.
 quarterly-only.para3 = Os ydych yn bwriadu llenwi eich Ffurflen Dreth drwy ddefnyddio meddalwedd, {0} er mwyn gwneud hyn.
 quarterly-only.para3.link.text = bydd angen i chi gael meddalwedd ychwanegol
 quarterly-only.heading2 = Yr hyn y dylech ei wneud nesaf
-quarterly-only.para4 = Os nad ydych chi wedi gwneud hyn eisoes, mae angen i chi wneud y canlynol:
+quarterly-only.para4 = Os ydych am ddefnyddio’r feddalwedd hon, bydd angen i chi wneud y canlynol:
 quarterly-only.bullet1 = cofrestru ar gyfer y cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm
 quarterly-only.bullet2 = awdurdodi’ch meddalwedd i CThEF
 

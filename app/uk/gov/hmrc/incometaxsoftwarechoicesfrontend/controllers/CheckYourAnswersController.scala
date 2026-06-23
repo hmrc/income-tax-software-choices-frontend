@@ -16,11 +16,14 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
+import play.api.i18n.Messages
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{RequireUserDataRefiner, SessionIdentifierAction}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.Check
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.Recognised
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserAnswers
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.{EnterSoftwareNamePage, HowYouFindSoftwarePage}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.{PageAnswersService, SoftwareChoicesService}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.helpers.SummaryListBuilder
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.CheckYourAnswersView
@@ -43,6 +46,7 @@ class CheckYourAnswersController @Inject()(view: CheckYourAnswersView,
     given Request[AnyContent] = request
 
     Ok(view(
+      pageHeading = getPageHeading(request.userFilters.answers),
       summaryList = buildSummaryList(request.userFilters.answers),
       postAction = routes.CheckYourAnswersController.submit()
     ))
@@ -73,6 +77,17 @@ class CheckYourAnswersController @Inject()(view: CheckYourAnswersView,
         case _ =>
           Redirect(routes.SearchSoftwareController.show())
       }
+    }
+  }
+
+  private def getPageHeading(userAnswers: Option[UserAnswers])(implicit messages: Messages): String = {
+
+    val softwareType = pageAnswersService.getPageAnswers(userAnswers, EnterSoftwareNamePage).map(_.softwareType)
+    val journeyType = pageAnswersService.getPageAnswers(userAnswers, HowYouFindSoftwarePage)
+
+    (journeyType, softwareType) match {
+      case (Some(Check), Some(Recognised)) => messages("check-your-answers.checked-heading")
+      case _ => messages("check-your-answers.guided-heading")
     }
   }
 }
