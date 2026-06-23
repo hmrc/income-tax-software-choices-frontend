@@ -30,7 +30,7 @@ class MainTemplateViewSpec extends ViewSpec {
     }
 
     "have the report technical issues link" in {
-      document.getTechnicalHelpLink shouldBe "http://localhost:9250/contact/report-technical-problem?service=ITSC&referrerUrl=%2F"
+      document.getTechnicalHelpLink shouldBe "http://localhost:9250/contact/report-technical-problem?service=ITSC&referrerUrl=%2F&useServiceNavigation"
       document.getTechnicalHelpLinkText shouldBe "Is this page not working properly? (opens in new tab)"
     }
 
@@ -50,7 +50,7 @@ class MainTemplateViewSpec extends ViewSpec {
       val accessibilityStatementLink: Element = document.selectNth(".govuk-footer__inline-list-item", 2).selectHead("a")
 
       accessibilityStatementLink.text shouldBe "Accessibility statement"
-      accessibilityStatementLink.attr("href") shouldBe "http://localhost:12346/accessibility-statement/income-tax-software-choices?referrerUrl=%2F"
+      accessibilityStatementLink.attr("href") shouldBe "http://localhost:12346/accessibility-statement/income-tax-software-choices?referrerUrl=%2F&useServiceNavigation"
     }
   }
 
