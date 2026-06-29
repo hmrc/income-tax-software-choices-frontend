@@ -390,7 +390,7 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
     val contactDetailsWebsite = "Website"
 
     val exitSurveyLinkTitle = "Give feedback on this service (opens in new tab)"
-    val exitSurveyLink = "http://localhost:9514/feedback/SOFTWAREMTDIT"
+    val exitSurveyLink = "http://localhost:9514/feedback/SOFTWAREMTDIT?useServiceNavigation"
 
     val softwareFeaturesHeading = "Software features"
     val quarterlyUpdatesHeading = "What you need for your quarterly updates"

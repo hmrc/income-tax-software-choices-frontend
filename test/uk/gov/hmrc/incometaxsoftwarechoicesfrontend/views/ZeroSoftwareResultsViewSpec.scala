@@ -97,5 +97,5 @@ private object ZeroSoftwareResultsViewContent {
   val bulletPoint2 = "ask your agent or accountant about software, if you have one"
   val finish = "Finish"
   val exitSurveyLinkTitle = "Give feedback on this service (opens in new tab)"
-  val exitSurveyLink = "http://localhost:9514/feedback/SOFTWAREMTDIT"
+  val exitSurveyLink = "http://localhost:9514/feedback/SOFTWAREMTDIT?useServiceNavigation"
 }
