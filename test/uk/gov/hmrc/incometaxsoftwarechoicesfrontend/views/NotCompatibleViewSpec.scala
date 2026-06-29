@@ -64,7 +64,7 @@ class NotCompatibleViewSpec extends ViewSpec {
 private object NotCompatibleContent {
   val heading = "A1 Tax Stuff is not currently compatible"
   val title = s"$heading - ${PageContentBase.title} - GOV.UK"
-  val para1 = "You may want to contact your current software provider to see if they are going to support Making Tax Digital for Income Tax for your circumstances."
-  val para2 = "You can also search for other software packages that are currently ready for Making Tax Digital for Income Tax to see if they are suitable."
+  val para1 = "You can ask your software provider if they plan to develop features to support Making Tax Digital for Income Tax."
+  val para2 = "You can also search for other software packages that are compatible with Making Tax Digital for Income Tax to see if they are suitable."
   val button = "Find compatible software"
 }

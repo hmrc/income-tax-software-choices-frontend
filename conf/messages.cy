@@ -347,5 +347,5 @@ quarterly-only.bullet2 = awdurdodi’ch meddalwedd i CThEF
 
 #Not Compatible page
 not-compatible.heading = Ar hyn o bryd, nid yw {0} yn cydweddu
-not-compatible.para1 = Mae’n bosibl y byddwch eisiau cysylltu â’ch darparwr meddalwedd presennol er mwyn gofyn a ydynt am fod yn cefnogi Troi Treth yn Ddigidol ar gyfer Treth Incwm at eich dibenion chi.
-not-compatible.para2 = Gallwch hefyd chwilio am becynnau meddalwedd eraill sydd ar gael ar hyn o bryd sy’n barod ar gyfer Troi Treth yn Ddigidol ar gyfer Treth Incwm er mwyn gweld a ydynt yn addas.
+not-compatible.para1 = Gallwch ofyn i’ch darparwr meddalwedd a yw’n bwriadu datblygu nodweddion i gefnogi’r cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm.
+not-compatible.para2 = Gallwch hefyd chwilio am becynnau meddalwedd eraill sy’n cydweddu â’r cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm er mwyn gweld a ydynt yn addas.
