@@ -651,7 +651,7 @@ private object SearchSoftwareWithIntentPageContent {
   val titleOne = s"$headingOne - ${PageContentBase.title} - GOV.UK"
   val changeAnswers = "Change answers"
   val exitSurveyLinkTitle = "Give feedback on this service (opens in new tab)"
-  val exitSurveyLink = "http://localhost:9514/feedback/SOFTWAREMTDIT"
+  val exitSurveyLink = "http://localhost:9514/feedback/SOFTWAREMTDIT?useServiceNavigation"
 
   object Filters {
     val filterHeading = "Filter options"

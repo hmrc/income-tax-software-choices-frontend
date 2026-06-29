@@ -92,5 +92,5 @@ private object QuarterlyOnlyContent {
   val bullet2Text = "authorise your software for HMRC (opens in new tab)"
   val bullet2Link = "https://www.gov.uk/guidance/use-making-tax-digital-for-income-tax/get-your-software-ready"
   val exitSurveyLinkTitle = "Give feedback on this service (opens in new tab)"
-  val exitSurveyLink = "http://localhost:9514/feedback/SOFTWAREMTDIT"
+  val exitSurveyLink = "http://localhost:9514/feedback/SOFTWAREMTDIT?useServiceNavigation"
 }

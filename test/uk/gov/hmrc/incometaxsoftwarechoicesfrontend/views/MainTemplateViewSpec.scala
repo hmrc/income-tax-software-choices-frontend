@@ -43,7 +43,7 @@ class MainTemplateViewSpec extends ViewSpec {
 
       val feedbackLink: Element = bannerContent.selectHead("a")
       feedbackLink.text shouldBe "give your feedback (opens in new tab)"
-      feedbackLink.attr("href") shouldBe "http://localhost:9514/feedback/SOFTWAREMTDIT"
+      feedbackLink.attr("href") shouldBe "http://localhost:9514/feedback/SOFTWAREMTDIT?useServiceNavigation"
     }
 
     "have a link to the accessibility statement for the service" in {
