@@ -25,6 +25,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.SoleTraderOrLandlord
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.*
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.UkProperty
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
 
@@ -132,9 +133,28 @@ class HowYouFindSoftwareControllerISpec extends ComponentSpecBase with BeforeAnd
 
     "user has preexisting UserAnswers which must be cleared" must {
       s"return $SEE_OTHER and update page answer for Find journey" in {
+        val recognisedSoftwareProduct = SoftwareProduct(3000, "Dummy", Recognised)
+        val userAnswers = UserAnswers()
+          .set(HowYouFindSoftwarePage, Check).get
+          .set(EnterSoftwareNamePage, recognisedSoftwareProduct).get
+          .set(UserTypePage, SoleTraderOrLandlord).get
+          .set(BusinessIncomePage, Seq(UkProperty)).get
+        await(userFiltersRepository.set(testUserFilters(userAnswers)))
+
+        val res = SoftwareChoicesFrontend.postHowYouFindSoftware(Some(Find))
+
+        res should have(
+          httpStatus(SEE_OTHER),
+          redirectURI(routes.UserTypeController.show().url)
+        )
+        getAllPageData(SessionId).size shouldBe 3
+      }
+
+      s"return $SEE_OTHER and update page answer for Check journey" in {
         val userAnswers = UserAnswers()
           .set(HowYouFindSoftwarePage, Find).get
           .set(UserTypePage, SoleTraderOrLandlord).get
+          .set(BusinessIncomePage, Seq(UkProperty)).get
         await(userFiltersRepository.set(testUserFilters(userAnswers)))
 
         val res = SoftwareChoicesFrontend.postHowYouFindSoftware(Some(Check))
@@ -143,10 +163,44 @@ class HowYouFindSoftwareControllerISpec extends ComponentSpecBase with BeforeAnd
           httpStatus(SEE_OTHER),
           redirectURI(routes.EnterSoftwareNameController.show().url)
         )
-        getAllPageData(SessionId).size shouldBe 1
+        getAllPageData(SessionId).size shouldBe 3
       }
 
-      s"return $SEE_OTHER and update page answer for Check journey" in {
+      s"return $SEE_OTHER and reset user answers for ViewAll journey" in {
+        val userAnswers = UserAnswers()
+          .set(HowYouFindSoftwarePage, Find).get
+          .set(UserTypePage, SoleTraderOrLandlord).get
+          .set(BusinessIncomePage, Seq(UkProperty)).get
+        await(userFiltersRepository.set(testUserFilters(userAnswers)))
+
+        val res = SoftwareChoicesFrontend.postHowYouFindSoftware(Some(ViewAll))
+
+        res should have(
+          httpStatus(SEE_OTHER),
+          redirectURI(routes.UserTypeController.show().url)
+        )
+        getAllPageData(SessionId).size shouldBe 2
+      }
+    }
+
+    "user has preexisting UserAnswers which must NOT be cleared as selecting same journey" must {
+      s"return $SEE_OTHER and retain answers for Find journey" in {
+        val userAnswers = UserAnswers()
+          .set(HowYouFindSoftwarePage, Find).get
+          .set(UserTypePage, SoleTraderOrLandlord).get
+          .set(BusinessIncomePage, Seq(UkProperty)).get
+        await(userFiltersRepository.set(testUserFilters(userAnswers)))
+
+        val res = SoftwareChoicesFrontend.postHowYouFindSoftware(Some(Find))
+
+        res should have(
+          httpStatus(SEE_OTHER),
+          redirectURI(routes.UserTypeController.show().url)
+        )
+        getAllPageData(SessionId).size shouldBe 3
+      }
+
+      s"return $SEE_OTHER and retain answers for Check journey" in {
         val recognisedSoftwareProduct = SoftwareProduct(3000, "Dummy", Recognised)
         val userAnswers = UserAnswers()
           .set(HowYouFindSoftwarePage, Check).get
@@ -159,12 +213,12 @@ class HowYouFindSoftwareControllerISpec extends ComponentSpecBase with BeforeAnd
           httpStatus(SEE_OTHER),
           redirectURI(routes.EnterSoftwareNameController.show().url)
         )
-        getAllPageData(SessionId).size shouldBe 1
+        getAllPageData(SessionId).size shouldBe 2
       }
 
-      s"return $SEE_OTHER and reset user answers for ViewAll journey" in {
+      s"return $SEE_OTHER and retain answers for ViewAll journey" in {
         val userAnswers = UserAnswers()
-          .set(HowYouFindSoftwarePage, Find).get
+          .set(HowYouFindSoftwarePage, ViewAll).get
           .set(UserTypePage, SoleTraderOrLandlord).get
         await(userFiltersRepository.set(testUserFilters(userAnswers)))
 
@@ -174,7 +228,7 @@ class HowYouFindSoftwareControllerISpec extends ComponentSpecBase with BeforeAnd
           httpStatus(SEE_OTHER),
           redirectURI(routes.UserTypeController.show().url)
         )
-        getAllPageData(SessionId).size shouldBe 1
+        getAllPageData(SessionId).size shouldBe 2
       }
     }
 
