@@ -94,7 +94,18 @@ class PageAnswersService @Inject()(userFiltersRepository: UserFiltersRepository,
       case None =>
         userFiltersRepository.set(UserFilters(id, Some(UserAnswers()), Seq.empty))
     }
-    
+  }
+
+  def resetPageUserAnswers(id: String, pages: Seq[QuestionPage[_]]): Future[Boolean] = {
+    userFiltersRepository.get(id).flatMap {
+      case Some(userFilters) =>
+        val newUA = pages.foldLeft(userFilters.answers.getOrElse(UserAnswers())) { (answers, page) =>
+            answers.remove(page).getOrElse(answers)
+        }
+        userFiltersRepository.set(userFilters.copy(answers = Some(newUA), finalFilters = Seq.empty))
+      case None =>
+        userFiltersRepository.set(UserFilters(id, Some(UserAnswers()), Seq.empty))
+    }
   }
 
 }

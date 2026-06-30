@@ -22,7 +22,8 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.SessionI
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.HowYouFindSoftwareForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.{Check, Find, ViewAll}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.HowYouFindSoftwarePage
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.requests.SessionRequest
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.PageAnswersService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.HowYouFindSoftwareView
 
@@ -62,7 +63,8 @@ class HowYouFindSoftwareController @Inject()(view: HowYouFindSoftwareView,
         ))),
       journeyType =>
         for {
-          resetUserAnswers <- pageAnswersService.resetUserAnswers(request.sessionId)
+          previousJourneyType <- pageAnswersService.getPageAnswers(request.sessionId, HowYouFindSoftwarePage)
+          resetUserAnswers <- removeOldAnswers(request.sessionId, journeyType, previousJourneyType)
           setPageAnswers <- pageAnswersService.setPageAnswers(request.sessionId, HowYouFindSoftwarePage, journeyType)
         } yield {
           if (resetUserAnswers && setPageAnswers)
@@ -78,4 +80,26 @@ class HowYouFindSoftwareController @Inject()(view: HowYouFindSoftwareView,
     case ViewAll => Redirect(routes.UserTypeController.show())
     case Check => Redirect(routes.EnterSoftwareNameController.show())
   }
+
+  private def removeOldAnswers(sessionId: String,
+                               newJourneyType: JourneyType,
+                               previousJourneyType: Option[JourneyType]): Future[Boolean] = {
+    val isSameJourneyType = Some(newJourneyType) == previousJourneyType
+    (isSameJourneyType, newJourneyType) match {
+      case (false, Find) => pageAnswersService.resetPageUserAnswers(sessionId, pagesNotInFindJourney)
+      case (false, ViewAll) => pageAnswersService.resetPageUserAnswers(sessionId, pagesNotInViewAllJourney)
+      case (false, Check) => pageAnswersService.resetPageUserAnswers(sessionId, pagesNotInCheckJourney)
+      case _ => Future.successful(true)
+    }
+  }
+
+  private val pagesNotInFindJourney: Seq[QuestionPage[_]] = Seq(EnterSoftwareNamePage)
+  private val pagesNotInViewAllJourney: Seq[QuestionPage[_]] = Seq(
+    EnterSoftwareNamePage,
+    BusinessIncomePage,
+    AdditionalIncomeSourcesPage,
+    OtherItemsPage,
+    AccountingPeriodPage
+  )
+  private val pagesNotInCheckJourney: Seq[QuestionPage[_]] = Seq()
 }
