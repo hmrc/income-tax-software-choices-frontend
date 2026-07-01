@@ -62,6 +62,7 @@
 
 @additionalHeadBlock = {
     @autocompleteCss()
+    <script @CSPNonce.attr src='@controllers.routes.Assets.versioned("javascript/scripts.js")'></script>
     <link href='@controllers.routes.Assets.versioned("stylesheets/application.css")' media="all" rel="stylesheet" type="text/css" />
 
     @if(showTimeoutDialog) {
