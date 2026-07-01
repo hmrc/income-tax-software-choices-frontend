@@ -42,11 +42,17 @@
         softwareVendor.name
     }</h1>
 
-    <p class="govuk-body-l">@messages("product-details.contact-details.heading")</p>
+    <p class="govuk-body">
+        @hmrcNewTabLinkHelper(NewTabLinkHelper(
+            text = messages("product-details.contact-details.website.link", softwareVendor.name),
+            href = Some(softwareVendor.website),
+            classList = Some("govuk-!-display-none-print")
+        ))
+    </p>
+   <br>
 
     <div class="govuk-!-width-three-quarters govuk-!-padding-0">
-        @contactDetailsList
-
+        <h2 class="govuk-heading-m">@messages("product-details.features-group.heading")</h2>
         @statusKeyTable
 
         <h2 class="govuk-heading-m">@messages("product-details.details.heading")</h2>
@@ -81,18 +87,6 @@
             classList = Some("govuk-!-display-none-print")
         ))
     </p>
-}
-
-@contactDetailsList = {
-    @govukSummaryList(SummaryList(
-        rows = Seq(SummaryListRow(
-            key = Key(content = Text(s"${messages("product-details.contact-details.website")}:")),
-            value = Value(content = HtmlContent(hmrcNewTabLinkHelper(NewTabLinkHelper(
-                text = softwareVendor.website,
-                href = Some(softwareVendor.website)
-            ))))
-        ))
-    ))
 }
 
 @featuresRow(filterGroup: List[VendorFilter], section: String, displayIntent: Boolean) = @{
@@ -205,7 +199,7 @@
       head = Some(
         Seq(
           HeadCell(
-            content = Text(messages("product-details.status.heading")),
+            content = Text(messages("product-details.feature-status.heading")),
             classes = "govuk-!-font-weight-bold"
           ),
           HeadCell(

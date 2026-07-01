@@ -174,8 +174,7 @@ search-software.vendor-detail.readiness.fully-ready = Yn barod ar gyfer diweddar
 
 # Contact details section
 
-product-details.contact-details.heading    = Ewch i wefan y cwmni i wirio a yw’r feddalwedd yn addas ar eich cyfer chi.
-product-details.contact-details.website    = Gwefan
+product-details.contact-details.website.link    = Cadarnhewch a yw {0} yn addas i chi
 
 # Product details section
 
@@ -223,15 +222,17 @@ product-details.other-income.payments-into-a-private-pension = Cyfraniadau pensi
 product-details.other-income.marriage-allowance = Lwfans Priodasol
 product-details.other-income.partner-income = Incwm partner o bartneriaeth
 
+product-details.features-group.heading = Beth yw ystyr pob statws
 product-details.status.heading = Statws
 product-details.status.ready = Yn barod nawr
 product-details.status.development = O dan ddatblygiad
 product-details.status.not-included = Ddim ar gael
+product-details.feature-status.heading = Statws y nodwedd
 product-details.meaning.heading = Ystyr
 
 product-details.meaning.ready = Mae’r nodwedd hon nawr yn barod i’w defnyddio.
 product-details.meaning.development = Mae’r darparwr meddalwedd wedi ymrwymo i adeiladu’r nodwedd hon mewn pryd ar gyfer Ffurflen Dreth 2026 i 2027.
-product-details.meaning.not-included = Nid yw’r nodwedd hon ar gael yn y cynnyrch meddalwedd hwn. Dewiswch gynnyrch gwahanol os yw’n debygol bod angen y nodwedd hon.
+product-details.meaning.not-included = Nid yw’r nodwedd hon ar gael yn y cynnyrch meddalwedd hwn.
 
 
 product-details.software-spec.heading = Manylebau’r feddalwedd

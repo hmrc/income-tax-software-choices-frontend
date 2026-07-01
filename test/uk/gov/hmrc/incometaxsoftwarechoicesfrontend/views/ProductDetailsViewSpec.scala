@@ -69,27 +69,23 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
         document.selectNth("h1", 1).text() shouldBe softwareVendorModelFull.name
       }
 
-      "display the vendor name heading paragraph" in {
-        document.mainContent.selectNth("p", 1).text() shouldBe s"${ProductDetailsPage.paragraph}"
-      }
-
-      "display the vendor website" in {
-        val vendorInformationSection = document.selectNth("dl", 1)
-        val row: Element = vendorInformationSection.selectNth(".govuk-summary-list__row", 1)
-        val link = row.selectHead("dd").selectHead("a")
-
-        row.selectHead("dt").text shouldBe s"${ProductDetailsPage.contactDetailsWebsite}:"
-        link.text shouldBe s"${softwareVendorModelBase.website} (opens in new tab)"
-        link.attr("href") shouldBe softwareVendorModelBase.website
+      "has link to the vendor website" in {
+        val link = document.mainContent.select(".govuk-link").get(0)
+        link.text shouldBe s"Confirm whether ${softwareVendorModelFull.name} is right for you (opens in new tab)"
+        link.attr("href") shouldBe softwareVendorModelFull.website
         link.attr("target") shouldBe "_blank"
       }
-
+      
+      "have a feature status heading" in {
+        document.selectNth("h2", 1).text shouldBe ProductDetailsPage.featureStatusHeading
+      }
+      
       "have a software features heading" in {
-        document.selectNth("h2", 1).text shouldBe ProductDetailsPage.softwareFeaturesHeading
+        document.selectNth("h2", 2).text shouldBe ProductDetailsPage.softwareFeaturesHeading
       }
 
       "have the correct quarterly updates title" in {
-        document.selectNth("h2", 2).text shouldBe ProductDetailsPage.quarterlyUpdatesHeading
+        document.selectNth("h2", 3).text shouldBe ProductDetailsPage.quarterlyUpdatesHeading
       }
 
       "have the correct quarterly updates description" in {
@@ -97,12 +93,12 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
       }
 
       "have the correct tax return title" in {
-        document.selectNth("h2", 3).text shouldBe ProductDetailsPage.taxReturnHeading
+        document.selectNth("h2", 4).text shouldBe ProductDetailsPage.taxReturnHeading
       }
 
       "display all tables with correct details" which {
         "has the correct table headings" in {
-          checkTableHeader(table(1), "Status", "Meaning")
+          checkTableHeader(table(1), "Feature status", "Meaning")
           checkTableHeader(table(2), "Features provided", "Status")
           checkTableHeader(table(3), "Business income sources", "Status")
           checkTableHeader(table(4), "Other income sources and items", "Status")
@@ -153,27 +149,23 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
         document.selectNth("h1", 1).text() shouldBe softwareVendorWithIntent.name
       }
 
-      "display the vendor name heading paragraph" in {
-        document.mainContent.selectNth("p", 1).text() shouldBe s"${ProductDetailsPage.paragraph}"
-      }
-
-      "display the vendor website" in {
-        val vendorInformationSection = document.selectNth("dl", 1)
-        val row: Element = vendorInformationSection.selectNth(".govuk-summary-list__row", 1)
-        val link = row.selectHead("dd").selectHead("a")
-
-        row.selectHead("dt").text shouldBe s"${ProductDetailsPage.contactDetailsWebsite}:"
-        link.text shouldBe s"${softwareVendorWithIntent.website} (opens in new tab)"
+      "has a link to the vendor website" in {
+        val link = document.mainContent.select(".govuk-link").get(0)
+        link.text shouldBe s"Confirm whether ${softwareVendorWithIntent.name} is right for you (opens in new tab)"
         link.attr("href") shouldBe softwareVendorWithIntent.website
         link.attr("target") shouldBe "_blank"
       }
 
+      "have a feature status heading" in {
+        document.selectNth("h2", 1).text shouldBe ProductDetailsPage.featureStatusHeading
+      }
+      
       "have a software features heading" in {
-        document.selectNth("h2", 1).text shouldBe ProductDetailsPage.softwareFeaturesHeading
+        document.selectNth("h2", 2).text shouldBe ProductDetailsPage.softwareFeaturesHeading
       }
 
       "have the correct quarterly updates title" in {
-        document.selectNth("h2", 2).text shouldBe ProductDetailsPage.quarterlyUpdatesHeading
+        document.selectNth("h2", 3).text shouldBe ProductDetailsPage.quarterlyUpdatesHeading
       }
 
       "have the correct quarterly updates description" in {
@@ -181,13 +173,13 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
       }
 
       "have the correct tax return title" in {
-        document.selectNth("h2", 3).text shouldBe ProductDetailsPage.taxReturnHeading
+        document.selectNth("h2", 4).text shouldBe ProductDetailsPage.taxReturnHeading
       }
 
       "display all tables with correct details" which {
 
         "has the correct table headings" in {
-          checkTableHeader(table(1), "Status", "Meaning")
+          checkTableHeader(table(1), "Feature status", "Meaning")
           checkTableHeader(table(2), "Features provided", "Status")
           checkTableHeader(table(3), "Business income sources", "Status")
           checkTableHeader(table(4), "Other income sources and items", "Status")
@@ -241,28 +233,24 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
       "display the vendor name heading" in {
         document.selectNth("h1", 1).text() shouldBe softwareVendorModelBase.name
       }
-
-      "display the vendor name heading paragraph" in {
-        document.mainContent.selectNth("p", 1).text() shouldBe s"${ProductDetailsPage.paragraph}"
-      }
-
-      "display the vendor website" in {
-        val vendorInformationSection = document.selectNth("dl", 1)
-        val row: Element = vendorInformationSection.selectNth(".govuk-summary-list__row", 1)
-        val link = row.selectHead("dd").selectHead("a")
-
-        row.selectHead("dt").text shouldBe s"${ProductDetailsPage.contactDetailsWebsite}:"
-        link.text shouldBe s"${softwareVendorModelBase.website} (opens in new tab)"
+      
+      "has a link to the vendor website" in {
+        val link = document.mainContent.select(".govuk-link").get(0)
+        link.text shouldBe s"Confirm whether ${softwareVendorModelBase.name} is right for you (opens in new tab)"
         link.attr("href") shouldBe softwareVendorModelBase.website
         link.attr("target") shouldBe "_blank"
       }
 
+      "have a feature status heading" in {
+        document.selectNth("h2", 1).text shouldBe ProductDetailsPage.featureStatusHeading
+      }
+
       "have a software features heading" in {
-        document.selectNth("h2", 1).text shouldBe ProductDetailsPage.softwareFeaturesHeading
+        document.selectNth("h2", 2).text shouldBe ProductDetailsPage.softwareFeaturesHeading
       }
 
       "have the correct quarterly updates title" in {
-        document.selectNth("h2", 2).text shouldBe ProductDetailsPage.quarterlyUpdatesHeading
+        document.selectNth("h2", 3).text shouldBe ProductDetailsPage.quarterlyUpdatesHeading
       }
 
       "have the correct quarterly updates description" in {
@@ -270,13 +258,13 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
       }
 
       "have the correct tax return title" in {
-        document.selectNth("h2", 3).text shouldBe ProductDetailsPage.taxReturnHeading
+        document.selectNth("h2", 4).text shouldBe ProductDetailsPage.taxReturnHeading
       }
 
       "display all tables with correct details" which {
 
         "has the correct table headings" in {
-          checkTableHeader(table(1), "Status", "Meaning")
+          checkTableHeader(table(1), "Feature status", "Meaning")
           checkTableHeader(table(2), "Features provided", "Status")
           checkTableHeader(table(3), "Business income sources", "Status")
           checkTableHeader(table(4), "Other income sources and items", "Status")
@@ -321,11 +309,11 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
       val document: Document = createAndParseDocument(softwareVendorModelFull)
 
       "have a software spec heading" in {
-        document.select("h2").get(3).text shouldBe ProductDetailsPage.softwareSpecHeading
+        document.select("h2").get(4).text shouldBe ProductDetailsPage.softwareSpecHeading
       }
 
       "render the correct rows when every spec is present" in {
-        val specList = document.select("dl.govuk-summary-list").get(1)
+        val specList = document.select("dl.govuk-summary-list").get(0)
         val rows = specList.select(".govuk-summary-list__row")
         rows.size shouldBe 4
 
@@ -364,7 +352,7 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
           DesktopApplication -> Intended, WebBrowser -> Intended, MacOS -> Intended, Apple -> Intended, English -> Intended
         )))
         val allSummaryLists = docEmpty.select("dl.govuk-summary-list")
-        allSummaryLists.size shouldBe 1
+        allSummaryLists.size shouldBe 0
 
         val specHeading = ProductDetailsPage.softwareSpecHeading
         docEmpty.select(s"h2:contains($specHeading)").size shouldBe 0
@@ -386,12 +374,11 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
     Jsoup.parse(page(vendorModel).body)
 
   object ProductDetailsPage {
-    val paragraph = "Visit the company’s website to check if the software is right for you"
-    val contactDetailsWebsite = "Website"
-
+    
     val exitSurveyLinkTitle = "Give feedback on this service (opens in new tab)"
     val exitSurveyLink = "http://localhost:9514/feedback/SOFTWAREMTDIT?useServiceNavigation"
 
+    val featureStatusHeading = "What each feature status means"
     val softwareFeaturesHeading = "Software features"
     val quarterlyUpdatesHeading = "What you need for your quarterly updates"
     val taxReturnHeading = "What you need for your tax return"
@@ -448,8 +435,8 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
     val notIncluded = "Not included"
 
     val readyNowDescription = "This feature is ready to use now."
-    val inDevelopmentDescription = "The software provider has committed to building this feature in time for the 2026 to 2027 tax return."
-    val notIncludedDescription = "This feature is not available in this software product. Choose a different product if this is likely to be needed."
+    val inDevelopmentDescription = "The software provider has committed to building this in time for the 2026 to 2027 tax return."
+    val notIncludedDescription = "This is not available in this software product."
   }
 
 }

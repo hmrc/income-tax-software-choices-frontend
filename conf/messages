@@ -175,8 +175,7 @@ search-software.vendor-detail.readiness.fully-ready = Ready for quarterly update
 
 # Contact details section
 
-product-details.contact-details.heading    = Visit the company’s website to check if the software is right for you
-product-details.contact-details.website    = Website
+product-details.contact-details.website.link    = Confirm whether {0} is right for you
 
 # Product details section
 
@@ -222,15 +221,17 @@ product-details.other-income.payments-into-a-private-pension = Private pension c
 product-details.other-income.marriage-allowance = Marriage Allowance
 product-details.other-income.partner-income = Partner income from a partnership
 
+product-details.features-group.heading = What each feature status means
 product-details.status.heading = Status
 product-details.status.ready = Ready now
 product-details.status.development = In development
 product-details.status.not-included = Not included
+product-details.feature-status.heading = Feature status
 product-details.meaning.heading = Meaning
 
 product-details.meaning.ready = This feature is ready to use now.
-product-details.meaning.development = The software provider has committed to building this feature in time for the 2026 to 2027 tax return.
-product-details.meaning.not-included = This feature is not available in this software product. Choose a different product if this is likely to be needed.
+product-details.meaning.development = The software provider has committed to building this in time for the 2026 to 2027 tax return.
+product-details.meaning.not-included = This is not available in this software product.
 
 
 product-details.software-spec.heading = Software specifications
