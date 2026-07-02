@@ -33,7 +33,7 @@ If not installed:
 
 3 — Verify both are working
 
-python3 --version       # should print e.g. Python 3.11.x
+python3 --version       # should print e.g. Python 3.x.x
 pip3 show openpyxl      # should show openpyxl version info
 
 ### Step 1 — Create a branch based on the task number
@@ -44,11 +44,7 @@ git checkout -b <branch name>  # replace with your actual task number
 
 ###  Step 2 — Copy the vendor .xlsx file(s) into the vendors folder
 
-Copy the completed template(s) received from the vendor management team into scripts/vendors/ and follow the below steps.
-
-Make sure you're in the project root directory first: cd <project root>
-
-Then copy the .xlsx file(s) into the vendors folder: cp ~/<Your Folder>/*.xlsx scripts/vendors/
+Copy the completed template(s) received from the vendor management team into scripts/vendors/
 
 This folder is gitignored — the .xlsx files will not be committed.
 

@@ -1,7 +1,7 @@
 import json, sys, os, glob, openpyxl, re
 
 VENDORS_JSON = "conf/software-vendors.json"
-INBOX_DIR    = "scripts/inbox"
+INBOX_DIR    = "scripts/vendors"
 FIELD_ORDER  = ["productId", "name", "phone", "email", "website", "accessibilityStatementLink", "filters"]
 
 
@@ -90,6 +90,7 @@ def process_file(excel_path, data):
     inserted = 0
     updated  = 0
     skipped  = 0
+    errored  = 0
     save_needed = False
 
     print(f"\n  FILE       : {os.path.basename(excel_path)}")
@@ -100,12 +101,12 @@ def process_file(excel_path, data):
         if "Json Output" not in wb.sheetnames:
             print(f"  ERROR      : Sheet 'Json Output' not found — skipping")
             print("=" * 60)
-            return data, 0, 0, 0, False
+            return data, 0, 0, 0, 1, False
         raw = wb["Json Output"]["F1"].value
         if not raw:
             print(f"  ERROR      : Cell F1 is empty — skipping")
             print("=" * 60)
-            return data, 0, 0, 0, False
+            return data, 0, 0, 0, 1, False
         cleaned = re.sub(r'[\x00-\x1f\x7f]', '', raw)
         if cleaned != raw:
             ctrl_changes = []
@@ -126,11 +127,22 @@ def process_file(excel_path, data):
                     offset += 1
             print(f"  CONTROL CHARS REMOVED (auto-fixed):")
             print_table(ctrl_changes)
-        vendor = json.loads(cleaned)
+
+        # ── Parse JSON from Excel cell ──────────────────────────
+        try:
+            vendor = json.loads(cleaned)
+        except json.JSONDecodeError as e:
+            print(f"  ERROR      : Cell F1 contains corrupt or invalid JSON.")
+            print(f"               Reason : {e.msg}")
+            print(f"               Line   : {e.lineno}, Column: {e.colno}")
+            print(f"               Near   : {repr(e.doc[max(0, e.pos-20):e.pos+20])}")
+            print("=" * 60)
+            return data, 0, 0, 0, 1, False
+
     except Exception as e:
-        print(f"  ERROR      : {e} — skipping")
+        print(f"  ERROR      : Failed to read Excel file — {e}")
         print("=" * 60)
-        return data, 0, 0, 0, False
+        return data, 0, 0, 0, 1, False
 
     # Trim spaces
     trimmed = trim_and_report(vendor)
@@ -144,7 +156,11 @@ def process_file(excel_path, data):
     # Validate and fix website
     validate_and_fix_website(vendor)
 
-    name = vendor["name"].strip()
+    name = vendor.get("name", "").strip()
+    if not name:
+        print(f"  ERROR      : \"name\" field is missing or empty — skipping")
+        print("=" * 60)
+        return data, 0, 0, 0, 1, False
 
     match = next((i for i, v in enumerate(vendors) if v["name"].strip().lower() == name.lower()), None)
 
@@ -177,7 +193,7 @@ def process_file(excel_path, data):
     print("=" * 60)
 
     data["vendors"] = vendors
-    return data, inserted, updated, skipped, save_needed
+    return data, inserted, updated, skipped, 0, save_needed
 
 
 # ── MAIN ──────────────────────────────────────────────────
@@ -199,24 +215,37 @@ print(f"  Inbox      : {folder}")
 print(f"  Files found: {len(excel_files)}")
 print("=" * 60)
 
-with open(VENDORS_JSON) as f:
-    data = json.load(f)
+if not os.path.exists(VENDORS_JSON):
+    print(f"ERROR: '{VENDORS_JSON}' does not exist. Ensure the file is present before running this script.")
+    sys.exit(1)
+
+try:
+    with open(VENDORS_JSON, encoding="utf-8") as f:
+        data = json.load(f)
+except json.JSONDecodeError as e:
+    print(f"ERROR: '{VENDORS_JSON}' is corrupt or contains invalid JSON.")
+    print(f"       Reason : {e.msg}")
+    print(f"       Line   : {e.lineno}, Column: {e.colno}")
+    print(f"       Near   : {repr(e.doc[max(0, e.pos-20):e.pos+20])}")
+    sys.exit(1)
 
 total_inserted = 0
 total_updated  = 0
 total_skipped  = 0
+total_errored  = 0
 any_save       = False
 
 for excel_path in excel_files:
-    data, ins, upd, skp, save_needed = process_file(excel_path, data)
+    data, ins, upd, skp, err, save_needed = process_file(excel_path, data)
     total_inserted += ins
     total_updated  += upd
     total_skipped  += skp
+    total_errored  += err
     if save_needed:
         any_save = True
 
 if any_save:
-    lines = ["    " + json.dumps(v, ensure_ascii=False, separators=(", ", ": ")) for v in data["vendors"]]
+    lines = ["    " + json.dumps(v, ensure_ascii=False, separators=(",", ": ")) for v in data["vendors"]]
     with open(VENDORS_JSON, "w", encoding="utf-8") as f:
         f.write("{\n")
         f.write(f'  "lastUpdated": {json.dumps(data["lastUpdated"])},\n')
@@ -230,4 +259,5 @@ print(f"  Files processed : {len(excel_files)}")
 print(f"  Inserted        : {total_inserted}")
 print(f"  Updated         : {total_updated}")
 print(f"  Skipped         : {total_skipped}")
+print(f"  Errored         : {total_errored}")
 print("=" * 60)
