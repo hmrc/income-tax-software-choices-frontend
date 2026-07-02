@@ -6,12 +6,62 @@ The vendor data capture template is a spreadsheet that allows the customer (HMRC
 
 The customer will complete a template for each software product to be added to the Software Choices service and share that spreadsheet with the development team.
 
-The development team will extract the json data (that the service uses) from the spreadsheet and apply it to the [software-vendors.json](conf/software-vendors.json) file.
+The development team will use the automated `process_vendor.py` script to extract, validate and apply the JSON data to [software-vendors.json](../conf/software-vendors.json).
 
-Note: If a new vendor product is to be added to the service then a new row should be created at the end of the software-vendor file and a new product Id should be allocated that is 3 larger than the last entry.
+Note: If a new vendor product is to be added, the script automatically assigns a new `productId` that is 3 larger than the last entry.
+
 
 ## Development team process
-The spreadsheet contains a hidden tab called "Json Output". This tab should be unhidden and the contents of the appropriate field (currently F1) should be copied and either appended to the bottom of the [software-vendors.json](conf/software-vendors.json) file, or used to replace an existing entry for a software product.
+
+Pre-requisites:
+
+1 — Install Python 3
+
+Check if already installed by running the below command in Terminal
+     python3 --version
+
+If not installed, install via Homebrew:
+     brew install python3
+
+2 — Install the required Python library openpyxl
+
+Check if already installed:
+     python3 -c "import openpyxl"
+
+If not installed:
+     pip3 install openpyxl
+
+3 — Verify both are working
+
+python3 --version       # should print e.g. Python 3.x.x
+pip3 show openpyxl      # should show openpyxl version info
+
+### Step 1 — Create a branch based on the task number
+
+git checkout main
+git pull
+git checkout -b <branch name>  # replace with your actual task number
+
+###  Step 2 — Copy the vendor .xlsx file(s) into the vendors folder
+
+Copy the completed template(s) received from the vendor management team into scripts/vendors/
+
+This folder is gitignored — the .xlsx files will not be committed.
+
+### Step 3 — Run the vendor processor script
+
+From the root of the project run the below command to process the vendor data and update the software-vendors.json file.
+
+python3 scripts/process_vendor.py scripts/vendors
+
+The script will automatically:
+Read all .xlsx files in scripts/vendors/
+Extract the JSON from the Json Output sheet
+Remove any invalid control characters (e.g. accidental newlines)
+Trim leading/trailing whitespace from all fields
+Fix http:// website URLs to https://
+Insert new vendors or update existing ones in conf/software-vendors.json
+Print a diff table of all changes made
 
 ## Template Update process
 

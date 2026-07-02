@@ -37,3 +37,7 @@ target
 test-result
 tmp
 .vscode/
+# Vendor inbox files
+scripts/vendors/
+~$*
+
