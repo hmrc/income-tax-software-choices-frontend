@@ -8,10 +8,11 @@
     {"productId": 1006,"name": "Quip Spreadsheets","softwareType": "spreadsheet"},
     {"productId": 1007,"name": "OnlyOffice Spreadsheets","softwareType": "spreadsheet"},
     {"productId": 1008,"name": "WPS Spreadsheets","softwareType": "spreadsheet"},
-    {"productId": 2001,"name": "Gbooks MTD for Income Tax","softwareType": "future-vendor"},
-    {"productId": 2002,"name": "Hnry","softwareType": "future-vendor"},
-    {"productId": 2003,"name": "HSBC My Business Finances","softwareType": "future-vendor"},
-    {"productId": 2004,"name": "Taxfix","softwareType": "future-vendor"},
-    {"productId": 2005,"name": "TELUS Farm Accounting (formerly Farmplan Business Cloud)","softwareType": "future-vendor"}
+    {"productId": 2001,"name": "EasyBooks","softwareType": "future-vendor"},
+    {"productId": 2002,"name": "Gbooks MTD for Income Tax","softwareType": "future-vendor"},
+    {"productId": 2003,"name": "Hnry","softwareType": "future-vendor"},
+    {"productId": 2004,"name": "HSBC My Business Finances","softwareType": "future-vendor"},
+    {"productId": 2005,"name": "Taxfix","softwareType": "future-vendor"},
+    {"productId": 2006,"name": "TELUS Farm Accounting (formerly Farmplan Business Cloud)","softwareType": "future-vendor"}
   ]
 }
