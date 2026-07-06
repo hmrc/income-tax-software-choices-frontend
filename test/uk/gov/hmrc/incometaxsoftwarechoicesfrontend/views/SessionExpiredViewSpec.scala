@@ -37,7 +37,7 @@ class SessionExpiredViewSpec extends ViewSpec {
     "user deletes answers (manual)" should {
       val document = Jsoup.parse(view(postAction = Call("", ""), Manual).body)
       "have the correct title" in {
-        document.title() mustBe SessionExpiredContent.title
+        document.title() mustBe SessionExpiredContent.titleManual
       }
 
       "have the correct heading" in {
@@ -51,7 +51,7 @@ class SessionExpiredViewSpec extends ViewSpec {
     "session expired due to inactivity (expired)" should {
       val document = Jsoup.parse(view(postAction = Call("", ""), Timeout).body)
       "have the correct title" in {
-        document.title() mustBe SessionExpiredContent.title
+        document.title() mustBe SessionExpiredContent.titleTimeout
       }
 
       "have the correct heading" in {
@@ -68,7 +68,7 @@ class SessionExpiredViewSpec extends ViewSpec {
     "no all-in-one product found (auto)" should {
       val document = Jsoup.parse(view(postAction = Call("", ""), Auto).body)
       "have the correct title" in {
-        document.title() mustBe SessionExpiredContent.title
+        document.title() mustBe SessionExpiredContent.titleAuto
       }
       "have the correct heading" in {
         document.selectHead("h1").text mustBe SessionExpiredContent.autoHeading
@@ -81,7 +81,9 @@ class SessionExpiredViewSpec extends ViewSpec {
 }
 
 private object SessionExpiredContent {
-  val title = s"Answers Deleted - ${PageContentBase.title} - GOV.UK"
+  val titleManual = s"You deleted your answers - ${PageContentBase.title} - GOV.UK"
+  val titleTimeout = s"Session timed out due to inactivity - ${PageContentBase.title} - GOV.UK"
+  val titleAuto = s"For security, we deleted your answers - ${PageContentBase.title} - GOV.UK"
   val userHeading = "You deleted your answers"
   val timeoutHeading = "Session timed out due to inactivity"
   val autoHeading = "For security, we deleted your answers"
