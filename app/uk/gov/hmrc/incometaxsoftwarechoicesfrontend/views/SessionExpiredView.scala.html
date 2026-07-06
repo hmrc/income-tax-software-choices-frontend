@@ -30,7 +30,15 @@
 
 @(postAction: Call, timeoutType: TimeoutType)(implicit request: Request[_], messages: Messages)
 
-@mainTemplate(title = messages("session-expired.title"), backLink = None, showTimeoutDialog = false) {
+@pageTitle = @{
+     timeoutType match {
+         case Timeout => messages("session-expired.timeout.heading")
+         case Manual  => messages("session-expired.user")
+         case _       => messages("session-expired.auto.heading")
+     }
+}
+
+@mainTemplate(title = pageTitle, backLink = None, showTimeoutDialog = false) {
 
     @timeoutType match {
         case Timeout => {
