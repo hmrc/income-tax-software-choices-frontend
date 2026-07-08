@@ -25,6 +25,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareVendorModel,
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.viewmodels.VendorSuitabilityViewModel
 
+import java.security.MessageDigest
 import javax.inject.{Inject, Singleton}
 import scala.util.Random.shuffle
 
@@ -73,44 +74,25 @@ class SoftwareChoicesService @Inject()(
         eoyReady = vendor.isEoyReady(finalFilters)
       ))
   }
-
- /* def getAllInOneVendors(finalFilters: Seq[VendorFilter])(implicit appConfig: AppConfig, request: SessionDataRequest[_]): SoftwareVendors = {
-    val vendors = softwareVendors
-    val selectedFilters = finalFilters.filterNot(_.eq(TaxReturn)).filterNot(_.eq(QuarterlyUpdates)).filterNot(_.eq(FullyReady))
-
-      val orderedMatchingVendors = if (request.userFilters.randomVendorOrder.isEmpty) {
-        val randomisedVendors = vendors.copy(vendors = shuffle(vendors.vendors))
-        userFiltersRepository.set(request.userFilters.copy(finalFilters = finalFilters, randomVendorOrder = randomisedVendors.vendors.map(_.productId).toList))
   
-        SoftwareChoicesService.matchFilter(selectedFilters)(randomisedVendors.vendors)
-      } else {
-        val matchingVendors = SoftwareChoicesService.matchFilter(selectedFilters)(vendors.vendors)
-        val vendorMap = matchingVendors.map(vendor => vendor.productId -> vendor).toMap
-  
-        request.userFilters.randomVendorOrder.flatMap(vendorMap.get)
-      }
-
-    vendors.copy(vendors = orderedMatchingVendors)
-  }
-*/
   def getAllInOneVendors(finalFilters: Seq[VendorFilter])(implicit appConfig: AppConfig, request: SessionDataRequest[_]): SoftwareVendors = {
     val vendors = softwareVendors
     val selectedFilters = finalFilters.filterNot(_.eq(TaxReturn)).filterNot(_.eq(QuarterlyUpdates)).filterNot(_.eq(FullyReady))
-
-    val random = scala.util.Random
-    val randomOrderSeed = if (request.userFilters.randomVendorOrderSeed.isEmpty) {
-      val nextRandomValue = random.nextLong()
-      userFiltersRepository.set(request.userFilters.copy(finalFilters = finalFilters, randomVendorOrderSeed = Some(nextRandomValue)))
-      nextRandomValue
-    } else {
-      request.userFilters.randomVendorOrderSeed.get
-    }
-    random.setSeed(randomOrderSeed)
-
-    val randomisedVendors = vendors.copy(vendors = random.shuffle(vendors.vendors))
+    
+    userFiltersRepository.set(request.userFilters.copy(finalFilters = finalFilters)) // do we still need this?
+    val randomisedVendors = vendors.copy(vendors = randomShuffle(vendors.vendors, request.sessionId))
     val orderedMatchingVendors = SoftwareChoicesService.matchFilter(selectedFilters)(randomisedVendors.vendors)
     
     vendors.copy(vendors = orderedMatchingVendors)
+  }
+
+  private def randomShuffle(vendors: Seq[SoftwareVendorModel], sessionId: String): Seq[SoftwareVendorModel] = {
+    def md5(s: String): String = {
+      val bytes = MessageDigest.getInstance("MD5").digest(s.getBytes("UTF-8"))
+      val result = bytes.map("%02x".format(_)).mkString
+      result
+    }
+    vendors.sortBy(vendor => md5(s"$sessionId-${vendor.productId.toString}"))
   }
 }
 

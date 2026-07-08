@@ -40,8 +40,7 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
       SessionId,
       answers,
       finalFilters = filters,
-      lastUpdated = testTime,
-      randomVendorOrderSeed = Some(1234L)
+      lastUpdated = testTime
     )
 
   override def beforeEach(): Unit = {

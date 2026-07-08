@@ -39,7 +39,6 @@ class ProductDetailsControllerISpec extends ComponentSpecBase with BeforeAndAfte
       SessionId,
       answers,
       finalFilters = filters,
-      randomVendorOrderSeed = Some(1234L),
       lastUpdated = testTime
     )
 

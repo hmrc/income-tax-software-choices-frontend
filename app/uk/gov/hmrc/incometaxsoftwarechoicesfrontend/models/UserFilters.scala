@@ -25,7 +25,6 @@ import scala.util.Random
 case class UserFilters(id: String,
                        answers: Option[UserAnswers] = None,
                        finalFilters: Seq[VendorFilter] = Seq.empty,
-                       randomVendorOrderSeed: Option[Long] = None,
                        lastUpdated: Instant = Instant.now)
 
 object UserFilters {
@@ -38,7 +37,6 @@ object UserFilters {
       (__ \ "_id").read[String] and
         (__ \ "answers").readNullable[UserAnswers] and
         (__ \ "finalFilters").read[Seq[VendorFilter]] and
-        (__ \ "randomVendorOrderSeed").readNullable[Long] and
           (__ \ "lastUpdated").read(MongoJavatimeFormats.instantFormat)
       ) (UserFilters.apply _)
   }
@@ -51,9 +49,8 @@ object UserFilters {
       (__ \ "_id").write[String] and
         (__ \ "answers").writeNullable[UserAnswers] and
         (__ \ "finalFilters").write[Seq[VendorFilter]] and
-        (__ \ "randomVendorOrderSeed").writeNullable[Long] and
           (__ \ "lastUpdated").write(MongoJavatimeFormats.instantFormat)
-      ) (ua => (ua.id, ua.answers, ua.finalFilters, ua.randomVendorOrderSeed, ua.lastUpdated))
+      ) (ua => (ua.id, ua.answers, ua.finalFilters, ua.lastUpdated))
   }
 
   implicit val format: OFormat[UserFilters] = OFormat(reads, writes)
