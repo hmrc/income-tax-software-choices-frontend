@@ -435,7 +435,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
   def testUserFilters(answers: Option[UserAnswers]): UserFilters = UserFilters(
     id = SessionId,
     answers = answers,
-    randomVendorOrder = (for (x <- 100 to 200) yield x).toList // range of productId in local test data
+    randomVendorOrderSeed = Some(1234L)
   )
 
   object SummaryListKeys {

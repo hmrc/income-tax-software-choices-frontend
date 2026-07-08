@@ -16,15 +16,16 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models
 
-import play.api.libs.json._
+import play.api.libs.json.*
 import uk.gov.hmrc.mongo.play.json.formats.MongoJavatimeFormats
 
 import java.time.Instant
+import scala.util.Random
 
 case class UserFilters(id: String,
                        answers: Option[UserAnswers] = None,
                        finalFilters: Seq[VendorFilter] = Seq.empty,
-                       randomVendorOrder: List[Int] = List.empty,
+                       randomVendorOrderSeed: Option[Long] = None,
                        lastUpdated: Instant = Instant.now)
 
 object UserFilters {
@@ -37,8 +38,8 @@ object UserFilters {
       (__ \ "_id").read[String] and
         (__ \ "answers").readNullable[UserAnswers] and
         (__ \ "finalFilters").read[Seq[VendorFilter]] and
-        (__ \ "randomVendorOrder").read[List[Int]] and
-        (__ \ "lastUpdated").read(MongoJavatimeFormats.instantFormat)
+        (__ \ "randomVendorOrderSeed").readNullable[Long] and
+          (__ \ "lastUpdated").read(MongoJavatimeFormats.instantFormat)
       ) (UserFilters.apply _)
   }
 
@@ -50,9 +51,9 @@ object UserFilters {
       (__ \ "_id").write[String] and
         (__ \ "answers").writeNullable[UserAnswers] and
         (__ \ "finalFilters").write[Seq[VendorFilter]] and
-        (__ \ "randomVendorOrder").write[List[Int]] and
-        (__ \ "lastUpdated").write(MongoJavatimeFormats.instantFormat)
-      ) (ua => (ua.id, ua.answers, ua.finalFilters, ua.randomVendorOrder, ua.lastUpdated))
+        (__ \ "randomVendorOrderSeed").writeNullable[Long] and
+          (__ \ "lastUpdated").write(MongoJavatimeFormats.instantFormat)
+      ) (ua => (ua.id, ua.answers, ua.finalFilters, ua.randomVendorOrderSeed, ua.lastUpdated))
   }
 
   implicit val format: OFormat[UserFilters] = OFormat(reads, writes)

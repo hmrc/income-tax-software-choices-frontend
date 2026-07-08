@@ -74,25 +74,44 @@ class SoftwareChoicesService @Inject()(
       ))
   }
 
+ /* def getAllInOneVendors(finalFilters: Seq[VendorFilter])(implicit appConfig: AppConfig, request: SessionDataRequest[_]): SoftwareVendors = {
+    val vendors = softwareVendors
+    val selectedFilters = finalFilters.filterNot(_.eq(TaxReturn)).filterNot(_.eq(QuarterlyUpdates)).filterNot(_.eq(FullyReady))
+
+      val orderedMatchingVendors = if (request.userFilters.randomVendorOrder.isEmpty) {
+        val randomisedVendors = vendors.copy(vendors = shuffle(vendors.vendors))
+        userFiltersRepository.set(request.userFilters.copy(finalFilters = finalFilters, randomVendorOrder = randomisedVendors.vendors.map(_.productId).toList))
+  
+        SoftwareChoicesService.matchFilter(selectedFilters)(randomisedVendors.vendors)
+      } else {
+        val matchingVendors = SoftwareChoicesService.matchFilter(selectedFilters)(vendors.vendors)
+        val vendorMap = matchingVendors.map(vendor => vendor.productId -> vendor).toMap
+  
+        request.userFilters.randomVendorOrder.flatMap(vendorMap.get)
+      }
+
+    vendors.copy(vendors = orderedMatchingVendors)
+  }
+*/
   def getAllInOneVendors(finalFilters: Seq[VendorFilter])(implicit appConfig: AppConfig, request: SessionDataRequest[_]): SoftwareVendors = {
     val vendors = softwareVendors
     val selectedFilters = finalFilters.filterNot(_.eq(TaxReturn)).filterNot(_.eq(QuarterlyUpdates)).filterNot(_.eq(FullyReady))
 
-    val orderedMatchingVendors = if (request.userFilters.randomVendorOrder.isEmpty) {
-      val randomisedVendors = vendors.copy(vendors = shuffle(vendors.vendors))
-      userFiltersRepository.set(request.userFilters.copy(finalFilters = finalFilters, randomVendorOrder = randomisedVendors.vendors.map(_.productId).toList))
-
-      SoftwareChoicesService.matchFilter(selectedFilters)(randomisedVendors.vendors)
+    val random = scala.util.Random
+    val randomOrderSeed = if (request.userFilters.randomVendorOrderSeed.isEmpty) {
+      val nextRandomValue = random.nextLong()
+      userFiltersRepository.set(request.userFilters.copy(finalFilters = finalFilters, randomVendorOrderSeed = Some(nextRandomValue)))
+      nextRandomValue
     } else {
-      val matchingVendors = SoftwareChoicesService.matchFilter(selectedFilters)(vendors.vendors)
-      val vendorMap = matchingVendors.map(vendor => vendor.productId -> vendor).toMap
-
-      request.userFilters.randomVendorOrder.flatMap(vendorMap.get)
+      request.userFilters.randomVendorOrderSeed.get
     }
+    random.setSeed(randomOrderSeed)
 
+    val randomisedVendors = vendors.copy(vendors = random.shuffle(vendors.vendors))
+    val orderedMatchingVendors = SoftwareChoicesService.matchFilter(selectedFilters)(randomisedVendors.vendors)
+    
     vendors.copy(vendors = orderedMatchingVendors)
   }
-
 }
 
 object SoftwareChoicesService {

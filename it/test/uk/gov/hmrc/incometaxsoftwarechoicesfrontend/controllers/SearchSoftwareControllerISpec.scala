@@ -40,8 +40,8 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
       SessionId,
       answers,
       finalFilters = filters,
-      randomVendorOrder = (for (x <- 100 to 200) yield x).toList, // range of productId in local test data
-      lastUpdated = testTime
+      lastUpdated = testTime,
+      randomVendorOrderSeed = Some(1234L)
     )
 
   override def beforeEach(): Unit = {
@@ -469,8 +469,7 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
         .set(UserTypePage, Agent).get
 
       val initialFilter = Seq()
-      val randonVendorOrder = (for (x <- 100 to 200) yield x).toList
-      setupAnswers(SessionId, Some(userAnswers), initialFilter, randonVendorOrder)
+      setupAnswers(SessionId, Some(userAnswers), initialFilter)
 
       val response = SoftwareChoicesFrontend.submitSoftwareSearch(FiltersFormModel(Seq(VendorFilter.Agent, FreeVersion)))
 
@@ -492,8 +491,7 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
         .set(UserTypePage, Agent).get
 
       val initialFilter = Seq()
-      val randonVendorOrder = (for (x <- 100 to 200) yield x).toList
-      setupAnswers(SessionId, Some(userAnswers), initialFilter, randonVendorOrder)
+      setupAnswers(SessionId, Some(userAnswers), initialFilter)
 
       val response = SoftwareChoicesFrontend.submitSoftwareSearch(FiltersFormModel(Seq(VendorFilter.Agent, FreeVersion)))
 
