@@ -74,6 +74,9 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
 
   override def beforeEach(): Unit = {
     super.beforeEach()
+    when(mockRequest.sessionId).thenReturn(
+      "test-session-id"
+    )
     when(mockDataService.getSoftwareVendors()).thenReturn(
       allVendors
     )
@@ -113,10 +116,7 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
       result.vendors.size mustBe 0
     }
     
-    "randomised order of vendors will return same order using same filters" in {
-      when(mockRequest.sessionId).thenReturn(
-        "test-session-id"
-      )
+    "randomised in same order of vendors when using same filters" in {
       val result1 = service.getAllInOneVendors(Seq(Individual, QuarterlyUpdates, TaxReturn))
       val result2 = service.getAllInOneVendors(Seq(Individual, QuarterlyUpdates, TaxReturn))
      
@@ -125,9 +125,6 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
     }
 
     "get new randomised order when more vendors are added" in {
-      when(mockRequest.sessionId).thenReturn(
-        "test-session-id"
-      )
       val result1 = service.getAllInOneVendors(Seq(Individual, QuarterlyUpdates, TaxReturn))
 
       val updatedVendors = allVendors.vendors ++ Seq(
@@ -159,30 +156,22 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
 
       result3.vendors.map(_.productId) mustBe result1.vendors.map(_.productId)
     }
-
-
-    "randomised order of vendors is different for different request sessions" in {
-      when(mockRequest.sessionId).thenReturn(
-        "test-session-id"
-      )
-
+    
+    "randomised to different order of vendors when session is different" in {
       val result1 = service.getAllInOneVendors(Seq(Individual, QuarterlyUpdates, TaxReturn))
-      result1.vendors.map(_.productId).toSet mustBe Set(1,2,3,4,5,6,7)
+      result1.vendors.map(_.productId) mustBe List(2,4,6,3,1,5,7)
 
       when(mockRequest.sessionId).thenReturn(
         "test-session-id-2"
       )
 
       val result2 = service.getAllInOneVendors(Seq(Individual, QuarterlyUpdates, TaxReturn))
-
+      result2.vendors.map(_.productId) mustBe List(1,3,4,2,7,5,6)
       result2.vendors.map(_.productId) == result1.vendors.map(_.productId) mustBe false
       result2.vendors.map(_.productId).toSet mustBe result1.vendors.map(_.productId).toSet
     }
 
     "return randomised order when vendors have same name" in {
-      when(mockRequest.sessionId).thenReturn(
-        "test-session-id"
-      )
       val updatedVendors = Seq(
         intentVendor(31, "Vendor 31", Map(Individual -> Available, QuarterlyUpdates -> Available, TaxReturn -> Available, UkProperty -> Available, StudentLoans -> Available, StandardUpdatePeriods -> Available, Visual -> Available)),
         intentVendor(32, "Vendor 31", Map(Individual -> Available, QuarterlyUpdates -> Available, TaxReturn -> Available, UkProperty -> Available, StudentLoans -> Available, StandardUpdatePeriods -> Available, Visual -> Available)),
@@ -198,7 +187,7 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
 
       val result = service.getAllInOneVendors(Seq(Individual, QuarterlyUpdates, TaxReturn))
       result.vendors.size mustBe 4
-      result.vendors.map(_.productId).toSet mustBe Set(31,32,33,34)
+      result.vendors.map(_.productId) mustBe List(34, 32, 33, 31)
     }
   }
 

@@ -74,12 +74,12 @@ class SoftwareChoicesService @Inject()(
         eoyReady = vendor.isEoyReady(finalFilters)
       ))
   }
-  
+
   def getAllInOneVendors(finalFilters: Seq[VendorFilter])(implicit appConfig: AppConfig, request: SessionDataRequest[_]): SoftwareVendors = {
     val vendors = softwareVendors
     val selectedFilters = finalFilters.filterNot(_.eq(TaxReturn)).filterNot(_.eq(QuarterlyUpdates)).filterNot(_.eq(FullyReady))
-    
-    userFiltersRepository.set(request.userFilters.copy(finalFilters = finalFilters)) // do we still need this?
+
+    userFiltersRepository.set(request.userFilters.copy(finalFilters = finalFilters))
     val randomisedVendors = vendors.copy(vendors = randomShuffle(vendors.vendors, request.sessionId))
     val orderedMatchingVendors = SoftwareChoicesService.matchFilter(selectedFilters)(randomisedVendors.vendors)
     
@@ -87,12 +87,11 @@ class SoftwareChoicesService @Inject()(
   }
 
   private def randomShuffle(vendors: Seq[SoftwareVendorModel], sessionId: String): Seq[SoftwareVendorModel] = {
-    def md5(s: String): String = {
-      val bytes = MessageDigest.getInstance("MD5").digest(s.getBytes("UTF-8"))
-      val result = bytes.map("%02x".format(_)).mkString
-      result
+    val bytes = MessageDigest.getInstance("MD5")
+    def generateHash(s: String): String = {
+      bytes.digest(s.getBytes("UTF-8")).map("%02x".format(_)).mkString
     }
-    vendors.sortBy(vendor => md5(s"$sessionId-${vendor.productId.toString}"))
+    vendors.sortBy(vendor => generateHash(s"$sessionId-${vendor.productId.toString}"))
   }
 }
 
