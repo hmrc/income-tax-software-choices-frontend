@@ -37,7 +37,7 @@ object UserFilters {
       (__ \ "_id").read[String] and
         (__ \ "answers").readNullable[UserAnswers] and
         (__ \ "finalFilters").read[Seq[VendorFilter]] and
-          (__ \ "lastUpdated").read(MongoJavatimeFormats.instantFormat)
+        (__ \ "lastUpdated").read(MongoJavatimeFormats.instantFormat)
       ) (UserFilters.apply _)
   }
 
@@ -49,7 +49,7 @@ object UserFilters {
       (__ \ "_id").write[String] and
         (__ \ "answers").writeNullable[UserAnswers] and
         (__ \ "finalFilters").write[Seq[VendorFilter]] and
-          (__ \ "lastUpdated").write(MongoJavatimeFormats.instantFormat)
+        (__ \ "lastUpdated").write(MongoJavatimeFormats.instantFormat)
       ) (ua => (ua.id, ua.answers, ua.finalFilters, ua.lastUpdated))
   }
 
