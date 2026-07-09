@@ -24,10 +24,8 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.requests.SessionDataR
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareVendorModel, SoftwareVendors, VendorFilter, VendorFilterGroups}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.viewmodels.VendorSuitabilityViewModel
-
 import java.security.MessageDigest
 import javax.inject.{Inject, Singleton}
-import scala.util.Random.shuffle
 
 @Singleton
 class SoftwareChoicesService @Inject()(
