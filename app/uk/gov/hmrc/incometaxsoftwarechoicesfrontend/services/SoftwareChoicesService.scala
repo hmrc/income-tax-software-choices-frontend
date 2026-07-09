@@ -79,17 +79,15 @@ class SoftwareChoicesService @Inject()(
     val vendors = softwareVendors
     val selectedFilters = finalFilters.filterNot(_.eq(TaxReturn)).filterNot(_.eq(QuarterlyUpdates)).filterNot(_.eq(FullyReady))
 
-    userFiltersRepository.set(request.userFilters.copy(finalFilters = finalFilters))
     val randomisedVendors = vendors.copy(vendors = randomShuffle(vendors.vendors, request.sessionId))
     val orderedMatchingVendors = SoftwareChoicesService.matchFilter(selectedFilters)(randomisedVendors.vendors)
-    
     vendors.copy(vendors = orderedMatchingVendors)
   }
 
   private def randomShuffle(vendors: Seq[SoftwareVendorModel], sessionId: String): Seq[SoftwareVendorModel] = {
     val bytes = MessageDigest.getInstance("MD5")
-    def generateHash(s: String): String = {
-      bytes.digest(s.getBytes("UTF-8")).map("%02x".format(_)).mkString
+    def generateHash(inputString: String): String = {
+      bytes.digest(inputString.getBytes("UTF-8")).map("%02x".format(_)).mkString
     }
     vendors.sortBy(vendor => generateHash(s"$sessionId-${vendor.productId.toString}"))
   }
