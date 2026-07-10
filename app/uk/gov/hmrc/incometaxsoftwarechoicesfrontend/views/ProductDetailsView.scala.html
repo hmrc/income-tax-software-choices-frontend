@@ -52,7 +52,6 @@
    <br>
 
     <div class="govuk-!-width-three-quarters govuk-!-padding-0">
-        <h2 class="govuk-heading-m">@messages("product-details.features-group.heading")</h2>
         @statusKeyTable
 
         <h2 class="govuk-heading-m">@messages("product-details.details.heading")</h2>
@@ -94,12 +93,15 @@
         Seq(
             TableRow(
                 content = Text(messages(s"product-details.$section.${filter.key}")),
-                classes = "govuk-!-width-two-thirds"
+                classes = "govuk-!-width-two-thirds govuk-!-font-weight-regular"
             ),
             TableRow(
                 content = (softwareVendor.getFeatureStatus(filter), displayIntent) match {
                     case (Available, _) => {
-                        Text(messages("search-software.vendor-detail.eoy-tax-return.ready"))
+                        HtmlContent(govukTag(Tag(
+                            content = Text(messages("search-software.vendor-detail.eoy-tax-return.ready")),
+                            classes = "govuk-tag--green govuk-!-display-inline"
+                         )))
                     }
                     case (Intended, true) => {
                         HtmlContent(govukTag(Tag(
@@ -131,9 +133,7 @@
                 content = Text(messages("product-details.status.heading"))
             )
         )),
-        firstCellIsHeader = false,
-        caption = Some(messages(s"product-details.$tableHeaderKey.heading")),
-        captionClasses = "govuk-visually-hidden"
+        firstCellIsHeader = true,
     ))
 }
 
@@ -167,7 +167,10 @@
       rows = Seq(
         Seq(
           TableRow(
-            content = Text(messages("product-details.status.ready")),
+            content = HtmlContent(
+              govukTag(Tag(
+                  content = Text(messages("product-details.status.ready")),
+                  classes = "govuk-tag--green govuk-!-display-inline"))),
             classes = "govuk-!-width-one-third"),
           TableRow(
             content = Text(messages("product-details.meaning.ready")),
@@ -208,9 +211,9 @@
           )
         )
       ),
-      firstCellIsHeader = false,
-      caption = Some(messages("product-details.status.heading")),
-      captionClasses = "govuk-visually-hidden"
+      firstCellIsHeader = true,
+      caption = Some(messages("product-details.features-group.heading")),
+      captionClasses = "govuk-table__caption--m"
     )
   )
 }
