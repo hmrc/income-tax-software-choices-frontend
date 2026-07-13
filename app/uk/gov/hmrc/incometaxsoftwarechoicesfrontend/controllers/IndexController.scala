@@ -18,22 +18,16 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.CheckJourney
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 
 import javax.inject.{Inject, Singleton}
 
 @Singleton
 class IndexController @Inject()(implicit val appConfig: AppConfig,
                                 mcc: MessagesControllerComponents
-                               ) extends BaseFrontendController with FeatureSwitching {
+                               ) extends BaseFrontendController {
 
   def index: Action[AnyContent] = Action { _ =>
-    if (isEnabled(CheckJourney)) {
-      Redirect(routes.HowYouFindSoftwareController.show())
-    } else {
-      Redirect(routes.UserTypeController.show())
-    }
+    Redirect(routes.HowYouFindSoftwareController.show())
   }
 }
 
