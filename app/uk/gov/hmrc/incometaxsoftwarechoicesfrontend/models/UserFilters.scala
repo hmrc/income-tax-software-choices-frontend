@@ -20,7 +20,6 @@ import play.api.libs.json.*
 import uk.gov.hmrc.mongo.play.json.formats.MongoJavatimeFormats
 
 import java.time.Instant
-import scala.util.Random
 
 case class UserFilters(id: String,
                        answers: Option[UserAnswers] = None,

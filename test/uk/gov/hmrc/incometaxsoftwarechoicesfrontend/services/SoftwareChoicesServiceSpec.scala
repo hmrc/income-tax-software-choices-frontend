@@ -117,15 +117,15 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
     }
     
     "randomised in same order of vendors when using same filters" in {
-      val result1 = service.getAllInOneVendors(Seq(Individual, QuarterlyUpdates, TaxReturn))
-      val result2 = service.getAllInOneVendors(Seq(Individual, QuarterlyUpdates, TaxReturn))
-     
-      result2.vendors.map(_.productId) == result1.vendors.map(_.productId) mustBe true
-      result2.vendors.map(_.productId).toSet mustBe result1.vendors.map(_.productId).toSet
+      val vendorsWthFilters = service.getAllInOneVendors(Seq(Individual, QuarterlyUpdates, TaxReturn))
+      val vendorsWthSameFilters = service.getAllInOneVendors(Seq(Individual, QuarterlyUpdates, TaxReturn))
+
+      vendorsWthSameFilters.vendors.map(_.productId) == vendorsWthFilters.vendors.map(_.productId) mustBe true
+      vendorsWthSameFilters.vendors.map(_.productId).toSet mustBe vendorsWthFilters.vendors.map(_.productId).toSet
     }
 
     "get new randomised order when more vendors are added" in {
-      val result1 = service.getAllInOneVendors(Seq(Individual, QuarterlyUpdates, TaxReturn))
+      val vendorsBeforeUpdate = service.getAllInOneVendors(Seq(Individual, QuarterlyUpdates, TaxReturn))
 
       val updatedVendors = allVendors.vendors ++ Seq(
         intentVendor(31, "Vendor 31", Map(Individual->Available, QuarterlyUpdates->Available, TaxReturn->Available, UkProperty->Available, StudentLoans->Available, StandardUpdatePeriods->Available, Visual->Available)),
@@ -138,37 +138,37 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
         )
       )
 
-      val result2 = service.getAllInOneVendors(Seq(Individual, QuarterlyUpdates, TaxReturn))
-      result2.vendors.size > result1.vendors.size mustBe true
-      result2.vendors.map(_.productId).toSet == result1.vendors.map(_.productId).toSet mustBe false
-      result2.vendors.map(_.productId).contains(31) mustBe true
-      result2.vendors.map(_.productId).contains(32) mustBe true
+      val vendorsAfterUpdate = service.getAllInOneVendors(Seq(Individual, QuarterlyUpdates, TaxReturn))
+      vendorsAfterUpdate.vendors.size > vendorsBeforeUpdate.vendors.size mustBe true
+      vendorsAfterUpdate.vendors.map(_.productId).toSet == vendorsBeforeUpdate.vendors.map(_.productId).toSet mustBe false
+      vendorsAfterUpdate.vendors.map(_.productId).contains(31) mustBe true
+      vendorsAfterUpdate.vendors.map(_.productId).contains(32) mustBe true
     }
 
     "retain randomised order when filters change" in {
-      val result1 = service.getAllInOneVendors(Seq(Individual, QuarterlyUpdates, TaxReturn))
-      result1.vendors.map(_.productId).toSet mustBe Set(1,2,3,4,5,6,7)
+      val vendorsWithFilters = service.getAllInOneVendors(Seq(Individual, QuarterlyUpdates, TaxReturn))
+      vendorsWithFilters.vendors.map(_.productId).toSet mustBe Set(1,2,3,4,5,6,7)
 
-      val result5 = service.getAllInOneVendors(Seq(Individual, QuarterlyUpdates, TaxReturn, UkProperty))
-      result5.vendors.map(_.productId).toSet mustBe Set(3,4)
+      val vendorsDiffFilters = service.getAllInOneVendors(Seq(Individual, QuarterlyUpdates, TaxReturn, UkProperty))
+      vendorsDiffFilters.vendors.map(_.productId).toSet mustBe Set(3,4)
 
-      val result3 = service.getAllInOneVendors(Seq(Individual, QuarterlyUpdates, TaxReturn))
+      val vendorsOriginalFilters = service.getAllInOneVendors(Seq(Individual, QuarterlyUpdates, TaxReturn))
 
-      result3.vendors.map(_.productId) mustBe result1.vendors.map(_.productId)
+      vendorsOriginalFilters.vendors.map(_.productId) mustBe vendorsWithFilters.vendors.map(_.productId)
     }
     
     "randomised to different order of vendors when session is different" in {
-      val result1 = service.getAllInOneVendors(Seq(Individual, QuarterlyUpdates, TaxReturn))
-      result1.vendors.map(_.productId) mustBe List(2,4,6,3,1,5,7)
+      val vendorsInSession1 = service.getAllInOneVendors(Seq(Individual, QuarterlyUpdates, TaxReturn))
+      vendorsInSession1.vendors.map(_.productId) mustBe List(2,4,6,3,1,5,7)
 
       when(mockRequest.sessionId).thenReturn(
         "test-session-id-2"
       )
 
-      val result2 = service.getAllInOneVendors(Seq(Individual, QuarterlyUpdates, TaxReturn))
-      result2.vendors.map(_.productId) mustBe List(1,3,4,2,7,5,6)
-      result2.vendors.map(_.productId) == result1.vendors.map(_.productId) mustBe false
-      result2.vendors.map(_.productId).toSet mustBe result1.vendors.map(_.productId).toSet
+      val vendorsInSession2 = service.getAllInOneVendors(Seq(Individual, QuarterlyUpdates, TaxReturn))
+      vendorsInSession2.vendors.map(_.productId) mustBe List(1,3,4,2,7,5,6)
+      vendorsInSession2.vendors.map(_.productId) == vendorsInSession1.vendors.map(_.productId) mustBe false
+      vendorsInSession2.vendors.map(_.productId).toSet mustBe vendorsInSession1.vendors.map(_.productId).toSet
     }
 
     "return randomised order when vendors have same name" in {

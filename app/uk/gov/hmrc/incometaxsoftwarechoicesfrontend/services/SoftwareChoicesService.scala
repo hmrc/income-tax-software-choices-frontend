@@ -83,11 +83,11 @@ class SoftwareChoicesService @Inject()(
   }
 
   private def randomShuffle(vendors: Seq[SoftwareVendorModel], sessionId: String): Seq[SoftwareVendorModel] = {
-    val bytes = MessageDigest.getInstance("MD5")
     def generateHash(inputString: String): String = {
-      bytes.digest(inputString.getBytes("UTF-8")).map("%02x".format(_)).mkString
+      val messageDigest = MessageDigest.getInstance("MD5")
+      messageDigest.digest(inputString.getBytes("UTF-8")).map("%02x".format(_)).mkString
     }
-    vendors.sortBy(vendor => generateHash(s"$sessionId-${vendor.productId.toString}"))
+    vendors.sortBy(vendor => generateHash(s"$sessionId-${vendor.productId}"))
   }
 }
 
