@@ -188,7 +188,7 @@ class UserTypeControllerSpec extends ControllerBaseSpec with MockSessionIdentifi
 
         intercept[SCInconsistentDataException](await(result)).message shouldBe "[UserTypeController][submit] - No journey type"
       }
-      
+
       "user in Check journey failed to save answers to Filters" in new Setup {
         when(mockPageAnswersService.setPageAnswers(eqTo(sessionId), eqTo(UserTypePage), eqTo(UserType.Agent))(any()))
           .thenReturn(Future.successful(false))
