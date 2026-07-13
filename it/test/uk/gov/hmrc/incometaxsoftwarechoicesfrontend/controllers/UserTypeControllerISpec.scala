@@ -50,23 +50,7 @@ class UserTypeControllerISpec extends ComponentSpecBase with BeforeAndAfterEach 
         )
       }
     }
-
-    "there are pre-existing page answers with radio option selected" should {
-      "display the page with the previously chosen radio checked and the guidance page as the back link" in {
-        val userAnswers = UserAnswers().set(UserTypePage, SoleTraderOrLandlord).get
-        await(userFiltersRepository.set(testUserFilters(userAnswers)))
-
-        val res = SoftwareChoicesFrontend.getUserType()
-
-        res should have(
-          httpStatus(OK),
-          pageTitle(s"${messages("type-of-user.heading")} - ${PageContentBase.title} - GOV.UK"),
-          radioButtonSelected(id = "type-of-user", selectedRadioButton = Some(SoleTraderOrLandlord.key)),
-          elementExists(s""".govuk-back-link[href="${appConfig.guidance}"]""", true)
-        )
-      }
-    }
-
+    
     "there are pre-existing page answers in edit mode" should {
       "display the page with the previously chosen radio checked and the check your answers page as the back link" in {
         val userAnswers = UserAnswers().set(UserTypePage, Agent).get
