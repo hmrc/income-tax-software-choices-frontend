@@ -17,6 +17,7 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.SCInconsistentDataException
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{RequireUserDataRefiner, SessionIdentifierAction}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SoftwareInDevelopmentView
 
@@ -39,7 +40,7 @@ class SoftwareInDevelopmentController @Inject()(view: SoftwareInDevelopmentView,
           chosenSoftware = product.name
         ))
       }
-      case None => InternalServerError("[SoftwareInDevelopmentController][show] - Could not find software name in answers]")
+      case None => throw new SCInconsistentDataException("[SoftwareInDevelopmentController][show] - Could not find software name in answers]")
     }
   }
 

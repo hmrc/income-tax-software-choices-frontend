@@ -17,6 +17,7 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.SCInconsistentDataException
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{RequireUserDataRefiner, SessionIdentifierAction}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.Recognised
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.QuarterlyOnlyView
@@ -41,7 +42,7 @@ class QuarterlyOnlyController @Inject()(view: QuarterlyOnlyView,
           softwareResultsUrl = routes.SearchSoftwareController.show().url
         ))
       }
-      case _ => InternalServerError("[QuarterlyOnlyController][show] - Could not find details of a recognised software product in answers")
+      case _ => throw new SCInconsistentDataException("[QuarterlyOnlyController][show] - Could not find details of a recognised software product in answers")
     }
 
   }

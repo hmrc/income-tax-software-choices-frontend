@@ -21,8 +21,9 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import play.api.http.Status.{INTERNAL_SERVER_ERROR, OK}
 import play.api.mvc.Result
-import play.api.test.Helpers.{HTML, contentType, defaultAwaitTimeout, status}
+import play.api.test.Helpers.{HTML, contentType, defaultAwaitTimeout, status, await}
 import play.twirl.api.HtmlFormat
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.SCInconsistentDataException
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.mocks.{MockRequireUserDataRefiner, MockSessionIdentifierAction}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareProduct
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.Recognised
@@ -57,11 +58,11 @@ class PartiallyCompatibleControllerSpec extends ControllerBaseSpec
     "return INTERNAL_SERVER_ERROR when the software product is missing" in {
       when(mockPartiallyCompatibleView(any(), any(), any())(any(), any()))
         .thenReturn(HtmlFormat.empty)
-
-      val result: Future[Result] = controller(None).show()(fakeRequest)
-
-      status(result) shouldBe INTERNAL_SERVER_ERROR
+      
+      val result = intercept[SCInconsistentDataException](
+        await(controller(None).show()(fakeRequest)))
+      result.responseCode shouldBe INTERNAL_SERVER_ERROR
+      result.message shouldBe "[PartiallyCompatibleController][show] - Could not find details of a recognised software product in answers"
     }
-    
   }
 }

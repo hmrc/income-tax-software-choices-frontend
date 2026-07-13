@@ -21,10 +21,11 @@ import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.Application
 import play.api.http.HeaderNames.CACHE_CONTROL
-import play.api.http.Status.INTERNAL_SERVER_ERROR
+import play.api.http.Status.{INTERNAL_SERVER_ERROR, NOT_FOUND}
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
+import uk.gov.hmrc.http.NotFoundException
 
 class ErrorHandlerSpec extends AnyWordSpec
   with Matchers
@@ -48,12 +49,25 @@ class ErrorHandlerSpec extends AnyWordSpec
       html.contentType shouldBe "text/html"
     }
   }
-
+  
+  "inconsistentDataTemplate" should {
+    "render HTML and have content" in {
+      val html = await(handler.inconsistentDataTemplate(fakeRequest))
+      html.contentType shouldBe "text/html"
+      html.body.contains("Sorry, we could not process your request") shouldBe true
+      html.body.contains("The information needed to display this page is missing or invalid.") shouldBe true
+    }
+  }
+  
   "resolveError" should {
     "handle unknown exceptions as 500s, with no-cache set" in {
       val header = await(handler.resolveError(fakeRequest, new Exception("dummy"))).header
       header.headers should contain(CACHE_CONTROL -> "no-cache")
       header.status should be(INTERNAL_SERVER_ERROR)
+    }
+    "handle Not Found exceptions as 404" in {
+      val header = await(handler.resolveError(fakeRequest, new NotFoundException("dummy"))).header
+      header.status should be(NOT_FOUND)
     }
   }
 
