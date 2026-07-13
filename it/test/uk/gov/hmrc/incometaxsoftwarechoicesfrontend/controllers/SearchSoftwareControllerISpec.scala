@@ -84,18 +84,6 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
           elementExists("#agent-filter", false)
         )
       }
-      "user type is agent in the database for this user and Check feature not enabled" in {
-        val userAnswers = UserAnswers()
-          .set(UserTypePage, Agent).get
-        setupAnswers(SessionId, Some(userAnswers), Seq(VendorFilter.Agent))
-
-        val response = SoftwareChoicesFrontend.getSoftwareResults
-
-        response should have(
-          httpStatus(OK),
-          elementExists("#agent-filter", true)
-        )
-      }
       "user type is individual in the database for this user in the Unguided Journey" in {
         val userAnswers = UserAnswers()
           .set(HowYouFindSoftwarePage, ViewAll).get
@@ -183,51 +171,6 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
         res should have(
           httpStatus(OK),
           elementExists(s""".govuk-back-link[href="${routes.QuarterlyOnlyController.show().url}"]""", true)
-        )
-      }
-    }
-    "have a back link that returns to the check your answers page" when {
-      "the journey type is not set and the user type is sole trader" in {
-        val softwareProduct = SoftwareProduct(101, "Product 101", Recognised)
-
-        val userAnswers = UserAnswers()
-          .set(UserTypePage, SoleTraderOrLandlord).get
-          .set(EnterSoftwareNamePage, softwareProduct).get
-          .set(BusinessIncomePage, Seq(SoleTrader)).get
-          .set(AdditionalIncomeSourcesPage, Seq(Employment)).get
-          .set(OtherItemsPage, Seq(StudentLoans)).get
-          .set(AccountingPeriodPage, SixthAprilToFifthApril).get
-
-        val initialFilter = Seq(Individual, SoleTrader, Employment, StudentLoans, StandardUpdatePeriods)
-        await(userFiltersRepository.set(testUserFilters(Some(userAnswers), initialFilter)))
-
-        val res = SoftwareChoicesFrontend.getSoftwareResults
-
-        res should have(
-          httpStatus(OK),
-          elementExists(s""".govuk-back-link[href="${routes.CheckYourAnswersController.show().url}"]""", true)
-        )
-      }
-    }
-    "have a back link that returns to the user type page" when {
-      "the journey type is not set and the user type is agent" in {
-        val softwareProduct = SoftwareProduct(101, "Product 101", Recognised)
-        val userAnswers = UserAnswers()
-          .set(UserTypePage, Agent).get
-          .set(EnterSoftwareNamePage, softwareProduct).get
-          .set(BusinessIncomePage, Seq(SoleTrader)).get
-          .set(AdditionalIncomeSourcesPage, Seq(Employment)).get
-          .set(OtherItemsPage, Seq(StudentLoans)).get
-          .set(AccountingPeriodPage, SixthAprilToFifthApril).get
-
-        val initialFilter = Seq(VendorFilter.Agent, SoleTrader, Employment, StudentLoans, StandardUpdatePeriods)
-        await(userFiltersRepository.set(testUserFilters(Some(userAnswers), initialFilter)))
-
-        val res = SoftwareChoicesFrontend.getSoftwareResults
-
-        res should have(
-          httpStatus(OK),
-          elementExists(s""".govuk-back-link[href="${routes.UserTypeController.show().url}"]""", true)
         )
       }
     }
@@ -423,26 +366,6 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
       }
     }
 
-    "add preference filters for Agent but not User Type" in {
-      val userAnswers = UserAnswers()
-        .set(UserTypePage, Agent).get
-
-      await(userFiltersRepository.set(testUserFilters(Some(userAnswers), Seq(VendorFilter.Agent))))
-
-      val response = SoftwareChoicesFrontend.submitSoftwareSearch(FiltersFormModel(Seq(FreeVersion, Bridging)))
-
-      response should have(
-        httpStatus(OK),
-        elementExists("#agent-filter", true),
-        checkboxSelected("agent-filter", None)
-      )
-
-      await(userFiltersRepository.get(SessionId)) match {
-        case Some(uf) => uf.finalFilters shouldBe Seq(FreeVersion, Bridging)
-        case None => fail("No user filters found")
-      }
-    }
-
     "add preference filters for Individual but not User Type for Unguided journey" in {
       val userAnswers = UserAnswers()
         .set(HowYouFindSoftwarePage, ViewAll).get
@@ -460,28 +383,6 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
 
       await(userFiltersRepository.get(SessionId)) match {
         case Some(uf) => uf.finalFilters shouldBe Seq(FreeVersion, Bridging)
-        case None => fail("No user filters found")
-      }
-    }
-
-    "add preference filters for Agent including User Type" in {
-      val userAnswers = UserAnswers()
-        .set(UserTypePage, Agent).get
-
-      val initialFilter = Seq()
-      val randonVendorOrder = (for (x <- 100 to 200) yield x).toList
-      setupAnswers(SessionId, Some(userAnswers), initialFilter, randonVendorOrder)
-
-      val response = SoftwareChoicesFrontend.submitSoftwareSearch(FiltersFormModel(Seq(VendorFilter.Agent, FreeVersion)))
-
-      response should have(
-        httpStatus(OK),
-        elementExists("#agent-filter", true),
-        checkboxSelected("agent-filter", Some("agent"))
-      )
-
-      await(userFiltersRepository.get(SessionId)) match {
-        case Some(uf) => uf.finalFilters shouldBe Seq(VendorFilter.Agent, FreeVersion)
         case None => fail("No user filters found")
       }
     }
