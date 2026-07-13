@@ -159,7 +159,7 @@ class UserTypeControllerISpec extends ComponentSpecBase with BeforeAndAfterEach 
         )
       }
     }
-    "the user is in the Check journey and has selected an recognised product" should {
+    "the user is in the Check journey and has selected a recognised product" should {
       "display the page with enter software name page as the back link" in {
         val userAnswers = UserAnswers()
           .set(HowYouFindSoftwarePage, Check).get
