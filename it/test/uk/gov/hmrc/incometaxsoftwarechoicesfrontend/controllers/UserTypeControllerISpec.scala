@@ -19,7 +19,6 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 import org.scalatest.BeforeAndAfterEach
 import play.api.http.Status.{BAD_REQUEST, OK, SEE_OTHER}
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.CheckJourney
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.SessionId
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, DatabaseHelper}
@@ -37,31 +36,17 @@ class UserTypeControllerISpec extends ComponentSpecBase with BeforeAndAfterEach 
 
   override def beforeEach(): Unit = {
     await(userFiltersRepository.collection.drop().toFuture())
-    disable(CheckJourney)
     super.beforeEach()
   }
 
   "GET /how-will-you-use-it" when {
     "there is nothing saved in the database for this user" should {
-      "redirect to the index page when Check feature switch is enabled" in {
-        enable(CheckJourney)
+      "redirect to the index page" in {
         val res = SoftwareChoicesFrontend.getUserType()
 
         res should have(
           httpStatus(SEE_OTHER),
           redirectURI(routes.IndexController.index.url)
-        )
-      }
-    }
-    "there are no existing page answers" should {
-      "display the page with an empty form" in {
-        val res = SoftwareChoicesFrontend.getUserType()
-
-        res should have(
-          httpStatus(OK),
-          pageTitle(s"${messages("type-of-user.heading")} - ${PageContentBase.title} - GOV.UK"),
-          radioButtonSelected(id = "type-of-user", None),
-          radioButtonSelected(id = "type-of-user-2", None)
         )
       }
     }
@@ -174,7 +159,7 @@ class UserTypeControllerISpec extends ComponentSpecBase with BeforeAndAfterEach 
         )
       }
     }
-    "the user is in the Check journey and has selected an recognised product" should {
+    "the user is in the Check journey and has selected a recognised product" should {
       "display the page with enter software name page as the back link" in {
         val userAnswers = UserAnswers()
           .set(HowYouFindSoftwarePage, Check).get
@@ -194,17 +179,14 @@ class UserTypeControllerISpec extends ComponentSpecBase with BeforeAndAfterEach 
   }
 
   "POST /how-will-you-use-it" when {
-    "user without Journey (Check feature off) selects sole trader or landlord" must {
-      s"return $SEE_OTHER and save page answer" in {
+    "there is nothing saved in the database for this user" must {
+      "redirect to the index page" in {
         val res = SoftwareChoicesFrontend.submitUserType(Some(SoleTraderOrLandlord))
 
         res should have(
           httpStatus(SEE_OTHER),
-          redirectURI(routes.BusinessIncomeController.show().url)
+          redirectURI(routes.IndexController.index.url)
         )
-
-        getPageData(SessionId, UserTypePage.toString).size shouldBe 1
-        getFinalFilters(SessionId) shouldBe Seq.empty
       }
     }
     "user in Find journey selects agent" must {
@@ -261,26 +243,6 @@ class UserTypeControllerISpec extends ComponentSpecBase with BeforeAndAfterEach 
         getFinalFilters(SessionId) shouldBe Seq(Individual)
       }
     }
-    "user without Journey (Check feature off) selects agent working on behalf of client" must {
-      s"return $SEE_OTHER, reset user filters and save page answer" in {
-        await(userFiltersRepository.set(testUserFilters(UserAnswers()
-          .set(UserTypePage, SoleTraderOrLandlord).get
-          .set(BusinessIncomePage, Seq(SoleTrader, UkProperty)).get
-        )))
-        getAllPageData(SessionId).size shouldBe 2 //verify existing user answers
-
-        val res = SoftwareChoicesFrontend.submitUserType(Some(Agent))
-
-        res should have(
-          httpStatus(SEE_OTHER),
-          redirectURI(routes.SearchSoftwareController.show().url)
-        )
-        getPageData(SessionId, UserTypePage.toString).size shouldBe 1
-        getAllPageData(SessionId).size shouldBe 1
-        getFinalFilters(SessionId) shouldBe Seq(VendorFilter.Agent)
-
-      }
-    }
 
     "user in edit mode selects agent then changes to sole trader or landlord" must {
         s"return $SEE_OTHER and save page answer" in {
@@ -305,6 +267,10 @@ class UserTypeControllerISpec extends ComponentSpecBase with BeforeAndAfterEach 
 
     "return BAD_REQUEST" when {
       "no answer is given" in {
+        await(userFiltersRepository.set(testUserFilters(UserAnswers()
+          .set(HowYouFindSoftwarePage, Check).get
+        )))
+
         val res = SoftwareChoicesFrontend.submitUserType(None)
 
         res should have(
