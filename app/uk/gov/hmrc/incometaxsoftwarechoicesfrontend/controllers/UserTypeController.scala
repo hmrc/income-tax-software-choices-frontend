@@ -19,15 +19,12 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 import play.api.mvc.*
 import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.CheckJourney
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{RequireUserDataRefiner, SessionIdentifierAction}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.UserTypeForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.UserTypeForm.userTypeForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.{Check, Find, ViewAll}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.{FutureVendor, Spreadsheet, Unrecognised}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.{Agent, SoleTraderOrLandlord}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.requests.SessionRequest
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{JourneyType, SoftwareProduct, UserAnswers, UserType}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.{EnterSoftwareNamePage, HowYouFindSoftwarePage, UserTypePage}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
@@ -45,9 +42,9 @@ class UserTypeController @Inject()(view: UserTypeView,
                                    requireData: RequireUserDataRefiner,
                                    val appConfig: AppConfig)
                                   (implicit ec: ExecutionContext,
-                                   mcc: MessagesControllerComponents) extends BaseFrontendController with FeatureSwitching {
+                                   mcc: MessagesControllerComponents) extends BaseFrontendController {
 
-  def show(editMode: Boolean = false): Action[AnyContent] = identifyAndRequireData.async { request =>
+  def show(editMode: Boolean = false): Action[AnyContent] = (identify andThen requireData).async { request =>
     given Request[AnyContent] = request
     for {
       userFilters <- userFiltersRepository.get(request.sessionId)
@@ -64,7 +61,7 @@ class UserTypeController @Inject()(view: UserTypeView,
     }
   }
 
-  def submit(editMode: Boolean = false): Action[AnyContent] = identifyAndRequireData.async { request =>
+  def submit(editMode: Boolean = false): Action[AnyContent] = (identify andThen requireData).async { request =>
     given Request[AnyContent] = request
 
     val journey = pageAnswersService.getPageAnswers(request.sessionId, HowYouFindSoftwarePage)
@@ -122,11 +119,6 @@ class UserTypeController @Inject()(view: UserTypeView,
           }
       }
     )
-  }
-
-  private def identifyAndRequireData: ActionBuilder[SessionRequest, AnyContent] = {
-    if (isEnabled(CheckJourney)) identify andThen requireData
-    else identify
   }
 
   private def backUrl(answers: Option[UserAnswers], editMode: Boolean = false): String = {
