@@ -24,7 +24,6 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.UserTypeForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.UserTypeForm.userTypeForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.{Check, Find, ViewAll}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.{FutureVendor, Spreadsheet, Unrecognised}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.{Agent, SoleTraderOrLandlord}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{JourneyType, SoftwareProduct, UserAnswers, UserType}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.{EnterSoftwareNamePage, HowYouFindSoftwarePage, UserTypePage}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
@@ -100,23 +99,8 @@ class UserTypeController @Inject()(view: UserTypeView,
               throw new InternalServerException("[UserTypeController][submit] - Could not save user type for view all journey")
             }
           }
-        case None if userType == SoleTraderOrLandlord =>
-          pageAnswersService.setPageAnswers(request.sessionId, UserTypePage, userType).map {
-            case true => Redirect(routes.BusinessIncomeController.show())
-            case false => throw new InternalServerException("[UserTypeController][submit] - Could not save sole trader or landlord user type")
-          }
-        case None if userType == Agent =>
-          for {
-            resetUserAnswers <- pageAnswersService.resetUserAnswers(request.sessionId)
-            setPageAnswers <- pageAnswersService.setPageAnswers(request.sessionId, UserTypePage, userType)
-            saveFiltersFromAnswers <- pageAnswersService.saveFiltersFromAnswers(request.sessionId)
-          } yield {
-            if (resetUserAnswers && setPageAnswers && saveFiltersFromAnswers.nonEmpty) {
-              Redirect(routes.SearchSoftwareController.show())
-            } else {
-              throw new InternalServerException("[UserTypeController][submit] - Could not save agent user type")
-            }
-          }
+        case _ =>
+          throw new InternalServerException("[UserTypeController][submit] - No journey type")
       }
     )
   }
@@ -127,7 +111,6 @@ class UserTypeController @Inject()(view: UserTypeView,
 
     (editMode, journeyOpt) match {
       case (true, _) => routes.CheckYourAnswersController.show().url
-      case (false, Some(Find) | Some(ViewAll)) => routes.HowYouFindSoftwareController.show().url
       case (false, Some(Check)) =>
         productType match {
           case Some(Spreadsheet) => routes.NeedAdditionalSoftwareController.show().url
@@ -135,7 +118,7 @@ class UserTypeController @Inject()(view: UserTypeView,
           case Some(Unrecognised) => routes.NoSoftwareListedController.show().url
           case _ => routes.EnterSoftwareNameController.show().url
         }
-      case (_, None) => appConfig.guidance
+      case (false, _) => routes.HowYouFindSoftwareController.show().url
     }
   }
 

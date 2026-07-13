@@ -172,39 +172,8 @@ class UserTypeControllerSpec extends ControllerBaseSpec with MockSessionIdentifi
         redirectLocation(result) shouldBe Some(routes.SearchSoftwareController.show().url)
       }
     }
-    "user without journey (Check Feature Off) selects As an agent" must {
-      "redirect to the Search Software page" when {
-        "user filters are reset, page answer is set and saved to filters" in new Setup {
-          when(mockPageAnswersService.resetUserAnswers(eqTo(sessionId)))
-            .thenReturn(Future.successful(true))
-          when(mockPageAnswersService.setPageAnswers(eqTo(sessionId), eqTo(UserTypePage), eqTo(UserType.Agent))(any()))
-            .thenReturn(Future.successful(true))
-          when(mockPageAnswersService.saveFiltersFromAnswers(sessionId))
-            .thenReturn(Future(Seq(VendorFilter.Agent)))
-          when(mockPageAnswersService.getPageAnswers(eqTo(sessionId), eqTo(HowYouFindSoftwarePage))(any()))
-            .thenReturn(Future.successful(None))
-
-          val result: Future[Result] = controller(journey = None).submit()(fakeRequest.post(UserTypeForm.userTypeForm, UserType.Agent))
-
-          status(result) shouldBe SEE_OTHER
-          redirectLocation(result) shouldBe Some(routes.SearchSoftwareController.show().url)
-        }
-      }
-    }
-    "user without journey (Check Feature Off) selects Sole Trader or Landlord" must {
-      "save page answers and redirect to Business Income page" in new Setup {
-        when(mockPageAnswersService.setPageAnswers(eqTo(sessionId), eqTo(UserTypePage), eqTo(SoleTraderOrLandlord))(any()))
-          .thenReturn(Future.successful(true))
-        when(mockPageAnswersService.getPageAnswers(eqTo(sessionId), eqTo(HowYouFindSoftwarePage))(any()))
-          .thenReturn(Future.successful(None))
-         val result: Future[Result] = controller(journey = None).submit()(fakeRequest.post(UserTypeForm.userTypeForm, SoleTraderOrLandlord))
-
-        status(result) shouldBe SEE_OTHER
-        redirectLocation(result) shouldBe Some(routes.BusinessIncomeController.show().url)
-      }
-    }
     "throw an exception" when {
-      "user without journey (Check Feature Off) failed to reset user filters" in new Setup {
+      "user does not have a journey" in new Setup {
         when(mockPageAnswersService.resetUserAnswers(eqTo(sessionId)))
           .thenReturn(Future.successful(false))
         when(mockPageAnswersService.setPageAnswers(eqTo(sessionId), eqTo(UserTypePage), eqTo(UserType.Agent))(any()))
@@ -216,52 +185,9 @@ class UserTypeControllerSpec extends ControllerBaseSpec with MockSessionIdentifi
 
         val result: Future[Result] = controller(journey = None).submit()(fakeRequest.post(UserTypeForm.userTypeForm, UserType.Agent))
 
-        intercept[InternalServerException](await(result)).message shouldBe "[UserTypeController][submit] - Could not save agent user type"
+        intercept[InternalServerException](await(result)).message shouldBe "[UserTypeController][submit] - No journey type"
       }
-      "user without journey (Check Feature Off) failed to set page answers Agent" in new Setup {
-        when(mockPageAnswersService.resetUserAnswers(eqTo(sessionId)))
-          .thenReturn(Future.successful(true))
-        when(mockPageAnswersService.setPageAnswers(eqTo(sessionId), eqTo(UserTypePage), eqTo(UserType.Agent))(any()))
-          .thenReturn(Future.successful(false))
-        when(mockPageAnswersService.saveFiltersFromAnswers(eqTo(sessionId)))
-          .thenReturn(Future.successful(Seq(VendorFilter.Agent)))
-        when(mockPageAnswersService.getPageAnswers(eqTo(sessionId), eqTo(HowYouFindSoftwarePage))(any()))
-          .thenReturn(Future.successful(None))
-
-        val result: Future[Result] = controller(journey = None).submit()(fakeRequest.post(UserTypeForm.userTypeForm, UserType.Agent))
-
-        intercept[InternalServerException](await(result)).message shouldBe "[UserTypeController][submit] - Could not save agent user type"
-      }
-      "user without journey (Check Feature Off) failed to set page answers Individual" in new Setup {
-        when(mockPageAnswersService.resetUserAnswers(eqTo(sessionId)))
-          .thenReturn(Future.successful(true))
-        when(mockPageAnswersService.setPageAnswers(eqTo(sessionId), eqTo(UserTypePage), eqTo(UserType.SoleTraderOrLandlord))(any()))
-          .thenReturn(Future.successful(false))
-        when(mockPageAnswersService.saveFiltersFromAnswers(eqTo(sessionId)))
-          .thenReturn(Future.successful(Seq(Individual)))
-        when(mockPageAnswersService.getPageAnswers(eqTo(sessionId), eqTo(HowYouFindSoftwarePage))(any()))
-          .thenReturn(Future.successful(None))
-
-        val result: Future[Result] = controller(journey = None).submit()(fakeRequest.post(UserTypeForm.userTypeForm, UserType.SoleTraderOrLandlord))
-
-        intercept[InternalServerException](await(result)).message shouldBe "[UserTypeController][submit] - Could not save sole trader or landlord user type"
-      }
-
-      "user without journey (Check Feature Off) failed to save answers to Filters" in new Setup {
-        when(mockPageAnswersService.resetUserAnswers(eqTo(sessionId)))
-          .thenReturn(Future.successful(true))
-        when(mockPageAnswersService.setPageAnswers(eqTo(sessionId), eqTo(UserTypePage), eqTo(UserType.Agent))(any()))
-          .thenReturn(Future.successful(true))
-        when(mockPageAnswersService.saveFiltersFromAnswers(eqTo(sessionId)))
-          .thenReturn(Future.successful(Seq.empty))
-        when(mockPageAnswersService.getPageAnswers(eqTo(sessionId), eqTo(HowYouFindSoftwarePage))(any()))
-          .thenReturn(Future.successful(None))
-
-        val result: Future[Result] = controller(journey = None).submit()(fakeRequest.post(UserTypeForm.userTypeForm, UserType.Agent))
-
-        intercept[InternalServerException](await(result)).message shouldBe "[UserTypeController][submit] - Could not save agent user type"
-      }
-
+      
       "user in Check journey failed to save answers to Filters" in new Setup {
         when(mockPageAnswersService.setPageAnswers(eqTo(sessionId), eqTo(UserTypePage), eqTo(UserType.Agent))(any()))
           .thenReturn(Future.successful(false))
