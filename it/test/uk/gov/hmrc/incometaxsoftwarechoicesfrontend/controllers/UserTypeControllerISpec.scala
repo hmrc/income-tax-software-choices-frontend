@@ -19,7 +19,6 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 import org.scalatest.BeforeAndAfterEach
 import play.api.http.Status.{BAD_REQUEST, OK, SEE_OTHER}
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.CheckJourney
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.SessionId
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, DatabaseHelper}
@@ -37,14 +36,12 @@ class UserTypeControllerISpec extends ComponentSpecBase with BeforeAndAfterEach 
 
   override def beforeEach(): Unit = {
     await(userFiltersRepository.collection.drop().toFuture())
-    disable(CheckJourney)
     super.beforeEach()
   }
 
   "GET /how-will-you-use-it" when {
     "there is nothing saved in the database for this user" should {
-      "redirect to the index page when Check feature switch is enabled" in {
-        enable(CheckJourney)
+      "redirect to the index page" in {
         val res = SoftwareChoicesFrontend.getUserType()
 
         res should have(
@@ -261,6 +258,7 @@ class UserTypeControllerISpec extends ComponentSpecBase with BeforeAndAfterEach 
         getFinalFilters(SessionId) shouldBe Seq(Individual)
       }
     }
+    //TODO - Delete or update??
     "user without Journey (Check feature off) selects agent working on behalf of client" must {
       s"return $SEE_OTHER, reset user filters and save page answer" in {
         await(userFiltersRepository.set(testUserFilters(UserAnswers()
