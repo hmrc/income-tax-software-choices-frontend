@@ -24,9 +24,8 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.requests.SessionDataR
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareVendorModel, SoftwareVendors, VendorFilter, VendorFilterGroups}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.viewmodels.VendorSuitabilityViewModel
-
+import java.security.MessageDigest
 import javax.inject.{Inject, Singleton}
-import scala.util.Random.shuffle
 
 @Singleton
 class SoftwareChoicesService @Inject()(
@@ -78,21 +77,18 @@ class SoftwareChoicesService @Inject()(
     val vendors = softwareVendors
     val selectedFilters = finalFilters.filterNot(_.eq(TaxReturn)).filterNot(_.eq(QuarterlyUpdates)).filterNot(_.eq(FullyReady))
 
-    val orderedMatchingVendors = if (request.userFilters.randomVendorOrder.isEmpty) {
-      val randomisedVendors = vendors.copy(vendors = shuffle(vendors.vendors))
-      userFiltersRepository.set(request.userFilters.copy(finalFilters = finalFilters, randomVendorOrder = randomisedVendors.vendors.map(_.productId).toList))
-
-      SoftwareChoicesService.matchFilter(selectedFilters)(randomisedVendors.vendors)
-    } else {
-      val matchingVendors = SoftwareChoicesService.matchFilter(selectedFilters)(vendors.vendors)
-      val vendorMap = matchingVendors.map(vendor => vendor.productId -> vendor).toMap
-
-      request.userFilters.randomVendorOrder.flatMap(vendorMap.get)
-    }
-
+    val randomisedVendors = vendors.copy(vendors = randomShuffle(vendors.vendors, request.sessionId))
+    val orderedMatchingVendors = SoftwareChoicesService.matchFilter(selectedFilters)(randomisedVendors.vendors)
     vendors.copy(vendors = orderedMatchingVendors)
   }
 
+  private def randomShuffle(vendors: Seq[SoftwareVendorModel], sessionId: String): Seq[SoftwareVendorModel] = {
+    def generateHash(inputString: String): String = {
+      val messageDigest = MessageDigest.getInstance("MD5")
+      messageDigest.digest(inputString.getBytes("UTF-8")).map("%02x".format(_)).mkString
+    }
+    vendors.sortBy(vendor => generateHash(s"$sessionId-${vendor.productId}"))
+  }
 }
 
 object SoftwareChoicesService {

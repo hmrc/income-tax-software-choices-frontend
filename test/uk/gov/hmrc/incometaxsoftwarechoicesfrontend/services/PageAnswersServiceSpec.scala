@@ -65,8 +65,8 @@ class PageAnswersServiceSpec extends PlaySpec with BeforeAndAfterEach {
   private val userFilterWithVendorFilterAnswerForPage = UserFilters(sessionId, Some(vendorFilterUserAnswers), Seq.empty)
   private val userFilterWithMixedAnswersForPage = UserFilters(sessionId, Some(mixedUserAnswers), Seq.empty)
   private val userFilterWithFullAnswersForPage = UserFilters(sessionId, Some(fullUserAnswers), Seq.empty)
-  private val userFilterWithRandomOrder = UserFilters(sessionId, Some(fullUserAnswers), Seq.empty, List(3,1,2), testTime)
-  private val resetUserFilterWithRandomOrder = UserFilters(sessionId, Some(UserAnswers()), Seq.empty, List(3,1,2), testTime)
+  private val userFilterWithRandomOrder = UserFilters(sessionId, Some(fullUserAnswers), Seq.empty, testTime)
+  private val resetUserFilterWithRandomOrder = UserFilters(sessionId, Some(UserAnswers()), Seq.empty, testTime)
 
   class Setup {
     implicit val ec: ExecutionContext = scala.concurrent.ExecutionContext.global
@@ -217,7 +217,7 @@ class PageAnswersServiceSpec extends PlaySpec with BeforeAndAfterEach {
         "the userFilters do not exist" in new Setup {
           when(mockUserFiltersRepository.get(eqTo(sessionId)))
             .thenReturn(Future.successful(None))
-          when(mockUserFiltersRepository.set(UserFilters(sessionId, Some(UserAnswers()), Seq.empty, List.empty, any())))
+          when(mockUserFiltersRepository.set(UserFilters(sessionId, Some(UserAnswers()), Seq.empty, any())))
             .thenReturn(Future.successful(true))
 
           await(service.resetUserAnswers(sessionId)) mustBe true

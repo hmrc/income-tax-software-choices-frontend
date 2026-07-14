@@ -39,7 +39,6 @@ class ProductDetailsControllerISpec extends ComponentSpecBase with BeforeAndAfte
       SessionId,
       answers,
       finalFilters = filters,
-      randomVendorOrder = (for (x <- 100 to 200) yield x).toList, // range of productId in local test data
       lastUpdated = testTime
     )
 
