@@ -40,7 +40,6 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
       SessionId,
       answers,
       finalFilters = filters,
-      randomVendorOrder = (for (x <- 100 to 200) yield x).toList, // range of productId in local test data
       lastUpdated = testTime
     )
 
@@ -387,14 +386,34 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
       }
     }
 
+    "add preference filters for Agent including User Type" in {
+      val userAnswers = UserAnswers()
+        .set(UserTypePage, Agent).get
+
+      val initialFilter = Seq()
+      setupAnswers(SessionId, Some(userAnswers), initialFilter)
+
+      val response = SoftwareChoicesFrontend.submitSoftwareSearch(FiltersFormModel(Seq(VendorFilter.Agent, FreeVersion)))
+
+      response should have(
+        httpStatus(OK),
+        elementExists("#agent-filter", true),
+        checkboxSelected("agent-filter", Some("agent"))
+      )
+
+      await(userFiltersRepository.get(SessionId)) match {
+        case Some(uf) => uf.finalFilters shouldBe Seq(VendorFilter.Agent, FreeVersion)
+        case None => fail("No user filters found")
+      }
+    }
+
     "add preference filters for Individual including User Type for Unguided journey" in {
       val userAnswers = UserAnswers()
         .set(HowYouFindSoftwarePage, ViewAll).get
         .set(UserTypePage, Agent).get
 
       val initialFilter = Seq()
-      val randonVendorOrder = (for (x <- 100 to 200) yield x).toList
-      setupAnswers(SessionId, Some(userAnswers), initialFilter, randonVendorOrder)
+      setupAnswers(SessionId, Some(userAnswers), initialFilter)
 
       val response = SoftwareChoicesFrontend.submitSoftwareSearch(FiltersFormModel(Seq(VendorFilter.Agent, FreeVersion)))
 

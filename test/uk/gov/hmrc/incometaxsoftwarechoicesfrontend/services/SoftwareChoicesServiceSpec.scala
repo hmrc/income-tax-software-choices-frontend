@@ -74,6 +74,9 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
 
   override def beforeEach(): Unit = {
     super.beforeEach()
+    when(mockRequest.sessionId).thenReturn(
+      "test-session-id"
+    )
     when(mockDataService.getSoftwareVendors()).thenReturn(
       allVendors
     )
@@ -81,8 +84,7 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
       UserFilters(
         id = "test-id",
         answers = None,
-        finalFilters = Seq.empty,
-        randomVendorOrder = (for (x <- 1 to 20) yield x).toList // doesn't want to random for tests!
+        finalFilters = Seq.empty
       )
     )
   }
@@ -113,35 +115,79 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
       val result = service.getAllInOneVendors(Seq(Agent, FreeVersion))
       result.vendors.size mustBe 0
     }
+    
+    "randomised in same order of vendors when using same filters" in {
+      val vendorsWthFilters = service.getAllInOneVendors(Seq(Individual, QuarterlyUpdates, TaxReturn))
+      val vendorsWthSameFilters = service.getAllInOneVendors(Seq(Individual, QuarterlyUpdates, TaxReturn))
 
-    "randomise the order of vendors when no previous order set" in {
-      val result1 = service.getAllInOneVendors(Seq(Individual, QuarterlyUpdates, TaxReturn))
-      result1.vendors.map(_.productId) mustBe List(1,2,3,4,5,6,7)
+      vendorsWthSameFilters.vendors.map(_.productId) == vendorsWthFilters.vendors.map(_.productId) mustBe true
+      vendorsWthSameFilters.vendors.map(_.productId).toSet mustBe vendorsWthFilters.vendors.map(_.productId).toSet
+    }
 
-      when(mockRequest.userFilters).thenReturn(
-        UserFilters(
-          id = "test-id",
-          answers = None,
-          finalFilters = Seq.empty,
-          randomVendorOrder = List.empty // should generate a new random order
+    "get new randomised order when more vendors are added" in {
+      val vendorsBeforeUpdate = service.getAllInOneVendors(Seq(Individual, QuarterlyUpdates, TaxReturn))
+
+      val updatedVendors = allVendors.vendors ++ Seq(
+        intentVendor(31, "Vendor 31", Map(Individual->Available, QuarterlyUpdates->Available, TaxReturn->Available, UkProperty->Available, StudentLoans->Available, StandardUpdatePeriods->Available, Visual->Available)),
+        intentVendor(32, "Vendor 32", Map(Individual->Available, QuarterlyUpdates->Available, TaxReturn->Available, UkProperty->Available, StudentLoans->Available, StandardUpdatePeriods->Available, Visual->Available)),
+      )
+      when(mockDataService.getSoftwareVendors()).thenReturn(
+        SoftwareVendors(
+          lastUpdated = LocalDate.now,
+          vendors = updatedVendors
         )
       )
 
-      val result2 = service.getAllInOneVendors(Seq(Individual, QuarterlyUpdates, TaxReturn))
-      result2.vendors.map(_.productId) == result1.vendors.map(_.productId) mustBe false
-
-      result2.vendors.map(_.productId).toSet mustBe result1.vendors.map(_.productId).toSet
+      val vendorsAfterUpdate = service.getAllInOneVendors(Seq(Individual, QuarterlyUpdates, TaxReturn))
+      vendorsAfterUpdate.vendors.size > vendorsBeforeUpdate.vendors.size mustBe true
+      vendorsAfterUpdate.vendors.map(_.productId).toSet == vendorsBeforeUpdate.vendors.map(_.productId).toSet mustBe false
+      vendorsAfterUpdate.vendors.map(_.productId).contains(31) mustBe true
+      vendorsAfterUpdate.vendors.map(_.productId).contains(32) mustBe true
     }
 
     "retain randomised order when filters change" in {
-      val result1 = service.getAllInOneVendors(Seq(Individual, QuarterlyUpdates, TaxReturn))
-      result1.vendors.map(_.productId) mustBe List(1,2,3,4,5,6,7)
+      val vendorsWithFilters = service.getAllInOneVendors(Seq(Individual, QuarterlyUpdates, TaxReturn))
+      vendorsWithFilters.vendors.map(_.productId).toSet mustBe Set(1,2,3,4,5,6,7)
 
-      val result5 = service.getAllInOneVendors(Seq(Individual, QuarterlyUpdates, TaxReturn, UkProperty))
-      result5.vendors.map(_.productId) mustBe List(3,4)
+      val vendorsDiffFilters = service.getAllInOneVendors(Seq(Individual, QuarterlyUpdates, TaxReturn, UkProperty))
+      vendorsDiffFilters.vendors.map(_.productId).toSet mustBe Set(3,4)
 
-      val result3 = service.getAllInOneVendors(Seq(Individual, QuarterlyUpdates, TaxReturn))
-      result3.vendors.map(_.productId) mustBe List(1,2,3,4,5,6,7)
+      val vendorsOriginalFilters = service.getAllInOneVendors(Seq(Individual, QuarterlyUpdates, TaxReturn))
+
+      vendorsOriginalFilters.vendors.map(_.productId) mustBe vendorsWithFilters.vendors.map(_.productId)
+    }
+    
+    "randomised to different order of vendors when session is different" in {
+      val vendorsInSession1 = service.getAllInOneVendors(Seq(Individual, QuarterlyUpdates, TaxReturn))
+      vendorsInSession1.vendors.map(_.productId) mustBe List(2,4,6,3,1,5,7)
+
+      when(mockRequest.sessionId).thenReturn(
+        "test-session-id-2"
+      )
+
+      val vendorsInSession2 = service.getAllInOneVendors(Seq(Individual, QuarterlyUpdates, TaxReturn))
+      vendorsInSession2.vendors.map(_.productId) mustBe List(1,3,4,2,7,5,6)
+      vendorsInSession2.vendors.map(_.productId) == vendorsInSession1.vendors.map(_.productId) mustBe false
+      vendorsInSession2.vendors.map(_.productId).toSet mustBe vendorsInSession1.vendors.map(_.productId).toSet
+    }
+
+    "return randomised order when vendors have same name" in {
+      val updatedVendors = Seq(
+        intentVendor(31, "Vendor 31", Map(Individual -> Available, QuarterlyUpdates -> Available, TaxReturn -> Available, UkProperty -> Available, StudentLoans -> Available, StandardUpdatePeriods -> Available, Visual -> Available)),
+        intentVendor(32, "Vendor 31", Map(Individual -> Available, QuarterlyUpdates -> Available, TaxReturn -> Available, UkProperty -> Available, StudentLoans -> Available, StandardUpdatePeriods -> Available, Visual -> Available)),
+        intentVendor(33, "Vendor 31", Map(Individual -> Available, QuarterlyUpdates -> Available, TaxReturn -> Available, UkProperty -> Available, StudentLoans -> Available, StandardUpdatePeriods -> Available, Visual -> Available)),
+        intentVendor(34, "Vendor 31", Map(Individual -> Available, QuarterlyUpdates -> Available, TaxReturn -> Available, UkProperty -> Available, StudentLoans -> Available, StandardUpdatePeriods -> Available, Visual -> Available)),
+      )
+      when(mockDataService.getSoftwareVendors()).thenReturn(
+        SoftwareVendors(
+          lastUpdated = LocalDate.now,
+          vendors = updatedVendors
+        )
+      )
+
+      val result = service.getAllInOneVendors(Seq(Individual, QuarterlyUpdates, TaxReturn))
+      result.vendors.size mustBe 4
+      result.vendors.map(_.productId) mustBe List(34, 32, 33, 31)
     }
   }
 
@@ -192,7 +238,7 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
           )
         )
       )
-      val result = service.getVendorsWithIntent(Seq(Individual, TaxReturn, UkProperty, StudentLoans, StandardUpdatePeriods, Visual))
+      val result = service.getVendorsWithIntent(Seq(Individual, TaxReturn, UkProperty, StudentLoans, StandardUpdatePeriods, Visual)).sortBy(_.vendor.productId)
       result.size mustBe 3
       result(0).vendor.name mustBe "Vendor 01"
       result(0).quarterlyReady mustBe Some(true)
