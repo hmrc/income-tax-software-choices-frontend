@@ -91,10 +91,8 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
       .getFiltersFromAnswers(request.userFilters.answers)
 
     // Remove user type filters for unguided journey in case they are overwritten by preferences
-    // Also remove Agent filter for existing (pre-check feature) to maintain existing functionality
     val newFiltersFromAnswers = request.journey match {
       case Some(ViewAll) => originalFiltersFromAnswers.filterNot(Set(VendorFilter.Agent, VendorFilter.Individual).contains(_))
-      case None => originalFiltersFromAnswers.filterNot(_ == VendorFilter.Agent)
       case _ => originalFiltersFromAnswers
     }
 

@@ -105,7 +105,7 @@ class UserTypeController @Inject()(view: UserTypeView,
     )
   }
 
-  private def backUrl(answers: Option[UserAnswers], editMode: Boolean = false): String = {
+  private def backUrl(answers: Option[UserAnswers], editMode: Boolean): String = {
     val journeyOpt = pageAnswersService.getPageAnswers(answers, HowYouFindSoftwarePage)
     val productType = pageAnswersService.getPageAnswers(answers, EnterSoftwareNamePage).map(_.softwareType)
 
