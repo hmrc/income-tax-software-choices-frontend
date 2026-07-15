@@ -16,19 +16,21 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
+import org.jsoup.Jsoup
 import org.scalatest.BeforeAndAfterEach
-import play.api.http.Status.OK
+import play.api.http.Status.{OK, SEE_OTHER}
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.SessionId
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, DatabaseHelper}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.AccountingPeriod.SixthAprilToFifthApril
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.*
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.SoleTraderOrLandlord
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.Recognised
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.{Agent, SoleTraderOrLandlord}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{VendorFilter, *}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.*
 
 import java.time.Instant
-import org.jsoup.Jsoup
 
 class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfterEach with DatabaseHelper {
   private val testTime = Instant.now()
