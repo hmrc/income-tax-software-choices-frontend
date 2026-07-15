@@ -17,19 +17,15 @@
 @import uk.gov.hmrc.govukfrontend.views.html.components.Text
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes.IndexController
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTemplate
-@import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcNewTabLinkHelper
-@import uk.gov.hmrc.hmrcfrontend.views.viewmodels.newtablinkhelper.NewTabLinkHelper
 
-@this(mainTemplate: MainTemplate, hmrcNewTabLinkHelper: HmrcNewTabLinkHelper)
+@this(mainTemplate: MainTemplate)
 
 @()(implicit request: RequestHeader, messages: Messages)
 
 @mainTemplate(title = messages("error.inconsistent.heading")) {
-    <h1 class="govuk-heading-xl">@{messages("error.inconsistent.heading")}</h1>
-    <p class="govuk-body">@{messages("error.inconsistent.p1")}</p>
-    <p class="govuk-body">@{messages("error.inconsistent.p2")}
-        <a href= @{IndexController.index.url} class="govuk-link">
-            @{messages("error.inconsistent.link-text")}
-        </a>
-    </p>
+<h1 class="govuk-heading-xl">@{messages("error.inconsistent.heading")}</h1>
+<p class="govuk-body">@{messages("error.inconsistent.p1")}</p>
+<p class="govuk-body">
+    @Html(messages("error.inconsistent.p2", s"""<a class="govuk-link govuk-!-display-none-print" href=${IndexController.index.url}>${messages("error.inconsistent.link-text")}</a>"""))
+</p>
 }

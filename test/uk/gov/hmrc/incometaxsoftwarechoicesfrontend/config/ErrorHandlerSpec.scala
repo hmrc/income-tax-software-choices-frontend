@@ -52,7 +52,7 @@ class ErrorHandlerSpec extends AnyWordSpec
   
   "inconsistentDataTemplate" should {
     "render HTML and have content" in {
-      val html = await(handler.inconsistentDataTemplate(fakeRequest))
+      val html = await(handler.inconsistentDataError(fakeRequest))
       html.contentType shouldBe "text/html"
       html.body.contains("Sorry, we could not process your request") shouldBe true
       html.body.contains("The information needed to display this page is missing or invalid.") shouldBe true
@@ -60,8 +60,13 @@ class ErrorHandlerSpec extends AnyWordSpec
   }
   
   "resolveError" should {
-    "handle unknown exceptions as 500s, with no-cache set" in {
+    "handle server error exceptions as 500s, with no-cache set" in {
       val header = await(handler.resolveError(fakeRequest, new Exception("dummy"))).header
+      header.headers should contain(CACHE_CONTROL -> "no-cache")
+      header.status should be(INTERNAL_SERVER_ERROR)
+    }
+    "handle inconsistent data exceptions as 500s, with no-cache set" in {
+      val header = await(handler.resolveError(fakeRequest, new SCInconsistentDataException("dummy"))).header
       header.headers should contain(CACHE_CONTROL -> "no-cache")
       header.status should be(INTERNAL_SERVER_ERROR)
     }

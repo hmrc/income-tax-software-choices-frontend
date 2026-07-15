@@ -24,7 +24,8 @@ import play.api.mvc.Results.{InternalServerError, NotFound}
 import play.api.mvc.{RequestHeader, Result}
 import play.twirl.api.Html
 import uk.gov.hmrc.http.{HttpException, NotFoundException}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.{ErrorTemplate, InconsistentDataErrorTemplate}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.InconsistentDataView
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.ErrorTemplate
 import uk.gov.hmrc.play.bootstrap.frontend.http.FrontendErrorHandler
 
 import javax.inject.{Inject, Singleton}
@@ -33,17 +34,23 @@ import scala.concurrent.{ExecutionContext, Future}
 @Singleton
 class ErrorHandler @Inject()(val messagesApi: MessagesApi,
                              errorTemplate: ErrorTemplate,
-                             inconsistentDataErrorTemplate: InconsistentDataErrorTemplate)
+                             inconsistentDataView: InconsistentDataView)
                             (implicit val ec: ExecutionContext) extends FrontendErrorHandler with Logging {
 
   def standardErrorTemplate(pageTitle: String, heading: String, message: String)(implicit request: RequestHeader): Future[Html] = {
     Future.successful(errorTemplate(pageTitle, heading, message))
   }
 
+  def inconsistentDataError(implicit request: RequestHeader): Future[Html] =
+    Future.successful(
+      inconsistentDataView()
+    )
+
   override def resolveError(rh: RequestHeader, ex: Throwable): Future[Result] = {
     ex match {
       case _: SCInconsistentDataException =>
-        inconsistentDataTemplate(rh)
+        logger.error(s"[ErrorHandler][resolveError] Inconsistent Data Error, (${rh.method})(${rh.uri})" + ex.getMessage, ex)
+        inconsistentDataError(rh)
           .map(html => InternalServerError(html).withHeaders(CACHE_CONTROL -> "no-cache"))
       case _: NotFoundException =>
         notFoundTemplate(rh) map { html =>
@@ -54,12 +61,6 @@ class ErrorHandler @Inject()(val messagesApi: MessagesApi,
         super.resolveError(rh, ex)
     }
   }
-  
-  def inconsistentDataTemplate(implicit request: RequestHeader): Future[Html] =
-    Future.successful(
-        inconsistentDataErrorTemplate()
-    )
-
 }
 
 class SCInconsistentDataException(message: String) extends HttpException(message, INTERNAL_SERVER_ERROR)
