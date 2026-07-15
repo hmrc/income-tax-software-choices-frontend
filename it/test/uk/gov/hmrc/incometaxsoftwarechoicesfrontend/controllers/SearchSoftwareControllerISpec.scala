@@ -17,14 +17,12 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import org.scalatest.BeforeAndAfterEach
-import play.api.http.Status.{OK, SEE_OTHER}
+import play.api.http.Status.OK
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.SessionId
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, DatabaseHelper}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.AccountingPeriod.SixthAprilToFifthApril
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.Recognised
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.*
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.{Agent, SoleTraderOrLandlord}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.SoleTraderOrLandlord
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{VendorFilter, *}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.*
@@ -81,18 +79,6 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
         response should have(
           httpStatus(OK),
           elementExists("#agent-filter", false)
-        )
-      }
-      "user type is agent in the database for this user and Check feature not enabled" in {
-        val userAnswers = UserAnswers()
-          .set(UserTypePage, Agent).get
-        setupAnswers(SessionId, Some(userAnswers), Seq(VendorFilter.Agent))
-
-        val response = SoftwareChoicesFrontend.getSoftwareResults
-
-        response should have(
-          httpStatus(OK),
-          elementExists("#agent-filter", true)
         )
       }
       "user type is individual in the database for this user in the Unguided Journey" in {
@@ -205,28 +191,6 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
         res should have(
           httpStatus(OK),
           elementExists(s""".govuk-back-link[href="${routes.CheckYourAnswersController.show().url}"]""", true)
-        )
-      }
-    }
-    "have a back link that returns to the user type page" when {
-      "the journey type is not set and the user type is agent" in {
-        val softwareProduct = SoftwareProduct(101, "Product 101", Recognised)
-        val userAnswers = UserAnswers()
-          .set(UserTypePage, Agent).get
-          .set(EnterSoftwareNamePage, softwareProduct).get
-          .set(BusinessIncomePage, Seq(SoleTrader)).get
-          .set(AdditionalIncomeSourcesPage, Seq(Employment)).get
-          .set(OtherItemsPage, Seq(StudentLoans)).get
-          .set(AccountingPeriodPage, SixthAprilToFifthApril).get
-
-        val initialFilter = Seq(VendorFilter.Agent, SoleTrader, Employment, StudentLoans, StandardUpdatePeriods)
-        await(userFiltersRepository.set(testUserFilters(Some(userAnswers), initialFilter)))
-
-        val res = SoftwareChoicesFrontend.getSoftwareResults
-
-        res should have(
-          httpStatus(OK),
-          elementExists(s""".govuk-back-link[href="${routes.UserTypeController.show().url}"]""", true)
         )
       }
     }
@@ -424,6 +388,7 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
 
     "add preference filters for Agent but not User Type" in {
       val userAnswers = UserAnswers()
+        .set(HowYouFindSoftwarePage, ViewAll).get
         .set(UserTypePage, Agent).get
 
       await(userFiltersRepository.set(testUserFilters(Some(userAnswers), Seq(VendorFilter.Agent))))
@@ -465,6 +430,7 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
 
     "add preference filters for Agent including User Type" in {
       val userAnswers = UserAnswers()
+        .set(HowYouFindSoftwarePage, ViewAll).get
         .set(UserTypePage, Agent).get
 
       val initialFilter = Seq()
