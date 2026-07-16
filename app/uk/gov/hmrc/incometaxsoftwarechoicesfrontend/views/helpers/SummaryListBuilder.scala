@@ -19,7 +19,7 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.helpers
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.*
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.*
-import uk.gov.hmrc.http.InternalServerException
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.SCInconsistentDataException
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.{Check, Find}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.{FutureVendor, Recognised, Spreadsheet}
@@ -28,7 +28,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.*
 
 trait SummaryListBuilder {
   def buildSummaryList(userAnswersOpt: Option[UserAnswers])(implicit messages: Messages): SummaryList = {
-    val userAnswers = userAnswersOpt.getOrElse(throw new InternalServerException("[SummaryListBuilder][buildSummaryList] - User answers is empty"))
+    val userAnswers = userAnswersOpt.getOrElse(throw new SCInconsistentDataException("[SummaryListBuilder][buildSummaryList] - User answers is empty"))
 
     val softwareNameRow = userAnswers.get(HowYouFindSoftwarePage) match {
       case Some(Check) => Seq(softwareNameSummaryListRow(userAnswers))
@@ -59,7 +59,7 @@ trait SummaryListBuilder {
           case Recognised | FutureVendor | Spreadsheet => softwareProduct.name
           case _ => messages("check-your-answers.software-not-listed")
         }
-      case _ => throw new InternalServerException("[SummaryListBuilder][softwareNameSummaryListRow] - software product not found")
+      case _ => throw new SCInconsistentDataException("[SummaryListBuilder][softwareNameSummaryListRow] - software product not found")
     }
 
     summaryListRow(filterList, routes.EnterSoftwareNameController.show(editMode = true).url, "software-name")
@@ -68,7 +68,7 @@ trait SummaryListBuilder {
   private def userTypeSummaryListRow(userAnswers: UserAnswers)(implicit messages: Messages): SummaryListRow = {
     val filterList: String = userAnswers.get(UserTypePage) match {
       case Some(f) => messages(s"check-your-answers.user-type.${f.key}")
-      case _ => throw new InternalServerException("[SummaryListBuilder][userTypeSummaryListRow] - User type data not found")
+      case _ => throw new SCInconsistentDataException("[SummaryListBuilder][userTypeSummaryListRow] - User type data not found")
     }
 
     summaryListRow(filterList, routes.UserTypeController.show(editMode = true).url, "user-type")
@@ -81,7 +81,7 @@ trait SummaryListBuilder {
         s"""<ul class="govuk-list">
             ${vf.map(f => s"""<li>${messages(s"business-income.${f.key}")}</li>""").mkString("")}
             </ul>"""
-      case _ => throw new InternalServerException("[SummaryListBuilder][businessIncomeSummaryListRow] - Business income sources data not found")
+      case _ => throw new SCInconsistentDataException("[SummaryListBuilder][businessIncomeSummaryListRow] - Business income sources data not found")
     }
 
     summaryListRow(filterList, routes.BusinessIncomeController.show(editMode = true).url, "business-income")
@@ -95,7 +95,7 @@ trait SummaryListBuilder {
         s"""<ul class="govuk-list">
             ${vf.map(f => s"""<li>${messages(s"additional.income.source-${f.key}")}</li>""").mkString("")}
             </ul>"""
-      case None => throw new InternalServerException("[SummaryListBuilder][otherIncomeSummaryListRow] - Other income sources data not found")
+      case None => throw new SCInconsistentDataException("[SummaryListBuilder][otherIncomeSummaryListRow] - Other income sources data not found")
     }
 
     summaryListRow(filterList, routes.AdditionalIncomeSourcesController.show(editMode = true).url, "additional-income")
@@ -109,7 +109,7 @@ trait SummaryListBuilder {
         s"""<ul class="govuk-list">
             ${vf.map(f => s"""<li>${messages(s"other-items.${f.key}")}</li>""").mkString("")}
             </ul>"""
-      case None => throw new InternalServerException("[SummaryListBuilder][otherItemsSummaryListRow] - Other items data not found")
+      case None => throw new SCInconsistentDataException("[SummaryListBuilder][otherItemsSummaryListRow] - Other items data not found")
     }
 
     summaryListRow(filterList, routes.OtherItemsController.show(editMode = true).url, "other-items")
@@ -118,7 +118,7 @@ trait SummaryListBuilder {
   private def accountingPeriodSummaryListRow(userAnswers: UserAnswers)(implicit messages: Messages): SummaryListRow = {
     val filterList: String = userAnswers.get(AccountingPeriodPage) match {
       case Some(accountingPeriod) => messages(s"accounting-period.${accountingPeriod.key}")
-      case None => throw new InternalServerException("[SummaryListBuilder][accountingPeriodSummaryListRow] - Accounting period data not found")
+      case None => throw new SCInconsistentDataException("[SummaryListBuilder][accountingPeriodSummaryListRow] - Accounting period data not found")
     }
 
     summaryListRow(filterList, routes.AccountingPeriodController.show(editMode = true).url, "accounting-period")

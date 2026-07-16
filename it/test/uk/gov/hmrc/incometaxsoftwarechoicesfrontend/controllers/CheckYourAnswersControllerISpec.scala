@@ -54,7 +54,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
         val res = SoftwareChoicesFrontend.getCheckYourAnswers
 
         res.status shouldBe INTERNAL_SERVER_ERROR
-        res.body.contains("Sorry, there is a problem with the service") shouldBe true
+        res.body.contains("Sorry, we could not process your request") shouldBe true
       }
     }
     "there is pre-filled data" should {
@@ -179,7 +179,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
 
         val res = SoftwareChoicesFrontend.getCheckYourAnswers
         res.status shouldBe INTERNAL_SERVER_ERROR
-        res.body.contains("Sorry, there is a problem with the service") shouldBe true
+        res.body.contains("Sorry, we could not process your request") shouldBe true
       }
       "In the Check journey, user type is not set" in {
         val userAnswers = UserAnswers()
@@ -192,7 +192,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
 
         val res = SoftwareChoicesFrontend.getCheckYourAnswers
         res.status shouldBe INTERNAL_SERVER_ERROR
-        res.body.contains("Sorry, there is a problem with the service") shouldBe true
+        res.body.contains("Sorry, we could not process your request") shouldBe true
       }
       "Business Incomes sources is not set" in {
         val userAnswers = UserAnswers()
@@ -203,7 +203,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
 
         val res = SoftwareChoicesFrontend.getCheckYourAnswers
         res.status shouldBe INTERNAL_SERVER_ERROR
-        res.body.contains("Sorry, there is a problem with the service") shouldBe true
+        res.body.contains("Sorry, we could not process your request") shouldBe true
       }
       "Other Incomes sources is not set" in {
         val userAnswers = UserAnswers()
@@ -214,7 +214,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
 
         val res = SoftwareChoicesFrontend.getCheckYourAnswers
         res.status shouldBe INTERNAL_SERVER_ERROR
-        res.body.contains("Sorry, there is a problem with the service") shouldBe true
+        res.body.contains("Sorry, we could not process your request") shouldBe true
       }
       "Other Items sources is not set" in {
         val userAnswers = UserAnswers()
@@ -225,7 +225,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
 
         val res = SoftwareChoicesFrontend.getCheckYourAnswers
         res.status shouldBe INTERNAL_SERVER_ERROR
-        res.body.contains("Sorry, there is a problem with the service") shouldBe true
+        res.body.contains("Sorry, we could not process your request") shouldBe true
       }
       "Accounting Period is not set" in {
         val userAnswers = UserAnswers()
@@ -236,7 +236,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
 
         val res = SoftwareChoicesFrontend.getCheckYourAnswers
         res.status shouldBe INTERNAL_SERVER_ERROR
-        res.body.contains("Sorry, there is a problem with the service") shouldBe true
+        res.body.contains("Sorry, we could not process your request") shouldBe true
       }
     }
   }
