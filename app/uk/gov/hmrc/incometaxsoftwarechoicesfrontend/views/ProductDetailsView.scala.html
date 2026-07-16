@@ -128,12 +128,14 @@
         head = Some(Seq(
             HeadCell(
                 content = Text(messages(s"product-details.$tableHeaderKey.heading"))
-            ),
+),
             HeadCell(
                 content = Text(messages("product-details.status.heading"))
             )
         )),
         firstCellIsHeader = true,
+        caption = Some(messages(s"product-details.$tableHeaderKey.heading")),
+        captionClasses = "govuk-visually-hidden"
     ))
 }
 
