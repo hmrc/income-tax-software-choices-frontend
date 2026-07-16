@@ -8,6 +8,12 @@ base.or                     = or
 base.change                 = Change
 base.find.compatible        = Find compatible software
 
+## General error
+error.inconsistent.heading  = Sorry, we could not process your request
+error.inconsistent.p1       = The information needed to display this page is missing or invalid.
+error.inconsistent.p2       = You need to {0}.
+error.inconsistent.link-text = start again
+
 ## How you find software page
 how-you-find-software.heading = How would you like to find software?
 how-you-find-software.find = Find software based on my answers to questions

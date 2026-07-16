@@ -21,8 +21,9 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import play.api.http.Status.{INTERNAL_SERVER_ERROR, OK}
 import play.api.mvc.Result
-import play.api.test.Helpers.{HTML, contentType, defaultAwaitTimeout, status}
+import play.api.test.Helpers.{HTML, await, contentType, defaultAwaitTimeout, status}
 import play.twirl.api.HtmlFormat
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.SCInconsistentDataException
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.mocks.{MockRequireUserDataRefiner, MockSessionIdentifierAction}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareProduct
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.Recognised
@@ -60,8 +61,8 @@ class NotCompatibleControllerSpec extends ControllerBaseSpec
 
       val result: Future[Result] = controller(None).show()(fakeRequest)
 
-      status(result) shouldBe INTERNAL_SERVER_ERROR
+      intercept[SCInconsistentDataException](await(result)).message shouldBe "[NotCompatibleController][show] - Could not find details of a recognised software product in answers"
+      intercept[SCInconsistentDataException](await(result)).responseCode shouldBe INTERNAL_SERVER_ERROR
     }
-    
   }
 }

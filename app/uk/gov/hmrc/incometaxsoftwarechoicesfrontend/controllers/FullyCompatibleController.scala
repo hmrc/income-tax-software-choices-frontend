@@ -17,6 +17,7 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.SCInconsistentDataException
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{RequireUserDataRefiner, SessionIdentifierAction}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.Recognised
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.FullyCompatibleView
@@ -40,7 +41,7 @@ class FullyCompatibleController @Inject()(view: FullyCompatibleView,
           chosenSoftware = product.name
         ))
       }
-      case _ => InternalServerError("[FullyCompatibleController][show] - Could not find details of a recognised software product in answers")
+      case _ => throw new SCInconsistentDataException("[FullyCompatibleController][show] - Could not find details of a recognised software product in answers")
     }
 
   }

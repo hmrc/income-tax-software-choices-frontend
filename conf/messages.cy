@@ -8,6 +8,12 @@ base.or                     = neu
 base.change                 = Newid
 base.find.compatible        = Dewch o hyd i feddalwedd sy’n cydweddu
 
+## General error
+error.inconsistent.heading  = Mae’n ddrwg gennym, nid oeddem yn gallu prosesu eich cais
+error.inconsistent.p1       = Mae’r wybodaeth sydd ei hangen i arddangos y dudalen hon ar goll neu’n annilys.
+error.inconsistent.p2       = Mae’n rhaid i chi {0}.
+error.inconsistent.link-text = ddechrau eto
+
 ## How you find software page
 how-you-find-software.heading = Sut yr hoffech chi ddod o hyd i feddalwedd?
 how-you-find-software.find = Dod o hyd i feddalwedd yn seiliedig ar fy atebion i’r cwestiynau
