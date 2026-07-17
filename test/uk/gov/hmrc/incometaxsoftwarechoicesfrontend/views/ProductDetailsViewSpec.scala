@@ -31,7 +31,7 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
 
   private val softwareVendorModelFull = softwareVendorModelBase
     .copy(name = "abc full")
-    .copy(filters = filterKeyToFilter.values.map(vf => vf -> Available).toMap) // All filters
+    .copy(filters = filterKeyToFilter.values.map(vf => vf -> Available).toMap)
 
   private val softwareVendorWithIntent = softwareVendorModelBase
     .copy(name = "abc minimal")
@@ -51,7 +51,7 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
     }
 
     def checkRow(table: Element, row: Int, field: String, status: String): Assertion = {
-      table.selectHead(s"tbody > tr:nth-child($row) > td:nth-child(1)").text shouldBe field
+      table.selectHead(s"tbody > tr:nth-child($row) > th:nth-child(1)").text shouldBe field
       table.selectHead(s"tbody > tr:nth-child($row) > td:nth-child(2)").text shouldBe status
     }
 
@@ -76,16 +76,12 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
         link.attr("target") shouldBe "_blank"
       }
       
-      "have a feature status heading" in {
-        document.selectNth("h2", 1).text shouldBe ProductDetailsPage.featureStatusHeading
-      }
-      
       "have a software features heading" in {
-        document.selectNth("h2", 2).text shouldBe ProductDetailsPage.softwareFeaturesHeading
+        document.selectNth("h2", 1).text shouldBe ProductDetailsPage.softwareFeaturesHeading
       }
 
       "have the correct quarterly updates title" in {
-        document.selectNth("h2", 3).text shouldBe ProductDetailsPage.quarterlyUpdatesHeading
+        document.selectNth("h2", 2).text shouldBe ProductDetailsPage.quarterlyUpdatesHeading
       }
 
       "have the correct quarterly updates description" in {
@@ -93,7 +89,7 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
       }
 
       "have the correct tax return title" in {
-        document.selectNth("h2", 4).text shouldBe ProductDetailsPage.taxReturnHeading
+        document.selectNth("h2", 3).text shouldBe ProductDetailsPage.taxReturnHeading
       }
 
       "display all tables with correct details" which {
@@ -156,16 +152,12 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
         link.attr("target") shouldBe "_blank"
       }
 
-      "have a feature status heading" in {
-        document.selectNth("h2", 1).text shouldBe ProductDetailsPage.featureStatusHeading
-      }
-      
       "have a software features heading" in {
-        document.selectNth("h2", 2).text shouldBe ProductDetailsPage.softwareFeaturesHeading
+        document.selectNth("h2", 1).text shouldBe ProductDetailsPage.softwareFeaturesHeading
       }
 
       "have the correct quarterly updates title" in {
-        document.selectNth("h2", 3).text shouldBe ProductDetailsPage.quarterlyUpdatesHeading
+        document.selectNth("h2", 2).text shouldBe ProductDetailsPage.quarterlyUpdatesHeading
       }
 
       "have the correct quarterly updates description" in {
@@ -173,7 +165,7 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
       }
 
       "have the correct tax return title" in {
-        document.selectNth("h2", 4).text shouldBe ProductDetailsPage.taxReturnHeading
+        document.selectNth("h2", 3).text shouldBe ProductDetailsPage.taxReturnHeading
       }
 
       "display all tables with correct details" which {
@@ -241,16 +233,12 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
         link.attr("target") shouldBe "_blank"
       }
 
-      "have a feature status heading" in {
-        document.selectNth("h2", 1).text shouldBe ProductDetailsPage.featureStatusHeading
-      }
-
       "have a software features heading" in {
-        document.selectNth("h2", 2).text shouldBe ProductDetailsPage.softwareFeaturesHeading
+        document.selectNth("h2", 1).text shouldBe ProductDetailsPage.softwareFeaturesHeading
       }
 
       "have the correct quarterly updates title" in {
-        document.selectNth("h2", 3).text shouldBe ProductDetailsPage.quarterlyUpdatesHeading
+        document.selectNth("h2", 2).text shouldBe ProductDetailsPage.quarterlyUpdatesHeading
       }
 
       "have the correct quarterly updates description" in {
@@ -258,7 +246,7 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
       }
 
       "have the correct tax return title" in {
-        document.selectNth("h2", 4).text shouldBe ProductDetailsPage.taxReturnHeading
+        document.selectNth("h2", 3).text shouldBe ProductDetailsPage.taxReturnHeading
       }
 
       "display all tables with correct details" which {
@@ -309,7 +297,7 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
       val document: Document = createAndParseDocument(softwareVendorModelFull)
 
       "have a software spec heading" in {
-        document.select("h2").get(4).text shouldBe ProductDetailsPage.softwareSpecHeading
+        document.select("h2").get(3).text shouldBe ProductDetailsPage.softwareSpecHeading
       }
 
       "render the correct rows when every spec is present" in {
