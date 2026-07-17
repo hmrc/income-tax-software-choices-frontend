@@ -18,7 +18,7 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import play.api.mvc.*
 import uk.gov.hmrc.http.InternalServerException
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.{AppConfig, SCInconsistentDataException}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{RequireUserDataRefiner, SessionIdentifierAction}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.UserTypeForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.UserTypeForm.userTypeForm
@@ -100,7 +100,7 @@ class UserTypeController @Inject()(view: UserTypeView,
             }
           }
         case _ =>
-          throw new InternalServerException("[UserTypeController][submit] - No journey type")
+          throw new SCInconsistentDataException("[UserTypeController][submit] - No journey type")
       }
     )
   }

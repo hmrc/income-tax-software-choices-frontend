@@ -23,6 +23,7 @@ import play.api.mvc.Result
 import play.api.test.Helpers.{HTML, await, contentType, defaultAwaitTimeout, redirectLocation, status}
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.http.InternalServerException
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.SCInconsistentDataException
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.mocks.{MockRequireUserDataRefiner, MockSessionIdentifierAction}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.UserTypeForm
@@ -185,7 +186,7 @@ class UserTypeControllerSpec extends ControllerBaseSpec with MockSessionIdentifi
 
         val result: Future[Result] = controller(journey = None).submit()(fakeRequest.post(UserTypeForm.userTypeForm, UserType.Agent))
 
-        intercept[InternalServerException](await(result)).message shouldBe "[UserTypeController][submit] - No journey type"
+        intercept[SCInconsistentDataException](await(result)).message shouldBe "[UserTypeController][submit] - No journey type"
       }
       
       "user in Check journey failed to save answers to Filters" in new Setup {
