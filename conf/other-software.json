@@ -13,7 +13,7 @@
     {"productId": 2003,"name": "Hnry","softwareType": "future-vendor"},
     {"productId": 2004,"name": "HSBC My Business Finances","softwareType": "future-vendor"},
     {"productId": 2005,"name": "Taxfix","softwareType": "future-vendor"},
-    {"productId": 2006,"name": "TELUS Farm Accounting (formerly Farmplan Business Cloud)","softwareType": "future-vendor"},
-    {"productId": 2007,"name": "Avona","softwareType": "future-vendor"}
+    {"productId": 2006,"name": "Avona","softwareType": "future-vendor"},
+    {"productId": 2007,"name": "SUM-IT TOTAL2","softwareType": "future-vendor"}
   ]
 }
