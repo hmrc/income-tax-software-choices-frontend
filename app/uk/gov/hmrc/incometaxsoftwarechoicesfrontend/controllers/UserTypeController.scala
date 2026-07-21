@@ -53,7 +53,7 @@ class UserTypeController @Inject()(view: UserTypeView,
       Ok(view(
         userTypeForm = UserTypeForm.userTypeForm.fill(userTypeAnswer),
         postAction = routes.UserTypeController.submit(editMode),
-        backUrl = backUrl(editMode)(request),
+        backUrl = backUrl(editMode),
         softwareName = getSoftwareName(request.product)
       ))
     }
@@ -67,7 +67,7 @@ class UserTypeController @Inject()(view: UserTypeView,
         Future.successful(BadRequest(view(
           userTypeForm = formWithErrors,
           postAction = routes.UserTypeController.submit(editMode),
-          backUrl = backUrl(editMode)(request),
+          backUrl = backUrl(editMode),
           softwareName = getSoftwareName(request.product)
         )))
       },
@@ -96,7 +96,7 @@ class UserTypeController @Inject()(view: UserTypeView,
     )
   }
 
-  private def backUrl(editMode: Boolean)(request: SessionDataRequest[_]): String = {
+  private def backUrl(editMode: Boolean)(implicit request: SessionDataRequest[_]): String =
     (editMode, request.journey) match {
       case (true, _) => routes.CheckYourAnswersController.show().url
       case (false, Some(Check)) =>
@@ -108,6 +108,5 @@ class UserTypeController @Inject()(view: UserTypeView,
         }
       case (false, _) => routes.HowYouFindSoftwareController.show().url
     }
-  }
 
 }
