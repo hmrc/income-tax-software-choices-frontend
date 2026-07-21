@@ -32,13 +32,14 @@ type-of-user.error                                                = Dewiswch a y
 ## Accounting period page
 accounting-period.heading                                         = Pa gyfnod cyfrifyddu ydych chi’n ei ddefnyddio?
 accounting-period.para-one                                        = Os yw’ch cyfnod cyfrifyddu yn dod i ben ar 31 Mawrth, bydd angen i chi gael meddalwedd sy’n cefnogi {0}.
-accounting-period.para-one-ending                                 = Bydd hyn yn ei gwneud hi’n haws i chi gadw cofnodion.
+accounting-period.para-one-ending-one                             = Bydd hyn yn ei gwneud hi’n haws i chi gadw cofnodion.
+accounting-period.para-one-ending-two                             = Gallwch hefyd ddewis y cyfnod cyfrifyddu rydych chi’n disgwyl ei ddefnyddio yn y dyfodol, fel y gallwn argymell meddalwedd sy’n diwallu’ch gofynion.
 accounting-period.para-one.link-text                              = cyfnodau diweddaru calendr
 accounting-period.para-one.link-href                              = https://www.gov.uk/guidance/defnyddio-r-cynllun-troi-treth-yn-ddigidol-ar-gyfer-treth-incwm/anfon-diweddariadau-chwarterol#defnyddio-cyfnodau-diweddaru-calendr
 accounting-period.sixth-april-to-fifth-april                      = 6 Ebrill i 5 Ebrill
 accounting-period.first-april-to-thirty-first-march               = 1 Ebrill i 31 Mawrth
 accounting-period.other                                           = Dim un o’r rhain
-accounting-period.error                                           = Dewiswch naill ai 6 Ebrill i 5 Ebrill, 1 Ebrill i 31 Mawrth, neu ‘dim un o’r rhain’
+accounting-period.error                                           = Dewiswch gyfnod cyfrifyddu, neu dewiswch ‘dim un o’r rhain’
 
 # Accounting period not aligned view
 accounting-period-not-aligned.heading                               = Nid yw’ch cyfnod cyfrifyddu wedi’i alinio
@@ -47,9 +48,9 @@ accounting-period-not-aligned.para-two                              = Bydd angen
 accounting-period-not-aligned.para-three                            = Bydd CThEF yn cyhoeddi arweiniad ar sut i wneud hyn maes o law.
 
 # Business Income page
-business-income.title               = Pa rai o’r ffynonellau incwm hyn y mae angen i chi eu cynnwys yn eich diweddariadau chwarterol?
-business-income.legend              = Pa rai o’r ffynonellau incwm hyn y mae angen i chi eu cynnwys yn eich diweddariadau chwarterol?
-business-income.para                = Bydd angen i chi gynnwys y rhain yn eich Ffurflen Dreth hefyd.
+business-income.title               = Pa un o’r ffynonellau incwm hyn y mae angen i chi eu cynnwys yn eich diweddariadau chwarterol?
+business-income.legend              = Pa un o’r ffynonellau incwm hyn y mae angen i chi eu cynnwys yn eich diweddariadau chwarterol?
+business-income.para                = Gallwch hefyd ddewis ffynonellau incwm rydych chi’n disgwyl eu cynnwys yn y dyfodol, fel y gallwn argymell meddalwedd sy’n diwallu’ch anghenion.
 business-income.hint                = Dewiswch bob un sy’n berthnasol
 business-income.sole-trader         = Hunangyflogedig fel unig fasnachwr
 business-income.uk-property         = Rhoi eiddo yn y DU ar osod
@@ -70,7 +71,8 @@ zero-results.bullet2 = gofyn wrth eich asiant neu’ch cyfrifydd (os oes un genn
 zero-results.button = Gorffen
 
 # Other Items page
-other-items.title = Pa rai o’r eitemau hyn y mae angen i chi eu cyflwyno yn eich Ffurflen Dreth?
+other-items.title = Pa rai o’r eitemau hyn y mae angen i chi eu cyflwyno gyda’ch Ffurflen Dreth?
+other-items.para = Gallwch hefyd ddewis eitemau rydych chi’n disgwyl eu cyflwyno yn y dyfodol, fel y gallwn argymell meddalwedd sy’n diwallu’ch anghenion.
 other-items.hint = Dewiswch bob un sy’n berthnasol
 other-items.payments-into-a-private-pension = Cyfraniadau pensiwn preifat
 other-items.construction-industry-scheme = Cynllun y Diwydiant Adeiladu
@@ -82,7 +84,7 @@ other-items.voluntary-class-2-national-insurance = Yswiriant Gwladol Dosbarth 2 
 other-items.high-income-child-benefit-charge = Tâl Treth Budd-dal Plant Incwm Uchel
 other-items.none-of-these = Dim un o’r rhain
 
-other-items.error.non-empty = Dewiswch un eitem arall neu eitemau eraill
+other-items.error.non-empty = Dewiswch eitemau y mae angen i chi eu cyflwyno gyda’ch Ffurflen Dreth neu dewiswch ‘dim o’r rhain’
 other-items.error.invalid-selection = Dewiswch un eitem arall, eitemau eraill, neu ‘dim un o’r rhain’
 
 # Check Your Answers view
@@ -261,7 +263,8 @@ product-details.mobile-app.apple-ios = Apple iOS
 product-details.language.english = Saesneg
 
 # Other Income Sources Page
-additional.income.source-heading                                    = Pa rai o’r ffynonellau incwm hyn y mae angen i chi eu cyflwyno yn eich Ffurflen Dreth?
+additional.income.source-heading                                    = Pa rai o’r ffynonellau incwm canlynol y mae angen i chi eu cyflwyno yn eich Ffurflen Dreth?
+additional.income.source-para                                       = Gallwch hefyd ddewis incwm rydych chi’n disgwyl ei gyflwyno yn y dyfodol, fel y gallwn argymell meddalwedd sy’n diwallu’ch anghenion.
 additional.income.source-hint                                       = Dewiswch bob un sy’n berthnasol
 additional.income.source-uk-interest                                = Llog yn y DU
 additional.income.source-construction-industry-scheme               = Cynllun y Diwydiant Adeiladu
@@ -273,7 +276,7 @@ additional.income.source-partner-income                             = Incwm part
 additional.income.source-foreign-dividends                          = Difidendau tramor
 additional.income.source-foreign-interest                           = Llog tramor
 additional.income.source-none                                       = Dim un o’r rhain
-additional.income.source.error-non-empty                            = Dewiswch fath o incwm, mathau o incwm, neu ‘dim un o’r rhain’
+additional.income.source.error-non-empty                            = Dewiswch incwm y mae angen i chi ei gyflwyno yn eich Ffurflen Dreth neu dewiswch ‘dim un o’r rhain’
 additional.income.source.error-none-only                            = Dewiswch naill ai math o incwm, mathau o incwm, neu ‘dim un o’r rhain’
 
 timeout.title = Er eich diogelwch

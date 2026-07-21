@@ -32,13 +32,14 @@ type-of-user.error                                                = Select if yo
 ## Accounting period page
 accounting-period.heading                                         = What accounting period do you use?
 accounting-period.para-one                                        = If your accounting period ends on 31 March, you’ll need software that supports {0}.
-accounting-period.para-one-ending                                 = This will make keeping records simpler.
+accounting-period.para-one-ending-one                             = This will make keeping records simpler.
+accounting-period.para-one-ending-two                             = You can also select the accounting period you expect to use in the future, so we can recommend software that meets your needs.
 accounting-period.para-one.link-text                              = calendar update periods
 accounting-period.para-one.link-href                              = https://www.gov.uk/guidance/use-making-tax-digital-for-income-tax/send-quarterly-updates#using-calendar-update-periods
 accounting-period.sixth-april-to-fifth-april                      = 6 April to 5 April
 accounting-period.first-april-to-thirty-first-march               = 1 April to 31 March
 accounting-period.other                                           = Neither of these
-accounting-period.error                                           = Select either 6 April to 5 April, 1 April to 31 March, or neither of these
+accounting-period.error                                           = Select an accounting period, or select 'neither of these'
 
 # Accounting period not aligned view
 accounting-period-not-aligned.heading                               = Your accounting period is not aligned
@@ -47,9 +48,9 @@ accounting-period-not-aligned.para-two                              = You’ll n
 accounting-period-not-aligned.para-three                            = HMRC will publish guidance on how to do this in due course.
 
 # Business Income page
-business-income.title               = Which of these incomes do you need to include in your quarterly updates?
-business-income.legend              = Which of these incomes do you need to include in your quarterly updates?
-business-income.para                = You’ll also need to send these in your tax return.
+business-income.title               = Which of these income sources do you need to include in your quarterly updates?
+business-income.legend              = Which of these income sources do you need to include in your quarterly updates?
+business-income.para                = You can also select income sources you expect to include in the future, so we can recommend software that meets your needs.
 business-income.hint                = Select all that apply
 business-income.sole-trader         = Being self-employed as a sole trader
 business-income.uk-property         = Renting out a UK property
@@ -70,7 +71,8 @@ zero-results.bullet2 = ask your agent or accountant about software, if you have 
 zero-results.button = Finish
 
 # Other Items page
-other-items.title = Which of these other items do you need to submit in your tax return?
+other-items.title = Which of these items do you need to submit with your tax return?
+other-items.para = You can also select items you expect to submit in the future, so we can recommend software that meets your needs.
 other-items.hint = Select all that apply
 other-items.payments-into-a-private-pension = Private pension contributions
 other-items.construction-industry-scheme = Construction Industry Scheme
@@ -82,7 +84,7 @@ other-items.voluntary-class-2-national-insurance = Voluntary Class 2 National In
 other-items.high-income-child-benefit-charge = High Income Child Benefit Charge
 other-items.none-of-these = None of these
 
-other-items.error.non-empty = Select one other item or other items
+other-items.error.non-empty = Select items you need to submit with your tax return or select ‘none of these’
 other-items.error.invalid-selection = Select one other item, other items, or ‘none of these’
 
 # Check Your Answers view
@@ -261,7 +263,8 @@ product-details.language.english = English
 product-details.language.welsh = Welsh
 
 # Other Income Sources Page
-additional.income.source-heading                                    = Which of these other incomes do you need to submit in your tax return?
+additional.income.source-heading                                    = Which of the following income do you need to submit in your tax return?
+additional.income.source-para                                       = You can also select income you expect to submit in the future, so we can recommend software that meets your needs.
 additional.income.source-hint                                       = Select all that apply
 additional.income.source-uk-interest                                = UK interest
 additional.income.source-construction-industry-scheme               = Construction Industry Scheme
@@ -273,7 +276,7 @@ additional.income.source-partner-income                             = Partner in
 additional.income.source-foreign-dividends                          = Foreign dividends
 additional.income.source-foreign-interest                           = Foreign interest
 additional.income.source-none                                       = None of these
-additional.income.source.error-non-empty                            = Select an income type, income types, or ‘none of these’
+additional.income.source.error-non-empty                            = Select income you need to submit in your tax return or select ‘none of these’
 additional.income.source.error-none-only                            = Select either an income type, income types, or ‘none of these’
 
 timeout.title = For your security

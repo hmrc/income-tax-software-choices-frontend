@@ -38,14 +38,18 @@
 
     @captionHelper(softwareName)
 
+   <h1 class="govuk-heading-l">@messages("other-items.title")</h1>
+
+   <p class ="govuk-body">@messages("other-items.para")</p>
+
     @form(action = postAction) {
 
         @govukCheckboxes(Checkboxes(
             fieldset = Some(Fieldset(
                 legend = Some(Legend(
                     content = Text(messages("other-items.title")),
-                    classes = "govuk-fieldset__legend--l",
-                    isPageHeading = true
+                    classes = "govuk-visually-hidden govuk-!-display-block",
+                    isPageHeading = false
                 ))
             )),
             hint = Some(Hint(
