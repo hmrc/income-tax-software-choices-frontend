@@ -128,9 +128,6 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
     }
   }
 
-  private def isUnguided(journey: Option[JourneyType]) = journey match {
-    case Some(ViewAll) => true
-    case _ => false
-  }
+  private def isUnguided(journey: Option[JourneyType]) = journey.contains(ViewAll)
 
 }
