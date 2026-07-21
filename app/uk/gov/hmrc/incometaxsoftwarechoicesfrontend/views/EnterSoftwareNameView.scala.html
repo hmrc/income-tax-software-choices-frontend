@@ -26,6 +26,8 @@
 @import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcAccessibleAutocompleteJavascript
 @import uk.gov.hmrc.govukfrontend.views.Implicits.RichSelect
 @import uk.gov.hmrc.hmrcfrontend.views.viewmodels.accessibleautocomplete.AccessibleAutocomplete
+@import views.html.helper.CSPNonce
+@import uk.gov.hmrc.webchat.client.WebChatClient
 
 @this(
         mainTemplate: MainTemplate,
@@ -33,7 +35,8 @@
         form: FormWithCSRF,
         autocompleteCss: HmrcAccessibleAutocompleteCss,
         autocompleteJavascript: HmrcAccessibleAutocompleteJavascript,
-        govukSelect: GovukSelect
+        govukSelect: GovukSelect,
+        webChatClient: WebChatClient
 )(implicit appConfig: AppConfig)
 
 @(enterSoftwareNameForm: Form[Int], selectOptions: Seq[SelectItem], postAction: Call, notListedLink:String, backLink: String)(implicit request: Request[_], messages: Messages)
@@ -71,5 +74,11 @@
                 classes = "govuk-button--secondary govuk-!-display-none-print"
             ))
         </div>
-    }
+   }
+
+   <div id="HMRC_CIAPI_Anchored_1" aria-live="polite" role="alert">
+       Checking Digital Assistant availability.
+   </div>
+    @{webChatClient.loadRequiredElements()}
+    @{webChatClient.loadHMRCChatSkinElement("popup", "HMRC_CIAPI_Anchored_1")}
 }
