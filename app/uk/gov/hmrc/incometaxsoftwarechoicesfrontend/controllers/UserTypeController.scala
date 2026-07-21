@@ -44,7 +44,7 @@ class UserTypeController @Inject()(view: UserTypeView,
                                   (implicit ec: ExecutionContext,
                                    mcc: MessagesControllerComponents) extends BaseFrontendController {
 
-  def show(editMode: Boolean = false): Action[AnyContent] = (identify andThen requireData).async { request =>
+  def show(editMode: Boolean = false): Action[AnyContent] = (identify andThen requireData).async { implicit request =>
     given Request[AnyContent] = request
     for {
       userFilters <- userFiltersRepository.get(request.sessionId)
@@ -53,13 +53,13 @@ class UserTypeController @Inject()(view: UserTypeView,
       Ok(view(
         userTypeForm = UserTypeForm.userTypeForm.fill(userTypeAnswer),
         postAction = routes.UserTypeController.submit(editMode),
-        backUrl = backUrl(request, editMode),
+        backUrl = backUrl(editMode)(request),
         softwareName = getSoftwareName(request.product)
       ))
     }
   }
 
-  def submit(editMode: Boolean = false): Action[AnyContent] = (identify andThen requireData).async { request =>
+  def submit(editMode: Boolean = false): Action[AnyContent] = (identify andThen requireData).async { implicit request =>
     given Request[AnyContent] = request
 
     userTypeForm.bindFromRequest().fold(
@@ -67,7 +67,7 @@ class UserTypeController @Inject()(view: UserTypeView,
         Future.successful(BadRequest(view(
           userTypeForm = formWithErrors,
           postAction = routes.UserTypeController.submit(editMode),
-          backUrl = backUrl(request, editMode),
+          backUrl = backUrl(editMode)(request),
           softwareName = getSoftwareName(request.product)
         )))
       },
@@ -96,16 +96,18 @@ class UserTypeController @Inject()(view: UserTypeView,
     )
   }
 
-  private def backUrl(request: SessionDataRequest[AnyContent], editMode: Boolean): String = (editMode, request.journey) match {
-    case (true, _) => routes.CheckYourAnswersController.show().url
-    case (false, Some(Check)) =>
-      request.product.map(_.softwareType) match {
-        case Some(Spreadsheet) => routes.NeedAdditionalSoftwareController.show().url
-        case Some(FutureVendor) => routes.SoftwareInDevelopmentController.show().url
-        case Some(Unrecognised) => routes.NoSoftwareListedController.show().url
-        case _ => routes.EnterSoftwareNameController.show().url
-      }
-    case (false, _) => routes.HowYouFindSoftwareController.show().url
+  private def backUrl(editMode: Boolean)(request: SessionDataRequest[_]): String = {
+    (editMode, request.journey) match {
+      case (true, _) => routes.CheckYourAnswersController.show().url
+      case (false, Some(Check)) =>
+        request.product.map(_.softwareType) match {
+          case Some(Spreadsheet) => routes.NeedAdditionalSoftwareController.show().url
+          case Some(FutureVendor) => routes.SoftwareInDevelopmentController.show().url
+          case Some(Unrecognised) => routes.NoSoftwareListedController.show().url
+          case _ => routes.EnterSoftwareNameController.show().url
+        }
+      case (false, _) => routes.HowYouFindSoftwareController.show().url
+    }
   }
 
 }
