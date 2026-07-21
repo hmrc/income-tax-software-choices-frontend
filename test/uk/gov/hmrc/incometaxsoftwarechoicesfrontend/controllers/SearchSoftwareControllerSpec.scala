@@ -89,6 +89,17 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec
 
     }
 
+    "return OK status with the search software page and default filters" in withControllerDefaultFilters { controller =>
+      val result = controller.search()(FakeRequest("POST", "/")
+        .withFormUrlEncodedBody(s"${FiltersForm.filters}[0]" -> "free-version"))
+
+      status(result) shouldBe Status.OK
+      contentType(result) shouldBe Some(HTML)
+      charset(result) shouldBe Some(Codec.utf_8.charset)
+      verify(auditService, times(0)).auditSearchResults(any(), any())(any())
+
+    }
+
     "send audit when ExplicitAudits feature switch is enabled" in withController { controller =>
       enable(ExplicitAudits)
 
@@ -102,7 +113,6 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec
   }
 
   private def withController(testCode: SearchSoftwareController => Any): Unit = {
-    val mockEnvironment: Environment = mock[Environment]
     val mockUserFiltersRepo: UserFiltersRepository = mock[UserFiltersRepository]
 
     when(mockUserFiltersRepo.get(ArgumentMatchers.any())).thenReturn(
@@ -113,6 +123,21 @@ class SearchSoftwareControllerSpec extends ControllerBaseSpec
         lastUpdated = Instant.now
       )))
     )
+
+    buildController(mockUserFiltersRepo, testCode)
+  }
+
+  private def withControllerDefaultFilters(testCode: SearchSoftwareController => Any): Unit = {
+    val mockUserFiltersRepo: UserFiltersRepository = mock[UserFiltersRepository]
+
+    when(mockUserFiltersRepo.get(ArgumentMatchers.any())).thenReturn(Future.successful(None))
+    
+    buildController(mockUserFiltersRepo, testCode)
+  }
+  
+  private def buildController(mockUserFiltersRepo: UserFiltersRepository, testCode: SearchSoftwareController => Any): Unit = {
+    val mockEnvironment: Environment = mock[Environment]
+
     when(mockUserFiltersRepo.set(ArgumentMatchers.any())).thenReturn(Future.successful(true))
     when(mockEnvironment.resourceAsStream(eqTo(appConfig.softwareChoicesVendorFileName)))
       .thenReturn(Some(new FileInputStream("test/resources/test-valid-software-vendors.json")))
