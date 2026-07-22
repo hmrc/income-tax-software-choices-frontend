@@ -68,9 +68,6 @@ class ZeroSoftwareResultsViewSpec extends ViewSpec {
         "has a first point" in {
           bulletList.selectNth("li", 1).text mustBe ZeroSoftwareResultsViewContent.bulletPoint1
         }
-        "has a second point" in {
-          bulletList.selectNth("li", 2).text mustBe ZeroSoftwareResultsViewContent.bulletPoint2
-        }
       }
 
        "display the exit survey link" in {
@@ -86,15 +83,14 @@ class ZeroSoftwareResultsViewSpec extends ViewSpec {
 }
 
 private object ZeroSoftwareResultsViewContent {
-  val title = s"Your results - ${PageContentBase.title} - GOV.UK"
-  val heading1 = s"Your results - ${PageContentBase.title} - GOV.UK"
+  val title = s"There is currently no compatible software that meets all your needs - ${PageContentBase.title} - GOV.UK"
+  val heading1 = s"There is currently no compatible software that meets all your needs - ${PageContentBase.title} - GOV.UK"
   val paragraph1 = "Based on what you’ve told us, there is not currently an all-in-one software product that meets all of your needs."
   val heading2 = "More software will be available soon"
   val paragraph2 = "Several all-in-one products are currently being developed."
   val paragraph3 = "We update this tool regularly to show what’s available. Please check back later for updates, which will include new software and changes to the features of existing software."
   val paragraph4 = "You can also:"
-  val bulletPoint1 = "visit software providers’ websites to find out more about what they’re developing"
-  val bulletPoint2 = "ask your agent or accountant about software, if you have one"
+  val bulletPoint1 = "ask your agent or accountant about software, if you have one"
   val finish = "Finish"
   val exitSurveyLinkTitle = "Give feedback on this service (opens in new tab)"
   val exitSurveyLink = "http://localhost:9514/feedback/SOFTWAREMTDIT?useServiceNavigation"

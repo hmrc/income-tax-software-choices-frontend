@@ -58,15 +58,14 @@ business-income.overseas-property   = Renting out a foreign property
 business-income.error.non-empty     = Select if you get income from being self-employed as a sole trader, or renting out a UK or foreign property
 
 # Zero Results page
-zero-results.title = Your results
-zero-results.heading = Your results
+zero-results.title = There is currently no compatible software that meets all your needs
+zero-results.heading = There is currently no compatible software that meets all your needs
 zero-results.sub-heading1 = More software will be available soon
 zero-results.para1 = Based on what you’ve told us, there is not currently an all-in-one software product that meets all of your needs.
 zero-results.para2 = Several all-in-one products are currently being developed.
 zero-results.para3 = We update this tool regularly to show what’s available. Please check back later for updates, which will include new software and changes to the features of existing software.
 zero-results.para4 = You can also:
-zero-results.bullet1 = visit software providers’ websites to find out more about what they’re developing
-zero-results.bullet2 = ask your agent or accountant about software, if you have one
+zero-results.bullet1 = ask your agent or accountant about software, if you have one
 zero-results.button = Finish
 
 # Other Items page

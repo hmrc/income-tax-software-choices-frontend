@@ -58,15 +58,14 @@ business-income.overseas-property   = Rhoi eiddo tramor ar osod
 business-income.error.non-empty     = Dewiswch a ydych yn cael incwm o fod yn hunangyflogedig fel unig fasnachwr, neu o roi eiddo tramor neu eiddo yn y DU ar osod
 
 # Zero Results page
-zero-results.title = Eich canlyniadau
-zero-results.heading = Eich canlyniadau
+zero-results.title = Ar hyn o bryd does dim meddalwedd sy’n cydweddu sy’n diwallu pob un o’ch anghenion
+zero-results.heading = Ar hyn o bryd does dim meddalwedd sy’n cydweddu sy’n diwallu pob un o’ch anghenion
 zero-results.sub-heading1 = Bydd rhagor o feddalwedd ar gael yn fuan
 zero-results.para1 = Yn seiliedig ar yr hyn rydych wedi rhoi gwybod i ni amdano, nid oes meddalwedd hollgynhwysol sy’n cynnwys eich holl anghenion mewn un gwasanaeth.
 zero-results.para2 = Mae sawl cynnyrch hollgynhwysol o dan ddatblygiad ar hyn o bryd.
 zero-results.para3 = Rydym yn diweddaru’r offeryn hwn yn aml er mwyn dangos yr hyn sydd ar gael. Dewch yn ôl yn nes ymlaen i wirio am ddiweddariadau. Bydd y diweddariadau yn cynnwys meddalwedd newydd a newidiadau i nodweddion meddalwedd sy’n bodoli eisoes.
 zero-results.para4 = Gallwch hefyd wneud y canlynol:
-zero-results.bullet1 = ymweld â gwefannau darparwyr meddalwedd er mwyn dysgu rhagor am yr hyn sydd o dan ddatblygiad ganddynt
-zero-results.bullet2 = gofyn wrth eich asiant neu’ch cyfrifydd (os oes un gennych) ynghylch meddalwedd
+zero-results.bullet1 = gofyn i’ch asiant neu’ch cyfrifydd (os oes un gennych) ynghylch meddalwedd
 zero-results.button = Gorffen
 
 # Other Items page
