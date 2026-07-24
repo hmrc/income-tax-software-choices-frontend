@@ -33,7 +33,6 @@ type-of-user.error                                                = Select if yo
 accounting-period.heading                                         = What accounting period do you use?
 accounting-period.para-one                                        = If your accounting period is 1 April to 31 March, you’ll need software that supports {0}.
 accounting-period.para-one-ending                                 = This will make keeping records simpler.
-accounting-period.para-one-ending-para2                           = You can also select the accounting period you expect to use in the future, so we can recommend software that meets your needs.
 accounting-period.para-one.link-text                              = calendar update periods
 accounting-period.para-one.link-href                              = https://www.gov.uk/guidance/use-making-tax-digital-for-income-tax/send-quarterly-updates#using-calendar-update-periods
 accounting-period.sixth-april-to-fifth-april                      = 6 April to 5 April
