@@ -70,6 +70,11 @@ class AdditionalIncomeSourceViewSpec extends ViewSpec  with BeforeAndAfterEach {
       "have a software name caption" in {
         document().mainContent.selectHead("span.govuk-caption-l").text() shouldBe SoftwareName
       }
+
+      "have a paragraph" in {
+        document().mainContent.select("p").get(0).text shouldBe AdditionalIncomeSourcesPageContent.para
+      }
+
       "have a form" which {
         def form: Element = document().mainContent.selectHead("form")
 
@@ -88,8 +93,8 @@ class AdditionalIncomeSourceViewSpec extends ViewSpec  with BeforeAndAfterEach {
           form.mustHaveCheckbox("fieldSet")(
             checkbox = 1,
             legend = AdditionalIncomeSourcesPageContent.legend,
-            isHeading = true,
-            isLegendHidden = false,
+            isHeading = false,
+            isLegendHidden = true,
             name = "additionalIncome[]",
             label = AdditionalIncomeSourcesPageContent.ukInterest,
             value = "uk-interest",
@@ -99,8 +104,8 @@ class AdditionalIncomeSourceViewSpec extends ViewSpec  with BeforeAndAfterEach {
           form.mustHaveCheckbox("fieldSet")(
             checkbox = 2,
             legend = AdditionalIncomeSourcesPageContent.legend,
-            isHeading = true,
-            isLegendHidden = false,
+            isHeading = false,
+            isLegendHidden = true,
             name = "additionalIncome[]",
             label = AdditionalIncomeSourcesPageContent.employment,
             value = "employment",
@@ -110,8 +115,8 @@ class AdditionalIncomeSourceViewSpec extends ViewSpec  with BeforeAndAfterEach {
           form.mustHaveCheckbox("fieldSet")(
             checkbox = 3,
             legend = AdditionalIncomeSourcesPageContent.legend,
-            isHeading = true,
-            isLegendHidden = false,
+            isHeading = false,
+            isLegendHidden = true,
             name = "additionalIncome[]",
             label = AdditionalIncomeSourcesPageContent.ukDividends,
             value = "uk-dividends",
@@ -121,8 +126,8 @@ class AdditionalIncomeSourceViewSpec extends ViewSpec  with BeforeAndAfterEach {
           form.mustHaveCheckbox("fieldSet")(
             checkbox = 4,
             legend = AdditionalIncomeSourcesPageContent.legend,
-            isHeading = true,
-            isLegendHidden = false,
+            isHeading = false,
+            isLegendHidden = true,
             name = "additionalIncome[]",
             label = AdditionalIncomeSourcesPageContent.statePension,
             value = "state-pension-income",
@@ -132,8 +137,8 @@ class AdditionalIncomeSourceViewSpec extends ViewSpec  with BeforeAndAfterEach {
           form.mustHaveCheckbox("fieldSet")(
             checkbox = 5,
             legend = AdditionalIncomeSourcesPageContent.legend,
-            isHeading = true,
-            isLegendHidden = false,
+            isHeading = false,
+            isLegendHidden = true,
             name = "additionalIncome[]",
             label = AdditionalIncomeSourcesPageContent.privatePension,
             value = "private-pension-income",
@@ -143,8 +148,8 @@ class AdditionalIncomeSourceViewSpec extends ViewSpec  with BeforeAndAfterEach {
           form.mustHaveCheckbox("fieldSet")(
             checkbox = 6,
             legend = AdditionalIncomeSourcesPageContent.legend,
-            isHeading = true,
-            isLegendHidden = false,
+            isHeading = false,
+            isLegendHidden = true,
             name = "additionalIncome[]",
             label = AdditionalIncomeSourcesPageContent.partnerIncomeFromPartnership,
             value = "partner-income",
@@ -155,8 +160,8 @@ class AdditionalIncomeSourceViewSpec extends ViewSpec  with BeforeAndAfterEach {
           form.mustHaveCheckbox("fieldSet")(
             checkbox = 7,
             legend = AdditionalIncomeSourcesPageContent.legend,
-            isHeading = true,
-            isLegendHidden = false,
+            isHeading = false,
+            isLegendHidden = true,
             name = "additionalIncome[]",
             label = AdditionalIncomeSourcesPageContent.foreignDividends,
             value = "foreign-dividends",
@@ -166,8 +171,8 @@ class AdditionalIncomeSourceViewSpec extends ViewSpec  with BeforeAndAfterEach {
           form.mustHaveCheckbox("fieldSet")(
             checkbox = 8,
             legend = AdditionalIncomeSourcesPageContent.legend,
-            isHeading = true,
-            isLegendHidden = false,
+            isHeading = false,
+            isLegendHidden = true,
             name = "additionalIncome[]",
             label = AdditionalIncomeSourcesPageContent.foreignInterest,
             value = "foreign-interest",
@@ -177,8 +182,8 @@ class AdditionalIncomeSourceViewSpec extends ViewSpec  with BeforeAndAfterEach {
           form.mustHaveCheckbox("fieldSet")(
             checkbox = 10,
             legend = AdditionalIncomeSourcesPageContent.legend,
-            isHeading = true,
-            isLegendHidden = false,
+            isHeading = false,
+            isLegendHidden = true,
             name = "additionalIncome[]",
             label = AdditionalIncomeSourcesPageContent.none,
             value = "none",
@@ -194,8 +199,9 @@ class AdditionalIncomeSourceViewSpec extends ViewSpec  with BeforeAndAfterEach {
 }
 
 private object AdditionalIncomeSourcesPageContent {
-  val title = s"Which of these other incomes do you need to submit in your tax return? - ${PageContentBase.title} - GOV.UK"
-  val legend = "Which of these other incomes do you need to submit in your tax return?"
+  val title = s"Which of the following income do you need to submit in your tax return? - ${PageContentBase.title} - GOV.UK"
+  val legend = "Which of the following income do you need to submit in your tax return?"
+  val para = "You can also select income you expect to submit in the future, so we can recommend software that meets your needs."
   val hint = "Select all that apply"
   val ukInterest = "UK interest"
   val employment = "Employment (PAYE)"

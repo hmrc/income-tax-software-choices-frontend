@@ -119,7 +119,7 @@ class AccountingPeriodViewSpec extends ViewSpec {
 private object AccountingPeriodContent {
   val title = s"What accounting period do you use? - ${PageContentBase.title} - GOV.UK"
   val legend = "What accounting period do you use?"
-  val paraOne = "If your accounting period ends on 31 March, you’ll need software that supports calendar update periods (opens in new tab). This will make keeping records simpler."
+  val paraOne = "If your accounting period is 1 April to 31 March, you’ll need software that supports calendar update periods (opens in new tab). This will make keeping records simpler."
   val linkText = "calendar update periods (opens in new tab)"
   val linkHref = "https://www.gov.uk/guidance/use-making-tax-digital-for-income-tax/send-quarterly-updates#using-calendar-update-periods"
   val sixthToFifth = "6 April to 5 April"
@@ -127,5 +127,5 @@ private object AccountingPeriodContent {
   val or = "or"
   val neither = "Neither of these"
   val continue = "Continue"
-  val error = "Select either 6 April to 5 April, 1 April to 31 March, or neither of these"
+  val error = "Select an accounting period, or select 'neither of these'"
 }

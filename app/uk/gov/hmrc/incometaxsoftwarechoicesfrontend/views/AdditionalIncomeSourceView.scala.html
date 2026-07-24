@@ -37,14 +37,18 @@
 
     @captionHelper(softwareName)
 
+   <h1 class="govuk-heading-l">@messages("additional.income.source-heading")</h1>
+
+   <p class ="govuk-body">@messages("additional.income.source-para")</p>
+
 @form(action = postAction) {
 
         @govukCheckboxes(Checkboxes(
             fieldset = Some(Fieldset(
                 legend = Some(Legend(
                     content = Text(messages("additional.income.source-heading")),
-                    classes = "govuk-fieldset__legend--l",
-                    isPageHeading = true
+                    classes = "govuk-visually-hidden govuk-!-display-block",
+                    isPageHeading = false
                 ))
             )),
             hint = Some(Hint(content = Text(messages("additional.income.source-hint")))),
