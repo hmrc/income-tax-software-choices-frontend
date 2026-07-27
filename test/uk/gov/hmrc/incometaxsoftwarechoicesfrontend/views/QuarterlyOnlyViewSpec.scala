@@ -84,7 +84,7 @@ private object QuarterlyOnlyContent {
   val heading2 = "What you should do next"
   val title = s"$heading1 - ${PageContentBase.title} - GOV.UK"
   val para1 = "This software does not have the ability to submit a tax return."
-  val para2 = "Learn more about your software and its upcoming features."
+  val para2 = "Learn more about your software and its upcoming features"
   val para3 = "If you intend to do your tax returns via software, you will need additional software to do this."
   val para4 = "If you want to use this software, you need to:"
   val bullet1Text = "sign up for Making Tax Digital for Income Tax (opens in new tab)"
