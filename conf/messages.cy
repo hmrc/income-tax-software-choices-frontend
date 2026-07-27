@@ -328,7 +328,7 @@ software-in-development.para2 = Gallwch hefyd chwilio am becynnau meddalwedd era
 #Fully Compatible page
 fully-compatible.heading1 = Mae {0} yn cydweddu’n llwyr â Throi Treth yn Ddigidol ar gyfer Treth Incwm
 fully-compatible.para1 = Ar hyn o bryd, mae’ch meddalwedd yn cefnogi’r holl nodweddion sydd eu hangen arnoch ar gyfer Troi Treth yn Ddigidol ar gyfer Treth Incwm.
-fully-compatible.para2.link.text = Dysgwch ragor am eich meddalwedd a’i nodweddion sydd ar ddod.
+fully-compatible.para2.link.text = Dysgwch ragor am eich meddalwedd a’i nodweddion sydd ar ddod
 fully-compatible.heading2 = Yr hyn y dylech ei wneud nesaf
 fully-compatible.para3 = Os ydych am ddefnyddio’r feddalwedd hon, bydd angen i chi wneud y canlynol:
 fully-compatible.bullet1 = cofrestru ar gyfer y cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm
@@ -337,7 +337,7 @@ fully-compatible.bullet2 = awdurdodi’ch meddalwedd i CThEF
 #Partially Compatible page
 partially-compatible.heading1 = Gall {0} anfon diweddariadau chwarterol ac mae’n datblygu nodweddion ar gyfer cyflwyno’ch Ffurflen Dreth
 partially-compatible.para1 = Mae’ch darparwr meddalwedd wedi adeiladu’r nodweddion sydd eu hangen arnoch er mwyn i chi anfon eich diweddariadau chwarterol. Erbyn hyn, maent yn datblygu’r nodweddion sy’n weddill sydd eu hangen ar gyfer eich Ffurflen Dreth. Dylai’r rhain fod ar gael mewn pryd ar gyfer eich Ffurflen Dreth 2026 i 2027.
-partially-compatible.para2.link.text = Dysgwch ragor am eich meddalwedd a’i nodweddion sydd ar ddod.
+partially-compatible.para2.link.text = Dysgwch ragor am eich meddalwedd a’i nodweddion sydd ar ddod
 partially-compatible.heading2 = Yr hyn y dylech ei wneud nesaf
 partially-compatible.para3 = Os ydych am ddefnyddio’r feddalwedd hon, bydd angen i chi wneud y canlynol:
 partially-compatible.bullet1 = cofrestru ar gyfer y cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm
@@ -346,7 +346,7 @@ partially-compatible.bullet2 = awdurdodi’ch meddalwedd i CThEF
 #Quarterly Only page
 quarterly-only.heading1 = Gall {0} anfon diweddariadau chwarterol yn unig
 quarterly-only.para1 = Nid oes gan y feddalwedd hon y gallu i gyflwyno Ffurflen Dreth.
-quarterly-only.para2.link.text = Dysgwch ragor am eich meddalwedd a’i nodweddion sydd ar ddod.
+quarterly-only.para2.link.text = Dysgwch ragor am eich meddalwedd a’i nodweddion sydd ar ddod
 quarterly-only.para3 = Os ydych yn bwriadu llenwi eich Ffurflen Dreth drwy ddefnyddio meddalwedd, {0} er mwyn gwneud hyn.
 quarterly-only.para3.link.text = bydd angen i chi gael meddalwedd ychwanegol
 quarterly-only.heading2 = Yr hyn y dylech ei wneud nesaf
