@@ -197,21 +197,17 @@ def process_file(excel_path, data):
 
 
 # ── MAIN ──────────────────────────────────────────────────
-folder = sys.argv[1].strip().strip("'\"") if len(sys.argv) > 1 else INBOX_DIR
-
-if not os.path.isdir(folder):
-    print(f"Folder not found: {folder}")
-    sys.exit(1)
-
-excel_files = sorted(f for f in glob.glob(os.path.join(folder, "*.xlsx"))
+excel_files = sorted(f for f in glob.glob(os.path.join(INBOX_DIR, "*.xlsx"))
                      if not os.path.basename(f).startswith("~$"))
+
 if not excel_files:
-    print(f"No .xlsx files found in: {folder}")
+    print(f"No .xlsx files found in /{INBOX_DIR}/")
+    print(f"Ensure /{INBOX_DIR}/ exists, and contains some vendor data files in .xslx format, before running this script again.")
     sys.exit(0)
 
 print("=" * 60)
 print(f"  VENDOR PROCESSOR")
-print(f"  Inbox      : {folder}")
+print(f"  Inbox      : {INBOX_DIR}")
 print(f"  Files found: {len(excel_files)}")
 print("=" * 60)
 
@@ -261,3 +257,6 @@ print(f"  Updated         : {total_updated}")
 print(f"  Skipped         : {total_skipped}")
 print(f"  Errored         : {total_errored}")
 print("=" * 60)
+
+for file in excel_files:
+    os.remove(file)
