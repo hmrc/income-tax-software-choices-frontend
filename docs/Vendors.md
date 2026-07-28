@@ -51,7 +51,7 @@ If not installed:
 
 ###  Step 2 — Copy the vendor .xlsx file(s) into the vendors folder
 
-Copy the completed template(s) received from the vendor management team into `scripts/vendors/`. This folder is git ignored. This is so that the `.xlsx` files will not be committed, but has the side effect that you will have to create the folder yourself the first time that you use the script. The script deletes all `.xlsx` files from your local folder after a successful run, to prevent issues occurring in any future runs of the script.
+Copy the completed template(s) received from the vendor management team into `scripts/vendors/`. This folder is git ignored. This is so that the `.xlsx` files will not be committed, but has the side effect that you will have to create the folder yourself the first time that you use the script. The script deletes all successfully processed `.xlsx` files from your local folder after a run, to prevent issues occurring in any future runs of the script. Skipped or errored files are kept for analysis.
 
 ### Step 3 — Run the vendor processor script
 
@@ -67,7 +67,7 @@ The script will automatically:
 - Update website URLs with an `http://` protocol to ones with an `https://` protocol
 - Insert new vendors or update existing ones in `conf/software-vendors.json`
 - Print a diff table of all changes made
-- Finally, delete all `.xlsx` files in `scripts/vendors/`
+- Delete all `.xlsx` files in `scripts/vendors/` relating to updated or inserted records
 
 ## Template Update process
 
