@@ -172,6 +172,7 @@ def process_file(excel_path, data):
         print(f"  ACTION     : INSERTED (new vendor)")
         print(f"  productId  : {new_id}")
         print(f"  name       : {name}")
+        os.remove(excel_path)
     else:
         old_vendor = vendors[match]
         pid = old_vendor["productId"]
@@ -186,6 +187,7 @@ def process_file(excel_path, data):
             print(f"  ACTION     : UPDATED")
             print(f"  Differences found:")
             print_table(changes)
+            os.remove(excel_path)
         else:
             skipped = 1
             print(f"  ACTION     : No differences found — skipped")
@@ -197,21 +199,17 @@ def process_file(excel_path, data):
 
 
 # ── MAIN ──────────────────────────────────────────────────
-folder = sys.argv[1].strip().strip("'\"") if len(sys.argv) > 1 else INBOX_DIR
-
-if not os.path.isdir(folder):
-    print(f"Folder not found: {folder}")
-    sys.exit(1)
-
-excel_files = sorted(f for f in glob.glob(os.path.join(folder, "*.xlsx"))
+excel_files = sorted(f for f in glob.glob(os.path.join(INBOX_DIR, "*.xlsx"))
                      if not os.path.basename(f).startswith("~$"))
+
 if not excel_files:
-    print(f"No .xlsx files found in: {folder}")
+    print(f"No .xlsx files found in /{INBOX_DIR}/")
+    print(f"Ensure /{INBOX_DIR}/ exists, and contains some vendor data files in .xslx format, before running this script again.")
     sys.exit(0)
 
 print("=" * 60)
 print(f"  VENDOR PROCESSOR")
-print(f"  Inbox      : {folder}")
+print(f"  Inbox      : {INBOX_DIR}")
 print(f"  Files found: {len(excel_files)}")
 print("=" * 60)
 
@@ -260,4 +258,7 @@ print(f"  Inserted        : {total_inserted}")
 print(f"  Updated         : {total_updated}")
 print(f"  Skipped         : {total_skipped}")
 print(f"  Errored         : {total_errored}")
+print("=" * 60)
+print("Files relating to any inserted or updated vendor records have been deleted from scripts/vendors.")
+print("Any files that were skipped or that caused errors have been maintained for analysis.")
 print("=" * 60)
