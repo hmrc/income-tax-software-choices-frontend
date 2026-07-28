@@ -172,6 +172,7 @@ def process_file(excel_path, data):
         print(f"  ACTION     : INSERTED (new vendor)")
         print(f"  productId  : {new_id}")
         print(f"  name       : {name}")
+        os.remove(excel_path)
     else:
         old_vendor = vendors[match]
         pid = old_vendor["productId"]
@@ -186,6 +187,7 @@ def process_file(excel_path, data):
             print(f"  ACTION     : UPDATED")
             print(f"  Differences found:")
             print_table(changes)
+            os.remove(excel_path)
         else:
             skipped = 1
             print(f"  ACTION     : No differences found — skipped")
@@ -257,6 +259,6 @@ print(f"  Updated         : {total_updated}")
 print(f"  Skipped         : {total_skipped}")
 print(f"  Errored         : {total_errored}")
 print("=" * 60)
-
-for file in excel_files:
-    os.remove(file)
+print("Files relating to any inserted or updated vendor records have been deleted from scripts/vendors.")
+print("Any files that were skipped or that caused errors have been maintained for analysis.")
+print("=" * 60)
