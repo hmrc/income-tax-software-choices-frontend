@@ -64,7 +64,7 @@ zero-results.sub-heading1 = Bydd rhagor o feddalwedd ar gael yn fuan
 zero-results.para1 = Yn seiliedig ar yr hyn rydych wedi rhoi gwybod i ni amdano, nid oes meddalwedd hollgynhwysol sy’n cynnwys eich holl anghenion mewn un gwasanaeth.
 zero-results.para2 = Mae sawl cynnyrch hollgynhwysol o dan ddatblygiad ar hyn o bryd.
 zero-results.para3 = Rydym yn diweddaru’r offeryn hwn yn aml er mwyn dangos yr hyn sydd ar gael. Dewch yn ôl yn nes ymlaen i wirio am ddiweddariadau. Bydd y diweddariadau yn cynnwys meddalwedd newydd a newidiadau i nodweddion meddalwedd sy’n bodoli eisoes.
-zero-results.para4 =
+zero-results.para4 = Os oes gennych asiant neu gyfrifydd, gallwch hefyd ofyn iddynt ynghylch meddalwedd.
 zero-results.button = Gorffen
 
 # Other Items page
