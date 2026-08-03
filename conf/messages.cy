@@ -87,13 +87,13 @@ other-items.error.invalid-selection = Dewiswch un eitem arall, eitemau eraill, n
 # Check Your Answers view
 check-your-answers.guided-heading                      = Gwiriwch eich atebion cyn edrych ar feddalwedd sy’n cydweddu
 check-your-answers.checked-heading                     = Gwiriwch eich atebion cyn bwrw golwg dros eich canlyniadau
-check-your-answers.software-name                       = Enw'r feddalwedd
+check-your-answers.software-name                       = Enw’r feddalwedd
 check-your-answers.user-type                           = Math o ddefnyddiwr
 check-your-answers.user-type.sole-trader-or-landlord   = Unig fasnachwr neu landlord
 check-your-answers.user-type.agent                     = Asiant
-check-your-answers.business-income                     = Ffynonellau incwm (diweddariadau chwarterol a Ffurflen Dreth)
-check-your-answers.additional-income                   = Ffynonellau eraill o incwm (Ffurflen Dreth yn unig)
-check-your-answers.other-items                         = Eitemau eraill (Ffurflen Dreth yn unig)
+check-your-answers.business-income                     = Ffynonellau incwm ar gyfer diweddariadau chwarterol
+check-your-answers.additional-income                   = Incwm ar gyfer Ffurflen Dreth
+check-your-answers.other-items                         = Eitemau ar gyfer Ffurflen Dreth
 check-your-answers.accounting-period                   = Cyfnod cyfrifyddu
 check-your-answers.none-selected                       = Dim wedi’i ddewis
 check-your-answers.software-not-listed                 = Meddalwedd heb ei rhestru
