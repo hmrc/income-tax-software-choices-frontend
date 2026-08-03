@@ -23,6 +23,8 @@
 @import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcAccessibleAutocompleteCss
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.TimeoutType.{Manual, Timeout}
 @import uk.gov.hmrc.webchat.client.WebChatClient
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.DigitalAssistant
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 
 @this(
     hmrcStandardPage: HmrcStandardPage,
@@ -32,7 +34,8 @@
     hmrcTimeoutDialogHelper: HmrcTimeoutDialogHelper,
     hmrcNewTabLinkHelper: HmrcNewTabLinkHelper,
     autocompleteCss: HmrcAccessibleAutocompleteCss,
-    webChatClient: WebChatClient
+    webChatClient: WebChatClient,
+    featureSwitching: FeatureSwitching
 )
 
 @(title: String, backLink: Option[String] = None, optForm: Option[Form[_]] = None, scripts: Option[Html] = None, isFullWidth: Boolean = false, showTimeoutDialog: Boolean = true)(contentBlock: Html)(implicit request: RequestHeader, messages: Messages)
@@ -97,8 +100,9 @@
 
     @hmrcReportTechnicalIssueHelper()
 
-    @digitalAssistant
-
+    @if(featureSwitching.isEnabled(DigitalAssistant)) {
+        @digitalAssistant
+    }
 }
 
 @customBanner = @{
