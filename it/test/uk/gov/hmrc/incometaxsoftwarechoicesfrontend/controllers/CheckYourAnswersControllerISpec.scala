@@ -440,9 +440,9 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
   object SummaryListKeys {
     val userType = "User type"
     val softwareName = "Software name"
-    val incomeSources = "Income sources (quarterly updates and tax return)"
-    val otherIncome = "Other incomes (tax return only)"
-    val otherItems = "Other items (tax return only)"
+    val incomeSources = "Income sources for quarterly updates"
+    val otherIncome = "Income for tax return"
+    val otherItems = "Items for tax return"
     val accountingPeriod = "Accounting period"
   }
 }
