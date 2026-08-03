@@ -20,7 +20,7 @@
 
 @this(mainTemplate: MainTemplate)
 
-@()(implicit request: RequestHeader, messages: Messages)
+@()(implicit request: Request[_], messages: Messages)
 
 @mainTemplate(title = messages("error.inconsistent.heading")) {
 <h1 class="govuk-heading-xl">@{messages("error.inconsistent.heading")}</h1>
