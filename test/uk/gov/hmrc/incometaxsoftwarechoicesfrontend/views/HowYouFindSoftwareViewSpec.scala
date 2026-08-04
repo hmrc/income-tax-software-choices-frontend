@@ -27,7 +27,11 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.HowYouFindSoftwareView
 
-class HowYouFindSoftwareViewSpec extends ViewSpec {
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.DigitalAssistant
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
+
+class HowYouFindSoftwareViewSpec extends ViewSpec with FeatureSwitching {
+
 
   private val view = app.injector.instanceOf[HowYouFindSoftwareView]
   private val formError = FormError(HowYouFindSoftwareForm.fieldName, "how-you-find-software.error")
@@ -100,6 +104,21 @@ class HowYouFindSoftwareViewSpec extends ViewSpec {
 
         "have a continue button" in {
           form.selectNth(".govuk-button", 1).text() mustBe PageContentBase.continue
+        }
+
+        "insert the Nuance container tag(s) when the Digital Assistant feature switch is enabled" in {
+          enable(DigitalAssistant)
+          document().getElementById("HMRC_CIAPI_Anchored_1") must not be null
+        }
+
+        "insert the Nuance required tag when the Digital Assistant feature switch is enabled" in {
+          enable(DigitalAssistant)
+          document().getElementById("webchat-tag") must not be null
+        }
+
+        "insert the Nuance chat container tag when the Digital Assistant feature switch is enabled" in {
+          enable(DigitalAssistant)
+          document().getElementById("tc-nuance-chat-container") must not be null
         }
       }
     }
