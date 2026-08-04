@@ -121,8 +121,9 @@
     }
 }
 
-@table(filterGroup: List[VendorFilter], tableHeaderKey: String, displayIntent: Boolean) = @{
-    govukTable(Table(
+@table(filterGroup: List[VendorFilter], tableHeaderKey: String, displayIntent: Boolean) = {
+     <div class="table-scroll-wrapper">
+       @govukTable(Table(
         rows = featuresRow(filterGroup, tableHeaderKey, displayIntent),
         head = Some(Seq(
             HeadCell(
@@ -136,6 +137,7 @@
         caption = Some(messages(s"product-details.$tableHeaderKey.heading")),
         captionClasses = "govuk-visually-hidden"
     ))
+     </div>
 }
 
 @swSpecRow(filtersGroup: List[VendorFilter], sectionKey: String) = @{
@@ -163,8 +165,9 @@
     }
 }
 
-@statusKeyTable = @{
-  govukTable(Table(
+@statusKeyTable = {
+  <div class="table-scroll-wrapper">
+    @govukTable(Table(
       rows = Seq(
         Seq(
           TableRow(
@@ -217,4 +220,5 @@
       captionClasses = "govuk-table__caption--m"
     )
   )
+  </div>
 }
