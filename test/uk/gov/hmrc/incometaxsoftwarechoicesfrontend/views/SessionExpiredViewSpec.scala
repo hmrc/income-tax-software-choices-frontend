@@ -17,12 +17,14 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views
 
 import org.jsoup.Jsoup
-import org.scalatest.matchers.must.Matchers._
+import org.scalatest.matchers.must.Matchers.*
 import play.api.mvc.Call
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.DigitalAssistant
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SessionExpiredView
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.TimeoutType.*
 
-class SessionExpiredViewSpec extends ViewSpec {
+class SessionExpiredViewSpec extends ViewSpec with FeatureSwitching{
 
   private val view =
     app.injector.instanceOf[SessionExpiredView]
@@ -46,6 +48,13 @@ class SessionExpiredViewSpec extends ViewSpec {
 
       "have a continue button" in {
         form.selectNth(".govuk-button", 1).text mustBe SessionExpiredContent.continue
+      }
+
+      "not insert the Nuance elements, even when the Digital Assistant feature switch is enabled" in {
+        enable(DigitalAssistant)
+        document.getElementById("HMRC_CIAPI_Anchored_1") mustBe null
+        document.getElementById("webchat-tag") mustBe null
+        document.getElementById("tc-nuance-chat-container") mustBe null
       }
     }
     "session expired due to inactivity (expired)" should {
