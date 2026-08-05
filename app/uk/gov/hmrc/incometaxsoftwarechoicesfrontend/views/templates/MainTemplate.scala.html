@@ -38,7 +38,7 @@
     featureSwitching: FeatureSwitching
 )
 
-@(title: String, backLink: Option[String] = None, optForm: Option[Form[_]] = None, scripts: Option[Html] = None, isFullWidth: Boolean = false, showTimeoutDialog: Boolean = true)(contentBlock: Html)(implicit request: RequestHeader, messages: Messages)
+@(title: String, backLink: Option[String] = None, optForm: Option[Form[_]] = None, scripts: Option[Html] = None, isFullWidth: Boolean = false, showTimeoutDialog: Boolean = true, showDigitalAssistant: Boolean = true)(contentBlock: Html)(implicit request: RequestHeader, messages: Messages)
 
 @prefixedTitle = @{
   optForm match {
@@ -100,7 +100,7 @@
 
     @hmrcReportTechnicalIssueHelper()
 
-    @if(featureSwitching.isEnabled(DigitalAssistant)) {
+    @if(featureSwitching.isEnabled(DigitalAssistant) && showDigitalAssistant) {
         @digitalAssistant
     }
 }
