@@ -105,9 +105,6 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
       Jsoup.parse(page(model).body)
     }
     val filterSection = getFilterSection(document)
-    println("start of filterSection")
-    println(filterSection.html())
-    println("start of filterSection")
 
     "has a role attribute to identify it as a search landmark" in {
       filterSection.attr("role") shouldBe "search"
