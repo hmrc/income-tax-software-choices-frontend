@@ -136,7 +136,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
     }
 
     "has a pricing section" that {
-      val checkboxGroup = getCheckboxGroup(document, 1)
+      val checkboxGroup = getCheckboxGroup(document, 2)
 
       "contains a fieldset legend" in {
         checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwareWithIntentPageContent.Filters.pricing
@@ -154,7 +154,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
     }
 
     "has a readiness section" that {
-      val checkboxGroup = getCheckboxGroup(document, 2)
+      val checkboxGroup = getCheckboxGroup(document, 3)
 
       "contains a fieldset legend" in {
         checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwareWithIntentPageContent.Filters.readiness
@@ -171,7 +171,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
     }
 
     "has a software for section" that {
-      val checkboxGroup = getCheckboxGroup(document, 3)
+      val checkboxGroup = getCheckboxGroup(document, 4)
 
       "contains a fieldset legend" in {
         checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwareWithIntentPageContent.Filters.softwareFor
@@ -188,7 +188,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
     }
 
     "has a software compatibility section" that {
-      val checkboxGroup = getCheckboxGroup(document, 4)
+      val checkboxGroup = getCheckboxGroup(document, 5)
 
       "contains a fieldset legend" in {
         checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwareWithIntentPageContent.Filters.softwareCompatibility
@@ -206,7 +206,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
     }
 
     "has an accessibility features section" that {
-      val checkboxGroup = getCheckboxGroup(document, 5)
+      val checkboxGroup = getCheckboxGroup(document, 6)
 
       "contains a fieldset legend" in {
         checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwareWithIntentPageContent.Filters.accessibilityFeatures
@@ -230,7 +230,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
     }
 
     "has a language section" that {
-      val checkboxGroup = getCheckboxGroup(document, 6)
+      val checkboxGroup = getCheckboxGroup(document, 7)
 
       "contains a fieldset legend" in {
         checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwareWithIntentPageContent.Filters.language
@@ -248,7 +248,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
     }
 
     "has an extra features section" that {
-      val checkboxGroup = getCheckboxGroup(document, 7)
+      val checkboxGroup = getCheckboxGroup(document, 8)
 
       "contains a fieldset legend" in {
         checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwareWithIntentPageContent.Filters.extraFeatures
@@ -274,7 +274,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
         Jsoup.parse(page(model).body)
       }
       "has a user type section" that {
-        val checkboxGroup = getCheckboxGroup(document, 1)
+        val checkboxGroup = getCheckboxGroup(document, 2)
 
         "contains a fieldset legend" in {
           checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwareWithIntentPageContent.Filters.userType
@@ -366,13 +366,13 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
       "have a single software vendor section for result" which {
         "has the correct heading" when {
           "there are multiple results" in {
-            documentManyResults.selectHead("#vendor-count h2").text shouldBe SearchSoftwareWithIntentPageContent.intentHeadingMany
+            documentManyResults.selectHead("#vendor-count h2").text shouldBe SearchSoftwareWithIntentPageContent.heading
           }
           "there is 1 result" in {
-            documentOneResult.selectHead("#vendor-count h2").text shouldBe SearchSoftwareWithIntentPageContent.intentHeadingOne
+            documentOneResult.selectHead("#vendor-count h2").text shouldBe SearchSoftwareWithIntentPageContent.heading
           }
           "there are 0 results" in {
-            documentNoResults.selectHead("#vendor-count h2").text shouldBe SearchSoftwareWithIntentPageContent.intentHeadingNone
+            documentNoResults.selectHead("#vendor-count h2").text shouldBe SearchSoftwareWithIntentPageContent.heading
           }
         }
 
@@ -516,13 +516,13 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
 
         "has the correct title and h1" when {
           "there are multiple results" in {
-            documentAgentMany.selectHead("#vendor-count h2").text shouldBe SearchSoftwareWithIntentPageContent.agentHeadingMany
+            documentAgentMany.selectHead("#vendor-count h2").text shouldBe SearchSoftwareWithIntentPageContent.heading
           }
           "there is 1 result" in {
-            documentAgentOneResult.selectHead("#vendor-count h2").text shouldBe SearchSoftwareWithIntentPageContent.agentHeadingOne
+            documentAgentOneResult.selectHead("#vendor-count h2").text shouldBe SearchSoftwareWithIntentPageContent.heading
           }
           "there are 0 results" in {
-            documentAgentNoResults.selectHead("#vendor-count h2").text shouldBe SearchSoftwareWithIntentPageContent.agentHeadingNone
+            documentAgentNoResults.selectHead("#vendor-count h2").text shouldBe SearchSoftwareWithIntentPageContent.heading
           }
         }
 
@@ -638,7 +638,7 @@ object SearchSoftwareWithIntentViewSpec extends ViewSpec {
 
   def getCheckboxGroup(document: Document, n: Int): Element = {
     getFilterSection(document)
-      .select(".govuk-form-group").get(n)
+      .selectNth(".govuk-form-group", n)
       .selectNth(".govuk-fieldset", 1)
   }
 
@@ -676,14 +676,7 @@ private object SearchSoftwareWithIntentPageContent {
     val applyFilters = "Apply filters"
   }
 
-  val intentHeadingMany = "Based on your filters and answers, we’ve found 4 results"
-  val intentHeadingOne = "Based on your filters and answers, we’ve found 1 result"
-  val intentHeadingNone = "Based on your filters and answers, there are no results"
-
-  val agentHeadingMany = "Based on your answers, we’ve found 4 results"
-  val agentHeadingOne = "Based on your answers, we’ve found 1 result"
-  val agentHeadingNone = "Based on your answers, there are no results"
-
+  val heading = "Software results based on your answers and filters"
   val para1 = "All software has passed HMRC’s recognition process. HMRC does not recommend any specific product and is not responsible for availability or whether the software meets a particular current or future need."
   val para2 = "Some of the listed products may have free trials or free versions, but others require payment."
   val para3 = "We recommend that you visit software providers’ websites to do more research before choosing a product."
