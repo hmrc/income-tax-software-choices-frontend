@@ -15,30 +15,26 @@
  *@
 
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.viewmodels.SoftwareChoicesResultsViewModel
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.SoftwareVendorsIntentTemplate
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.SoftwareVendorsFindTemplate
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.SoftwareVendorsViewAllTemplate
 
 @this(
-    govukInsetText: GovukInsetText,
-        softwareVendorsIntentTemplate: SoftwareVendorsIntentTemplate
+        softwareVendorsFindTemplate: SoftwareVendorsFindTemplate,
+        softwareVendorsViewAllTemplate: SoftwareVendorsViewAllTemplate
 )
 
 @(viewModel: SoftwareChoicesResultsViewModel)(implicit messages: Messages)
 
-@count = @{viewModel.vendorsWithIntent.length}
-
 <div id="vendor-count" class="govuk-!-padding-top-3">
-    @{
-        count match {
-            case 0 => <h2 class="govuk-heading-l">{messages("search-software.vendor-count.intent.heading.none")}</h2>
-            case 1 => <h2 class="govuk-heading-l">{messages("search-software.vendor-count.intent.heading.one")}</h2>
-            case _ => <h2 class="govuk-heading-l">{messages("search-software.vendor-count.intent.heading.many", count)}</h2>
-        }
-    }
-
+    <h2 class="govuk-heading-l">@{messages("search-software.vendor-count.heading")}</h2>
 </div>
 
-@if(count > 0) {
-    <div id="software-vendor-list">
-        @softwareVendorsIntentTemplate(viewModel.vendorsWithIntent)
-    </div>
-}
+<div id="software-vendor-list">
+    @{
+        (viewModel.isUnguided, viewModel.vendorsWithIntent.length) match {
+            case (true, _) => softwareVendorsViewAllTemplate(viewModel.vendorsWithIntent)
+            case (false, x) if x > 0 => softwareVendorsFindTemplate(viewModel.vendorsWithIntent)
+            case (false, _) =>
+        }
+    }
+</div>

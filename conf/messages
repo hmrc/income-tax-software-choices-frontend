@@ -110,8 +110,8 @@ search-software.p4           = Results have been put in random order to ensure f
 search-software.check-answers                             = Change answers
 search-software.skip-to-results                           = Skip to results
 
-search-software.filters.heading = Filter options
-search-software.filters.paragraph = You can use filters to find specific software. All fields are optional.
+search-software.filters.heading = Filter software
+search-software.filters.paragraph = You can use the filters to refine your results.
 search-software.filters.pricing = Price
 search-software.filters.user-type = User type
 search-software.filters.software-for = Type of software
@@ -126,13 +126,7 @@ search-software.filters.readiness = Software readiness
 
 search-software.intent.vendor-visit-link        = Find out what {0} provide now and what they’re developing
 
-search-software.vendor-count.unguided.heading.many     = Based on your answers, we’ve found {0} results
-search-software.vendor-count.unguided.heading.one      = Based on your answers, we’ve found 1 result
-search-software.vendor-count.unguided.heading.none     = Based on your answers, there are no results
-
-search-software.vendor-count.intent.heading.many    = Based on your filters and answers, we’ve found {0} results
-search-software.vendor-count.intent.heading.one     = Based on your filters and answers, we’ve found 1 result
-search-software.vendor-count.intent.heading.none    = Based on your filters and answers, there are no results
+search-software.vendor-count.heading = Software results based on your answers and  filters
 
 search-software.vendor-detail.language-features.welsh = Welsh
 

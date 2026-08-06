@@ -105,6 +105,9 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
       Jsoup.parse(page(model).body)
     }
     val filterSection = getFilterSection(document)
+    println("start of filterSection")
+    println(filterSection.html())
+    println("start of filterSection")
 
     "has a role attribute to identify it as a search landmark" in {
       filterSection.attr("role") shouldBe "search"
@@ -118,14 +121,18 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
       filterSection.selectHead("p").text shouldBe SearchSoftwareWithIntentPageContent.Filters.filterParagraph
     }
 
-    "has a clear filters link" in {
-      filterSection.selectHead("a").text shouldBe SearchSoftwareWithIntentPageContent.Filters.clearFilters
+    "has 2 clear filters links" in {
+      val anchorElements = filterSection.select("a")
+      anchorElements.size() shouldBe 2
+      anchorElements.get(0).text shouldBe SearchSoftwareWithIntentPageContent.Filters.clearFilters
+      anchorElements.get(1).text shouldBe SearchSoftwareWithIntentPageContent.Filters.clearFilters
     }
 
-    "has a apply button section" that {
-      "contains an apply filters button" in {
-        filterSection.selectHead(".apply-filters-button").text shouldBe SearchSoftwareWithIntentPageContent.Filters.applyFilters
-      }
+    "has 2 apply filters buttons" in {
+      val applyFiltersButtons = filterSection.select(".apply-filters-button")
+      applyFiltersButtons.size() shouldBe 2
+      applyFiltersButtons.get(0).text shouldBe SearchSoftwareWithIntentPageContent.Filters.applyFilters
+      applyFiltersButtons.get(1).text shouldBe SearchSoftwareWithIntentPageContent.Filters.applyFilters
     }
 
     "has a pricing section" that {
@@ -631,7 +638,7 @@ object SearchSoftwareWithIntentViewSpec extends ViewSpec {
 
   def getCheckboxGroup(document: Document, n: Int): Element = {
     getFilterSection(document)
-      .selectNth(".govuk-form-group", n)
+      .select(".govuk-form-group").get(n)
       .selectNth(".govuk-fieldset", 1)
   }
 
@@ -654,8 +661,8 @@ private object SearchSoftwareWithIntentPageContent {
   val exitSurveyLink = "http://localhost:9514/feedback/SOFTWAREMTDIT?useServiceNavigation"
 
   object Filters {
-    val filterHeading = "Filter options"
-    val filterParagraph = "You can use filters to find specific software. All fields are optional."
+    val filterHeading = "Filter software"
+    val filterParagraph = "You can use the filters to refine your results."
     val clearFilters = "Clear filters"
     val userType = "User type"
     val pricing = "Price"
