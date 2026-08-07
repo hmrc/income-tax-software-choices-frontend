@@ -194,3 +194,8 @@ legend.govuk-hidden {
     padding: 10px;
     display: inline-block;
 }
+
+.table-scroll-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}

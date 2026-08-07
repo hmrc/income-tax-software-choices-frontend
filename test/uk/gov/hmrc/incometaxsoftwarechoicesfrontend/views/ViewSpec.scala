@@ -75,7 +75,8 @@ trait ViewSpec extends AnyWordSpecLike with Matchers with GuiceOneAppPerSuite {
 
     def getForm: Element = element.selectHead("form")
 
-    def getTable(index: Int): Element = selectHead(s".govuk-table:nth-of-type($index)")
+    def getTable(index: Int): Element = selectSeq(".govuk-table").lift(index - 1)
+      .getOrElse(fail(s"No table found at index: $index"))
 
     def getSummaryList: Element = element.selectHead("dl.govuk-summary-list")
 
