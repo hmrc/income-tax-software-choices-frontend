@@ -22,6 +22,9 @@
 @import uk.gov.hmrc.hmrcfrontend.views.viewmodels.newtablinkhelper.NewTabLinkHelper
 @import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcAccessibleAutocompleteCss
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.TimeoutType.{Manual, Timeout}
+@import uk.gov.hmrc.webchat.client.WebChatClient
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.DigitalAssistant
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 
 @this(
     hmrcStandardPage: HmrcStandardPage,
@@ -30,10 +33,12 @@
     hmrcReportTechnicalIssueHelper: HmrcReportTechnicalIssueHelper,
     hmrcTimeoutDialogHelper: HmrcTimeoutDialogHelper,
     hmrcNewTabLinkHelper: HmrcNewTabLinkHelper,
-    autocompleteCss: HmrcAccessibleAutocompleteCss
+    autocompleteCss: HmrcAccessibleAutocompleteCss,
+    webChatClient: WebChatClient,
+    featureSwitching: FeatureSwitching
 )
 
-@(title: String, backLink: Option[String] = None, optForm: Option[Form[_]] = None, scripts: Option[Html] = None, isFullWidth: Boolean = false, showTimeoutDialog: Boolean = true)(contentBlock: Html)(implicit request: RequestHeader, messages: Messages)
+@(title: String, backLink: Option[String] = None, optForm: Option[Form[_]] = None, scripts: Option[Html] = None, isFullWidth: Boolean = false, showTimeoutDialog: Boolean = true, showDigitalAssistant: Boolean = true)(contentBlock: Html)(implicit request: RequestHeader, messages: Messages)
 
 @prefixedTitle = @{
   optForm match {
@@ -95,6 +100,9 @@
 
     @hmrcReportTechnicalIssueHelper()
 
+    @if(featureSwitching.isEnabled(DigitalAssistant) && showDigitalAssistant) {
+        @digitalAssistant
+    }
 }
 
 @customBanner = @{
@@ -110,4 +118,13 @@
             ))}"
         )
     )
+}
+
+@digitalAssistant = {
+    <div id="HMRC_CIAPI_Anchored_1" aria-live="polite" role="alert">
+        Checking Digital Assistant availability.
+    </div>
+
+    @{webChatClient.loadRequiredElements()(request.asInstanceOf[Request[AnyContent]])}
+    @{webChatClient.loadHMRCChatSkinElement("popup", "HMRC_CIAPI_Anchored_1")(request.asInstanceOf[Request[AnyContent]])}
 }

@@ -21,7 +21,7 @@ import play.api.http.HeaderNames.CACHE_CONTROL
 import play.api.http.Status.INTERNAL_SERVER_ERROR
 import play.api.i18n.MessagesApi
 import play.api.mvc.Results.{InternalServerError, NotFound}
-import play.api.mvc.{RequestHeader, Result}
+import play.api.mvc.{AnyContentAsEmpty, Request, RequestHeader, Result}
 import play.twirl.api.Html
 import uk.gov.hmrc.http.{HttpException, NotFoundException}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.InconsistentDataView
@@ -41,7 +41,7 @@ class ErrorHandler @Inject()(val messagesApi: MessagesApi,
     Future.successful(errorTemplate(pageTitle, heading, message))
   }
 
-  def inconsistentDataError(implicit request: RequestHeader): Future[Html] =
+  def inconsistentDataError(implicit request: Request[_]): Future[Html] =
     Future.successful(
       inconsistentDataView()
     )
@@ -50,7 +50,7 @@ class ErrorHandler @Inject()(val messagesApi: MessagesApi,
     ex match {
       case _: SCInconsistentDataException =>
         logger.error(s"[ErrorHandler][resolveError] Inconsistent Data Error, (${rh.method})(${rh.uri})" + ex.getMessage, ex)
-        inconsistentDataError(rh)
+        inconsistentDataError(Request(rh, AnyContentAsEmpty))
           .map(html => InternalServerError(html).withHeaders(CACHE_CONTROL -> "no-cache"))
       case _: NotFoundException =>
         notFoundTemplate(rh) map { html =>
