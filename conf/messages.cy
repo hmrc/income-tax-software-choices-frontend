@@ -109,8 +109,8 @@ search-software.p4                                        = Mae’r canlyniadau 
 search-software.check-answers                             = Gwirio atebion
 search-software.skip-to-results                           = Ewch yn syth i’r canlyniadau
 
-search-software.filters.heading = Opsiynau hidlo
-search-software.filters.paragraph = Gallwch ddefnyddio hidlyddion er mwyn dod o hyd i feddalwedd benodol. Mae pob maes yn ddewisol.
+search-software.filters.heading = Hidlo meddalwedd
+search-software.filters.paragraph = Gallwch ddefnyddio’r hidlyddion i fireinio’ch canlyniadau.
 search-software.filters.pricing = Pris
 search-software.filters.user-type = Math o ddefnyddiwr
 search-software.filters.software-for = Math o feddalwedd
@@ -125,13 +125,7 @@ search-software.filters.clear-filters = Clirio hidlyddion
 
 search-software.intent.vendor-visit-link        = Dysgwch beth mae {0} yn ei ddarparu ar hyn o bryd, a’r hyn sy’n cael ei ddatblygu ganddynt
 
-search-software.vendor-count.unguided.heading.many     = Yn seiliedig ar eich atebion, rydym wedi dod o hyd i {0} canlyniad
-search-software.vendor-count.unguided.heading.one      = Yn seiliedig ar eich atebion, rydym wedi dod o hyd i 1 canlyniad
-search-software.vendor-count.unguided.heading.none     = Yn seiliedig ar eich atebion, nid oes unrhyw ganlyniad
-
-search-software.vendor-count.intent.heading.many    = Yn seiliedig ar eich hidlyddion ac atebion, rydym wedi dod o hyd i {0} canlyniad
-search-software.vendor-count.intent.heading.one     = Yn seiliedig ar eich hidlyddion ac atebion, rydym wedi dod o hyd i 1 canlyniad
-search-software.vendor-count.intent.heading.none    = Yn seiliedig ar eich hidlyddion ac atebion, nid oes unrhyw ganlyniad
+search-software.vendor-count.heading = Canlyniadau meddalwedd yn seiliedig ar eich atebion a’ch hidlyddion
 
 search-software.vendor-detail.pricing = Pris
 search-software.vendor-detail.pricing.free-version = Fersiwn am ddim

@@ -32,8 +32,7 @@
   mainTemplate: MainTemplate,
   hmrcNewTabLinkHelper: HmrcNewTabLinkHelper,
   softwareFiltersTemplate: SoftwareFiltersTemplate,
-  softwareVendorsIntentResultsTemplate: SoftwareVendorsIntentResultsTemplate,
-  softwareVendorsUnguidedTemplate: SoftwareVendorsUnguidedTemplate,
+  softwareVendorsResultsTemplate: SoftwareVendorsResultsTemplate,
   form: FormWithCSRF,
   govukButton: GovukButton,
   languageUtils: LanguageUtils
@@ -49,6 +48,18 @@
     } else {
         messages("search-software.heading.many", count)
     }
+}
+
+@applyFiltersGroup = {
+<div class="govuk-button-group govuk-!-padding-top-0 apply-filters-group">
+    @govukButton(Button(
+    classes = "apply-filters-button govuk-!-display-none-print",
+    content = Text(messages("search-software.filters.apply-filters")),
+    ))
+    <p class="govuk-body">
+        <a class="govuk-link govuk-!-display-none-print" href="@clearAction.url">@messages("search-software.filters.clear-filters")</a>
+    </p>
+</div>
 }
 
 @mainTemplate(title = title, backLink = Some(backUrl), optForm = Some(searchForm), isFullWidth = true) {
@@ -93,26 +104,16 @@
 
           <p class="govuk-body">@messages("search-software.filters.paragraph")</p>
 
+          @applyFiltersGroup
+
           @softwareFiltersTemplate(searchForm(FiltersForm.filters), viewModel.isUnguided)
 
-          <div class="govuk-button-group govuk-!-padding-top-0 apply-filters-group">
-            @govukButton(Button(
-              classes = "apply-filters-button govuk-!-display-none-print",
-              content = Text(messages("search-software.filters.apply-filters")),
-            ))
-            <p class="govuk-body">
-              <a class="govuk-link govuk-!-display-none-print" href="@clearAction.url">@messages("search-software.filters.clear-filters")</a>
-            </p>
-          </div>
+          @applyFiltersGroup
         </div>
       </div>
 
     <div class="govuk-grid-column-two-thirds">
-        @if(viewModel.isUnguided) {
-            @softwareVendorsUnguidedTemplate(viewModel)
-        } else {
-            @softwareVendorsIntentResultsTemplate(viewModel)
-        }
+        @softwareVendorsResultsTemplate(viewModel)
     </div>
     }
   </div>
