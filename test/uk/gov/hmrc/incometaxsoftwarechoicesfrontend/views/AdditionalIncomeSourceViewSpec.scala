@@ -61,7 +61,7 @@ class AdditionalIncomeSourceViewSpec extends ViewSpec  with BeforeAndAfterEach {
       }
     }
 
-    "there is no error (partner income, trust income and foster care feature switch is OFF)" must {
+    "there is no error" must {
 
       "have a title" in {
         document().title() shouldBe AdditionalIncomeSourcesPageContent.title

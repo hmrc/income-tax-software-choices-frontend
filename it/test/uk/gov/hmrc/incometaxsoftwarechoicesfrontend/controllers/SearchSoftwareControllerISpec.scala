@@ -60,7 +60,7 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
       }
     }
     "display the page" when {
-      "there is data present in the database for this Individual user and Check feature not enabled" in {
+      "there is data present in the database for this Individual user" in {
         setupAnswers(SessionId, None)
 
         val response = SoftwareChoicesFrontend.getSoftwareResults
