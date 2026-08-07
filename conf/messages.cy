@@ -82,7 +82,7 @@ other-items.high-income-child-benefit-charge = Tâl Treth Budd-dal Plant Incwm U
 other-items.none-of-these = Dim un o’r rhain
 
 other-items.error.non-empty = Dewiswch eitemau y mae angen i chi eu cyflwyno gyda’ch Ffurflen Dreth neu dewiswch ‘dim o’r rhain’
-other-items.error.invalid-selection = Dewiswch un eitem arall, eitemau eraill, neu ‘dim un o’r rhain’
+other-items.error.invalid-selection = Dewiswch eitemau neu dewiswch ‘dim un o’r rhain’
 
 # Check Your Answers view
 check-your-answers.guided-heading                      = Gwiriwch eich atebion cyn edrych ar feddalwedd sy’n cydweddu
@@ -268,7 +268,7 @@ additional.income.source-foreign-dividends                          = Difidendau
 additional.income.source-foreign-interest                           = Llog tramor
 additional.income.source-none                                       = Dim un o’r rhain
 additional.income.source.error-non-empty                            = Dewiswch incwm y mae angen i chi ei gyflwyno yn eich Ffurflen Dreth neu dewiswch ‘dim un o’r rhain’
-additional.income.source.error-none-only                            = Dewiswch naill ai math o incwm, mathau o incwm, neu ‘dim un o’r rhain’
+additional.income.source.error-none-only                            = Dewiswch incwm neu dewiswch ‘dim un o’r rhain’
 
 timeout.title = Er eich diogelwch
 timeout.message = Byddwn yn dileu’ch atebion mewn

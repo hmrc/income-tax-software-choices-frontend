@@ -82,7 +82,7 @@ other-items.high-income-child-benefit-charge = High Income Child Benefit Charge
 other-items.none-of-these = None of these
 
 other-items.error.non-empty = Select items you need to submit with your tax return or select ‘none of these’
-other-items.error.invalid-selection = Select one other item, other items, or ‘none of these’
+other-items.error.invalid-selection = Select items or select ‘none of these’
 
 # Check Your Answers view
 check-your-answers.guided-heading                      = Check your answers before viewing compatible software
@@ -268,7 +268,7 @@ additional.income.source-foreign-dividends                          = Foreign di
 additional.income.source-foreign-interest                           = Foreign interest
 additional.income.source-none                                       = None of these
 additional.income.source.error-non-empty                            = Select income you need to submit in your tax return or select ‘none of these’
-additional.income.source.error-none-only                            = Select either an income type, income types, or ‘none of these’
+additional.income.source.error-none-only                            = Select income or select ‘none of these’
 
 timeout.title = For your security
 timeout.message = We will delete your answers in

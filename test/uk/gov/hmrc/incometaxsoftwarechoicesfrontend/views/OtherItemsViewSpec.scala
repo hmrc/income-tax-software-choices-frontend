@@ -20,11 +20,10 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.{Document, Element}
 import play.api.data.FormError
 import play.twirl.api.HtmlFormat
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.OtherItemsForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.OtherItemsView
 
-class OtherItemsViewSpec extends ViewSpec with FeatureSwitching {
+class OtherItemsViewSpec extends ViewSpec {
 
   private val view = app.injector.instanceOf[OtherItemsView]
   private val SoftwareName = "Bright"
@@ -54,7 +53,7 @@ class OtherItemsViewSpec extends ViewSpec with FeatureSwitching {
       }
     }
 
-    "there is no error (without Averaging Adjustment feature OFF)" must {
+    "there is no error" must {
       val document: Document = Jsoup.parse(page().body)
 
       "have a title" in {

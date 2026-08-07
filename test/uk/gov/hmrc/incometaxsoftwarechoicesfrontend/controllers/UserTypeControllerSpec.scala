@@ -24,7 +24,6 @@ import play.api.test.Helpers.{HTML, await, contentType, defaultAwaitTimeout, red
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.SCInconsistentDataException
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.mocks.{MockRequireUserDataRefiner, MockSessionIdentifierAction}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.UserTypeForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.*
@@ -39,7 +38,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.UserTypeView
 
 import scala.concurrent.Future
 
-class UserTypeControllerSpec extends ControllerBaseSpec with MockSessionIdentifierAction with MockRequireUserDataRefiner with FeatureSwitching{
+class UserTypeControllerSpec extends ControllerBaseSpec with MockSessionIdentifierAction with MockRequireUserDataRefiner {
 
   private val recognisedProduct = SoftwareProduct(3, "Vendor 03", Recognised)
   private val userAnswers: UserAnswers = UserAnswers()

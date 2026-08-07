@@ -19,7 +19,6 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 import org.scalatest.BeforeAndAfterEach
 import play.api.http.Status.{BAD_REQUEST, OK, SEE_OTHER}
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.SessionId
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, DatabaseHelper}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.*
@@ -30,7 +29,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
 
-class UserTypeControllerISpec extends ComponentSpecBase with BeforeAndAfterEach with DatabaseHelper with FeatureSwitching {
+class UserTypeControllerISpec extends ComponentSpecBase with BeforeAndAfterEach with DatabaseHelper {
 
   def testUserFilters(answers: UserAnswers): UserFilters = UserFilters(SessionId, Some(answers))
 
