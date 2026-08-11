@@ -43,5 +43,5 @@ object FeatureSwitch {
     override val key = "explicit-audits"
     override val displayText = "Explicit audits"
   }
-  
+
 }
