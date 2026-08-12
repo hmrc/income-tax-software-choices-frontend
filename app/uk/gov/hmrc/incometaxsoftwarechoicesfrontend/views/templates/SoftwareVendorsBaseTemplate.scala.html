@@ -1,0 +1,144 @@
+@*
+* Copyright 2026 HM Revenue & Customs
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*     http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*@
+
+@import uk.gov.hmrc.govukfrontend.views.html.components._
+@import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus._
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes.ProductDetailsController
+
+@this(
+govukSummaryList: GovukSummaryList
+)
+
+@(
+vendor: SoftwareVendorModel,
+index: Int,
+renderSubmissionType: Boolean = false,
+quarterlyTagOpt: Option[(String, String)] = None, // Some((contentKey, colourClass))
+eoyTagOpt: Option[(String, String)] = None        // Some((contentKey, colourClass))
+)(implicit messages: Messages)
+
+@summaryListRow(key: String, value: Content) = @{
+SummaryListRow(
+key = Key(content = Text(key)),
+value = Value(content = value)
+)
+}
+
+@tag(content: String, colour: String) = @{
+HtmlContent(s"""<strong class="govuk-tag ${colour}" style="max-width: 100%;">${content}</strong>""")
+}
+
+@customSummaryListRow(key: String, filtersAvailable: Seq[VendorFilter]) = @{
+val value: String = filtersAvailable
+.sortBy(_.priority)
+.map(filter => messages(s"search-software.vendor-detail.$key.${filter.key}"))
+.mkString(", ")
+
+if(value.nonEmpty) {
+Some(summaryListRow(
+key = messages(s"search-software.vendor-detail.$key"),
+value = Text(value)
+))
+} else {
+None
+}
+}
+
+@softwareVendorPricing(vendor: SoftwareVendorModel) = @{
+val key: String = messages("search-software.vendor-detail.pricing")
+val freeVersion = if(vendor.getFeatureStatus(FreeVersion).eq(Available)) Some(messages("search-software.vendor-detail.pricing.free-version")) else Some(messages("search-software.vendor-detail.pricing.no-free-version"))
+val value = Seq(freeVersion).flatten.mkString("/")
+
+Some(summaryListRow(
+key = key,
+value = Text(value)
+))
+}
+
+@softwareVendorSuitableFor(vendor: SoftwareVendorModel) = @{
+customSummaryListRow(
+key = "suitable-for",
+filtersAvailable = vendor.orderedFilterSubset(VendorFilterGroups.suitableForFilters)
+.filter(_._2.eq(Available))
+.map(_._1).toSeq
+)
+}
+
+@softwareVendorSoftwareFor(vendor: SoftwareVendorModel) = @{
+customSummaryListRow(
+key = "software-for",
+filtersAvailable = vendor.orderedFilterSubset(VendorFilterGroups.softwareForFilters)
+.filter(_._2.eq(Available))
+.map(_._1).toSeq
+)
+}
+
+@softwareSubmissionType(vendor: SoftwareVendorModel) = @{
+customSummaryListRow(
+key = "submission-type",
+filtersAvailable = vendor.orderedFilterSubset(VendorFilterGroups.submissionTypeFilters)
+.filter(_._2.eq(Available))
+.map(_._1).toSeq
+)
+}
+
+@orderedRows = @{
+val submissionTypeRow = if(renderSubmissionType) softwareSubmissionType(vendor) else None
+
+val quarterlyReadyRow = quarterlyTagOpt.map {
+case (contentKey, colour) =>
+summaryListRow(
+key = messages("search-software.vendor-detail.quarterly-ready"),
+value = tag(messages(contentKey), colour)
+)
+}
+
+val eoyRow = eoyTagOpt.map {
+case (contentKey, colour) =>
+summaryListRow(
+key = messages("search-software.vendor-detail.eoy-tax-return"),
+value = tag(messages(contentKey), colour)
+)
+}
+
+Seq(
+softwareVendorPricing(vendor),
+softwareVendorSoftwareFor(vendor),
+submissionTypeRow,
+softwareVendorSuitableFor(vendor),
+quarterlyReadyRow,
+eoyRow
+).flatten
+}
+
+<hr class="govuk-section-break govuk-section-break--visible" aria-hidden="true">
+<div id="software-vendor-@index">
+    <h3 class="govuk-heading-m software-vendor-list-heading-override">
+        @vendor.name
+    </h3>
+    @govukSummaryList(SummaryList(
+    rows = orderedRows,
+    classes = "govuk-summary-list--no-border"
+    ))
+    <p class="govuk-body">
+        <a href="@{ProductDetailsController.show(vendor.productId.toString)}" class="govuk-link">
+            @messages("search-software.intent.vendor-visit-link", vendor.name)
+        </a>
+    </p>
+</div>
