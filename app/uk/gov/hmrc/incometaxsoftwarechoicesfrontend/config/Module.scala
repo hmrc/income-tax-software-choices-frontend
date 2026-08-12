@@ -17,7 +17,6 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config
 
 import com.google.inject.AbstractModule
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.{FeatureSwitching, FeatureSwitchingImpl}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.SoftwareChoicesService
 
@@ -28,6 +27,5 @@ class Module extends AbstractModule {
     bind(classOf[SoftwareChoicesService]).asEagerSingleton()
     bind(classOf[UserFiltersRepository]).asEagerSingleton()
     bind(classOf[Clock]).toInstance(Clock.systemDefaultZone.withZone(ZoneOffset.UTC))
-    bind(classOf[FeatureSwitching]).to(classOf[FeatureSwitchingImpl]).asEagerSingleton()
   }
 }
