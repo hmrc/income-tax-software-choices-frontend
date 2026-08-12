@@ -23,7 +23,7 @@ import org.scalatestplus.play.PlaySpec
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.Configuration
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.*
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.{AccountingPeriodSelectionControlsUpdate, TestFeature}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.TestFeature
 
 class FeatureSwitchingSpec extends PlaySpec with FeatureSwitching with BeforeAndAfterEach with GuiceOneAppPerSuite {
 
@@ -55,16 +55,6 @@ class FeatureSwitchingSpec extends PlaySpec with FeatureSwitching with BeforeAnd
     "return false if Test feature switch is disabled in sys.props" in {
       disable(TestFeature)
       isEnabled(TestFeature) mustBe false
-    }
-
-    "return true if the accounting period switch is enabled in sys.props" in {
-      enable(AccountingPeriodSelectionControlsUpdate)
-      isEnabled(AccountingPeriodSelectionControlsUpdate) mustBe true
-    }
-
-    "return false if accounting period switch is disabled in sys.props" in {
-      disable(AccountingPeriodSelectionControlsUpdate)
-      isEnabled(AccountingPeriodSelectionControlsUpdate) mustBe false
     }
 
     "return false if Test feature switch does not exist" in {
