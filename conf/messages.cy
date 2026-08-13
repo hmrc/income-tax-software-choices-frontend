@@ -122,6 +122,8 @@ search-software.filters.accessibility = Nodweddion hygyrchedd
 search-software.filters.extra-features = Nodweddion ychwanegol
 search-software.filters.language-features = Iaith
 search-software.filters.readiness = Parodrwydd y Feddalwedd
+search-software.filters.software-application-type = Math o raglen meddalwedd
+search-software.filters.accounting-period = Cyfnod cyfrifyddu
 
 search-software.filters.apply-filters = Rhoi hidlyddion ar waith
 search-software.filters.clear-filters = Clirio hidlyddion
@@ -146,7 +148,9 @@ search-software.vendor-detail.submission-type.tax-return = Ffurfleni Treth
 
 search-software.vendor-detail.software-for = Math o feddalwedd
 search-software.vendor-detail.software-for.record-keeping = Meddalwedd sy’n creu cofnodion digidol
-search-software.vendor-detail.software-for.bridging = Meddalwedd sy’n cysylltu â’ch cofnodion (meddalwedd pontio)
+search-software.vendor-detail.software-for.record-keeping.hint = <ul class="govuk-list govuk-list--bullet" style="color: #505a5f;"><li>yn cofnodi incwm a threuliau’n uniongyrchol<li>yn anfon diweddariadau i CThEF
+search-software.vendor-detail.software-for.bridging = Meddalwedd sy’n pontio sy’n cysylltu â chofnodion
+search-software.vendor-detail.software-for.bridging.hint = Yn cysylltu cofnodion taenlen â CThEF ar gyfer cyflwyno digidol
 
 search-software.vendor-detail.quarterly-ready = Diweddariadau chwarterol
 search-software.vendor-detail.quarterly-ready.ready = Yn barod nawr
@@ -171,6 +175,21 @@ search-software.vendor-detail.extra-features.hmrc-assist = HMRC Assist (Adborth 
 search-software.vendor-detail.language-features.welsh = Cymraeg
 
 search-software.vendor-detail.readiness.fully-ready = Yn barod ar gyfer diweddariadau chwarterol a Ffurflen Dreth
+
+search-software.vendor-detail.software-application-type = Math o raglen meddalwedd
+search-software.vendor-detail.software-application-type.web-browser = Ar-lein mewn porwr gwe (pob system)
+search-software.vendor-detail.software-application-type.microsoft-windows = Ap bwrdd gwaith (Microsoft Windows)
+search-software.vendor-detail.software-application-type.mac-os = Ap bwrdd gwaith (Mac OS)
+search-software.vendor-detail.software-application-type.linux = Ap bwrdd gwaith (Linux)
+search-software.vendor-detail.software-application-type.android = Ap ffôn symudol (Android)
+search-software.vendor-detail.software-application-type.apple-ios = Ap ffôn symudol (Apple iOS)
+
+search-software.vendor-detail.accounting-period = Cyfnod cyfrifyddu
+search-software.vendor-detail.accounting-period.standard-update-periods = 6 Ebrill i 5 Ebrill
+search-software.vendor-detail.accounting-period.calendar-update-periods = 1 Ebrill i 31 Mawrth
+search-software.vendor-detail.accounting-period.calendar-update-periods.hint = Mae’r feddalwedd yn cefnogi cyfnodau diweddaru calendr. Bydd hyn yn ei gwneud hi’n haws i chi gadw cofnodion.
+search-software.vendor-detail.accounting-period.non-standard-update-periods = Cyfnod cyfrifyddu gwahanol
+search-software.vendor-detail.accounting-period.non-standard-update-periods.hint = Mae meddalwedd yn cefnogi cyfnodau cyfrifyddu eraill. Mae angen i chi wneud addasiadau yn eich meddalwedd.
 
 # Product details page
 
