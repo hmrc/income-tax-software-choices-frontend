@@ -29,7 +29,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.AccountingPeriodV
 class AccountingPeriodViewSpec extends ViewSpec {
 
   private val view = app.injector.instanceOf[AccountingPeriodView]
-  private val formError = FormError(AccountingPeriodForm.fieldName, "accounting-period.error")
+  private val formError = FormError(AccountingPeriodForm.formKey, "accounting-period.error")
   private val SoftwareName = "Bright"
 
   def page(hasError: Boolean = false): HtmlFormat.Appendable = {
@@ -70,6 +70,18 @@ class AccountingPeriodViewSpec extends ViewSpec {
         document().mainContent.selectHead("span.govuk-caption-l").text() shouldBe SoftwareName
       }
 
+      "have a heading" in {
+        document().mainContent.selectHead("h1").text() shouldBe AccountingPeriodContent.heading
+      }
+
+      "have a secondary heading" in {
+        document().mainContent.selectNth("h1", 2).text() shouldBe AccountingPeriodContent.legend
+      }
+
+      "have paragraph two" in {
+        document().mainContent.select("p").get(1).text mustBe AccountingPeriodContent.paraTwo
+      }
+
       "have a form" which {
         def form: Element = document().mainContent.selectHead("form")
 
@@ -78,54 +90,71 @@ class AccountingPeriodViewSpec extends ViewSpec {
           form.attr("action") shouldBe testCall.url
         }
 
-        "render the radio inputs" in {
-          document().mainContent.mustHaveRadioInput(
-            selector = "fieldset"
-          )(
-            name = AccountingPeriodForm.fieldName,
+        "has a hint" in {
+          val fieldSet = form.selectHead("fieldset")
+          val hint = fieldSet.selectHead(".govuk-hint")
+          hint.text shouldBe AccountingPeriodContent.hint
+          fieldSet.attr("aria-describedby") should include(hint.attr("id"))
+        }
+
+        "has a checkbox for sixth-april-to-fifth-april" in {
+          form.mustHaveCheckbox("fieldSet")(
+            checkbox = 1,
             legend = AccountingPeriodContent.legend,
             isHeading = false,
             isLegendHidden = true,
-            hint = None,
-            errorMessage = None,
-            Seq(
-              RadioItem(
-                content = Text(AccountingPeriodContent.sixthToFifth),
-                value = Some(AccountingPeriod.SixthAprilToFifthApril.key)
-              ),
-              RadioItem(
-                content = Text(AccountingPeriodContent.firstToThirtyFirst),
-                value = Some(AccountingPeriod.FirstAprilToThirtyFirstMarch.key),
-              ),
-              RadioItem(
-                divider = Some(AccountingPeriodContent.or)
-              ),
-              RadioItem(
-                content = Text(AccountingPeriodContent.neither),
-                value = Some(AccountingPeriod.OtherAccountingPeriod.key),
-              )
-            )
+            name = s"${AccountingPeriodForm.formKey}[]",
+            label = AccountingPeriodContent.sixthToFifth,
+            value = "sixth-april-to-fifth-april"
           )
         }
 
-        "have a continue button" in {
-          form.selectNth(".govuk-button", 1).text() mustBe AccountingPeriodContent.continue
+        "has a checkbox for first-april-to-thirty-first-march" in {
+          form.mustHaveCheckbox("fieldSet")(
+            checkbox = 2,
+            legend = AccountingPeriodContent.legend,
+            isHeading = false,
+            isLegendHidden = true,
+            name = s"${AccountingPeriodForm.formKey}[]",
+            label = AccountingPeriodContent.firstToThirtyFirst,
+            value = "first-april-to-thirty-first-march"
+          )
+        }
+
+        "has a checkbox for other" in {
+          form.mustHaveCheckbox("fieldSet")(
+            checkbox = 3,
+            legend = AccountingPeriodContent.legend,
+            isHeading = false,
+            isLegendHidden = true,
+            name = s"${AccountingPeriodForm.formKey}[]",
+            label = AccountingPeriodContent.other,
+            value = "other",
+            isExclusive = true
+          )
+        }
+
+        "has a continue button" in {
+          form.selectNth(".govuk-button", 1).text() shouldBe AccountingPeriodContent.continue
         }
       }
     }
   }
 }
 
+
 private object AccountingPeriodContent {
-  val title = s"What accounting period do you use? - ${PageContentBase.title} - GOV.UK"
+  val title = s"Accounting period - ${PageContentBase.title} - GOV.UK"
+  val heading = "Accounting period"
   val legend = "What accounting period do you use?"
   val paraOne = "If your accounting period is 1 April to 31 March, you’ll need software that supports calendar update periods (opens in new tab). This will make keeping records simpler."
+  val paraTwo = "You can also select the accounting period you expect to use in the future, so we can recommend software that meets your needs."
   val linkText = "calendar update periods (opens in new tab)"
   val linkHref = "https://www.gov.uk/guidance/use-making-tax-digital-for-income-tax/send-quarterly-updates#using-calendar-update-periods"
+  val hint = "Select all that apply"
   val sixthToFifth = "6 April to 5 April"
   val firstToThirtyFirst = "1 April to 31 March"
-  val or = "or"
-  val neither = "Neither of these"
+  val other = "A different accounting period"
   val continue = "Continue"
-  val error = "Select an accounting period, or select 'neither of these'"
+  val error = "Select an accounting period"
 }

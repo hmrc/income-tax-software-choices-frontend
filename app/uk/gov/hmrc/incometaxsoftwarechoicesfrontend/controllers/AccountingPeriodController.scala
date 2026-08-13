@@ -42,13 +42,13 @@ class AccountingPeriodController @Inject()(view: AccountingPeriodView,
     given Request[AnyContent] = request
 
     val pageAnswers = pageAnswersService.getPageAnswers(request.userFilters.answers, AccountingPeriodPage)
-        Ok(view(
-          accountingPeriodForm = AccountingPeriodForm.accountingPeriodForm.fill(pageAnswers),
-          postAction = routes.AccountingPeriodController.submit(editMode),
-          backUrl = backUrl(editMode),
-          softwareName = getSoftwareName(request.product)
-        ))
-    }
+    Ok(view(
+      accountingPeriodForm = AccountingPeriodForm.accountingPeriodForm.fill(pageAnswers),
+      postAction = routes.AccountingPeriodController.submit(editMode),
+      backUrl = backUrl(editMode),
+      softwareName = getSoftwareName(request.product)
+    ))
+  }
 
   def submit(editMode: Boolean): Action[AnyContent] = (identify andThen requireData).async { request =>
     given Request[AnyContent] = request
@@ -67,12 +67,10 @@ class AccountingPeriodController @Inject()(view: AccountingPeriodView,
           selectedPeriod => {
             pageAnswersService.setPageAnswers(request.userFilters, AccountingPeriodPage, selectedPeriod).flatMap {
               case true =>
-                selectedPeriod match {
-                  case SixthAprilToFifthApril | FirstAprilToThirtyFirstMarch =>
-                    Future.successful(Redirect(routes.CheckYourAnswersController.show()))
-                  case OtherAccountingPeriod =>
-                    Future.successful(Redirect(routes.AccountingPeriodNotAlignedController.show(editMode)))
-                }
+                if (selectedPeriod.contains(OtherAccountingPeriod))
+                  Future.successful(Redirect(routes.AccountingPeriodNotAlignedController.show(editMode)))
+                else
+                  Future.successful(Redirect(routes.CheckYourAnswersController.show()))
               case false => throw new InternalServerException("[AccountingPeriodController][submit] - Could not save accounting period")
             }
           }
