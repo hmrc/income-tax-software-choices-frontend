@@ -74,7 +74,7 @@ object VendorFilter {
   case object Bridging extends VendorFilter {
     override val key: String = "bridging"
     override val priority: Int = 2
-    override val showHint: Boolean = false
+    override val showHint: Boolean = true
     override val auditDescription: String = "bridging"
   }
 
@@ -122,15 +122,22 @@ object VendorFilter {
 
   case object StandardUpdatePeriods extends VendorFilter {
     override val key: String = "standard-update-periods"
-    override val priority: Int = 3
+    override val priority: Int = 1
     override val auditDescription: String = "standardUpdatePeriods"
   }
 
   case object CalendarUpdatePeriods extends VendorFilter {
     override val key: String = "calendar-update-periods"
-    override val priority: Int = 4
+    override val priority: Int = 2
     override val showHint: Boolean = true
     override val auditDescription: String = "calendarUpdatePeriods"
+  }
+
+  case object NonStandardUpdatePeriods extends VendorFilter {
+    override val key: String = "non-standard-update-periods"
+    override val priority: Int = 3
+    override val showHint: Boolean = true
+    override val auditDescription: String = "nonStandardUpdatePeriods"
   }
 
   case object ConstructionIndustryScheme extends VendorFilter {
@@ -279,31 +286,31 @@ object VendorFilter {
 
   case object MicrosoftWindows extends VendorFilter {
     override val key: String = "microsoft-windows"
-    override val priority: Int = 1
+    override val priority: Int = 2
     override val auditDescription: String = "microsoftWindows"
   }
 
   case object MacOS extends VendorFilter {
     override val key: String = "mac-os"
-    override val priority: Int = 2
+    override val priority: Int = 3
     override val auditDescription: String = "macOS"
   }
 
   case object Linux extends VendorFilter {
     override val key: String = "linux"
-    override val priority: Int = 3
+    override val priority: Int = 4
     override val auditDescription: String = "linux"
   }
 
   case object Android extends VendorFilter {
     override val key: String = "android"
-    override val priority: Int = 1
+    override val priority: Int = 5
     override val auditDescription: String = "android"
   }
 
   case object Apple extends VendorFilter {
     override val key: String = "apple-ios"
-    override val priority: Int = 2
+    override val priority: Int = 6
     override val auditDescription: String = "apple"
   }
 
@@ -337,6 +344,7 @@ object VendorFilter {
     TaxReturn,
     StandardUpdatePeriods,
     CalendarUpdatePeriods,
+    NonStandardUpdatePeriods,
     SoleTrader,
     UkProperty,
     OverseasProperty,
@@ -426,6 +434,12 @@ object VendorFilterGroups {
     CalendarUpdatePeriods
   )
 
+  val accountingPeriodFiltersForCheckboxes: Set[VendorFilter] = Set(
+    StandardUpdatePeriods,
+    CalendarUpdatePeriods,
+    NonStandardUpdatePeriods
+  )
+
   val submissionTypeFilters: Set[VendorFilter] = Set(
     QuarterlyUpdates,
     TaxReturn
@@ -473,6 +487,15 @@ object VendorFilterGroups {
     CalendarUpdatePeriods
   )
 
+  val applicationTypeFilters: Set[VendorFilter] = Set(
+    WebBrowser,
+    MicrosoftWindows,
+    MacOS,
+    Linux,
+    Android,
+    Apple
+  )
+
   // product details page groups //
   def featuresProvidedGroup: List[VendorFilter] = List(
     FreeVersion,
@@ -510,11 +533,13 @@ object VendorFilterGroups {
     agentGroup ++
       Seq((pricingFilters, "pricing")) ++
       readinessGroup ++
-      Seq((Set(Bridging), "software-for")) ++
+      Seq((softwareForFilters, "software-for")) ++
       Seq((compatibility, "software-compatibility")) ++
       Seq((accessibilityFilters, "accessibility")) ++
       Seq((languageFeature, "language-features")) ++
-      Seq((extraFeatures, "extra-features"))
+      Seq((extraFeatures, "extra-features")) ++
+      Seq((applicationTypeFilters, "software-application-type")) ++
+      Seq((accountingPeriodFiltersForCheckboxes, "accounting-period"))
   }
 
   val nonMandatedIncomeGroup: List[VendorFilter] = List(
@@ -528,7 +553,11 @@ object VendorFilterGroups {
   val mobileGroup: List[VendorFilter] = List(Android, Apple)
   val languageGroup: List[VendorFilter] = List(English, Welsh)
 
-  val mandatoryFilterGroup: List[VendorFilter] =
+  val mandatoryFilterGroup: List[VendorFilter] = {
+    // TODO : Update Seq(Bridging) below to softwareForFilters?
+    //  Add applicationTypeFilters?
+    //  Update accountingPeriodFilters for accountingPeriodFiltersForCheckboxes?
     businessIncomeGroup ++ userTypeFilters ++ accountingPeriodFilters ++ pricingFilters ++
       compatibility ++ accessibilityFilters ++ Seq(Bridging) ++ extraFeatures ++ languageFilter
+  }
 }
