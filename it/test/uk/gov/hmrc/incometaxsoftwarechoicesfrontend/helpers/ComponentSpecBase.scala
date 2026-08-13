@@ -125,7 +125,7 @@ trait ComponentSpecBase extends AnyWordSpec
       post(s"/accounting-period-check?editMode=$editMode")(body)
     }
 
-    def getUserType(editMode: Boolean = false): WSResponse =  {
+    def getUserType(editMode: Boolean = false): WSResponse = {
       editMode match {
         case true => get("/how-will-you-use-it?editMode=true")
         case false => get("/how-will-you-use-it")
