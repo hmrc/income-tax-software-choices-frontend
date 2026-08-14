@@ -30,15 +30,18 @@ type-of-user.agent                                                = Fel asiant s
 type-of-user.error                                                = Dewiswch a ydych yn unig fasnachwr neu’n landlord, neu’n asiant
 
 ## Accounting period page
-accounting-period.heading                                         = Pa gyfnod cyfrifyddu ydych chi’n ei ddefnyddio?
+accounting-period.heading                                         = Cyfnod cyfrifyddu
 accounting-period.para-one                                        = Os yw’ch cyfnod cyfrifyddu rhwng 1 Ebrill a 31 Mawrth, bydd angen i chi gael meddalwedd sy’n cefnogi {0}.
 accounting-period.para-one-ending                                 = Bydd hyn yn ei gwneud hi’n haws i chi gadw cofnodion.
+accounting-period.para-two                                        = Gallwch hefyd ddewis y cyfnod cyfrifyddu rydych chi’n disgwyl ei ddefnyddio yn y dyfodol, fel y gallwn argymell meddalwedd sy’n diwallu’ch gofynion.
 accounting-period.para-one.link-text                              = cyfnodau diweddaru calendr
 accounting-period.para-one.link-href                              = https://www.gov.uk/guidance/defnyddio-r-cynllun-troi-treth-yn-ddigidol-ar-gyfer-treth-incwm/anfon-diweddariadau-chwarterol#defnyddio-cyfnodau-diweddaru-calendr
 accounting-period.sixth-april-to-fifth-april                      = 6 Ebrill i 5 Ebrill
 accounting-period.first-april-to-thirty-first-march               = 1 Ebrill i 31 Mawrth
-accounting-period.other                                           = Dim un o’r rhain
-accounting-period.error                                           = Dewiswch gyfnod cyfrifyddu, neu dewiswch ‘dim un o’r rhain’
+accounting-period.heading-one                                     = Pa gyfnod cyfrifyddu ydych chi’n ei ddefnyddio?
+accounting-period.hint                                            = Dewiswch bob un sy’n berthnasol
+accounting-period.other                                           = Cyfnod cyfrifyddu gwahanol
+accounting-period.error                                           = Dewiswch gyfnod cyfrifyddu
 
 # Accounting period not aligned view
 accounting-period-not-aligned.heading                               = Nid yw’ch cyfnod cyfrifyddu wedi’i alinio
