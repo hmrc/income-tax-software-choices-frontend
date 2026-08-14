@@ -431,11 +431,6 @@ object VendorFilterGroups {
 
   val accountingPeriodFilters: Set[VendorFilter] = Set(
     StandardUpdatePeriods,
-    CalendarUpdatePeriods
-  )
-
-  val accountingPeriodFiltersForCheckboxes: Set[VendorFilter] = Set(
-    StandardUpdatePeriods,
     CalendarUpdatePeriods,
     NonStandardUpdatePeriods
   )
@@ -539,7 +534,7 @@ object VendorFilterGroups {
       Seq((languageFeature, "language-features")) ++
       Seq((extraFeatures, "extra-features")) ++
       Seq((applicationTypeFilters, "software-application-type")) ++
-      Seq((accountingPeriodFiltersForCheckboxes, "accounting-period"))
+      Seq((accountingPeriodFilters, "accounting-period"))
   }
 
   val nonMandatedIncomeGroup: List[VendorFilter] = List(
@@ -556,7 +551,6 @@ object VendorFilterGroups {
   val mandatoryFilterGroup: List[VendorFilter] = {
     // TODO : Update Seq(Bridging) below to softwareForFilters?
     //  Add applicationTypeFilters?
-    //  Update accountingPeriodFilters for accountingPeriodFiltersForCheckboxes?
     businessIncomeGroup ++ userTypeFilters ++ accountingPeriodFilters ++ pricingFilters ++
       compatibility ++ accessibilityFilters ++ Seq(Bridging) ++ extraFeatures ++ languageFilter
   }
