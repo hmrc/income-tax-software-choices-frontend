@@ -110,6 +110,23 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
           )
           res.body.contains(RecognisedSoftwareProduct.name) shouldBe true
         }
+        "were multiple options" in {
+          val userAnswers = UserAnswers()
+            .set(EnterSoftwareNamePage, RecognisedSoftwareProduct).get
+            .set(AccountingPeriodPage, Seq(SixthAprilToFifthApril, FirstAprilToThirtyFirstMarch)).get
+          setupAnswers(SessionId, Some(userAnswers))
+
+          val res = SoftwareChoicesFrontend.getAccountingPeriod
+
+          res should have(
+            httpStatus(OK),
+            pageTitle(s"${messages("accounting-period.heading")} - ${PageContentBase.title} - GOV.UK"),
+            checkboxSelected("accounting-period", Some(SixthAprilToFifthApril.key)),
+            checkboxSelected("accounting-period-2", Some(FirstAprilToThirtyFirstMarch.key)),
+            checkboxSelected("accounting-period-3", None)
+          )
+          res.body.contains(RecognisedSoftwareProduct.name) shouldBe true
+        }
       }
     }
   }
@@ -151,9 +168,21 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
 
           getPageData(SessionId, AccountingPeriodPage) shouldBe Some(Seq(FirstAprilToThirtyFirstMarch))
         }
+        "the user has selected multiple checkboxes" in {
+          setupAnswers(SessionId, None)
+
+          val res = SoftwareChoicesFrontend.submitAccountingPeriod(Some(Seq(SixthAprilToFifthApril.key, FirstAprilToThirtyFirstMarch.key)))
+
+          res should have(
+            httpStatus(SEE_OTHER),
+            redirectURI(routes.CheckYourAnswersController.show().url)
+          )
+
+          getPageData(SessionId, AccountingPeriodPage) shouldBe Some(Seq(SixthAprilToFifthApril, FirstAprilToThirtyFirstMarch))
+        }
       }
       "redirect to the accounting period not aligned page" when {
-        "the user selected the neither checkbox" in {
+        "the user selected the different accounting period checkbox" in {
           setupAnswers(SessionId, None)
 
           val res = SoftwareChoicesFrontend.submitAccountingPeriod(Some(Seq(OtherAccountingPeriod.key)))
@@ -195,7 +224,7 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
         }
       }
       "redirect to the accounting period not aligned page" when {
-        "the user selected the neither checkbox" in {
+        "the user selected the different accounting period checkbox" in {
           setPageData(SessionId, AccountingPeriodPage, Seq(SixthAprilToFifthApril))
 
           val res = SoftwareChoicesFrontend.submitAccountingPeriod(Some(Seq(OtherAccountingPeriod.key)))

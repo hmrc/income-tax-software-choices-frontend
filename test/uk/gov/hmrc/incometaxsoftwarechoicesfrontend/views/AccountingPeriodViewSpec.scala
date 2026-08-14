@@ -129,8 +129,7 @@ class AccountingPeriodViewSpec extends ViewSpec {
             isLegendHidden = true,
             name = s"${AccountingPeriodForm.formKey}[]",
             label = AccountingPeriodContent.other,
-            value = "other",
-            isExclusive = true
+            value = "other"
           )
         }
 
