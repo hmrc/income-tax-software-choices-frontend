@@ -93,7 +93,7 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
           )
           res.body.contains(RecognisedSoftwareProduct.name) shouldBe true
         }
-        "was the neither option" in {
+        "was the other accounting period option" in {
           val userAnswers = UserAnswers()
             .set(EnterSoftwareNamePage, RecognisedSoftwareProduct).get
             .set(AccountingPeriodPage, Seq(OtherAccountingPeriod)).get
