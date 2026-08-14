@@ -49,7 +49,7 @@ class ProductDetailsControllerSpec extends ControllerBaseSpec
       PrivatePensionIncome, ForeignDividends, ForeignInterest)).get
     .set(OtherItemsPage, Seq(PaymentsIntoAPrivatePension, CharitableGiving, CapitalGainsTax, StudentLoans,
       MarriageAllowance, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge)).get
-    .set(AccountingPeriodPage, FirstAprilToThirtyFirstMarch).get
+    .set(AccountingPeriodPage, Seq(FirstAprilToThirtyFirstMarch)).get
   private val userFilterWithFullAnswersForPage = UserFilters(sessionId, Some(fullUserAnswers), Seq.empty)
 
 
