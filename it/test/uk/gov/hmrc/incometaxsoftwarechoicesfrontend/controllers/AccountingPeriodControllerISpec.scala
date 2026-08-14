@@ -53,16 +53,16 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
         res should have(
           httpStatus(OK),
           pageTitle(s"${messages("accounting-period.heading")} - ${PageContentBase.title} - GOV.UK"),
-          radioButtonSelected(id = "accounting-period", None),
-          radioButtonSelected(id = "accounting-period-2", None),
-          radioButtonSelected(id = "accounting-period-4", None)
+          checkboxSelected("accounting-period", None),
+          checkboxSelected("accounting-period-2", None),
+          checkboxSelected("accounting-period-3", None)
         )
       }
       "the accounting period question has been answered previously" which {
         "was the 6th April to 5th April option" in {
           val userAnswers = UserAnswers()
             .set(EnterSoftwareNamePage, RecognisedSoftwareProduct).get
-            .set(AccountingPeriodPage, SixthAprilToFifthApril).get
+            .set(AccountingPeriodPage, Seq(SixthAprilToFifthApril)).get
           setupAnswers(SessionId, Some(userAnswers))
 
           val res = SoftwareChoicesFrontend.getAccountingPeriod
@@ -70,16 +70,16 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
           res should have(
             httpStatus(OK),
             pageTitle(s"${messages("accounting-period.heading")} - ${PageContentBase.title} - GOV.UK"),
-            radioButtonSelected(id = "accounting-period", Some(SixthAprilToFifthApril.key)),
-            radioButtonSelected(id = "accounting-period-2", None),
-            radioButtonSelected(id = "accounting-period-4", None)
+            checkboxSelected("accounting-period", Some(SixthAprilToFifthApril.key)),
+            checkboxSelected("accounting-period-2", None),
+            checkboxSelected("accounting-period-3", None)
           )
           res.body.contains(RecognisedSoftwareProduct.name) shouldBe true
         }
         "was the 1st April to 31st March option" in {
           val userAnswers = UserAnswers()
             .set(EnterSoftwareNamePage, RecognisedSoftwareProduct).get
-            .set(AccountingPeriodPage, FirstAprilToThirtyFirstMarch).get
+            .set(AccountingPeriodPage, Seq(FirstAprilToThirtyFirstMarch)).get
           setupAnswers(SessionId, Some(userAnswers))
 
           val res = SoftwareChoicesFrontend.getAccountingPeriod
@@ -87,26 +87,43 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
           res should have(
             httpStatus(OK),
             pageTitle(s"${messages("accounting-period.heading")} - ${PageContentBase.title} - GOV.UK"),
-            radioButtonSelected(id = "accounting-period", None),
-            radioButtonSelected(id = "accounting-period-2", Some(FirstAprilToThirtyFirstMarch.key)),
-            radioButtonSelected(id = "accounting-period-4", None)
+            checkboxSelected("accounting-period", None),
+            checkboxSelected("accounting-period-2", Some(FirstAprilToThirtyFirstMarch.key)),
+            checkboxSelected("accounting-period-3", None)
           )
           res.body.contains(RecognisedSoftwareProduct.name) shouldBe true
         }
-        "was the neither option" in {
+        "was the other accounting period option" in {
           val userAnswers = UserAnswers()
             .set(EnterSoftwareNamePage, RecognisedSoftwareProduct).get
-            .set(AccountingPeriodPage, OtherAccountingPeriod).get
+            .set(AccountingPeriodPage, Seq(OtherAccountingPeriod)).get
           setupAnswers(SessionId, Some(userAnswers))
-          
+
           val res = SoftwareChoicesFrontend.getAccountingPeriod
 
           res should have(
             httpStatus(OK),
             pageTitle(s"${messages("accounting-period.heading")} - ${PageContentBase.title} - GOV.UK"),
-            radioButtonSelected(id = "accounting-period", None),
-            radioButtonSelected(id = "accounting-period-2", None),
-            radioButtonSelected(id = "accounting-period-4", Some(OtherAccountingPeriod.key))
+            checkboxSelected("accounting-period", None),
+            checkboxSelected("accounting-period-2", None),
+            checkboxSelected("accounting-period-3", Some(OtherAccountingPeriod.key))
+          )
+          res.body.contains(RecognisedSoftwareProduct.name) shouldBe true
+        }
+        "were multiple options" in {
+          val userAnswers = UserAnswers()
+            .set(EnterSoftwareNamePage, RecognisedSoftwareProduct).get
+            .set(AccountingPeriodPage, Seq(SixthAprilToFifthApril, FirstAprilToThirtyFirstMarch)).get
+          setupAnswers(SessionId, Some(userAnswers))
+
+          val res = SoftwareChoicesFrontend.getAccountingPeriod
+
+          res should have(
+            httpStatus(OK),
+            pageTitle(s"${messages("accounting-period.heading")} - ${PageContentBase.title} - GOV.UK"),
+            checkboxSelected("accounting-period", Some(SixthAprilToFifthApril.key)),
+            checkboxSelected("accounting-period-2", Some(FirstAprilToThirtyFirstMarch.key)),
+            checkboxSelected("accounting-period-3", None)
           )
           res.body.contains(RecognisedSoftwareProduct.name) shouldBe true
         }
@@ -117,7 +134,7 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
   s"POST ${routes.AccountingPeriodController.submit().url}" when {
     "there is nothing saved in the database for this user" should {
       "redirect to the service index" in {
-        val res = SoftwareChoicesFrontend.submitAccountingPeriod(Some(SixthAprilToFifthApril))
+        val res = SoftwareChoicesFrontend.submitAccountingPeriod(Some(Seq(SixthAprilToFifthApril.key)))
 
         res should have(
           httpStatus(SEE_OTHER),
@@ -127,89 +144,101 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
     }
     "not in edit mode" should {
       "redirect to the check your answers page" when {
-        "the user has selected the 6th April to 5th April radio button" in {
+        "the user has selected the 6th April to 5th April checkbox" in {
           setupAnswers(SessionId, None)
 
-          val res = SoftwareChoicesFrontend.submitAccountingPeriod(Some(SixthAprilToFifthApril))
+          val res = SoftwareChoicesFrontend.submitAccountingPeriod(Some(Seq(SixthAprilToFifthApril.key)))
 
           res should have(
             httpStatus(SEE_OTHER),
             redirectURI(routes.CheckYourAnswersController.show().url)
           )
 
-          getPageData(SessionId, AccountingPeriodPage) shouldBe Some(SixthAprilToFifthApril)
+          getPageData(SessionId, AccountingPeriodPage) shouldBe Some(Seq(SixthAprilToFifthApril))
         }
-        "the user has selected the 1st April to 31st March radio button" in {
+        "the user has selected the 1st April to 31st March checkbox" in {
           setupAnswers(SessionId, None)
 
-          val res = SoftwareChoicesFrontend.submitAccountingPeriod(Some(FirstAprilToThirtyFirstMarch))
+          val res = SoftwareChoicesFrontend.submitAccountingPeriod(Some(Seq(FirstAprilToThirtyFirstMarch.key)))
 
           res should have(
             httpStatus(SEE_OTHER),
             redirectURI(routes.CheckYourAnswersController.show().url)
           )
 
-          getPageData(SessionId, AccountingPeriodPage) shouldBe Some(FirstAprilToThirtyFirstMarch)
+          getPageData(SessionId, AccountingPeriodPage) shouldBe Some(Seq(FirstAprilToThirtyFirstMarch))
+        }
+        "the user has selected multiple checkboxes" in {
+          setupAnswers(SessionId, None)
+
+          val res = SoftwareChoicesFrontend.submitAccountingPeriod(Some(Seq(SixthAprilToFifthApril.key, FirstAprilToThirtyFirstMarch.key)))
+
+          res should have(
+            httpStatus(SEE_OTHER),
+            redirectURI(routes.CheckYourAnswersController.show().url)
+          )
+
+          getPageData(SessionId, AccountingPeriodPage) shouldBe Some(Seq(SixthAprilToFifthApril, FirstAprilToThirtyFirstMarch))
         }
       }
       "redirect to the accounting period not aligned page" when {
-        "the user selected the neither radio button" in {
+        "the user selected the different accounting period checkbox" in {
           setupAnswers(SessionId, None)
 
-          val res = SoftwareChoicesFrontend.submitAccountingPeriod(Some(OtherAccountingPeriod))
+          val res = SoftwareChoicesFrontend.submitAccountingPeriod(Some(Seq(OtherAccountingPeriod.key)))
 
           res should have(
             httpStatus(SEE_OTHER),
             redirectURI(routes.AccountingPeriodNotAlignedController.show().url)
           )
 
-          getPageData(SessionId, AccountingPeriodPage) shouldBe Some(OtherAccountingPeriod)
+          getPageData(SessionId, AccountingPeriodPage) shouldBe Some(Seq(OtherAccountingPeriod))
         }
       }
     }
     "in edit mode" should {
       "redirect to the check your answers page" when {
-        "the user has selected the 6th April to 5th April radio button" in {
-          setPageData(SessionId, AccountingPeriodPage, FirstAprilToThirtyFirstMarch)
+        "the user has selected the 6th April to 5th April checkbox" in {
+          setPageData(SessionId, AccountingPeriodPage, Seq(FirstAprilToThirtyFirstMarch))
 
-          val res = SoftwareChoicesFrontend.submitAccountingPeriod(Some(SixthAprilToFifthApril))
+          val res = SoftwareChoicesFrontend.submitAccountingPeriod(Some(Seq(SixthAprilToFifthApril.key)))
 
           res should have(
             httpStatus(SEE_OTHER),
             redirectURI(routes.CheckYourAnswersController.show().url)
           )
 
-          getPageData(SessionId, AccountingPeriodPage) shouldBe Some(SixthAprilToFifthApril)
+          getPageData(SessionId, AccountingPeriodPage) shouldBe Some(Seq(SixthAprilToFifthApril))
         }
-        "the user has selected the 1st April to 31st March radio button" in {
-          setPageData(SessionId, AccountingPeriodPage, OtherAccountingPeriod)
+        "the user has selected the 1st April to 31st March checkbox" in {
+          setPageData(SessionId, AccountingPeriodPage, Seq(OtherAccountingPeriod))
 
-          val res = SoftwareChoicesFrontend.submitAccountingPeriod(Some(FirstAprilToThirtyFirstMarch))
+          val res = SoftwareChoicesFrontend.submitAccountingPeriod(Some(Seq(FirstAprilToThirtyFirstMarch.key)))
 
           res should have(
             httpStatus(SEE_OTHER),
             redirectURI(routes.CheckYourAnswersController.show().url)
           )
 
-          getPageData(SessionId, AccountingPeriodPage) shouldBe Some(FirstAprilToThirtyFirstMarch)
+          getPageData(SessionId, AccountingPeriodPage) shouldBe Some(Seq(FirstAprilToThirtyFirstMarch))
         }
       }
       "redirect to the accounting period not aligned page" when {
-        "the user selected the neither radio button" in {
-          setPageData(SessionId, AccountingPeriodPage, SixthAprilToFifthApril)
+        "the user selected the different accounting period checkbox" in {
+          setPageData(SessionId, AccountingPeriodPage, Seq(SixthAprilToFifthApril))
 
-          val res = SoftwareChoicesFrontend.submitAccountingPeriod(Some(OtherAccountingPeriod))
+          val res = SoftwareChoicesFrontend.submitAccountingPeriod(Some(Seq(OtherAccountingPeriod.key)))
 
           res should have(
             httpStatus(SEE_OTHER),
             redirectURI(routes.AccountingPeriodNotAlignedController.show().url)
           )
 
-          getPageData(SessionId, AccountingPeriodPage) shouldBe Some(OtherAccountingPeriod)
+          getPageData(SessionId, AccountingPeriodPage) shouldBe Some(Seq(OtherAccountingPeriod))
         }
       }
     }
-    "no radio button has been selected" should {
+    "no checkbox has been selected" should {
       "return a bad request" in {
         setupAnswers(SessionId, None)
 

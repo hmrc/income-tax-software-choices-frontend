@@ -55,7 +55,7 @@ object SearchResultsEvent {
     }
 
     val accountingPeriod = userAnswers.get(AccountingPeriodPage) match {
-      case Some(answer) => Json.obj("accountingPeriod" -> answer.auditDescription)
+      case Some(answer) => Json.obj("accountingPeriod" -> answer.map(_.auditDescription))
       case _ => Json.obj()
     }
 
