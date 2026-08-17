@@ -331,15 +331,6 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
           Some(SearchSoftwareWithIntentPageContent.calendarUpdatePeriodHint)
         )
       }
-      "contains a different accounting period checkbox" in {
-        validateCheckboxInGroup(
-          checkboxGroup,
-          3,
-          NonStandardUpdatePeriods.key,
-          SearchSoftwareWithIntentPageContent.nonStandardUpdatePeriod,
-          Some(SearchSoftwareWithIntentPageContent.nonStandardUpdatePeriodHint)
-        )
-      }
     }
 
     "has the correct filters for agent users" which {
@@ -811,8 +802,6 @@ private object SearchSoftwareWithIntentPageContent {
   val standardUpdatePeriod = "6 April to 5 April"
   val calendarUpdatePeriod = "1 April to 31 March"
   val calendarUpdatePeriodHint = "Software supports calendar update periods. This will make keeping records simpler."
-  val nonStandardUpdatePeriod = "Different accounting period"
-  val nonStandardUpdatePeriodHint = "Software supports other accounting periods. You need to make adjustments in your software."
 
   private val lastUpdateTest = LocalDate.of(2022, 12, 2)
 

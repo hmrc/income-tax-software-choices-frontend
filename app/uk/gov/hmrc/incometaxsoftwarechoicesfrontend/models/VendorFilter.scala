@@ -133,13 +133,6 @@ object VendorFilter {
     override val auditDescription: String = "calendarUpdatePeriods"
   }
 
-  case object NonStandardUpdatePeriods extends VendorFilter {
-    override val key: String = "non-standard-update-periods"
-    override val priority: Int = 3
-    override val showHint: Boolean = true
-    override val auditDescription: String = "nonStandardUpdatePeriods"
-  }
-
   case object ConstructionIndustryScheme extends VendorFilter {
     override val key: String = "construction-industry-scheme"
     override val priority: Int = 1
@@ -344,7 +337,6 @@ object VendorFilter {
     TaxReturn,
     StandardUpdatePeriods,
     CalendarUpdatePeriods,
-    NonStandardUpdatePeriods,
     SoleTrader,
     UkProperty,
     OverseasProperty,
@@ -431,8 +423,7 @@ object VendorFilterGroups {
 
   val accountingPeriodFilters: Set[VendorFilter] = Set(
     StandardUpdatePeriods,
-    CalendarUpdatePeriods,
-    NonStandardUpdatePeriods
+    CalendarUpdatePeriods
   )
 
   val submissionTypeFilters: Set[VendorFilter] = Set(
