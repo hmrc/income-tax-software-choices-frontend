@@ -305,35 +305,22 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
       }
     }
 
-
-    "has an accounting period section" that {
-      val checkboxGroup = getCheckboxGroup(document, 10)
-
-      "contains a fieldset legend" in {
-        checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwareWithIntentPageContent.Filters.accountingPeriod
-      }
-
-      "contains an standard update period checkbox" in {
-        validateCheckboxInGroup(
-          checkboxGroup,
-          1,
-          StandardUpdatePeriods.key,
-          SearchSoftwareWithIntentPageContent.standardUpdatePeriod
-        )
-      }
-
-      "contains a calendar update period checkbox" in {
-        validateCheckboxInGroup(
-          checkboxGroup,
-          2,
-          CalendarUpdatePeriods.key,
-          SearchSoftwareWithIntentPageContent.calendarUpdatePeriod,
-          Some(SearchSoftwareWithIntentPageContent.calendarUpdatePeriodHint)
-        )
-      }
+    "has the correct order of filters with no user type or accounting period sections" in {
+      val filterGroups = getFilterSection(document).selectSeq(".govuk-form-group > fieldset > legend").map(_.text)
+      filterGroups shouldBe Seq(
+        SearchSoftwareWithIntentPageContent.Filters.pricing,
+        SearchSoftwareWithIntentPageContent.Filters.readiness,
+        SearchSoftwareWithIntentPageContent.Filters.softwareFor,
+        SearchSoftwareWithIntentPageContent.Filters.softwareCompatibility,
+        SearchSoftwareWithIntentPageContent.Filters.accessibilityFeatures,
+        SearchSoftwareWithIntentPageContent.Filters.language,
+        SearchSoftwareWithIntentPageContent.Filters.extraFeatures,
+        SearchSoftwareWithIntentPageContent.Filters.softwareApplicationType
+      )
     }
 
-    "has the correct filters for agent users" which {
+
+    "has the correct filters for view all users" which {
       lazy val document = {
         val model = SoftwareChoicesResultsViewModel(
           vendorsWithIntent = SearchSoftwareWithIntentPageContent.multipleVendorsWithIntent,
@@ -363,6 +350,33 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
             2,
             Individual.key,
             SearchSoftwareWithIntentPageContent.individual
+          )
+        }
+      }
+
+      "has an accounting period section" that {
+        val checkboxGroup = getCheckboxGroup(document, 10)
+
+        "contains a fieldset legend" in {
+          checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwareWithIntentPageContent.Filters.accountingPeriod
+        }
+
+        "contains an standard update period checkbox" in {
+          validateCheckboxInGroup(
+            checkboxGroup,
+            1,
+            StandardUpdatePeriods.key,
+            SearchSoftwareWithIntentPageContent.standardUpdatePeriod
+          )
+        }
+
+        "contains a calendar update period checkbox" in {
+          validateCheckboxInGroup(
+            checkboxGroup,
+            2,
+            CalendarUpdatePeriods.key,
+            SearchSoftwareWithIntentPageContent.calendarUpdatePeriod,
+            Some(SearchSoftwareWithIntentPageContent.calendarUpdatePeriodHint)
           )
         }
       }

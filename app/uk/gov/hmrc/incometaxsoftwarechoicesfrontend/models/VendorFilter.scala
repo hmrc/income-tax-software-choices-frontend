@@ -516,6 +516,8 @@ object VendorFilterGroups {
 
     val readinessGroup = if (!isUnguided) Seq((readinessFilters, "readiness")) else Seq.empty
 
+    val accountingGroup = if (isUnguided) Seq((accountingPeriodFilters, "accounting-period")) else Seq.empty
+
     agentGroup ++
       Seq((pricingFilters, "pricing")) ++
       readinessGroup ++
@@ -525,7 +527,7 @@ object VendorFilterGroups {
       Seq((languageFeature, "language-features")) ++
       Seq((extraFeatures, "extra-features")) ++
       Seq((applicationTypeFilters, "software-application-type")) ++
-      Seq((accountingPeriodFilters, "accounting-period"))
+      accountingGroup
   }
 
   val nonMandatedIncomeGroup: List[VendorFilter] = List(
