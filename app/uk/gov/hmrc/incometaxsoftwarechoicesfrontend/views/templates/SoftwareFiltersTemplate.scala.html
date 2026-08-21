@@ -21,10 +21,11 @@
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilterGroups
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.helpers.CheckboxGroupHelper
 
 @this(
-govukAccordion: GovukAccordion,
-govukCheckboxes: GovukCheckboxes
+    govukAccordion: GovukAccordion,
+    checkboxGroup: CheckboxGroupHelper
 )
 
 @(checkboxField: Field, isUnguided: Boolean)(implicit messages: Messages)
@@ -46,11 +47,10 @@ govukCheckboxes: GovukCheckboxes
     items = VendorFilterGroups.preferenceFilters(isUnguided).map { case (group, label) =>
         Section(
             headingContent = Text(messages(s"search-software.filters.$label")),
-            content = HtmlContent(govukCheckboxes(
-                Checkboxes(
-                    classes = "govuk-checkboxes--small",
-                    items = buildCheckBoxes(group, label)
-                ).withFormField(checkboxField)
+            content = HtmlContent(checkboxGroup(
+                                    field = checkboxField,
+                                    fieldsetLegend = messages(s"search-software.filters.$label"),
+                                    checkboxes = buildCheckBoxes(group, label)
             ))
         )
     }
