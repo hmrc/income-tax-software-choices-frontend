@@ -48,10 +48,11 @@
             headingContent = Text(messages(s"search-software.filters.$label")),
             content = HtmlContent(govukCheckboxes(
                                     Checkboxes(
-                                        classes = "govuk-checkboxes--small",
+                                        classes = "govuk-checkboxes--small govuk-!-margin-bottom-3",
+                                        attributes = Map("style" -> "margin-top: -15px;"),
                                         items = buildCheckBoxes(group, label)
                                     ).withFormField(checkboxField)
-            ))
+                        ))
         )
     }
 ))
