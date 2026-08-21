@@ -512,22 +512,22 @@ object VendorFilterGroups {
 
   def preferenceFilters(isUnguided: Boolean): Seq[(Set[VendorFilter], String)] = {
 
-    val agentGroup = if (isUnguided) Seq((userTypeFilters, "user-type")) else Seq.empty
+    val userTypeGroup = if (isUnguided) Seq((userTypeFilters, "user-type")) else Seq.empty
 
     val readinessGroup = if (!isUnguided) Seq((readinessFilters, "readiness")) else Seq.empty
 
     val accountingGroup = if (isUnguided) Seq((accountingPeriodFilters, "accounting-period")) else Seq.empty
 
-    agentGroup ++
+    userTypeGroup ++
       Seq((pricingFilters, "pricing")) ++
       readinessGroup ++
       Seq((softwareForFilters, "software-for")) ++
+      accountingGroup ++
       Seq((compatibility, "software-compatibility")) ++
       Seq((accessibilityFilters, "accessibility")) ++
-      Seq((languageFeature, "language-features")) ++
-      Seq((extraFeatures, "extra-features")) ++
       Seq((applicationTypeFilters, "software-application-type")) ++
-      accountingGroup
+      Seq((languageFeature, "language-features")) ++
+      Seq((extraFeatures, "extra-features"))
   }
 
   val nonMandatedIncomeGroup: List[VendorFilter] = List(
