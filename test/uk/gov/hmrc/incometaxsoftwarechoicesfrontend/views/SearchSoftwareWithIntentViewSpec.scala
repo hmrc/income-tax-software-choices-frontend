@@ -133,7 +133,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
     }
 
     "has a pricing section" that {
-      val checkboxGroup = getCheckboxGroup(document, 2)
+      val checkboxGroup = getCheckboxGroup(document, 1)
 
       "contains a fieldset legend" in {
         checkboxGroup.selectHead(".govuk-accordion__section-button").text shouldBe SearchSoftwareWithIntentPageContent.Filters.pricing
@@ -151,7 +151,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
     }
 
     "has a readiness section" that {
-      val checkboxGroup = getCheckboxGroup(document, 3)
+      val checkboxGroup = getCheckboxGroup(document, 2)
 
       "contains a fieldset legend" in {
         checkboxGroup.selectHead(".govuk-accordion__section-button").text shouldBe SearchSoftwareWithIntentPageContent.Filters.readiness
@@ -168,7 +168,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
     }
 
     "has a software for section" that {
-      val checkboxGroup = getCheckboxGroup(document, 4)
+      val checkboxGroup = getCheckboxGroup(document, 3)
 
       "contains a fieldset legend" in {
         checkboxGroup.selectHead(".govuk-accordion__section-button").text shouldBe SearchSoftwareWithIntentPageContent.Filters.softwareFor
@@ -185,7 +185,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
     }
 
     "has a software compatibility section" that {
-      val checkboxGroup = getCheckboxGroup(document, 5)
+      val checkboxGroup = getCheckboxGroup(document, 4)
 
       "contains a fieldset legend" in {
         checkboxGroup.selectHead(".govuk-accordion__section-button").text shouldBe SearchSoftwareWithIntentPageContent.Filters.softwareCompatibility
@@ -203,7 +203,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
     }
 
     "has an accessibility features section" that {
-      val checkboxGroup = getCheckboxGroup(document, 6)
+      val checkboxGroup = getCheckboxGroup(document, 5)
 
       "contains a fieldset legend" in {
         checkboxGroup.selectHead(".govuk-accordion__section-button").text shouldBe SearchSoftwareWithIntentPageContent.Filters.accessibilityFeatures
@@ -227,7 +227,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
     }
 
     "has a language section" that {
-      val checkboxGroup = getCheckboxGroup(document, 7)
+      val checkboxGroup = getCheckboxGroup(document, 6)
 
       "contains a fieldset legend" in {
         checkboxGroup.selectHead(".govuk-accordion__section-button").text shouldBe SearchSoftwareWithIntentPageContent.Filters.language
@@ -245,7 +245,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
     }
 
     "has an extra features section" that {
-      val checkboxGroup = getCheckboxGroup(document, 8)
+      val checkboxGroup = getCheckboxGroup(document, 7)
 
       "contains a fieldset legend" in {
         checkboxGroup.selectHead(".govuk-accordion__section-button").text shouldBe SearchSoftwareWithIntentPageContent.Filters.extraFeatures
@@ -271,7 +271,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
         Jsoup.parse(page(model).body)
       }
       "has a user type section" that {
-        val checkboxGroup = getCheckboxGroup(document, 2)
+        val checkboxGroup = getCheckboxGroup(document, 1)
 
         "contains a fieldset legend" in {
           checkboxGroup.selectHead(".govuk-accordion__section-button").text shouldBe SearchSoftwareWithIntentPageContent.Filters.userType
