@@ -30,7 +30,7 @@ case object AccountingPeriodPage extends QuestionPage[Seq[AccountingPeriod]] {
   override def toVendorFilter(value: Seq[AccountingPeriod]): Seq[VendorFilter] = value.flatMap {
     case SixthAprilToFifthApril       => Seq(StandardUpdatePeriods)
     case FirstAprilToThirtyFirstMarch => Seq(CalendarUpdatePeriods)
-    case _ => Seq.empty
+    case _                            => Seq.empty
   }
 
   override def reads: Reads[Seq[AccountingPeriod]] = implicitly
