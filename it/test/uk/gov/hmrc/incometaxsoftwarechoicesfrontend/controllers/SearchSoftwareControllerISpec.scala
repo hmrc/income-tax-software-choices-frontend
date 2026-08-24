@@ -168,7 +168,7 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
     }
     "have a back link that returns to the quarterly updates only page" when {
       "the journey type is Check and has a quarterly quarterly-updates-only product" in {
-        val softwareProduct = SoftwareProduct(102, "Product 102", Recognised)
+        val softwareProduct = SoftwareProduct(107, "Product 107", Recognised)
 
         val userAnswers = UserAnswers()
           .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
