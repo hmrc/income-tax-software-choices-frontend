@@ -298,7 +298,7 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
       }
     }
 
-    "remove all preference filters including UserType for Individual in Unguided journey" in {
+    "remove all preference filters but UserType for Individual in Unguided journey" in {
       val userAnswers = UserAnswers()
         .set(HowYouFindSoftwarePage, ViewAll).get
         .set(UserTypePage, SoleTraderOrLandlord).get
@@ -313,7 +313,7 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
       )
 
       await(userFiltersRepository.get(SessionId)) match {
-        case Some(uf) => uf.finalFilters shouldBe Seq()
+        case Some(uf) => uf.finalFilters shouldBe Seq(Individual)
         case None => fail("No user filters found")
       }
     }
@@ -330,26 +330,27 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
         )
       }
     }
-    "return the same software result count when Individual is unchecked or Agent is unchecked in the Unguided (ViewAll) journey" in {
-      val soleTraderAnswers = UserAnswers()
-        .set(HowYouFindSoftwarePage, ViewAll).get
-        .set(UserTypePage, SoleTraderOrLandlord).get
-      setupAnswers(SessionId, Some(soleTraderAnswers), Seq(VendorFilter.Individual))
 
-      val soleTraderResponse = SoftwareChoicesFrontend.submitSoftwareSearch(FiltersFormModel(Seq.empty))
-      soleTraderResponse should have(httpStatus(OK))
-      val soleTraderCount = Jsoup.parse(soleTraderResponse.body).select("h1.govuk-heading-xl").text()
-
+    "update user type filter for agents in the ViewAll journey" in {
       val agentAnswers = UserAnswers()
         .set(HowYouFindSoftwarePage, ViewAll).get
         .set(UserTypePage, Agent).get
       setupAnswers(SessionId, Some(agentAnswers), Seq(VendorFilter.Agent))
 
-      val agentResponse = SoftwareChoicesFrontend.submitSoftwareSearch(FiltersFormModel(Seq.empty))
-      agentResponse should have(httpStatus(OK))
-      val agentCount = Jsoup.parse(agentResponse.body).select("h1.govuk-heading-xl").text()
+      val agentResponse = SoftwareChoicesFrontend.submitSoftwareSearch(FiltersFormModel(Seq(Individual)))
+      agentResponse should have(
+        httpStatus(OK),
+        elementExists("#agent-filter", true),
+        checkboxSelected("agent-filter", None),
+        elementExists("#individual-filter", true),
+        checkboxSelected("individual-filter", Some("individual"))
+      )
 
-      soleTraderCount shouldBe agentCount
+      await(userFiltersRepository.get(SessionId)) match {
+        case Some(uf) => uf.finalFilters shouldBe Seq(Individual)
+        case None => fail("No user filters found")
+      }
+
     }
 
     "add preference filters for Individual including UserAnswers and UserType" in {

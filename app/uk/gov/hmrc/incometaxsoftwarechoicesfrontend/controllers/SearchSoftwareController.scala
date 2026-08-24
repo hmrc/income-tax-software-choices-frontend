@@ -93,9 +93,9 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
     val originalFiltersFromAnswers = pageAnswersService
       .getFiltersFromAnswers(request.userFilters.answers)
 
-    // Remove user type filters for unguided journey in case they are overwritten by preferences
-    val newFiltersFromAnswers = request.journey match {
-      case Some(ViewAll) => originalFiltersFromAnswers.filterNot(Set(VendorFilter.Agent, VendorFilter.Individual).contains(_))
+    // Remove user type filters for agents in unguided journey in case they are overwritten by preferences
+    val newFiltersFromAnswers = (request.journey, request.userType) match {
+      case (Some(ViewAll), Some(Agent)) => originalFiltersFromAnswers.filterNot(Set(VendorFilter.Agent, VendorFilter.Individual).contains(_))
       case _ => originalFiltersFromAnswers
     }
 
