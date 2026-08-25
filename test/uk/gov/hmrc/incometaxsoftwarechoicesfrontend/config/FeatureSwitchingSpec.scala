@@ -21,11 +21,9 @@ import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.mockito.MockitoSugar.mock
 import org.scalatestplus.play.PlaySpec
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import play.api.Application
-import play.api.Configuration
+import play.api.{Application, Configuration}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.{AccountingPeriodSelectionControlsUpdate, TestFeature}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.TestFeature
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.TestAppBuilder
 
 class FeatureSwitchingSpec extends PlaySpec with FeatureSwitching with BeforeAndAfterEach with GuiceOneAppPerSuite with TestAppBuilder {

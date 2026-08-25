@@ -19,9 +19,9 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers
 import play.api.Application
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
-import uk.gov.hmrc.auth.core.{AuthConnector, Enrolments}
 import uk.gov.hmrc.auth.core.authorise.Predicate
 import uk.gov.hmrc.auth.core.retrieve.Retrieval
+import uk.gov.hmrc.auth.core.{AuthConnector, Enrolments}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import uk.gov.hmrc.webchat.connectors.VerificationConnector
 import uk.gov.hmrc.webchat.models.verificationservice.UserVerificationRequest
