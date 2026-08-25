@@ -510,9 +510,9 @@ object VendorFilterGroups {
     QuarterlyUpdates
   )
 
-  def preferenceFilters(isUnguided: Boolean): Seq[(Set[VendorFilter], String)] = {
+  def preferenceFilters(isUnguided: Boolean, isAgent: Boolean): Seq[(Set[VendorFilter], String)] = {
 
-    val agentGroup = if (isUnguided) Seq((userTypeFilters, "user-type")) else Seq.empty
+    val agentGroup = if (isUnguided && isAgent) Seq((userTypeFilters, "user-type")) else Seq.empty
 
     val readinessGroup = if (!isUnguided) Seq((readinessFilters, "readiness")) else Seq.empty
 

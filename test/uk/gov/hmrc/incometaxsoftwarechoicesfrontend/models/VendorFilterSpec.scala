@@ -35,15 +35,24 @@ class VendorFilterSpec extends PlaySpec {
       languageFeature
     ).flatten.distinct
 
-    "contain ALL required filters for an unguided user" in {
-        val actual = VendorFilterGroups.preferenceFilters(isUnguided = true).flatMap(f => f._1)
+    "contain ALL required filters for an unguided agent" in {
+        val actual = VendorFilterGroups.preferenceFilters(isUnguided = true, isAgent = true).flatMap(f => f._1)
         val expected = allFilters.filter(_ != FullyReady)
         expected.map(f => actual.contains(f) mustBe true)
     }
 
+    "contain ALL required filters for an unguided individual" in {
+        val actual = VendorFilterGroups.preferenceFilters(isUnguided = true, isAgent = false).flatMap(f => f._1)
+        val expected = allFilters.filter(_ != Agent)
+                                  .filter(_ != Individual)
+                                  .filter(_ != FullyReady)
+
+        expected.map(f => actual.contains(f) mustBe true)
+    }
+
     "contain ALL required filters for a user NOT in the unguided journey" in {
-        val individual = VendorFilterGroups.preferenceFilters(isUnguided = false).flatMap(f => f._1)
-        val agent = VendorFilterGroups.preferenceFilters(isUnguided = false).flatMap(f => f._1)
+        val individual = VendorFilterGroups.preferenceFilters(isUnguided = false, isAgent = false).flatMap(f => f._1)
+        val agent = VendorFilterGroups.preferenceFilters(isUnguided = false, isAgent = true).flatMap(f => f._1)
         val expected = allFilters.filter(_ != Agent)
                                   .filter(_ != Individual)
         expected.map(f => individual.contains(f) mustBe true)

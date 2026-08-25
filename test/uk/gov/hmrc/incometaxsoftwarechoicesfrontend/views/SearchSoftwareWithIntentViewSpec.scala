@@ -313,6 +313,21 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
         SearchSoftwareWithIntentPageContent.Filters.softwareFor,
         SearchSoftwareWithIntentPageContent.Filters.softwareCompatibility,
         SearchSoftwareWithIntentPageContent.Filters.accessibilityFeatures,
+        SearchSoftwareWithIntentPageContent.Filters.language,
+        SearchSoftwareWithIntentPageContent.Filters.extraFeatures
+      )
+    }
+
+
+    "has the correct filters for individual view all users" which {
+    "has the correct order of filters with no user type or accounting period sections" in {
+      val filterGroups = getFilterSection(document).selectSeq(".govuk-form-group > fieldset > legend").map(_.text)
+      filterGroups shouldBe Seq(
+        SearchSoftwareWithIntentPageContent.Filters.pricing,
+        SearchSoftwareWithIntentPageContent.Filters.readiness,
+        SearchSoftwareWithIntentPageContent.Filters.softwareFor,
+        SearchSoftwareWithIntentPageContent.Filters.softwareCompatibility,
+        SearchSoftwareWithIntentPageContent.Filters.accessibilityFeatures,
         SearchSoftwareWithIntentPageContent.Filters.softwareApplicationType,
         SearchSoftwareWithIntentPageContent.Filters.language,
         SearchSoftwareWithIntentPageContent.Filters.extraFeatures
@@ -324,7 +339,57 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
       lazy val document = {
         val model = SoftwareChoicesResultsViewModel(
           vendorsWithIntent = SearchSoftwareWithIntentPageContent.multipleVendorsWithIntent,
-          isUnguided = true
+          isUnguided = true,
+          isAgent = false
+        )
+        Jsoup.parse(page(model).body)
+      }
+
+      "has an accounting period section" that {
+        val checkboxGroup = getCheckboxGroup(document, 4)
+
+        "contains a fieldset legend" in {
+          checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwareWithIntentPageContent.Filters.accountingPeriod
+        }
+
+        "contains an standard update period checkbox" in {
+          validateCheckboxInGroup(
+            checkboxGroup,
+            1,
+            StandardUpdatePeriods.key,
+            SearchSoftwareWithIntentPageContent.standardUpdatePeriod
+          )
+        }
+
+        "contains a calendar update period checkbox" in {
+          validateCheckboxInGroup(
+            checkboxGroup,
+            2,
+            CalendarUpdatePeriods.key,
+            SearchSoftwareWithIntentPageContent.calendarUpdatePeriod,
+            Some(SearchSoftwareWithIntentPageContent.calendarUpdatePeriodHint)
+          )
+        }
+      }
+
+      "has the correct order of filters with no readiness section" in {
+        val filterGroups = getFilterSection(document).selectSeq(".govuk-form-group > fieldset > legend").map(_.text)
+        filterGroups shouldBe Seq(
+          SearchSoftwareWithIntentPageContent.Filters.pricing,
+          SearchSoftwareWithIntentPageContent.Filters.softwareFor,
+          SearchSoftwareWithIntentPageContent.Filters.softwareCompatibility,
+          SearchSoftwareWithIntentPageContent.Filters.accessibilityFeatures,
+          SearchSoftwareWithIntentPageContent.Filters.language,
+          SearchSoftwareWithIntentPageContent.Filters.extraFeatures
+        )
+      }
+    }
+    "has the correct filters for agent view all users" which {
+      lazy val document = {
+        val model = SoftwareChoicesResultsViewModel(
+          vendorsWithIntent = SearchSoftwareWithIntentPageContent.multipleVendorsWithIntent,
+          isUnguided = true,
+          isAgent = true
         )
         Jsoup.parse(page(model).body)
       }
