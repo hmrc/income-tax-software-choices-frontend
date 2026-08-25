@@ -18,21 +18,25 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views
 
 import org.jsoup.nodes.Element
 import org.scalatest.Checkpoints.Checkpoint
-import org.scalatest.matchers.must.Matchers._
+import org.scalatest.matchers.must.Matchers.*
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 import org.scalatest.{Assertion, Succeeded}
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+import play.api.Application
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.mvc.{Call, Request}
 import play.api.test.FakeRequest
 import uk.gov.hmrc.govukfrontend.views.Aliases.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.RadioItem
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.TestAppBuilder
 
-import scala.jdk.CollectionConverters._
+import scala.jdk.CollectionConverters.*
 
-trait ViewSpec extends AnyWordSpecLike with Matchers with GuiceOneAppPerSuite {
+trait ViewSpec extends AnyWordSpecLike with Matchers with GuiceOneAppPerSuite with TestAppBuilder {
+
+  override def fakeApplication(): Application = authorizedVerifiedTestApplication()
 
   implicit val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
 
