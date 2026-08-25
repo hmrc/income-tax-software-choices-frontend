@@ -18,17 +18,21 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions
 
 import org.scalatestplus.play.PlaySpec
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+import play.api.Application
 import play.api.http.Status.OK
 import play.api.mvc.{BodyParsers, Result, Results}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{await, defaultAwaitTimeout, status}
 import uk.gov.hmrc.http.InternalServerException
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.TestAppBuilder
 import uk.gov.hmrc.http.SessionKeys.sessionId
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class SessionIdentifierActionSpec extends PlaySpec with GuiceOneAppPerSuite {
+class SessionIdentifierActionSpec extends PlaySpec with GuiceOneAppPerSuite with TestAppBuilder {
+
+  override def fakeApplication(): Application = authorizedVerifiedTestApplication()
 
   val sessionIdentifierAction = new SessionIdentifierAction(
     app.injector.instanceOf[BodyParsers.Default]
