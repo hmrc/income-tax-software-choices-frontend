@@ -25,12 +25,11 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.AccountingPeriod.{Fir
 object AccountingPeriodForm {
 
   val formKey: String = "accounting-period"
-  val noneKey: String = OtherAccountingPeriod.key
 
   private val initialPeriod: Mapping[Seq[String]] =
     seq(text)
       .verifying(nonEmptySeq("accounting-period.error"))
-      .verifying("accounting-period.error", page => !(page.contains(noneKey) && page.size > 1))
+      .verifying("accounting-period.error", page => page.size < 4)
 
   val accountingPeriodForm: Form[Seq[AccountingPeriod]] = Form(
     single(
@@ -43,6 +42,5 @@ object AccountingPeriodForm {
   private def toAccountingPeriods(seq: Seq[String]): Seq[AccountingPeriod] =
     seq.flatMap(s => Seq(SixthAprilToFifthApril, FirstAprilToThirtyFirstMarch, OtherAccountingPeriod).find(_.key == s))
 
-  private def fromAccountingPeriods(periods: Seq[AccountingPeriod]): Seq[String] =
-    if (periods.isEmpty) Seq(noneKey) else periods.map(_.key)
+  private def fromAccountingPeriods(periods: Seq[AccountingPeriod]): Seq[String] = periods.map(_.key)
 }
