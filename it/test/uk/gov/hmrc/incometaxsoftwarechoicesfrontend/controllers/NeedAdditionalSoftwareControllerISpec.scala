@@ -21,10 +21,11 @@ import play.api.http.Status.{OK, SEE_OTHER}
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.SessionId
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, DatabaseHelper}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.AccountingPeriod.{OtherAccountingPeriod, SixthAprilToFifthApril}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.Check
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.Spreadsheet
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareProduct, UserAnswers, UserFilters}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.{EnterSoftwareNamePage, HowYouFindSoftwarePage}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.{AccountingPeriodPage, EnterSoftwareNamePage, HowYouFindSoftwarePage}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
 
 class NeedAdditionalSoftwareControllerISpec
@@ -60,6 +61,7 @@ class NeedAdditionalSoftwareControllerISpec
       "have a back link to check your answers" in {
         val userAnswers = UserAnswers().set(HowYouFindSoftwarePage, Check).get
           .set(EnterSoftwareNamePage, firstOtherSpreadsheetProduct).get
+          .set(AccountingPeriodPage,  Seq(SixthAprilToFifthApril)).get
         await(userFiltersRepository.set(testUserFilters(userAnswers)))
 
         val res = SoftwareChoicesFrontend.getNeedAdditionalSoftware(editMode = true)

@@ -20,7 +20,7 @@ import play.api.mvc.Results.Redirect
 import play.api.mvc.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.requests.{SessionDataRequest, SessionRequest}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.{EnterSoftwareNamePage, HowYouFindSoftwarePage}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.{EnterSoftwareNamePage, HowYouFindSoftwarePage, UserTypePage}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.PageAnswersService
 
@@ -38,7 +38,8 @@ class RequireUserDataRefiner @Inject()(userFiltersRepository: UserFiltersReposit
       case Some(userFilters) => {
         val journey = pageAnswersService.getPageAnswers(userFilters.answers, HowYouFindSoftwarePage)
         val product = pageAnswersService.getPageAnswers(userFilters.answers, EnterSoftwareNamePage)
-        Right(SessionDataRequest(request, request.sessionId, userFilters, journey, product))
+        val userType = pageAnswersService.getPageAnswers(userFilters.answers, UserTypePage)
+        Right(SessionDataRequest(request, request.sessionId, userFilters, journey, product, userType))
       }
       case None => Left(Redirect(routes.IndexController.index))
     }

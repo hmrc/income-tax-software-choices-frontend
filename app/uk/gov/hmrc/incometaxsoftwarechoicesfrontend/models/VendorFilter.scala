@@ -74,7 +74,7 @@ object VendorFilter {
   case object Bridging extends VendorFilter {
     override val key: String = "bridging"
     override val priority: Int = 2
-    override val showHint: Boolean = false
+    override val showHint: Boolean = true
     override val auditDescription: String = "bridging"
   }
 
@@ -122,13 +122,13 @@ object VendorFilter {
 
   case object StandardUpdatePeriods extends VendorFilter {
     override val key: String = "standard-update-periods"
-    override val priority: Int = 3
+    override val priority: Int = 1
     override val auditDescription: String = "standardUpdatePeriods"
   }
 
   case object CalendarUpdatePeriods extends VendorFilter {
     override val key: String = "calendar-update-periods"
-    override val priority: Int = 4
+    override val priority: Int = 2
     override val showHint: Boolean = true
     override val auditDescription: String = "calendarUpdatePeriods"
   }
@@ -279,31 +279,31 @@ object VendorFilter {
 
   case object MicrosoftWindows extends VendorFilter {
     override val key: String = "microsoft-windows"
-    override val priority: Int = 1
+    override val priority: Int = 2
     override val auditDescription: String = "microsoftWindows"
   }
 
   case object MacOS extends VendorFilter {
     override val key: String = "mac-os"
-    override val priority: Int = 2
+    override val priority: Int = 3
     override val auditDescription: String = "macOS"
   }
 
   case object Linux extends VendorFilter {
     override val key: String = "linux"
-    override val priority: Int = 3
+    override val priority: Int = 4
     override val auditDescription: String = "linux"
   }
 
   case object Android extends VendorFilter {
     override val key: String = "android"
-    override val priority: Int = 1
+    override val priority: Int = 5
     override val auditDescription: String = "android"
   }
 
   case object Apple extends VendorFilter {
     override val key: String = "apple-ios"
-    override val priority: Int = 2
+    override val priority: Int = 6
     override val auditDescription: String = "apple"
   }
 
@@ -473,6 +473,15 @@ object VendorFilterGroups {
     CalendarUpdatePeriods
   )
 
+  val applicationTypeFilters: Set[VendorFilter] = Set(
+    WebBrowser,
+    MicrosoftWindows,
+    MacOS,
+    Linux,
+    Android,
+    Apple
+  )
+
   // product details page groups //
   def featuresProvidedGroup: List[VendorFilter] = List(
     FreeVersion,
@@ -501,18 +510,22 @@ object VendorFilterGroups {
     QuarterlyUpdates
   )
 
-  def preferenceFilters(isUnguided: Boolean): Seq[(Set[VendorFilter], String)] = {
+  def preferenceFilters(isUnguided: Boolean, isAgent: Boolean): Seq[(Set[VendorFilter], String)] = {
 
-    val agentGroup = if (isUnguided) Seq((userTypeFilters, "user-type")) else Seq.empty
+    val userTypeGroup = if (isUnguided && isAgent) Seq((userTypeFilters, "user-type")) else Seq.empty
 
     val readinessGroup = if (!isUnguided) Seq((readinessFilters, "readiness")) else Seq.empty
 
-    agentGroup ++
+    val accountingGroup = if (isUnguided) Seq((accountingPeriodFilters, "accounting-period")) else Seq.empty
+
+    userTypeGroup ++
       Seq((pricingFilters, "pricing")) ++
       readinessGroup ++
-      Seq((Set(Bridging), "software-for")) ++
+      Seq((softwareForFilters, "software-for")) ++
+      accountingGroup ++
       Seq((compatibility, "software-compatibility")) ++
       Seq((accessibilityFilters, "accessibility")) ++
+      Seq((applicationTypeFilters, "software-application-type")) ++
       Seq((languageFeature, "language-features")) ++
       Seq((extraFeatures, "extra-features"))
   }
@@ -528,7 +541,10 @@ object VendorFilterGroups {
   val mobileGroup: List[VendorFilter] = List(Android, Apple)
   val languageGroup: List[VendorFilter] = List(English, Welsh)
 
-  val mandatoryFilterGroup: List[VendorFilter] =
+  val mandatoryFilterGroup: List[VendorFilter] = {
+    // TODO : Update Seq(Bridging) below to softwareForFilters?
+    //  Add applicationTypeFilters?
     businessIncomeGroup ++ userTypeFilters ++ accountingPeriodFilters ++ pricingFilters ++
       compatibility ++ accessibilityFilters ++ Seq(Bridging) ++ extraFeatures ++ languageFilter
+  }
 }

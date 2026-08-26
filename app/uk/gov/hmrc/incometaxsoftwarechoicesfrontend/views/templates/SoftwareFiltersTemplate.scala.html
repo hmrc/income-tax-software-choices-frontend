@@ -26,7 +26,7 @@
         checkboxGroup: CheckboxGroupHelper
 )
 
-@(checkboxField: Field, isUnguided: Boolean)(implicit messages: Messages)
+@(checkboxField: Field, isUnguided: Boolean, isAgent: Boolean)(implicit messages: Messages)
 
 
 @buildCheckBoxes(filters: Set[VendorFilter], label: String) = @{
@@ -35,13 +35,17 @@
             id = Some(s"$item-filter"),
             content = Text(messages(s"search-software.vendor-detail.$label.$item")),
             value = item,
-            hint = if(item.showHint) Some(Hint(content = Text(messages(s"search-software.vendor-detail.$label.$item.hint")))) else None
+            hint = (item.showHint, messages(s"search-software.vendor-detail.$label.$item.hint")) match {
+                        case (true, x) if x contains "<" => Some(Hint(content = HtmlContent(x)))
+                        case (true, x) => Some(Hint(content = Text(x)))
+                        case (_,_) => None
+                     }
         )
     )
 }
 
 @{
-    VendorFilterGroups.preferenceFilters(isUnguided).map { case (group, label) =>
+    VendorFilterGroups.preferenceFilters(isUnguided, isAgent).map { case (group, label) =>
 
         checkboxGroup(
             field = checkboxField,
