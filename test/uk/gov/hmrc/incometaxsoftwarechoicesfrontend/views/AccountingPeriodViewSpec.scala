@@ -75,7 +75,7 @@ class AccountingPeriodViewSpec extends ViewSpec {
       }
 
       "have a secondary heading" in {
-        document().mainContent.selectNth("h1", 2).text() shouldBe AccountingPeriodContent.legend
+        document().mainContent.selectHead("h2").text() shouldBe AccountingPeriodContent.legend
       }
 
       "have paragraph two" in {

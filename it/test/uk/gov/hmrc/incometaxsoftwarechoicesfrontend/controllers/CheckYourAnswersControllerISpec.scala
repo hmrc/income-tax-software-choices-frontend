@@ -22,7 +22,7 @@ import play.api.http.Status.*
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.SessionId
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, DatabaseHelper}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.AccountingPeriod.{OtherAccountingPeriod, SixthAprilToFifthApril}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.AccountingPeriod.{FirstAprilToThirtyFirstMarch, OtherAccountingPeriod, SixthAprilToFifthApril}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.{Check, Find}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.{Recognised, Unrecognised}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.SoleTraderOrLandlord
@@ -67,7 +67,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
             PrivatePensionIncome, ForeignDividends, ForeignInterest)).get
           .set(OtherItemsPage, Seq(PaymentsIntoAPrivatePension, CharitableGiving, CapitalGainsTax, StudentLoans,
             MarriageAllowance, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge)).get
-          .set(AccountingPeriodPage, Seq(OtherAccountingPeriod)).get
+          .set(AccountingPeriodPage, Seq(SixthAprilToFifthApril, FirstAprilToThirtyFirstMarch)).get
         await(userFiltersRepository.set(testUserFilters(Some(userAnswers))))
 
         val res = SoftwareChoicesFrontend.getCheckYourAnswers
@@ -85,11 +85,11 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
           summaryListRow(SummaryListKeys.otherItems, Seq(PaymentsIntoAPrivatePension, CharitableGiving, CapitalGainsTax, StudentLoans,
             MarriageAllowance, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge)
             .map(vf => messages(s"other-items.$vf")).mkString(" ")),
-          summaryListRow(SummaryListKeys.accountingPeriod, Set(OtherAccountingPeriod)
+          summaryListRow(SummaryListKeys.accountingPeriod, Set(SixthAprilToFifthApril, FirstAprilToThirtyFirstMarch)
             .map(vf => messages(s"accounting-period.${vf.key}")).mkString(" "))
         )
 
-        Jsoup.parse(res.body).select("main li").size() shouldBe 18
+        Jsoup.parse(res.body).select("main li").size() shouldBe 20
       }
       "display the page with minimal summary lists" in {
         val userAnswers = UserAnswers()
