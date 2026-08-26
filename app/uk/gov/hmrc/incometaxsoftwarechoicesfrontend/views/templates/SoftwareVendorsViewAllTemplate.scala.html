@@ -16,123 +16,23 @@
 
 @import uk.gov.hmrc.govukfrontend.views.html.components._
 @import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
-@import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcNewTabLinkHelper
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.viewmodels.VendorSuitabilityViewModel
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes.ProductDetailsController
+
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.viewmodels.VendorSuitabilityViewModel
 
 @this(
-  hmrcNewTabLinkHelper: HmrcNewTabLinkHelper,
-  govukSummaryList : GovukSummaryList
+    softwareVendorsBaseTemplate: SoftwareVendorsBaseTemplate
 )
 
 @(softwareVendors: Seq[VendorSuitabilityViewModel])(implicit messages: Messages)
 
-@customSummaryListRow(key: String, filtersAvailable: Seq[VendorFilter]) = @{
-
-  val value: String = filtersAvailable
-          .sortBy(_.priority)
-          .map(filter => messages(s"search-software.vendor-detail.$key.${filter.key}"))
-          .mkString(", ")
-
-  if(value.nonEmpty) {
-    Some(SummaryListRow(
-      key = Key(
-        content = Text(messages(s"search-software.vendor-detail.$key"))
-      ),
-      value = Value(
-        content = Text(value)
-      )
-    ))
-  } else {
-    None
-  }
-}
-
-@softwareVendorPricing(vendor: SoftwareVendorModel) = @{
-
-  val key: String = {messages("search-software.vendor-detail.pricing")}
-  val freeVersion = if(vendor.getFeatureStatus(FreeVersion).eq(Available)) Some(messages("search-software.vendor-detail.pricing.free-version")) else Some(messages("search-software.vendor-detail.pricing.no-free-version"))
-  val value = Seq(
-    freeVersion
-  ).flatten.mkString("/")
-
-  Some(SummaryListRow(
-    key = Key(
-      content = Text(key)
-    ),
-    value = Value(
-      content = Text(value)
-    )
-  ))
-
-}
-
-@softwareVendorSuitableFor(vendor: SoftwareVendorModel) = @{
-
-  customSummaryListRow(
-    key = "suitable-for",
-    filtersAvailable =
-        vendor.orderedFilterSubset(VendorFilterGroups.suitableForFilters)
-            .filter(_._2.eq(Available))
-            .map(_._1).toSeq
-  )
-
-}
-
-@softwareVendorSoftwareFor(vendor: SoftwareVendorModel) = @{
-
-  customSummaryListRow(
-    key = "software-for",
-    filtersAvailable = vendor.orderedFilterSubset(VendorFilterGroups.softwareForFilters)
-        .filter(_._2.eq(Available))
-        .map(_._1).toSeq
-  )
-
-}
-
-@softwareSubmissionType(vendor: SoftwareVendorModel) = @{
-
-  customSummaryListRow(
-    key = "submission-type",
-    filtersAvailable = vendor.orderedFilterSubset(VendorFilterGroups.submissionTypeFilters)
-    .filter(_._2.eq(Available))
-    .map(_._1).toSeq
-  )
-
-}
-
-@softwareVendorDetail(vendor: SoftwareVendorModel) = @{
-
-  Seq(
-    softwareVendorPricing(vendor),
-    softwareVendorSoftwareFor(vendor),
-    softwareSubmissionType(vendor),
-    softwareVendorSuitableFor(vendor)
-  ).flatten
-
-}
-
-@softwareVendorListing(vendor: SoftwareVendorModel, index: Int) = {
-    <hr class="govuk-section-break govuk-section-break--visible" aria-hidden="true">
-    <div id="software-vendor-@index">
-    <h3 class="govuk-heading-m software-vendor-list-heading-override">
-      @vendor.name
-    </h3>
-    @govukSummaryList(SummaryList(
-      rows = softwareVendorDetail(vendor),
-      classes = "govuk-summary-list--no-border"
-    ))
-    <p class="govuk-body">
-      <a href="@{ProductDetailsController.show(vendor.productId.toString)}" class="govuk-link">
-              @messages("search-software.intent.vendor-visit-link", vendor.name)
-      </a>
-    </p>
-  </div>
-}
-
 @softwareVendors.zipWithIndex.map { case (vendorSuitability, index) =>
-  @softwareVendorListing(vendorSuitability.vendor, index)
+    @softwareVendorsBaseTemplate(
+        vendor = vendorSuitability.vendor,
+        index = index,
+        renderSubmissionType = true
+    )
 }
