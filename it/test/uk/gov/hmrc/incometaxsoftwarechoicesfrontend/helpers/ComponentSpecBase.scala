@@ -119,7 +119,6 @@ trait ComponentSpecBase extends AnyWordSpec
     def submitAccountingPeriod(request: Option[Seq[String]], editMode: Boolean = false): WSResponse = {
       val body: Map[String, Seq[String]] = request match {
         case Some(keys) if keys.nonEmpty => Map(s"${AccountingPeriodForm.formKey}[]" -> keys)
-        case Some(_) => Map(s"${AccountingPeriodForm.formKey}[]" -> Seq(AccountingPeriodForm.noneKey))
         case None => Map.empty
       }
       post(s"/accounting-period-check?editMode=$editMode")(body)
