@@ -66,10 +66,9 @@ class AccountingPeriodController @Inject()(view: AccountingPeriodView,
       },
       selectedPeriod => {
         pageAnswersService.setPageAnswers(request.userFilters, AccountingPeriodPage, selectedPeriod).flatMap {
-          case true =>
-            if (selectedPeriod.contains(OtherAccountingPeriod))
+          case true if selectedPeriod.contains(OtherAccountingPeriod) =>
               Future.successful(Redirect(routes.AccountingPeriodNotAlignedController.show(editMode)))
-            else
+          case true =>
               Future.successful(Redirect(routes.CheckYourAnswersController.show()))
           case false => throw new InternalServerException("[AccountingPeriodController][submit] - Could not save accounting period")
         }

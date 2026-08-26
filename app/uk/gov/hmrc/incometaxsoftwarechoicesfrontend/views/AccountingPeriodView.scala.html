@@ -39,48 +39,48 @@
 
 @mainTemplate(title = messages("accounting-period.heading"), optForm = Some(accountingPeriodForm), backLink = Some(backUrl)) {
 
-@captionHelper(softwareName)
+    @captionHelper(softwareName)
 
-<h1 class="govuk-heading-l">@messages("accounting-period.heading")</h1>
+    <h1 class="govuk-heading-l">@messages("accounting-period.heading")</h1>
 
-<p class="govuk-body">
-    @Html(messages(
-    key = "accounting-period.para-one",
-    args = hmrcNewTabLinkHelper(NewTabLinkHelper(messages("accounting-period.para-one.link-text"), Some(messages("accounting-period.para-one.link-href"))))
-    ))
-    @messages("accounting-period.para-one-ending")
-</p>
+    <p class="govuk-body">
+        @Html(messages(
+        key = "accounting-period.para-one",
+        args = hmrcNewTabLinkHelper(NewTabLinkHelper(messages("accounting-period.para-one.link-text"), Some(messages("accounting-period.para-one.link-href"))))
+        ))
+        @messages("accounting-period.para-one-ending")
+    </p>
 
-<p class="govuk-body">@messages("accounting-period.para-two")</p>
+    <p class="govuk-body">@messages("accounting-period.para-two")</p>
 
-<h1 class="govuk-heading-m">@messages("accounting-period.heading-one")</h1>
+    <h2 class="govuk-heading-m">@messages("accounting-period.heading-one")</h2>
 
-@form(action = postAction) {
-  @govukCheckboxes(Checkboxes(
-    fieldset = Some(Fieldset(
-      legend = Some(Legend(
-        content = Text(messages("accounting-period.heading-one")),
-        classes = "govuk-visually-hidden govuk-!-display-block",
-        isPageHeading = false
-      ))
-    )),
-    hint = Some(Hint(content = Text(messages("accounting-period.hint")))),
-    items = Seq(
-      CheckboxItem(
-        content = Text(messages(s"accounting-period.${SixthAprilToFifthApril.key}")),
-        value = SixthAprilToFifthApril.key
-      ),
-      CheckboxItem(
-        content = Text(messages(s"accounting-period.${FirstAprilToThirtyFirstMarch.key}")),
-        value = FirstAprilToThirtyFirstMarch.key
-      ),
-      CheckboxItem(
-        content   = Text(messages(s"accounting-period.${OtherAccountingPeriod.key}")),
-        value     = OtherAccountingPeriod.key
-      )
-    )
-  ).withFormField(accountingPeriodForm(formKey)))
+    @form(action = postAction) {
+      @govukCheckboxes(Checkboxes(
+        fieldset = Some(Fieldset(
+          legend = Some(Legend(
+            content = Text(messages("accounting-period.heading-one")),
+            classes = "govuk-visually-hidden govuk-!-display-block",
+            isPageHeading = false
+          ))
+        )),
+        hint = Some(Hint(content = Text(messages("accounting-period.hint")))),
+        items = Seq(
+          CheckboxItem(
+            content = Text(messages(s"accounting-period.${SixthAprilToFifthApril.key}")),
+            value = SixthAprilToFifthApril.key
+          ),
+          CheckboxItem(
+            content = Text(messages(s"accounting-period.${FirstAprilToThirtyFirstMarch.key}")),
+            value = FirstAprilToThirtyFirstMarch.key
+          ),
+          CheckboxItem(
+            content   = Text(messages(s"accounting-period.${OtherAccountingPeriod.key}")),
+            value     = OtherAccountingPeriod.key
+          )
+        )
+      ).withFormField(accountingPeriodForm(formKey)))
 
-  @govukButton(Button(content = Text(messages("base.continue"))))
-}
+      @govukButton(Button(content = Text(messages("base.continue"))))
+    }
 }
