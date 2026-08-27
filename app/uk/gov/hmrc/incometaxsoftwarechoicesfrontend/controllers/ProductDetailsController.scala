@@ -25,7 +25,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareVendorModel,
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.{PageAnswersService, SoftwareChoicesService}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.{EnterSoftwareNamePage, HowYouFindSoftwarePage}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.{NotFoundView, ProductDetailsView}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.{NotFoundView, StaticProductDetailsView, PersonalisedProductDetailsView}
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
@@ -35,7 +35,8 @@ class ProductDetailsController @Inject()(softwareChoicesService: SoftwareChoices
                                          userFiltersRepository: UserFiltersRepository,
                                          pageAnswersService: PageAnswersService,
                                          identify: SessionIdentifierAction,
-                                         productDetailsView: ProductDetailsView,
+                                         staticProductDetailsView: StaticProductDetailsView,
+                                         personalisedProductDetailsView: PersonalisedProductDetailsView,
                                          notFoundView: NotFoundView)
                                         (implicit mcc: MessagesControllerComponents, appConfig: AppConfig, val executionContext: ExecutionContext) extends BaseFrontendController {
 
@@ -47,10 +48,15 @@ class ProductDetailsController @Inject()(softwareChoicesService: SoftwareChoices
       vendorOpt = productId.toIntOption.flatMap(softwareChoicesService.getSoftwareVendor)
     } yield {
       (userFilters, vendorOpt) match {
-        case (Some(userFilters), Some(softwareVendor)) =>
-          Ok(productDetailsView(softwareVendor, backLink(userFilters.answers, userFilters.finalFilters, softwareVendor)))
-        case (None, Some(softwareVendor)) =>
-          Ok(productDetailsView(softwareVendor, routes.SearchSoftwareController.show().url))
+        case (Some(userFilters), Some(softwareVendor)) if userFilters.finalFilters.nonEmpty =>
+          println("### In the some block ###")
+          println(s"### User Filters: $userFilters ###")
+          println(s"### Final Filters: ${userFilters.finalFilters} ###")
+          println(s"### Final Filters length: ${userFilters.finalFilters.length} ###")
+          Ok(personalisedProductDetailsView(softwareVendor, backLink(userFilters.answers, userFilters.finalFilters, softwareVendor)))
+        case (_, Some(softwareVendor)) =>
+          println("### In the none block ###")
+          Ok(staticProductDetailsView(softwareVendor, routes.SearchSoftwareController.show().url))
         case _ =>
           NotFound(notFoundView(routes.ProductDetailsController.show(productId).url))
       }

@@ -19,7 +19,6 @@
 @import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcNewTabLinkHelper
 @import uk.gov.hmrc.hmrcfrontend.views.viewmodels.newtablinkhelper.NewTabLinkHelper
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilterGroups._
@@ -34,13 +33,18 @@
         govukTable: GovukTable,
         govukTag: GovukTag
 )(implicit appConfig: AppConfig)
-@(softwareVendor: SoftwareVendorModel, backLink: String)(implicit request: Request[_], messages: Messages)
+
+@(
+  softwareVendor: SoftwareVendorModel,
+  backLink: String,
+  featuresProvided: List[VendorFilter] = Nil,
+  businessIncome: List[VendorFilter] = Nil,
+  nonMandatedIncome: List[VendorFilter] = Nil
+)(implicit request: Request[_], messages: Messages)
 
 @mainTemplate(title = softwareVendor.name, backLink = Some(backLink), isFullWidth = true) {
 
-    <h1 class="govuk-heading-l">@{
-        softwareVendor.name
-    }</h1>
+    <h1 class="govuk-heading-l">@{ softwareVendor.name }</h1>
 
     <p class="govuk-body govuk-!-margin-bottom-6">
         @hmrcNewTabLinkHelper(NewTabLinkHelper(
@@ -53,15 +57,21 @@
     <div class="govuk-!-width-three-quarters govuk-!-padding-0">
         @statusKeyTable
 
-        <h2 class="govuk-heading-m">@messages("product-details.details.heading")</h2>
-        @table(featuresProvidedGroup, "features-provided", displayIntent = false)
+        @if(featuresProvided.nonEmpty) {
+            <h2 class="govuk-heading-m">@messages("product-details.details.heading")</h2>
+            @table(featuresProvided, "features-provided", displayIntent = false)
+        }
 
-        <h2 class="govuk-heading-m">@messages("product-details.quarterly-updates.heading")</h2>
-        <p class="govuk-body-m">@messages("product-details.quarterly-updates.what-you-need")</p>
-        @table(businessIncomeGroup, "business-income", displayIntent = false)
+        @if(businessIncome.nonEmpty) {
+            <h2 class="govuk-heading-m">@messages("product-details.quarterly-updates.heading")</h2>
+            <p class="govuk-body-m">@messages("product-details.quarterly-updates.what-you-need")</p>
+            @table(businessIncome, "business-income", displayIntent = false)
+        }
 
-        <h2 class="govuk-heading-m">@messages("product-details.tax-return.heading")</h2>
-        @table(nonMandatedIncomeGroup, "other-income", displayIntent = true)
+        @if(nonMandatedIncome.nonEmpty) {
+            <h2 class="govuk-heading-m">@messages("product-details.tax-return.heading")</h2>
+            @table(nonMandatedIncome, "other-income", displayIntent = true)
+        }
     </div>
 
     @defining({
@@ -87,7 +97,7 @@
     </p>
 }
 
-@featuresRow(filterGroup: List[VendorFilter], section: String, displayIntent: Boolean) = @{
+@featuresRow(filterGroup: List[VendorFilter], section: String, displayIntent: Boolean) = @{ 
     filterGroup map { filter =>
         Seq(
             TableRow(
@@ -140,7 +150,7 @@
      </div>
 }
 
-@swSpecRow(filtersGroup: List[VendorFilter], sectionKey: String) = @{
+@swSpecRow(filtersGroup: List[VendorFilter], sectionKey: String) = @{ 
     val filters = filtersGroup.filter(f => softwareVendor.filters.contains(f) && softwareVendor.getFeatureStatus(f).eq(Available))
     filters.size match {
         case x if x==1 => Seq(SummaryListRow(
@@ -149,7 +159,7 @@
                 classes = "govuk-!-width-one-third"
             ),
             value = Value(content = HtmlContent(
-                s"${filters.map(f => s"""${messages(s"product-details.${sectionKey}.${f.key}")}""").mkString("")}"
+                s"${filters.map(f => s"""${messages(s"product-details.${sectionKey}.${f.key}")}""" ).mkString("") }"
             ))))
         case x if x>1 => Seq(SummaryListRow(
             key = Key(
@@ -157,9 +167,7 @@
                 classes = "govuk-!-width-one-third"
             ),
             value = Value(content = HtmlContent(
-                s"""<ul class="govuk-list">
-                    ${filters.map(f => s"""<li>${messages(s"product-details.${sectionKey}.${f.key}")}</li>""").mkString("")}
-                    </ul>"""
+                s"""<ul class=\"govuk-list\">\n                    ${filters.map(f => s"""<li>${messages(s"product-details.${sectionKey}.${f.key}")}</li>""").mkString("\n") }\n                    </ul>"""
             ))))
         case _ => Seq.empty
     }
