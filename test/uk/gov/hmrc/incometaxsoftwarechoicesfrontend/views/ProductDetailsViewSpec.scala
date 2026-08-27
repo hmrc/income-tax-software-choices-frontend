@@ -22,12 +22,12 @@ import org.scalatest.{Assertion, BeforeAndAfterEach}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.{Available, Intended}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareVendorModel
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.*
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.ProductDetailsView
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.StaticProductDetailsView
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.TestModels.softwareVendorModelBase
 
-class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
+class StaticProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
 
-  private val productDetailsPage = app.injector.instanceOf[ProductDetailsView]
+  private val productDetailsPage = app.injector.instanceOf[StaticProductDetailsView]
 
   private val softwareVendorModelFull = softwareVendorModelBase
     .copy(name = "abc full")
