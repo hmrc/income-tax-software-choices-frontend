@@ -491,7 +491,20 @@ object VendorFilterGroups {
     Individual,
     HMRCAssist,
     StandardUpdatePeriods,
-    CalendarUpdatePeriods
+    CalendarUpdatePeriods,
+    Vat,
+    Visual,
+    Hearing,
+    Motor,
+    Cognitive,
+    WebBrowser,
+    MicrosoftWindows,
+    MacOS,
+    Linux,
+    Android,
+    Apple,
+    English,
+    Welsh
   )
   
   val businessIncomeGroup: List[VendorFilter] = List(
