@@ -174,12 +174,23 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
         checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwareWithIntentPageContent.Filters.softwareFor
       }
 
-      "contains a Bridging checkbox" in {
+      "contains an all-in-one checkbox" in {
         validateCheckboxInGroup(
           checkboxGroup,
           1,
+          RecordKeeping.key,
+          SearchSoftwareWithIntentPageContent.recordKeeping,
+          Some(SearchSoftwareWithIntentPageContent.recordKeepingHint)
+        )
+      }
+
+      "contains a Bridging checkbox" in {
+        validateCheckboxInGroup(
+          checkboxGroup,
+          2,
           Bridging.key,
-          SearchSoftwareWithIntentPageContent.bridging
+          SearchSoftwareWithIntentPageContent.bridging,
+          Some(SearchSoftwareWithIntentPageContent.bridgingHint)
         )
       }
     }
@@ -226,8 +237,40 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
       }
     }
 
-    "has a language section" that {
+    "has an software application type section" that {
       val checkboxGroup = getCheckboxGroup(document, 7)
+
+      "contains a fieldset legend" in {
+        checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwareWithIntentPageContent.Filters.softwareApplicationType
+      }
+
+      "contains an online checkbox" in {
+        validateCheckboxInGroup(checkboxGroup, 1, WebBrowser.key, SearchSoftwareWithIntentPageContent.webBrowser)
+      }
+
+      "contains a Windows checkbox" in {
+        validateCheckboxInGroup(checkboxGroup, 2, MicrosoftWindows.key, SearchSoftwareWithIntentPageContent.microsoftWindows)
+      }
+
+      "contains a MacOS checkbox" in {
+        validateCheckboxInGroup(checkboxGroup, 3, MacOS.key, SearchSoftwareWithIntentPageContent.macOs)
+      }
+
+      "contains a Linux checkbox" in {
+        validateCheckboxInGroup(checkboxGroup, 4, Linux.key, SearchSoftwareWithIntentPageContent.linux)
+      }
+
+      "contains an Android checkbox" in {
+        validateCheckboxInGroup(checkboxGroup, 5, Android.key, SearchSoftwareWithIntentPageContent.android)
+      }
+
+      "contains an Apple iOS checkbox" in {
+        validateCheckboxInGroup(checkboxGroup, 6, Apple.key, SearchSoftwareWithIntentPageContent.appleIos)
+      }
+    }
+
+    "has a language section" that {
+      val checkboxGroup = getCheckboxGroup(document, 8)
 
       "contains a fieldset legend" in {
         checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwareWithIntentPageContent.Filters.language
@@ -245,7 +288,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
     }
 
     "has an extra features section" that {
-      val checkboxGroup = getCheckboxGroup(document, 8)
+      val checkboxGroup = getCheckboxGroup(document, 9)
 
       "contains a fieldset legend" in {
         checkboxGroup.getElementsByTag("legend").text shouldBe SearchSoftwareWithIntentPageContent.Filters.extraFeatures
@@ -262,7 +305,22 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
       }
     }
 
-    "has the correct filters for agent users" which {
+    "has the correct order of filters with no user type or accounting period sections" in {
+      val filterGroups = getFilterSection(document).selectSeq(".govuk-form-group > fieldset > legend").map(_.text)
+      filterGroups shouldBe Seq(
+        SearchSoftwareWithIntentPageContent.Filters.pricing,
+        SearchSoftwareWithIntentPageContent.Filters.readiness,
+        SearchSoftwareWithIntentPageContent.Filters.softwareFor,
+        SearchSoftwareWithIntentPageContent.Filters.softwareCompatibility,
+        SearchSoftwareWithIntentPageContent.Filters.accessibilityFeatures,
+        SearchSoftwareWithIntentPageContent.Filters.softwareApplicationType,
+        SearchSoftwareWithIntentPageContent.Filters.language,
+        SearchSoftwareWithIntentPageContent.Filters.extraFeatures
+      )
+    }
+
+
+    "has the correct filters for view all users" which {
       lazy val document = {
         val model = SoftwareChoicesResultsViewModel(
           vendorsWithIntent = SearchSoftwareWithIntentPageContent.multipleVendorsWithIntent,
@@ -304,6 +362,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
           SearchSoftwareWithIntentPageContent.Filters.softwareFor,
           SearchSoftwareWithIntentPageContent.Filters.softwareCompatibility,
           SearchSoftwareWithIntentPageContent.Filters.accessibilityFeatures,
+          SearchSoftwareWithIntentPageContent.Filters.softwareApplicationType,
           SearchSoftwareWithIntentPageContent.Filters.language,
           SearchSoftwareWithIntentPageContent.Filters.extraFeatures
         )
@@ -671,6 +730,7 @@ private object SearchSoftwareWithIntentPageContent {
     val extraFeatures = "Extra features"
     val language = "Language"
     val applyFilters = "Apply filters"
+    val softwareApplicationType = "Software application type"
   }
 
   val heading = "Software results based on your answers and filters"
@@ -691,8 +751,10 @@ private object SearchSoftwareWithIntentPageContent {
   val overseasProperty = "Foreign property"
 
   val softwareFor = "Type of software"
-  val recordKeeping = "Software that creates digital records"
-  val bridging = "Software that connects to your records (bridging software)"
+  val recordKeeping = "All-in-one software that creates digital records"
+  val recordKeepingHint = "records income and expenses directly sends updates to HMRC"
+  val bridging = "Bridging software that connects to records"
+  val bridgingHint = "Connects spreadsheet records to HMRC for digital submission"
 
   val submissionType = "Submission type"
   val incomeSources = "Income sources"
@@ -714,6 +776,13 @@ private object SearchSoftwareWithIntentPageContent {
   val welsh = "Welsh"
 
   val fullyReady = "Ready for quarterly updates and tax return"
+
+  val webBrowser = "Online in web browser (all systems)"
+  val microsoftWindows = "Desktop app (Microsoft Windows)"
+  val macOs = "Desktop app (Mac OS)"
+  val linux = "Desktop app (Linux)"
+  val android = "Mobile app (Android)"
+  val appleIos = "Mobile app (Apple iOS)"
 
   private val lastUpdateTest = LocalDate.of(2022, 12, 2)
 

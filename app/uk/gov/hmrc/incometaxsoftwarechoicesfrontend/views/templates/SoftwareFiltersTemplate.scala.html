@@ -35,7 +35,7 @@
             id = Some(s"$item-filter"),
             content = Text(messages(s"search-software.vendor-detail.$label.$item")),
             value = item,
-            hint = if(item.showHint) Some(Hint(content = Text(messages(s"search-software.vendor-detail.$label.$item.hint")))) else None
+            hint = if(item.showHint) Some(Hint(content = HtmlContent(messages(s"search-software.vendor-detail.$label.$item.hint")))) else None
         )
     )
 }

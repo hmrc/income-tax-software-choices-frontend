@@ -74,7 +74,7 @@ object VendorFilter {
   case object Bridging extends VendorFilter {
     override val key: String = "bridging"
     override val priority: Int = 2
-    override val showHint: Boolean = false
+    override val showHint: Boolean = true
     override val auditDescription: String = "bridging"
   }
 
@@ -279,31 +279,31 @@ object VendorFilter {
 
   case object MicrosoftWindows extends VendorFilter {
     override val key: String = "microsoft-windows"
-    override val priority: Int = 1
+    override val priority: Int = 2
     override val auditDescription: String = "microsoftWindows"
   }
 
   case object MacOS extends VendorFilter {
     override val key: String = "mac-os"
-    override val priority: Int = 2
+    override val priority: Int = 3
     override val auditDescription: String = "macOS"
   }
 
   case object Linux extends VendorFilter {
     override val key: String = "linux"
-    override val priority: Int = 3
+    override val priority: Int = 4
     override val auditDescription: String = "linux"
   }
 
   case object Android extends VendorFilter {
     override val key: String = "android"
-    override val priority: Int = 1
+    override val priority: Int = 5
     override val auditDescription: String = "android"
   }
 
   case object Apple extends VendorFilter {
     override val key: String = "apple-ios"
-    override val priority: Int = 2
+    override val priority: Int = 6
     override val auditDescription: String = "apple"
   }
 
@@ -473,6 +473,15 @@ object VendorFilterGroups {
     CalendarUpdatePeriods
   )
 
+  val applicationTypeFilters: Set[VendorFilter] = Set(
+    WebBrowser,
+    MicrosoftWindows,
+    MacOS,
+    Linux,
+    Android,
+    Apple
+  )
+
   // product details page groups //
   def featuresProvidedGroup: List[VendorFilter] = List(
     FreeVersion,
@@ -510,9 +519,10 @@ object VendorFilterGroups {
     agentGroup ++
       Seq((pricingFilters, "pricing")) ++
       readinessGroup ++
-      Seq((Set(Bridging), "software-for")) ++
+      Seq((softwareForFilters, "software-for")) ++
       Seq((compatibility, "software-compatibility")) ++
       Seq((accessibilityFilters, "accessibility")) ++
+      Seq((applicationTypeFilters, "software-application-type")) ++
       Seq((languageFeature, "language-features")) ++
       Seq((extraFeatures, "extra-features"))
   }
@@ -530,5 +540,7 @@ object VendorFilterGroups {
 
   val mandatoryFilterGroup: List[VendorFilter] =
     businessIncomeGroup ++ userTypeFilters ++ accountingPeriodFilters ++ pricingFilters ++
-      compatibility ++ accessibilityFilters ++ Seq(Bridging) ++ extraFeatures ++ languageFilter
+      compatibility ++ accessibilityFilters ++ softwareForFilters ++ extraFeatures ++
+      languageFilter ++ applicationTypeFilters
+  
 }
