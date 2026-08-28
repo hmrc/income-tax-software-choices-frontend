@@ -19,13 +19,13 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.SessionIdentifierAction
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.Check
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.{Check, Find}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.Recognised
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareVendorModel, UserAnswers, VendorFilter}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.{PageAnswersService, SoftwareChoicesService}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.{EnterSoftwareNamePage, HowYouFindSoftwarePage}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.{NotFoundView, StaticProductDetailsView, PersonalisedProductDetailsView}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.{NotFoundView, PersonalisedProductDetailsView, StaticProductDetailsView}
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
@@ -48,14 +48,9 @@ class ProductDetailsController @Inject()(softwareChoicesService: SoftwareChoices
       vendorOpt = productId.toIntOption.flatMap(softwareChoicesService.getSoftwareVendor)
     } yield {
       (userFilters, vendorOpt) match {
-        case (Some(userFilters), Some(softwareVendor)) if userFilters.finalFilters.nonEmpty =>
-          println("### In the some block ###")
-          println(s"### User Filters: $userFilters ###")
-          println(s"### Final Filters: ${userFilters.finalFilters} ###")
-          println(s"### Final Filters length: ${userFilters.finalFilters.length} ###")
-          Ok(personalisedProductDetailsView(softwareVendor, backLink(userFilters.answers, userFilters.finalFilters, softwareVendor)))
+        case (Some(userFilters), Some(softwareVendor)) if userIsInFindOrCheckJourney(userFilters.answers) =>
+          Ok(personalisedProductDetailsView(softwareVendor, userFilters.finalFilters, backLink(userFilters.answers, userFilters.finalFilters, softwareVendor)))
         case (_, Some(softwareVendor)) =>
-          println("### In the none block ###")
           Ok(staticProductDetailsView(softwareVendor, routes.SearchSoftwareController.show().url))
         case _ =>
           NotFound(notFoundView(routes.ProductDetailsController.show(productId).url))
@@ -80,6 +75,13 @@ class ProductDetailsController @Inject()(softwareChoicesService: SoftwareChoices
       case (Some(Check), false, Some(Recognised), Some(true), Some(false))  => routes.PartiallyCompatibleController.show().url
       case (Some(Check), false, Some(Recognised), Some(true), None)         => routes.QuarterlyOnlyController.show().url
       case _                                                                => routes.SearchSoftwareController.show().url
+    }
+  }
+
+  private def userIsInFindOrCheckJourney(answers: Option[UserAnswers]): Boolean = {
+    pageAnswersService.getPageAnswers(answers, HowYouFindSoftwarePage).match {
+      case Some(Check) | Some(Find) => true
+      case _ => false
     }
   }
 }
