@@ -184,11 +184,14 @@ search-software.vendor-detail.software-application-type.apple-ios = Ap ffôn sym
 
 # Contact details section
 
-product-details.contact-details.website.link    = Cadarnhewch a yw {0} yn addas i chi
+product-details.contact-details.website.link    = Archwiliwch y feddalwedd hon ar wefan {0}
 
 # Product details section
 
 product-details.details.heading = Nodweddion meddalwedd
+
+product-details.details.personalised-heading = Yn seiliedig ar eich dewisiadau
+product-details.details.personalised-sub-heading = Nodweddion meddalwedd sydd eu hangen
 
 product-details.features-provided.heading = Nodweddion sydd ar gael
 product-details.features-provided.quarterly-updates = Diweddariadau chwarterol
@@ -244,25 +247,14 @@ product-details.meaning.ready = Mae’r nodwedd hon nawr yn barod i’w defnyddi
 product-details.meaning.development = Mae’r darparwr meddalwedd wedi ymrwymo i adeiladu’r nodwedd hon mewn pryd ar gyfer Ffurflen Dreth 2026 i 2027.
 product-details.meaning.not-included = Nid yw’r nodwedd hon ar gael yn y cynnyrch meddalwedd hwn.
 
+product-details.features-provided.web-browser = Porwr gwe
+product-details.features-provided.microsoft-windows = Microsoft Windows
+product-details.features-provided.mac-os = Mac OS
+product-details.features-provided.linux = Linux
+product-details.features-provided.android = Android
+product-details.features-provided.apple-ios = Apple iOS
 
-product-details.software-spec.heading = Manylebau’r feddalwedd
-
-product-details.software-spec.software-type = Math o feddalwedd
-product-details.software-spec.compatible-with = Yn cydweddu â
-product-details.software-spec.mobile-app = Ap Ffon Symudol
-product-details.software-spec.language = Iaith
-
-product-details.software-type.desktop-based = Rhaglen bwrdd gwaith
-product-details.software-type.web-browser = Porwr gwe
-
-product-details.compatible-with.microsoft-windows = Microsoft Windows
-product-details.compatible-with.mac-os = Mac OS
-product-details.compatible-with.linux = Linux
-
-product-details.mobile-app.android = Android
-product-details.mobile-app.apple-ios = Apple iOS
-
-product-details.language.english = Saesneg
+product-details.features-provided.english = Saesneg
 
 # Other Income Sources Page
 additional.income.source-heading                                    = Pa rai o’r ffynonellau incwm canlynol y mae angen i chi eu cyflwyno yn eich Ffurflen Dreth?

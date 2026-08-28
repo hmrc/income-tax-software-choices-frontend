@@ -185,11 +185,14 @@ search-software.vendor-detail.software-application-type.apple-ios = Mobile app (
 
 # Contact details section
 
-product-details.contact-details.website.link    = Confirm whether {0} is right for you
+product-details.contact-details.website.link    = Explore this software on {0}'s website
 
 # Product details section
 
 product-details.details.heading = Software features
+
+product-details.details.personalised-heading = Based on your selections
+product-details.details.personalised-sub-heading = Software features needed
 
 product-details.features-provided.heading = Features provided
 product-details.features-provided.quarterly-updates = Quarterly updates
@@ -203,7 +206,7 @@ product-details.features-provided.individual = Individual software
 product-details.features-provided.hmrc-assist = HMRC Assist (Submission Feedback)
 product-details.features-provided.free-version = Free version
 
-product-details.quarterly-updates.heading = What you need for your quarterly updates
+product-details.quarterly-updates.heading = What is needed for quarterly updates
 product-details.quarterly-updates.what-you-need = You’ll still need to send these income sources in your tax return.
 
 product-details.business-income.heading = Business income sources
@@ -242,14 +245,6 @@ product-details.meaning.heading = Meaning
 product-details.meaning.ready = This feature is ready to use now.
 product-details.meaning.development = The software provider has committed to building this in time for the 2026 to 2027 tax return.
 product-details.meaning.not-included = This is not available in this software product.
-
-
-product-details.software-spec.heading = Software specifications
-
-product-details.software-spec.software-type = Software type
-product-details.software-spec.compatible-with = Compatible with
-product-details.software-spec.mobile-app = Mobile App
-product-details.software-spec.language = Language
 
 product-details.software-type.desktop-based = Desktop application
 product-details.software-type.web-browser = Web browser
