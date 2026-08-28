@@ -53,6 +53,9 @@
     <div class="govuk-!-width-three-quarters govuk-!-padding-0">
         @statusKeyTable
 
+        <h2 class="govuk-heading-l">@messages("product-details.details.heading")</h2>
+        @table(featuresProvidedGroup, "features-provided", displayIntent = false)
+
 
     </div>
 
@@ -175,3 +178,13 @@
   )
   </div>
 }
+
+@filtersSelectedFrom(filterGroup: List[VendorFilter]) = @{
+    filterGroup.filter(f => finalFilters.contains(f))
+}
+
+@filtersNotSelectedFrom(filterGroup: List[VendorFilter]) = @{
+    filterGroup.filter(f => !finalFilters.contains(f))
+}
+
+
