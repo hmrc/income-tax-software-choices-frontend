@@ -503,7 +503,6 @@ object VendorFilterGroups {
     Linux,
     Android,
     Apple,
-    English,
     Welsh
   )
   

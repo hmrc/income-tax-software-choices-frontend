@@ -199,10 +199,10 @@ product-details.meaning.development = Mae’r darparwr meddalwedd wedi ymrwymo i
 product-details.meaning.not-included = Nid yw’r nodwedd hon ar gael yn y cynnyrch meddalwedd hwn.
 
 # Product details section
-product-details.details.heading = Nodweddion meddalwedd
+product-details.details.heading.personalised = Yn seiliedig ar eich dewisiadau
 
-product-details.details.personalised.heading = Yn seiliedig ar eich dewisiadau
-product-details.details.personalised.sub-heading = Nodweddion meddalwedd sydd eu hangen
+product-details.features.heading = Nodweddion meddalwedd
+product-details.features.heading.personalised = Nodweddion meddalwedd sydd eu hangen
 
 product-details.features-provided.heading = Nodweddion sydd ar gael
 product-details.features-provided.free-version = Fersiwn am ddim
@@ -224,7 +224,6 @@ product-details.features-provided.mac-os = Ap bwrdd gwaith (Mac OS)
 product-details.features-provided.linux = Ap bwrdd gwaith (Linux)
 product-details.features-provided.android = Ap ffôn symudol (Android)
 product-details.features-provided.apple-ios = Ap ffôn symudol (Apple iOS)
-product-details.features-provided.english = Saesneg
 product-details.features-provided.welsh = Cymraeg
 
 product-details.quarterly-updates.heading = Yr hyn sydd ei angen ar gyfer diweddariadau chwarterol
@@ -259,6 +258,7 @@ product-details.other-features.collapsible = Other potential software features
 product-details.other-features.heading = Other features
 product-details.other-features.quarterly-updates.heading = Other quarterly update income sources
 product-details.other-features.tax-return.heading = Other tax return income sources and items
+
 
 # Other Income Sources Page
 additional.income.source-heading                                    = Pa rai o’r ffynonellau incwm canlynol y mae angen i chi eu cyflwyno yn eich Ffurflen Dreth?

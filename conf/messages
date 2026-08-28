@@ -200,10 +200,10 @@ product-details.meaning.development = The software provider has committed to bui
 product-details.meaning.not-included = This is not available in this software product.
 
 # Product details section
-product-details.details.heading = Software features
+product-details.details.heading.personalised = Based on your selections
 
-product-details.details.personalised.heading = Based on your selections
-product-details.details.personalised.sub-heading = Software features needed
+product-details.features.heading = Software features
+product-details.features.heading.personalised = Software features needed
 
 product-details.features-provided.heading = Features provided
 product-details.features-provided.free-version = Free version
@@ -227,7 +227,6 @@ product-details.features-provided.mac-os = Desktop app (Mac OS)
 product-details.features-provided.linux = Desktop app (Linux)
 product-details.features-provided.android = Mobile app (Android)
 product-details.features-provided.apple-ios = Mobile app (Apple iOS)
-product-details.features-provided.english = English
 product-details.features-provided.welsh = Welsh
 
 product-details.quarterly-updates.heading = What is needed for quarterly updates
