@@ -146,7 +146,7 @@ search-software.vendor-detail.submission-type.quarterly-updates = Quarterly upda
 search-software.vendor-detail.submission-type.tax-return = Tax return
 
 search-software.vendor-detail.software-for = Type of software
-search-software.vendor-detail.software-for.record-keeping = Software that creates digital records
+search-software.vendor-detail.software-for.record-keeping = All-in-one software that creates digital records
 search-software.vendor-detail.software-for.record-keeping.hint = <ul class="govuk-list govuk-list--bullet" style="color: #505a5f;"><li>records income and expenses directly<li>sends updates to HMRC
 search-software.vendor-detail.software-for.bridging = Bridging software that connects to records
 search-software.vendor-detail.software-for.bridging.hint = Connects spreadsheet records to HMRC for digital submission

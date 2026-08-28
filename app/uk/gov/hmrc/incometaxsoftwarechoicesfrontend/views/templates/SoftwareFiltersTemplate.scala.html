@@ -35,11 +35,7 @@
             id = Some(s"$item-filter"),
             content = Text(messages(s"search-software.vendor-detail.$label.$item")),
             value = item,
-            hint = (item.showHint, messages(s"search-software.vendor-detail.$label.$item.hint")) match {
-                        case (true, x) if x contains "<" => Some(Hint(content = HtmlContent(x)))
-                        case (true, x) => Some(Hint(content = Text(x)))
-                        case (_,_) => None
-                     }
+            hint = if(item.showHint) Some(Hint(content = HtmlContent(messages(s"search-software.vendor-detail.$label.$item.hint"))))
         )
     )
 }

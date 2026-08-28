@@ -538,10 +538,9 @@ object VendorFilterGroups {
   val mobileGroup: List[VendorFilter] = List(Android, Apple)
   val languageGroup: List[VendorFilter] = List(English, Welsh)
 
-  val mandatoryFilterGroup: List[VendorFilter] = {
-    // TODO : Update Seq(Bridging) below to softwareForFilters?
-    //  Add applicationTypeFilters?
+  val mandatoryFilterGroup: List[VendorFilter] =
     businessIncomeGroup ++ userTypeFilters ++ accountingPeriodFilters ++ pricingFilters ++
-      compatibility ++ accessibilityFilters ++ Seq(Bridging) ++ extraFeatures ++ languageFilter
-  }
+      compatibility ++ accessibilityFilters ++ softwareForFilters ++ extraFeatures ++
+      languageFilter ++ applicationTypeFilters
+  
 }
