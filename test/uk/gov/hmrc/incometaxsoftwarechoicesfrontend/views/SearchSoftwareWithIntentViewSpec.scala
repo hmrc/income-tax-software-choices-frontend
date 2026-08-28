@@ -751,7 +751,7 @@ private object SearchSoftwareWithIntentPageContent {
   val overseasProperty = "Foreign property"
 
   val softwareFor = "Type of software"
-  val recordKeeping = "Software that creates digital records"
+  val recordKeeping = "All-in-one software that creates digital records"
   val recordKeepingHint = "records income and expenses directly sends updates to HMRC"
   val bridging = "Bridging software that connects to records"
   val bridgingHint = "Connects spreadsheet records to HMRC for digital submission"
