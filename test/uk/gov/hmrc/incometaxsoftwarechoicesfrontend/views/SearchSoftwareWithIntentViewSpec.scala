@@ -313,6 +313,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
         SearchSoftwareWithIntentPageContent.Filters.softwareFor,
         SearchSoftwareWithIntentPageContent.Filters.softwareCompatibility,
         SearchSoftwareWithIntentPageContent.Filters.accessibilityFeatures,
+        SearchSoftwareWithIntentPageContent.Filters.softwareApplicationType,
         SearchSoftwareWithIntentPageContent.Filters.language,
         SearchSoftwareWithIntentPageContent.Filters.extraFeatures
       )
@@ -320,20 +321,20 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
 
 
     "has the correct filters for individual view all users" which {
-    "has the correct order of filters with no user type or accounting period sections" in {
-      val filterGroups = getFilterSection(document).selectSeq(".govuk-form-group > fieldset > legend").map(_.text)
-      filterGroups shouldBe Seq(
-        SearchSoftwareWithIntentPageContent.Filters.pricing,
-        SearchSoftwareWithIntentPageContent.Filters.readiness,
-        SearchSoftwareWithIntentPageContent.Filters.softwareFor,
-        SearchSoftwareWithIntentPageContent.Filters.softwareCompatibility,
-        SearchSoftwareWithIntentPageContent.Filters.accessibilityFeatures,
-        SearchSoftwareWithIntentPageContent.Filters.softwareApplicationType,
-        SearchSoftwareWithIntentPageContent.Filters.language,
-        SearchSoftwareWithIntentPageContent.Filters.extraFeatures
-      )
+      "has the correct order of filters with no user type or accounting period sections" in {
+        val filterGroups = getFilterSection(document).selectSeq(".govuk-form-group > fieldset > legend").map(_.text)
+        filterGroups shouldBe Seq(
+          SearchSoftwareWithIntentPageContent.Filters.pricing,
+          SearchSoftwareWithIntentPageContent.Filters.readiness,
+          SearchSoftwareWithIntentPageContent.Filters.softwareFor,
+          SearchSoftwareWithIntentPageContent.Filters.softwareCompatibility,
+          SearchSoftwareWithIntentPageContent.Filters.accessibilityFeatures,
+          SearchSoftwareWithIntentPageContent.Filters.softwareApplicationType,
+          SearchSoftwareWithIntentPageContent.Filters.language,
+          SearchSoftwareWithIntentPageContent.Filters.extraFeatures
+        )
+      }
     }
-
 
     "has the correct filters for view all users" which {
       lazy val document = {
@@ -352,6 +353,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
           SearchSoftwareWithIntentPageContent.Filters.softwareFor,
           SearchSoftwareWithIntentPageContent.Filters.softwareCompatibility,
           SearchSoftwareWithIntentPageContent.Filters.accessibilityFeatures,
+          SearchSoftwareWithIntentPageContent.Filters.softwareApplicationType,
           SearchSoftwareWithIntentPageContent.Filters.language,
           SearchSoftwareWithIntentPageContent.Filters.extraFeatures
         )
