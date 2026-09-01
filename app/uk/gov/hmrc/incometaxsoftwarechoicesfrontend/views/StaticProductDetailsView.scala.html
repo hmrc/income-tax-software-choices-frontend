@@ -44,9 +44,9 @@
 
     <p class="govuk-body govuk-!-margin-bottom-6">
         @hmrcNewTabLinkHelper(NewTabLinkHelper(
-            text = messages("product-details.contact-details.website.link", softwareVendor.name),
-            href = Some(softwareVendor.website),
-            classList = Some("govuk-!-display-none-print")
+        text = textForVendorLink,
+        href = Some(softwareVendor.website),
+        classList = Some("govuk-!-display-none-print")
         ))
     </p>
 
@@ -181,4 +181,13 @@
     )
   )
   </div>
+}
+
+@textForVendorLink = @{
+    // Add apostrophe for English(not handled correctly by messages()), but not for Welsh
+    if (messages("product-details.contact-details.website.link").contains("s website")) {
+        messages("product-details.contact-details.website.link", softwareVendor.name + "'")
+    } else {
+        messages("product-details.contact-details.website.link", softwareVendor.name)
+    }
 }
