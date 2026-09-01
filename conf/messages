@@ -184,7 +184,7 @@ search-software.vendor-detail.software-application-type.apple-ios = Mobile app (
 # Product details page
 
 # Contact details section
-product-details.contact-details.website.link    = Explore this software on {0}'s website
+product-details.contact-details.website.link    = Explore this software on {0}s website
 
 # Status section
 product-details.features-group.heading = What each feature status means
@@ -219,8 +219,6 @@ product-details.features-provided.visual = Blindness or impaired vision
 product-details.features-provided.hearing = Deafness or impaired hearing
 product-details.features-provided.motor = Motor or physical difficulties
 product-details.features-provided.cognitive = Cognitive impairments
-product-details.features-provided.standard-update-periods = Standard update period (6 April to 5 April)
-product-details.features-provided.calendar-update-periods = Calendar update period (1 April to 31 March)
 product-details.features-provided.web-browser = Online in web browser (all systems)
 product-details.features-provided.microsoft-windows = Desktop app (Microsoft Windows)
 product-details.features-provided.mac-os = Desktop app (Mac OS)
