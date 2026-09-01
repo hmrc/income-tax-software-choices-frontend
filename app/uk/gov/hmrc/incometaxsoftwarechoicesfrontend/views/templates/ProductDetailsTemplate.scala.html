@@ -135,16 +135,16 @@
 
         // Selected filters
         @for(section <- Seq(
-            ProductDetailsSectionInfo("features.heading.personalised", filtersSelectedFrom(featuresProvidedGroup), "features-provided", displayIntent = false, "govuk-heading-m"),
-            ProductDetailsSectionInfo("quarterly-updates.heading", filtersSelectedFrom(businessIncomeGroup), "business-income", displayIntent = false, "govuk-heading-m")
+            ProductDetailsSectionInfo("features.heading.personalised", filtersSelectedFrom(featuresProvidedGroup), "features-provided", displayIntent = false),
+            ProductDetailsSectionInfo("quarterly-updates.heading", filtersSelectedFrom(businessIncomeGroup), "business-income", displayIntent = false)
         )) {
             @featureSection(section, true)
         }
 
         // Tax return section only shown if there are selected filters from the non-mandated income group - to avoid showing just header with no corresponding filters
-        @defining(ProductDetailsSectionInfo("tax-return.heading", filtersSelectedFrom(nonMandatedIncomeGroup), "other-income", displayIntent = true, "govuk-heading-m")) { taxSection =>
-            @if(taxSection.group.nonEmpty) {
-                @featureSection(taxSection, true)
+        @defining(ProductDetailsSectionInfo("tax-return.heading", filtersSelectedFrom(nonMandatedIncomeGroup), "other-income", displayIntent = true)) { taxReturnSection =>
+            @if(taxReturnSection.group.nonEmpty) {
+                @featureSection(taxReturnSection, true)
             }
         }
 
@@ -160,9 +160,9 @@
     } else {
         // All filters
         @for(section <- Seq(
-            ProductDetailsSectionInfo("features.heading", featuresProvidedGroup, "features-provided", displayIntent = false, "govuk-heading-l"),
-            ProductDetailsSectionInfo("quarterly-updates.heading", businessIncomeGroup, "business-income", displayIntent = false, "govuk-heading-l"),
-            ProductDetailsSectionInfo("tax-return.heading", nonMandatedIncomeGroup, "other-income", displayIntent = true, "govuk-heading-l")
+            ProductDetailsSectionInfo("features.heading", featuresProvidedGroup, "features-provided", displayIntent = false),
+            ProductDetailsSectionInfo("quarterly-updates.heading", businessIncomeGroup, "business-income", displayIntent = false),
+            ProductDetailsSectionInfo("tax-return.heading", nonMandatedIncomeGroup, "other-income", displayIntent = true)
         )) {
             @featureSection(section, false)
         }
@@ -178,8 +178,10 @@
 }
 
 @featureSection(section: ProductDetailsSectionInfo, isPersonalised: Boolean) = {
-    <h2 class="@section.headingClass">@messages(s"product-details.${section.headingSuffix}")</h2>
-    @featureTable(section.group, section.tableKey, section.displayIntent)
+    @defining(if (isPersonalised) "m" else "l") { headingSize =>
+        <h2 class="govuk-heading-@headingSize">@messages(s"product-details.${section.headingSuffix}")</h2>
+        @featureTable(section.group, section.tableKey, section.displayIntent)
+    }
 }
 
 @featureTable(filterGroup: List[VendorFilter], tableHeaderKey: String, displayIntent: Boolean) = {
@@ -228,9 +230,9 @@
 @detailsElementContent = {
     // Only sections with filters not selected are shown - to avoid showing just header with no corresponding filters
     @for(section <- Seq(
-        ProductDetailsSectionInfo("features.heading.personalised", filtersNotSelectedFrom(featuresProvidedGroup), "features-provided", displayIntent = false, "govuk-heading-m"),
-        ProductDetailsSectionInfo("quarterly-updates.heading", filtersNotSelectedFrom(businessIncomeGroup), "business-income", displayIntent = false, "govuk-heading-m"),
-        ProductDetailsSectionInfo("tax-return.heading", filtersNotSelectedFrom(nonMandatedIncomeGroup), "other-income", displayIntent = true, "govuk-heading-m")
+        ProductDetailsSectionInfo("features.heading.personalised", filtersNotSelectedFrom(featuresProvidedGroup), "features-provided", displayIntent = false),
+        ProductDetailsSectionInfo("quarterly-updates.heading", filtersNotSelectedFrom(businessIncomeGroup), "business-income", displayIntent = false),
+        ProductDetailsSectionInfo("tax-return.heading", filtersNotSelectedFrom(nonMandatedIncomeGroup), "other-income", displayIntent = true)
     ).filter(_.group.nonEmpty)) {
         @featureSection(section, true)
     }

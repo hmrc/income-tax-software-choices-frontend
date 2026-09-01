@@ -22,6 +22,5 @@ case class ProductDetailsSectionInfo(
   headingSuffix: String,
   group: List[VendorFilter],
   tableKey: String,
-  displayIntent: Boolean,
-  headingClass: String
+  displayIntent: Boolean
 )
