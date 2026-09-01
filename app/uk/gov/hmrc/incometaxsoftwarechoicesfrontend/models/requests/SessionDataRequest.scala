@@ -23,5 +23,6 @@ case class SessionDataRequest[A](request: Request[A],
                                  override val sessionId: String,
                                  userFilters: UserFilters,
                                  journey: Option[JourneyType],
-                                 product: Option[SoftwareProduct]
+                                 product: Option[SoftwareProduct],
+                                 userType: Option[UserType]
                                 ) extends SessionRequest[A](request, sessionId)
