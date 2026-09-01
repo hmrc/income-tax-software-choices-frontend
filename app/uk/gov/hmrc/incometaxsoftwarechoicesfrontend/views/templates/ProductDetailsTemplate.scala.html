@@ -1,0 +1,228 @@
+@*
+ * Copyright 2023 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import uk.gov.hmrc.govukfrontend.views.html.components._
+@import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
+@import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcNewTabLinkHelper
+@import uk.gov.hmrc.hmrcfrontend.views.viewmodels.newtablinkhelper.NewTabLinkHelper
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.{Available, Intended, NotApplicable}
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilterGroups._
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTemplate
+
+@this(
+        mainTemplate: MainTemplate,
+        hmrcNewTabLinkHelper: HmrcNewTabLinkHelper,
+        govukDetails: GovukDetails,
+        govukTable: GovukTable,
+        govukTag: GovukTag
+)(implicit appConfig: AppConfig)
+
+@(softwareVendor: SoftwareVendorModel, backLink: String, finalFilters: Option[Seq[VendorFilter]] = None)(implicit request: Request[_], messages: Messages)
+
+@mainTemplate(title = softwareVendor.name, backLink = Some(backLink), isFullWidth = true) {
+
+    <h1 class="govuk-heading-xl">@{softwareVendor.name}</h1>
+
+    <p class="govuk-body govuk-!-margin-bottom-6">
+        @hmrcNewTabLinkHelper(NewTabLinkHelper(
+            text = textForVendorLink,
+            href = Some(softwareVendor.website),
+            classList = Some("govuk-!-display-none-print")
+        ))
+    </p>
+
+    <div class="govuk-!-width-three-quarters govuk-!-padding-0">
+        @statusKeyTable
+        @renderFeatureSections(finalFilters.isDefined)
+    </div>
+
+    <p class="govuk-body">
+        @hmrcNewTabLinkHelper(NewTabLinkHelper(
+            text = messages("exit-survey.link"),
+            href = Some(appConfig.feedbackUrl),
+            classList = Some("govuk-!-display-none-print")
+        ))
+    </p>
+}
+
+@renderFeatureSections(isPersonalised: Boolean) = {
+    @if(isPersonalised) {
+        <h2 class="govuk-heading-l">@messages("product-details.details.heading.personalised")</h2>
+
+        <h2 class="govuk-heading-m">@messages("product-details.features.heading.personalised")</h2>
+        @featureTable(filtersSelectedFrom(featuresProvidedGroup), "features-provided", displayIntent = false)
+
+        <h2 class="govuk-heading-m">@messages("product-details.quarterly-updates.heading")</h2>
+        @featureTable(filtersSelectedFrom(businessIncomeGroup), "business-income", displayIntent = false)
+
+        @if(filtersSelectedFrom(nonMandatedIncomeGroup).nonEmpty) {
+            <h2 class="govuk-heading-m">@messages("product-details.tax-return.heading")</h2>
+            @featureTable(filtersSelectedFrom(nonMandatedIncomeGroup), "other-income", displayIntent = true)
+        }
+
+        @if(filtersNotSelectedFrom(featuresProvidedGroup).nonEmpty || filtersNotSelectedFrom(businessIncomeGroup).nonEmpty || filtersNotSelectedFrom(nonMandatedIncomeGroup).nonEmpty) {
+            @govukDetails(Details(
+                summary = Text(messages("product-details.other-features.collapsible")),
+                content = HtmlContent(detailsElementContent)
+            ))
+        }
+    } else {
+        <h2 class="govuk-heading-l">@messages("product-details.features.heading")</h2>
+        @featureTable(featuresProvidedGroup, "features-provided", displayIntent = false)
+
+        <h2 class="govuk-heading-l">@messages("product-details.quarterly-updates.heading")</h2>
+        @featureTable(businessIncomeGroup, "business-income", displayIntent = false)
+
+        <h2 class="govuk-heading-l">@messages("product-details.tax-return.heading")</h2>
+        @featureTable(nonMandatedIncomeGroup, "other-income", displayIntent = true)
+    }
+}
+
+@featureTable(filterGroup: List[VendorFilter], tableHeaderKey: String, displayIntent: Boolean) = {
+    <div class="table-scroll-wrapper">
+        @govukTable(Table(
+            rows = filterGroup map { filter =>
+                Seq(
+                    TableRow(
+                        content = Text(messages(s"product-details.$tableHeaderKey.${filter.key}")),
+                        classes = "govuk-!-width-two-thirds govuk-!-font-weight-regular"
+                    ),
+                    TableRow(
+                        content = (softwareVendor.getFeatureStatus(filter), displayIntent) match {
+                            case (Available, _) => HtmlContent(govukTag(Tag(
+                                content = Text(messages("search-software.vendor-detail.eoy-tax-return.ready")),
+                                classes = "govuk-tag--green govuk-!-display-inline"
+                            )))
+                            case (Intended, true) => HtmlContent(govukTag(Tag(
+                                content = Text(messages("search-software.vendor-detail.eoy-tax-return.development")),
+                                classes = "govuk-tag--yellow govuk-!-display-inline"
+                            )))
+                            case _ => HtmlContent(govukTag(Tag(
+                                content = Text(messages("search-software.vendor-detail.eoy-tax-return.not-included")),
+                                classes = "govuk-tag--red govuk-!-display-inline"
+                            )))
+                        },
+                        classes = "govuk-!-width-one-third"
+                    )
+                )
+            },
+            head = Some(Seq(
+                HeadCell(
+                    content = Text(messages(s"product-details.$tableHeaderKey.heading"))
+                ),
+                HeadCell(
+                    content = Text(messages("product-details.status.heading"))
+                )
+            )),
+            firstCellIsHeader = true,
+            caption = Some(messages(s"product-details.$tableHeaderKey.heading")),
+            captionClasses = "govuk-visually-hidden"
+        ))
+    </div>
+}
+
+@statusKeyTable = {
+  <div class="table-scroll-wrapper">
+    @govukTable(Table(
+      rows = Seq(
+        Seq(
+          TableRow(
+            content = HtmlContent(
+              govukTag(Tag(
+                  content = Text(messages("product-details.status.ready")),
+                  classes = "govuk-tag--green govuk-!-display-inline"))),
+            classes = "govuk-!-width-one-third"),
+          TableRow(
+            content = Text(messages("product-details.meaning.ready")),
+            classes = "govuk-!-width-two-thirds")
+        ),
+        Seq(
+          TableRow(
+            content = HtmlContent(
+              govukTag(Tag(
+                  content = Text(messages("product-details.status.development")),
+                  classes = "govuk-tag--yellow govuk-!-display-inline"))),
+            classes = "govuk-!-width-one-third"),
+          TableRow(
+            content = Text(messages("product-details.meaning.development")),
+            classes = "govuk-!-width-two-thirds")
+        ),
+        Seq(
+          TableRow(
+            content = HtmlContent(
+              govukTag(Tag(
+                  content = Text(messages("product-details.status.not-included")),
+                  classes = "govuk-tag--red govuk-!-display-inline"))),
+            classes = "govuk-!-width-one-third"),
+          TableRow(
+            content = Text(messages("product-details.meaning.not-included")),
+            classes = "govuk-!-width-two-thirds")
+        )
+      ),
+      head = Some(
+        Seq(
+          HeadCell(
+            content = Text(messages("product-details.feature-status.heading")),
+            classes = "govuk-!-font-weight-bold"
+          ),
+          HeadCell(
+            content = Text(messages("product-details.meaning.heading")),
+            classes = "govuk-!-font-weight-bold"
+          )
+        )
+      ),
+      firstCellIsHeader = true,
+      caption = Some(messages("product-details.features-group.heading")),
+      captionClasses = "govuk-table__caption--m"
+    ))
+  </div>
+}
+
+@filtersSelectedFrom(filterGroup: List[VendorFilter]) = @{
+    filterGroup.filter(f => finalFilters.getOrElse(Seq.empty).contains(f))
+}
+
+@filtersNotSelectedFrom(filterGroup: List[VendorFilter]) = @{
+    filterGroup.filter(f => !finalFilters.getOrElse(Seq.empty).contains(f))
+}
+
+@detailsElementContent = {
+    @if(filtersNotSelectedFrom(featuresProvidedGroup).nonEmpty) {
+        <h2 class="govuk-heading-m">@messages("product-details.features.heading.personalised")</h2>
+        @featureTable(filtersNotSelectedFrom(featuresProvidedGroup), "features-provided", displayIntent = false)
+    }
+    @if(filtersNotSelectedFrom(businessIncomeGroup).nonEmpty) {
+        <h2 class="govuk-heading-m">@messages("product-details.quarterly-updates.heading")</h2>
+        @featureTable(filtersNotSelectedFrom(businessIncomeGroup), "business-income", displayIntent = false)
+    }
+    @if(filtersNotSelectedFrom(nonMandatedIncomeGroup).nonEmpty) {
+        <h2 class="govuk-heading-m">@messages("product-details.tax-return.heading")</h2>
+        @featureTable(filtersNotSelectedFrom(nonMandatedIncomeGroup), "other-income", displayIntent = true)
+    }
+}
+
+@textForVendorLink = @{
+    // Add apostrophe for English (lost when retrieved from messages file), but not for Welsh (Welsh translation has no apostrophe
+    if (messages("product-details.contact-details.website.link").contains("s website")) {
+        messages("product-details.contact-details.website.link", softwareVendor.name + "'")
+    } else {
+        messages("product-details.contact-details.website.link", softwareVendor.name)
+    }
+}
