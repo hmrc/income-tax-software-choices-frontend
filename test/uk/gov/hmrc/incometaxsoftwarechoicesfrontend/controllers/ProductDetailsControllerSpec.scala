@@ -30,7 +30,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.SoleTraderOr
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.{PageAnswersService, SoftwareChoicesService}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.{NotFoundView, StaticProductDetailsView}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.{NotFoundView, StaticProductDetailsView, PersonalisedProductDetailsView}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 
 import scala.concurrent.Future
@@ -105,6 +105,7 @@ class ProductDetailsControllerSpec extends ControllerBaseSpec
 
   class Setup(userFilters: Option[UserFilters] = None) {
     private val staticProductDetailsView = app.injector.instanceOf[StaticProductDetailsView]
+    private val personalisedProductDetailsView = app.injector.instanceOf[PersonalisedProductDetailsView]
     private val notFoundView = app.injector.instanceOf[NotFoundView]
     private val softwareChoicesService = app.injector.instanceOf[SoftwareChoicesService]
     private val pageAnswersService = app.injector.instanceOf[PageAnswersService]
@@ -119,6 +120,7 @@ class ProductDetailsControllerSpec extends ControllerBaseSpec
       pageAnswersService,
       fakeSessionIdentifierAction,
       staticProductDetailsView,
+      personalisedProductDetailsView,
       notFoundView
     )(mcc, appConfig, ec)
 

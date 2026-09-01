@@ -71,7 +71,7 @@ class StaticProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
 
       "has link to the vendor website" in {
         val link = document.mainContent.select(".govuk-link").get(0)
-        link.text shouldBe s"Confirm whether ${softwareVendorModelFull.name} is right for you (opens in new tab)"
+        link.text shouldBe s"Explore this software on ${softwareVendorModelFull.name}'s website (opens in new tab)"
         link.attr("href") shouldBe softwareVendorModelFull.website
         link.attr("target") shouldBe "_blank"
       }
@@ -82,10 +82,6 @@ class StaticProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
 
       "have the correct quarterly updates title" in {
         document.selectNth("h2", 2).text shouldBe ProductDetailsPage.quarterlyUpdatesHeading
-      }
-
-      "have the correct quarterly updates description" in {
-        document.mainContent.selectNth(".govuk-body-m", 1).text() shouldBe ProductDetailsPage.quarterlyUpdatesDetails
       }
 
       "have the correct tax return title" in {
@@ -147,7 +143,7 @@ class StaticProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
 
       "has a link to the vendor website" in {
         val link = document.mainContent.select(".govuk-link").get(0)
-        link.text shouldBe s"Confirm whether ${softwareVendorWithIntent.name} is right for you (opens in new tab)"
+        link.text shouldBe s"Explore this software on ${softwareVendorWithIntent.name}'s website (opens in new tab)"
         link.attr("href") shouldBe softwareVendorWithIntent.website
         link.attr("target") shouldBe "_blank"
       }
@@ -158,10 +154,6 @@ class StaticProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
 
       "have the correct quarterly updates title" in {
         document.selectNth("h2", 2).text shouldBe ProductDetailsPage.quarterlyUpdatesHeading
-      }
-
-      "have the correct quarterly updates description" in {
-        document.mainContent.selectNth(".govuk-body-m", 1).text() shouldBe ProductDetailsPage.quarterlyUpdatesDetails
       }
 
       "have the correct tax return title" in {
@@ -228,7 +220,7 @@ class StaticProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
       
       "has a link to the vendor website" in {
         val link = document.mainContent.select(".govuk-link").get(0)
-        link.text shouldBe s"Confirm whether ${softwareVendorModelBase.name} is right for you (opens in new tab)"
+        link.text shouldBe s"Explore this software on ${softwareVendorModelBase.name}'s website (opens in new tab)"
         link.attr("href") shouldBe softwareVendorModelBase.website
         link.attr("target") shouldBe "_blank"
       }
@@ -239,10 +231,6 @@ class StaticProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
 
       "have the correct quarterly updates title" in {
         document.selectNth("h2", 2).text shouldBe ProductDetailsPage.quarterlyUpdatesHeading
-      }
-
-      "have the correct quarterly updates description" in {
-        document.mainContent.selectNth(".govuk-body-m", 1).text() shouldBe ProductDetailsPage.quarterlyUpdatesDetails
       }
 
       "have the correct tax return title" in {
@@ -293,60 +281,6 @@ class StaticProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
       }
     }
 
-    "display software specifications of the vendor" which {
-      val document: Document = createAndParseDocument(softwareVendorModelFull)
-
-      "have a software spec heading" in {
-        document.select("h2").get(3).text shouldBe ProductDetailsPage.softwareSpecHeading
-      }
-
-      "render the correct rows when every spec is present" in {
-        val specList = document.select("dl.govuk-summary-list").get(0)
-        val rows = specList.select(".govuk-summary-list__row")
-        rows.size shouldBe 4
-
-        rows.get(0).select("dt").text() shouldBe ProductDetailsPage.softwareType
-        rows.get(0).select("dd").text() shouldBe
-          Seq(
-            ProductDetailsPage.desktopBased,
-            ProductDetailsPage.webBrowser
-          ).mkString(" ")
-
-        rows.get(1).select("dt").text() shouldBe ProductDetailsPage.compatibleWith
-        rows.get(1).select("dd").text() shouldBe
-          Seq(
-            ProductDetailsPage.microsoftWindows,
-            ProductDetailsPage.macOs,
-            ProductDetailsPage.linux
-          ).mkString(" ")
-
-        rows.get(2).select("dt").text() shouldBe ProductDetailsPage.mobileApp
-        rows.get(2).select("dd").text() shouldBe
-          Seq(
-            ProductDetailsPage.android,
-            ProductDetailsPage.appleIOS
-          ).mkString(" ")
-
-        rows.get(3).select("dt").text() shouldBe ProductDetailsPage.language
-        rows.get(3).select("dd").text() shouldBe
-          Seq(
-            ProductDetailsPage.english,
-            ProductDetailsPage.welsh
-          ).mkString(" ")
-      }
-
-      "not render the specs section when no specs are present or are intended" in {
-        val docEmpty: Document = createAndParseDocument(softwareVendorModelBase.copy(filters = Map(
-          DesktopApplication -> Intended, WebBrowser -> Intended, MacOS -> Intended, Apple -> Intended, English -> Intended
-        )))
-        val allSummaryLists = docEmpty.select("dl.govuk-summary-list")
-        allSummaryLists.size shouldBe 0
-
-        val specHeading = ProductDetailsPage.softwareSpecHeading
-        docEmpty.select(s"h2:contains($specHeading)").size shouldBe 0
-      }
-    }
-
     "display the exit survey link" in {
       val document: Document = createAndParseDocument(softwareVendorModelFull)
       val link = document.mainContent.select(".govuk-link").get(1)
@@ -368,14 +302,12 @@ class StaticProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
 
     val featureStatusHeading = "What each feature status means"
     val softwareFeaturesHeading = "Software features"
-    val quarterlyUpdatesHeading = "What you need for your quarterly updates"
-    val taxReturnHeading = "What you need for your tax return"
-
-    val quarterlyUpdatesDetails = "You’ll still need to send these income sources in your tax return."
+    val quarterlyUpdatesHeading = "What is needed for quarterly updates"
+    val taxReturnHeading = "What is needed for tax returns"
 
     val freeVersion = "Free version"
-    val recordKeeping = "Software that creates digital records"
-    val bridging = "Software that connects to your records (bridging software)"
+    val recordKeeping = "All-in-one software that creates digital records"
+    val bridging = "Bridging software that connects to records"
     val quarterlyUpdates = "Quarterly updates"
     val saTaxReturn = "Tax return"
     val agent = "Agent software"
