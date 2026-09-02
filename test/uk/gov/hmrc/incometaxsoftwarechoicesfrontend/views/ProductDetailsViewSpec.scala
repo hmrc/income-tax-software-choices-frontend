@@ -25,9 +25,9 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.StaticProductDetailsView
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.TestModels.softwareVendorModelBase
 
-class StaticProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
+class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
 
-  private val productDetailsPage = app.injector.instanceOf[StaticProductDetailsView]
+  private val staticProductDetailsPage = app.injector.instanceOf[StaticProductDetailsView]
 
   private val softwareVendorModelFull = softwareVendorModelBase
     .copy(name = "abc full")
@@ -55,9 +55,9 @@ class StaticProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
       table.selectHead(s"tbody > tr:nth-child($row) > td:nth-child(2)").text shouldBe status
     }
 
-    "the vendor has everything ready now" which {
+    "in static view and the vendor has everything ready now" which {
 
-      val document: Document = createAndParseDocument(softwareVendorModelFull)
+      val document: Document = createAndParseStaticDocument(softwareVendorModelFull)
 
       def table(index: Int): Element = document.getTable(index)
 
@@ -131,9 +131,9 @@ class StaticProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
       }
     }
 
-    "the vendor has features in development" which {
+    "in static view and the vendor has features in development" which {
 
-      val document: Document = createAndParseDocument(softwareVendorWithIntent)
+      val document: Document = createAndParseStaticDocument(softwareVendorWithIntent)
 
       def table(index: Int): Element = document.getTable(index)
 
@@ -204,9 +204,9 @@ class StaticProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
       }
     }
 
-    "the vendor does not have any features" which {
+    "in static view and the vendor does not have any features" which {
 
-      val document: Document = createAndParseDocument(softwareVendorModelBase)
+      val document: Document = createAndParseStaticDocument(softwareVendorModelBase)
 
       def table(index: Int): Element = document.getTable(index)
 
@@ -282,18 +282,18 @@ class StaticProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
     }
 
     "display the exit survey link" in {
-      val document: Document = createAndParseDocument(softwareVendorModelFull)
+      val document: Document = createAndParseStaticDocument(softwareVendorModelFull)
       val link = document.mainContent.select(".govuk-link").get(1)
       link.text shouldBe ProductDetailsPage.exitSurveyLinkTitle
       link.attr("href") shouldBe ProductDetailsPage.exitSurveyLink
     }
   }
 
-  private def page(vendorModel: SoftwareVendorModel) =
-    productDetailsPage(vendorModel, testBackUrl)
+  private def staticPage(vendorModel: SoftwareVendorModel) =
+    staticProductDetailsPage(vendorModel, testBackUrl)
 
-  private def createAndParseDocument(vendorModel: SoftwareVendorModel): Document =
-    Jsoup.parse(page(vendorModel).body)
+  private def createAndParseStaticDocument(vendorModel: SoftwareVendorModel): Document =
+    Jsoup.parse(staticPage(vendorModel).body)
 
   object ProductDetailsPage {
     
