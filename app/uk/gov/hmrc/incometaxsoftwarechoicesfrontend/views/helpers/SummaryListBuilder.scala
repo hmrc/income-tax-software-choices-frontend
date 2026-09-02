@@ -117,8 +117,12 @@ trait SummaryListBuilder {
 
   private def accountingPeriodSummaryListRow(userAnswers: UserAnswers)(implicit messages: Messages): SummaryListRow = {
     val filterList: String = userAnswers.get(AccountingPeriodPage) match {
-      case Some(accountingPeriod) => messages(s"accounting-period.${accountingPeriod.key}")
-      case None => throw new SCInconsistentDataException("[SummaryListBuilder][accountingPeriodSummaryListRow] - Accounting period data not found")
+      case Some(vf) if vf.size == 1 => vf.map(f => messages(s"accounting-period.${f.key}")).mkString("")
+      case Some(vf) if vf.size > 1 =>
+        s"""<ul class="govuk-list">
+            ${vf.map(f => s"""<li>${messages(s"accounting-period.${f.key}")}</li>""").mkString("")}
+            </ul>"""
+      case None  => throw new SCInconsistentDataException("[SummaryListBuilder][accountingPeriodSummaryListRow] - Accounting period data not found")
     }
 
     summaryListRow(filterList, routes.AccountingPeriodController.show(editMode = true).url, "accounting-period")

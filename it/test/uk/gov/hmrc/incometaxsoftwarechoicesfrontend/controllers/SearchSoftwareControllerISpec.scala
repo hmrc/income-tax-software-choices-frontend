@@ -153,7 +153,7 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
           .set(UserTypePage, Agent).get
           .set(BusinessIncomePage, Seq(SoleTrader)).get
           .set(OtherItemsPage, Seq(UkInterest)).get
-          .set(AccountingPeriodPage, SixthAprilToFifthApril).get
+          .set(AccountingPeriodPage, Seq(SixthAprilToFifthApril)).get
 
         val initialFilter = Seq(VendorFilter.Agent, SoleTrader, UkInterest, StandardUpdatePeriods)
         await(userFiltersRepository.set(testUserFilters(Some(userAnswers), initialFilter)))
@@ -174,7 +174,7 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
           .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
           .set(AdditionalIncomeSourcesPage, Seq.empty).get
           .set(OtherItemsPage, Seq.empty).get
-          .set(AccountingPeriodPage, SixthAprilToFifthApril).get
+          .set(AccountingPeriodPage, Seq(SixthAprilToFifthApril)).get
           .set(HowYouFindSoftwarePage, Check).get
           .set(EnterSoftwareNamePage, softwareProduct).get
           .set(UserTypePage, Agent).get
@@ -200,7 +200,7 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
           .set(BusinessIncomePage, Seq(SoleTrader)).get
           .set(AdditionalIncomeSourcesPage, Seq(Employment)).get
           .set(OtherItemsPage, Seq(StudentLoans)).get
-          .set(AccountingPeriodPage, SixthAprilToFifthApril).get
+          .set(AccountingPeriodPage, Seq(SixthAprilToFifthApril)).get
 
         val initialFilter = Seq(Individual, SoleTrader, Employment, StudentLoans, StandardUpdatePeriods)
         await(userFiltersRepository.set(testUserFilters(Some(userAnswers), initialFilter)))
@@ -233,7 +233,7 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
         .set(BusinessIncomePage, Seq(SoleTrader)).get
         .set(AdditionalIncomeSourcesPage, Seq(UkInterest)).get
         .set(OtherItemsPage, Seq(PaymentsIntoAPrivatePension)).get
-        .set(AccountingPeriodPage, SixthAprilToFifthApril).get
+        .set(AccountingPeriodPage, Seq(SixthAprilToFifthApril)).get
 
       val initialFilter = Seq(Individual, SoleTrader, UkInterest, PaymentsIntoAPrivatePension, StandardUpdatePeriods, FreeVersion)
 
@@ -259,7 +259,7 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
         .set(BusinessIncomePage, Seq(SoleTrader)).get
         .set(AdditionalIncomeSourcesPage, Seq(UkInterest)).get
         .set(OtherItemsPage, Seq(PaymentsIntoAPrivatePension)).get
-        .set(AccountingPeriodPage, SixthAprilToFifthApril).get
+        .set(AccountingPeriodPage, Seq(SixthAprilToFifthApril)).get
 
       val initialFilter = Seq(Individual, SoleTrader, UkInterest, PaymentsIntoAPrivatePension, StandardUpdatePeriods, FreeVersion)
 
@@ -359,7 +359,7 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
         .set(BusinessIncomePage, Seq(SoleTrader)).get
         .set(AdditionalIncomeSourcesPage, Seq(UkInterest)).get
         .set(OtherItemsPage, Seq(PaymentsIntoAPrivatePension)).get
-        .set(AccountingPeriodPage, SixthAprilToFifthApril).get
+        .set(AccountingPeriodPage, Seq(SixthAprilToFifthApril)).get
 
       val initialFilter = Seq()
       await(userFiltersRepository.set(testUserFilters(Some(userAnswers), initialFilter)))
@@ -387,7 +387,7 @@ class SearchSoftwareControllerISpec extends ComponentSpecBase with BeforeAndAfte
         .set(BusinessIncomePage, Seq(SoleTrader)).get
         .set(AdditionalIncomeSourcesPage, Seq(UkInterest)).get
         .set(OtherItemsPage, Seq(PaymentsIntoAPrivatePension)).get
-        .set(AccountingPeriodPage, SixthAprilToFifthApril).get
+        .set(AccountingPeriodPage, Seq(SixthAprilToFifthApril)).get
 
       val initialFilter = Seq()
       await(userFiltersRepository.set(testUserFilters(Some(userAnswers), initialFilter)))

@@ -21,17 +21,17 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.AccountingPeriod.{Fir
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{CalendarUpdatePeriods, StandardUpdatePeriods}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{AccountingPeriod, VendorFilter}
 
-case object AccountingPeriodPage extends QuestionPage[AccountingPeriod] {
+case object AccountingPeriodPage extends QuestionPage[Seq[AccountingPeriod]] {
 
   override def toString: String = "accountingPeriod"
 
   override def path: JsPath = JsPath \ toString
 
-  override def toVendorFilter(value: AccountingPeriod): Seq[VendorFilter] = value match {
-    case SixthAprilToFifthApril => Seq(StandardUpdatePeriods)
+  override def toVendorFilter(value: Seq[AccountingPeriod]): Seq[VendorFilter] = value.flatMap {
+    case SixthAprilToFifthApril       => Seq(StandardUpdatePeriods)
     case FirstAprilToThirtyFirstMarch => Seq(CalendarUpdatePeriods)
-    case _ => Seq.empty
+    case _                            => Seq.empty
   }
 
-  override def reads: Reads[AccountingPeriod] = implicitly
+  override def reads: Reads[Seq[AccountingPeriod]] = implicitly
 }

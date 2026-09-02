@@ -63,7 +63,7 @@ class AuditEventSpec extends PlaySpec {
           .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
           .set(AdditionalIncomeSourcesPage, Seq(UkInterest, ConstructionIndustryScheme, Employment, UkDividends, StatePensionIncome)).get
           .set(OtherItemsPage, Seq(CharitableGiving, CapitalGainsTax, StudentLoans, MarriageAllowance, HighIncomeChildBenefitCharge)).get
-          .set(AccountingPeriodPage, FirstAprilToThirtyFirstMarch).get
+          .set(AccountingPeriodPage, Seq(FirstAprilToThirtyFirstMarch)).get
 
         val finalFilters: Seq[VendorFilter] = Seq(
           Individual, QuarterlyUpdates, TaxReturn,
@@ -83,7 +83,7 @@ class AuditEventSpec extends PlaySpec {
             "businessIncome" -> Json.arr("soleTrader", "ukProperty", "overseasProperty"),
             "additionalIncome" -> Json.arr("ukInterest", "constructionIndustryScheme", "employment(PAYE)", "ukDividends", "statePensionIncome"),
             "otherItems" -> Json.arr("charitableGiving", "capitalGains", "studentLoans", "marriageAllowance", "highIncomeChildBenefitCharge"),
-            "accountingPeriod" -> "1st April to 31st March"
+            "accountingPeriod" -> Json.arr("1st April to 31st March")
           ),
           "filtersApplied" -> Json.arr(
             "individual",
@@ -120,7 +120,7 @@ class AuditEventSpec extends PlaySpec {
           .set(BusinessIncomePage, Seq(SoleTrader)).get
           .set(AdditionalIncomeSourcesPage, Seq.empty).get
           .set(OtherItemsPage, Seq.empty).get
-          .set(AccountingPeriodPage, OtherAccountingPeriod).get
+          .set(AccountingPeriodPage, Seq(OtherAccountingPeriod)).get
 
         val finalFilters: Seq[VendorFilter] = Seq(
           Individual, QuarterlyUpdates, TaxReturn,
@@ -135,7 +135,7 @@ class AuditEventSpec extends PlaySpec {
           "userAnswers" -> Json.obj(
             "userType" -> "soleTraderOrLandlord",
             "businessIncome" -> Json.arr("soleTrader"),
-            "accountingPeriod" -> "otherAccountingPeriod"
+            "accountingPeriod" -> Json.arr("otherAccountingPeriod")
           ),
           "filtersApplied" -> Json.arr(
             "individual",
