@@ -19,8 +19,8 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.helpers
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter
 
 case class ProductDetailsSectionInfo(
-  headingSuffix: String,
+  headingSuffix: Option[String],
   group: List[VendorFilter],
   tableKey: String,
-  displayIntent: Boolean
+  displayIntent: Boolean = false
 )

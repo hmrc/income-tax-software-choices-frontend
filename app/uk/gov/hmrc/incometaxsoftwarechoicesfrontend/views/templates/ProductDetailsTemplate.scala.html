@@ -64,7 +64,7 @@
 }
 
 @textForVendorLink = @{
-    // Add apostrophe for English (lost when retrieved from messages file), but not for Welsh (Welsh translation has no apostrophe)
+<!--    Add apostrophe for English (lost when retrieved from messages file), but not for Welsh (Welsh translation has no apostrophe)-->
     if (messages("product-details.contact-details.website.link").contains("s website")) {
         messages("product-details.contact-details.website.link", softwareVendor.name + "'")
     } else {
@@ -133,23 +133,35 @@
     @if(isPersonalised) {
         <h2 class="govuk-heading-l">@messages("product-details.details.heading.personalised")</h2>
 
-        // Selected filters
+        <!--Selected filters-->
         @for(section <- Seq(
-            ProductDetailsSectionInfo("features.heading.personalised", filtersSelectedFrom(featuresProvidedGroup), "features-provided", displayIntent = false),
-            ProductDetailsSectionInfo("quarterly-updates.heading", filtersSelectedFrom(businessIncomeGroup), "business-income", displayIntent = false)
+            ProductDetailsSectionInfo(Some("features.heading.personalised"), filtersSelectedFrom(featuresProvidedGroup), "features-provided"),
+            ProductDetailsSectionInfo(Some("quarterly-updates.heading"), filtersSelectedFrom(businessIncomeGroup), "business-income")
         )) {
-            @featureSection(section, true)
+            @featureSection(section, isPersonalised)
         }
 
-        // Tax return section only shown if there are selected filters from the non-mandated income group - to avoid showing just header with no corresponding filters
-        @defining(ProductDetailsSectionInfo("tax-return.heading", filtersSelectedFrom(nonMandatedIncomeGroup), "other-income", displayIntent = true)) { taxReturnSection =>
+<!--        Tax return section only shown if there are selected filters from the non-mandated income group - to avoid showing just header with no corresponding filters-->
+        @defining(ProductDetailsSectionInfo(Some("tax-return.heading"), filtersSelectedFrom(nonMandatedIncomeGroup), "other-income", displayIntent = true)) { taxReturnSection =>
             @if(taxReturnSection.group.nonEmpty) {
-                @featureSection(taxReturnSection, true)
+                @featureSection(taxReturnSection, isPersonalised)
             }
         }
 
+<!--        For software spec section, only print the heading if at least one group is non-empty, then filter the empty sections-->
+        @if(filtersSelectedFrom(applicationTypeFilters.toList).nonEmpty || filtersSelectedFrom(accessibilityFilters.toList).nonEmpty || filtersSelectedFrom(languageFilters.toList).nonEmpty) {
+            <h2 class="govuk-heading-m">@messages(s"product-details.software-specifications.heading")</h2>
 
-        // Details drop down for filters not selected
+            @for(section <- Seq(
+                ProductDetailsSectionInfo(None, filtersSelectedFrom(applicationTypeFilters.toList), "application-type"),
+                ProductDetailsSectionInfo(None, filtersSelectedFrom(accessibilityFilters.toList), "accessibility"),
+                ProductDetailsSectionInfo(None, filtersSelectedFrom(languageFilters.toList), "language")
+            ).filter(_.group.nonEmpty)) {
+                @featureSection(section, isPersonalised)
+            }
+        }
+
+        <!-- Details drop down for filters not selected -->
         @if(filtersNotSelectedFrom(featuresProvidedGroup).nonEmpty || filtersNotSelectedFrom(businessIncomeGroup).nonEmpty || filtersNotSelectedFrom(nonMandatedIncomeGroup).nonEmpty) {
             @govukDetails(Details(
                 summary = Text(messages("product-details.other-features.collapsible")),
@@ -158,13 +170,16 @@
         }
 
     } else {
-        // All filters
+<!--         All filters-->
         @for(section <- Seq(
-            ProductDetailsSectionInfo("features.heading", featuresProvidedGroup, "features-provided", displayIntent = false),
-            ProductDetailsSectionInfo("quarterly-updates.heading", businessIncomeGroup, "business-income", displayIntent = false),
-            ProductDetailsSectionInfo("tax-return.heading", nonMandatedIncomeGroup, "other-income", displayIntent = true)
+            ProductDetailsSectionInfo(Some("features.heading"), featuresProvidedGroup, "features-provided"),
+            ProductDetailsSectionInfo(Some("quarterly-updates.heading"), businessIncomeGroup, "business-income"),
+            ProductDetailsSectionInfo(Some("tax-return.heading"), nonMandatedIncomeGroup, "other-income", displayIntent = true),
+            ProductDetailsSectionInfo(Some("software-specifications.heading"), applicationTypeFilters.toList, "application-type"),
+            ProductDetailsSectionInfo(None, accessibilityFilters.toList, "accessibility"),
+            ProductDetailsSectionInfo(None, languageFilters.toList, "language")
         )) {
-            @featureSection(section, false)
+            @featureSection(section, isPersonalised)
         }
     }
 }
@@ -178,10 +193,18 @@
 }
 
 @featureSection(section: ProductDetailsSectionInfo, isPersonalised: Boolean) = {
-    @defining(if (isPersonalised) "m" else "l") { headingSize =>
-        <h2 class="govuk-heading-@headingSize">@messages(s"product-details.${section.headingSuffix}")</h2>
-        @featureTable(section.group, section.tableKey, section.displayIntent)
+    @defining(section.headingSuffix.isDefined) { hasHeading =>
+        @if(hasHeading) {
+            @defining(section.headingSuffix.get) { hs =>
+                @if(isPersonalised) {
+                    <h2 class="govuk-heading-m">@messages(s"product-details.$hs")</h2>
+                } else {
+                    <h2 class="govuk-heading-l">@messages(s"product-details.$hs")</h2>
+                }
+            }
+        }
     }
+    @featureTable(section.group, section.tableKey, section.displayIntent)
 }
 
 @featureTable(filterGroup: List[VendorFilter], tableHeaderKey: String, displayIntent: Boolean) = {
@@ -228,12 +251,24 @@
 }
 
 @detailsElementContent = {
-    // Only sections with filters not selected are shown - to avoid showing just header with no corresponding filters
+<!--    Only sections with filters not selected are shown - to avoid showing just header with no corresponding filters-->
     @for(section <- Seq(
-        ProductDetailsSectionInfo("features.heading.personalised", filtersNotSelectedFrom(featuresProvidedGroup), "features-provided", displayIntent = false),
-        ProductDetailsSectionInfo("quarterly-updates.heading", filtersNotSelectedFrom(businessIncomeGroup), "business-income", displayIntent = false),
-        ProductDetailsSectionInfo("tax-return.heading", filtersNotSelectedFrom(nonMandatedIncomeGroup), "other-income", displayIntent = true)
+        ProductDetailsSectionInfo(Some("features.heading.personalised"), filtersNotSelectedFrom(featuresProvidedGroup), "features-provided"),
+        ProductDetailsSectionInfo(Some("quarterly-updates.heading"), filtersNotSelectedFrom(businessIncomeGroup), "business-income"),
+        ProductDetailsSectionInfo(Some("tax-return.heading"), filtersNotSelectedFrom(nonMandatedIncomeGroup), "other-income", displayIntent = true)
     ).filter(_.group.nonEmpty)) {
         @featureSection(section, true)
     }
+
+<!--    English filter will always be in this section, as it is not selectable as a filter, so the language section will always be there.-->
+   <!-- But a user could have selected all of application type filters and/ or the accessibility filters -->
+    <h2 class="govuk-heading-m">@messages(s"product-details.software-specifications.heading")</h2>
+    @for(section <- Seq(
+        ProductDetailsSectionInfo(None, filtersNotSelectedFrom(applicationTypeFilters.toList), "application-type"),
+        ProductDetailsSectionInfo(None, filtersNotSelectedFrom(accessibilityFilters.toList), "accessibility")
+    ).filter(_.group.nonEmpty)) {
+        @featureSection(section, true)
+    }
+    @featureSection(ProductDetailsSectionInfo(None, filtersNotSelectedFrom(languageFilters.toList), "language"), true)
+
 }
