@@ -199,9 +199,9 @@ product-details.meaning.ready = This feature is ready to use now.
 product-details.meaning.development = The software provider has committed to building this in time for the 2026 to 2027 tax return.
 product-details.meaning.not-included = This is not available in this software product.
 
-# Product details section
 product-details.details.heading.personalised = Based on your selections
 
+# Product features section
 product-details.features.heading = Software features
 product-details.features.heading.personalised = Software features needed
 
@@ -215,17 +215,6 @@ product-details.features-provided.hmrc-assist = HMRC Assist (Submission Feedback
 product-details.features-provided.standard-update-periods = Standard update period (6 April to 5 April)
 product-details.features-provided.calendar-update-periods = Calendar update period (1 April to 31 March)
 product-details.features-provided.vat = Making Tax Digital for VAT
-product-details.features-provided.visual = Blindness or impaired vision
-product-details.features-provided.hearing = Deafness or impaired hearing
-product-details.features-provided.motor = Motor or physical difficulties
-product-details.features-provided.cognitive = Cognitive impairments
-product-details.features-provided.web-browser = Online in web browser (all systems)
-product-details.features-provided.microsoft-windows = Desktop app (Microsoft Windows)
-product-details.features-provided.mac-os = Desktop app (Mac OS)
-product-details.features-provided.linux = Desktop app (Linux)
-product-details.features-provided.android = Mobile app (Android)
-product-details.features-provided.apple-ios = Mobile app (Apple iOS)
-product-details.features-provided.welsh = Welsh
 
 product-details.quarterly-updates.heading = What is needed for quarterly updates
 
@@ -253,6 +242,26 @@ product-details.other-income.high-income-child-benefit-charge = High Income Chil
 product-details.other-income.payments-into-a-private-pension = Private pension contributions
 product-details.other-income.marriage-allowance = Marriage Allowance
 product-details.other-income.partner-income = Partner income from a partnership
+
+product-details.software-specifications.heading = Software specifications
+
+product-details.application-type.heading = Software application type
+product-details.application-type.web-browser = Online in web browser (all systems)
+product-details.application-type.microsoft-windows = Desktop app (Microsoft Windows)
+product-details.application-type.mac-os = Desktop app (Mac OS)
+product-details.application-type.linux = Desktop app (Linux)
+product-details.application-type.android = Mobile app (Android)
+product-details.application-type.apple-ios = Mobile app (Apple iOS)
+
+product-details.accessibility.heading = Accessibility features
+product-details.accessibility.visual = Blindness or impaired vision
+product-details.accessibility.hearing = Deafness or impaired hearing
+product-details.accessibility.motor = Motor or physical difficulties
+product-details.accessibility.cognitive = Cognitive impairments
+
+product-details.language.heading = Language
+product-details.language.english = English
+product-details.language.welsh = Welsh
 
 # Other features section
 product-details.other-features.collapsible = Other potential software features

@@ -442,7 +442,7 @@ object VendorFilterGroups {
     Apple
   )
 
-  val languageFilter: Set[VendorFilter] = Set(
+  val languageFilters: Set[VendorFilter] = Set(
     English, Welsh
   )
 
@@ -492,18 +492,7 @@ object VendorFilterGroups {
     HMRCAssist,
     StandardUpdatePeriods,
     CalendarUpdatePeriods,
-    Vat,
-    Visual,
-    Hearing,
-    Motor,
-    Cognitive,
-    WebBrowser,
-    MicrosoftWindows,
-    MacOS,
-    Linux,
-    Android,
-    Apple,
-    Welsh
+    Vat
   )
   
   val businessIncomeGroup: List[VendorFilter] = List(
@@ -553,6 +542,6 @@ object VendorFilterGroups {
   val mandatoryFilterGroup: List[VendorFilter] =
     businessIncomeGroup ++ userTypeFilters ++ accountingPeriodFilters ++ pricingFilters ++
       compatibility ++ accessibilityFilters ++ softwareForFilters ++ extraFeatures ++
-      languageFilter ++ applicationTypeFilters
+      languageFilters ++ applicationTypeFilters
   
 }
