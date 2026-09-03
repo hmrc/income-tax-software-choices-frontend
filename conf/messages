@@ -183,8 +183,8 @@ search-software.vendor-detail.software-application-type.apple-ios = Mobile app (
 
 # Product details page
 
-# Contact details section
-product-details.contact-details.website.link    = Explore this software on {0}s website
+# Contact details section - ** Double single quote below to escape single quote - single single quote is removed by Java parser **
+product-details.contact-details.website.link    = Explore this software on {0}''s website
 
 # Status section
 product-details.features-group.heading = What each feature status means
