@@ -22,12 +22,12 @@ import org.scalatest.{Assertion, BeforeAndAfterEach}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.{Available, Intended}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareVendorModel
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.*
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.StaticProductDetailsView
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.ProductDetailsView
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.TestModels.softwareVendorModelBase
 
 class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
 
-  private val staticProductDetailsPage = app.injector.instanceOf[StaticProductDetailsView]
+  private val productDetailsView = app.injector.instanceOf[ProductDetailsView]
 
   private val softwareVendorModelFull = softwareVendorModelBase
     .copy(name = "abc full")
@@ -290,7 +290,7 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
   }
 
   private def staticPage(vendorModel: SoftwareVendorModel) =
-    staticProductDetailsPage(vendorModel, testBackUrl)
+    productDetailsView(vendorModel, testBackUrl)
 
   private def createAndParseStaticDocument(vendorModel: SoftwareVendorModel): Document =
     Jsoup.parse(staticPage(vendorModel).body)

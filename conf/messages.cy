@@ -261,7 +261,7 @@ product-details.accessibility.cognitive = Amhariad gwybyddol
 
 product-details.language.heading = Laith
 product-details.language.english = Saesneg
-product-details.features-provided.welsh = Cymraeg
+product-details.language.welsh = Cymraeg
 
 # Other features section
 product-details.other-features.collapsible = Other potential software features
