@@ -485,14 +485,14 @@ object VendorFilterGroups {
   // product details page groups //
   def featuresProvidedGroup: List[VendorFilter] = List(
     FreeVersion,
-    RecordKeeping,
-    Bridging,
     Agent,
     Individual,
-    HMRCAssist,
     StandardUpdatePeriods,
     CalendarUpdatePeriods,
-    Vat
+    RecordKeeping,
+    Bridging,
+    Vat,
+    HMRCAssist
   )
   
   val businessIncomeGroup: List[VendorFilter] = List(
