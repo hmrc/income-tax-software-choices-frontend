@@ -25,7 +25,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareVendorModel,
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.{PageAnswersService, SoftwareChoicesService}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.{EnterSoftwareNamePage, HowYouFindSoftwarePage}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.{NotFoundView, PersonalisedProductDetailsView, StaticProductDetailsView}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.{NotFoundView, ProductDetailsView}
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
@@ -35,8 +35,7 @@ class ProductDetailsController @Inject()(softwareChoicesService: SoftwareChoices
                                          userFiltersRepository: UserFiltersRepository,
                                          pageAnswersService: PageAnswersService,
                                          identify: SessionIdentifierAction,
-                                         staticProductDetailsView: StaticProductDetailsView,
-                                         personalisedProductDetailsView: PersonalisedProductDetailsView,
+                                         productDetailsView: ProductDetailsView,
                                          notFoundView: NotFoundView)
                                         (implicit mcc: MessagesControllerComponents, appConfig: AppConfig, val executionContext: ExecutionContext) extends BaseFrontendController {
 
@@ -49,9 +48,9 @@ class ProductDetailsController @Inject()(softwareChoicesService: SoftwareChoices
     } yield {
       (userFilters, vendorOpt) match {
         case (Some(userFilters), Some(softwareVendor)) if userIsInFindOrCheckJourney(userFilters.answers) =>
-          Ok(personalisedProductDetailsView(softwareVendor, userFilters.finalFilters, backLink(userFilters.answers, userFilters.finalFilters, softwareVendor)))
+          Ok(productDetailsView(softwareVendor, backLink(userFilters.answers, userFilters.finalFilters, softwareVendor), Some(userFilters.finalFilters)))
         case (_, Some(softwareVendor)) =>
-          Ok(staticProductDetailsView(softwareVendor, routes.SearchSoftwareController.show().url))
+          Ok(productDetailsView(softwareVendor, routes.SearchSoftwareController.show().url, None))
         case _ =>
           NotFound(notFoundView(routes.ProductDetailsController.show(productId).url))
       }
