@@ -264,10 +264,11 @@ product-details.language.english = Saesneg
 product-details.language.welsh = Cymraeg
 
 # Other features section
-product-details.other-features.collapsible = Other potential software features
-product-details.other-features.heading = Other features
-product-details.other-features.quarterly-updates.heading = Other quarterly update income sources
-product-details.other-features.tax-return.heading = Other tax return income sources and items
+product-details.other-features.collapsible = Nodweddion meddalwedd posibl eraill
+product-details.other-features.heading = Nodweddion eraill
+product-details.other-features.quarterly-updates.heading = Ffynonellau incwm eraill ar gyfer diweddariadau chwarterol
+product-details.other-features.tax-return.heading = Ffynonellau incwm ac eitemau eraill ar gyfer Ffurflen Dreth
+product-details.other-features.software-specifications.heading = Manylebau’r feddalwedd eraill
 
 
 # Other Income Sources Page
