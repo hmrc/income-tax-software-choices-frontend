@@ -106,6 +106,7 @@ search-software.p1                                        = Mae’r holl feddalw
 search-software.p2                                        = Efallai y bydd rhai o’r cynhyrchion sy’n cael eu rhestru yn cynnig cyfnod prawf am ddim, neu fersiynau am ddim, ond mae angen talu am rai eraill.
 search-software.p3                                        = Rydym yn argymell eich bod yn ymweld â gwefan darparwyr meddalwedd i wneud ymchwil cyn dewis cynnyrch.
 search-software.p4                                        = Mae’r canlyniadau wedi’u rhoi mewn trefn ar hap i sicrhau tegwch wrth ddangos y feddalwedd sydd ar gael.
+
 search-software.check-answers                             = Gwirio atebion
 search-software.skip-to-results                           = Ewch yn syth i’r canlyniadau
 
@@ -198,7 +199,7 @@ product-details.meaning.ready = Mae’r nodwedd hon nawr yn barod i’w defnyddi
 product-details.meaning.development = Mae’r darparwr meddalwedd wedi ymrwymo i adeiladu’r nodwedd hon mewn pryd ar gyfer Ffurflen Dreth 2026 i 2027.
 product-details.meaning.not-included = Nid yw’r nodwedd hon ar gael yn y cynnyrch meddalwedd hwn.
 
-# Product details section
+# Product features section
 product-details.details.heading.personalised = Yn seiliedig ar eich dewisiadau
 
 product-details.features.heading = Nodweddion meddalwedd
@@ -214,17 +215,6 @@ product-details.features-provided.hmrc-assist = HMRC Assist (Adborth wrth gyflwy
 product-details.features-provided.standard-update-periods = Cyfnod diweddaru safonol (6 Ebrill i 5 Ebrill)
 product-details.features-provided.calendar-update-periods = Cyfnod diweddaru calendr (1 Ebrill i 31 Mawrth)
 product-details.features-provided.vat = Troi Treth yn Ddigidol ar gyfer TAW
-product-details.features-provided.visual = Dallineb neu amhariad golwg
-product-details.features-provided.hearing = Byddardod neu amhariad clyw
-product-details.features-provided.motor = Amhariad echddygol neu gorfforol
-product-details.features-provided.cognitive = Amhariad gwybyddol
-product-details.features-provided.web-browser = Ar-lein mewn porwr gwe (pob system)
-product-details.features-provided.microsoft-windows = Ap bwrdd gwaith (Microsoft Windows)
-product-details.features-provided.mac-os = Ap bwrdd gwaith (Mac OS)
-product-details.features-provided.linux = Ap bwrdd gwaith (Linux)
-product-details.features-provided.android = Ap ffôn symudol (Android)
-product-details.features-provided.apple-ios = Ap ffôn symudol (Apple iOS)
-product-details.features-provided.welsh = Cymraeg
 
 product-details.quarterly-updates.heading = Yr hyn sydd ei angen ar gyfer diweddariadau chwarterol
 
@@ -252,6 +242,26 @@ product-details.other-income.high-income-child-benefit-charge = Tâl Treth Budd-
 product-details.other-income.payments-into-a-private-pension = Cyfraniadau pensiwn preifat
 product-details.other-income.marriage-allowance = Lwfans Priodasol
 product-details.other-income.partner-income = Incwm partner o bartneriaeth
+
+product-details.software-specifications.heading = Manylebau’r feddalwedd
+
+product-details.application-type.heading = Math o raglen meddalwedd
+product-details.application-type.web-browser = Ar-lein mewn porwr gwe (pob system)
+product-details.application-type.microsoft-windows = Ap bwrdd gwaith (Microsoft Windows)
+product-details.application-type.mac-os = Ap bwrdd gwaith (Mac OS)
+product-details.application-type.linux = Ap bwrdd gwaith (Linux)
+product-details.application-type.android = Ap ffôn symudol (Android)
+product-details.application-type.apple-ios = Ap ffôn symudol (Apple iOS)
+
+product-details.accessibility.heading = Nodweddion hygyrchedd
+product-details.accessibility.visual = Dallineb neu amhariad golwg
+product-details.accessibility.hearing = Byddardod neu amhariad clyw
+product-details.accessibility.motor = Amhariad echddygol neu gorfforol
+product-details.accessibility.cognitive = Amhariad gwybyddol
+
+product-details.language.heading = Laith
+product-details.language.english = Saesneg
+product-details.features-provided.welsh = Cymraeg
 
 # Other features section
 product-details.other-features.collapsible = Other potential software features
