@@ -134,6 +134,8 @@
         <h2 class="govuk-heading-l">@messages("product-details.details.heading.personalised")</h2>
 
         <!--Selected filters-->
+
+<!--        As a user type and an accounting period must be selected, and an answer must be given on the quarterly updates question, these sections will always be populated-->
         @for(section <- Seq(
             ProductDetailsSectionInfo(Some("features.heading.personalised"), filtersSelectedFrom(featuresProvidedGroup), "features-provided"),
             ProductDetailsSectionInfo(Some("quarterly-updates.heading"), filtersSelectedFrom(businessIncomeGroup), "business-income")
@@ -148,7 +150,7 @@
             }
         }
 
-<!--        For software spec section, only print the heading if at least one group is non-empty, then filter the empty sections-->
+<!--        For software spec section, only print the heading if at least one group is non-empty, then filter out the empty sections-->
         @if(filtersSelectedFrom(applicationTypeFilters.toList).nonEmpty || filtersSelectedFrom(accessibilityFilters.toList).nonEmpty || filtersSelectedFrom(languageFilters.toList).nonEmpty) {
             <h2 class="govuk-heading-m">@messages(s"product-details.software-specifications.heading")</h2>
 
@@ -161,7 +163,7 @@
             }
         }
 
-        <!-- Details drop down for filters not selected -->
+        <!-- Details drop down, for filters not selected by the user -->
         @if(filtersNotSelectedFrom(featuresProvidedGroup).nonEmpty || filtersNotSelectedFrom(businessIncomeGroup).nonEmpty || filtersNotSelectedFrom(nonMandatedIncomeGroup).nonEmpty) {
             @govukDetails(Details(
                 summary = Text(messages("product-details.other-features.collapsible")),
@@ -170,7 +172,7 @@
         }
 
     } else {
-<!--         All filters-->
+<!--         All filters are shown in view all/ for external users-->
         @for(section <- Seq(
             ProductDetailsSectionInfo(Some("features.heading"), featuresProvidedGroup, "features-provided"),
             ProductDetailsSectionInfo(Some("quarterly-updates.heading"), businessIncomeGroup, "business-income"),
@@ -193,17 +195,13 @@
 }
 
 @featureSection(section: ProductDetailsSectionInfo, isPersonalised: Boolean) = {
-    @defining(section.headingSuffix.isDefined) { hasHeading =>
-        @if(hasHeading) {
-            @defining(section.headingSuffix.get) { hs =>
-                @if(isPersonalised) {
-                    <h2 class="govuk-heading-m">@messages(s"product-details.$hs")</h2>
-                } else {
-                    <h2 class="govuk-heading-l">@messages(s"product-details.$hs")</h2>
-                }
-            }
-        }
+<!--If a heading is required, print in medium size for personalised view, or large size for non-personalised view. Then print the table of features for that section.-->
+    @if(section.headingSuffix.isDefined && isPersonalised) {
+        <h2 class="govuk-heading-m">@messages(s"product-details.${section.headingSuffix.get}")</h2>
+    } else if (section.headingSuffix.isDefined) {
+        <h2 class="govuk-heading-l">@messages(s"product-details.${section.headingSuffix.get}")</h2>
     }
+
     @featureTable(section.group, section.tableKey, section.displayIntent)
 }
 
@@ -261,7 +259,7 @@
     }
 
 <!--    English filter will always be in this section, as it is not selectable as a filter, so the language section will always be there.-->
-   <!-- But a user could have selected all of application type filters and/ or the accessibility filters -->
+   <!-- But a user could have selected all of application type filters and/ or the accessibility filters, so there may be nothing that isn't selected -->
     <h2 class="govuk-heading-m">@messages(s"product-details.software-specifications.heading")</h2>
     @for(section <- Seq(
         ProductDetailsSectionInfo(None, filtersNotSelectedFrom(applicationTypeFilters.toList), "application-type"),
