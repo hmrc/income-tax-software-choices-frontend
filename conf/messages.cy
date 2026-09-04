@@ -106,6 +106,7 @@ search-software.p1                                        = Mae’r holl feddalw
 search-software.p2                                        = Efallai y bydd rhai o’r cynhyrchion sy’n cael eu rhestru yn cynnig cyfnod prawf am ddim, neu fersiynau am ddim, ond mae angen talu am rai eraill.
 search-software.p3                                        = Rydym yn argymell eich bod yn ymweld â gwefan darparwyr meddalwedd i wneud ymchwil cyn dewis cynnyrch.
 search-software.p4                                        = Mae’r canlyniadau wedi’u rhoi mewn trefn ar hap i sicrhau tegwch wrth ddangos y feddalwedd sydd ar gael.
+
 search-software.check-answers                             = Gwirio atebion
 search-software.skip-to-results                           = Ewch yn syth i’r canlyniadau
 
@@ -183,36 +184,46 @@ search-software.vendor-detail.software-application-type.apple-ios = Ap ffôn sym
 # Product details page
 
 # Contact details section
+product-details.contact-details.website.link    = Archwiliwch y feddalwedd hon ar wefan {0}
 
-product-details.contact-details.website.link    = Cadarnhewch a yw {0} yn addas i chi
+# Status section
+product-details.features-group.heading = Beth yw ystyr pob statws
+product-details.status.heading = Statws
+product-details.status.ready = Yn barod nawr
+product-details.status.development = O dan ddatblygiad
+product-details.status.not-included = Ddim ar gael
+product-details.feature-status.heading = Statws y nodwedd
+product-details.meaning.heading = Ystyr
 
-# Product details section
+product-details.meaning.ready = Mae’r nodwedd hon nawr yn barod i’w defnyddio.
+product-details.meaning.development = Mae’r darparwr meddalwedd wedi ymrwymo i adeiladu’r nodwedd hon mewn pryd ar gyfer Ffurflen Dreth 2026 i 2027.
+product-details.meaning.not-included = Nid yw’r nodwedd hon ar gael yn y cynnyrch meddalwedd hwn.
 
-product-details.details.heading = Nodweddion meddalwedd
+# Product features section
+product-details.details.heading.personalised = Yn seiliedig ar eich dewisiadau
+
+product-details.features.heading = Nodweddion meddalwedd
+product-details.features.heading.personalised = Nodweddion meddalwedd sydd eu hangen
 
 product-details.features-provided.heading = Nodweddion sydd ar gael
-product-details.features-provided.quarterly-updates = Diweddariadau chwarterol
-product-details.features-provided.calendar-update-periods = Cyfnod diweddaru calendr (1 Ebrill i 31 Mawrth)
-product-details.features-provided.bridging = Meddalwedd sy’n cysylltu â’ch cofnodion (meddalwedd pontio)
-product-details.features-provided.record-keeping = Meddalwedd sy’n creu cofnodion digidol
-product-details.features-provided.standard-update-periods = Cyfnod diweddaru safonol (6 Ebrill i 5 Ebrill)
-product-details.features-provided.tax-return = Ffurfleni Treth
+product-details.features-provided.free-version = Fersiwn am ddim
+product-details.features-provided.record-keeping = Meddalwedd hollgynhwysol sy’n creu cofnodion digidol
+product-details.features-provided.bridging = Meddalwedd sy’n pontio sy’n cysylltu â chofnodion
 product-details.features-provided.agent = Meddalwedd asiant
 product-details.features-provided.individual = Meddalwedd unigolyn
 product-details.features-provided.hmrc-assist = HMRC Assist (Adborth wrth gyflwyno)
-product-details.features-provided.free-version = Fersiwn am ddim
+product-details.features-provided.standard-update-periods = Cyfnod diweddaru safonol (6 Ebrill i 5 Ebrill)
+product-details.features-provided.calendar-update-periods = Cyfnod diweddaru calendr (1 Ebrill i 31 Mawrth)
+product-details.features-provided.vat = Troi Treth yn Ddigidol ar gyfer TAW
 
-product-details.language.welsh = Cymraeg
-
-product-details.quarterly-updates.heading = Yr hyn sydd ei angen arnoch ar gyfer eich diweddariadau chwarterol
-product-details.quarterly-updates.what-you-need = Bydd angen i chi gynnwys y ffynonellau incwm hyn yn eich Ffurflen Dreth o hyd.
+product-details.quarterly-updates.heading = Yr hyn sydd ei angen ar gyfer diweddariadau chwarterol
 
 product-details.business-income.heading = Ffynonellau incwm busnes
 product-details.business-income.sole-trader = Unig fasnachwr
 product-details.business-income.uk-property = Eiddo yn y DU
 product-details.business-income.overseas-property = Eiddo tramor
 
-product-details.tax-return.heading = Yr hyn sydd ei angen arnoch ar gyfer eich Ffurflen Dreth
+product-details.tax-return.heading = Yr hyn sydd ei angen ar gyfer Ffurflenni Dreth
 
 product-details.other-income.heading = Eitemau eraill a ffynonellau eraill o incwm
 product-details.other-income.construction-industry-scheme = Cynllun y Diwydiant Adeiladu
@@ -232,37 +243,33 @@ product-details.other-income.payments-into-a-private-pension = Cyfraniadau pensi
 product-details.other-income.marriage-allowance = Lwfans Priodasol
 product-details.other-income.partner-income = Incwm partner o bartneriaeth
 
-product-details.features-group.heading = Beth yw ystyr pob statws
-product-details.status.heading = Statws
-product-details.status.ready = Yn barod nawr
-product-details.status.development = O dan ddatblygiad
-product-details.status.not-included = Ddim ar gael
-product-details.feature-status.heading = Statws y nodwedd
-product-details.meaning.heading = Ystyr
+product-details.software-specifications.heading = Manylebau’r feddalwedd
 
-product-details.meaning.ready = Mae’r nodwedd hon nawr yn barod i’w defnyddio.
-product-details.meaning.development = Mae’r darparwr meddalwedd wedi ymrwymo i adeiladu’r nodwedd hon mewn pryd ar gyfer Ffurflen Dreth 2026 i 2027.
-product-details.meaning.not-included = Nid yw’r nodwedd hon ar gael yn y cynnyrch meddalwedd hwn.
+product-details.application-type.heading = Math o raglen meddalwedd
+product-details.application-type.web-browser = Ar-lein mewn porwr gwe (pob system)
+product-details.application-type.microsoft-windows = Ap bwrdd gwaith (Microsoft Windows)
+product-details.application-type.mac-os = Ap bwrdd gwaith (Mac OS)
+product-details.application-type.linux = Ap bwrdd gwaith (Linux)
+product-details.application-type.android = Ap ffôn symudol (Android)
+product-details.application-type.apple-ios = Ap ffôn symudol (Apple iOS)
 
+product-details.accessibility.heading = Nodweddion hygyrchedd
+product-details.accessibility.visual = Dallineb neu amhariad golwg
+product-details.accessibility.hearing = Byddardod neu amhariad clyw
+product-details.accessibility.motor = Amhariad echddygol neu gorfforol
+product-details.accessibility.cognitive = Amhariad gwybyddol
 
-product-details.software-spec.heading = Manylebau’r feddalwedd
-
-product-details.software-spec.software-type = Math o feddalwedd
-product-details.software-spec.compatible-with = Yn cydweddu â
-product-details.software-spec.mobile-app = Ap Ffon Symudol
-product-details.software-spec.language = Iaith
-
-product-details.software-type.desktop-based = Rhaglen bwrdd gwaith
-product-details.software-type.web-browser = Porwr gwe
-
-product-details.compatible-with.microsoft-windows = Microsoft Windows
-product-details.compatible-with.mac-os = Mac OS
-product-details.compatible-with.linux = Linux
-
-product-details.mobile-app.android = Android
-product-details.mobile-app.apple-ios = Apple iOS
-
+product-details.language.heading = Laith
 product-details.language.english = Saesneg
+product-details.language.welsh = Cymraeg
+
+# Other features section
+product-details.other-features.collapsible = Nodweddion meddalwedd posibl eraill
+product-details.other-features.heading = Nodweddion eraill
+product-details.other-features.quarterly-updates.heading = Ffynonellau incwm eraill ar gyfer diweddariadau chwarterol
+product-details.other-features.tax-return.heading = Ffynonellau incwm ac eitemau eraill ar gyfer Ffurflen Dreth
+product-details.other-features.software-specifications.heading = Manylebau meddalwedd eraill
+
 
 # Other Income Sources Page
 additional.income.source-heading                                    = Pa rai o’r ffynonellau incwm canlynol y mae angen i chi eu cyflwyno yn eich Ffurflen Dreth?

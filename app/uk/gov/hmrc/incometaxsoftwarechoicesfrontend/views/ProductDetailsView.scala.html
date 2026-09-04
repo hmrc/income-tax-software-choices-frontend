@@ -19,28 +19,27 @@
 @import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcNewTabLinkHelper
 @import uk.gov.hmrc.hmrcfrontend.views.viewmodels.newtablinkhelper.NewTabLinkHelper
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.{Available, Intended, NotApplicable}
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilterGroups._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTemplate
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.{Available, Intended, NotApplicable}
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.helpers.ProductDetailsSectionInfo
 
 @this(
         mainTemplate: MainTemplate,
         hmrcNewTabLinkHelper: HmrcNewTabLinkHelper,
-        govukSummaryList: GovukSummaryList,
+        govukDetails: GovukDetails,
         govukTable: GovukTable,
         govukTag: GovukTag
 )(implicit appConfig: AppConfig)
-@(softwareVendor: SoftwareVendorModel, backLink: String)(implicit request: Request[_], messages: Messages)
+
+@(softwareVendor: SoftwareVendorModel, backLink: String, finalFilters: Option[Seq[VendorFilter]] = None)(implicit request: Request[_], messages: Messages)
 
 @mainTemplate(title = softwareVendor.name, backLink = Some(backLink), isFullWidth = true) {
 
-    <h1 class="govuk-heading-l">@{
-        softwareVendor.name
-    }</h1>
+    <h1 class="govuk-heading-xl">@{softwareVendor.name}</h1>
 
     <p class="govuk-body govuk-!-margin-bottom-6">
         @hmrcNewTabLinkHelper(NewTabLinkHelper(
@@ -52,31 +51,8 @@
 
     <div class="govuk-!-width-three-quarters govuk-!-padding-0">
         @statusKeyTable
-
-        <h2 class="govuk-heading-m">@messages("product-details.details.heading")</h2>
-        @table(featuresProvidedGroup, "features-provided", displayIntent = false)
-
-        <h2 class="govuk-heading-m">@messages("product-details.quarterly-updates.heading")</h2>
-        <p class="govuk-body-m">@messages("product-details.quarterly-updates.what-you-need")</p>
-        @table(businessIncomeGroup, "business-income", displayIntent = false)
-
-        <h2 class="govuk-heading-m">@messages("product-details.tax-return.heading")</h2>
-        @table(nonMandatedIncomeGroup, "other-income", displayIntent = true)
+        @renderFeatureSections(finalFilters.isDefined)
     </div>
-
-    @defining({
-        swSpecRow(softwareTypeGroup, "software-type") ++
-        swSpecRow(compatibleWithGroup, "compatible-with") ++
-        swSpecRow(mobileGroup, "mobile-app") ++
-        swSpecRow(languageGroup, "language")
-    }) { specsRows =>
-        @if(specsRows.nonEmpty) {
-            <div class="govuk-!-width-two-thirds govuk-!-padding-0">
-                <h2 class="govuk-heading-m">@messages("product-details.software-spec.heading")</h2>
-                @govukSummaryList(SummaryList(rows = specsRows))
-            </div>
-        }
-    }
 
     <p class="govuk-body">
         @hmrcNewTabLinkHelper(NewTabLinkHelper(
@@ -85,84 +61,6 @@
             classList = Some("govuk-!-display-none-print")
         ))
     </p>
-}
-
-@featuresRow(filterGroup: List[VendorFilter], section: String, displayIntent: Boolean) = @{
-    filterGroup map { filter =>
-        Seq(
-            TableRow(
-                content = Text(messages(s"product-details.$section.${filter.key}")),
-                classes = "govuk-!-width-two-thirds govuk-!-font-weight-regular"
-            ),
-            TableRow(
-                content = (softwareVendor.getFeatureStatus(filter), displayIntent) match {
-                    case (Available, _) => {
-                        HtmlContent(govukTag(Tag(
-                            content = Text(messages("search-software.vendor-detail.eoy-tax-return.ready")),
-                            classes = "govuk-tag--green govuk-!-display-inline"
-                         )))
-                    }
-                    case (Intended, true) => {
-                        HtmlContent(govukTag(Tag(
-                            content = Text(messages("search-software.vendor-detail.eoy-tax-return.development")),
-                            classes = "govuk-tag--yellow govuk-!-display-inline"
-                        )))
-                    }
-                    case _ => {
-                        HtmlContent(govukTag(Tag(
-                            content = Text(messages("search-software.vendor-detail.eoy-tax-return.not-included")),
-                            classes = "govuk-tag--red govuk-!-display-inline"
-                        )))
-                    }
-                },
-                classes = "govuk-!-width-one-third"
-            )
-        )
-    }
-}
-
-@table(filterGroup: List[VendorFilter], tableHeaderKey: String, displayIntent: Boolean) = {
-     <div class="table-scroll-wrapper">
-       @govukTable(Table(
-        rows = featuresRow(filterGroup, tableHeaderKey, displayIntent),
-        head = Some(Seq(
-            HeadCell(
-                content = Text(messages(s"product-details.$tableHeaderKey.heading"))
-),
-            HeadCell(
-                content = Text(messages("product-details.status.heading"))
-            )
-        )),
-        firstCellIsHeader = true,
-        caption = Some(messages(s"product-details.$tableHeaderKey.heading")),
-        captionClasses = "govuk-visually-hidden"
-    ))
-     </div>
-}
-
-@swSpecRow(filtersGroup: List[VendorFilter], sectionKey: String) = @{
-    val filters = filtersGroup.filter(f => softwareVendor.filters.contains(f) && softwareVendor.getFeatureStatus(f).eq(Available))
-    filters.size match {
-        case x if x==1 => Seq(SummaryListRow(
-            key = Key(
-                content = Text(messages(s"product-details.software-spec.$sectionKey")),
-                classes = "govuk-!-width-one-third"
-            ),
-            value = Value(content = HtmlContent(
-                s"${filters.map(f => s"""${messages(s"product-details.${sectionKey}.${f.key}")}""").mkString("")}"
-            ))))
-        case x if x>1 => Seq(SummaryListRow(
-            key = Key(
-                content = Text(messages(s"product-details.software-spec.$sectionKey")),
-                classes = "govuk-!-width-one-third"
-            ),
-            value = Value(content = HtmlContent(
-                s"""<ul class="govuk-list">
-                    ${filters.map(f => s"""<li>${messages(s"product-details.${sectionKey}.${f.key}")}</li>""").mkString("")}
-                    </ul>"""
-            ))))
-        case _ => Seq.empty
-    }
 }
 
 @statusKeyTable = {
@@ -218,7 +116,149 @@
       firstCellIsHeader = true,
       caption = Some(messages("product-details.features-group.heading")),
       captionClasses = "govuk-table__caption--m"
-    )
-  )
+    ))
   </div>
+}
+
+@renderFeatureSections(isPersonalised: Boolean) = {
+    @if(isPersonalised) {
+        <h2 class="govuk-heading-l">@messages("product-details.details.heading.personalised")</h2>
+
+        <!--Selected filters-->
+
+<!--        As a user type and an accounting period must be selected, and an answer must be given on the quarterly updates question, these sections will always be populated-->
+        @for(section <- Seq(
+            ProductDetailsSectionInfo(Some("features.heading.personalised"), filtersSelectedFrom(featuresProvidedGroup), "features-provided"),
+            ProductDetailsSectionInfo(Some("quarterly-updates.heading"), filtersSelectedFrom(businessIncomeGroup), "business-income")
+        )) {
+            @featureSection(section, isPersonalised)
+        }
+
+<!--        Tax return section only shown if there are selected filters from the non-mandated income group - to avoid showing just header with no corresponding filters-->
+        @defining(ProductDetailsSectionInfo(Some("tax-return.heading"), filtersSelectedFrom(nonMandatedIncomeGroup), "other-income", displayIntent = true)) { taxReturnSection =>
+            @if(taxReturnSection.group.nonEmpty) {
+                @featureSection(taxReturnSection, isPersonalised)
+            }
+        }
+
+<!--        For software spec section, only print the heading if at least one group is non-empty, then filter out the empty sections-->
+        @if(filtersSelectedFrom(applicationTypeFilters.toList).nonEmpty || filtersSelectedFrom(accessibilityFilters.toList).nonEmpty || filtersSelectedFrom(languageFilters.toList).nonEmpty) {
+            <h2 class="govuk-heading-m">@messages(s"product-details.software-specifications.heading")</h2>
+
+            @for(section <- Seq(
+                ProductDetailsSectionInfo(None, filtersSelectedFrom(applicationTypeFilters.toList), "application-type"),
+                ProductDetailsSectionInfo(None, filtersSelectedFrom(accessibilityFilters.toList), "accessibility"),
+                ProductDetailsSectionInfo(None, filtersSelectedFrom(languageFilters.toList), "language")
+            ).filter(_.group.nonEmpty)) {
+                @featureSection(section, isPersonalised)
+            }
+        }
+
+        <!-- Details drop down, for filters not selected by the user -->
+        @govukDetails(Details(
+            summary = Text(messages("product-details.other-features.collapsible")),
+            content = HtmlContent(detailsElementContent)
+        ))
+
+
+    } else {
+<!--         All filters are shown in view all/ for external users-->
+        @for(section <- Seq(
+            ProductDetailsSectionInfo(Some("features.heading"), featuresProvidedGroup, "features-provided"),
+            ProductDetailsSectionInfo(Some("quarterly-updates.heading"), businessIncomeGroup, "business-income"),
+            ProductDetailsSectionInfo(Some("tax-return.heading"), nonMandatedIncomeGroup, "other-income", displayIntent = true),
+            ProductDetailsSectionInfo(Some("software-specifications.heading"), applicationTypeFilters.toList, "application-type"),
+            ProductDetailsSectionInfo(None, accessibilityFilters.toList, "accessibility"),
+            ProductDetailsSectionInfo(None, languageFilters.toList, "language")
+        )) {
+            @featureSection(section, isPersonalised)
+        }
+    }
+}
+
+@filtersSelectedFrom(filterGroup: List[VendorFilter]) = @{
+    filterGroup.filter(f => finalFilters.get.contains(f))
+}
+
+@filtersNotSelectedFrom(filterGroup: List[VendorFilter]) = @{
+    filterGroup.filter(f => !finalFilters.get.contains(f))
+}
+
+@featureSection(section: ProductDetailsSectionInfo, isPersonalised: Boolean) = {
+<!--If a heading is required, print in medium size for personalised view, or large size for non-personalised view. Then print the table of features for that section.-->
+    @if(section.headingSuffix.isDefined && isPersonalised) {
+        <h2 class="govuk-heading-m">@messages(s"product-details.${section.headingSuffix.get}")</h2>
+    } else if (section.headingSuffix.isDefined) {
+        <h2 class="govuk-heading-l">@messages(s"product-details.${section.headingSuffix.get}")</h2>
+    }
+
+    @featureTable(section.group, section.tableKey, section.displayIntent)
+}
+
+@featureTable(filterGroup: List[VendorFilter], tableHeaderKey: String, displayIntent: Boolean) = {
+    <div class="table-scroll-wrapper">
+        @govukTable(Table(
+            rows = filterGroup map { filter =>
+                Seq(
+                    TableRow(
+                        content = Text(messages(s"product-details.$tableHeaderKey.${filter.key}")),
+                        classes = "govuk-!-width-two-thirds govuk-!-font-weight-regular"
+                    ),
+                    TableRow(
+                        content = (softwareVendor.getFeatureStatus(filter), displayIntent) match {
+                            case (Available, _) => HtmlContent(govukTag(Tag(
+                                content = Text(messages("search-software.vendor-detail.eoy-tax-return.ready")),
+                                classes = "govuk-tag--green govuk-!-display-inline"
+                            )))
+                            case (Intended, true) => HtmlContent(govukTag(Tag(
+                                content = Text(messages("search-software.vendor-detail.eoy-tax-return.development")),
+                                classes = "govuk-tag--yellow govuk-!-display-inline"
+                            )))
+                            case _ => HtmlContent(govukTag(Tag(
+                                content = Text(messages("search-software.vendor-detail.eoy-tax-return.not-included")),
+                                classes = "govuk-tag--red govuk-!-display-inline"
+                            )))
+                        },
+                        classes = "govuk-!-width-one-third"
+                    )
+                )
+            },
+            head = Some(Seq(
+                HeadCell(
+                    content = Text(messages(s"product-details.$tableHeaderKey.heading"))
+                ),
+                HeadCell(
+                    content = Text(messages("product-details.status.heading"))
+                )
+            )),
+            firstCellIsHeader = true,
+            caption = Some(messages(s"product-details.$tableHeaderKey.heading")),
+            captionClasses = "govuk-visually-hidden"
+        ))
+    </div>
+}
+
+@detailsElementContent = {
+<!--    Other features is always shown, as it is not possible to select both user types in the guided or check journeys-->
+    @featureSection(ProductDetailsSectionInfo(Some("other-features.heading"), filtersNotSelectedFrom(featuresProvidedGroup), "features-provided"), true)
+
+<!--    Quarterly updates and tax return sections are only shown when they have filters not selected - to avoid showing just header with no corresponding filters-->
+    @for(section <- Seq(
+        ProductDetailsSectionInfo(Some("other-features.quarterly-updates.heading"), filtersNotSelectedFrom(businessIncomeGroup), "business-income"),
+        ProductDetailsSectionInfo(Some("other-features.tax-return.heading"), filtersNotSelectedFrom(nonMandatedIncomeGroup), "other-income", displayIntent = true)
+    ).filter(_.group.nonEmpty)) {
+        @featureSection(section, true)
+    }
+
+<!--    English filter will always be in this section, as it is not selectable as a filter, so the language section will always be there.-->
+   <!-- But a user could have selected all of application type filters and/ or the accessibility filters, so there may be nothing that isn't selected -->
+    <h2 class="govuk-heading-m">@messages(s"product-details.other-features.software-specifications.heading")</h2>
+    @for(section <- Seq(
+        ProductDetailsSectionInfo(None, filtersNotSelectedFrom(applicationTypeFilters.toList), "application-type"),
+        ProductDetailsSectionInfo(None, filtersNotSelectedFrom(accessibilityFilters.toList), "accessibility")
+    ).filter(_.group.nonEmpty)) {
+        @featureSection(section, true)
+    }
+    @featureSection(ProductDetailsSectionInfo(None, filtersNotSelectedFrom(languageFilters.toList), "language"), true)
+
 }

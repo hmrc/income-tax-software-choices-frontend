@@ -100,12 +100,12 @@ check-your-answers.software-not-listed                 = Software not listed
 
 
 # Search software page
-search-software.heading.many = You have {0} software results
-search-software.heading.one  = You have 1 software result
-search-software.p1           = All software has passed HMRC’s recognition process. HMRC does not recommend any specific product and is not responsible for availability or whether the software meets a particular current or future need.
-search-software.p2           = Some of the listed products may have free trials or free versions, but others require payment.
-search-software.p3           = We recommend that you visit software providers’ websites to do more research before choosing a product.
-search-software.p4           = Results have been put in random order to ensure fairness when displaying software choices.
+search-software.heading.many                              = You have {0} software results
+search-software.heading.one                               = You have 1 software result
+search-software.p1                                        = All software has passed HMRC’s recognition process. HMRC does not recommend any specific product and is not responsible for availability or whether the software meets a particular current or future need.
+search-software.p2                                        = Some of the listed products may have free trials or free versions, but others require payment.
+search-software.p3                                        = We recommend that you visit software providers’ websites to do more research before choosing a product.
+search-software.p4                                        = Results have been put in random order to ensure fairness when displaying software choices.
 
 search-software.check-answers                             = Change answers
 search-software.skip-to-results                           = Skip to results
@@ -117,19 +117,17 @@ search-software.filters.user-type = User type
 search-software.filters.software-for = Type of software
 search-software.filters.software-compatibility = Making Tax Digital Compatibility
 search-software.filters.accessibility = Accessibility features
+search-software.filters.extra-features = Extra features
+search-software.filters.language-features = Language
+search-software.filters.readiness = Software readiness
 search-software.filters.software-application-type = Software application type
 
 search-software.filters.apply-filters = Apply filters
 search-software.filters.clear-filters = Clear filters
-search-software.filters.extra-features = Extra features
-search-software.filters.language-features = Language
-search-software.filters.readiness = Software readiness
 
 search-software.intent.vendor-visit-link        = Find out what {0} provide now and what they’re developing
 
 search-software.vendor-count.heading = Software results based on your answers and  filters
-
-search-software.vendor-detail.language-features.welsh = Welsh
 
 search-software.vendor-detail.pricing = Price
 search-software.vendor-detail.pricing.free-version = Free version
@@ -171,6 +169,8 @@ search-software.vendor-detail.user-type.individual = Individual
 
 search-software.vendor-detail.extra-features.hmrc-assist = HMRC Assist (Submission Feedback)
 
+search-software.vendor-detail.language-features.welsh = Welsh
+
 search-software.vendor-detail.readiness.fully-ready = Ready for quarterly updates and tax return
 
 search-software.vendor-detail.software-application-type = Software application type
@@ -183,35 +183,47 @@ search-software.vendor-detail.software-application-type.apple-ios = Mobile app (
 
 # Product details page
 
-# Contact details section
+# Contact details section - ** Double single quote below to escape single quote - single single quote is removed by Java parser **
+product-details.contact-details.website.link    = Explore this software on {0}''s website
 
-product-details.contact-details.website.link    = Confirm whether {0} is right for you
+# Status section
+product-details.features-group.heading = What each feature status means
+product-details.status.heading = Status
+product-details.status.ready = Ready now
+product-details.status.development = In development
+product-details.status.not-included = Not included
+product-details.feature-status.heading = Feature status
+product-details.meaning.heading = Meaning
 
-# Product details section
+product-details.meaning.ready = This feature is ready to use now.
+product-details.meaning.development = The software provider has committed to building this in time for the 2026 to 2027 tax return.
+product-details.meaning.not-included = This is not available in this software product.
 
-product-details.details.heading = Software features
+# Product features section
+product-details.details.heading.personalised = Based on your selections
+
+product-details.features.heading = Software features
+product-details.features.heading.personalised = Software features needed
 
 product-details.features-provided.heading = Features provided
-product-details.features-provided.quarterly-updates = Quarterly updates
-product-details.features-provided.calendar-update-periods = Calendar update period (1 April to 31 March)
-product-details.features-provided.bridging = Software that connects to your records (bridging software)
-product-details.features-provided.record-keeping = Software that creates digital records
-product-details.features-provided.standard-update-periods = Standard update period (6 April to 5 April)
-product-details.features-provided.tax-return = Tax return
+product-details.features-provided.free-version = Free version
+product-details.features-provided.record-keeping = All-in-one software that creates digital records
+product-details.features-provided.bridging = Bridging software that connects to records
 product-details.features-provided.agent = Agent software
 product-details.features-provided.individual = Individual software
 product-details.features-provided.hmrc-assist = HMRC Assist (Submission Feedback)
-product-details.features-provided.free-version = Free version
+product-details.features-provided.standard-update-periods = Standard update period (6 April to 5 April)
+product-details.features-provided.calendar-update-periods = Calendar update period (1 April to 31 March)
+product-details.features-provided.vat = Making Tax Digital for VAT
 
-product-details.quarterly-updates.heading = What you need for your quarterly updates
-product-details.quarterly-updates.what-you-need = You’ll still need to send these income sources in your tax return.
+product-details.quarterly-updates.heading = What is needed for quarterly updates
 
 product-details.business-income.heading = Business income sources
 product-details.business-income.sole-trader = Sole trader
 product-details.business-income.uk-property = UK property
 product-details.business-income.overseas-property = Foreign property
 
-product-details.tax-return.heading = What you need for your tax return
+product-details.tax-return.heading = What is needed for tax returns
 
 product-details.other-income.heading = Other income sources and items
 product-details.other-income.construction-industry-scheme = Construction Industry Scheme
@@ -231,38 +243,33 @@ product-details.other-income.payments-into-a-private-pension = Private pension c
 product-details.other-income.marriage-allowance = Marriage Allowance
 product-details.other-income.partner-income = Partner income from a partnership
 
-product-details.features-group.heading = What each feature status means
-product-details.status.heading = Status
-product-details.status.ready = Ready now
-product-details.status.development = In development
-product-details.status.not-included = Not included
-product-details.feature-status.heading = Feature status
-product-details.meaning.heading = Meaning
+product-details.software-specifications.heading = Software specifications
 
-product-details.meaning.ready = This feature is ready to use now.
-product-details.meaning.development = The software provider has committed to building this in time for the 2026 to 2027 tax return.
-product-details.meaning.not-included = This is not available in this software product.
+product-details.application-type.heading = Software application type
+product-details.application-type.web-browser = Online in web browser (all systems)
+product-details.application-type.microsoft-windows = Desktop app (Microsoft Windows)
+product-details.application-type.mac-os = Desktop app (Mac OS)
+product-details.application-type.linux = Desktop app (Linux)
+product-details.application-type.android = Mobile app (Android)
+product-details.application-type.apple-ios = Mobile app (Apple iOS)
 
+product-details.accessibility.heading = Accessibility features
+product-details.accessibility.visual = Blindness or impaired vision
+product-details.accessibility.hearing = Deafness or impaired hearing
+product-details.accessibility.motor = Motor or physical difficulties
+product-details.accessibility.cognitive = Cognitive impairments
 
-product-details.software-spec.heading = Software specifications
-
-product-details.software-spec.software-type = Software type
-product-details.software-spec.compatible-with = Compatible with
-product-details.software-spec.mobile-app = Mobile App
-product-details.software-spec.language = Language
-
-product-details.software-type.desktop-based = Desktop application
-product-details.software-type.web-browser = Web browser
-
-product-details.compatible-with.microsoft-windows = Microsoft Windows
-product-details.compatible-with.mac-os = Mac OS
-product-details.compatible-with.linux = Linux
-
-product-details.mobile-app.android = Android
-product-details.mobile-app.apple-ios = Apple iOS
-
+product-details.language.heading = Language
 product-details.language.english = English
 product-details.language.welsh = Welsh
+
+# Other features section
+product-details.other-features.collapsible = Other potential software features
+product-details.other-features.heading = Other features
+product-details.other-features.quarterly-updates.heading = Other quarterly update income sources
+product-details.other-features.tax-return.heading = Other tax return income sources and items
+product-details.other-features.software-specifications.heading = Other software specifications
+
 
 # Other Income Sources Page
 additional.income.source-heading                                    = Which of the following income do you need to submit in your tax return?
