@@ -268,7 +268,7 @@ product-details.other-features.collapsible = Nodweddion meddalwedd posibl eraill
 product-details.other-features.heading = Nodweddion eraill
 product-details.other-features.quarterly-updates.heading = Ffynonellau incwm eraill ar gyfer diweddariadau chwarterol
 product-details.other-features.tax-return.heading = Ffynonellau incwm ac eitemau eraill ar gyfer Ffurflen Dreth
-product-details.other-features.software-specifications.heading = Manylebau’r feddalwedd eraill
+product-details.other-features.software-specifications.heading = Manylebau meddalwedd eraill
 
 
 # Other Income Sources Page
