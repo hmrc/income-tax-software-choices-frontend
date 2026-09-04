@@ -85,6 +85,10 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
         link.attr("target") shouldBe "_blank"
       }
 
+      "have a feature status meaning caption" in {
+        document.selectNth("caption", 1).text shouldBe featureStatusHeading
+      }
+
       "have a software features heading" in {
         document.selectNth("h2", 1).text shouldBe softwareFeaturesHeading
       }
@@ -178,6 +182,10 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
         link.text shouldBe s"Explore this software on ${softwareVendorWithIntent.name}'s website (opens in new tab)"
         link.attr("href") shouldBe softwareVendorWithIntent.website
         link.attr("target") shouldBe "_blank"
+      }
+
+      "have a feature status meaning caption" in {
+        document.selectNth("caption", 1).text shouldBe featureStatusHeading
       }
 
       "have a software features heading" in {
@@ -274,6 +282,10 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
         link.text shouldBe s"Explore this software on ${softwareVendorModelBase.name}'s website (opens in new tab)"
         link.attr("href") shouldBe softwareVendorModelBase.website
         link.attr("target") shouldBe "_blank"
+      }
+
+      "have a feature status meaning caption" in {
+        document.selectNth("caption", 1).text shouldBe featureStatusHeading
       }
 
       "have a software features heading" in {
@@ -374,6 +386,10 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
         link.text shouldBe s"Explore this software on ${softwareVendorModelFull.name}'s website (opens in new tab)"
         link.attr("href") shouldBe softwareVendorModelFull.website
         link.attr("target") shouldBe "_blank"
+      }
+
+      "have a feature status meaning caption" in {
+        document.selectNth("caption", 1).text shouldBe featureStatusHeading
       }
 
       "have a main personalised heading" in {
@@ -507,6 +523,10 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
         link.attr("target") shouldBe "_blank"
       }
 
+      "have a feature status meaning caption" in {
+        document.selectNth("caption", 1).text shouldBe featureStatusHeading
+      }
+
       "have a main personalised heading" in {
         document.selectNth("h2", 1).text shouldBe mainPersonalisedHeading
       }
@@ -625,17 +645,11 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
     }
   }
 
-  private def page(vendorModel: SoftwareVendorModel, filters: Option[Seq[VendorFilter]] = None) = {
-    //    println("page is here")
-    //    println(productDetailsView(vendorModel, testBackUrl, filters))
+  private def page(vendorModel: SoftwareVendorModel, filters: Option[Seq[VendorFilter]] = None) =
     productDetailsView(vendorModel, testBackUrl, filters)
-  }
 
-  private def createAndParseDocument(vendorModel: SoftwareVendorModel, filters: Option[Seq[VendorFilter]] = None): Document = {
-    //    println("page(vendorModel, filters).body")
-    //    println(page(vendorModel, filters).body)
+  private def createAndParseDocument(vendorModel: SoftwareVendorModel, filters: Option[Seq[VendorFilter]] = None): Document =
     Jsoup.parse(page(vendorModel, filters).body)
-  }
 
   object ProductDetailsPage {
 
@@ -680,7 +694,6 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
     val ukProperty = "UK property"
     val foreignProperty = "Foreign property"
 
-    val saTaxReturn = "Tax return"
     val cis = "Construction Industry Scheme"
     val cgt = "Capital Gains"
     val employment = "Employment (PAYE)"
