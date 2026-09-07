@@ -59,7 +59,7 @@ class PageAnswersServiceSpec extends PlaySpec with BeforeAndAfterEach {
       PrivatePensionIncome, ForeignDividends, ForeignInterest)).get
     .set(OtherItemsPage, Seq(PaymentsIntoAPrivatePension, CharitableGiving, CapitalGainsTax, StudentLoans,
       MarriageAllowance, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge)).get
-    .set(AccountingPeriodPage, FirstAprilToThirtyFirstMarch).get
+    .set(AccountingPeriodPage, Seq(FirstAprilToThirtyFirstMarch)).get
   private val emptyUserFilter = UserFilters(sessionId, None, Seq.empty)
   private val userFilterWithAnswerForPage = UserFilters(sessionId, Some(dummyUserAnswers), Seq.empty)
   private val userFilterWithVendorFilterAnswerForPage = UserFilters(sessionId, Some(vendorFilterUserAnswers), Seq.empty)

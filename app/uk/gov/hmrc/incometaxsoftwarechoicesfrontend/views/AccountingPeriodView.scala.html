@@ -27,15 +27,15 @@
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.helpers._
 
 @this(
-        mainTemplate: MainTemplate,
-        form: FormWithCSRF,
-        radioHelper: RadioHelper,
-        hmrcNewTabLinkHelper: HmrcNewTabLinkHelper,
-        captionHelper: CaptionHelper,
-        govukButton: GovukButton
+  mainTemplate: MainTemplate,
+  form: FormWithCSRF,
+  govukCheckboxes: GovukCheckboxes,
+  hmrcNewTabLinkHelper: HmrcNewTabLinkHelper,
+  captionHelper: CaptionHelper,
+  govukButton: GovukButton
 )
 
-@(accountingPeriodForm: Form[AccountingPeriod], postAction: Call, backUrl: String, softwareName: Option[String])(implicit request: Request[_], messages: Messages)
+@(accountingPeriodForm: Form[Seq[AccountingPeriod]], postAction: Call, backUrl: String, softwareName: Option[String])(implicit request: Request[_], messages: Messages)
 
 @mainTemplate(title = messages("accounting-period.heading"), optForm = Some(accountingPeriodForm), backLink = Some(backUrl)) {
 
@@ -51,31 +51,36 @@
         @messages("accounting-period.para-one-ending")
     </p>
 
-    @form(action = postAction) {
-        @radioHelper(
-            field = accountingPeriodForm(fieldName),
-            legend = messages("accounting-period.heading"),
-            isPageHeading = false,
-            radioItems = Seq(
-                RadioItem(
-                    content = Text(messages(s"accounting-period.${SixthAprilToFifthApril.key}")),
-                    value = Some(SixthAprilToFifthApril.key)
-                ),
-                RadioItem(
-                    content = Text(messages(s"accounting-period.${FirstAprilToThirtyFirstMarch.key}")),
-                    value = Some(FirstAprilToThirtyFirstMarch.key)
-                ),
-                RadioItem(
-                    divider = Some(messages("base.or"))
-                ),
-                RadioItem(
-                    content = Text(messages(s"accounting-period.${OtherAccountingPeriod.key}")),
-                    value = Some(OtherAccountingPeriod.key)
-                )
-            ),
-            inline = false
-        )
+    <p class="govuk-body">@messages("accounting-period.para-two")</p>
 
-        @govukButton(Button(content = Text(messages("base.continue"))))
+    <h2 class="govuk-heading-m">@messages("accounting-period.heading-one")</h2>
+
+    @form(action = postAction) {
+      @govukCheckboxes(Checkboxes(
+        fieldset = Some(Fieldset(
+          legend = Some(Legend(
+            content = Text(messages("accounting-period.heading-one")),
+            classes = "govuk-visually-hidden govuk-!-display-block",
+            isPageHeading = false
+          ))
+        )),
+        hint = Some(Hint(content = Text(messages("accounting-period.hint")))),
+        items = Seq(
+          CheckboxItem(
+            content = Text(messages(s"accounting-period.${SixthAprilToFifthApril.key}")),
+            value = SixthAprilToFifthApril.key
+          ),
+          CheckboxItem(
+            content = Text(messages(s"accounting-period.${FirstAprilToThirtyFirstMarch.key}")),
+            value = FirstAprilToThirtyFirstMarch.key
+          ),
+          CheckboxItem(
+            content   = Text(messages(s"accounting-period.${OtherAccountingPeriod.key}")),
+            value     = OtherAccountingPeriod.key
+          )
+        )
+      ).withFormField(accountingPeriodForm(formKey)))
+
+      @govukButton(Button(content = Text(messages("base.continue"))))
     }
 }

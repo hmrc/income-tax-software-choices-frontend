@@ -116,15 +116,15 @@ trait ComponentSpecBase extends AnyWordSpec
 
     def getAccountingPeriod: WSResponse = get("/accounting-period-check")
 
-    def submitAccountingPeriod(request: Option[AccountingPeriod]): WSResponse = {
-      post("/accounting-period-check")(
-        request.fold(Map.empty[String, Seq[String]])(
-          model => AccountingPeriodForm.accountingPeriodForm.fill(model).data.map { case (k, v) => (k, Seq(v)) }
-        )
-      )
+    def submitAccountingPeriod(request: Option[Seq[String]], editMode: Boolean = false): WSResponse = {
+      val body: Map[String, Seq[String]] = request match {
+        case Some(keys) if keys.nonEmpty => Map(s"${AccountingPeriodForm.formKey}[]" -> keys)
+        case None => Map.empty
+      }
+      post(s"/accounting-period-check?editMode=$editMode")(body)
     }
 
-    def getUserType(editMode: Boolean = false): WSResponse =  {
+    def getUserType(editMode: Boolean = false): WSResponse = {
       editMode match {
         case true => get("/how-will-you-use-it?editMode=true")
         case false => get("/how-will-you-use-it")

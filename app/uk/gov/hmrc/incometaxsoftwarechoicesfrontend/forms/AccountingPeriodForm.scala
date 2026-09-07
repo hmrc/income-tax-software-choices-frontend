@@ -16,16 +16,31 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms
 
-import play.api.data.Form
-import play.api.data.Forms.single
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.mappings.AccountingPeriodMapping.accountingPeriodMapping
+import play.api.data.Forms.*
+import play.api.data.{Form, Mapping}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.utils.Constraints.nonEmptySeq
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.AccountingPeriod
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.AccountingPeriod.{FirstAprilToThirtyFirstMarch, OtherAccountingPeriod, SixthAprilToFifthApril}
 
 object AccountingPeriodForm {
-  val fieldName: String = "accounting-period"
-  val accountingPeriodForm: Form[AccountingPeriod] = Form(
+
+  val formKey: String = "accounting-period"
+
+  private val initialPeriod: Mapping[Seq[String]] =
+    seq(text)
+      .verifying(nonEmptySeq("accounting-period.error"))
+      .verifying("accounting-period.error", page => page.size < 4)
+
+  val accountingPeriodForm: Form[Seq[AccountingPeriod]] = Form(
     single(
-      fieldName -> accountingPeriodMapping("accounting-period.error")
+      formKey ->
+        initialPeriod
+          .transform(toAccountingPeriods, fromAccountingPeriods)
     )
   )
+
+  private def toAccountingPeriods(seq: Seq[String]): Seq[AccountingPeriod] =
+    seq.flatMap(s => Seq(SixthAprilToFifthApril, FirstAprilToThirtyFirstMarch, OtherAccountingPeriod).find(_.key == s))
+
+  private def fromAccountingPeriods(periods: Seq[AccountingPeriod]): Seq[String] = periods.map(_.key)
 }

@@ -22,7 +22,7 @@ import play.api.http.Status.*
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.SessionId
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, DatabaseHelper}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.AccountingPeriod.{OtherAccountingPeriod, SixthAprilToFifthApril}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.AccountingPeriod.{FirstAprilToThirtyFirstMarch, OtherAccountingPeriod, SixthAprilToFifthApril}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.{Check, Find}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.{Recognised, Unrecognised}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.SoleTraderOrLandlord
@@ -67,7 +67,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
             PrivatePensionIncome, ForeignDividends, ForeignInterest)).get
           .set(OtherItemsPage, Seq(PaymentsIntoAPrivatePension, CharitableGiving, CapitalGainsTax, StudentLoans,
             MarriageAllowance, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge)).get
-          .set(AccountingPeriodPage, OtherAccountingPeriod).get
+          .set(AccountingPeriodPage, Seq(SixthAprilToFifthApril, FirstAprilToThirtyFirstMarch)).get
         await(userFiltersRepository.set(testUserFilters(Some(userAnswers))))
 
         val res = SoftwareChoicesFrontend.getCheckYourAnswers
@@ -85,11 +85,11 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
           summaryListRow(SummaryListKeys.otherItems, Seq(PaymentsIntoAPrivatePension, CharitableGiving, CapitalGainsTax, StudentLoans,
             MarriageAllowance, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge)
             .map(vf => messages(s"other-items.$vf")).mkString(" ")),
-          summaryListRow(SummaryListKeys.accountingPeriod, Set(OtherAccountingPeriod)
+          summaryListRow(SummaryListKeys.accountingPeriod, Set(SixthAprilToFifthApril, FirstAprilToThirtyFirstMarch)
             .map(vf => messages(s"accounting-period.${vf.key}")).mkString(" "))
         )
 
-        Jsoup.parse(res.body).select("main li").size() shouldBe 18
+        Jsoup.parse(res.body).select("main li").size() shouldBe 20
       }
       "display the page with minimal summary lists" in {
         val userAnswers = UserAnswers()
@@ -99,7 +99,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
           .set(BusinessIncomePage, Seq(SoleTrader)).get
           .set(AdditionalIncomeSourcesPage, Seq(UkInterest)).get
           .set(OtherItemsPage, Seq(PaymentsIntoAPrivatePension)).get
-          .set(AccountingPeriodPage, OtherAccountingPeriod).get
+          .set(AccountingPeriodPage, Seq(OtherAccountingPeriod)).get
         await(userFiltersRepository.set(testUserFilters(Some(userAnswers))))
 
         val res = SoftwareChoicesFrontend.getCheckYourAnswers
@@ -127,7 +127,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
           .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
           .set(AdditionalIncomeSourcesPage, Seq.empty).get
           .set(OtherItemsPage, Seq.empty).get
-          .set(AccountingPeriodPage, OtherAccountingPeriod).get
+          .set(AccountingPeriodPage, Seq(OtherAccountingPeriod)).get
         await(userFiltersRepository.set(testUserFilters(Some(userAnswers))))
 
         val res = SoftwareChoicesFrontend.getCheckYourAnswers
@@ -151,7 +151,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
           .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
           .set(AdditionalIncomeSourcesPage, Seq.empty).get
           .set(OtherItemsPage, Seq.empty).get
-          .set(AccountingPeriodPage, OtherAccountingPeriod).get
+          .set(AccountingPeriodPage, Seq(OtherAccountingPeriod)).get
         await(userFiltersRepository.set(testUserFilters(Some(userAnswers))))
 
         val res = SoftwareChoicesFrontend.getCheckYourAnswers
@@ -174,7 +174,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
           .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
           .set(AdditionalIncomeSourcesPage, Seq(UkInterest)).get
           .set(OtherItemsPage, Seq(StudentLoans)).get
-          .set(AccountingPeriodPage, OtherAccountingPeriod).get
+          .set(AccountingPeriodPage, Seq(OtherAccountingPeriod)).get
         await(userFiltersRepository.set(testUserFilters(Some(userAnswers))))
 
         val res = SoftwareChoicesFrontend.getCheckYourAnswers
@@ -187,7 +187,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
           .set(EnterSoftwareNamePage, recognisedProduct).get
           .set(AdditionalIncomeSourcesPage, Seq.empty).get
           .set(OtherItemsPage, Seq.empty).get
-          .set(AccountingPeriodPage, OtherAccountingPeriod).get
+          .set(AccountingPeriodPage, Seq(OtherAccountingPeriod)).get
         await(userFiltersRepository.set(testUserFilters(Some(userAnswers))))
 
         val res = SoftwareChoicesFrontend.getCheckYourAnswers
@@ -198,7 +198,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
         val userAnswers = UserAnswers()
           .set(AdditionalIncomeSourcesPage, Seq.empty).get
           .set(OtherItemsPage, Seq.empty).get
-          .set(AccountingPeriodPage, OtherAccountingPeriod).get
+          .set(AccountingPeriodPage, Seq(OtherAccountingPeriod)).get
         await(userFiltersRepository.set(testUserFilters(Some(userAnswers))))
 
         val res = SoftwareChoicesFrontend.getCheckYourAnswers
@@ -209,7 +209,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
         val userAnswers = UserAnswers()
           .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
           .set(OtherItemsPage, Seq.empty).get
-          .set(AccountingPeriodPage, OtherAccountingPeriod).get
+          .set(AccountingPeriodPage, Seq(OtherAccountingPeriod)).get
         await(userFiltersRepository.set(testUserFilters(Some(userAnswers))))
 
         val res = SoftwareChoicesFrontend.getCheckYourAnswers
@@ -220,7 +220,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
         val userAnswers = UserAnswers()
           .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
           .set(AdditionalIncomeSourcesPage, Seq.empty).get
-          .set(AccountingPeriodPage, OtherAccountingPeriod).get
+          .set(AccountingPeriodPage, Seq(OtherAccountingPeriod)).get
         await(userFiltersRepository.set(testUserFilters(Some(userAnswers))))
 
         val res = SoftwareChoicesFrontend.getCheckYourAnswers
@@ -248,7 +248,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
           .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
           .set(AdditionalIncomeSourcesPage, Seq(ForeignInterest)).get
           .set(OtherItemsPage, Seq.empty).get
-          .set(AccountingPeriodPage, SixthAprilToFifthApril).get
+          .set(AccountingPeriodPage, Seq(SixthAprilToFifthApril)).get
         await(userFiltersRepository.set(testUserFilters(Some(userAnswers))))
 
         val res = SoftwareChoicesFrontend.postCheckYourAnswers()
@@ -268,7 +268,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
           .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
           .set(AdditionalIncomeSourcesPage, Seq.empty).get
           .set(OtherItemsPage, Seq.empty).get
-          .set(AccountingPeriodPage, SixthAprilToFifthApril).get
+          .set(AccountingPeriodPage, Seq(SixthAprilToFifthApril)).get
         await(userFiltersRepository.set(testUserFilters(Some(userAnswers))))
 
         val res = SoftwareChoicesFrontend.postCheckYourAnswers()
@@ -288,7 +288,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
           .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
           .set(AdditionalIncomeSourcesPage, Seq.empty).get
           .set(OtherItemsPage, Seq.empty).get
-          .set(AccountingPeriodPage, SixthAprilToFifthApril).get
+          .set(AccountingPeriodPage, Seq(SixthAprilToFifthApril)).get
           .set(HowYouFindSoftwarePage, Find).get
         await(userFiltersRepository.set(testUserFilters(Some(userAnswers))))
 
@@ -311,7 +311,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
           .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
           .set(AdditionalIncomeSourcesPage, Seq.empty).get
           .set(OtherItemsPage, Seq.empty).get
-          .set(AccountingPeriodPage, SixthAprilToFifthApril).get
+          .set(AccountingPeriodPage, Seq(SixthAprilToFifthApril)).get
           .set(HowYouFindSoftwarePage, Check).get
           .set(EnterSoftwareNamePage, fullyCompatibleProduct).get
         await(userFiltersRepository.set(testUserFilters(Some(userAnswers))))
@@ -335,7 +335,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
           .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
           .set(AdditionalIncomeSourcesPage, Seq.empty).get
           .set(OtherItemsPage, Seq.empty).get
-          .set(AccountingPeriodPage, SixthAprilToFifthApril).get
+          .set(AccountingPeriodPage, Seq(SixthAprilToFifthApril)).get
           .set(HowYouFindSoftwarePage, Check).get
           .set(EnterSoftwareNamePage, partiallyCompatibleProduct).get
         await(userFiltersRepository.set(testUserFilters(Some(userAnswers))))
@@ -359,7 +359,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
           .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
           .set(AdditionalIncomeSourcesPage, Seq.empty).get
           .set(OtherItemsPage, Seq.empty).get
-          .set(AccountingPeriodPage, SixthAprilToFifthApril).get
+          .set(AccountingPeriodPage, Seq(SixthAprilToFifthApril)).get
           .set(HowYouFindSoftwarePage, Check).get
           .set(EnterSoftwareNamePage, quarterlyOnlyProduct).get
         await(userFiltersRepository.set(testUserFilters(Some(userAnswers))))
@@ -383,7 +383,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
           .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
           .set(AdditionalIncomeSourcesPage, Seq.empty).get
           .set(OtherItemsPage, Seq.empty).get
-          .set(AccountingPeriodPage, SixthAprilToFifthApril).get
+          .set(AccountingPeriodPage, Seq(SixthAprilToFifthApril)).get
           .set(HowYouFindSoftwarePage, Check).get
           .set(EnterSoftwareNamePage, nonCompatibleProduct).get
         await(userFiltersRepository.set(testUserFilters(Some(userAnswers))))
@@ -406,7 +406,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
           .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
           .set(AdditionalIncomeSourcesPage, Seq.empty).get
           .set(OtherItemsPage, Seq.empty).get
-          .set(AccountingPeriodPage, SixthAprilToFifthApril).get
+          .set(AccountingPeriodPage, Seq(SixthAprilToFifthApril)).get
           .set(HowYouFindSoftwarePage, Check).get
         await(userFiltersRepository.set(testUserFilters(Some(userAnswers))))
 
