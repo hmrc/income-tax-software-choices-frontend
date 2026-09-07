@@ -80,7 +80,7 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
 
       "has link to the vendor website" in {
         val link = document.mainContent.select(".govuk-link").get(0)
-        link.text shouldBe s"Explore this software on ${softwareVendorModelFull.name}'s website (opens in new tab)"
+        link.text shouldBe vendorLinkText(softwareVendorModelFull.name)
         link.attr("href") shouldBe softwareVendorModelFull.website
         link.attr("target") shouldBe "_blank"
       }
@@ -179,7 +179,7 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
 
       "has a link to the vendor website" in {
         val link = document.mainContent.select(".govuk-link").get(0)
-        link.text shouldBe s"Explore this software on ${softwareVendorWithIntent.name}'s website (opens in new tab)"
+        link.text shouldBe vendorLinkText(softwareVendorWithIntent.name)
         link.attr("href") shouldBe softwareVendorWithIntent.website
         link.attr("target") shouldBe "_blank"
       }
@@ -279,7 +279,7 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
 
       "has a link to the vendor website" in {
         val link = document.mainContent.select(".govuk-link").get(0)
-        link.text shouldBe s"Explore this software on ${softwareVendorModelBase.name}'s website (opens in new tab)"
+        link.text shouldBe vendorLinkText(softwareVendorModelBase.name)
         link.attr("href") shouldBe softwareVendorModelBase.website
         link.attr("target") shouldBe "_blank"
       }
@@ -383,7 +383,7 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
 
       "has link to the vendor website" in {
         val link = document.mainContent.select(".govuk-link").get(0)
-        link.text shouldBe s"Explore this software on ${softwareVendorModelFull.name}'s website (opens in new tab)"
+        link.text shouldBe vendorLinkText(softwareVendorModelFull.name)
         link.attr("href") shouldBe softwareVendorModelFull.website
         link.attr("target") shouldBe "_blank"
       }
@@ -518,7 +518,7 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
 
       "has link to the vendor website" in {
         val link = document.mainContent.select(".govuk-link").get(0)
-        link.text shouldBe s"Explore this software on ${softwareVendorModelFull.name}'s website (opens in new tab)"
+        link.text shouldBe vendorLinkText(softwareVendorModelFull.name)
         link.attr("href") shouldBe softwareVendorModelFull.website
         link.attr("target") shouldBe "_blank"
       }
@@ -636,7 +636,6 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
       }
     }
 
-
     "display the exit survey link" in {
       val document: Document = createAndParseDocument(softwareVendorModelFull)
       val link = document.mainContent.select(".govuk-link").get(1)
@@ -650,6 +649,8 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
 
   private def createAndParseDocument(vendorModel: SoftwareVendorModel, filters: Option[Seq[VendorFilter]] = None): Document =
     Jsoup.parse(page(vendorModel, filters).body)
+
+  private def vendorLinkText(vendorName: String): String = s"Explore this software on the $vendorName website (opens in new tab)"
 
   object ProductDetailsPage {
 
