@@ -16,7 +16,6 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
-import org.jsoup.Jsoup
 import org.scalatest.BeforeAndAfterEach
 import play.api.http.Status.{OK, SEE_OTHER}
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
