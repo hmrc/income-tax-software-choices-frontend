@@ -24,10 +24,10 @@ how-you-find-software.check.hint = This includes using spreadsheets
 how-you-find-software.error = Select how you would like to find software
 
 ## User type page
-type-of-user.heading                                              = How will you use Making Tax Digital for Income Tax software?
-type-of-user.sole-trader-or-landlord                              = As a sole trader or landlord doing my taxes
-type-of-user.agent                                                = As an agent working on behalf of a client
-type-of-user.error                                                = Select if you’re a sole trader or landlord, or an agent
+type-of-user.heading                                              = Which of these best describes you?
+type-of-user.sole-trader-or-landlord                              = I’m a sole trader, a landlord or both
+type-of-user.agent                                                = I’m an agent working on behalf of a client
+type-of-user.error                                                = Select if you’re a sole trader, landlord, or an agent
 
 ## Accounting period page
 accounting-period.heading                                         = What accounting period do you use?
@@ -89,7 +89,7 @@ check-your-answers.guided-heading                      = Check your answers befo
 check-your-answers.checked-heading                     = Check your answers before viewing your result
 check-your-answers.software-name                       = Software name
 check-your-answers.user-type                           = User type
-check-your-answers.user-type.sole-trader-or-landlord   = Sole trader or landlord
+check-your-answers.user-type.sole-trader-or-landlord   = Sole trader, landlord or both
 check-your-answers.user-type.agent                     = Agent
 check-your-answers.business-income                     = Income sources for quarterly updates
 check-your-answers.additional-income                   = Income for tax return

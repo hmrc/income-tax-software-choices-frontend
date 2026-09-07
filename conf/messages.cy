@@ -24,10 +24,10 @@ how-you-find-software.check.hint = Mae hyn yn cynnwys defnyddio taenlenni
 how-you-find-software.error = Dewiswch sut yr hoffech chi ddod o hyd i feddalwedd
 
 ## User type page
-type-of-user.heading                                              = Sut y byddwch yn defnyddio Meddalwedd ar gyfer y cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm?
-type-of-user.sole-trader-or-landlord                              = Fel unig fasnachwr neu landlord sy’n gwneud fy nhrethi
-type-of-user.agent                                                = Fel asiant sy’n gweithio ar ran cleient
-type-of-user.error                                                = Dewiswch a ydych yn unig fasnachwr neu’n landlord, neu’n asiant
+type-of-user.heading                                              = Pa rai o’r rhain sy’n eich disgrifio orau?
+type-of-user.sole-trader-or-landlord                              = Rwy’n unig fasnachwr, yn landlord neu’r ddau
+type-of-user.agent                                                = Rwy’n asiant sy’n gweithio ar ran cleient
+type-of-user.error                                                = Dewiswch a ydych yn unig fasnachwr, yn landlord, neu’n asiant
 
 ## Accounting period page
 accounting-period.heading                                         = Pa gyfnod cyfrifyddu ydych chi’n ei ddefnyddio?
@@ -89,7 +89,7 @@ check-your-answers.guided-heading                      = Gwiriwch eich atebion c
 check-your-answers.checked-heading                     = Gwiriwch eich atebion cyn bwrw golwg dros eich canlyniadau
 check-your-answers.software-name                       = Enw’r feddalwedd
 check-your-answers.user-type                           = Math o ddefnyddiwr
-check-your-answers.user-type.sole-trader-or-landlord   = Unig fasnachwr neu landlord
+check-your-answers.user-type.sole-trader-or-landlord   = Unig fasnachwr, landlord neu’r ddau
 check-your-answers.user-type.agent                     = Asiant
 check-your-answers.business-income                     = Ffynonellau incwm ar gyfer diweddariadau chwarterol
 check-your-answers.additional-income                   = Incwm ar gyfer Ffurflen Dreth
