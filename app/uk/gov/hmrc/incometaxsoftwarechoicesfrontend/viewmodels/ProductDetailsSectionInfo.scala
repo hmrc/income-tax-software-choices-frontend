@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.helpers
+package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.viewmodels
 
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter
 
 case class ProductDetailsSectionInfo(
-  headingSuffix: Option[String],
-  group: List[VendorFilter],
-  tableKey: String,
-  displayIntent: Boolean = false
-)
+                                      headingSuffix: Option[String],
+                                      group: List[VendorFilter],
+                                      tableKey: String,
+                                      displayIntent: Boolean = false
+                                    )
