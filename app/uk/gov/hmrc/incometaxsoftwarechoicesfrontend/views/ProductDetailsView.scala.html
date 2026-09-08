@@ -131,12 +131,12 @@
             ProductDetailsSectionInfo(Some("features.heading.personalised"), filtersSelectedFrom(featuresProvidedGroup), "features-provided"),
             ProductDetailsSectionInfo(Some("quarterly-updates.heading"), filtersSelectedFrom(businessIncomeGroup), "business-income")
         )) {
-            @featureSection(section, isPersonalised)
+            @featureSection(section)
         }
 
 <!--        Tax return section only shown if there are selected filters from the non-mandated income group - to avoid showing just header with no corresponding filters-->
         @if(filtersSelectedFrom(nonMandatedIncomeGroup).nonEmpty) {
-            @featureSection(ProductDetailsSectionInfo(Some("tax-return.heading"), filtersSelectedFrom(nonMandatedIncomeGroup), "other-income", displayIntent = true), isPersonalised)
+            @featureSection(ProductDetailsSectionInfo(Some("tax-return.heading"), filtersSelectedFrom(nonMandatedIncomeGroup), "other-income", displayIntent = true))
         }
 
 <!--        For software spec section, only print the heading if at least one group is non-empty, then filter out the empty sections-->
@@ -148,7 +148,7 @@
                 ProductDetailsSectionInfo(None, filtersSelectedFrom(accessibilityFilters.toList), "accessibility"),
                 ProductDetailsSectionInfo(None, filtersSelectedFrom(languageFilters.toList), "language")
             ).filter(_.group.nonEmpty)) {
-                @featureSection(section, isPersonalised)
+                @featureSection(section)
             }
         }
 
@@ -169,7 +169,7 @@
             ProductDetailsSectionInfo(None, accessibilityFilters.toList, "accessibility"),
             ProductDetailsSectionInfo(None, languageFilters.toList, "language")
         )) {
-            @featureSection(section, isPersonalised)
+            @featureSection(section)
         }
     }
 }
@@ -182,12 +182,10 @@
     filterGroup.filter(f => !finalFilters.get.contains(f))
 }
 
-@featureSection(section: ProductDetailsSectionInfo, isPersonalised: Boolean) = {
-<!--If a heading is required, print in medium size for personalised view, or large size for non-personalised view. Then print the table of features for that section.-->
-    @if(section.headingSuffix.isDefined && isPersonalised) {
+@featureSection(section: ProductDetailsSectionInfo) = {
+<!--If a heading is required, print it. Then print the table of features for that section.-->
+    @if(section.headingSuffix.isDefined) {
         <h2 class="govuk-heading-m">@messages(s"product-details.${section.headingSuffix.get}")</h2>
-    } else if (section.headingSuffix.isDefined) {
-        <h2 class="govuk-heading-l">@messages(s"product-details.${section.headingSuffix.get}")</h2>
     }
 
     @featureTable(section.group, section.tableKey, section.displayIntent)
@@ -238,14 +236,14 @@
 
 @detailsElementContent = {
 <!--    Other features is always shown, as it is not possible to select both user types in the guided or check journeys-->
-    @featureSection(ProductDetailsSectionInfo(Some("other-features.heading"), filtersNotSelectedFrom(featuresProvidedGroup), "features-provided"), true)
+    @featureSection(ProductDetailsSectionInfo(Some("other-features.heading"), filtersNotSelectedFrom(featuresProvidedGroup), "features-provided"))
 
 <!--    Quarterly updates and tax return sections are only shown when they have filters not selected - to avoid showing just header with no corresponding filters-->
     @for(section <- Seq(
         ProductDetailsSectionInfo(Some("other-features.quarterly-updates.heading"), filtersNotSelectedFrom(businessIncomeGroup), "business-income"),
         ProductDetailsSectionInfo(Some("other-features.tax-return.heading"), filtersNotSelectedFrom(nonMandatedIncomeGroup), "other-income", displayIntent = true)
     ).filter(_.group.nonEmpty)) {
-        @featureSection(section, true)
+        @featureSection(section)
     }
 
 <!--    English filter will always be in this section, as it is not selectable as a filter, so the language section will always be there.-->
@@ -255,8 +253,8 @@
         ProductDetailsSectionInfo(None, filtersNotSelectedFrom(applicationTypeFilters.toList), "application-type"),
         ProductDetailsSectionInfo(None, filtersNotSelectedFrom(accessibilityFilters.toList), "accessibility")
     ).filter(_.group.nonEmpty)) {
-        @featureSection(section, true)
+        @featureSection(section)
     }
-    @featureSection(ProductDetailsSectionInfo(None, filtersNotSelectedFrom(languageFilters.toList), "language"), true)
+    @featureSection(ProductDetailsSectionInfo(None, filtersNotSelectedFrom(languageFilters.toList), "language"))
 
 }
