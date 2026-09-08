@@ -48,7 +48,7 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
       Set(Agent, StandardUpdatePeriods, AveragingAdjustment, FosterCarer, TrustIncome, English).contains(_)
     ))
 
-  private val filtersOnlyFromMinimalQuestionAnswers = Some(Seq(Individual, SoleTrader, StandardUpdatePeriods))
+  private val filtersOnlyFromMinimalQuestionAnswers = Some(Seq(Individual, SoleTrader))
   private val filtersOnlyFreeWithConditions = Some(Seq(FreeVersionWithConditions))
 
   "ProductDetailsPage" when {
@@ -556,7 +556,6 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
           checkRow(table(1), 2, inDevelopment, inDevelopmentDescription)
           checkRow(table(1), 3, notIncluded, notIncludedDescription)
           checkRow(table(2), 1, individual, readyNow)
-          checkRow(table(2), 2, standardUpdatePeriods, readyNow)
           checkRow(table(3), 1, soleTrader, readyNow)
         }
       }
@@ -596,11 +595,12 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
           "displays all the rows" in {
             checkRow(detailsElementTable(1), 1, freeVersion, readyNow)
             checkRow(detailsElementTable(1), 2, agent, readyNow)
-            checkRow(detailsElementTable(1), 3, calendarUpdatePeriods, readyNow)
-            checkRow(detailsElementTable(1), 4, recordKeeping, readyNow)
-            checkRow(detailsElementTable(1), 5, bridging, readyNow)
-            checkRow(detailsElementTable(1), 6, vat, readyNow)
-            checkRow(detailsElementTable(1), 7, hmrcAssist, readyNow)
+            checkRow(detailsElementTable(1), 3, standardUpdatePeriods, readyNow)
+            checkRow(detailsElementTable(1), 4, calendarUpdatePeriods, readyNow)
+            checkRow(detailsElementTable(1), 5, recordKeeping, readyNow)
+            checkRow(detailsElementTable(1), 6, bridging, readyNow)
+            checkRow(detailsElementTable(1), 7, vat, readyNow)
+            checkRow(detailsElementTable(1), 8, hmrcAssist, readyNow)
 
             checkRow(detailsElementTable(2), 1, ukProperty, readyNow)
             checkRow(detailsElementTable(2), 2, foreignProperty, readyNow)
