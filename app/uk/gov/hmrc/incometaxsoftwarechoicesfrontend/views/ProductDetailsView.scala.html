@@ -25,7 +25,7 @@
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilterGroups._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTemplate
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.helpers.ProductDetailsSectionInfo
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.viewmodels.ProductDetailsSectionInfo
 
 @this(
         mainTemplate: MainTemplate,
@@ -135,14 +135,12 @@
         }
 
 <!--        Tax return section only shown if there are selected filters from the non-mandated income group - to avoid showing just header with no corresponding filters-->
-        @defining(ProductDetailsSectionInfo(Some("tax-return.heading"), filtersSelectedFrom(nonMandatedIncomeGroup), "other-income", displayIntent = true)) { taxReturnSection =>
-            @if(taxReturnSection.group.nonEmpty) {
-                @featureSection(taxReturnSection, isPersonalised)
-            }
+        @if(filtersSelectedFrom(nonMandatedIncomeGroup).nonEmpty) {
+            @featureSection(ProductDetailsSectionInfo(Some("tax-return.heading"), filtersSelectedFrom(nonMandatedIncomeGroup), "other-income", displayIntent = true), isPersonalised)
         }
 
 <!--        For software spec section, only print the heading if at least one group is non-empty, then filter out the empty sections-->
-        @if(filtersSelectedFrom(applicationTypeFilters.toList).nonEmpty || filtersSelectedFrom(accessibilityFilters.toList).nonEmpty || filtersSelectedFrom(languageFilters.toList).nonEmpty) {
+        @if(filtersSelectedFrom((applicationTypeFilters ++ accessibilityFilters ++ languageFilters).toList).nonEmpty) {
             <h2 class="govuk-heading-m">@messages(s"product-details.software-specifications.heading")</h2>
 
             @for(section <- Seq(

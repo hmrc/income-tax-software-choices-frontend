@@ -46,6 +46,14 @@ object VendorFilter {
     override val auditDescription: String = "freeVersion"
   }
 
+  // Added to test logic in ProductDetailsView
+  case object FreeVersionWithConditions extends VendorFilter {
+    override val key: String = "free-version-with-conditions"
+    override val priority: Int = 3
+    override val showHint: Boolean = false
+    override val auditDescription: String = "freeVersionWithConditions"
+  }
+
   case object SoleTrader extends VendorFilter {
     override val key: String = "sole-trader"
     override val priority: Int = 1
