@@ -14,156 +14,33 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.govukfrontend.views.html.components._
-@import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
-@import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcNewTabLinkHelper
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{VendorFilterGroups, _}
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus._
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.routes.ProductDetailsController
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.viewmodels.VendorSuitabilityViewModel
 
 @this(
-  hmrcNewTabLinkHelper: HmrcNewTabLinkHelper,
-  govukSummaryList : GovukSummaryList
+  softwareVendorsBaseTemplate: SoftwareVendorsBaseTemplate
 )
 
 @(softwareVendors: Seq[VendorSuitabilityViewModel])(implicit messages: Messages)
 
-@customSummaryListRow(key: String, filtersAvailable: Seq[VendorFilter]) = @{
-
-  val value: String = filtersAvailable
-          .sortBy(_.priority)
-          .map(filter => messages(s"search-software.vendor-detail.$key.${filter.key}"))
-          .mkString(", ")
-
-  if(value.nonEmpty) {
-    Some(summaryListRow(
-      key = messages(s"search-software.vendor-detail.$key"),
-      value = Text(value)
-    ))
-  } else {
-    None
+@quarterlyTagConfig(vendorSuitability: VendorSuitabilityViewModel) = @{
+  vendorSuitability.quarterlyReady.flatMap {
+    case true  => Some(("search-software.vendor-detail.quarterly-ready.ready", "govuk-tag--green"))
   }
 }
 
-@softwareVendorPricing(vendor: SoftwareVendorModel) = @{
-
-  val key: String = {messages("search-software.vendor-detail.pricing")}
-  val freeVersion = if(vendor.getFeatureStatus(FreeVersion).eq(Available)) Some(messages("search-software.vendor-detail.pricing.free-version")) else Some(messages("search-software.vendor-detail.pricing.no-free-version"))
-  val value = Seq(
-    freeVersion
-  ).flatten.mkString("/")
-
-  Some(summaryListRow(
-    key = key,
-    value = Text(value)
-  ))
-
-}
-
-@softwareVendorSuitableFor(vendor: SoftwareVendorModel) = @{
-
-  customSummaryListRow(
-    key = "suitable-for",
-    filtersAvailable = vendor.orderedFilterSubset(VendorFilterGroups.suitableForFilters)
-    .filter(_._2.eq(Available))
-    .map(_._1).toSeq
-  )
-
-}
-
-@softwareVendorSoftwareFor(vendor: SoftwareVendorModel) = @{
-
-  customSummaryListRow(
-    key = "software-for",
-    filtersAvailable = vendor.orderedFilterSubset(VendorFilterGroups.softwareForFilters)
-    .filter(_._2.eq(Available))
-    .map(_._1).toSeq
-  )
-
-}
-
-@softwareQuarterlyReady(vendorSuitability: VendorSuitabilityViewModel) = @{
-    vendorSuitability.quarterlyReady.flatMap {
-        case true => Some(summaryListRow(
-            key = messages(s"search-software.vendor-detail.quarterly-ready"),
-            value = tag(
-                content = messages(s"search-software.vendor-detail.quarterly-ready.ready"),
-                colour = "govuk-tag--green")
-        ))
-        case false => None // Should not occur
-    }
-}
-
-@softwareEoyTaxReturnReady(vendorSuitability: VendorSuitabilityViewModel) = @{
-    vendorSuitability.eoyReady match {
-        case Some(true) => Some(summaryListRow(
-            key = messages(s"search-software.vendor-detail.eoy-tax-return"),
-            value = tag(
-                content = messages(s"search-software.vendor-detail.eoy-tax-return.ready"),
-                colour = "govuk-tag--green")
-        ))
-        case Some(false) => Some(summaryListRow(
-            key = messages(s"search-software.vendor-detail.eoy-tax-return"),
-            value = tag(
-                content = messages(s"search-software.vendor-detail.eoy-tax-return.development"),
-                colour = "govuk-tag--yellow")
-        ))
-        case None => Some(summaryListRow(
-            key = messages(s"search-software.vendor-detail.eoy-tax-return"),
-            value = tag(
-                content = messages(s"search-software.vendor-detail.eoy-tax-return.not-included"),
-                colour = "govuk-tag--red")
-        ))
-    }
-}
-
-@tag(content: String, colour: String) = @{
-    HtmlContent(s"""<strong class="govuk-tag ${colour}" style="max-width: 100%;">${content}</strong>""")
-}
-
-@summaryListRow(key: String, value: Content) = @{
-    SummaryListRow(
-        key = Key(
-            content = Text(key)
-        ),
-        value = Value(
-            content = value
-        )
-    )
-}
-
-@softwareVendorDetail(vendorSuitability: VendorSuitabilityViewModel) = @{
-
-  Seq(
-    softwareVendorPricing(vendorSuitability.vendor),
-    softwareVendorSoftwareFor(vendorSuitability.vendor),
-    softwareVendorSuitableFor(vendorSuitability.vendor),
-    softwareQuarterlyReady(vendorSuitability),
-    softwareEoyTaxReturnReady(vendorSuitability)
-  ).flatten
-
-}
-
-@softwareVendorListing(vendorSuitability: VendorSuitabilityViewModel, index: Int) = {
-    <hr class="govuk-section-break govuk-section-break--visible" aria-hidden="true">
-    <div id="software-vendor-@index">
-    <h3 class="govuk-heading-m software-vendor-list-heading-override">
-      @vendorSuitability.vendor.name
-    </h3>
-    @govukSummaryList(SummaryList(
-      rows = softwareVendorDetail(vendorSuitability),
-      classes = "govuk-summary-list--no-border"
-    ))
-    <p class="govuk-body">
-      <a href="@{ProductDetailsController.show(vendorSuitability.vendor.productId.toString)}" class="govuk-link">
-        @messages("search-software.intent.vendor-visit-link", vendorSuitability.vendor.name)
-      </a>
-    </p>
-  </div>
+@eoyTagConfig(vendorSuitability: VendorSuitabilityViewModel) = @{
+  vendorSuitability.eoyReady match {
+    case Some(true)  => Some(("search-software.vendor-detail.eoy-tax-return.ready", "govuk-tag--green"))
+    case Some(false) => Some(("search-software.vendor-detail.eoy-tax-return.development", "govuk-tag--yellow"))
+    case None        => Some(("search-software.vendor-detail.eoy-tax-return.not-included", "govuk-tag--red"))
+  }
 }
 
 @softwareVendors.zipWithIndex.map { case (vendorSuitability, index) =>
-  @softwareVendorListing(vendorSuitability, index)
+  @softwareVendorsBaseTemplate(
+    vendor = vendorSuitability.vendor,
+    index = index,
+    quarterlyTagOpt = quarterlyTagConfig(vendorSuitability),
+    eoyTagOpt = eoyTagConfig(vendorSuitability)
+  )
 }
