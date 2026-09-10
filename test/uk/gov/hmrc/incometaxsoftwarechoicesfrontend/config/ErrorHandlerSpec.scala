@@ -22,22 +22,17 @@ import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.Application
 import play.api.http.HeaderNames.CACHE_CONTROL
 import play.api.http.Status.{INTERNAL_SERVER_ERROR, NOT_FOUND}
-import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import uk.gov.hmrc.http.NotFoundException
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.TestAppBuilder
 
 class ErrorHandlerSpec extends AnyWordSpec
   with Matchers
-  with GuiceOneAppPerSuite {
+  with GuiceOneAppPerSuite
+  with TestAppBuilder {
 
-  override def fakeApplication(): Application =
-    new GuiceApplicationBuilder()
-      .configure(
-        "metrics.jvm" -> false,
-        "metrics.enabled" -> false
-      )
-      .build()
+  override def fakeApplication(): Application = authorizedVerifiedTestApplication()
 
   private val fakeRequest = FakeRequest("GET", "/")
 
