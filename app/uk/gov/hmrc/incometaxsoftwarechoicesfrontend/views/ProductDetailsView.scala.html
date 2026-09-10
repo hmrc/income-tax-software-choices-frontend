@@ -122,11 +122,14 @@
 
 @renderFeatureSections(isPersonalised: Boolean) = {
     @if(isPersonalised) {
+    <!--In the personalised view, there is logic attached to the visibility of sections based on user answers, so that empty tables are not shown.-->
+    <!--There will always be a features provided section, as a user type must be selected.-->
+    <!--There will always be a quarterly updates section, as at least one answer must be given for that question.-->
+    <!--Within the other features collapsible, there will be an 'other features' section, as there will always be one user type that is not selected.-->
+    <!--There will also always be a software specifications section within the other features collapsible, as it is not possible to select English-->
+    <!--All other sections are optional-->
         <h2 class="govuk-heading-l">@messages("product-details.details.heading.personalised")</h2>
 
-        <!--Selected filters-->
-
-<!--        As a user type and an accounting period must be selected, and an answer must be given on the quarterly updates question, these sections will always be populated-->
         @for(section <- Seq(
             ProductDetailsSectionInfo(Some("features.heading.personalised"), filtersSelectedFrom(featuresProvidedGroup), "features-provided"),
             ProductDetailsSectionInfo(Some("quarterly-updates.heading"), filtersSelectedFrom(businessIncomeGroup), "business-income")
@@ -134,12 +137,10 @@
             @featureSection(section)
         }
 
-<!--        Tax return section only shown if there are selected filters from the non-mandated income group - to avoid showing just header with no corresponding filters-->
         @if(filtersSelectedFrom(nonMandatedIncomeGroup).nonEmpty) {
             @featureSection(ProductDetailsSectionInfo(Some("tax-return.heading"), filtersSelectedFrom(nonMandatedIncomeGroup), "other-income", displayIntent = true))
         }
 
-<!--        For software spec section, only print the heading if at least one group is non-empty, then filter out the empty sections-->
         @if(filtersSelectedFrom((applicationTypeFilters ++ accessibilityFilters ++ languageFilters).toList).nonEmpty) {
             <h2 class="govuk-heading-m">@messages(s"product-details.software-specifications.heading")</h2>
 
@@ -152,7 +153,6 @@
             }
         }
 
-        <!-- Details drop down, for filters not selected by the user -->
         @govukDetails(Details(
             summary = Text(messages("product-details.other-features.collapsible")),
             content = HtmlContent(detailsElementContent)
@@ -160,7 +160,6 @@
 
 
     } else {
-<!--         All filters are shown in view all/ for external users-->
         @for(section <- Seq(
             ProductDetailsSectionInfo(Some("features.heading"), featuresProvidedGroup, "features-provided"),
             ProductDetailsSectionInfo(Some("quarterly-updates.heading"), businessIncomeGroup, "business-income"),
@@ -183,7 +182,6 @@
 }
 
 @featureSection(section: ProductDetailsSectionInfo) = {
-<!--If a heading is required, print it. Then print the table of features for that section.-->
     @if(section.headingSuffix.isDefined) {
         <h2 class="govuk-heading-m">@messages(s"product-details.${section.headingSuffix.get}")</h2>
     }
@@ -235,10 +233,8 @@
 }
 
 @detailsElementContent = {
-<!--    Other features is always shown, as it is not possible to select both user types in the guided or check journeys-->
     @featureSection(ProductDetailsSectionInfo(Some("other-features.heading"), filtersNotSelectedFrom(featuresProvidedGroup), "features-provided"))
 
-<!--    Quarterly updates and tax return sections are only shown when they have filters not selected - to avoid showing just header with no corresponding filters-->
     @for(section <- Seq(
         ProductDetailsSectionInfo(Some("other-features.quarterly-updates.heading"), filtersNotSelectedFrom(businessIncomeGroup), "business-income"),
         ProductDetailsSectionInfo(Some("other-features.tax-return.heading"), filtersNotSelectedFrom(nonMandatedIncomeGroup), "other-income", displayIntent = true)
@@ -246,8 +242,6 @@
         @featureSection(section)
     }
 
-<!--    English filter will always be in this section, as it is not selectable as a filter, so the language section will always be there.-->
-   <!-- But a user could have selected all of application type filters and/ or the accessibility filters, so there may be nothing that isn't selected -->
     <h2 class="govuk-heading-m">@messages(s"product-details.other-features.software-specifications.heading")</h2>
     @for(section <- Seq(
         ProductDetailsSectionInfo(None, filtersNotSelectedFrom(applicationTypeFilters.toList), "application-type"),
