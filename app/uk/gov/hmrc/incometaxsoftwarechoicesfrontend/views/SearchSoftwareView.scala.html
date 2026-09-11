@@ -68,16 +68,6 @@
     <div class="govuk-grid-column-two-thirds">
       <h1 class="govuk-heading-xl">@title</h1>
         <p class="govuk-body">@messages("search-software.p1")</p>
-        <p class="govuk-body">@messages("search-software.p2")</p>
-        <p class="govuk-body">@messages("search-software.p3")</p>
-        <p class="govuk-body">@messages("search-software.p4")</p>
-        @if(!viewModel.isUnguided) {
-            @govukButton(Button(
-               content = Text(messages("search-software.check-answers")),
-               href = Some(routes.CheckYourAnswersController.show().url),
-               classes = "govuk-button--secondary govuk-!-display-none-print"
-            ))
-        }
 
         <p class="govuk-body">
             @hmrcNewTabLinkHelper(NewTabLinkHelper(

@@ -94,10 +94,11 @@ check-your-answers.software-name                       = Software name
 check-your-answers.user-type                           = User type
 check-your-answers.user-type.sole-trader-or-landlord   = Sole trader or landlord
 check-your-answers.user-type.agent                     = Agent
-check-your-answers.business-income                     = Income sources for quarterly updates
+check-your-answers.business-income                     = Income sources (quarterly updates and tax return)
 check-your-answers.additional-income                   = Income for tax return
 check-your-answers.other-items                         = Items for tax return
 check-your-answers.accounting-period                   = Accounting period
+check-your-answers.warning-text                        = HMRC does not recommend any specific product and is not responsible for availability or whether the software meets a particular current or future need. All software has passed HMRC’s recognition process.
 check-your-answers.none-selected                       = None selected
 check-your-answers.software-not-listed                 = Software not listed
 
@@ -105,12 +106,8 @@ check-your-answers.software-not-listed                 = Software not listed
 # Search software page
 search-software.heading.many = You have {0} software results
 search-software.heading.one  = You have 1 software result
-search-software.p1           = All software has passed HMRC’s recognition process. HMRC does not recommend any specific product and is not responsible for availability or whether the software meets a particular current or future need.
-search-software.p2           = Some of the listed products may have free trials or free versions, but others require payment.
-search-software.p3           = We recommend that you visit software providers’ websites to do more research before choosing a product.
-search-software.p4           = Results have been put in random order to ensure fairness when displaying software choices.
+search-software.p1           = Results are shown in random order for fairness.
 
-search-software.check-answers                             = Change answers
 search-software.skip-to-results                           = Skip to results
 
 search-software.filters.heading = Filter software
