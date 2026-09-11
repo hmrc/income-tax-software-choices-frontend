@@ -58,19 +58,22 @@ class CheckYourAnswersViewSpec extends ViewSpec {
         }
       }
     }
+    "have a warning message" in {
+      document.select(".govuk-warning-text").text() shouldBe CheckYourAnswersViewContent.warningText
+    }
     "have a continue button" in {
       document.select("form").select(".govuk-button").text() shouldBe CheckYourAnswersViewContent.confirmContinue
     }
   }
 
   "CheckYourAnswersView" must {
-    def checkedJourneyPage: HtmlFormat.Appendable = view("Check your answers before viewing your result", summaryList, testCall)
-    def checkedJourneyDocument: Document = Jsoup.parse(checkedJourneyPage.body)
-    "have a correct h1 title in checked journey" in {
-      checkedJourneyDocument.title() shouldBe CheckYourAnswersViewContent.checkedTitle
+    def checkJourneyPage: HtmlFormat.Appendable = view("Check your answers before viewing your result", summaryList, testCall)
+    def checkJourneyDocument: Document = Jsoup.parse(checkJourneyPage.body)
+    "have a correct h1 title in check journey" in {
+      checkJourneyDocument.title() shouldBe CheckYourAnswersViewContent.checkTitle
     }
-    "have a correct h1 heading in checked journey" in {
-      checkedJourneyDocument.selectHead("h1").text() shouldBe CheckYourAnswersViewContent.checkedHeading
+    "have a correct h1 heading in check journey" in {
+      checkJourneyDocument.selectHead("h1").text() shouldBe CheckYourAnswersViewContent.checkHeading
     }
   }
 
@@ -101,9 +104,10 @@ class CheckYourAnswersViewSpec extends ViewSpec {
   object CheckYourAnswersViewContent {
     val guidedTitle = s"Check your answers before viewing compatible software - ${PageContentBase.title} - GOV.UK"
     val guidedHeading = "Check your answers before viewing compatible software"
-    val checkedTitle = s"Check your answers before viewing your result - ${PageContentBase.title} - GOV.UK"
-    val checkedHeading = "Check your answers before viewing your result"
+    val checkTitle = s"Check your answers before viewing your result - ${PageContentBase.title} - GOV.UK"
+    val checkHeading = "Check your answers before viewing your result"
     val confirmContinue = "Confirm and continue"
+    val warningText = "! Warning HMRC does not recommend any specific product and is not responsible for availability or whether the software meets a particular current or future need. All software has passed HMRC’s recognition process."
   }
 
 }

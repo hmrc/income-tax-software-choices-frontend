@@ -94,10 +94,11 @@ check-your-answers.software-name                       = Enw’r feddalwedd
 check-your-answers.user-type                           = Math o ddefnyddiwr
 check-your-answers.user-type.sole-trader-or-landlord   = Unig fasnachwr neu landlord
 check-your-answers.user-type.agent                     = Asiant
-check-your-answers.business-income                     = Ffynonellau incwm ar gyfer diweddariadau chwarterol
+check-your-answers.business-income                     = Ffynonellau incwm (diweddariadau chwarterol a Ffurflen Dreth)
 check-your-answers.additional-income                   = Incwm ar gyfer Ffurflen Dreth
 check-your-answers.other-items                         = Eitemau ar gyfer Ffurflen Dreth
 check-your-answers.accounting-period                   = Cyfnod cyfrifyddu
+check-your-answers.warning-text                        = Nid yw CThEF yn argymell unrhyw gynnyrch penodol ac nid yw’n gyfrifol am argaeledd y feddalwedd na ph’un a yw’r feddalwedd yn bodloni anghenion penodol presennol, neu anghenion penodol yn y dyfodol. Mae’r holl feddalwedd wedi pasio proses gydnabod CThEF.
 check-your-answers.none-selected                       = Dim wedi’i ddewis
 check-your-answers.software-not-listed                 = Meddalwedd heb ei rhestru
 
@@ -105,11 +106,8 @@ check-your-answers.software-not-listed                 = Meddalwedd heb ei rhest
 # Search software page
 search-software.heading.many                              = Mae gennych {0} canlyniad meddalwedd
 search-software.heading.one                               = Mae gennych 1 canlyniad meddalwedd
-search-software.p1                                        = Mae’r holl feddalwedd wedi pasio proses gydnabod CThEF. Nid yw CThEF yn argymell unrhyw gynnyrch penodol ac nid yw’n gyfrifol am argaeledd y feddalwedd neu p’un a yw’r feddalwedd yn bodloni anghenion penodol presennol, neu anghenion penodol yn y dyfodol.
-search-software.p2                                        = Efallai y bydd rhai o’r cynhyrchion sy’n cael eu rhestru yn cynnig cyfnod prawf am ddim, neu fersiynau am ddim, ond mae angen talu am rai eraill.
-search-software.p3                                        = Rydym yn argymell eich bod yn ymweld â gwefan darparwyr meddalwedd i wneud ymchwil cyn dewis cynnyrch.
-search-software.p4                                        = Mae’r canlyniadau wedi’u rhoi mewn trefn ar hap i sicrhau tegwch wrth ddangos y feddalwedd sydd ar gael.
-search-software.check-answers                             = Gwirio atebion
+search-software.p1                                        = Er tegwch, bydd y canlyniadau yn ymddangos mewn trefn ar hap.
+
 search-software.skip-to-results                           = Ewch yn syth i’r canlyniadau
 
 search-software.filters.heading = Hidlo meddalwedd

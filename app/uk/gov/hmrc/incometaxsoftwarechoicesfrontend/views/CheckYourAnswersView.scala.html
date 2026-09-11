@@ -28,6 +28,7 @@
         govukCheckboxes: GovukCheckboxes,
         govukSummaryList: GovukSummaryList,
         govukButton: GovukButton,
+        govukWarningText : GovukWarningText,
         form: FormWithCSRF
 )(implicit appConfig: AppConfig)
 
@@ -38,6 +39,11 @@
     <h1 class="govuk-heading-l">@pageHeading</h1>
 
     @govukSummaryList(summaryList)
+
+    @govukWarningText(WarningText(
+        iconFallbackText = Some("Warning"),
+        content = Text(messages("check-your-answers.warning-text"))
+    ))
 
     @form(action = postAction) {
         @govukButton(Button(
