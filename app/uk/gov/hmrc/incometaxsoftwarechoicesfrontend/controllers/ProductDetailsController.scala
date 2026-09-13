@@ -19,7 +19,7 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.SessionIdentifierAction
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.Check
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.{Check, Find}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.Recognised
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareVendorModel, UserAnswers, VendorFilter}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
@@ -47,10 +47,10 @@ class ProductDetailsController @Inject()(softwareChoicesService: SoftwareChoices
       vendorOpt = productId.toIntOption.flatMap(softwareChoicesService.getSoftwareVendor)
     } yield {
       (userFilters, vendorOpt) match {
-        case (Some(userFilters), Some(softwareVendor)) =>
-          Ok(productDetailsView(softwareVendor, backLink(userFilters.answers, userFilters.finalFilters, softwareVendor)))
-        case (None, Some(softwareVendor)) =>
-          Ok(productDetailsView(softwareVendor, routes.SearchSoftwareController.show().url))
+        case (Some(userFilters), Some(softwareVendor)) if userIsInFindOrCheckJourney(userFilters.answers) =>
+          Ok(productDetailsView(softwareVendor, backLink(userFilters.answers, userFilters.finalFilters, softwareVendor), Some(userFilters.finalFilters)))
+        case (_, Some(softwareVendor)) =>
+          Ok(productDetailsView(softwareVendor, routes.SearchSoftwareController.show().url, None))
         case _ =>
           NotFound(notFoundView(routes.ProductDetailsController.show(productId).url))
       }
@@ -74,6 +74,13 @@ class ProductDetailsController @Inject()(softwareChoicesService: SoftwareChoices
       case (Some(Check), false, Some(Recognised), Some(true), Some(false))  => routes.PartiallyCompatibleController.show().url
       case (Some(Check), false, Some(Recognised), Some(true), None)         => routes.QuarterlyOnlyController.show().url
       case _                                                                => routes.SearchSoftwareController.show().url
+    }
+  }
+
+  private def userIsInFindOrCheckJourney(answers: Option[UserAnswers]): Boolean = {
+    pageAnswersService.getPageAnswers(answers, HowYouFindSoftwarePage).match {
+      case Some(Check) | Some(Find) => true
+      case _ => false
     }
   }
 }
