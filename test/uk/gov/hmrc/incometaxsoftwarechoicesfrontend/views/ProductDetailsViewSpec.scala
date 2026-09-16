@@ -349,9 +349,35 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
 
     "display the exit survey link" in {
       val document: Document = createAndParseDocument(softwareVendorModelFull)
-      val link = document.mainContent.select(".govuk-link").get(1)
+      val link = document.mainContent.select(".govuk-link").get(3)
       link.text shouldBe ProductDetailsPage.exitSurveyLinkTitle
       link.attr("href") shouldBe ProductDetailsPage.exitSurveyLink
+    }
+
+    "display the getting started section" which {
+      val document: Document = createAndParseDocument(softwareVendorModelFull)
+
+      "has the getting started heading" in {
+        document.select("h2").get(4).text shouldBe ProductDetailsPage.gettingStartedHeading
+      }
+
+      "has the getting started text" in {
+        document.select(".govuk-inset-text > p").text shouldBe ProductDetailsPage.gettingStartedText
+      }
+
+      "has a link to sign up for MTD" in {
+        val link = document.mainContent.select(".govuk-link").get(1)
+        link.text shouldBe s"${ProductDetailsPage.gettingStartedSignUp} (opens in new tab)"
+        link.attr("href") shouldBe appConfig.individualSignUpForMtdUrl
+        link.attr("target") shouldBe "_blank"
+      }
+
+      "has a link to authorise software" in {
+        val link = document.mainContent.select(".govuk-link").get(2)
+        link.text shouldBe s"${ProductDetailsPage.gettingStartedAuthorise} (opens in new tab)"
+        link.attr("href") shouldBe appConfig.getSoftwareReadyUrl
+        link.attr("target") shouldBe "_blank"
+      }
     }
   }
 
@@ -425,6 +451,11 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
     val readyNowDescription = "This feature is ready to use now."
     val inDevelopmentDescription = "The software provider has committed to building this in time for the 2026 to 2027 tax return."
     val notIncludedDescription = "This is not available in this software product."
+
+    val gettingStartedHeading = "Getting started with this software"
+    val gettingStartedText = "The following will need to be completed, if not already done so:"
+    val gettingStartedSignUp = "sign up for Making Tax Digital for Income Tax"
+    val gettingStartedAuthorise = "authorise this software for HMRC"
   }
 
 }

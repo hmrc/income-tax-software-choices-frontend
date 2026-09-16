@@ -205,6 +205,10 @@ product-details.features-provided.agent = Agent software
 product-details.features-provided.individual = Individual software
 product-details.features-provided.hmrc-assist = HMRC Assist (Submission Feedback)
 product-details.features-provided.free-version = Free version
+product-details.getting-started = Getting started with this software
+product-details.getting-started.text = The following will need to be completed, if not already done so:
+product-details.getting-started.sign-up = sign up for Making Tax Digital for Income Tax
+product-details.getting-started.authorise = authorise this software for HMRC
 
 product-details.quarterly-updates.heading = What you need for your quarterly updates
 product-details.quarterly-updates.what-you-need = You’ll still need to send these income sources in your tax return.
