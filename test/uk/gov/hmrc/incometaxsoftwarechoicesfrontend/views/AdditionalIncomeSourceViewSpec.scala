@@ -21,10 +21,12 @@ import org.jsoup.nodes.{Document, Element}
 import org.scalatest.BeforeAndAfterEach
 import play.api.data.FormError
 import play.twirl.api.HtmlFormat
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.AveragingReliefFeature
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.AdditionalIncomeForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.AdditionalIncomeSourceView
 
-class AdditionalIncomeSourceViewSpec extends ViewSpec  with BeforeAndAfterEach {
+class AdditionalIncomeSourceViewSpec extends ViewSpec with BeforeAndAfterEach with FeatureSwitching {
   private val view = app.injector.instanceOf[AdditionalIncomeSourceView]
 
   private val formEmpty: FormError = FormError("additionalIncome", "additional.income.source.error-non-empty")
@@ -178,9 +180,21 @@ class AdditionalIncomeSourceViewSpec extends ViewSpec  with BeforeAndAfterEach {
             value = "foreign-interest",
           )
         }
+        "has a checkbox for averaging-relief when feature switch is enabled" in {
+          enable(AveragingReliefFeature)
+          form.mustHaveCheckbox("fieldSet")(
+            checkbox = 9,
+            legend = AdditionalIncomeSourcesPageContent.legend,
+            isHeading = false,
+            isLegendHidden = true,
+            name = "additionalIncome[]",
+            label = AdditionalIncomeSourcesPageContent.averagingRelief,
+            value = "averaging-relief",
+          )
+        }
         "has a checkbox for None" in {
           form.mustHaveCheckbox("fieldSet")(
-            checkbox = 10,
+            checkbox = 11,
             legend = AdditionalIncomeSourcesPageContent.legend,
             isHeading = false,
             isLegendHidden = true,
@@ -211,6 +225,7 @@ private object AdditionalIncomeSourcesPageContent {
   val partnerIncomeFromPartnership = "Partner income from a partnership"
   val foreignDividends = "Foreign dividends"
   val foreignInterest = "Foreign interest"
+  val averagingRelief = "Averaging relief"
   val none = "None of these"
   val continue = "Continue"
 }

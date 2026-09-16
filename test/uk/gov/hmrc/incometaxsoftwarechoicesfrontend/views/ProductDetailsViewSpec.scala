@@ -123,14 +123,15 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
           checkRow(table(4), 6, ProductDetailsPage.partnerIncome, status = s"${ProductDetailsPage.readyNow}")
           checkRow(table(4), 7, ProductDetailsPage.foreignDividend, status = s"${ProductDetailsPage.readyNow}")
           checkRow(table(4), 8, ProductDetailsPage.foreignInterest, status = s"${ProductDetailsPage.readyNow}")
-          checkRow(table(4), 9, ProductDetailsPage.privatePensionContribution, status = s"${ProductDetailsPage.readyNow}")
-          checkRow(table(4), 10, ProductDetailsPage.cis, status = s"${ProductDetailsPage.readyNow}")
-          checkRow(table(4), 11, ProductDetailsPage.charitableGiving, status = s"${ProductDetailsPage.readyNow}")
-          checkRow(table(4), 12, ProductDetailsPage.cgt, status = s"${ProductDetailsPage.readyNow}")
-          checkRow(table(4), 13, ProductDetailsPage.student, status = s"${ProductDetailsPage.readyNow}")
-          checkRow(table(4), 14, ProductDetailsPage.marriage, status = s"${ProductDetailsPage.readyNow}")
-          checkRow(table(4), 15, ProductDetailsPage.class2NIC, status = s"${ProductDetailsPage.readyNow}")
-          checkRow(table(4), 16, ProductDetailsPage.childBenefitCharge, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(4), 9, ProductDetailsPage.averagingRelief, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(4), 10, ProductDetailsPage.privatePensionContribution, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(4), 11, ProductDetailsPage.cis, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(4), 12, ProductDetailsPage.charitableGiving, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(4), 13, ProductDetailsPage.cgt, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(4), 14, ProductDetailsPage.student, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(4), 15, ProductDetailsPage.marriage, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(4), 16, ProductDetailsPage.class2NIC, status = s"${ProductDetailsPage.readyNow}")
+          checkRow(table(4), 17, ProductDetailsPage.childBenefitCharge, status = s"${ProductDetailsPage.readyNow}")
         }
       }
     }
@@ -200,14 +201,15 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
           checkRow(table(4), 6, ProductDetailsPage.partnerIncome, status = s"${ProductDetailsPage.notIncluded}")
           checkRow(table(4), 7, ProductDetailsPage.foreignDividend, status = s"${ProductDetailsPage.readyNow}")
           checkRow(table(4), 8, ProductDetailsPage.foreignInterest, status = s"${ProductDetailsPage.notIncluded}")
-          checkRow(table(4), 9, ProductDetailsPage.privatePensionContribution, status = s"${ProductDetailsPage.notIncluded}")
-          checkRow(table(4), 10, ProductDetailsPage.cis, status = s"${ProductDetailsPage.notIncluded}")
-          checkRow(table(4), 11, ProductDetailsPage.charitableGiving, status = s"${ProductDetailsPage.notIncluded}")
-          checkRow(table(4), 12, ProductDetailsPage.cgt, status = s"${ProductDetailsPage.notIncluded}")
-          checkRow(table(4), 13, ProductDetailsPage.student, status = s"${ProductDetailsPage.notIncluded}")
-          checkRow(table(4), 14, ProductDetailsPage.marriage, status = s"${ProductDetailsPage.notIncluded}")
-          checkRow(table(4), 15, ProductDetailsPage.class2NIC, status = s"${ProductDetailsPage.notIncluded}")
-          checkRow(table(4), 16, ProductDetailsPage.childBenefitCharge, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(4), 9, ProductDetailsPage.averagingRelief, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(4), 10, ProductDetailsPage.privatePensionContribution, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(4), 11, ProductDetailsPage.cis, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(4), 12, ProductDetailsPage.charitableGiving, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(4), 13, ProductDetailsPage.cgt, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(4), 14, ProductDetailsPage.student, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(4), 15, ProductDetailsPage.marriage, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(4), 16, ProductDetailsPage.class2NIC, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(4), 17, ProductDetailsPage.childBenefitCharge, status = s"${ProductDetailsPage.notIncluded}")
         }
       }
     }
@@ -281,14 +283,15 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
           checkRow(table(4), 6, ProductDetailsPage.partnerIncome, status = s"${ProductDetailsPage.notIncluded}")
           checkRow(table(4), 7, ProductDetailsPage.foreignDividend, status = s"${ProductDetailsPage.notIncluded}")
           checkRow(table(4), 8, ProductDetailsPage.foreignInterest, status = s"${ProductDetailsPage.notIncluded}")
-          checkRow(table(4), 9, ProductDetailsPage.privatePensionContribution, status = s"${ProductDetailsPage.notIncluded}")
-          checkRow(table(4), 10, ProductDetailsPage.cis, status = s"${ProductDetailsPage.notIncluded}")
-          checkRow(table(4), 11, ProductDetailsPage.charitableGiving, status = s"${ProductDetailsPage.notIncluded}")
-          checkRow(table(4), 12, ProductDetailsPage.cgt, status = s"${ProductDetailsPage.notIncluded}")
-          checkRow(table(4), 13, ProductDetailsPage.student, status = s"${ProductDetailsPage.notIncluded}")
-          checkRow(table(4), 14, ProductDetailsPage.marriage, status = s"${ProductDetailsPage.notIncluded}")
-          checkRow(table(4), 15, ProductDetailsPage.class2NIC, status = s"${ProductDetailsPage.notIncluded}")
-          checkRow(table(4), 16, ProductDetailsPage.childBenefitCharge, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(4), 9, ProductDetailsPage.averagingRelief, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(4), 10, ProductDetailsPage.privatePensionContribution, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(4), 11, ProductDetailsPage.cis, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(4), 12, ProductDetailsPage.charitableGiving, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(4), 13, ProductDetailsPage.cgt, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(4), 14, ProductDetailsPage.student, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(4), 15, ProductDetailsPage.marriage, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(4), 16, ProductDetailsPage.class2NIC, status = s"${ProductDetailsPage.notIncluded}")
+          checkRow(table(4), 17, ProductDetailsPage.childBenefitCharge, status = s"${ProductDetailsPage.notIncluded}")
         }
       }
     }
@@ -402,6 +405,7 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
     val privatePensionContribution = "Private pension contributions"
     val marriage = "Marriage Allowance"
     val partnerIncome = "Partner income from a partnership"
+    val averagingRelief = "Averaging relief"
 
     val softwareSpecHeading = "Software specifications"
     val softwareType = "Software type"
