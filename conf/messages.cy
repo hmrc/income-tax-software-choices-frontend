@@ -263,6 +263,7 @@ product-details.other-income.high-income-child-benefit-charge = Tâl Treth Budd-
 product-details.other-income.payments-into-a-private-pension = Cyfraniadau pensiwn preifat
 product-details.other-income.marriage-allowance = Lwfans Priodasol
 product-details.other-income.partner-income = Incwm partner o bartneriaeth
+product-details.other-income.averaging-relief = Averaging relief
 
 #Software specifications section
 product-details.software-spec.heading = Manylebau’r feddalwedd
@@ -306,6 +307,7 @@ additional-income-source.private-pension-income                     = Incwm o be
 additional-income-source.partner-income                             = Incwm partner o bartneriaeth
 additional-income-source.foreign-dividends                          = Difidendau tramor
 additional-income-source.foreign-interest                           = Llog tramor
+additional-income-source.averaging-relief                           = Averaging relief
 additional-income-source.none                                       = Dim un o’r rhain
 additional-income-source.error-non-empty.individual                 = Dewiswch yr incwm y mae angen i chi ei gyflwyno yn eich Ffurflen Dreth neu dewiswch ‘dim un o’r rhain’
 additional-income-source.error-non-empty.agent                      = Dewiswch yr incwm y mae angen i’ch cleient ei gyflwyno yn ei Ffurflen Dreth neu dewiswch ‘dim un o’r rhain’

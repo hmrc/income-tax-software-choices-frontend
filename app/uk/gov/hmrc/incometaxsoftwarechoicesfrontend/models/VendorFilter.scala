@@ -181,6 +181,12 @@ object VendorFilter {
     override val auditDescription: String = "foreignInterest"
   }
 
+  case object AveragingRelief extends VendorFilter {
+    override val key: String = "averaging-relief"
+    override val priority: Int = 9
+    override val auditDescription: String = "averagingRelief"
+  }
+
   case object CharitableGiving extends VendorFilter {
     override val key: String = "charitable-giving"
     override val priority: Int = 1
@@ -356,6 +362,7 @@ object VendorFilter {
     UkInterest,
     ForeignDividends,
     ForeignInterest,
+    AveragingRelief,
     CharitableGiving,
     HighIncomeChildBenefitCharge,
     StudentLoans,
@@ -536,7 +543,7 @@ object VendorFilterGroups {
 
   val nonMandatedIncomeGroup: List[VendorFilter] = List(
     UkInterest, Employment, UkDividends, StatePensionIncome, PrivatePensionIncome, PartnerIncome,
-    ForeignDividends, ForeignInterest, PaymentsIntoAPrivatePension, ConstructionIndustryScheme, CharitableGiving,
+    ForeignDividends, ForeignInterest, AveragingRelief, PaymentsIntoAPrivatePension, ConstructionIndustryScheme, CharitableGiving,
     CapitalGainsTax, StudentLoans, MarriageAllowance, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge
   )
 

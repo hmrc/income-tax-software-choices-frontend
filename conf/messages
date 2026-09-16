@@ -263,6 +263,7 @@ product-details.other-income.high-income-child-benefit-charge = High Income Chil
 product-details.other-income.payments-into-a-private-pension = Private pension contributions
 product-details.other-income.marriage-allowance = Marriage Allowance
 product-details.other-income.partner-income = Partner income from a partnership
+product-details.other-income.averaging-relief = Averaging relief
 
 #Software specifications section
 product-details.software-spec.heading = Software specifications
@@ -306,6 +307,7 @@ additional-income-source.private-pension-income                     = Private pe
 additional-income-source.partner-income                             = Partner income from a partnership
 additional-income-source.foreign-dividends                          = Foreign dividends
 additional-income-source.foreign-interest                           = Foreign interest
+additional-income-source.averaging-relief                           = Averaging relief
 additional-income-source.none                                       = None of these
 additional-income-source.error-non-empty.individual                 = Select the income you need to submit in your tax return or select ‘none of these’
 additional-income-source.error-non-empty.agent                      = Select the income your client needs to submit in their tax return or select ‘none of these’

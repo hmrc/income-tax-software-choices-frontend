@@ -162,14 +162,15 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
           checkRow(table(4), 6, partnerIncome, readyNow)
           checkRow(table(4), 7, foreignDividend, readyNow)
           checkRow(table(4), 8, foreignInterest, readyNow)
-          checkRow(table(4), 9, privatePensionContribution, readyNow)
-          checkRow(table(4), 10, cis, readyNow)
-          checkRow(table(4), 11, charitableGiving, readyNow)
-          checkRow(table(4), 12, cgt, readyNow)
-          checkRow(table(4), 13, student, readyNow)
-          checkRow(table(4), 14, marriage, readyNow)
-          checkRow(table(4), 15, class2NIC, readyNow)
-          checkRow(table(4), 16, childBenefitCharge, readyNow)
+          checkRow(table(4), 9, averagingRelief, readyNow)
+          checkRow(table(4), 10, privatePensionContribution, readyNow)
+          checkRow(table(4), 11, cis, readyNow)
+          checkRow(table(4), 12, charitableGiving, readyNow)
+          checkRow(table(4), 13, cgt, readyNow)
+          checkRow(table(4), 14, student, readyNow)
+          checkRow(table(4), 15, marriage, readyNow)
+          checkRow(table(4), 16, class2NIC, readyNow)
+          checkRow(table(4), 17, childBenefitCharge, readyNow)
         }
       }
     }
@@ -253,14 +254,15 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
           checkRow(table(4), 6, partnerIncome, notIncluded)
           checkRow(table(4), 7, foreignDividend, readyNow)
           checkRow(table(4), 8, foreignInterest, notIncluded)
-          checkRow(table(4), 9, privatePensionContribution, notIncluded)
-          checkRow(table(4), 10, cis, notIncluded)
-          checkRow(table(4), 11, charitableGiving, notIncluded)
-          checkRow(table(4), 12, cgt, notIncluded)
-          checkRow(table(4), 13, student, notIncluded)
-          checkRow(table(4), 14, marriage, notIncluded)
-          checkRow(table(4), 15, class2NIC, notIncluded)
-          checkRow(table(4), 16, childBenefitCharge, notIncluded)
+          checkRow(table(4), 9, averagingRelief, notIncluded)
+          checkRow(table(4), 10, privatePensionContribution, notIncluded)
+          checkRow(table(4), 11, cis, notIncluded)
+          checkRow(table(4), 12, charitableGiving, notIncluded)
+          checkRow(table(4), 13, cgt, notIncluded)
+          checkRow(table(4), 14, student, notIncluded)
+          checkRow(table(4), 15, marriage, notIncluded)
+          checkRow(table(4), 16, class2NIC, notIncluded)
+          checkRow(table(4), 17, childBenefitCharge, notIncluded)
         }
       }
     }
@@ -348,14 +350,15 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
           checkRow(table(4), 6, partnerIncome, notIncluded)
           checkRow(table(4), 7, foreignDividend, notIncluded)
           checkRow(table(4), 8, foreignInterest, notIncluded)
-          checkRow(table(4), 9, privatePensionContribution, notIncluded)
-          checkRow(table(4), 10, cis, notIncluded)
-          checkRow(table(4), 11, charitableGiving, notIncluded)
-          checkRow(table(4), 12, cgt, notIncluded)
-          checkRow(table(4), 13, student, notIncluded)
-          checkRow(table(4), 14, marriage, notIncluded)
-          checkRow(table(4), 15, class2NIC, notIncluded)
-          checkRow(table(4), 16, childBenefitCharge, notIncluded)
+          checkRow(table(4), 9, averagingRelief, notIncluded)
+          checkRow(table(4), 10, privatePensionContribution, notIncluded)
+          checkRow(table(4), 11, cis, notIncluded)
+          checkRow(table(4), 12, charitableGiving, notIncluded)
+          checkRow(table(4), 13, cgt, notIncluded)
+          checkRow(table(4), 14, student, notIncluded)
+          checkRow(table(4), 15, marriage, notIncluded)
+          checkRow(table(4), 16, class2NIC, notIncluded)
+          checkRow(table(4), 17, childBenefitCharge, notIncluded)
         }
       }
     }
@@ -459,7 +462,7 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
       "have an 'other features to consider' section" which {
 
         val detailsElement: Element = document.selectNth("details", 1)
-        
+
         "have the correct summary text" in {
           detailsElement.select("summary").text() shouldBe otherFeaturesDropDown
         }
@@ -800,6 +803,7 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
     val privatePensionContribution = "Private pension contributions"
     val marriage = "Marriage Allowance"
     val partnerIncome = "Partner income from a partnership"
+    val averagingRelief = "Averaging relief"
 
     val softwareSpecHeading = "Software specifications"
     val softwareType = "Software type"
