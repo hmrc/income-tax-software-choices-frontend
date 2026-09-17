@@ -200,6 +200,10 @@ legend.govuk-hidden {
   -webkit-overflow-scrolling: touch;
 }
 
+.app-grey-box {
+    background-color: govuk-colour("light-grey");
+}
+
 #ciapiSkinContainer {
   position: fixed;
   z-index: 10;
