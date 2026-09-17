@@ -19,6 +19,8 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views
 import org.jsoup.Jsoup
 import org.jsoup.nodes.{Document, Element}
 import org.scalatest.{Assertion, BeforeAndAfterEach}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.{AveragingReliefFeature, ResidenceAndRemittanceFeature, TrustsAndEstatesFeature}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.{Available, Intended}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareVendorModel, VendorFilter}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.*
@@ -27,7 +29,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.TestModels.softwareV
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.{SoleTraderOrLandlord, Agent => AgentUserType}
 
-class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
+class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach with FeatureSwitching {
 
   import ProductDetailsPage._
 
@@ -65,6 +67,10 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
       table.selectHead(s"tbody > tr:nth-child($row) > th:nth-child(1)").text shouldBe field
       table.selectHead(s"tbody > tr:nth-child($row) > td:nth-child(2)").text shouldBe status
     }
+
+    disable(AveragingReliefFeature)
+    disable(ResidenceAndRemittanceFeature)
+    disable(TrustsAndEstatesFeature)
 
     def checkColumnWidthClasses(table: Element, firstColumnClass: String, secondColumnClass: String): Assertion = {
       table.selectHead(s"tbody > tr:nth-child(1) > th:nth-child(1)").classNames() should contain(firstColumnClass)
@@ -162,15 +168,14 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
           checkRow(table(4), 6, partnerIncome, readyNow)
           checkRow(table(4), 7, foreignDividend, readyNow)
           checkRow(table(4), 8, foreignInterest, readyNow)
-          checkRow(table(4), 9, averagingRelief, readyNow)
-          checkRow(table(4), 10, privatePensionContribution, readyNow)
-          checkRow(table(4), 11, cis, readyNow)
-          checkRow(table(4), 12, charitableGiving, readyNow)
-          checkRow(table(4), 13, cgt, readyNow)
-          checkRow(table(4), 14, student, readyNow)
-          checkRow(table(4), 15, marriage, readyNow)
-          checkRow(table(4), 16, class2NIC, readyNow)
-          checkRow(table(4), 17, childBenefitCharge, readyNow)
+          checkRow(table(4), 9, privatePensionContribution, readyNow)
+          checkRow(table(4), 10, cis, readyNow)
+          checkRow(table(4), 11, charitableGiving, readyNow)
+          checkRow(table(4), 12, cgt, readyNow)
+          checkRow(table(4), 13, student, readyNow)
+          checkRow(table(4), 14, marriage, readyNow)
+          checkRow(table(4), 15, class2NIC, readyNow)
+          checkRow(table(4), 16, childBenefitCharge, readyNow)
         }
       }
     }
@@ -254,15 +259,14 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
           checkRow(table(4), 6, partnerIncome, notIncluded)
           checkRow(table(4), 7, foreignDividend, readyNow)
           checkRow(table(4), 8, foreignInterest, notIncluded)
-          checkRow(table(4), 9, averagingRelief, notIncluded)
-          checkRow(table(4), 10, privatePensionContribution, notIncluded)
-          checkRow(table(4), 11, cis, notIncluded)
-          checkRow(table(4), 12, charitableGiving, notIncluded)
-          checkRow(table(4), 13, cgt, notIncluded)
-          checkRow(table(4), 14, student, notIncluded)
-          checkRow(table(4), 15, marriage, notIncluded)
-          checkRow(table(4), 16, class2NIC, notIncluded)
-          checkRow(table(4), 17, childBenefitCharge, notIncluded)
+          checkRow(table(4), 9, privatePensionContribution, notIncluded)
+          checkRow(table(4), 10, cis, notIncluded)
+          checkRow(table(4), 11, charitableGiving, notIncluded)
+          checkRow(table(4), 12, cgt, notIncluded)
+          checkRow(table(4), 13, student, notIncluded)
+          checkRow(table(4), 14, marriage, notIncluded)
+          checkRow(table(4), 15, class2NIC, notIncluded)
+          checkRow(table(4), 16, childBenefitCharge, notIncluded)
         }
       }
     }
@@ -350,15 +354,14 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
           checkRow(table(4), 6, partnerIncome, notIncluded)
           checkRow(table(4), 7, foreignDividend, notIncluded)
           checkRow(table(4), 8, foreignInterest, notIncluded)
-          checkRow(table(4), 9, averagingRelief, notIncluded)
-          checkRow(table(4), 10, privatePensionContribution, notIncluded)
-          checkRow(table(4), 11, cis, notIncluded)
-          checkRow(table(4), 12, charitableGiving, notIncluded)
-          checkRow(table(4), 13, cgt, notIncluded)
-          checkRow(table(4), 14, student, notIncluded)
-          checkRow(table(4), 15, marriage, notIncluded)
-          checkRow(table(4), 16, class2NIC, notIncluded)
-          checkRow(table(4), 17, childBenefitCharge, notIncluded)
+          checkRow(table(4), 9, privatePensionContribution, notIncluded)
+          checkRow(table(4), 10, cis, notIncluded)
+          checkRow(table(4), 11, charitableGiving, notIncluded)
+          checkRow(table(4), 12, cgt, notIncluded)
+          checkRow(table(4), 13, student, notIncluded)
+          checkRow(table(4), 14, marriage, notIncluded)
+          checkRow(table(4), 15, class2NIC, notIncluded)
+          checkRow(table(4), 16, childBenefitCharge, notIncluded)
         }
       }
     }
@@ -674,6 +677,26 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
       }
     }
 
+    "the vendor has everything ready now, and averaging relief, residence and remittance, and trusts and estates feature switches are enabled" which {
+
+      enable(AveragingReliefFeature)
+      enable(ResidenceAndRemittanceFeature)
+      enable(TrustsAndEstatesFeature)
+
+      val document: Document = createAndParseDocument(softwareVendorModelFull)
+
+      def table(index: Int): Element = document.getTable(index)
+
+      "display all tables with correct details" which {
+        "displays all the extra rows" in {
+          checkRow(table(4), 9, averagingRelief, readyNow)
+          checkRow(table(4), 10, residenceAndRemittance, readyNow)
+          checkRow(table(4), 11, trustsAndEstates, readyNow)
+        }
+      }
+    }
+
+
     "display the exit survey link" in {
       val document: Document = createAndParseDocument(softwareVendorModelFull)
       val link = document.mainContent.select(".govuk-link").get(3)
@@ -804,6 +827,8 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
     val marriage = "Marriage Allowance"
     val partnerIncome = "Partner income from a partnership"
     val averagingRelief = "Averaging relief"
+    val residenceAndRemittance = "Residence and Remittance"
+    val trustsAndEstates = "Trusts and Estates"
 
     val softwareSpecHeading = "Software specifications"
     val softwareType = "Software type"

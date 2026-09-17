@@ -264,6 +264,8 @@ product-details.other-income.payments-into-a-private-pension = Cyfraniadau pensi
 product-details.other-income.marriage-allowance = Lwfans Priodasol
 product-details.other-income.partner-income = Incwm partner o bartneriaeth
 product-details.other-income.averaging-relief = Averaging relief
+product-details.other-income.residence-and-remittance = Residence and Remittance
+product-details.other-income.trusts-and-estates = Trusts and Estates
 
 #Software specifications section
 product-details.software-spec.heading = Manylebau’r feddalwedd
@@ -308,6 +310,8 @@ additional-income-source.partner-income                             = Incwm part
 additional-income-source.foreign-dividends                          = Difidendau tramor
 additional-income-source.foreign-interest                           = Llog tramor
 additional-income-source.averaging-relief                           = Averaging relief
+additional-income-source.residence-and-remittance                   = Residence and Remittance
+additional-income-source.trusts-and-estates                         = Trusts and Estates
 additional-income-source.none                                       = Dim un o’r rhain
 additional-income-source.error-non-empty.individual                 = Dewiswch yr incwm y mae angen i chi ei gyflwyno yn eich Ffurflen Dreth neu dewiswch ‘dim un o’r rhain’
 additional-income-source.error-non-empty.agent                      = Dewiswch yr incwm y mae angen i’ch cleient ei gyflwyno yn ei Ffurflen Dreth neu dewiswch ‘dim un o’r rhain’

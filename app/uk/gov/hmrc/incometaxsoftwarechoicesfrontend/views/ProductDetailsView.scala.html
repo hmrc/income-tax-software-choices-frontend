@@ -27,6 +27,8 @@
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTemplate
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.viewmodels.ProductDetailsSectionInfo
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.GettingStartedTemplate
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.{AveragingReliefFeature, ResidenceAndRemittanceFeature, TrustsAndEstatesFeature}
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 
 @this(
         mainTemplate: MainTemplate,
@@ -35,7 +37,8 @@
         govukDetails: GovukDetails,
         govukTable: GovukTable,
         govukTag: GovukTag,
-        gettingStartedTemplate: GettingStartedTemplate
+        gettingStartedTemplate: GettingStartedTemplate,
+        featureSwitching: FeatureSwitching
 )(implicit appConfig: AppConfig)
 @(softwareVendor: SoftwareVendorModel, backLink: String, finalFilters: Option[Seq[VendorFilter]] = None, userType: Option[UserType] = None)(implicit request: Request[_], messages: Messages)
 
@@ -152,7 +155,7 @@
         }
 
         @if(filtersSelectedFrom(nonMandatedIncomeGroup).nonEmpty) {
-            @featureSection(ProductDetailsSectionInfo(Some("tax-return.heading"), filtersSelectedFrom(nonMandatedIncomeGroup), "other-income", displayIntent = true))
+            @featureSection(ProductDetailsSectionInfo(Some("tax-return.heading"), filtersSelectedFrom(adjustNonMandatedIncomeGroupForFeatureSwitches), "other-income", displayIntent = true))
         }
 
         @govukDetails(Details(
@@ -261,8 +264,31 @@
 
     @for(section <- Seq(
         ProductDetailsSectionInfo(Some("other-features.quarterly-updates.heading"), filtersNotSelectedFrom(businessIncomeGroup), "business-income"),
-        ProductDetailsSectionInfo(Some("other-features.tax-return.heading"), filtersNotSelectedFrom(nonMandatedIncomeGroup), "other-income", displayIntent = true)
+        ProductDetailsSectionInfo(Some("other-features.tax-return.heading"), filtersNotSelectedFrom(adjustNonMandatedIncomeGroupForFeatureSwitches), "other-income", displayIntent = true)
     ).filter(_.group.nonEmpty)) {
         @featureSection(section)
     }
+}
+
+
+@adjustNonMandatedIncomeGroupForFeatureSwitches = @{
+    val adjustedForAveragingRelief = if (featureSwitching.isEnabled(AveragingReliefFeature)) {
+        nonMandatedIncomeGroup
+    } else {
+        nonMandatedIncomeGroup.filter(f => !f.equals(AveragingRelief))
+    }
+
+    val adjustedForResidenceAndRemittance = if (featureSwitching.isEnabled(ResidenceAndRemittanceFeature)) {
+        adjustedForAveragingRelief
+    } else {
+        adjustedForAveragingRelief.filter(f => !f.equals(ResidenceAndRemittance))
+    }
+
+    val adjustedForTrustsAndEstates = if (featureSwitching.isEnabled(TrustsAndEstatesFeature)) {
+        adjustedForResidenceAndRemittance
+    } else {
+        adjustedForResidenceAndRemittance.filter(f => !f.equals(TrustsAndEstates))
+    }
+
+    adjustedForTrustsAndEstates
 }
