@@ -21,7 +21,7 @@ import org.jsoup.nodes.{Document, Element}
 import org.scalatest.BeforeAndAfterEach
 import play.api.data.FormError
 import play.twirl.api.HtmlFormat
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.AveragingReliefFeature
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.{AveragingReliefFeature, ResidenceAndRemittanceFeature, TrustsAndEstatesFeature}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.AdditionalIncomeForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.AdditionalIncomeSourceView
@@ -192,9 +192,33 @@ class AdditionalIncomeSourceViewSpec extends ViewSpec with BeforeAndAfterEach wi
             value = "averaging-relief",
           )
         }
-        "has a checkbox for None" in {
+        "has a checkbox for residence-and-remittance when feature switch is enabled" in {
+          enable(ResidenceAndRemittanceFeature)
+          form.mustHaveCheckbox("fieldSet")(
+            checkbox = 10,
+            legend = AdditionalIncomeSourcesPageContent.legend,
+            isHeading = false,
+            isLegendHidden = true,
+            name = "additionalIncome[]",
+            label = AdditionalIncomeSourcesPageContent.residenceAndRemittance,
+            value = "residence-and-remittance",
+          )
+        }
+        "has a checkbox for trusts-and-estates when feature switch is enabled" in {
+          enable(TrustsAndEstatesFeature)
           form.mustHaveCheckbox("fieldSet")(
             checkbox = 11,
+            legend = AdditionalIncomeSourcesPageContent.legend,
+            isHeading = false,
+            isLegendHidden = true,
+            name = "additionalIncome[]",
+            label = AdditionalIncomeSourcesPageContent.trustsAndEstates,
+            value = "trusts-and-estates",
+          )
+        }
+        "has a checkbox for None" in {
+          form.mustHaveCheckbox("fieldSet")(
+            checkbox = 13,
             legend = AdditionalIncomeSourcesPageContent.legend,
             isHeading = false,
             isLegendHidden = true,
@@ -226,6 +250,8 @@ private object AdditionalIncomeSourcesPageContent {
   val foreignDividends = "Foreign dividends"
   val foreignInterest = "Foreign interest"
   val averagingRelief = "Averaging relief"
+  val residenceAndRemittance = "Residence and Remittance"
+  val trustsAndEstates = "Trusts and Estates"
   val none = "None of these"
   val continue = "Continue"
 }

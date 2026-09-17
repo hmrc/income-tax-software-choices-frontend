@@ -187,6 +187,18 @@ object VendorFilter {
     override val auditDescription: String = "averagingRelief"
   }
 
+  case object ResidenceAndRemittance extends VendorFilter {
+    override val key: String = "residence-and-remittance"
+    override val priority: Int = 10
+    override val auditDescription: String = "residenceAndRemittance"
+  }
+
+  case object TrustsAndEstates extends VendorFilter {
+    override val key: String = "trusts-and-estates"
+    override val priority: Int = 11
+    override val auditDescription: String = "trustsAndEstates"
+  }
+
   case object CharitableGiving extends VendorFilter {
     override val key: String = "charitable-giving"
     override val priority: Int = 1
@@ -362,6 +374,8 @@ object VendorFilter {
     ForeignDividends,
     ForeignInterest,
     AveragingRelief,
+    ResidenceAndRemittance,
+    TrustsAndEstates,
     CharitableGiving,
     HighIncomeChildBenefitCharge,
     StudentLoans,
@@ -536,8 +550,9 @@ object VendorFilterGroups {
 
   val nonMandatedIncomeGroup: List[VendorFilter] = List(
     UkInterest, Employment, UkDividends, StatePensionIncome, PrivatePensionIncome, PartnerIncome,
-    ForeignDividends, ForeignInterest, AveragingRelief, PaymentsIntoAPrivatePension, ConstructionIndustryScheme, CharitableGiving,
-    CapitalGainsTax, StudentLoans, MarriageAllowance, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge
+    ForeignDividends, ForeignInterest, AveragingRelief, ResidenceAndRemittance, TrustsAndEstates,
+    PaymentsIntoAPrivatePension, ConstructionIndustryScheme, CharitableGiving, CapitalGainsTax,
+    StudentLoans, MarriageAllowance, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge
   )
 
   val softwareTypeGroup: List[VendorFilter] = List(DesktopApplication, WebBrowser)

@@ -22,7 +22,7 @@
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTemplate
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.AdditionalIncomeForm
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.helpers._
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.AveragingReliefFeature
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.{AveragingReliefFeature, ResidenceAndRemittanceFeature, TrustsAndEstatesFeature}
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
 
 @this(
@@ -88,12 +88,26 @@
                   content = Text(messages("additional.income.source-foreign-interest")),
                   value = ForeignInterest.key
                )
-           ) ++ (if(featureSwitching.isEnabled(AveragingReliefFeature)) {
-             Seq(CheckboxItem(
-               content = Text(messages("additional.income.source-averaging-relief")),
-               value = AveragingRelief.key
-             ))
-           } else Seq.empty) ++ Seq(
+           )
+            ++ (if(featureSwitching.isEnabled(AveragingReliefFeature)) {
+                    Seq(CheckboxItem(
+                        content = Text(messages("additional.income.source-averaging-relief")),
+                        value = AveragingRelief.key
+                    ))
+                } else Seq.empty)
+            ++ (if(featureSwitching.isEnabled(ResidenceAndRemittanceFeature)) {
+                    Seq(CheckboxItem(
+                        content = Text(messages("additional.income.source-residence-and-remittance")),
+                        value = ResidenceAndRemittance.key
+                    ))
+                } else Seq.empty)
+            ++ (if(featureSwitching.isEnabled(TrustsAndEstatesFeature)) {
+                    Seq(CheckboxItem(
+                        content = Text(messages("additional.income.source-trusts-and-estates")),
+                        value = TrustsAndEstates.key
+                    ))
+                } else Seq.empty)
+            ++ Seq(
                CheckboxItem(divider = Some(messages("base.or"))),
                CheckboxItem(
                  content   = Text(messages("additional.income.source-none")),

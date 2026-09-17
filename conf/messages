@@ -234,6 +234,8 @@ product-details.other-income.payments-into-a-private-pension = Private pension c
 product-details.other-income.marriage-allowance = Marriage Allowance
 product-details.other-income.partner-income = Partner income from a partnership
 product-details.other-income.averaging-relief = Averaging relief
+product-details.other-income.residence-and-remittance = Residence and Remittance
+product-details.other-income.trusts-and-estates = Trusts and Estates
 
 product-details.features-group.heading = What each feature status means
 product-details.status.heading = Status
@@ -282,6 +284,8 @@ additional.income.source-partner-income                             = Partner in
 additional.income.source-foreign-dividends                          = Foreign dividends
 additional.income.source-foreign-interest                           = Foreign interest
 additional.income.source-averaging-relief                           = Averaging relief
+additional.income.source-residence-and-remittance                   = Residence and Remittance
+additional.income.source-trusts-and-estates                         = Trusts and Estates
 additional.income.source-none                                       = None of these
 additional.income.source.error-non-empty                            = Select income you need to submit in your tax return or select ‘none of these’
 additional.income.source.error-none-only                            = Select income or select ‘none of these’

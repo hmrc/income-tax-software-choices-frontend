@@ -26,13 +26,17 @@
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTemplate
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.{Available, Intended, NotApplicable}
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.{AveragingReliefFeature, ResidenceAndRemittanceFeature, TrustsAndEstatesFeature}
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
+
 
 @this(
         mainTemplate: MainTemplate,
         hmrcNewTabLinkHelper: HmrcNewTabLinkHelper,
         govukSummaryList: GovukSummaryList,
         govukTable: GovukTable,
-        govukTag: GovukTag
+        govukTag: GovukTag,
+        featureSwitching: FeatureSwitching
 )(implicit appConfig: AppConfig)
 @(softwareVendor: SoftwareVendorModel, backLink: String)(implicit request: Request[_], messages: Messages)
 
@@ -61,7 +65,7 @@
         @table(businessIncomeGroup, "business-income", displayIntent = false)
 
         <h2 class="govuk-heading-m">@messages("product-details.tax-return.heading")</h2>
-        @table(nonMandatedIncomeGroup, "other-income", displayIntent = true)
+        @table(adjustNonMandatedIncomeGroupForFeatureSwitches, "other-income", displayIntent = true)
     </div>
 
     @defining({
@@ -221,4 +225,26 @@
     )
   )
   </div>
+}
+
+@adjustNonMandatedIncomeGroupForFeatureSwitches = @{
+    val adjustedForAveragingRelief = if (featureSwitching.isEnabled(AveragingReliefFeature)) {
+        nonMandatedIncomeGroup
+    } else {
+        nonMandatedIncomeGroup.filter(f => !f.equals(AveragingRelief))
+    }
+
+    val adjustedForResidenceAndRemittance = if (featureSwitching.isEnabled(ResidenceAndRemittanceFeature)) {
+        adjustedForAveragingRelief
+    } else {
+        adjustedForAveragingRelief.filter(f => !f.equals(ResidenceAndRemittance))
+    }
+
+    val adjustedForTrustsAndEstates = if (featureSwitching.isEnabled(TrustsAndEstatesFeature)) {
+        adjustedForResidenceAndRemittance
+    } else {
+        adjustedForResidenceAndRemittance.filter(f => !f.equals(TrustsAndEstates))
+    }
+
+    adjustedForTrustsAndEstates
 }
