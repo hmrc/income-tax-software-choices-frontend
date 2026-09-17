@@ -23,6 +23,7 @@
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{OverseasProperty, SoleTrader, UkProperty}
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTemplate
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.helpers._
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.helpers.QuestionPageCheckboxItemsBuilder.buildCheckboxes
 
 @this(
         mainTemplate: MainTemplate,
@@ -56,19 +57,9 @@
             hint = Some(Hint(
                 content = Text(messages("business-income.hint"))
             )),
-            items = Seq(
-                CheckboxItem(
-                    content = Text(messages("business-income.sole-trader")),
-                    value = SoleTrader.key
-                ),
-                CheckboxItem(
-                    content = Text(messages("business-income.uk-property")),
-                    value = UkProperty.key
-                ),
-                CheckboxItem(
-                    content = Text(messages("business-income.overseas-property")),
-                    value = OverseasProperty.key
-                )
+            items = buildCheckboxes(
+                checkboxItems = Seq(SoleTrader, UkProperty, OverseasProperty),
+                messagesPrefix = "business-income"
             )
         ).withFormField(businessIncomeForm(BusinessIncomeForm.formKey)))
 

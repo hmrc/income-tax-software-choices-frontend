@@ -5,6 +5,7 @@ base.error-heading          = Mae problem
 base.continue               = Parhau
 base.confirm-continue       = Cadarnhau a pharhau
 base.or                     = neu
+base.none-of-these          = Dim un o’r rhain
 base.change                 = Newid
 base.find.compatible        = Dewch o hyd i feddalwedd sy’n cydweddu
 
@@ -82,7 +83,6 @@ other-items.student-loans = Benthyciad myfyriwr
 other-items.marriage-allowance = Lwfans Priodasol
 other-items.voluntary-class-2-national-insurance = Yswiriant Gwladol Dosbarth 2 Gwirfoddol
 other-items.high-income-child-benefit-charge = Tâl Treth Budd-dal Plant Incwm Uchel
-other-items.none-of-these = Dim un o’r rhain
 
 other-items.error.non-empty = Dewiswch eitemau y mae angen i chi eu cyflwyno gyda’ch Ffurflen Dreth neu dewiswch ‘dim o’r rhain’
 other-items.error.invalid-selection = Dewiswch eitemau neu dewiswch ‘dim un o’r rhain’
@@ -268,21 +268,20 @@ product-details.mobile-app.apple-ios = Apple iOS
 product-details.language.english = Saesneg
 
 # Other Income Sources Page
-additional.income.source-heading                                    = Pa rai o’r ffynonellau incwm canlynol y mae angen i chi eu cyflwyno yn eich Ffurflen Dreth?
-additional.income.source-para                                       = Gallwch hefyd ddewis incwm rydych chi’n disgwyl ei gyflwyno yn y dyfodol, fel y gallwn argymell meddalwedd sy’n diwallu’ch anghenion.
-additional.income.source-hint                                       = Dewiswch bob un sy’n berthnasol
-additional.income.source-uk-interest                                = Llog yn y DU
-additional.income.source-construction-industry-scheme               = Cynllun y Diwydiant Adeiladu
-additional.income.source-employment                                 = Cyflogaeth (TWE)
-additional.income.source-uk-dividends                               = Difidendau’r DU
-additional.income.source-state-pension-income                       = Incwm o Bensiwn y Wladwriaeth
-additional.income.source-private-pension-income                     = Incwm o bensiwn preifat
-additional.income.source-partner-income                             = Incwm partner o bartneriaeth
-additional.income.source-foreign-dividends                          = Difidendau tramor
-additional.income.source-foreign-interest                           = Llog tramor
-additional.income.source-none                                       = Dim un o’r rhain
-additional.income.source.error-non-empty                            = Dewiswch incwm y mae angen i chi ei gyflwyno yn eich Ffurflen Dreth neu dewiswch ‘dim un o’r rhain’
-additional.income.source.error-none-only                            = Dewiswch incwm neu dewiswch ‘dim un o’r rhain’
+additional-income-source.heading                                    = Pa rai o’r ffynonellau incwm canlynol y mae angen i chi eu cyflwyno yn eich Ffurflen Dreth?
+additional-income-source.para                                       = Gallwch hefyd ddewis incwm rydych chi’n disgwyl ei gyflwyno yn y dyfodol, fel y gallwn argymell meddalwedd sy’n diwallu’ch anghenion.
+additional-income-source.hint                                       = Dewiswch bob un sy’n berthnasol
+additional-income-source.uk-interest                                = Llog yn y DU
+additional-income-source.construction-industry-scheme               = Cynllun y Diwydiant Adeiladu
+additional-income-source.employment                                 = Cyflogaeth (TWE)
+additional-income-source.uk-dividends                               = Difidendau’r DU
+additional-income-source.state-pension-income                       = Incwm o Bensiwn y Wladwriaeth
+additional-income-source.private-pension-income                     = Incwm o bensiwn preifat
+additional-income-source.partner-income                             = Incwm partner o bartneriaeth
+additional-income-source.foreign-dividends                          = Difidendau tramor
+additional-income-source.foreign-interest                           = Llog tramor
+additional-income-source.error-non-empty                            = Dewiswch incwm y mae angen i chi ei gyflwyno yn eich Ffurflen Dreth neu dewiswch ‘dim un o’r rhain’
+additional-income-source.error-none-only                            = Dewiswch incwm neu dewiswch ‘dim un o’r rhain’
 
 timeout.title = Er eich diogelwch
 timeout.message = Byddwn yn dileu’ch atebion mewn

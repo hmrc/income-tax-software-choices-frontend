@@ -22,6 +22,7 @@
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTemplate
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.AdditionalIncomeForm
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.helpers._
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.helpers.QuestionPageCheckboxItemsBuilder.buildCheckboxes
 
 @this(
     mainTemplate: MainTemplate,
@@ -33,64 +34,38 @@
 
 @(additionalIncomeForm: Form[Seq[VendorFilter]], postAction: Call, backUrl: String, softwareName: Option[String])(implicit request: Request[_], messages: Messages)
 
-@mainTemplate(messages("additional.income.source-heading"), optForm = Some(additionalIncomeForm), backLink = Some(backUrl)) {
+@mainTemplate(messages("additional-income-source.heading"), optForm = Some(additionalIncomeForm), backLink = Some(backUrl)) {
 
     @captionHelper(softwareName)
 
-   <h1 class="govuk-heading-l">@messages("additional.income.source-heading")</h1>
+   <h1 class="govuk-heading-l">@messages("additional-income-source.heading")</h1>
 
-   <p class ="govuk-body">@messages("additional.income.source-para")</p>
+   <p class ="govuk-body">@messages("additional-income-source.para")</p>
 
 @form(action = postAction) {
 
         @govukCheckboxes(Checkboxes(
             fieldset = Some(Fieldset(
                 legend = Some(Legend(
-                    content = Text(messages("additional.income.source-heading")),
+                    content = Text(messages("additional-income-source.heading")),
                     classes = "govuk-visually-hidden govuk-!-display-block",
                     isPageHeading = false
                 ))
             )),
-            hint = Some(Hint(content = Text(messages("additional.income.source-hint")))),
-            items = Seq(
-                CheckboxItem(
-                    content = Text(messages("additional.income.source-uk-interest")),
-                    value = UkInterest.key
+            hint = Some(Hint(content = Text(messages("additional-income-source.hint")))),
+            items = buildCheckboxes(
+                checkboxItems = Seq(
+                    UkInterest,
+                    Employment,
+                    UkDividends,
+                    StatePensionIncome,
+                    PrivatePensionIncome,
+                    PartnerIncome,
+                    ForeignDividends,
+                    ForeignInterest
                 ),
-                CheckboxItem(
-                    content = Text(messages("additional.income.source-employment")),
-                    value = Employment.key
-                ),
-                CheckboxItem(
-                    content = Text(messages("additional.income.source-uk-dividends")),
-                    value = UkDividends.key
-                ),
-                CheckboxItem(
-                    content = Text(messages("additional.income.source-state-pension-income")),
-                    value = StatePensionIncome.key
-                ),
-                CheckboxItem(
-                    content = Text(messages("additional.income.source-private-pension-income")),
-                    value = PrivatePensionIncome.key
-                ),
-                CheckboxItem(
-                    content = Text(messages("additional.income.source-partner-income")),
-                    value = PartnerIncome.key
-               ),
-               CheckboxItem(
-                   content = Text(messages("additional.income.source-foreign-dividends")),
-                   value = ForeignDividends.key
-               ),
-               CheckboxItem(
-                  content = Text(messages("additional.income.source-foreign-interest")),
-                  value = ForeignInterest.key
-                ),
-               CheckboxItem(divider = Some(messages("base.or"))),
-               CheckboxItem(
-                 content   = Text(messages("additional.income.source-none")),
-                 value     = "none",
-                 behaviour = Some(ExclusiveCheckbox)
-               )
+                messagesPrefix = "additional-income-source",
+                addNoneOfThese = true
             )
         ).withFormField(additionalIncomeForm(AdditionalIncomeForm.formKey)))
 

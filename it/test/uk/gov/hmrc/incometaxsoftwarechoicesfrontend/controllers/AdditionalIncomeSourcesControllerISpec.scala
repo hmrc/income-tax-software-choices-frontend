@@ -50,7 +50,7 @@ class AdditionalIncomeSourcesControllerISpec extends ComponentSpecBase with Befo
 
         res should have(
           httpStatus(OK),
-          pageTitle(s"${messages("additional.income.source-heading")} - ${PageContentBase.title} - GOV.UK"),
+          pageTitle(s"${messages("additional-income-source.heading")} - ${PageContentBase.title} - GOV.UK"),
           checkboxSelected("additionalIncome", None),
           checkboxSelected("additionalIncome-2", None),
           checkboxSelected("additionalIncome-3", None),
@@ -72,7 +72,7 @@ class AdditionalIncomeSourcesControllerISpec extends ComponentSpecBase with Befo
 
         res should have(
           httpStatus(OK),
-          pageTitle(s"${messages("additional.income.source-heading")} - ${PageContentBase.title} - GOV.UK"),
+          pageTitle(s"${messages("additional-income-source.heading")} - ${PageContentBase.title} - GOV.UK"),
           checkboxSelected("additionalIncome", Some(UkInterest.key)),
           checkboxSelected("additionalIncome-2", Some(Employment.key)),
           checkboxSelected("additionalIncome-3", Some(UkDividends.key)),
@@ -94,7 +94,7 @@ class AdditionalIncomeSourcesControllerISpec extends ComponentSpecBase with Befo
 
         res should have(
           httpStatus(OK),
-          pageTitle(s"${messages("additional.income.source-heading")} - ${PageContentBase.title} - GOV.UK"),
+          pageTitle(s"${messages("additional-income-source.heading")} - ${PageContentBase.title} - GOV.UK"),
           checkboxSelected("additionalIncome", None),
           checkboxSelected("additionalIncome-2", None),
           checkboxSelected("additionalIncome-3", None),
@@ -209,7 +209,7 @@ class AdditionalIncomeSourcesControllerISpec extends ComponentSpecBase with Befo
 
         res should have(
           httpStatus(BAD_REQUEST),
-          pageTitle(s"Error: ${messages("additional.income.source-heading")} - ${PageContentBase.title} - GOV.UK")
+          pageTitle(s"Error: ${messages("additional-income-source.heading")} - ${PageContentBase.title} - GOV.UK")
         )
 
         getPageData(SessionId, AdditionalIncomeSourcesPage) shouldBe None
@@ -223,7 +223,7 @@ class AdditionalIncomeSourcesControllerISpec extends ComponentSpecBase with Befo
 
         res should have(
           httpStatus(BAD_REQUEST),
-          pageTitle(s"Error: ${messages("additional.income.source-heading")} - ${PageContentBase.title} - GOV.UK")
+          pageTitle(s"Error: ${messages("additional-income-source.heading")} - ${PageContentBase.title} - GOV.UK")
         )
 
         getPageData(SessionId, AdditionalIncomeSourcesPage) shouldBe None

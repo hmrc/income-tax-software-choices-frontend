@@ -28,8 +28,8 @@ object AdditionalIncomeForm {
 
   private val initialIncome: Mapping[Seq[String]] =
     seq(text)
-      .verifying(nonEmptySeq("additional.income.source.error-non-empty"))
-      .verifying("additional.income.source.error-none-only", page => !(page.contains(noneKey) && page.size > 1)
+      .verifying(nonEmptySeq("additional-income-source.error-non-empty"))
+      .verifying("additional-income-source.error-none-only", page => !(page.contains(noneKey) && page.size > 1)
       )
 
   val form: Form[Seq[VendorFilter]] = Form(

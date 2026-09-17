@@ -27,8 +27,8 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.AdditionalIncomeS
 class AdditionalIncomeSourceViewSpec extends ViewSpec  with BeforeAndAfterEach {
   private val view = app.injector.instanceOf[AdditionalIncomeSourceView]
 
-  private val formEmpty: FormError = FormError("additionalIncome", "additional.income.source.error-non-empty")
-  private val formNoneOnly: FormError = FormError("additionalIncome", "additional.income.source.error-none-only")
+  private val formEmpty: FormError = FormError("additionalIncome", "additional-income-source.error-non-empty")
+  private val formNoneOnly: FormError = FormError("additionalIncome", "additional-income-source.error-none-only")
   private val SoftwareName = "Bright"
 
   def page(hasError: Boolean = false): HtmlFormat.Appendable = {

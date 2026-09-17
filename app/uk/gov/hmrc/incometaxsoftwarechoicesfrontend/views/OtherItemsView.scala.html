@@ -23,6 +23,7 @@
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTemplate
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.helpers._
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.helpers.QuestionPageCheckboxItemsBuilder.buildCheckboxes
 
 @this(
         mainTemplate: MainTemplate,
@@ -55,47 +56,19 @@
             hint = Some(Hint(
                 content = Text(messages("other-items.hint"))
             )),
-            items = Seq(
-                CheckboxItem(
-                    content = Text(messages("other-items.payments-into-a-private-pension")),
-                    value = PaymentsIntoAPrivatePension.key
+            items = buildCheckboxes(
+                checkboxItems = Seq(
+                    PaymentsIntoAPrivatePension,
+                    ConstructionIndustryScheme,
+                    CharitableGiving,
+                    CapitalGainsTax,
+                    StudentLoans,
+                    MarriageAllowance,
+                    VoluntaryClass2NationalInsurance,
+                    HighIncomeChildBenefitCharge
                 ),
-                CheckboxItem(
-                    content = Text(messages("other-items.construction-industry-scheme")),
-                    value = ConstructionIndustryScheme.key
-                ),
-                CheckboxItem(
-                    content = Text(messages("other-items.charitable-giving")),
-                    value = CharitableGiving.key
-                ),
-                CheckboxItem(
-                    content = Text(messages("other-items.capital-gains-tax")),
-                    value = CapitalGainsTax.key
-                ),
-                CheckboxItem(
-                    content = Text(messages("other-items.student-loans")),
-                    value = StudentLoans.key
-                ),
-                CheckboxItem(
-                    content = Text(messages("other-items.marriage-allowance")),
-                    value = MarriageAllowance.key
-                ),
-                CheckboxItem(
-                    content = Text(messages("other-items.voluntary-class-2-national-insurance")),
-                    value = VoluntaryClass2NationalInsurance.key
-                ),
-                CheckboxItem(
-                    content = Text(messages("other-items.high-income-child-benefit-charge")),
-                    value = HighIncomeChildBenefitCharge.key
-                ),
-               CheckboxItem(
-                  divider = Some(messages("base.or"))
-               ),
-               CheckboxItem(
-                  content = Text(messages("other-items.none-of-these")),
-                  value = "none",
-                  behaviour = Some(ExclusiveCheckbox)
-               )
+                messagesPrefix = "other-items",
+                addNoneOfThese = true
             )
         ).withFormField(otherItemsForm(OtherItemsForm.formKey)))
 
@@ -104,4 +77,3 @@
         ))
     }
 }
-

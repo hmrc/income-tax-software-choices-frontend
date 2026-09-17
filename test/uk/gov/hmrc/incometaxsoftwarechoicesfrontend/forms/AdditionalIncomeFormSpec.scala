@@ -105,7 +105,7 @@ class AdditionalIncomeFormSpec extends PlaySpec {
         val bound = AdditionalIncomeForm.form.bindFromRequest(answers)
         bound.value mustBe None
         bound.errors must contain(
-          FormError("additionalIncome", "additional.income.source.error-non-empty")
+          FormError("additionalIncome", "additional-income-source.error-non-empty")
         )
       }
 
@@ -121,7 +121,7 @@ class AdditionalIncomeFormSpec extends PlaySpec {
         val bound = AdditionalIncomeForm.form.bindFromRequest(answers)
         bound.value mustBe None
         bound.errors must contain(
-          FormError("additionalIncome", "additional.income.source.error-none-only")
+          FormError("additionalIncome", "additional-income-source.error-none-only")
         )
       }
     }

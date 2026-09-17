@@ -25,6 +25,8 @@
 @import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcNewTabLinkHelper
 @import uk.gov.hmrc.hmrcfrontend.views.viewmodels.newtablinkhelper.NewTabLinkHelper
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.helpers._
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.helpers.QuestionPageCheckboxItemsBuilder.buildCheckboxes
+
 
 @this(
   mainTemplate: MainTemplate,
@@ -65,19 +67,9 @@
           ))
         )),
         hint = Some(Hint(content = Text(messages("accounting-period.hint")))),
-        items = Seq(
-          CheckboxItem(
-            content = Text(messages(s"accounting-period.${SixthAprilToFifthApril.key}")),
-            value = SixthAprilToFifthApril.key
-          ),
-          CheckboxItem(
-            content = Text(messages(s"accounting-period.${FirstAprilToThirtyFirstMarch.key}")),
-            value = FirstAprilToThirtyFirstMarch.key
-          ),
-          CheckboxItem(
-            content   = Text(messages(s"accounting-period.${OtherAccountingPeriod.key}")),
-            value     = OtherAccountingPeriod.key
-          )
+        items = buildCheckboxes(
+            checkboxItems = Seq(SixthAprilToFifthApril, FirstAprilToThirtyFirstMarch, OtherAccountingPeriod),
+            messagesPrefix = "accounting-period"
         )
       ).withFormField(accountingPeriodForm(formKey)))
 
