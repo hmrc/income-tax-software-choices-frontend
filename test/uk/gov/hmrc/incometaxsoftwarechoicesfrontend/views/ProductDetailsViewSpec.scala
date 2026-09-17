@@ -628,7 +628,7 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
       }
 
       "has the getting started text" in {
-        document.select(".app-grey-box > p").text shouldBe ProductDetailsPage.gettingStartedText
+        document.select(".app-getting-started-box > p").text shouldBe ProductDetailsPage.gettingStartedText
       }
 
       "has a link to sign up for MTD" in {
