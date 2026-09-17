@@ -202,4 +202,7 @@ legend.govuk-hidden {
 
 .app-grey-box {
     background-color: govuk-colour("light-grey");
+#ciapiSkinContainer {
+  position: fixed;
+  z-index: 10;
 }
