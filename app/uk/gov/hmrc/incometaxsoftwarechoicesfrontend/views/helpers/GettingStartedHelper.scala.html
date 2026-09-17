@@ -24,19 +24,17 @@ hmrcNewTabLinkHelper: HmrcNewTabLinkHelper
 
 @()(implicit messages: Messages)
 
-<div class="govuk-!-width-two-thirds govuk-!-padding-0">
+<div class="app-getting-started-box govuk-!-width-two-thirds">
  <h2 class="govuk-heading-m">@messages("product-details.getting-started")</h2>
- <div class="app-grey-box govuk-!-padding-4">
-  <p class="govuk-body">@messages("product-details.getting-started.text")</p>
-  <ul class="govuk-list govuk-list--bullet">
-   <li class="govuk-!-margin-bottom-3">@hmrcNewTabLinkHelper(NewTabLinkHelper(
-    text = messages("product-details.getting-started.sign-up"),
-    href = Some(appConfig.individualSignUpForMtdUrl)
-    ))</li>
-   <li class="govuk-!-margin-bottom-3">@hmrcNewTabLinkHelper(NewTabLinkHelper(
-    text = messages("product-details.getting-started.authorise"),
-    href = Some(appConfig.getSoftwareReadyUrl)
-    ))</li>
-  </ul>
- </div>
+ <p class="govuk-body">@messages("product-details.getting-started.text")</p>
+ <ul class="govuk-list govuk-list--bullet">
+  <li class="govuk-!-margin-bottom-3">@hmrcNewTabLinkHelper(NewTabLinkHelper(
+   text = messages("product-details.getting-started.sign-up"),
+   href = Some(appConfig.individualSignUpForMtdUrl)
+   ))</li>
+  <li class="govuk-!-margin-bottom-3">@hmrcNewTabLinkHelper(NewTabLinkHelper(
+   text = messages("product-details.getting-started.authorise"),
+   href = Some(appConfig.getSoftwareReadyUrl)
+   ))</li>
+ </ul>
 </div>
