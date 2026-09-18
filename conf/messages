@@ -104,9 +104,10 @@ check-your-answers.software-not-listed                 = Software not listed
 
 
 # Search software page
-search-software.heading.many = You have {0} software results
-search-software.heading.one  = You have 1 software result
-search-software.p1           = Results are shown in random order for fairness.
+search-software.heading.many  = You have {0} software results
+search-software.heading.one   = You have 1 software result
+search-software.warning-text  = HMRC does not recommend any specific product and is not responsible for availability or whether the software meets a particular current or future need. All software has passed HMRC’s recognition process.
+search-software.p1            = Results are shown in random order for fairness.
 
 search-software.skip-to-results                           = Skip to results
 

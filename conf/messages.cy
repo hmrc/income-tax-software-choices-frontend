@@ -106,6 +106,7 @@ check-your-answers.software-not-listed                 = Meddalwedd heb ei rhest
 # Search software page
 search-software.heading.many                              = Mae gennych {0} canlyniad meddalwedd
 search-software.heading.one                               = Mae gennych 1 canlyniad meddalwedd
+search-software.warning-text                              = Nid yw CThEF yn argymell unrhyw gynnyrch penodol ac nid yw’n gyfrifol am argaeledd y feddalwedd na ph’un a yw’r feddalwedd yn bodloni anghenions penodol presennol, neu anghenions penodol yn y dyfodol. Mae’r holl feddalwedd wedi pasio proses gydnabod CThEF.
 search-software.p1                                        = Er tegwch, bydd y canlyniadau yn ymddangos mewn trefn ar hap.
 
 search-software.skip-to-results                           = Ewch yn syth i’r canlyniadau

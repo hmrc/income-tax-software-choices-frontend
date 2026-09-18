@@ -444,6 +444,9 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
           documentNoResults.mainContent.selectHead("h1").text shouldBe SearchSoftwareWithIntentPageContent.heading(0)
         }
       }
+      "not have a warning message" in {
+        documentManyResults.select(".govuk-warning-text").isEmpty
+      }
       "have first paragraph" in {
         documentManyResults.mainContent.selectNth("p", 1).text shouldBe SearchSoftwareWithIntentPageContent.para1
       }
@@ -581,6 +584,9 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
           documentAgentNoResults.mainContent.selectHead("h1").text shouldBe SearchSoftwareWithIntentPageContent.heading(0)
         }
       }
+        "have a warning message" in {
+          documentAgentMany.select(".govuk-warning-text").text() shouldBe SearchSoftwareWithIntentPageContent.warningText
+        }
         "has first paragraph" in {
           documentAgentMany.mainContent.selectNth("p", 1).text shouldBe SearchSoftwareWithIntentPageContent.para1
         }
@@ -750,6 +756,7 @@ private object SearchSoftwareWithIntentPageContent {
   }
 
   val heading = "Software results based on your answers and filters"
+  val warningText = "! Warning HMRC does not recommend any specific product and is not responsible for availability or whether the software meets a particular current or future need. All software has passed HMRC’s recognition process."
   val para1 = "Results are shown in random order for fairness."
 
   val agent = "Agent"
