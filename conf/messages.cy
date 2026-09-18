@@ -204,7 +204,10 @@ product-details.features-provided.agent = Meddalwedd asiant
 product-details.features-provided.individual = Meddalwedd unigolyn
 product-details.features-provided.hmrc-assist = HMRC Assist (Adborth wrth gyflwyno)
 product-details.features-provided.free-version = Fersiwn am ddim
-
+product-details.getting-started = Dechrau arni â’r feddalwedd hon
+product-details.getting-started.text = Os nad yw wedi’i wneud eisoes, bydd angen gwneud y canlynol:
+product-details.getting-started.sign-up = cofrestru ar gyfer y cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm (yn agor tab newydd)
+product-details.getting-started.authorise = awdurdodi’r feddalwedd hon i CThEF (yn agor tab newydd)
 product-details.language.welsh = Cymraeg
 
 product-details.quarterly-updates.heading = Yr hyn sydd ei angen arnoch ar gyfer eich diweddariadau chwarterol
