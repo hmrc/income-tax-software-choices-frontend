@@ -331,7 +331,7 @@ object VendorFilter {
     override val auditDescription: String = "fully-ready"
   }
 
-  val filterKeyToFilter: Map[String, VendorFilter] = Seq(
+  val allFilters = Seq(
     FreeVersion,
     QuarterlyUpdates,
     TaxReturn,
@@ -380,7 +380,9 @@ object VendorFilter {
     Welsh,
     HMRCAssist,
     FullyReady
-  ).map(value => value.key -> value).toMap
+  )
+
+  val filterKeyToFilter: Map[String, VendorFilter] = allFilters.map(value => value.key -> value).toMap
 
   implicit val reads: Reads[VendorFilter] = __.read[String] map filterKeyToFilter
   implicit val writes: Writes[VendorFilter] = Writes(JsString(_))
@@ -406,7 +408,7 @@ object VendorFilterGroups {
     RecordKeeping
   )
 
-  val accessibilityFilters: Set[VendorFilter] = Set(
+  val accessibilityFilters: Seq[VendorFilter] = Seq(
     Visual,
     Hearing,
     Motor,
@@ -442,7 +444,7 @@ object VendorFilterGroups {
     Apple
   )
 
-  val languageFilter: Set[VendorFilter] = Set(
+  val languageFilters: Set[VendorFilter] = Set(
     English, Welsh
   )
 
@@ -485,15 +487,20 @@ object VendorFilterGroups {
   // product details page groups //
   def featuresProvidedGroup: List[VendorFilter] = List(
     FreeVersion,
-    RecordKeeping,
-    Bridging,
     Agent,
     Individual,
-    HMRCAssist,
     StandardUpdatePeriods,
-    CalendarUpdatePeriods
+    CalendarUpdatePeriods,
+    RecordKeeping,
+    Bridging,
+    Vat,
+    Visual,
+    Hearing,
+    Motor,
+    Cognitive,
+    HMRCAssist
   )
-  
+
   val businessIncomeGroup: List[VendorFilter] = List(
     SoleTrader,
     UkProperty,
@@ -521,7 +528,7 @@ object VendorFilterGroups {
       readinessGroup ++
       Seq((softwareForFilters, "software-for")) ++
       Seq((compatibility, "software-compatibility")) ++
-      Seq((accessibilityFilters, "accessibility")) ++
+      Seq((accessibilityFilters.toSet, "accessibility")) ++
       Seq((applicationTypeFilters, "software-application-type")) ++
       Seq((languageFeature, "language-features")) ++
       Seq((extraFeatures, "extra-features"))
@@ -541,6 +548,6 @@ object VendorFilterGroups {
   val mandatoryFilterGroup: List[VendorFilter] =
     businessIncomeGroup ++ userTypeFilters ++ accountingPeriodFilters ++ pricingFilters ++
       compatibility ++ accessibilityFilters ++ softwareForFilters ++ extraFeatures ++
-      languageFilter ++ applicationTypeFilters
-  
+      languageFilters ++ applicationTypeFilters
+
 }
