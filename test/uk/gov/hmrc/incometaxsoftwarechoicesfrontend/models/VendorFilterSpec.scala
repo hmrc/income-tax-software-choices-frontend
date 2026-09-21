@@ -30,7 +30,6 @@ class VendorFilterSpec extends PlaySpec {
       softwareForFilters,
       compatibility,
       accessibilityFilters,
-      applicationTypeFilters,
       extraFeatures,
       languageFeature
     ).flatten.distinct

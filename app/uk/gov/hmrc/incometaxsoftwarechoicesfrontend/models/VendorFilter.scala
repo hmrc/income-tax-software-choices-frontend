@@ -522,7 +522,6 @@ object VendorFilterGroups {
       Seq((softwareForFilters, "software-for")) ++
       Seq((compatibility, "software-compatibility")) ++
       Seq((accessibilityFilters, "accessibility")) ++
-      Seq((applicationTypeFilters, "software-application-type")) ++
       Seq((languageFeature, "language-features")) ++
       Seq((extraFeatures, "extra-features"))
   }
@@ -541,6 +540,6 @@ object VendorFilterGroups {
   val mandatoryFilterGroup: List[VendorFilter] =
     businessIncomeGroup ++ userTypeFilters ++ accountingPeriodFilters ++ pricingFilters ++
       compatibility ++ accessibilityFilters ++ softwareForFilters ++ extraFeatures ++
-      languageFilter ++ applicationTypeFilters
+      languageFilter
   
 }
