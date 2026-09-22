@@ -36,8 +36,7 @@
         govukTag: GovukTag,
         gettingStartedHelper: uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.helpers.GettingStartedHelper
 )(implicit appConfig: AppConfig)
-
-@(softwareVendor: SoftwareVendorModel, backLink: String, finalFilters: Option[Seq[VendorFilter]] = None)(implicit request: Request[_], messages: Messages)
+@(softwareVendor: SoftwareVendorModel, backLink: String, userType: Option[UserType], finalFilters: Option[Seq[VendorFilter]] = None)(implicit request: Request[_], messages: Messages)
 
 @mainTemplate(title = softwareVendor.name, backLink = Some(backLink), isFullWidth = true) {
 
@@ -69,13 +68,13 @@
             </div>
         }
     }
-     @gettingStartedHelper()
-         <p class="govuk-body">
-            @hmrcNewTabLinkHelper(NewTabLinkHelper(
+    @gettingStartedHelper(userType)
+    <p class="govuk-body">
+        @hmrcNewTabLinkHelper(NewTabLinkHelper(
             text = messages("exit-survey.link"),
             href = Some(appConfig.feedbackUrl),
             classList = Some("govuk-!-display-none-print")
-         ))
+        ))
     </p>
 }
 
