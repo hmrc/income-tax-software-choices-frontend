@@ -17,12 +17,22 @@
 @import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcNewTabLinkHelper
 @import uk.gov.hmrc.hmrcfrontend.views.viewmodels.newtablinkhelper.NewTabLinkHelper
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.{SoleTraderOrLandlord, Agent}
 
 @this(
 hmrcNewTabLinkHelper: HmrcNewTabLinkHelper
 )(implicit appConfig: AppConfig)
 
-@()(implicit messages: Messages)
+@(userType: Option[UserType])(implicit messages: Messages)
+
+@signUpUrl = @{
+       userType match {
+           case Some(SoleTraderOrLandlord) => appConfig.individualSignUpForMtdUrl
+           case Some(Agent)                => appConfig.agentSignUpForMtdUrl
+           case None                       => appConfig.unspecifiedSignUpForMtdUrl
+      }
+}
 
 <div class="app-getting-started-box govuk-!-width-two-thirds">
  <h2 class="govuk-heading-m">@messages("product-details.getting-started")</h2>
@@ -30,7 +40,7 @@ hmrcNewTabLinkHelper: HmrcNewTabLinkHelper
  <ul class="govuk-list govuk-list--bullet">
   <li class="govuk-!-margin-bottom-3">@hmrcNewTabLinkHelper(NewTabLinkHelper(
    text = messages("product-details.getting-started.sign-up"),
-   href = Some(appConfig.individualSignUpForMtdUrl)
+   href = Some(signUpUrl)
    ))</li>
   <li class="govuk-!-margin-bottom-3">@hmrcNewTabLinkHelper(NewTabLinkHelper(
    text = messages("product-details.getting-started.authorise"),
