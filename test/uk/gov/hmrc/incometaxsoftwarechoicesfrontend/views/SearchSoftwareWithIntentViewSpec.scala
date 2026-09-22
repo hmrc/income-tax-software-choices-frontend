@@ -114,10 +114,6 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
       filterSection.selectHead("h2").text shouldBe SearchSoftwareWithIntentPageContent.Filters.filterHeading
     }
 
-    "has a paragraph" in {
-      filterSection.selectHead("p").text shouldBe SearchSoftwareWithIntentPageContent.Filters.filterParagraph
-    }
-
     "has 2 clear filters links" in {
       val anchorElements = filterSection.select("a")
       anchorElements.size() shouldBe 2
@@ -269,7 +265,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
           1,
           HMRCAssist.key,
           SearchSoftwareWithIntentPageContent.hmrcAssist,
-          None
+          Some(SearchSoftwareWithIntentPageContent.hmrcAssistHint)
         )
       }
     }
@@ -705,21 +701,20 @@ private object SearchSoftwareWithIntentPageContent {
 
   object Filters {
     val filterHeading = "Filter software"
-    val filterParagraph = "You can use the filters to refine your results."
     val clearFilters = "Clear filters"
     val userType = "User type"
     val pricing = "Price"
     val readiness = "Software readiness"
     val suitableFor = "Income sources"
     val softwareFor = "Type of software"
-    val softwareCompatibility = "Making Tax Digital Compatibility"
+    val softwareCompatibility = "Making Tax Digital for VAT"
     val accessibilityFeatures = "Accessibility features"
     val extraFeatures = "Extra features"
     val language = "Language"
     val applyFilters = "Apply filters"
   }
 
-  val heading = "Software results based on your answers and filters"
+  val heading = "Software results based on answers and filters"
   val warningText = "! Warning HMRC does not recommend any specific product and is not responsible for availability or whether the software meets a particular current or future need. All software has passed HMRC’s recognition process."
   val para1 = "Results are shown in random order for fairness."
 
@@ -749,7 +744,7 @@ private object SearchSoftwareWithIntentPageContent {
   val inDevelopment = "In development"
   val notIncluded = "Not included"
 
-  val vat = "VAT"
+  val vat = "VAT compatible"
 
   val visual = "Blindness or impaired vision"
   val hearing = "Deafness or impaired hearing"
@@ -757,6 +752,7 @@ private object SearchSoftwareWithIntentPageContent {
   val cognitive = "Cognitive impairments"
 
   val hmrcAssist = "HMRC Assist (Submission Feedback)"
+  val hmrcAssistHint = "Helps identify potential mistakes when completing a tax return"
   val welsh = "Welsh"
 
   val fullyReady = "Ready for quarterly updates and tax return"
