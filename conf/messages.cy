@@ -317,7 +317,8 @@ exit-survey.link = Rhoi adborth ar y gwasanaeth hwn
 
 # Not Listed Software
 not-listed-software.title = Nid yw’r feddalwedd hon yn cael ei chydnabod ar gyfer Troi Treth yn Ddigidol ar gyfer Treth Incwm
-not-listed-software.para1 = Mae’n bosibl y byddwch eisiau cysylltu â’ch darparwr meddalwedd presennol er mwyn gweld a ydynt am fod yn cefnogi Troi Treth yn Ddigidol ar gyfer Treth Incwm. Gallwch hefyd chwilio am becynnau meddalwedd eraill er mwyn gweld a ydynt yn addas.
+not-listed-software.para1 = Efallai y byddwch am ofyn i’r darparwr meddalwedd hwn a yw’n bwriadu datblygu nodweddion i gefnogi’r cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm.
+not-listed-software.para2 = Gallwch hefyd chwilio am becynnau meddalwedd eraill sy’n cydweddu â’r cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm er mwyn gweld a ydynt yn addas.
 
 # Enter Software Name
 enter-software-name.heading = Beth yw enw eich meddalwedd?

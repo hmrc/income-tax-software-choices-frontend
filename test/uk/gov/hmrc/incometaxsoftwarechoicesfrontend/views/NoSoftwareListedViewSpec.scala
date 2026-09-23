@@ -41,6 +41,10 @@ class NoSoftwareListedViewSpec extends ViewSpec {
       document().mainContent.select("p").get(0).text mustBe NoSoftwareListedViewContent.paragraph1
     }
 
+    "have the correct second paragraph text" in {
+      document().mainContent.select("p").get(1).text mustBe NoSoftwareListedViewContent.paragraph2
+    }
+
     "have a find compatible software button" in {
       document().select(".govuk-button").text() shouldBe NoSoftwareListedViewContent.compatibleSoftwareButton
     }
@@ -58,6 +62,7 @@ class NoSoftwareListedViewSpec extends ViewSpec {
 private object NoSoftwareListedViewContent {
   val title = "This software is not recognised for Making Tax Digital for Income Tax"
   val heading = "This software is not recognised for Making Tax Digital for Income Tax"
-  val paragraph1 = "You may want to contact your current software provider to see if they are going to support Making Tax Digital for Income Tax. You can also search for other software packages to see if they are suitable."
+  val paragraph1 = "You may want to ask this software provider if they plan to develop features to support Making Tax Digital for Income Tax."
+  val paragraph2 = "You can also search for other software packages that are compatible with Making Tax Digital for Income Tax to see if they are suitable."
   val compatibleSoftwareButton = "Find compatible software"
 }
