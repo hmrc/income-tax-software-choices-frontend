@@ -324,20 +324,11 @@ phase-banner.feedback = give your feedback
 # Exit Survey
 exit-survey.link = Give feedback on this service
 
-# Not Listed Software
-not-listed-software.title = This software is not recognised for Making Tax Digital for Income Tax
-not-listed-software.para1 = You may want to contact your current software provider to see if they are going to support Making Tax Digital for Income Tax. You can also search for other software packages to see if they are suitable.
-
 # Enter Software Name
 enter-software-name.heading = What is the name of your software?
 enter-software-name.hint = Start typing and select from the list
 enter-software-name.error.empty = Enter a software name and choose it from the list, or select ‘My software is not listed’
 enter-software-name.software-not-listed = My software is not listed
-
-#Software In Development page
-software-in-development.heading = {0} is not recognised for Making Tax Digital for Income Tax yet
-software-in-development.para1 = You may want to contact your current software provider to ask if they are going to support Making Tax Digital for Income Tax for your circumstances.
-software-in-development.para2 = You can also search for other software packages that are currently ready for Making Tax Digital for Income Tax to see if they are suitable.
 
 #Fully Compatible page
 fully-compatible.heading1 = {0} is fully compatible with Making Tax Digital for Income Tax
@@ -368,7 +359,9 @@ quarterly-only.para4 = If you want to use this software, you need to:
 quarterly-only.bullet1 = sign up for Making Tax Digital for Income Tax
 quarterly-only.bullet2 = authorise your software for HMRC
 
-#Not Compatible page
+# No Software Listed & Software in Development & Not Compatible pages
+no-software-listed.heading = This software is not recognised for Making Tax Digital for Income Tax
+software-in-development.heading = {0} is not recognised for Making Tax Digital for Income Tax yet
 not-compatible.heading = {0} is not currently compatible
-not-compatible.para1 = You can ask your software provider if they plan to develop features to support Making Tax Digital for Income Tax.
-not-compatible.para2 = You can also search for other software packages that are compatible with Making Tax Digital for Income Tax to see if they are suitable.
+unsuitable-software.para1 = You may want to ask this software provider if they plan to develop features to support Making Tax Digital for Income Tax.
+unsuitable-software.para2 = You can also search for other software packages that are compatible with Making Tax Digital for Income Tax to see if they are suitable.

@@ -43,7 +43,7 @@ class NoSoftwareListedControllerISpec extends ComponentSpecBase  with DatabaseHe
 
       result should have(
         httpStatus(OK),
-        pageTitle(s"${messages("not-listed-software.title")} - ${PageContentBase.title} - GOV.UK")
+        pageTitle(s"${messages("no-software-listed.heading")} - ${PageContentBase.title} - GOV.UK")
       )
     }
     "in edit mode" should {
@@ -56,7 +56,7 @@ class NoSoftwareListedControllerISpec extends ComponentSpecBase  with DatabaseHe
 
         res should have(
           httpStatus(OK),
-          pageTitle(s"${messages("not-listed-software.title")} - ${PageContentBase.title} - GOV.UK"),
+          pageTitle(s"${messages("no-software-listed.heading")} - ${PageContentBase.title} - GOV.UK"),
           elementHasHref(".govuk-back-link", routes.EnterSoftwareNameController.show(editMode = true).url)
         )
       }
@@ -69,7 +69,7 @@ class NoSoftwareListedControllerISpec extends ComponentSpecBase  with DatabaseHe
 
         res should have(
           httpStatus(OK),
-          pageTitle(s"${messages("not-listed-software.title")} - ${PageContentBase.title} - GOV.UK"),
+          pageTitle(s"${messages("no-software-listed.heading")} - ${PageContentBase.title} - GOV.UK"),
           elementHasHref(".govuk-button", routes.CheckYourAnswersController.show().url)
         )
       }
