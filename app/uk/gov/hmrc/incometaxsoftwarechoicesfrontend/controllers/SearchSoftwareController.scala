@@ -110,7 +110,8 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
       searchForm = form,
       postAction = routes.SearchSoftwareController.search(),
       clearAction = routes.SearchSoftwareController.clear(),
-      backUrl = backLinkUrl(model)
+      backUrl = backLinkUrl(model),
+      detailsDefault = !isMobile()
     )
   }
 
@@ -134,5 +135,19 @@ class SearchSoftwareController @Inject()(searchSoftwareView: SearchSoftwareView,
   private def isUnguided(journey: Option[JourneyType]) = journey.contains(ViewAll)
 
   private def isAgent(userType: Option[UserType]) = userType.contains(Agent)
+
+  private def isMobile()(implicit request: SessionDataRequest[_]): Boolean = {
+    val userAgent = request.headers.get("User-Agent").fold("")(_.toLowerCase)
+    val mobilePreference = request.headers.get("sec-ch-ua-mobile").fold(false)(_.contains("1"))
+
+    (mobilePreference, userAgent) match {
+        case (true, _) => true
+        case (_, ua) if ua.contains("android") => true
+        case (_, ua) if ua.contains("iphone") => true
+        case (_, ua) if ua.contains("ipad") => true
+        case _ => false
+    }
+  
+  }
 
 }
