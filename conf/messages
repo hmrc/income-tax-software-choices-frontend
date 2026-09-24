@@ -145,7 +145,7 @@ search-software.vendor-detail.submission-type.quarterly-updates = Quarterly upda
 search-software.vendor-detail.submission-type.tax-return = Tax return
 
 search-software.vendor-detail.software-for = Type of software
-search-software.vendor-detail.software-for.record-keeping = All-in-one software that creates digital records
+search-software.vendor-detail.software-for.record-keeping = Software that creates digital records
 search-software.vendor-detail.software-for.record-keeping.hint = <ul class="govuk-list govuk-list--bullet" style="color: #505a5f;"><li>records income and expenses directly<li>sends updates to HMRC
 search-software.vendor-detail.software-for.bridging = Bridging software that connects to records
 search-software.vendor-detail.software-for.bridging.hint = Connects spreadsheet records to HMRC for digital submission
@@ -212,7 +212,7 @@ product-details.features-provided.agent = Agent software
 product-details.features-provided.individual = Individual software
 product-details.features-provided.standard-update-periods = Standard update period (6 April to 5 April)
 product-details.features-provided.calendar-update-periods = Calendar update period (1 April to 31 March)
-product-details.features-provided.record-keeping = All-in-one software that creates digital records
+product-details.features-provided.record-keeping = Software that creates digital records
 product-details.features-provided.bridging = Bridging software that connects to records
 product-details.features-provided.vat = Making Tax Digital for VAT
 product-details.features-provided.visual = Blindness or impaired vision

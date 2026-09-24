@@ -662,7 +662,7 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
     val individual = "Individual software"
     val standardUpdatePeriods = "Standard update period (6 April to 5 April)"
     val calendarUpdatePeriods = "Calendar update period (1 April to 31 March)"
-    val recordKeeping = "All-in-one software that creates digital records"
+    val recordKeeping = "Software that creates digital records"
     val bridging = "Bridging software that connects to records"
     val vat = "Making Tax Digital for VAT"
     val visual = "Blindness or impaired vision"
