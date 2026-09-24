@@ -27,11 +27,13 @@
 
 @(continueUrl: String, backLink: String)(implicit request: Request[_], messages: Messages)
 
-@mainTemplate(title = messages("not-listed-software.title"), backLink = Some(backLink)) {
+@mainTemplate(title = messages("no-software-listed.heading"), backLink = Some(backLink)) {
 
-    <h1 class="govuk-heading-l">@messages("not-listed-software.title")</h1>
-    <p class ="govuk-body">@messages("not-listed-software.para1")</p>
-    <p class ="govuk-body govuk-!-margin-bottom-6">@messages("not-listed-software.para2")</p>
+    <h1 class="govuk-heading-l">@messages("no-software-listed.heading")</h1>
+
+    <p class ="govuk-body">@messages("invalid-software.para1")</p>
+    <p class ="govuk-body govuk-!-margin-bottom-6">@messages("invalid-software.para2")</p>
+
     <p class ="govuk-body">
         @govukButton(Button(
             content = Text(messages("base.find.compatible")),

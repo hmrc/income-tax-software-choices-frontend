@@ -315,21 +315,11 @@ phase-banner.feedback = rhoi eich adborth
 # Exit Survey
 exit-survey.link = Rhoi adborth ar y gwasanaeth hwn
 
-# Not Listed Software
-not-listed-software.title = Nid yw’r feddalwedd hon yn cael ei chydnabod ar gyfer Troi Treth yn Ddigidol ar gyfer Treth Incwm
-not-listed-software.para1 = Efallai y byddwch am ofyn i’r darparwr meddalwedd hwn a yw’n bwriadu datblygu nodweddion i gefnogi’r cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm.
-not-listed-software.para2 = Gallwch hefyd chwilio am becynnau meddalwedd eraill sy’n cydweddu â’r cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm er mwyn gweld a ydynt yn addas.
-
 # Enter Software Name
 enter-software-name.heading = Beth yw enw eich meddalwedd?
 enter-software-name.hint = Dechreuwch deipio a dewis o’r rhestr
 enter-software-name.error.empty = Nodwch enw’r feddalwedd a’i dewis o’r rhestr, neu dewiswch ‘Nid yw fy meddalwedd wedi’i restru’
 enter-software-name.software-not-listed = Nid yw fy meddalwedd wedi’i restru
-
-#Software In Development page
-software-in-development.heading = Nid yw {0} yn cael ei chydnabod ar gyfer Troi Treth yn Ddigidol ar gyfer Treth Incwm eto
-software-in-development.para1 = Mae’n bosibl y byddwch eisiau cysylltu â’ch darparwr meddalwedd presennol er mwyn gofyn a ydynt am fod yn cefnogi Troi Treth yn Ddigidol ar gyfer Treth Incwm at eich dibenion chi.
-software-in-development.para2 = Gallwch hefyd chwilio am becynnau meddalwedd eraill sydd ar gael ar hyn o bryd sy’n barod ar gyfer Troi Treth yn Ddigidol ar gyfer Treth Incwm er mwyn gweld a ydynt yn addas.
 
 #Fully Compatible page
 fully-compatible.heading1 = Mae {0} yn cydweddu’n llwyr â Throi Treth yn Ddigidol ar gyfer Treth Incwm
@@ -360,7 +350,9 @@ quarterly-only.para4 = Os ydych am ddefnyddio’r feddalwedd hon, bydd angen i c
 quarterly-only.bullet1 = cofrestru ar gyfer y cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm
 quarterly-only.bullet2 = awdurdodi’ch meddalwedd i CThEF
 
-#Not Compatible page
+# No Software Listed & Software in Development & Not Compatible pages
+no-software-listed.heading = Nid yw’r feddalwedd hon yn cael ei chydnabod ar gyfer Troi Treth yn Ddigidol ar gyfer Treth Incwm
+software-in-development.heading = Nid yw {0} yn cael ei chydnabod ar gyfer Troi Treth yn Ddigidol ar gyfer Treth Incwm eto
 not-compatible.heading = Ar hyn o bryd, nid yw {0} yn cydweddu
-not-compatible.para1 = Gallwch ofyn i’ch darparwr meddalwedd a yw’n bwriadu datblygu nodweddion i gefnogi’r cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm.
-not-compatible.para2 = Gallwch hefyd chwilio am becynnau meddalwedd eraill sy’n cydweddu â’r cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm er mwyn gweld a ydynt yn addas.
+invalid-software.para1 = Efallai y byddwch am ofyn i’r darparwr meddalwedd hwn a yw’n bwriadu datblygu nodweddion i gefnogi’r cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm.
+invalid-software.para2 = Gallwch hefyd chwilio am becynnau meddalwedd eraill sy’n cydweddu â’r cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm er mwyn gweld a ydynt yn addas.
