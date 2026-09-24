@@ -354,5 +354,5 @@ quarterly-only.bullet2 = awdurdodi’ch meddalwedd i CThEF
 no-software-listed.heading = Nid yw’r feddalwedd hon yn cael ei chydnabod ar gyfer Troi Treth yn Ddigidol ar gyfer Treth Incwm
 software-in-development.heading = Nid yw {0} yn cael ei chydnabod ar gyfer Troi Treth yn Ddigidol ar gyfer Treth Incwm eto
 not-compatible.heading = Ar hyn o bryd, nid yw {0} yn cydweddu
-invalid-software.para1 = Efallai y byddwch am ofyn i’r darparwr meddalwedd hwn a yw’n bwriadu datblygu nodweddion i gefnogi’r cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm.
-invalid-software.para2 = Gallwch hefyd chwilio am becynnau meddalwedd eraill sy’n cydweddu â’r cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm er mwyn gweld a ydynt yn addas.
+unsuitable-software.para1 = Efallai y byddwch am ofyn i’r darparwr meddalwedd hwn a yw’n bwriadu datblygu nodweddion i gefnogi’r cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm.
+unsuitable-software.para2 = Gallwch hefyd chwilio am becynnau meddalwedd eraill sy’n cydweddu â’r cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm er mwyn gweld a ydynt yn addas.
