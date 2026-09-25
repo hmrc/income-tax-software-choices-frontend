@@ -20,13 +20,12 @@ import com.google.inject.AbstractModule
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.{FeatureSwitching, FeatureSwitchingImpl}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.SoftwareChoicesService
-
 import java.time.{Clock, ZoneOffset}
 
 class Module extends AbstractModule {
   override def configure(): Unit = {
-    bind(classOf[SoftwareChoicesService]).asEagerSingleton()
-    bind(classOf[UserFiltersRepository]).asEagerSingleton()
+    bind(classOf[SoftwareChoicesService])
+    bind(classOf[UserFiltersRepository])
     bind(classOf[Clock]).toInstance(Clock.systemDefaultZone.withZone(ZoneOffset.UTC))
     bind(classOf[FeatureSwitching]).to(classOf[FeatureSwitchingImpl]).asEagerSingleton()
   }

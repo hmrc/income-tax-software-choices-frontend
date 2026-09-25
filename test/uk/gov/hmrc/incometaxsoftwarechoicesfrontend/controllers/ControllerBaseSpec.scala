@@ -20,15 +20,19 @@ import org.scalatest.BeforeAndAfterEach
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+import play.api.Application
 import play.api.data.Form
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, MessagesControllerComponents}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{POST, stubMessagesControllerComponents}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.TestAppBuilder
 
 import scala.concurrent.ExecutionContext
 
-trait ControllerBaseSpec extends AnyWordSpecLike with Matchers with GuiceOneAppPerSuite with BeforeAndAfterEach {
+trait ControllerBaseSpec extends AnyWordSpecLike with Matchers with GuiceOneAppPerSuite with BeforeAndAfterEach with TestAppBuilder {
+
+  override def fakeApplication(): Application = authorizedVerifiedTestApplication()
 
   val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
 
