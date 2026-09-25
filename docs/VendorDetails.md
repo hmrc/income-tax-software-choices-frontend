@@ -59,6 +59,7 @@ This file is for the vendor management team to quickly reference the product det
 | [Deductic MTD](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3509) |
 | [Dext Solo](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3144) |
 | [Digita Personal Tax](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3147) |
+| [Distil](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3605) |
 | [DIY Tax](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3345) |
 | [DoneSE](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3551) |
 | [DoneTax](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3527) |
@@ -105,6 +106,7 @@ This file is for the vendor management team to quickly reference the product det
 | [MTD Companion for macOS](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3237) |
 | [MTD Landlord Services](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3369) |
 | [MTD Sheets](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3452) |
+| [MTDKit](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3608) |
 | [MTDone](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3557) |
 | [MTDsorted](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3348) |
 | [My Business Finances, powered by Sage](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3563) |
@@ -121,6 +123,7 @@ This file is for the vendor management team to quickly reference the product det
 | [Powered Now ](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3366) |
 | [Property Income eReturn](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3458) |
 | [Provestor for Landlords](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3294) |
+| [Q Tax Agent](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3611) |
 | [Quartax](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3530) |
 | [Quarterwise](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3566) |
 | [QuickBooks (Intuit)](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3204) |
