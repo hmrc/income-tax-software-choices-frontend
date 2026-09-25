@@ -24,6 +24,8 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareVendorModel,
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.ProductDetailsView
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.TestModels.softwareVendorModelBase
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.{SoleTraderOrLandlord, Agent => AgentUserType}
 
 class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
 
@@ -88,6 +90,7 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
         link.attr("href") shouldBe softwareVendorModelFull.website
         link.attr("target") shouldBe "_blank"
       }
+
 
       "have a feature status meaning caption" in {
         document.selectNth("caption", 1).text shouldBe featureStatusHeading
@@ -333,7 +336,7 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
 
     "in personalised view when the user has selected all possible filters" which {
 
-      val document: Document = createAndParseDocument(softwareVendorModelFull, allFiltersPossibleToSelect)
+      val document: Document = createAndParseDocument(softwareVendorModelFull, filters = allFiltersPossibleToSelect)
 
       def table(index: Int): Element = document.getTable(index)
 
@@ -445,7 +448,7 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
 
     "in personalised view when the user has only filters from minimal question answers" which {
 
-      val document: Document = createAndParseDocument(softwareVendorModelFull, filtersOnlyFromMinimalQuestionAnswers)
+      val document: Document = createAndParseDocument(softwareVendorModelFull, filters = filtersOnlyFromMinimalQuestionAnswers)
 
       def table(index: Int): Element = document.getTable(index)
 
@@ -615,17 +618,64 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
 
     "display the exit survey link" in {
       val document: Document = createAndParseDocument(softwareVendorModelFull)
-      val link = document.mainContent.select(".govuk-link").get(1)
-      link.text shouldBe exitSurveyLinkTitle
-      link.attr("href") shouldBe exitSurveyLink
+      val link = document.mainContent.select(".govuk-link").get(3)
+      link.text shouldBe ProductDetailsPage.exitSurveyLinkTitle
+      link.attr("href") shouldBe ProductDetailsPage.exitSurveyLink
+    }
+
+    "display the getting started section" which {
+
+      "for an individual (SoleTraderOrLandlord) user type" should {
+        val document: Document = createAndParseDocument(softwareVendorModelFull, Some(SoleTraderOrLandlord))
+
+        "has the getting started heading" in {
+          document.select("h2").get(4).text shouldBe ProductDetailsPage.gettingStartedHeading
+        }
+
+        "has the getting started text" in {
+          document.select(".app-getting-started-box > p").text shouldBe ProductDetailsPage.gettingStartedText
+        }
+
+        "has a link to sign up for MTD as an individual" in {
+          val link = document.mainContent.select(".govuk-link").get(1)
+          link.text shouldBe s"${ProductDetailsPage.gettingStartedSignUp} (opens in new tab)"
+          link.attr("href") shouldBe appConfig.individualSignUpForMtdUrl
+          link.attr("target") shouldBe "_blank"
+        }
+
+        "has a link to authorise software" in {
+          val link = document.mainContent.select(".govuk-link").get(2)
+          link.text shouldBe s"${ProductDetailsPage.gettingStartedAuthorise} (opens in new tab)"
+          link.attr("href") shouldBe appConfig.getSoftwareReadyUrl
+          link.attr("target") shouldBe "_blank"
+        }
+      }
+
+      "for an agent user type" should {
+        val document: Document = createAndParseDocument(softwareVendorModelFull, Some(AgentUserType))
+
+        "has a link to sign up for MTD as an agent" in {
+          val link = document.mainContent.select(".govuk-link").get(1)
+          link.attr("href") shouldBe appConfig.agentSignUpForMtdUrl
+        }
+      }
+
+      "for an unspecified user type (no answer given)" should {
+        val document: Document = createAndParseDocument(softwareVendorModelFull, None)
+
+        "has a link to sign up for MTD for an unspecified user type" in {
+          val link = document.mainContent.select(".govuk-link").get(1)
+          link.attr("href") shouldBe appConfig.unspecifiedSignUpForMtdUrl
+        }
+      }
     }
   }
 
-  private def page(vendorModel: SoftwareVendorModel, filters: Option[Seq[VendorFilter]] = None) =
-    productDetailsView(vendorModel, testBackUrl, filters)
+  private def page(vendorModel: SoftwareVendorModel, userType: Option[UserType] = None, filters: Option[Seq[VendorFilter]] = None) =
+    productDetailsView(vendorModel, testBackUrl, userType, filters)
 
-  private def createAndParseDocument(vendorModel: SoftwareVendorModel, filters: Option[Seq[VendorFilter]] = None): Document =
-    Jsoup.parse(page(vendorModel, filters).body)
+  private def createAndParseDocument(vendorModel: SoftwareVendorModel, userType: Option[UserType] = None, filters: Option[Seq[VendorFilter]] = None): Document =
+    Jsoup.parse(page(vendorModel, userType, filters).body)
 
   private def vendorLinkText(vendorName: String): String = s"Explore this software on the $vendorName website (opens in new tab)"
 
@@ -715,6 +765,11 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
     val readyNowDescription = "This feature is ready to use now."
     val inDevelopmentDescription = "The software provider has committed to building this in time for the 2026 to 2027 tax return."
     val notIncludedDescription = "This is not available in this software product."
+
+    val gettingStartedHeading = "Getting started with this software"
+    val gettingStartedText = "The following will need to be completed, if not already done so:"
+    val gettingStartedSignUp = "sign up for Making Tax Digital for Income Tax"
+    val gettingStartedAuthorise = "authorise this software for HMRC"
   }
 
 }

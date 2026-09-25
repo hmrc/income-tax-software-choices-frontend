@@ -26,6 +26,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepo
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.{PageAnswersService, SoftwareChoicesService}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.{EnterSoftwareNamePage, HowYouFindSoftwarePage}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.{NotFoundView, ProductDetailsView}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.UserTypePage
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
@@ -48,9 +49,13 @@ class ProductDetailsController @Inject()(softwareChoicesService: SoftwareChoices
     } yield {
       (userFilters, vendorOpt) match {
         case (Some(userFilters), Some(softwareVendor)) if userIsInFindOrCheckJourney(userFilters.answers) =>
-          Ok(productDetailsView(softwareVendor, backLink(userFilters.answers, userFilters.finalFilters, softwareVendor), Some(userFilters.finalFilters)))
-        case (_, Some(softwareVendor)) =>
-          Ok(productDetailsView(softwareVendor, routes.SearchSoftwareController.show().url, None))
+          val userType = pageAnswersService.getPageAnswers(userFilters.answers, UserTypePage)
+          Ok(productDetailsView(softwareVendor, backLink(userFilters.answers, userFilters.finalFilters, softwareVendor), userType, Some(userFilters.finalFilters)))
+        case (Some(userFilters), Some(softwareVendor)) =>
+          val userType = pageAnswersService.getPageAnswers(userFilters.answers, UserTypePage)
+          Ok(productDetailsView(softwareVendor, backLink(userFilters.answers, userFilters.finalFilters, softwareVendor), userType, Some(userFilters.finalFilters)))
+        case (None, Some(softwareVendor)) =>
+          Ok(productDetailsView(softwareVendor, routes.SearchSoftwareController.show().url, None, None))
         case _ =>
           NotFound(notFoundView(routes.ProductDetailsController.show(productId).url))
       }
@@ -78,7 +83,7 @@ class ProductDetailsController @Inject()(softwareChoicesService: SoftwareChoices
   }
 
   private def userIsInFindOrCheckJourney(answers: Option[UserAnswers]): Boolean = {
-    pageAnswersService.getPageAnswers(answers, HowYouFindSoftwarePage).match {
+    pageAnswersService.getPageAnswers(answers, HowYouFindSoftwarePage) match {
       case Some(Check) | Some(Find) => true
       case _ => false
     }
