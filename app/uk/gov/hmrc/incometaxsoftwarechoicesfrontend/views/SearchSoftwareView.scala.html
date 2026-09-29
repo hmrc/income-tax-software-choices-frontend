@@ -99,8 +99,6 @@
         <div class="filters-section" role="search" aria-label="@messages("search-software.filters.heading")">
           <h2 class="govuk-heading-l">@messages("search-software.filters.heading")</h2>
 
-          <p class="govuk-body">@messages("search-software.filters.paragraph")</p>
-
           @applyFiltersGroup
 
           @softwareFiltersTemplate(searchForm(FiltersForm.filters), viewModel.isUnguided, viewModel.isAgent)

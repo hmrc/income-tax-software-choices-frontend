@@ -112,11 +112,10 @@ search-software.p1                                        = Er tegwch, bydd y ca
 search-software.skip-to-results                           = Ewch yn syth i’r canlyniadau
 
 search-software.filters.heading = Hidlo meddalwedd
-search-software.filters.paragraph = Gallwch ddefnyddio’r hidlyddion i fireinio’ch canlyniadau.
 search-software.filters.pricing = Pris
 search-software.filters.user-type = Math o ddefnyddiwr
 search-software.filters.software-for = Math o feddalwedd
-search-software.filters.software-compatibility = Cydweddoldeb â’r cynllun Troi Treth yn Ddigidol
+search-software.filters.software-compatibility = Troi Treth yn Ddigidol ar gyfer TAW
 search-software.filters.accessibility = Nodweddion hygyrchedd
 search-software.filters.extra-features = Nodweddion ychwanegol
 search-software.filters.language-features = Iaith
@@ -128,7 +127,7 @@ search-software.filters.clear-filters = Clirio hidlyddion
 
 search-software.intent.vendor-visit-link        = Dysgwch beth mae {0} yn ei ddarparu ar hyn o bryd, a’r hyn sy’n cael ei ddatblygu ganddynt
 
-search-software.vendor-count.heading = Canlyniadau meddalwedd yn seiliedig ar eich atebion a’ch hidlyddion
+search-software.vendor-count.heading = Canlyniadau meddalwedd yn seiliedig ar atebion a hidlyddion
 
 search-software.vendor-detail.pricing = Pris
 search-software.vendor-detail.pricing.free-version = Fersiwn am ddim
@@ -158,7 +157,7 @@ search-software.vendor-detail.eoy-tax-return.ready = Yn barod nawr
 search-software.vendor-detail.eoy-tax-return.development = O dan ddatblygiad
 search-software.vendor-detail.eoy-tax-return.not-included = Ddim ar gael
 
-search-software.vendor-detail.software-compatibility.vat = TAW
+search-software.vendor-detail.software-compatibility.vat = Yn cydweddu â TAW
 
 search-software.vendor-detail.accessibility.visual = Dallineb neu amhariad golwg
 search-software.vendor-detail.accessibility.hearing = Byddardod neu amhariad clyw
@@ -169,6 +168,7 @@ search-software.vendor-detail.user-type.agent = Asiant
 search-software.vendor-detail.user-type.individual = Unigolyn
 
 search-software.vendor-detail.extra-features.hmrc-assist = HMRC Assist (Adborth wrth gyflwyno)
+search-software.vendor-detail.extra-features.hmrc-assist.hint = Yn helpu nodi camgymeriadau posibl wrth lenwi Ffurflen Dreth
 
 search-software.vendor-detail.language-features.welsh = Cymraeg
 

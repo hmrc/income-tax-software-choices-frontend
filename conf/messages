@@ -112,11 +112,10 @@ search-software.p1            = Results are shown in random order for fairness.
 search-software.skip-to-results                           = Skip to results
 
 search-software.filters.heading = Filter software
-search-software.filters.paragraph = You can use the filters to refine your results.
 search-software.filters.pricing = Price
 search-software.filters.user-type = User type
 search-software.filters.software-for = Type of software
-search-software.filters.software-compatibility = Making Tax Digital Compatibility
+search-software.filters.software-compatibility = Making Tax Digital for VAT
 search-software.filters.accessibility = Accessibility features
 search-software.filters.extra-features = Extra features
 search-software.filters.language-features = Language
@@ -128,7 +127,7 @@ search-software.filters.clear-filters = Clear filters
 
 search-software.intent.vendor-visit-link        = Find out what {0} provide now and what they’re developing
 
-search-software.vendor-count.heading = Software results based on your answers and  filters
+search-software.vendor-count.heading = Software results based on answers and filters
 
 search-software.vendor-detail.pricing = Price
 search-software.vendor-detail.pricing.free-version = Free version
@@ -158,7 +157,7 @@ search-software.vendor-detail.eoy-tax-return.ready = Ready now
 search-software.vendor-detail.eoy-tax-return.development = In development
 search-software.vendor-detail.eoy-tax-return.not-included = Not included
 
-search-software.vendor-detail.software-compatibility.vat = VAT
+search-software.vendor-detail.software-compatibility.vat = VAT compatible
 
 search-software.vendor-detail.accessibility.visual = Blindness or impaired vision
 search-software.vendor-detail.accessibility.hearing = Deafness or impaired hearing
@@ -169,6 +168,7 @@ search-software.vendor-detail.user-type.agent = Agent
 search-software.vendor-detail.user-type.individual = Individual
 
 search-software.vendor-detail.extra-features.hmrc-assist = HMRC Assist (Submission Feedback)
+search-software.vendor-detail.extra-features.hmrc-assist.hint = Helps identify potential mistakes when completing a tax return
 
 search-software.vendor-detail.language-features.welsh = Welsh
 

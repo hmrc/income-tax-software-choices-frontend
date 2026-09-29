@@ -322,6 +322,7 @@ object VendorFilter {
   case object HMRCAssist extends VendorFilter {
     override val key: String = "hmrc-assist"
     override val priority: Int = 4
+    override val showHint: Boolean = true
     override val auditDescription: String = "hmrc-assist"
   }
 
