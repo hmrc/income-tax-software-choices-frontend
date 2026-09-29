@@ -50,8 +50,7 @@ class ProductDetailsController @Inject()(softwareChoicesService: SoftwareChoices
     } yield {
       (userFilters, vendorOpt) match {
         case (Some(userFilters), Some(softwareVendor)) if userIsInFindOrCheckJourney(userFilters.answers) =>
-          //val userType = pageAnswersService.getPageAnswers(userFilters.answers, UserTypePage)
-          Ok(productDetailsView(softwareVendor, backLink(userFilters.answers, userFilters.finalFilters, softwareVendor), userType, Some(userFilters.finalFilters)))
+          Ok(productDetailsView(softwareVendor, backLink(userFilters.answers, userFilters.finalFilters, softwareVendor), Some(userFilters.finalFilters), userType))
         case (_ , Some(softwareVendor)) =>
           Ok(productDetailsView(softwareVendor, routes.SearchSoftwareController.show().url, None, None))
         case _ =>
