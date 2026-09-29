@@ -25,21 +25,29 @@ If not installed, install via Homebrew:
 
 `brew install python3`
 
-2 — Install the required Python library openpyxl
+2 — Install the required Python libraries:
 
 Check if already installed:
 
 `python3 -c "import openpyxl"`
+`python3 -c "import markdown"`
+`python3 -c "import pandas"`
 
 If not installed:
 
 `pip3 install openpyxl`
+`pip3 install markdown`
+`pip3 install pandas`
 
-3 — Verify both are working:
+3 — Verify all are working:
 
-`python3 --version`      # should print e.g. Python 3.x.x
+`python3 --version`       # should print e.g. Python 3.x.x
 
 `pip3 show openpyxl`      # should show openpyxl version info
+
+`pip3 show markdown`      # should show markdown version info
+
+`pip3 show pandas`        # should show pandas version info
 
 ### Step 1 — Create a branch based on the task number
 
@@ -68,6 +76,7 @@ The script will automatically:
 - Insert new vendors or update existing ones in `conf/software-vendors.json`
 - Print a diff table of all changes made
 - Delete all `.xlsx` files in `scripts/vendors/` relating to updated or inserted records
+- Update `docs/VendorDetails.md` with product details page of any newly added vendors
 
 ## Template Update process
 

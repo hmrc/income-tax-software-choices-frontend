@@ -1,8 +1,17 @@
-import json, sys, os, glob, openpyxl, re
+import json, sys, os, glob, openpyxl, re, markdown
+import pandas as pd
+from io import StringIO
 
 VENDORS_JSON = "conf/software-vendors.json"
 INBOX_DIR    = "scripts/vendors"
 FIELD_ORDER  = ["productId", "name", "phone", "email", "website", "accessibilityStatementLink", "filters"]
+MATCH_FIELDS = ("name", "phone", "email", "website")
+VENDOR_DETAILS = "docs/VendorDetails.md"
+VENDOR_DETAILS_PREAMBLE = """# Vendor Details
+
+This file is for the vendor management team to quickly reference the product details of each of the vendors in the service. It should not be used for any other purpose.
+
+"""
 
 
 def ordered_vendor(vendor, product_id):
@@ -14,6 +23,20 @@ def ordered_vendor(vendor, product_id):
         if key not in result and key != "productId":
             result[key] = vendor[key]
     return result
+
+
+def find_vendor_match(vendors, vendor):
+    def normalized(value):
+        return value.strip().casefold() if isinstance(value, str) else ""
+
+    for i, existing in enumerate(vendors):
+        if any(
+            normalized(vendor.get(field))
+            and normalized(vendor.get(field)) == normalized(existing.get(field))
+            for field in MATCH_FIELDS
+        ):
+            return i
+    return None
 
 
 def trim_and_report(vendor):
@@ -33,18 +56,19 @@ def trim_and_report(vendor):
 
 def validate_and_fix_website(vendor):
     website = vendor.get("website", "")
-    if website and not website.startswith("https://"):
-        clean = website
-        for prefix in ("https://", "http://"):
-            if clean.startswith(prefix):
-                clean = clean[len(prefix):]
-                break
-        fixed = "https://" + clean
+    if website and website.startswith("https://"):
+        return True
+    elif website and website.startswith("http://"):
+        clean = website[len("http"):]
+        fixed = "https" + clean.strip()
         print(f"  WEBSITE FIXED  : '{website}' → '{fixed}'")
         vendor["website"] = fixed
+        return True
+    else:
+        return False
 
 
-def print_diff(old, new):
+def print_diff(old, new, pid):
     changes = []
     all_keys = set(old.keys()) | set(new.keys())
     for key in sorted(all_keys):
@@ -63,6 +87,8 @@ def print_diff(old, new):
                     if ov != nv:
                         changes.append((f"filters.{fk}", str(ov), str(nv)))
             else:
+                if key == "name":
+                    update_vendor_markdown(new_val, pid)
                 changes.append((key, str(old_val), str(new_val)))
     return changes
 
@@ -84,14 +110,41 @@ def print_table(changes):
         print(f"  │ {field:<{col1}} │ {old_v:<{col2}} │ {new_v:<{col3}} │")
     print(footer)
 
+def update_vendor_markdown(name, id):
+    with open(VENDOR_DETAILS, "r") as f:
+        md_content = f.read()
+
+    df = pd.read_table(StringIO(md_content), sep="|", skipinitialspace=True, skiprows=4)
+
+    df = df.loc[:, ~df.columns.str.contains("^Unnamed")]
+    df.columns = df.columns.str.strip()
+
+    df = df[~df["Product name"].str.contains(r"^:?-{3,}", na=False)]
+    df = df[df["Product name"].str.strip() != ""]
+    df = df.dropna(subset=["Product name"])
+
+    url = f'(https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId={id})'
+    df = df[~df["Product name"].str.contains(url, regex=False, na=False)]
+
+    new_link = f"[{name}]{url}"
+    new_row = pd.DataFrame([{"Product name": new_link}])
+    df = pd.concat([df, new_row], ignore_index=True)
+
+    df = df.sort_values(
+        by="Product name",
+        key=lambda col: col.str.replace(r"^\[", "", regex=True)  # Strip leading [
+        .str.replace(r"\].*$", "", regex=True)  # Strip closing ] and the URL
+        .str.strip()
+        .str.lower(),
+        ).reset_index(drop=True)
+
+    with open(VENDOR_DETAILS, "w") as f:
+        f.write(VENDOR_DETAILS_PREAMBLE)
+        f.write(df.to_markdown(index=False))
+
 
 def process_file(excel_path, data):
     vendors = data["vendors"]
-    inserted = 0
-    updated  = 0
-    skipped  = 0
-    errored  = 0
-    save_needed = False
 
     print(f"\n  FILE       : {os.path.basename(excel_path)}")
     print("-" * 60)
@@ -101,12 +154,12 @@ def process_file(excel_path, data):
         if "Json Output" not in wb.sheetnames:
             print(f"  ERROR      : Sheet 'Json Output' not found — skipping")
             print("=" * 60)
-            return data, 0, 0, 0, 1, False
+            return data, "errored"
         raw = wb["Json Output"]["F1"].value
         if not raw:
             print(f"  ERROR      : Cell F1 is empty — skipping")
             print("=" * 60)
-            return data, 0, 0, 0, 1, False
+            return data, "errored"
         cleaned = re.sub(r'[\x00-\x1f\x7f]', '', raw)
         if cleaned != raw:
             ctrl_changes = []
@@ -137,12 +190,12 @@ def process_file(excel_path, data):
             print(f"               Line   : {e.lineno}, Column: {e.colno}")
             print(f"               Near   : {repr(e.doc[max(0, e.pos-20):e.pos+20])}")
             print("=" * 60)
-            return data, 0, 0, 0, 1, False
+            return data, "errored"
 
     except Exception as e:
         print(f"  ERROR      : Failed to read Excel file — {e}")
         print("=" * 60)
-        return data, 0, 0, 0, 1, False
+        return data, "errored"
 
     # Trim spaces
     trimmed = trim_and_report(vendor)
@@ -154,50 +207,70 @@ def process_file(excel_path, data):
         print(f"  VALIDATION : No leading/trailing spaces found")
 
     # Validate and fix website
-    validate_and_fix_website(vendor)
+    website = validate_and_fix_website(vendor)
+    if not website:
+        print(f"  ERROR      : \"website\" field is missing, empty, or invalid — skipping")
+        print("=" * 60)
+        return data, "errored"
 
     name = vendor.get("name", "").strip()
     if not name:
         print(f"  ERROR      : \"name\" field is missing or empty — skipping")
         print("=" * 60)
-        return data, 0, 0, 0, 1, False
+        return data, "errored"
 
-    match = next((i for i, v in enumerate(vendors) if v["name"].strip().lower() == name.lower()), None)
+    match = find_vendor_match(vendors, vendor)
 
     if match is None:
         new_id = max(v["productId"] for v in vendors if "productId" in v) + 3
         vendors.append(ordered_vendor(vendor, new_id))
-        inserted = 1
-        save_needed = True
+        status = "inserted"
         print(f"  ACTION     : INSERTED (new vendor)")
         print(f"  productId  : {new_id}")
         print(f"  name       : {name}")
         os.remove(excel_path)
+        update_vendor_markdown(name, new_id)
     else:
         old_vendor = vendors[match]
         pid = old_vendor["productId"]
         new_vendor = ordered_vendor(vendor, pid)
-        changes = print_diff(old_vendor, new_vendor)
+        changes = print_diff(old_vendor, new_vendor, pid)
         print(f"  productId  : {pid}")
         print(f"  name       : {name}")
         if changes:
             vendors[match] = new_vendor
-            updated = 1
-            save_needed = True
+            status = "updated"
             print(f"  ACTION     : UPDATED")
             print(f"  Differences found:")
             print_table(changes)
             os.remove(excel_path)
         else:
-            skipped = 1
+            status = "skipped"
             print(f"  ACTION     : No differences found — skipped")
 
     print("=" * 60)
 
     data["vendors"] = vendors
-    return data, inserted, updated, skipped, 0, save_needed
+    return data, status
 
+total_inserted = 0
+total_updated  = 0
+total_skipped  = 0
+total_errored  = 0
+any_save       = False
 
+def update_totals(status):
+    global total_inserted, total_updated, total_skipped, total_errored, any_save
+    if status == "inserted":
+        total_inserted += 1
+        any_save = True
+    elif status == "updated":
+        total_updated += 1
+        any_save = True
+    elif status == "skipped":
+        total_skipped += 1
+    elif status == "errored":
+        total_errored += 1
 # ── MAIN ──────────────────────────────────────────────────
 excel_files = sorted(f for f in glob.glob(os.path.join(INBOX_DIR, "*.xlsx"))
                      if not os.path.basename(f).startswith("~$"))
@@ -227,20 +300,9 @@ except json.JSONDecodeError as e:
     print(f"       Near   : {repr(e.doc[max(0, e.pos-20):e.pos+20])}")
     sys.exit(1)
 
-total_inserted = 0
-total_updated  = 0
-total_skipped  = 0
-total_errored  = 0
-any_save       = False
-
 for excel_path in excel_files:
-    data, ins, upd, skp, err, save_needed = process_file(excel_path, data)
-    total_inserted += ins
-    total_updated  += upd
-    total_skipped  += skp
-    total_errored  += err
-    if save_needed:
-        any_save = True
+    data, action = process_file(excel_path, data)
+    update_totals(action)
 
 if any_save:
     lines = ["    " + json.dumps(v, ensure_ascii=False, separators=(",", ": ")) for v in data["vendors"]]
