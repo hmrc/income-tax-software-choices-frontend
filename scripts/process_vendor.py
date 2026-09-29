@@ -5,7 +5,6 @@ from io import StringIO
 VENDORS_JSON = "conf/software-vendors.json"
 INBOX_DIR    = "scripts/vendors"
 FIELD_ORDER  = ["productId", "name", "phone", "email", "website", "accessibilityStatementLink", "filters"]
-MATCH_FIELDS = ("name", "phone", "email", "website")
 VENDOR_DETAILS = "docs/VendorDetails.md"
 VENDOR_DETAILS_PREAMBLE = """# Vendor Details
 
@@ -23,20 +22,6 @@ def ordered_vendor(vendor, product_id):
         if key not in result and key != "productId":
             result[key] = vendor[key]
     return result
-
-
-def find_vendor_match(vendors, vendor):
-    def normalized(value):
-        return value.strip().casefold() if isinstance(value, str) else ""
-
-    for i, existing in enumerate(vendors):
-        if any(
-            normalized(vendor.get(field))
-            and normalized(vendor.get(field)) == normalized(existing.get(field))
-            for field in MATCH_FIELDS
-        ):
-            return i
-    return None
 
 
 def trim_and_report(vendor):
@@ -68,7 +53,7 @@ def validate_and_fix_website(vendor):
         return False
 
 
-def print_diff(old, new, pid):
+def print_diff(old, new):
     changes = []
     all_keys = set(old.keys()) | set(new.keys())
     for key in sorted(all_keys):
@@ -87,8 +72,6 @@ def print_diff(old, new, pid):
                     if ov != nv:
                         changes.append((f"filters.{fk}", str(ov), str(nv)))
             else:
-                if key == "name":
-                    update_vendor_markdown(new_val, pid)
                 changes.append((key, str(old_val), str(new_val)))
     return changes
 
@@ -219,7 +202,7 @@ def process_file(excel_path, data):
         print("=" * 60)
         return data, "errored"
 
-    match = find_vendor_match(vendors, vendor)
+    match = next((i for i, v in enumerate(vendors) if v["name"].strip().lower() == name.lower()), None)
 
     if match is None:
         new_id = max(v["productId"] for v in vendors if "productId" in v) + 3
@@ -234,7 +217,7 @@ def process_file(excel_path, data):
         old_vendor = vendors[match]
         pid = old_vendor["productId"]
         new_vendor = ordered_vendor(vendor, pid)
-        changes = print_diff(old_vendor, new_vendor, pid)
+        changes = print_diff(old_vendor, new_vendor)
         print(f"  productId  : {pid}")
         print(f"  name       : {name}")
         if changes:

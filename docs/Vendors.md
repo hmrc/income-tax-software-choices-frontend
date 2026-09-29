@@ -6,7 +6,9 @@ The vendor data capture template is a spreadsheet that allows the customer (HMRC
 
 The customer will complete a template for each software product to be added to the Software Choices service and share that spreadsheet with the development team.
 
-The development team will use `process_vendor.py` to extract, validate and apply the JSON data to [software-vendors.json](../conf/software-vendors.json).
+The development team will use `process_vendor.py` to extract, validate and apply the JSON data to [software-vendors.json](../conf/software-vendors.json), and in the case of a new vendor, update [VendorDetails.md](./VendorDetails.md) to include a link to the product details page for that vendor.
+
+**IMPORTANT**: If part of an update to an existing product includes that product being renamed, this script will not work as expected, without the name being first manually updated in both [software-vendors.json](../conf/software-vendors.json) & [VendorDetails.md](./VendorDetails.md) before the script is run. It was not possible to make allowances for this, as some vendors have multiple products, with similar contact details, but different names. Therefore, matching on anything other than the name would cause issues with these products. Fortunately, a vendor renaming their product is comparatively rare, and involves some admin for the vendor!
 
 Note: If a new vendor product is to be added, the script automatically assigns a new `productId` that is 3 larger than the last entry.
 
