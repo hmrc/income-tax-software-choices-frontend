@@ -26,6 +26,7 @@
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTemplate
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.viewmodels.ProductDetailsSectionInfo
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.GettingStartedTemplate
 
 @this(
         mainTemplate: MainTemplate,
@@ -34,9 +35,9 @@
         govukDetails: GovukDetails,
         govukTable: GovukTable,
         govukTag: GovukTag,
-        gettingStartedHelper: uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.helpers.GettingStartedHelper
+        gettingStartedHelper: GettingStartedTemplate
 )(implicit appConfig: AppConfig)
-@(softwareVendor: SoftwareVendorModel, backLink: String, userType: Option[UserType], finalFilters: Option[Seq[VendorFilter]] = None)(implicit request: Request[_], messages: Messages)
+@(softwareVendor: SoftwareVendorModel, backLink: String, finalFilters: Option[Seq[VendorFilter]] = None, userType: Option[UserType] = None)(implicit request: Request[_], messages: Messages)
 
 @mainTemplate(title = softwareVendor.name, backLink = Some(backLink), isFullWidth = true) {
 

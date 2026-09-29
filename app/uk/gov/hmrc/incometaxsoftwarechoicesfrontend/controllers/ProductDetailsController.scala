@@ -45,16 +45,14 @@ class ProductDetailsController @Inject()(softwareChoicesService: SoftwareChoices
 
     for {
       userFilters <- userFiltersRepository.get(request.sessionId)
+      userType = pageAnswersService.getPageAnswers(userFilters.flatMap(_.answers), UserTypePage)
       vendorOpt = productId.toIntOption.flatMap(softwareChoicesService.getSoftwareVendor)
     } yield {
       (userFilters, vendorOpt) match {
         case (Some(userFilters), Some(softwareVendor)) if userIsInFindOrCheckJourney(userFilters.answers) =>
-          val userType = pageAnswersService.getPageAnswers(userFilters.answers, UserTypePage)
+          //val userType = pageAnswersService.getPageAnswers(userFilters.answers, UserTypePage)
           Ok(productDetailsView(softwareVendor, backLink(userFilters.answers, userFilters.finalFilters, softwareVendor), userType, Some(userFilters.finalFilters)))
-        case (Some(userFilters), Some(softwareVendor)) =>
-          val userType = pageAnswersService.getPageAnswers(userFilters.answers, UserTypePage)
-          Ok(productDetailsView(softwareVendor, backLink(userFilters.answers, userFilters.finalFilters, softwareVendor), userType, Some(userFilters.finalFilters)))
-        case (None, Some(softwareVendor)) =>
+        case (_ , Some(softwareVendor)) =>
           Ok(productDetailsView(softwareVendor, routes.SearchSoftwareController.show().url, None, None))
         case _ =>
           NotFound(notFoundView(routes.ProductDetailsController.show(productId).url))
