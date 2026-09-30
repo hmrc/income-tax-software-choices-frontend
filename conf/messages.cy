@@ -351,13 +351,9 @@ partially-compatible.bullet2 = awdurdodi’ch meddalwedd i CThEF
 #Quarterly Only page
 quarterly-only.heading1 = Gall {0} anfon diweddariadau chwarterol yn unig
 quarterly-only.para1 = Nid oes gan y feddalwedd hon y gallu i gyflwyno Ffurflen Dreth.
-quarterly-only.para2.link.text = Dysgwch ragor am eich meddalwedd a’i nodweddion sydd ar ddod
-quarterly-only.para3 = Os ydych yn bwriadu llenwi eich Ffurflen Dreth drwy ddefnyddio meddalwedd, {0} er mwyn gwneud hyn.
-quarterly-only.para3.link.text = bydd angen i chi gael meddalwedd ychwanegol
-quarterly-only.heading2 = Yr hyn y dylech ei wneud nesaf
-quarterly-only.para4 = Os ydych am ddefnyddio’r feddalwedd hon, bydd angen i chi wneud y canlynol:
-quarterly-only.bullet1 = cofrestru ar gyfer y cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm
-quarterly-only.bullet2 = awdurdodi’ch meddalwedd i CThEF
+quarterly-only.para2.link.text = Dysgwch ragor am y feddalwedd hon a’i nodweddion sydd ar y gweill
+quarterly-only.para3 = {0} ychwanegol i lenwi Ffurflenni Treth.
+quarterly-only.para3.link.text = Bydd angen meddalwedd
 
 # No Software Listed & Software in Development & Not Compatible pages
 no-software-listed.heading = Nid yw’r feddalwedd hon yn cael ei chydnabod ar gyfer Troi Treth yn Ddigidol ar gyfer Treth Incwm

@@ -45,7 +45,7 @@ class QuarterlyOnlyControllerSpec extends ControllerBaseSpec
 
   "show" must {
     "return OK and display the quarterly only page" in {
-      when(mockQuarterlyOnlyView(any(), any(), any(), any())(any(), any()))
+      when(mockQuarterlyOnlyView(any(), any(), any(), any(), any())(any(), any()))
         .thenReturn(HtmlFormat.empty)
       val testProduct = SoftwareProduct(1234, "test-software", Recognised)
 
@@ -56,7 +56,7 @@ class QuarterlyOnlyControllerSpec extends ControllerBaseSpec
     }
 
     "return INTERNAL_SERVER_ERROR when the software product is missing" in {
-      when(mockQuarterlyOnlyView(any(), any(), any(), any())(any(), any()))
+      when(mockQuarterlyOnlyView(any(), any(), any(), any(), any())(any(), any()))
         .thenReturn(HtmlFormat.empty)
 
       val result = intercept[SCInconsistentDataException](

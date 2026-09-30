@@ -19,6 +19,7 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.twirl.api.HtmlFormat
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.{Agent, SoleTraderOrLandlord}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.QuarterlyOnlyView
 
 class QuarterlyOnlyViewSpec extends ViewSpec {
@@ -30,7 +31,8 @@ class QuarterlyOnlyViewSpec extends ViewSpec {
     productDetailsUrl = testCall.url,
     backLink = testBackUrl,
     chosenSoftware = softwareName,
-    softwareResultsUrl = resultsUrl
+    softwareResultsUrl = resultsUrl,
+    userType = Some(SoleTraderOrLandlord)
   )
   val document: Document = Jsoup.parse(page.body)
   "QuarterlyOnly view" must {
@@ -47,25 +49,65 @@ class QuarterlyOnlyViewSpec extends ViewSpec {
       document.selectHead("h1").text() shouldBe QuarterlyOnlyContent.heading1
     }
 
-    "have an h2" in {
-      document.selectHead("h2").text() shouldBe QuarterlyOnlyContent.heading2
-    }
-
     "have the correct paragraphs" in {
       document.mainContent.selectNth("p", 1).text() shouldBe QuarterlyOnlyContent.para1
       document.mainContent.selectNth("p", 2).text() shouldBe QuarterlyOnlyContent.para2
       document.mainContent.selectNth("p", 2).selectHead("a").attribute("href").getValue shouldBe testCall.url
       document.mainContent.selectNth("p", 3).text() shouldBe QuarterlyOnlyContent.para3
       document.mainContent.selectNth("p", 3).selectHead("a").attribute("href").getValue shouldBe resultsUrl
-      document.mainContent.selectNth("p", 4).text() shouldBe QuarterlyOnlyContent.para4
 
     }
 
-    "have the correct bullet points" in {
-      document.selectNth("ul.govuk-list--bullet > li", 1).text() shouldBe QuarterlyOnlyContent.bullet1Text
-      document.selectNth("ul.govuk-list--bullet > li", 1).selectHead("a").attribute("href").getValue shouldBe QuarterlyOnlyContent.bullet1Link
-      document.selectNth("ul.govuk-list--bullet > li", 2).text() shouldBe QuarterlyOnlyContent.bullet2Text
-      document.selectNth("ul.govuk-list--bullet > li", 2).selectHead("a").attribute("href").getValue shouldBe QuarterlyOnlyContent.bullet2Link
+    "display the getting started section" which {
+
+      "for an individual (SoleTraderOrLandlord) user type" should {
+
+        "has the getting started heading" in {
+          document.selectHead("h2").text shouldBe QuarterlyOnlyContent.heading2
+        }
+
+        "has the getting started text" in {
+          document.select(".app-getting-started-box > p").text shouldBe QuarterlyOnlyContent.para4
+        }
+
+        "have the correct main section bullet points" in {
+          document.selectNth("ul.govuk-list--bullet > li", 1).text() shouldBe QuarterlyOnlyContent.bullet1Text
+          document.selectNth("ul.govuk-list--bullet > li", 1).selectHead("a").attribute("href").getValue shouldBe QuarterlyOnlyContent.bullet1LinkIndividual
+          document.selectNth("ul.govuk-list--bullet > li", 2).text() shouldBe QuarterlyOnlyContent.bullet2Text
+          document.selectNth("ul.govuk-list--bullet > li", 2).selectHead("a").attribute("href").getValue shouldBe QuarterlyOnlyContent.bullet2Link
+        }
+      }
+
+      "for an agent user type" should {
+        val agentPage: HtmlFormat.Appendable = view(
+          productDetailsUrl = testCall.url,
+          backLink = testBackUrl,
+          chosenSoftware = softwareName,
+          softwareResultsUrl = resultsUrl,
+          userType = Some(Agent)
+        )
+        val agentDocument: Document = Jsoup.parse(agentPage.body)
+
+        "has a link to sign up for MTD as an agent" in {
+          agentDocument.selectNth("ul.govuk-list--bullet > li", 1).text() shouldBe QuarterlyOnlyContent.bullet1Text
+          agentDocument.selectNth("ul.govuk-list--bullet > li", 1).selectHead("a").attribute("href").getValue shouldBe QuarterlyOnlyContent.bullet1LinkAgent
+        }
+      }
+
+      "for an unspecified user type (no answer given)" should {
+        val unspecifiedPage: HtmlFormat.Appendable = view(
+          productDetailsUrl = testCall.url,
+          backLink = testBackUrl,
+          chosenSoftware = softwareName,
+          softwareResultsUrl = resultsUrl,
+          userType = None
+        )
+        val unspecified: Document = Jsoup.parse(unspecifiedPage.body)
+        "has a link to sign up for MTD for an unspecified user type" in {
+          unspecified.selectNth("ul.govuk-list--bullet > li", 1).text() shouldBe QuarterlyOnlyContent.bullet1Text
+          unspecified.selectNth("ul.govuk-list--bullet > li", 1).selectHead("a").attribute("href").getValue shouldBe QuarterlyOnlyContent.bullet1LinkIndividual
+        }
+      }
     }
 
     "display the exit survey link" in {
@@ -81,15 +123,16 @@ class QuarterlyOnlyViewSpec extends ViewSpec {
 
 private object QuarterlyOnlyContent {
   val heading1 = "A1 Tax Stuff can only send quarterly updates"
-  val heading2 = "What you should do next"
+  val heading2 = "Getting started with this software"
   val title = s"$heading1 - ${PageContentBase.title} - GOV.UK"
   val para1 = "This software does not have the ability to submit a tax return."
-  val para2 = "Learn more about your software and its upcoming features"
-  val para3 = "If you intend to do your tax returns via software, you will need additional software to do this."
-  val para4 = "If you want to use this software, you need to:"
+  val para2 = "Learn more about this software and its upcoming features"
+  val para3 = "Additional software will be required to complete tax returns."
+  val para4 = "The following will need to be completed, if not already done so:"
   val bullet1Text = "sign up for Making Tax Digital for Income Tax (opens in new tab)"
-  val bullet1Link = "https://www.gov.uk/guidance/sign-up-for-making-tax-digital-for-income-tax"
-  val bullet2Text = "authorise your software for HMRC (opens in new tab)"
+  val bullet1LinkIndividual = "https://www.gov.uk/guidance/sign-up-for-making-tax-digital-for-income-tax"
+  val bullet1LinkAgent = "https://www.gov.uk/guidance/sign-up-your-client-for-making-tax-digital-for-income-tax"
+  val bullet2Text = "authorise this software for HMRC (opens in new tab)"
   val bullet2Link = "https://www.gov.uk/guidance/use-making-tax-digital-for-income-tax/get-your-software-ready"
   val exitSurveyLinkTitle = "Give feedback on this service (opens in new tab)"
   val exitSurveyLink = "http://localhost:9514/feedback/SOFTWAREMTDIT?useServiceNavigation"
