@@ -6,7 +6,9 @@ The vendor data capture template is a spreadsheet that allows the customer (HMRC
 
 The customer will complete a template for each software product to be added to the Software Choices service and share that spreadsheet with the development team.
 
-The development team will use `process_vendor.py` to extract, validate and apply the JSON data to [software-vendors.json](../conf/software-vendors.json).
+The development team will use `process_vendor.py` to extract, validate and apply the JSON data to [software-vendors.json](../conf/software-vendors.json), and in the case of a new vendor, update [VendorDetails.md](./VendorDetails.md) to include a link to the product details page for that vendor.
+
+**IMPORTANT**: If part of an update to an existing product includes that product being renamed, this script will not work as expected, without the name being first manually updated in both [software-vendors.json](../conf/software-vendors.json) & [VendorDetails.md](./VendorDetails.md) before the script is run. It was not possible to make allowances for this, as some vendors have multiple products, with similar contact details, but different names. Therefore, matching on anything other than the name would cause issues with these products. Fortunately, a vendor renaming their product is comparatively rare, and involves some admin for the vendor!
 
 Note: If a new vendor product is to be added, the script automatically assigns a new `productId` that is 3 larger than the last entry.
 
@@ -25,21 +27,29 @@ If not installed, install via Homebrew:
 
 `brew install python3`
 
-2 — Install the required Python library openpyxl
+2 — Install the required Python libraries:
 
 Check if already installed:
 
 `python3 -c "import openpyxl"`
+`python3 -c "import markdown"`
+`python3 -c "import pandas"`
 
 If not installed:
 
 `pip3 install openpyxl`
+`pip3 install markdown`
+`pip3 install pandas`
 
-3 — Verify both are working:
+3 — Verify all are working:
 
-`python3 --version`      # should print e.g. Python 3.x.x
+`python3 --version`       # should print e.g. Python 3.x.x
 
 `pip3 show openpyxl`      # should show openpyxl version info
+
+`pip3 show markdown`      # should show markdown version info
+
+`pip3 show pandas`        # should show pandas version info
 
 ### Step 1 — Create a branch based on the task number
 
@@ -68,6 +78,7 @@ The script will automatically:
 - Insert new vendors or update existing ones in `conf/software-vendors.json`
 - Print a diff table of all changes made
 - Delete all `.xlsx` files in `scripts/vendors/` relating to updated or inserted records
+- Update `docs/VendorDetails.md` with product details page of any newly added vendors
 
 ## Template Update process
 
