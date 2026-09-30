@@ -365,3 +365,9 @@ software-in-development.heading = Nid yw {0} yn cael ei chydnabod ar gyfer Troi 
 not-compatible.heading = Ar hyn o bryd, nid yw {0} yn cydweddu
 unsuitable-software.para1 = Efallai y byddwch am ofyn i’r darparwr meddalwedd hwn a yw’n bwriadu datblygu nodweddion i gefnogi’r cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm.
 unsuitable-software.para2 = Gallwch hefyd chwilio am becynnau meddalwedd eraill sy’n cydweddu â’r cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm er mwyn gweld a ydynt yn addas.
+
+# Getting Started template
+getting-started.heading = Dechrau arni â’r feddalwedd hon
+getting-started.p1 = Os nad yw wedi’i wneud eisoes, bydd angen gwneud y canlynol:
+getting-started.sign-up.text = cofrestru ar gyfer y cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm
+getting-started.authorise.text = awdurdodi’r feddalwedd hon i CThEF
