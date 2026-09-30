@@ -665,7 +665,7 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
 
         "has a link to sign up for MTD for an unspecified user type" in {
           val link = document.mainContent.select(".govuk-link").get(1)
-          link.attr("href") shouldBe appConfig.unspecifiedSignUpForMtdUrl
+          link.attr("href") shouldBe appConfig.individualSignUpForMtdUrl
         }
       }
     }

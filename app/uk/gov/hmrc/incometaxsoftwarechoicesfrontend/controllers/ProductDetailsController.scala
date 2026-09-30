@@ -52,7 +52,7 @@ class ProductDetailsController @Inject()(softwareChoicesService: SoftwareChoices
         case (Some(userFilters), Some(softwareVendor)) if userIsInFindOrCheckJourney(userFilters.answers) =>
           Ok(productDetailsView(softwareVendor, backLink(userFilters.answers, userFilters.finalFilters, softwareVendor), Some(userFilters.finalFilters), userType))
         case (_ , Some(softwareVendor)) =>
-          Ok(productDetailsView(softwareVendor, routes.SearchSoftwareController.show().url, None, None))
+          Ok(productDetailsView(softwareVendor, routes.SearchSoftwareController.show().url))
         case _ =>
           NotFound(notFoundView(routes.ProductDetailsController.show(productId).url))
       }

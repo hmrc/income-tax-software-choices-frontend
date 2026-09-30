@@ -21,30 +21,31 @@
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.{SoleTraderOrLandlord, Agent}
 
 @this(
-hmrcNewTabLinkHelper: HmrcNewTabLinkHelper
+    hmrcNewTabLinkHelper: HmrcNewTabLinkHelper
 )(implicit appConfig: AppConfig)
 
 @(userType: Option[UserType])(implicit messages: Messages)
 
 @signUpUrl = @{
-       userType match {
-           case Some(SoleTraderOrLandlord) => appConfig.individualSignUpForMtdUrl
-           case Some(Agent)                => appConfig.agentSignUpForMtdUrl
-           case None                       => appConfig.unspecifiedSignUpForMtdUrl
-      }
+    userType match {
+        case Some(Agent) => appConfig.agentSignUpForMtdUrl
+        case _           => appConfig.individualSignUpForMtdUrl
+    }
 }
 
 <div class="app-getting-started-box govuk-!-width-two-thirds">
- <h2 class="govuk-heading-m">@messages("product-details.getting-started")</h2>
- <p class="govuk-body">@messages("product-details.getting-started.text")</p>
- <ul class="govuk-list govuk-list--bullet">
-  <li class="govuk-!-margin-bottom-3">@hmrcNewTabLinkHelper(NewTabLinkHelper(
-   text = messages("product-details.getting-started.sign-up"),
-   href = Some(signUpUrl)
-   ))</li>
-  <li class="govuk-!-margin-bottom-3">@hmrcNewTabLinkHelper(NewTabLinkHelper(
-   text = messages("product-details.getting-started.authorise"),
-   href = Some(appConfig.getSoftwareReadyUrl)
-   ))</li>
- </ul>
+    <h2 class="govuk-heading-m">@messages("getting-started.heading")</h2>
+    <p class="govuk-body">@messages("getting-started.p1")</p>
+    <ul class="govuk-list govuk-list--bullet">
+        <li class="govuk-!-margin-bottom-3">@hmrcNewTabLinkHelper(NewTabLinkHelper(
+            text = messages("getting-started.sign-up.text"),
+            href = Some(signUpUrl)
+            ))
+        </li>
+        <li class="govuk-!-margin-bottom-3">@hmrcNewTabLinkHelper(NewTabLinkHelper(
+            text = messages("getting-started.authorise.text"),
+            href = Some(appConfig.getSoftwareReadyUrl)
+            ))
+        </li>
+    </ul>
 </div>

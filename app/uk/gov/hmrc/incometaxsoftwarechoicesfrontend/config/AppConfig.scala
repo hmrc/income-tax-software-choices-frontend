@@ -48,7 +48,6 @@ class AppConfig @Inject()(val config: Configuration) {
 
   val individualSignUpForMtdUrl: String = config.get[String]("guidance.individualSignUpForMtdUrl")
   val agentSignUpForMtdUrl: String = config.get[String]("guidance.agentSignUpForMtdUrl")
-  val unspecifiedSignUpForMtdUrl: String = config.get[String]("guidance.unspecifiedSignUpForMtdUrl")
 
   val getSoftwareReadyUrl: String = config.get[String]("guidance.getSoftwareReadyUrl")
 }
