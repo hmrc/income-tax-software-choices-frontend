@@ -33,19 +33,21 @@
     }
 }
 
-<div class="app-getting-started-box govuk-!-width-two-thirds">
+<div class = "getting-started-section">
     <h2 class="govuk-heading-m">@messages("getting-started.heading")</h2>
-    <p class="govuk-body">@messages("getting-started.p1")</p>
-    <ul class="govuk-list govuk-list--bullet">
-        <li class="govuk-!-margin-bottom-3">@hmrcNewTabLinkHelper(NewTabLinkHelper(
-            text = messages("getting-started.sign-up.text"),
-            href = Some(signUpUrl)
-            ))
-        </li>
-        <li class="govuk-!-margin-bottom-3">@hmrcNewTabLinkHelper(NewTabLinkHelper(
-            text = messages("getting-started.authorise.text"),
-            href = Some(appConfig.getSoftwareReadyUrl)
-            ))
-        </li>
-    </ul>
+    <div class="app-getting-started-box govuk-!-width-two-thirds govuk-!-margin-bottom-6">
+        <p class="govuk-body">@messages("getting-started.p1")</p>
+        <ul class="govuk-list govuk-list--bullet">
+            <li class="govuk-!-margin-bottom-3">@hmrcNewTabLinkHelper(NewTabLinkHelper(
+                text = messages("getting-started.sign-up.text"),
+                href = Some(signUpUrl)
+                ))
+            </li>
+            <li class="govuk-!-margin-bottom-3">@hmrcNewTabLinkHelper(NewTabLinkHelper(
+                text = messages("getting-started.authorise.text"),
+                href = Some(appConfig.getSoftwareReadyUrl)
+                ))
+            </li>
+        </ul>
+    </div>
 </div>
