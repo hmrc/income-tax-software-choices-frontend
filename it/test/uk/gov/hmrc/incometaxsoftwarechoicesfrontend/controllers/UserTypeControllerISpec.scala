@@ -38,7 +38,7 @@ class UserTypeControllerISpec extends ComponentSpecBase with BeforeAndAfterEach 
     super.beforeEach()
   }
 
-  "GET /how-will-you-use-it" when {
+  "GET /about-you" when {
     "there is nothing saved in the database for this user" should {
       "redirect to the index page" in {
         val res = SoftwareChoicesFrontend.getUserType()
@@ -161,7 +161,7 @@ class UserTypeControllerISpec extends ComponentSpecBase with BeforeAndAfterEach 
     }
   }
 
-  "POST /how-will-you-use-it" when {
+  "POST /about-you" when {
     "there is nothing saved in the database for this user" must {
       "redirect to the index page" in {
         val res = SoftwareChoicesFrontend.submitUserType(Some(SoleTraderOrLandlord))

@@ -17,10 +17,10 @@ POST        /session-expired                     uk.gov.hmrc.incometaxsoftwarech
 
 GET         /keep-alive                          uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.KeepAliveController.keepAlive()
 
-GET         /how-will-you-use-it                 uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.UserTypeController.show(editMode: Boolean ?= false)
-POST        /how-will-you-use-it                 uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.UserTypeController.submit(editMode: Boolean ?= false)
 GET         /about-you                           uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.UserTypeController.show(editMode: Boolean ?= false)
 POST        /about-you                           uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.UserTypeController.submit(editMode: Boolean ?= false)
+GET         /how-will-you-use-it                 uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.UserTypeController.show(editMode: Boolean ?= false)
+POST        /how-will-you-use-it                 uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.UserTypeController.submit(editMode: Boolean ?= false)
 
 GET         /which-income-source-quarterly-updates  uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.BusinessIncomeController.show(editMode: Boolean ?= false)
 POST        /which-income-source-quarterly-updates  uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.BusinessIncomeController.submit(editMode: Boolean ?= false)
@@ -37,28 +37,28 @@ POST        /accounting-period-check                uk.gov.hmrc.incometaxsoftwar
 GET         /check-answers                          uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.CheckYourAnswersController.show()
 POST        /check-answers                          uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.CheckYourAnswersController.submit()
 
-GET         /no-all-in-one-product                  uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.ZeroSoftwareResultsController.show()
-POST        /no-all-in-one-product                  uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.ZeroSoftwareResultsController.submit()
 GET         /no-software-matches                  uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.ZeroSoftwareResultsController.show()
 POST        /no-software-matches                  uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.ZeroSoftwareResultsController.submit()
+GET         /no-all-in-one-product                  uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.ZeroSoftwareResultsController.show()
+POST        /no-all-in-one-product                  uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.ZeroSoftwareResultsController.submit()
 
 GET         /accounting-period-not-aligned          uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.AccountingPeriodNotAlignedController.show(editMode: Boolean ?= false)
 POST        /accounting-period-not-aligned          uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.AccountingPeriodNotAlignedController.submit(editMode: Boolean ?= false)
 
-GET         /enter-software-name                    uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.EnterSoftwareNameController.show(editMode: Boolean ?= false)
-POST        /enter-software-name                    uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.EnterSoftwareNameController.submit(editMode: Boolean ?= false)
-GET         /enter-software-name/clear              uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.EnterSoftwareNameController.clearSelection(editMode: Boolean ?= false)
 GET         /check-software                         uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.EnterSoftwareNameController.show(editMode: Boolean ?= false)
 POST        /check-software                         uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.EnterSoftwareNameController.submit(editMode: Boolean ?= false)
 GET         /check-software/clear                   uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.EnterSoftwareNameController.clearSelection(editMode: Boolean ?= false)
+GET         /enter-software-name                    uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.EnterSoftwareNameController.show(editMode: Boolean ?= false)
+POST        /enter-software-name                    uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.EnterSoftwareNameController.submit(editMode: Boolean ?= false)
+GET         /enter-software-name/clear              uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.EnterSoftwareNameController.clearSelection(editMode: Boolean ?= false)
 
-GET         /do-you-have-software                   uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.HowYouFindSoftwareController.show()
-POST        /do-you-have-software                   uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.HowYouFindSoftwareController.submit()
 GET         /how-to-find-software                   uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.HowYouFindSoftwareController.show()
 POST        /how-to-find-software                   uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.HowYouFindSoftwareController.submit()
+GET         /do-you-have-software                   uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.HowYouFindSoftwareController.show()
+POST        /do-you-have-software                   uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.HowYouFindSoftwareController.submit()
 
-GET         /no-software-listed                     uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.NoSoftwareListedController.show(editMode: Boolean ?= false)
 GET         /software-not-recognised                uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.NoSoftwareListedController.show(editMode: Boolean ?= false)
+GET         /no-software-listed                     uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.NoSoftwareListedController.show(editMode: Boolean ?= false)
 
 GET         /need-additional-software               uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.NeedAdditionalSoftwareController.show(editMode: Boolean ?= false)
 
