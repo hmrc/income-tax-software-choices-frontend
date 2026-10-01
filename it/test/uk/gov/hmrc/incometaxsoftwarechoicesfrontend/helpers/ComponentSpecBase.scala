@@ -126,16 +126,16 @@ trait ComponentSpecBase extends AnyWordSpec
 
     def getUserType(editMode: Boolean = false): WSResponse = {
       editMode match {
-        case true => get("/how-will-you-use-it?editMode=true")
-        case false => get("/how-will-you-use-it")
+        case true => get("/about-you?editMode=true")
+        case false => get("/about-you")
       }
 
     }
 
     def submitUserType(request: Option[UserType], editMode: Boolean = false): WSResponse = {
       val url = editMode match {
-        case true => "/how-will-you-use-it?editMode=true"
-        case false => "/how-will-you-use-it"
+        case true => "/about-you?editMode=true"
+        case false => "/about-you"
       }
       post(url)(
         request.fold(Map.empty[String, Seq[String]])(
@@ -158,22 +158,22 @@ trait ComponentSpecBase extends AnyWordSpec
       FiltersForm.form.fill(search).data.map { case (k, v) => (k, Seq(v)) }
     }
 
-    def getZeroSoftwareResults(): WSResponse = get("/no-all-in-one-product")
+    def getZeroSoftwareResults(): WSResponse = get("/no-software-matches")
 
-    def postZeroSoftwareResults(): WSResponse = post("/no-all-in-one-product")(Map.empty)
+    def postZeroSoftwareResults(): WSResponse = post("/no-software-matches")(Map.empty)
 
     def getNoListedSoftware(editMode: Boolean = false): WSResponse =  {
       val url = editMode match {
-        case true => "/no-software-listed?editMode=true"
-        case false => "/no-software-listed"
+        case true => "/software-not-recognised?editMode=true"
+        case false => "/software-not-recognised"
       }
       get(url)
     }
     
-    def getHowYouFindSoftware(): WSResponse = get("/do-you-have-software")
+    def getHowYouFindSoftware(): WSResponse = get("/how-to-find-software")
     
     def postHowYouFindSoftware(pageAnswer: Option[JourneyType]): WSResponse = {
-      post("/do-you-have-software")(
+      post("/how-to-find-software")(
         pageAnswer.fold(Map.empty[String, Seq[String]])(
           journeyType=> HowYouFindSoftwareForm.form.fill(journeyType).data.map { case (k, v) => (k, Seq(v)) }
         )
@@ -182,16 +182,16 @@ trait ComponentSpecBase extends AnyWordSpec
 
     def getEnterSoftwareName(editMode: Boolean = false): WSResponse = {
       val url = editMode match {
-        case true => "/enter-software-name?editMode=true"
-        case false => "/enter-software-name"
+        case true => "/check-software?editMode=true"
+        case false => "/check-software"
       }
       get(url)
     }
 
     def postEnterSoftwareName(pageAnswer: Option[Int], editMode: Boolean = false): WSResponse = {
       val url = editMode match {
-        case true => "/enter-software-name?editMode=true"
-        case false => "/enter-software-name"
+        case true => "/check-software?editMode=true"
+        case false => "/check-software"
       }
       post(url)(
         pageAnswer.fold(Map.empty[String, Seq[String]])(
@@ -202,8 +202,8 @@ trait ComponentSpecBase extends AnyWordSpec
 
     def clearEnterSoftwareName(editMode: Boolean = false): WSResponse = {
       val url = editMode match {
-        case true => "/enter-software-name/clear?editMode=true"
-        case false => "/enter-software-name/clear"
+        case true => "/check-software/clear?editMode=true"
+        case false => "/check-software/clear"
       }
       get(url)
     }
