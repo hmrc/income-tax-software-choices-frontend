@@ -10,8 +10,10 @@ This file is for the vendor management team to quickly reference the product det
 | [100PcMTD](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3357)                                      |
 | [123 e-Filing MTD for Income Tax](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3240)               |
 | [123 Sheets](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3123)                                    |
+| [123 Tax](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3614)                                       |
 | [@1TaxFiler](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3354)                                    |
 | [@Taxd MTD](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3261)                                     |
+| [AATAX](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3617)                                         |
 | [Ablegatio Ftax MTD for IT](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3372)                     |
 | [AbraTax MTD for Income Tax](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3231)                    |
 | [Abridge (MTD for Excel/Sheets)](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3381)                |
@@ -40,6 +42,7 @@ This file is for the vendor management team to quickly reference the product det
 | [Basetax – Making Tax Digital for Income Tax](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3518)   |
 | [BizHub365](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3584)                                     |
 | [bluQube Tax Connect](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3411)                           |
+| [Bookfolio](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3620)                                     |
 | [Bosh](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3521)                                          |
 | [Briefcase](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3360)                                     |
 | [Bright](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3213)                                        |
@@ -56,6 +59,7 @@ This file is for the vendor management team to quickly reference the product det
 | [Coconut](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3150)                                       |
 | [Coconut Free](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3153)                                  |
 | [Crunch](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3318)                                        |
+| [Cuppa](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3623)                                         |
 | [Deductic MTD](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3509)                                  |
 | [Dext Solo](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3144)                                     |
 | [Digita Personal Tax](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3147)                           |
@@ -71,6 +75,7 @@ This file is for the vendor management team to quickly reference the product det
 | [Filed Quarterly](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3515)                               |
 | [FileThat!](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3560)                                     |
 | [Finaap MTD Income Tax](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3423)                         |
+| [Five Eyes Financial Intelligence](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3626)              |
 | [flonancial](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3399)                                    |
 | [Forbes MTD](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3189)                                    |
 | [FreeAgent](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3192)                                     |
@@ -117,7 +122,7 @@ This file is for the vendor management team to quickly reference the product det
 | [Nexus by Landlord Studio](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3420)                      |
 | [NJT Tax Return Manager](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3455)                        |
 | [Nomi](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3201)                                          |
-| [Otis Tax](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3614)                                      |
+| [Otis Tax](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3228)                                      |
 | [Pandle](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3402)                                        |
 | [PaTMa Property Manager](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3219)                        |
 | [Powered Now ](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3366)                                  |
@@ -156,6 +161,7 @@ This file is for the vendor management team to quickly reference the product det
 | [TELUS Farm Accounting](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3500)                         |
 | [Tide Accounting](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3306)                               |
 | [Tofflo](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3578)                                        |
+| [TradeKit](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3629)                                      |
 | [VANTIX](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3491)                                        |
 | [Varro](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3479)                                         |
 | [VitalTax](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3246)                                      |
