@@ -38,8 +38,12 @@ class ZeroSoftwareResultsViewSpec extends ViewSpec {
 
   "ZeroResultsView" when {
 
+      "have the correct title" in {
+        document().title() mustBe ZeroSoftwareResultsViewContent.title
+      }
+
       "have the correct first heading" in {
-        document().title() mustBe ZeroSoftwareResultsViewContent.heading1
+        document().selectHead("h1").text() mustBe ZeroSoftwareResultsViewContent.heading1
       }
 
       "have the correct first paragraph text" in {
@@ -58,10 +62,6 @@ class ZeroSoftwareResultsViewSpec extends ViewSpec {
         document().mainContent.select("p").get(2).text mustBe ZeroSoftwareResultsViewContent.paragraph3
       }
 
-      "have the correct forth paragraph text" in {
-        document().mainContent.select("p").get(3).text mustBe ZeroSoftwareResultsViewContent.paragraph4
-      }
-
        "display the exit survey link" in {
           val link = document().mainContent.select(".govuk-link").get(0)
           link.text shouldBe ZeroSoftwareResultsViewContent.exitSurveyLinkTitle
@@ -75,13 +75,12 @@ class ZeroSoftwareResultsViewSpec extends ViewSpec {
 }
 
 private object ZeroSoftwareResultsViewContent {
-  val title = s"There is currently no compatible software that meets all your needs - ${PageContentBase.title} - GOV.UK"
-  val heading1 = s"There is currently no compatible software that meets all your needs - ${PageContentBase.title} - GOV.UK"
-  val paragraph1 = "Based on what you’ve told us, there is not currently an all-in-one software product that meets all of your needs."
+  val title = s"There is currently no compatible software that meets all the requirements - ${PageContentBase.title} - GOV.UK"
+  val heading1 = s"There is currently no compatible software that meets all the requirements"
+  val paragraph1 = "Based on the information provided, no all-in-one software product currently meets all of these requirements."
   val heading2 = "More software will be available soon"
   val paragraph2 = "Several all-in-one products are currently being developed."
   val paragraph3 = "We update this tool regularly to show what’s available. Please check back later for updates, which will include new software and changes to the features of existing software."
-  val paragraph4 = "If you have an agent or accountant, you can also ask them about software."
   val finish = "Finish"
   val exitSurveyLinkTitle = "Give feedback on this service (opens in new tab)"
   val exitSurveyLink = "http://localhost:9514/feedback/SOFTWAREMTDIT?useServiceNavigation"
