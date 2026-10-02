@@ -18,14 +18,16 @@
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTemplate
 @import uk.gov.hmrc.hmrcfrontend.views.viewmodels.newtablinkhelper.NewTabLinkHelper
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
-
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.GettingStartedTemplate
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType
 
 @this(
-        mainTemplate: MainTemplate,
-        hmrcNewTabLinkHelper: HmrcNewTabLinkHelper
+    mainTemplate: MainTemplate,
+    hmrcNewTabLinkHelper: HmrcNewTabLinkHelper,
+    gettingStartedTemplate: GettingStartedTemplate
 )(implicit appConfig: AppConfig)
 
-@(productDetailsUrl: String, backLink: String, chosenSoftware: String, softwareResultsUrl: String)(implicit request: Request[_], messages: Messages)
+@(productDetailsUrl: String, backLink: String, chosenSoftware: String, softwareResultsUrl: String, userType: Option[UserType] = None)(implicit request: Request[_], messages: Messages)
 
 @mainTemplate(title = messages("quarterly-only.heading1", chosenSoftware), backLink = Some(backLink)) {
 
@@ -39,20 +41,7 @@
         @Html(messages("quarterly-only.para3", s"""<a class="govuk-link govuk-!-display-none-print" href="$softwareResultsUrl">${messages("quarterly-only.para3.link.text")}</a>"""))
     </p>
 
-    <h2 class="govuk-heading-m">@messages("quarterly-only.heading2")</h2>
-
-    <p class="govuk-body">@messages("quarterly-only.para4")</p>
-
-    <ul class="govuk-list govuk-list--bullet">
-        <li>@hmrcNewTabLinkHelper(NewTabLinkHelper(
-            text = s"${messages("quarterly-only.bullet1")}",
-            href = Some(appConfig.individualSignUpForMtdUrl)
-        ))</li>
-        <li>@hmrcNewTabLinkHelper(NewTabLinkHelper(
-            text = s"${messages("quarterly-only.bullet2")}",
-            href = Some(appConfig.getSoftwareReadyUrl)
-        ))</li>
-    </ul>
+    @gettingStartedTemplate(userType)
 
     <p class="govuk-body">
         @hmrcNewTabLinkHelper(NewTabLinkHelper(

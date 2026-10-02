@@ -39,7 +39,8 @@ class QuarterlyOnlyController @Inject()(view: QuarterlyOnlyView,
           productDetailsUrl = routes.ProductDetailsController.show(product.productId.toString).url,
           backLink = routes.CheckYourAnswersController.show().url,
           chosenSoftware = product.name,
-          softwareResultsUrl = routes.SearchSoftwareController.show().url
+          softwareResultsUrl = routes.SearchSoftwareController.show().url,
+          userType = request.userType
         ))
       }
       case _ => throw new SCInconsistentDataException("[QuarterlyOnlyController][show] - Could not find details of a recognised software product in answers")
