@@ -69,7 +69,11 @@
             </div>
         }
     }
-    @gettingStartedTemplate(userType)
+
+    <div class="govuk-!-width-two-thirds govuk-!-padding-0">
+        @gettingStartedTemplate(userType)
+    </div>
+
     <p class="govuk-body">
         @hmrcNewTabLinkHelper(NewTabLinkHelper(
             text = messages("exit-survey.link"),
