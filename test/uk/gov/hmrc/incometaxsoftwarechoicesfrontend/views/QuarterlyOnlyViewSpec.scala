@@ -60,21 +60,19 @@ class QuarterlyOnlyViewSpec extends ViewSpec {
 
     "display the getting started section" which {
 
+      "has the getting started heading" in {
+        document.selectHead("h2").text shouldBe QuarterlyOnlyContent.heading2
+      }
+
+      "has the getting started text" in {
+        document.select(".app-getting-started-box > p").text shouldBe QuarterlyOnlyContent.para4
+      }
+
       "for an individual (SoleTraderOrLandlord) user type" should {
 
-        "has the getting started heading" in {
-          document.selectHead("h2").text shouldBe QuarterlyOnlyContent.heading2
-        }
-
-        "has the getting started text" in {
-          document.select(".app-getting-started-box > p").text shouldBe QuarterlyOnlyContent.para4
-        }
-
-        "have the correct main section bullet points" in {
+        "have a link to sign up for MTD for an individual" in {
           document.selectNth("ul.govuk-list--bullet > li", 1).text() shouldBe QuarterlyOnlyContent.bullet1Text
           document.selectNth("ul.govuk-list--bullet > li", 1).selectHead("a").attribute("href").getValue shouldBe QuarterlyOnlyContent.bullet1LinkIndividual
-          document.selectNth("ul.govuk-list--bullet > li", 2).text() shouldBe QuarterlyOnlyContent.bullet2Text
-          document.selectNth("ul.govuk-list--bullet > li", 2).selectHead("a").attribute("href").getValue shouldBe QuarterlyOnlyContent.bullet2Link
         }
       }
 
@@ -88,7 +86,7 @@ class QuarterlyOnlyViewSpec extends ViewSpec {
         )
         val agentDocument: Document = Jsoup.parse(agentPage.body)
 
-        "has a link to sign up for MTD as an agent" in {
+        "have a link to sign up for MTD as an agent" in {
           agentDocument.selectNth("ul.govuk-list--bullet > li", 1).text() shouldBe QuarterlyOnlyContent.bullet1Text
           agentDocument.selectNth("ul.govuk-list--bullet > li", 1).selectHead("a").attribute("href").getValue shouldBe QuarterlyOnlyContent.bullet1LinkAgent
         }
@@ -103,10 +101,15 @@ class QuarterlyOnlyViewSpec extends ViewSpec {
           userType = None
         )
         val unspecified: Document = Jsoup.parse(unspecifiedPage.body)
-        "has a link to sign up for MTD for an unspecified user type" in {
+        "have a link to sign up for MTD for an individual" in {
           unspecified.selectNth("ul.govuk-list--bullet > li", 1).text() shouldBe QuarterlyOnlyContent.bullet1Text
           unspecified.selectNth("ul.govuk-list--bullet > li", 1).selectHead("a").attribute("href").getValue shouldBe QuarterlyOnlyContent.bullet1LinkIndividual
         }
+      }
+
+      "has a link to authorise this software for HMRC" in {
+        document.selectNth("ul.govuk-list--bullet > li", 2).text() shouldBe QuarterlyOnlyContent.bullet2Text
+        document.selectNth("ul.govuk-list--bullet > li", 2).selectHead("a").attribute("href").getValue shouldBe QuarterlyOnlyContent.bullet2Link
       }
     }
 
