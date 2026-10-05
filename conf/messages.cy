@@ -199,7 +199,7 @@ product-details.meaning.development = Mae’r darparwr meddalwedd wedi ymrwymo i
 product-details.meaning.not-included = Nid yw’r nodwedd hon ar gael yn y cynnyrch meddalwedd hwn.
 
 # Product features section
-product-details.details.heading.personalised = Yn seiliedig ar eich dewisiadau
+product-details.details.heading.personalised = Yn seiliedig ar y dewisiadau a wnaed
 
 product-details.features.heading = Nodweddion meddalwedd
 product-details.features.heading.personalised = Nodweddion meddalwedd sydd eu hangen
@@ -268,7 +268,7 @@ product-details.language.english = Saesneg
 product-details.language.welsh = Cymraeg
 
 # Other features section
-product-details.other-features.collapsible = Nodweddion meddalwedd posibl eraill
+product-details.other-features.collapsible = Nodweddion eraill i’w hystyried
 product-details.other-features.heading = Nodweddion eraill
 product-details.other-features.quarterly-updates.heading = Ffynonellau incwm eraill ar gyfer diweddariadau chwarterol
 product-details.other-features.tax-return.heading = Ffynonellau incwm ac eitemau eraill ar gyfer Ffurflen Dreth

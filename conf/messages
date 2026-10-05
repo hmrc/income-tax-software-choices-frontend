@@ -199,7 +199,7 @@ product-details.meaning.development = The software provider has committed to bui
 product-details.meaning.not-included = This is not available in this software product.
 
 # Product features section
-product-details.details.heading.personalised = Based on your selections
+product-details.details.heading.personalised = Based on the selections made
 
 product-details.features.heading = Software features
 product-details.features.heading.personalised = Software features needed
@@ -268,7 +268,7 @@ product-details.language.english = English
 product-details.language.welsh = Welsh
 
 # Other features section
-product-details.other-features.collapsible = Other potential software features
+product-details.other-features.collapsible = Other features to consider
 product-details.other-features.heading = Other features
 product-details.other-features.quarterly-updates.heading = Other quarterly update income sources
 product-details.other-features.tax-return.heading = Other tax return income sources and items
