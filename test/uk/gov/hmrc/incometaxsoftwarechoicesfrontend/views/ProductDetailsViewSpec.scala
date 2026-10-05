@@ -244,7 +244,7 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
       }
     }
 
-    "the vendor does not have any features" which {
+    "in static view and the vendor does not have any features" which {
 
       val document: Document = createAndParseDocument(softwareVendorModelBase)
 
@@ -423,9 +423,13 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
         }
       }
 
-      "have an 'other potential software features' section" which {
+      "have an 'other features to consider' section" which {
 
         val detailsElement: Element = document.selectNth("details", 1)
+        
+        "have the correct summary text" in {
+          detailsElement.select("summary").text() shouldBe otherFeaturesDropDown
+        }
 
         def detailsElementTable(index: Int): Element = detailsElement.getTable(index)
 
@@ -499,9 +503,13 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
         }
       }
 
-      "have an 'other potential software features' section" which {
+      "have an 'other features to consider' section" which {
 
         val detailsElement: Element = document.selectNth("details", 1)
+
+        "have the correct summary text" in {
+          detailsElement.select("summary").text() shouldBe otherFeaturesDropDown
+        }
 
         def detailsElementTable(index: Int): Element = detailsElement.getTable(index)
 
@@ -689,7 +697,7 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
     val exitSurveyLink = "http://localhost:9514/feedback/SOFTWAREMTDIT?useServiceNavigation"
 
     val featureStatusHeading = "What each feature status means"
-    val mainPersonalisedHeading = "Based on your selections"
+    val mainPersonalisedHeading = "Based on the selections made"
     val softwareFeaturesHeading = "Software features"
     val softwareFeaturesHeadingPersonalised = "Software features needed"
     val softwareFeaturesHeadingOther = "Other features"
@@ -697,8 +705,7 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
     val quarterlyUpdatesHeadingOther = "Other quarterly update income sources"
     val taxReturnHeading = "What is needed for tax returns"
     val taxReturnHeadingOther = "Other tax return income sources and items"
-    val softwareSpecificationsHeading = "Software specifications"
-    val softwareSpecificationsHeadingOther = "Other software specifications"
+    val otherFeaturesDropDown = "Other features to consider"
 
     val featureStatusTitle = "Feature status"
     val meaningTitle = "Meaning"
