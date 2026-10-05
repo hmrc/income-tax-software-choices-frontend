@@ -363,5 +363,6 @@ unsuitable-software.para2 = Gallwch hefyd chwilio am becynnau meddalwedd eraill 
 # Getting Started template
 getting-started.heading = Dechrau arni â’r feddalwedd hon
 getting-started.p1 = Os nad yw wedi’i wneud eisoes, bydd angen gwneud y canlynol:
-getting-started.sign-up.text = cofrestru ar gyfer y cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm
+getting-started.sign-up.text.individual = cofrestru ar gyfer y cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm
+getting-started.sign-up.text.agent = cofrestru’ch cleient ar gyfer y cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm
 getting-started.authorise.text = awdurdodi’r feddalwedd hon i CThEF

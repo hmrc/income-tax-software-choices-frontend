@@ -363,5 +363,6 @@ unsuitable-software.para2 = You can also search for other software packages that
 # Getting Started template
 getting-started.heading = Getting started with this software
 getting-started.p1 = The following will need to be completed, if not already done so:
-getting-started.sign-up.text = sign up for Making Tax Digital for Income Tax
+getting-started.sign-up.text.individual = sign up for Making Tax Digital for Income Tax
+getting-started.sign-up.text.agent = sign up your client for Making Tax Digital for Income Tax
 getting-started.authorise.text = authorise this software for HMRC
