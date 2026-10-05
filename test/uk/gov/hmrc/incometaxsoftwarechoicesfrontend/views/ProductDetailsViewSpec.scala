@@ -638,7 +638,7 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
 
         "has a link to sign up for MTD as an individual" in {
           val link = document.mainContent.select(".govuk-link").get(1)
-          link.text shouldBe s"${ProductDetailsPage.gettingStartedSignUp} (opens in new tab)"
+          link.text shouldBe s"${ProductDetailsPage.gettingStartedSignUpIndividual} (opens in new tab)"
           link.attr("href") shouldBe appConfig.individualSignUpForMtdUrl
           link.attr("target") shouldBe "_blank"
         }
@@ -656,7 +656,9 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
 
         "has a link to sign up for MTD as an agent" in {
           val link = document.mainContent.select(".govuk-link").get(1)
+          link.text shouldBe s"${ProductDetailsPage.gettingStartedSignUpAgent} (opens in new tab)"
           link.attr("href") shouldBe appConfig.agentSignUpForMtdUrl
+          link.attr("target") shouldBe "_blank"
         }
       }
 
@@ -665,7 +667,9 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
 
         "has a link to sign up for MTD for an unspecified user type" in {
           val link = document.mainContent.select(".govuk-link").get(1)
+          link.text shouldBe s"${ProductDetailsPage.gettingStartedSignUpIndividual} (opens in new tab)"
           link.attr("href") shouldBe appConfig.individualSignUpForMtdUrl
+          link.attr("target") shouldBe "_blank"
         }
       }
     }
@@ -768,7 +772,8 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
 
     val gettingStartedHeading = "Getting started with this software"
     val gettingStartedText = "The following will need to be completed, if not already done so:"
-    val gettingStartedSignUp = "sign up for Making Tax Digital for Income Tax"
+    val gettingStartedSignUpIndividual = "sign up for Making Tax Digital for Income Tax"
+    val gettingStartedSignUpAgent  = "sign up your client for Making Tax Digital for Income Tax"
     val gettingStartedAuthorise = "authorise this software for HMRC"
   }
 

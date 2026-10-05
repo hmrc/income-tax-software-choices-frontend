@@ -71,7 +71,7 @@ class QuarterlyOnlyViewSpec extends ViewSpec {
       "for an individual (SoleTraderOrLandlord) user type" should {
 
         "have a link to sign up for MTD for an individual" in {
-          document.selectNth("ul.govuk-list--bullet > li", 1).text() shouldBe QuarterlyOnlyContent.bullet1Text
+          document.selectNth("ul.govuk-list--bullet > li", 1).text() shouldBe QuarterlyOnlyContent.bullet1TextIndividual
           document.selectNth("ul.govuk-list--bullet > li", 1).selectHead("a").attribute("href").getValue shouldBe QuarterlyOnlyContent.bullet1LinkIndividual
         }
       }
@@ -87,7 +87,7 @@ class QuarterlyOnlyViewSpec extends ViewSpec {
         val agentDocument: Document = Jsoup.parse(agentPage.body)
 
         "have a link to sign up for MTD as an agent" in {
-          agentDocument.selectNth("ul.govuk-list--bullet > li", 1).text() shouldBe QuarterlyOnlyContent.bullet1Text
+          agentDocument.selectNth("ul.govuk-list--bullet > li", 1).text() shouldBe QuarterlyOnlyContent.bullet1TextAgent
           agentDocument.selectNth("ul.govuk-list--bullet > li", 1).selectHead("a").attribute("href").getValue shouldBe QuarterlyOnlyContent.bullet1LinkAgent
         }
       }
@@ -102,7 +102,7 @@ class QuarterlyOnlyViewSpec extends ViewSpec {
         )
         val unspecified: Document = Jsoup.parse(unspecifiedPage.body)
         "have a link to sign up for MTD for an individual" in {
-          unspecified.selectNth("ul.govuk-list--bullet > li", 1).text() shouldBe QuarterlyOnlyContent.bullet1Text
+          unspecified.selectNth("ul.govuk-list--bullet > li", 1).text() shouldBe QuarterlyOnlyContent.bullet1TextIndividual
           unspecified.selectNth("ul.govuk-list--bullet > li", 1).selectHead("a").attribute("href").getValue shouldBe QuarterlyOnlyContent.bullet1LinkIndividual
         }
       }
@@ -132,7 +132,8 @@ private object QuarterlyOnlyContent {
   val para2 = "Learn more about this software and its upcoming features"
   val para3 = "Additional software will be required to complete tax returns."
   val para4 = "The following will need to be completed, if not already done so:"
-  val bullet1Text = "sign up for Making Tax Digital for Income Tax (opens in new tab)"
+  val bullet1TextIndividual = "sign up for Making Tax Digital for Income Tax (opens in new tab)"
+  val bullet1TextAgent = "sign up your client for Making Tax Digital for Income Tax (opens in new tab)"
   val bullet1LinkIndividual = "https://www.gov.uk/guidance/sign-up-for-making-tax-digital-for-income-tax"
   val bullet1LinkAgent = "https://www.gov.uk/guidance/sign-up-your-client-for-making-tax-digital-for-income-tax"
   val bullet2Text = "authorise this software for HMRC (opens in new tab)"
