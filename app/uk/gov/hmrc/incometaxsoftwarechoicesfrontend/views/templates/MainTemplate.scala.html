@@ -121,10 +121,6 @@
 }
 
 @digitalAssistant = {
-    <div id="HMRC_CIAPI_Anchored_1" aria-live="polite" role="alert">
-        Checking Digital Assistant availability.
-    </div>
-
     @{webChatClient.loadRequiredElements()(request.asInstanceOf[Request[AnyContent]])}
     @{webChatClient.loadHMRCChatSkinElement("popup", "HMRC_CIAPI_Anchored_1")(request.asInstanceOf[Request[AnyContent]])}
 }
