@@ -27,7 +27,7 @@ class AdditionalIncomeFormSpec extends PlaySpec {
       "bound with one valid answer" in {
         val answers = Map("additionalIncome[]" -> Seq("uk-interest"))
 
-        val boundForm = AdditionalIncomeForm.form.bindFromRequest(answers)
+        val boundForm = AdditionalIncomeForm.form("individual").bindFromRequest(answers)
 
         boundForm.value mustBe Some(Seq(UkInterest))
       }
@@ -46,7 +46,7 @@ class AdditionalIncomeFormSpec extends PlaySpec {
           )
         )
 
-        val boundForm = AdditionalIncomeForm.form.bindFromRequest(answers)
+        val boundForm = AdditionalIncomeForm.form("individual").bindFromRequest(answers)
 
         boundForm.value mustBe Some(Seq(
           UkInterest,
@@ -64,7 +64,7 @@ class AdditionalIncomeFormSpec extends PlaySpec {
     "transform vendor filters into page answers" when {
       "there are no vendor filters" in {
         val vendorFilters = Seq()
-        val filled = AdditionalIncomeForm.form.fill(vendorFilters)
+        val filled = AdditionalIncomeForm.form("individual").fill(vendorFilters)
 
         filled.data mustBe Map(
           "additionalIncome[0]" -> AdditionalIncomeForm.noneKey
@@ -82,7 +82,7 @@ class AdditionalIncomeFormSpec extends PlaySpec {
           ForeignDividends,
           ForeignInterest
         )
-        val filled = AdditionalIncomeForm.form.fill(vendorFilters)
+        val filled = AdditionalIncomeForm.form("individual").fill(vendorFilters)
 
         filled.data mustBe Map(
           "additionalIncome[0]" -> "uk-interest",
@@ -100,28 +100,37 @@ class AdditionalIncomeFormSpec extends PlaySpec {
 
     "validate the answers" when {
 
-      "no answers are provided" in {
+      "no answers are provided by an individual" in {
         val answers = Map("additionalIncome" -> Seq.empty[String])
-        val bound = AdditionalIncomeForm.form.bindFromRequest(answers)
+        val bound = AdditionalIncomeForm.form("individual").bindFromRequest(answers)
         bound.value mustBe None
         bound.errors must contain(
-          FormError("additionalIncome", "additional.income.source.error-non-empty")
+          FormError("additionalIncome", "additional-income-source.error-non-empty.individual")
+        )
+      }
+
+      "no answers are provided by an agent" in {
+        val answers = Map("additionalIncome" -> Seq.empty[String])
+        val bound = AdditionalIncomeForm.form("agent").bindFromRequest(answers)
+        bound.value mustBe None
+        bound.errors must contain(
+          FormError("additionalIncome", "additional-income-source.error-non-empty.agent")
         )
       }
 
       "none only" in {
         val answers = Map("additionalIncome[]" -> Seq("none"))
-        val bound = AdditionalIncomeForm.form.bindFromRequest(answers)
+        val bound = AdditionalIncomeForm.form("individual").bindFromRequest(answers)
         bound.value mustBe Some(Seq.empty)
         bound.hasErrors mustBe false
       }
 
       "none with other selections" in {
         val answers = Map("additionalIncome[]" -> Seq("employment", "none"))
-        val bound = AdditionalIncomeForm.form.bindFromRequest(answers)
+        val bound = AdditionalIncomeForm.form("individual").bindFromRequest(answers)
         bound.value mustBe None
         bound.errors must contain(
-          FormError("additionalIncome", "additional.income.source.error-none-only")
+          FormError("additionalIncome", "additional-income-source.error-none-only")
         )
       }
     }

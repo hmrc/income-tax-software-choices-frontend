@@ -26,16 +26,16 @@ object AdditionalIncomeForm {
   val formKey: String = "additionalIncome"
   val noneKey = "none"
 
-  private val initialIncome: Mapping[Seq[String]] =
+  private def initialIncome(userTypeString: String): Mapping[Seq[String]] =
     seq(text)
-      .verifying(nonEmptySeq("additional.income.source.error-non-empty"))
-      .verifying("additional.income.source.error-none-only", page => !(page.contains(noneKey) && page.size > 1)
+      .verifying(nonEmptySeq(s"additional-income-source.error-non-empty.$userTypeString"))
+      .verifying("additional-income-source.error-none-only", page => !(page.contains(noneKey) && page.size > 1)
       )
 
-  val form: Form[Seq[VendorFilter]] = Form(
+  def form(userTypeString: String): Form[Seq[VendorFilter]] = Form(
     single(
       formKey ->
-        initialIncome
+        initialIncome(userTypeString)
           .transform(toVendorFilters, fromVendorFilters)
     )
   )

@@ -27,55 +27,84 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.AdditionalIncomeS
 class AdditionalIncomeSourceViewSpec extends ViewSpec  with BeforeAndAfterEach {
   private val view = app.injector.instanceOf[AdditionalIncomeSourceView]
 
-  private val formEmpty: FormError = FormError("additionalIncome", "additional.income.source.error-non-empty")
-  private val formNoneOnly: FormError = FormError("additionalIncome", "additional.income.source.error-none-only")
+  private val formEmptyIndividual: FormError = FormError("additionalIncome", "additional-income-source.error-non-empty.individual")
+  private val formEmptyAgent: FormError = FormError("additionalIncome", "additional-income-source.error-non-empty.agent")
+  private val formNoneOnly: FormError = FormError("additionalIncome", "additional-income-source.error-none-only")
   private val SoftwareName = "Bright"
 
-  def page(hasError: Boolean = false): HtmlFormat.Appendable = {
-    val form = if (hasError) {
-      AdditionalIncomeForm.form
-        .withError(formEmpty)
-        .withError(formNoneOnly)
-    } else {
-      AdditionalIncomeForm.form
+  def page(hasError: Boolean = false, isAgent: Boolean = false): HtmlFormat.Appendable = {
+    val form = (hasError, isAgent) match {
+      case (true, true) =>
+        AdditionalIncomeForm.form("agent")
+          .withError(formEmptyAgent)
+          .withError(formNoneOnly)
+      case (true, false) =>
+        AdditionalIncomeForm.form("individual")
+          .withError(formEmptyIndividual)
+          .withError(formNoneOnly)
+      case (false, _) =>
+        AdditionalIncomeForm.form("individual")
     }
     view(
       additionalIncomeForm = form,
       postAction = testCall,
       backUrl = testBackUrl,
-      softwareName = Some(SoftwareName)
+      softwareName = Some(SoftwareName),
+      userTypeString = if (isAgent) "agent" else "individual"
     )
   }
 
-  def document(hasError: Boolean = false): Document = Jsoup.parse(page(hasError).body)
+  def document(hasError: Boolean = false, isAgent: Boolean = false): Document = Jsoup.parse(page(hasError, isAgent).body)
 
   "AdditionalIncomePage" when {
-    "there is an error" must {
+    "there is an error with an individual's form" must {
+      val individualErrorForm = document(hasError = true)
       "have an error title" in {
-        document(hasError = true).title() shouldBe s"Error: ${AdditionalIncomeSourcesPageContent.title}"
+        individualErrorForm.title() shouldBe s"Error: ${AdditionalIncomeSourcesPageContent.headingIndividual} ${AdditionalIncomeSourcesPageContent.titleSuffix}"
       }
       "have an error summary" in {
-        document(hasError = true).selectSeq(".govuk-error-summary").size shouldBe 1
-        document(hasError = true).selectHead(".govuk-error-summary").text() should include("There is a problem")
-        document(hasError = true).select(".govuk-error-summary__body > ul > li > a").attr("href") shouldBe "#additionalIncome"
+        individualErrorForm.selectSeq(".govuk-error-summary").size shouldBe 1
+        val errorText = individualErrorForm.selectHead(".govuk-error-summary").text()
+        errorText should include("There is a problem")
+        errorText should include("Select the income you need to submit in your tax return or select ‘none of these’")
+        errorText should include("Select income or select ‘none of these’")
+        individualErrorForm.select(".govuk-error-summary__body > ul > li > a").attr("href") shouldBe "#additionalIncome"
+      }
+    }
+
+    "there is an error with an agent's form" must {
+      val agentErrorForm = document(hasError = true, isAgent = true)
+      "have an error title" in {
+        agentErrorForm.title() shouldBe s"Error: ${AdditionalIncomeSourcesPageContent.headingAgent} ${AdditionalIncomeSourcesPageContent.titleSuffix}"
+      }
+      "have an error summary including the agent-specific error" in {
+        agentErrorForm.selectHead(".govuk-error-summary").text() should include("Select the income your client needs to submit in their tax return or select ‘none of these’")
       }
     }
 
     "there is no error" must {
 
-      "have a title" in {
-        document().title() shouldBe AdditionalIncomeSourcesPageContent.title
+      "have an individual-specific title for an individual" in {
+        document().title() shouldBe s"${AdditionalIncomeSourcesPageContent.headingIndividual} ${AdditionalIncomeSourcesPageContent.titleSuffix}"
       }
-      
+
+      "have an agent-specific title for an agent" in {
+        document(isAgent = true).title() shouldBe s"${AdditionalIncomeSourcesPageContent.headingAgent} ${AdditionalIncomeSourcesPageContent.titleSuffix}"
+      }
+
       "have a software name caption" in {
         document().mainContent.selectHead("span.govuk-caption-l").text() shouldBe SoftwareName
       }
 
-      "have a paragraph" in {
-        document().mainContent.select("p").get(0).text shouldBe AdditionalIncomeSourcesPageContent.para
+      "have an individual-specific paragraph for an individual" in {
+        document().mainContent.select("p").get(0).text shouldBe AdditionalIncomeSourcesPageContent.paraIndividual
       }
 
-      "have a form" which {
+      "have an agent-specific paragraph for an agent" in {
+        document(isAgent = true).mainContent.select("p").get(0).text shouldBe AdditionalIncomeSourcesPageContent.paraAgent
+      }
+
+      "have a correctly formatted form (for an individual)" which {
         def form: Element = document().mainContent.selectHead("form")
 
         "has the correct method and action" in {
@@ -92,7 +121,7 @@ class AdditionalIncomeSourceViewSpec extends ViewSpec  with BeforeAndAfterEach {
         "has a checkbox for uk-interest" in {
           form.mustHaveCheckbox("fieldSet")(
             checkbox = 1,
-            legend = AdditionalIncomeSourcesPageContent.legend,
+            legend = AdditionalIncomeSourcesPageContent.headingIndividual,
             isHeading = false,
             isLegendHidden = true,
             name = "additionalIncome[]",
@@ -103,7 +132,7 @@ class AdditionalIncomeSourceViewSpec extends ViewSpec  with BeforeAndAfterEach {
         "has a checkbox for employment" in {
           form.mustHaveCheckbox("fieldSet")(
             checkbox = 2,
-            legend = AdditionalIncomeSourcesPageContent.legend,
+            legend = AdditionalIncomeSourcesPageContent.headingIndividual,
             isHeading = false,
             isLegendHidden = true,
             name = "additionalIncome[]",
@@ -114,7 +143,7 @@ class AdditionalIncomeSourceViewSpec extends ViewSpec  with BeforeAndAfterEach {
         "has a checkbox for uk-dividends" in {
           form.mustHaveCheckbox("fieldSet")(
             checkbox = 3,
-            legend = AdditionalIncomeSourcesPageContent.legend,
+            legend = AdditionalIncomeSourcesPageContent.headingIndividual,
             isHeading = false,
             isLegendHidden = true,
             name = "additionalIncome[]",
@@ -125,7 +154,7 @@ class AdditionalIncomeSourceViewSpec extends ViewSpec  with BeforeAndAfterEach {
         "has a checkbox for state-pension-income" in {
           form.mustHaveCheckbox("fieldSet")(
             checkbox = 4,
-            legend = AdditionalIncomeSourcesPageContent.legend,
+            legend = AdditionalIncomeSourcesPageContent.headingIndividual,
             isHeading = false,
             isLegendHidden = true,
             name = "additionalIncome[]",
@@ -136,7 +165,7 @@ class AdditionalIncomeSourceViewSpec extends ViewSpec  with BeforeAndAfterEach {
         "has a checkbox for private-pension-income" in {
           form.mustHaveCheckbox("fieldSet")(
             checkbox = 5,
-            legend = AdditionalIncomeSourcesPageContent.legend,
+            legend = AdditionalIncomeSourcesPageContent.headingIndividual,
             isHeading = false,
             isLegendHidden = true,
             name = "additionalIncome[]",
@@ -147,7 +176,7 @@ class AdditionalIncomeSourceViewSpec extends ViewSpec  with BeforeAndAfterEach {
         "has a checkbox for partner-income" in {
           form.mustHaveCheckbox("fieldSet")(
             checkbox = 6,
-            legend = AdditionalIncomeSourcesPageContent.legend,
+            legend = AdditionalIncomeSourcesPageContent.headingIndividual,
             isHeading = false,
             isLegendHidden = true,
             name = "additionalIncome[]",
@@ -159,7 +188,7 @@ class AdditionalIncomeSourceViewSpec extends ViewSpec  with BeforeAndAfterEach {
         "has a checkbox for foreign-dividends" in {
           form.mustHaveCheckbox("fieldSet")(
             checkbox = 7,
-            legend = AdditionalIncomeSourcesPageContent.legend,
+            legend = AdditionalIncomeSourcesPageContent.headingIndividual,
             isHeading = false,
             isLegendHidden = true,
             name = "additionalIncome[]",
@@ -170,7 +199,7 @@ class AdditionalIncomeSourceViewSpec extends ViewSpec  with BeforeAndAfterEach {
         "has a checkbox for foreign-interest" in {
           form.mustHaveCheckbox("fieldSet")(
             checkbox = 8,
-            legend = AdditionalIncomeSourcesPageContent.legend,
+            legend = AdditionalIncomeSourcesPageContent.headingIndividual,
             isHeading = false,
             isLegendHidden = true,
             name = "additionalIncome[]",
@@ -181,7 +210,7 @@ class AdditionalIncomeSourceViewSpec extends ViewSpec  with BeforeAndAfterEach {
         "has a checkbox for None" in {
           form.mustHaveCheckbox("fieldSet")(
             checkbox = 10,
-            legend = AdditionalIncomeSourcesPageContent.legend,
+            legend = AdditionalIncomeSourcesPageContent.headingIndividual,
             isHeading = false,
             isLegendHidden = true,
             name = "additionalIncome[]",
@@ -194,14 +223,25 @@ class AdditionalIncomeSourceViewSpec extends ViewSpec  with BeforeAndAfterEach {
           form.selectNth(".govuk-button", 1).text() shouldBe AdditionalIncomeSourcesPageContent.continue
         }
       }
+
+      "have the correct legend for an agent form" in {
+        val form = document(isAgent = true).mainContent.selectHead("form")
+        val fieldSet = form.selectHead("fieldset")
+        val legend = fieldSet.selectHead("legend")
+
+        legend.text shouldBe AdditionalIncomeSourcesPageContent.headingAgent
+        legend.hasClass("govuk-visually-hidden") shouldBe true
+      }
     }
   }
 }
 
 private object AdditionalIncomeSourcesPageContent {
-  val title = s"Which of the following income do you need to submit in your tax return? - ${PageContentBase.title} - GOV.UK"
-  val legend = "Which of the following income do you need to submit in your tax return?"
-  val para = "You can also select income you expect to submit in the future, so we can recommend software that meets your needs."
+  val titleSuffix = s"- ${PageContentBase.title} - GOV.UK"
+  val headingIndividual = "Which of the following income do you need to submit in your tax return?"
+  val headingAgent = "Which of the following income needs to be submitted in your client’s tax return?"
+  val paraIndividual = "If you expect your income to change, include your current and future income."
+  val paraAgent = "If your client’s income is expected to change, include their current and future income."
   val hint = "Select all that apply"
   val ukInterest = "UK interest"
   val employment = "Employment (PAYE)"
