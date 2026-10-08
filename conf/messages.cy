@@ -327,8 +327,8 @@ exit-survey.link = Rhoi adborth ar y gwasanaeth hwn
 # Enter Software Name
 enter-software-name.heading = Beth yw enw eich meddalwedd?
 enter-software-name.hint = Dechreuwch deipio a dewis o’r rhestr
-enter-software-name.error.empty = Nodwch enw’r feddalwedd a’i dewis o’r rhestr, neu dewiswch ‘Nid yw fy meddalwedd wedi’i restru’
-enter-software-name.software-not-listed = Nid yw fy meddalwedd wedi’i restru
+enter-software-name.error.empty = Nodwch enw’r feddalwedd a’i dewis o’r rhestr, neu dewiswch ‘Nid yw’r feddalwedd hon wedi’i rhestru’
+enter-software-name.software-not-listed = Nid yw’r feddalwedd hon wedi’i rhestru
 
 #Fully Compatible page
 fully-compatible.heading1 = Mae {0} yn cydweddu’n llwyr â Throi Treth yn Ddigidol ar gyfer Treth Incwm
