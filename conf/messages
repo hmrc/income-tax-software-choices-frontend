@@ -335,12 +335,8 @@ enter-software-name.software-not-listed = This software is not listed
 
 #Fully Compatible page
 fully-compatible.heading1 = {0} is fully compatible with Making Tax Digital for Income Tax
-fully-compatible.para1 = Your software currently supports all the features you need for Making Tax Digital for Income Tax.
-fully-compatible.para2.link.text = Learn more about your software and its upcoming features
-fully-compatible.heading2 = What you should do next
-fully-compatible.para3 = If you want to use this software, you need to:
-fully-compatible.bullet1 = sign up for Making Tax Digital for Income Tax
-fully-compatible.bullet2 = authorise your software for HMRC
+fully-compatible.para1 = This software currently supports all the features required for Making Tax Digital for Income Tax.
+fully-compatible.para2.link.text = Learn more about this software
 
 #Partially Compatible page
 partially-compatible.heading1 = {0} can send quarterly updates and is developing your tax return features
@@ -369,5 +365,8 @@ unsuitable-software.para2 = You can also search for other software packages that
 getting-started.heading = Getting started with this software
 getting-started.p1 = The following will need to be completed, if not already done so:
 getting-started.sign-up.text.individual = sign up for Making Tax Digital for Income Tax
+getting-started.sign-up.link.individual = https://www.gov.uk/guidance/sign-up-for-making-tax-digital-for-income-tax
 getting-started.sign-up.text.agent = sign up your client for Making Tax Digital for Income Tax
+getting-started.sign-up.link.agent = https://www.gov.uk/guidance/sign-up-your-client-for-making-tax-digital-for-income-tax
 getting-started.authorise.text = authorise this software for HMRC
+getting-started.authorise.link = https://www.gov.uk/guidance/use-making-tax-digital-for-income-tax/get-your-software-ready

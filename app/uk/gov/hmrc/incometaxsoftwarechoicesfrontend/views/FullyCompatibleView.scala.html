@@ -18,15 +18,17 @@
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTemplate
 @import uk.gov.hmrc.hmrcfrontend.views.viewmodels.newtablinkhelper.NewTabLinkHelper
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
-
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.GettingStartedTemplate
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType
 
 @this(
         mainTemplate: MainTemplate,
         govukPanel : GovukPanel,
-        hmrcNewTabLinkHelper: HmrcNewTabLinkHelper
+        hmrcNewTabLinkHelper: HmrcNewTabLinkHelper,
+        gettingStartedTemplate: GettingStartedTemplate
 )(implicit appConfig: AppConfig)
 
-@(productDetailsUrl: String, backLink: String, chosenSoftware: String)(implicit request: Request[_], messages: Messages)
+@(productDetailsUrl: String, backLink: String, chosenSoftware: String, userType: Option[UserType] = None)(implicit request: Request[_], messages: Messages)
 
 @mainTemplate(title = messages("fully-compatible.heading1", chosenSoftware), backLink = Some(backLink)) {
 
@@ -38,20 +40,7 @@
 
     <p class="govuk-body"><a class="govuk-link govuk-!-display-none-print" href="@productDetailsUrl">@messages("fully-compatible.para2.link.text")</a></p>
 
-    <h2 class="govuk-heading-m">@messages("fully-compatible.heading2")</h2>
-
-    <p class="govuk-body">@messages("fully-compatible.para3")</p>
-
-    <ul class="govuk-list govuk-list--bullet">
-        <li>@hmrcNewTabLinkHelper(NewTabLinkHelper(
-            text = s"${messages("fully-compatible.bullet1")}",
-            href = Some(appConfig.individualSignUpForMtdUrl)
-        ))</li>
-        <li>@hmrcNewTabLinkHelper(NewTabLinkHelper(
-            text = s"${messages("fully-compatible.bullet2")}",
-            href = Some(appConfig.getSoftwareReadyUrl)
-        ))</li>
-    </ul>
+    @gettingStartedTemplate(userType)
 
     <p class="govuk-body">
         @hmrcNewTabLinkHelper(NewTabLinkHelper(
