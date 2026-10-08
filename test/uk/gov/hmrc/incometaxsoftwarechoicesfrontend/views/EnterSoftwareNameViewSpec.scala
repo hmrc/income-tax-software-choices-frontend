@@ -112,10 +112,10 @@ class EnterSoftwareNameViewSpec extends ViewSpec with SelectBuilder {
 }
 
 private object EnterSoftwareNameViewContent {
-  val title = s"What is the name of your software? - ${PageContentBase.title} - GOV.UK"
-  val h1 = "What is the name of your software?"
+  val title = s"What is the name of the software? - ${PageContentBase.title} - GOV.UK"
+  val h1 = "What is the name of the software?"
   val hint = "Start typing and select from the list"
   val continue = "Continue"
-  val softwareNotListed = "My software is not listed"
-  val emptyError = "Enter a software name and choose it from the list, or select ‘My software is not listed’"
+  val softwareNotListed = "This software is not listed"
+  val emptyError = "Enter a software name and choose it from the list, or select ‘This software is not listed’"
 }
