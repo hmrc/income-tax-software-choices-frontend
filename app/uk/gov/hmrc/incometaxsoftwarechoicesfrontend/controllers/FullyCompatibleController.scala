@@ -38,7 +38,8 @@ class FullyCompatibleController @Inject()(view: FullyCompatibleView,
         Ok(view(
           productDetailsUrl = routes.ProductDetailsController.show(product.productId.toString).url,
           backLink = routes.CheckYourAnswersController.show().url,
-          chosenSoftware = product.name
+          chosenSoftware = product.name,
+          userType = request.userType
         ))
       }
       case _ => throw new SCInconsistentDataException("[FullyCompatibleController][show] - Could not find details of a recognised software product in answers")

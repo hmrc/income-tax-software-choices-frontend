@@ -330,12 +330,8 @@ enter-software-name.software-not-listed = Nid yw fy meddalwedd wedi’i restru
 
 #Fully Compatible page
 fully-compatible.heading1 = Mae {0} yn cydweddu’n llwyr â Throi Treth yn Ddigidol ar gyfer Treth Incwm
-fully-compatible.para1 = Ar hyn o bryd, mae’ch meddalwedd yn cefnogi’r holl nodweddion sydd eu hangen arnoch ar gyfer Troi Treth yn Ddigidol ar gyfer Treth Incwm.
-fully-compatible.para2.link.text = Dysgwch ragor am eich meddalwedd a’i nodweddion sydd ar ddod
-fully-compatible.heading2 = Yr hyn y dylech ei wneud nesaf
-fully-compatible.para3 = Os ydych am ddefnyddio’r feddalwedd hon, bydd angen i chi wneud y canlynol:
-fully-compatible.bullet1 = cofrestru ar gyfer y cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm
-fully-compatible.bullet2 = awdurdodi’ch meddalwedd i CThEF
+fully-compatible.para1 = Ar hyn o bryd, mae’r meddalwedd hon yn cefnogi’r holl nodweddion sydd eu hangen ar gyfer y cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm.
+fully-compatible.para2.link.text = Dysgwch ragor am y feddalwedd hon
 
 #Partially Compatible page
 partially-compatible.heading1 = Gall {0} anfon diweddariadau chwarterol ac mae’n datblygu nodweddion ar gyfer cyflwyno’ch Ffurflen Dreth
@@ -364,5 +360,8 @@ unsuitable-software.para2 = Gallwch hefyd chwilio am becynnau meddalwedd eraill 
 getting-started.heading = Dechrau arni â’r feddalwedd hon
 getting-started.p1 = Os nad yw wedi’i wneud eisoes, bydd angen gwneud y canlynol:
 getting-started.sign-up.text.individual = cofrestru ar gyfer y cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm
+getting-started.sign-up.link.individual = https://www.gov.uk/guidance/sign-up-for-making-tax-digital-for-income-tax.cy
 getting-started.sign-up.text.agent = cofrestru’ch cleient ar gyfer y cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm
+getting-started.sign-up.link.agent = https://www.gov.uk/guidance/sign-up-your-client-for-making-tax-digital-for-income-tax.cy
 getting-started.authorise.text = awdurdodi’r feddalwedd hon i CThEF
+getting-started.authorise.link = https://www.gov.uk/guidance/defnyddio-r-cynllun-troi-treth-yn-ddigidol-ar-gyfer-treth-incwm/cael-eich-meddalwedd-yn-barod

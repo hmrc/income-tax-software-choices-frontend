@@ -32,8 +32,8 @@
         <p class="govuk-body">@messages("getting-started.p1")</p>
         <ul class="govuk-list govuk-list--bullet">
             @defining(userType match {
-                case Some(Agent) => (messages("getting-started.sign-up.text.agent"), appConfig.agentSignUpForMtdUrl)
-                case _           => (messages("getting-started.sign-up.text.individual"), appConfig.individualSignUpForMtdUrl)
+                case Some(Agent) => (messages("getting-started.sign-up.text.agent"), messages("getting-started.sign-up.link.agent"))
+                case _           => (messages("getting-started.sign-up.text.individual"), messages("getting-started.sign-up.link.individual"))
             }) { case (signUpText, signUpUrl) =>
                 <li class="govuk-!-margin-bottom-3">@hmrcNewTabLinkHelper(NewTabLinkHelper(
                     text = signUpText,
@@ -43,7 +43,7 @@
             }
             <li class="govuk-!-margin-bottom-3">@hmrcNewTabLinkHelper(NewTabLinkHelper(
                 text = messages("getting-started.authorise.text"),
-                href = Some(appConfig.getSoftwareReadyUrl)
+                href = Some(messages("getting-started.authorise.link"))
                 ))
             </li>
         </ul>
