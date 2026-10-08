@@ -310,9 +310,11 @@ page-not-found.bullet1 = cysylltu â ni ynghylch y broblem hon
 page-not-found.bullet2 = dod o hyd i feddalwedd sy’n cydweddu â’r cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm
 
 # Need Additional Software page
-need-additional-software.heading = Bydd angen i chi gael meddalwedd ychwanegol
-need-additional-software.para1 = Os ydych eisiau parhau i ddefnyddio eich taenlenni i gofnodi eich incwm a’ch treuliau, bydd angen i chi ddefnyddio meddalwedd newydd sy’n cysylltu i’ch cofnodion digidol.
-need-additional-software.para2 = Gallwch hefyd ddewis meddalwedd sy’n creu cofnodion digidol. Gall hyn fod y dewis gorau os ydych am gael un offeryn sy’n bodloni’ch holl ofynion.
+need-additional-software.heading =  Mae angen meddalwedd ychwanegol
+need-additional-software.para1 = Os defnyddir taenlenni i gofnodi incwm a threuliau, bydd angen meddalwedd ychwanegol sy’n cysylltu â chofnodion digidol.
+need-additional-software.para2 = Gellir defnyddio meddalwedd sy’n creu cofnodion digidol hefyd. Gallai hwn fod yn opsiwn gwell os oes angen un cynnyrch i fodloni’r holl ofynion a’ch galluogi i wneud y canlynol:
+need-additional-software.bullet1 = anfon diweddariadau chwarterol
+need-additional-software.bullet2 = cyflwyno Ffurflenni Treth
 
 # Phase Banner
 phase-banner.tag = Beta
