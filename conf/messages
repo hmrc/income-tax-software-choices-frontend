@@ -310,9 +310,11 @@ page-not-found.bullet1 = contact us about this problem
 page-not-found.bullet2 = find software that works with Making Tax Digital for Income Tax
 
 #Need Additional Software page
-need-additional-software.heading = You will need additional software
-need-additional-software.para1 = If you want to keep using your spreadsheets to record your income and expenses, you will need to use new software that connects to your digital records.
-need-additional-software.para2 = You can also choose software that creates digital records. This may be the better option if you want one product to meet all your needs.
+need-additional-software.heading = Additional software is required
+need-additional-software.para1 = If spreadsheets are used to record income and expenses, additional software will be required that connects to digital records.
+need-additional-software.para2 = Software that creates digital records can also be used. This may be a better option if one product is needed to meet all of the requirements and let you:
+need-additional-software.bullet1 = send quarterly updates
+need-additional-software.bullet2 = submit tax returns
 
 # Phase Banner
 phase-banner.tag = Beta
