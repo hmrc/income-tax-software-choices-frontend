@@ -34,13 +34,14 @@ class PartiallyCompatibleController @Inject()(view: PartiallyCompatibleView,
     given Request[AnyContent] = request
 
     request.product match {
-      case Some(product) if product.softwareType == Recognised => {
+      case Some(product) if product.softwareType == Recognised => 
         Ok(view(
           productDetailsUrl = routes.ProductDetailsController.show(product.productId.toString).url,
           backLink = routes.CheckYourAnswersController.show().url,
-          chosenSoftware = product.name
+          chosenSoftware = product.name,
+          softwareResultsUrl = routes.SearchSoftwareController.show().url,
+          userType = request.userType
         ))
-      }
       case _ => throw new SCInconsistentDataException("[PartiallyCompatibleController][show] - Could not find details of a recognised software product in answers")
     }
 
