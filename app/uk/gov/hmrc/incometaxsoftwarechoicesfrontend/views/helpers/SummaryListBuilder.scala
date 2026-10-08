@@ -90,10 +90,10 @@ trait SummaryListBuilder {
   private def otherIncomeSummaryListRow(userAnswers: UserAnswers)(implicit messages: Messages): SummaryListRow = {
     val filterList: String = userAnswers.get(AdditionalIncomeSourcesPage) match {
       case Some(vf) if vf.isEmpty => messages(s"check-your-answers.none-selected")
-      case Some(vf) if vf.size == 1 => vf.map(f => messages(s"additional.income.source-${f.key}")).mkString("")
+      case Some(vf) if vf.size == 1 => vf.map(f => messages(s"additional-income-source.${f.key}")).mkString("")
       case Some(vf) if vf.size > 1 =>
         s"""<ul class="govuk-list">
-            ${vf.map(f => s"""<li>${messages(s"additional.income.source-${f.key}")}</li>""").mkString("")}
+            ${vf.map(f => s"""<li>${messages(s"additional-income-source.${f.key}")}</li>""").mkString("")}
             </ul>"""
       case None => throw new SCInconsistentDataException("[SummaryListBuilder][otherIncomeSummaryListRow] - Other income sources data not found")
     }

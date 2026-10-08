@@ -81,7 +81,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
             .map(vf => messages(s"business-income.$vf")).mkString(" ")),
           summaryListRow(SummaryListKeys.otherIncome, Seq(UkInterest, ConstructionIndustryScheme, Employment, UkDividends, StatePensionIncome,
             PrivatePensionIncome, ForeignDividends, ForeignInterest)
-            .map(vf => messages(s"additional.income.source-$vf")).mkString(" ")),
+            .map(vf => messages(s"additional-income-source.$vf")).mkString(" ")),
           summaryListRow(SummaryListKeys.otherItems, Seq(PaymentsIntoAPrivatePension, CharitableGiving, CapitalGainsTax, StudentLoans,
             MarriageAllowance, VoluntaryClass2NationalInsurance, HighIncomeChildBenefitCharge)
             .map(vf => messages(s"other-items.$vf")).mkString(" ")),
@@ -112,7 +112,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with BeforeAndAf
           summaryListRow(SummaryListKeys.incomeSources, Seq(SoleTrader)
             .map(vf => messages(s"business-income.$vf")).mkString(" ")),
           summaryListRow(SummaryListKeys.otherIncome, Seq(UkInterest)
-            .map(vf => messages(s"additional.income.source-$vf")).mkString(" ")),
+            .map(vf => messages(s"additional-income-source.$vf")).mkString(" ")),
           summaryListRow(SummaryListKeys.otherItems, Seq(PaymentsIntoAPrivatePension)
             .map(vf => messages(s"other-items.$vf")).mkString(" ")),
           summaryListRow(SummaryListKeys.accountingPeriod, Set(OtherAccountingPeriod)
