@@ -50,7 +50,7 @@ class BusinessIncomeControllerISpec extends ComponentSpecBase with BeforeAndAfte
 
         res should have(
           httpStatus(OK),
-          pageTitle(s"${messages("business-income.title")} - ${PageContentBase.title} - GOV.UK"),
+          pageTitle(s"${messages("business-income.heading.individual")} - ${PageContentBase.title} - GOV.UK"),
           checkboxSelected("businessIncome", None),
           checkboxSelected("businessIncome-2", None),
           checkboxSelected("businessIncome-3", None)
@@ -65,7 +65,7 @@ class BusinessIncomeControllerISpec extends ComponentSpecBase with BeforeAndAfte
 
         res should have(
           httpStatus(OK),
-          pageTitle(s"${messages("business-income.title")} - ${PageContentBase.title} - GOV.UK"),
+          pageTitle(s"${messages("business-income.heading.individual")} - ${PageContentBase.title} - GOV.UK"),
           checkboxSelected("businessIncome", Some(SoleTrader.key)),
           checkboxSelected("businessIncome-2", Some(UkProperty.key)),
           checkboxSelected("businessIncome-3", Some(OverseasProperty.key))
@@ -148,7 +148,7 @@ class BusinessIncomeControllerISpec extends ComponentSpecBase with BeforeAndAfte
 
         res should have(
           httpStatus(BAD_REQUEST),
-          pageTitle(s"Error: ${messages("business-income.title")} - ${PageContentBase.title} - GOV.UK"),
+          pageTitle(s"Error: ${messages("business-income.heading.individual")} - ${PageContentBase.title} - GOV.UK"),
         )
       }
     }

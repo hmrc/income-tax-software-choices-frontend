@@ -73,8 +73,8 @@ trait ComponentSpecBase extends AnyWordSpec
 
     def getBusinessIncome: WSResponse = get("/which-income-source-quarterly-updates")
 
-    def postBusinessIncome(pageAnswers: Seq[VendorFilter], editMode: Boolean = false): WSResponse = post(s"/which-income-source-quarterly-updates?editMode=$editMode")(
-      BusinessIncomeForm.form.fill(pageAnswers).data.map { case (k, v) => (k, Seq(v)) }
+    def postBusinessIncome(pageAnswers: Seq[VendorFilter], editMode: Boolean = false, userTypeString: String = "individual"): WSResponse = post(s"/which-income-source-quarterly-updates?editMode=$editMode")(
+      BusinessIncomeForm.form(userTypeString).fill(pageAnswers).data.map { case (k, v) => (k, Seq(v)) }
     )
 
     def getNeedAdditionalSoftware(editMode: Boolean = false): WSResponse = {
