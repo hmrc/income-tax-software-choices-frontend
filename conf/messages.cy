@@ -328,7 +328,7 @@ phase-banner.feedback = rhoi eich adborth
 exit-survey.link = Rhoi adborth ar y gwasanaeth hwn
 
 # Enter Software Name
-enter-software-name.heading = Beth yw enw eich meddalwedd?
+enter-software-name.heading = Beth yw enw’r feddalwedd?
 enter-software-name.hint = Dechreuwch deipio a dewis o’r rhestr
 enter-software-name.error.empty = Nodwch enw’r feddalwedd a’i dewis o’r rhestr, neu dewiswch ‘Nid yw’r feddalwedd hon wedi’i rhestru’
 enter-software-name.software-not-listed = Nid yw’r feddalwedd hon wedi’i rhestru
