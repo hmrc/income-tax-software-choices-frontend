@@ -46,7 +46,8 @@ class AccountingPeriodController @Inject()(view: AccountingPeriodView,
       accountingPeriodForm = AccountingPeriodForm.accountingPeriodForm.fill(pageAnswers),
       postAction = routes.AccountingPeriodController.submit(editMode),
       backUrl = backUrl(editMode),
-      softwareName = getSoftwareName(request.product)
+      softwareName = getSoftwareName(request.product),
+      userTypeString = getUserTypeAsString(request.userType)
     ))
   }
 
@@ -60,7 +61,8 @@ class AccountingPeriodController @Inject()(view: AccountingPeriodView,
             accountingPeriodForm = formWithErrors,
             postAction = routes.AccountingPeriodController.submit(editMode),
             backUrl = backUrl(editMode),
-            softwareName = getSoftwareName(request.product)
+            softwareName = getSoftwareName(request.product),
+            userTypeString = getUserTypeAsString(request.userType)
           ))
         )
       },
