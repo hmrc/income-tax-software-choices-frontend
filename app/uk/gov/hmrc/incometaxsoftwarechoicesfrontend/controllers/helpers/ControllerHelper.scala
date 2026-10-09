@@ -16,8 +16,9 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.helpers
 
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareProduct
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareProduct, UserType}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.Recognised
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.Agent
 
 trait ControllerHelper {
 
@@ -26,5 +27,9 @@ trait ControllerHelper {
         case Some(p) if p.softwareType == Recognised => Some(p.name)
         case _ => None
      }
+  }
+
+  def getUserTypeAsString(userType: Option[UserType]): String = {
+    if (userType.contains(Agent)) "agent" else "individual"
   }
 }

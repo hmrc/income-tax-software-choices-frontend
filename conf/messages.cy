@@ -31,14 +31,17 @@ type-of-user.error                                                = Dewiswch a y
 
 ## Accounting period page
 accounting-period.heading                                         = Cyfnod cyfrifyddu
-accounting-period.para-one                                        = Os yw’ch cyfnod cyfrifyddu rhwng 1 Ebrill a 31 Mawrth, bydd angen i chi gael meddalwedd sy’n cefnogi {0}.
-accounting-period.para-one-ending                                 = Bydd hyn yn ei gwneud hi’n haws i chi gadw cofnodion.
-accounting-period.para-two                                        = Gallwch hefyd ddewis y cyfnod cyfrifyddu rydych chi’n disgwyl ei ddefnyddio yn y dyfodol, fel y gallwn argymell meddalwedd sy’n diwallu’ch gofynion.
-accounting-period.para-one.link-text                              = cyfnodau diweddaru calendr
+accounting-period.para-one.individual                             = Os yw’ch cyfnod cyfrifyddu yn dod i ben ar 31 Mawrth, bydd angen i chi gael meddalwedd sy’n cefnogi {0}. Bydd hyn yn ei gwneud hi’n haws i chi gadw cofnodion.
+accounting-period.para-one.agent                                  = Os yw cyfnod cyfrifyddu’ch cleient rhwng 1 Ebrill a 31 Mawrth, bydd angen i chi neu’ch cleient ddewis meddalwedd sy’n cefnogi {0}. Bydd hyn yn ei gwneud hi’n haws i chi gadw cofnodion.
+accounting-period.para-two.individual                             = Os byddwch yn bwriadu newid eich cyfnod cyfrifyddu, dylech gynnwys eich cyfnod cyfrifyddu presennol ac unrhyw gyfnod cyfrifyddu y byddwch yn bwriadu ei ddefnyddio yn y dyfodol.
+accounting-period.para-two.agent                                  = Os oes disgwyl i gyfnod cyfrifyddu’ch cleient newid, dylech gynnwys ei gyfnod cyfrifyddu presennol ac unrhyw gyfnod y gallai ei ddefnyddio yn y dyfodol.
+accounting-period.para-one.link-text.individual                   = cyfnodau diweddaru calendr
+accounting-period.para-one.link-text.agent                        = cyfnodau diweddaru yn ôl y calendr
 accounting-period.para-one.link-href                              = https://www.gov.uk/guidance/defnyddio-r-cynllun-troi-treth-yn-ddigidol-ar-gyfer-treth-incwm/anfon-diweddariadau-chwarterol#defnyddio-cyfnodau-diweddaru-calendr
 accounting-period.sixth-april-to-fifth-april                      = 6 Ebrill i 5 Ebrill
 accounting-period.first-april-to-thirty-first-march               = 1 Ebrill i 31 Mawrth
-accounting-period.heading-one                                     = Pa gyfnod cyfrifyddu ydych chi’n ei ddefnyddio?
+accounting-period.sub-heading.individual                          = Pa gyfnod cyfrifyddu ydych chi’n ei ddefnyddio?
+accounting-period.sub-heading.agent                               = Pa gyfnod cyfrifyddu y mae’ch cleient yn ei ddefnyddio?
 accounting-period.hint                                            = Dewiswch bob un sy’n berthnasol
 accounting-period.other                                           = Cyfnod cyfrifyddu gwahanol
 accounting-period.error                                           = Dewiswch gyfnod cyfrifyddu
@@ -303,7 +306,7 @@ session-expired.user = Rydych wedi dileu’ch atebion
 session-expired.timeout.heading = Sesiwn wedi dod i ben oherwydd anweithgarwch
 session-expired.timeout.para1 = Fe ddaeth eich sesiwn i ben ar ôl 15 munud o anweithgarwch, felly rydym wedi clirio eich gwybodaeth er mwyn ei chadw’n ddiogel. Bydd angen i chi ddechrau eto.
 session-expired.button = Dechrau eto
-session-expired.auto.heading = Er diogelwch, gwnaethom ddileu'ch atebion
+session-expired.auto.heading = Er diogelwch, gwnaethom ddileu’ch atebion
 
 page-not-found.title = Heb ddod o hyd i’r dudalen
 page-not-found.p1 = Os gwnaethoch deipio’r cyfeiriad gwe, gwiriwch ei fod yn gywir.
