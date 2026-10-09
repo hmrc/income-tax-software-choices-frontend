@@ -82,5 +82,5 @@ class AdditionalIncomeSourcesController @Inject()(view: AdditionalIncomeSourceVi
     if (editMode) routes.CheckYourAnswersController.show().url
     else routes.BusinessIncomeController.show().url
   }
-  
+
 }

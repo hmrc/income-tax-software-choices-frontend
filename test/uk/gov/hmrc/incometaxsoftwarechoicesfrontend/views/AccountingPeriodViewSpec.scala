@@ -32,16 +32,22 @@ class AccountingPeriodViewSpec extends ViewSpec {
   private val formError = FormError(AccountingPeriodForm.formKey, "accounting-period.error")
   private val SoftwareName = "Bright"
 
-  def page(hasError: Boolean = false): HtmlFormat.Appendable = {
+  def page(hasError: Boolean = false, isAgent: Boolean = false): HtmlFormat.Appendable = {
     val form = if (hasError) {
       AccountingPeriodForm.accountingPeriodForm.withError(formError)
     } else {
       AccountingPeriodForm.accountingPeriodForm
     }
-    view(accountingPeriodForm = form, postAction = testCall, backUrl = testBackUrl, softwareName = Some(SoftwareName))
+    view(
+      accountingPeriodForm = form,
+      postAction = testCall,
+      backUrl = testBackUrl,
+      softwareName = Some(SoftwareName),
+      userTypeString = if (isAgent) "agent" else "individual"
+    )
   }
 
-  def document(hasError: Boolean = false): Document = Jsoup.parse(page(hasError).body)
+  def document(hasError: Boolean = false, isAgent: Boolean = false): Document = Jsoup.parse(page(hasError, isAgent).body)
 
   "AccountingPeriodPage" when {
     "there is an error" should {
@@ -59,9 +65,16 @@ class AccountingPeriodViewSpec extends ViewSpec {
         document().title() mustBe AccountingPeriodContent.title
       }
 
-      "have a paragraph with a link" in {
-        document().mainContent.select("p").get(0).text mustBe AccountingPeriodContent.paraOne
+      "have a paragraph with a link for an individual" in {
+        document().mainContent.select("p").get(0).text mustBe AccountingPeriodContent.paraOneIndividual
         val link = document().mainContent.select(".govuk-link").first()
+        link.text mustBe AccountingPeriodContent.linkText
+        link.attr("href") mustBe AccountingPeriodContent.linkHref
+      }
+
+      "have a paragraph with a link for an agent" in {
+        document(isAgent = true).mainContent.select("p").get(0).text mustBe AccountingPeriodContent.paraOneAgent
+        val link = document(isAgent = true).mainContent.select(".govuk-link").first()
         link.text mustBe AccountingPeriodContent.linkText
         link.attr("href") mustBe AccountingPeriodContent.linkHref
       }
@@ -74,12 +87,20 @@ class AccountingPeriodViewSpec extends ViewSpec {
         document().mainContent.selectHead("h1").text() shouldBe AccountingPeriodContent.heading
       }
 
-      "have a secondary heading" in {
-        document().mainContent.selectHead("h2").text() shouldBe AccountingPeriodContent.legend
+      "have a secondary heading for an individual" in {
+        document().mainContent.selectHead("h2").text() shouldBe AccountingPeriodContent.subHeadingIndividual
       }
 
-      "have paragraph two" in {
-        document().mainContent.select("p").get(1).text mustBe AccountingPeriodContent.paraTwo
+      "have a secondary heading for an agent" in {
+        document(isAgent = true).mainContent.selectHead("h2").text() shouldBe AccountingPeriodContent.subHeadingAgent
+      }
+
+      "have paragraph two for an individual" in {
+        document().mainContent.select("p").get(1).text mustBe AccountingPeriodContent.paraTwoIndividual
+      }
+
+      "have paragraph two for an agent" in {
+        document(isAgent = true).mainContent.select("p").get(1).text mustBe AccountingPeriodContent.paraTwoAgent
       }
 
       "have a form" which {
@@ -100,7 +121,7 @@ class AccountingPeriodViewSpec extends ViewSpec {
         "has a checkbox for sixth-april-to-fifth-april" in {
           form.mustHaveCheckbox("fieldSet")(
             checkbox = 1,
-            legend = AccountingPeriodContent.legend,
+            legend = AccountingPeriodContent.subHeadingIndividual,
             isHeading = false,
             isLegendHidden = true,
             name = s"${AccountingPeriodForm.formKey}[]",
@@ -112,7 +133,7 @@ class AccountingPeriodViewSpec extends ViewSpec {
         "has a checkbox for first-april-to-thirty-first-march" in {
           form.mustHaveCheckbox("fieldSet")(
             checkbox = 2,
-            legend = AccountingPeriodContent.legend,
+            legend = AccountingPeriodContent.subHeadingIndividual,
             isHeading = false,
             isLegendHidden = true,
             name = s"${AccountingPeriodForm.formKey}[]",
@@ -124,7 +145,7 @@ class AccountingPeriodViewSpec extends ViewSpec {
         "has a checkbox for other" in {
           form.mustHaveCheckbox("fieldSet")(
             checkbox = 3,
-            legend = AccountingPeriodContent.legend,
+            legend = AccountingPeriodContent.subHeadingIndividual,
             isHeading = false,
             isLegendHidden = true,
             name = s"${AccountingPeriodForm.formKey}[]",
@@ -143,11 +164,14 @@ class AccountingPeriodViewSpec extends ViewSpec {
 
 
 private object AccountingPeriodContent {
-  val title = s"Accounting period - ${PageContentBase.title} - GOV.UK"
   val heading = "Accounting period"
-  val legend = "What accounting period do you use?"
-  val paraOne = "If your accounting period is 1 April to 31 March, you’ll need software that supports calendar update periods (opens in new tab). This will make keeping records simpler."
-  val paraTwo = "You can also select the accounting period you expect to use in the future, so we can recommend software that meets your needs."
+  val title = s"$heading - ${PageContentBase.title} - GOV.UK"
+  val subHeadingIndividual = "What accounting period do you use?"
+  val subHeadingAgent = "What accounting period does your client use?"
+  val paraOneIndividual = "If your accounting period is 1 April to 31 March, you’ll need software that supports calendar update periods (opens in new tab). This will make keeping records simpler."
+  val paraOneAgent = "If your client’s accounting period is 1 April to 31 March, you or your client will need to choose software that supports calendar update periods (opens in new tab). This will make keeping records simpler."
+  val paraTwoIndividual = "If you plan to change your accounting period, include your current accounting period and any you plan to use in the future."
+  val paraTwoAgent = "If your client’s accounting period is expected to change, include their current accounting period and any they might use in the future."
   val linkText = "calendar update periods (opens in new tab)"
   val linkHref = "https://www.gov.uk/guidance/use-making-tax-digital-for-income-tax/send-quarterly-updates#using-calendar-update-periods"
   val hint = "Select all that apply"
