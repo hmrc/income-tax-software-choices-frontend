@@ -339,13 +339,11 @@ fully-compatible.para1 = This software currently supports all the features requi
 fully-compatible.para2.link.text = Learn more about this software
 
 #Partially Compatible page
-partially-compatible.heading1 = {0} can send quarterly updates and is developing your tax return features
-partially-compatible.para1 = Your software provider has built the features you need to send your quarterly updates. They are now developing the remaining features required for your tax return. These should be available in time for your 2026 to 2027 tax return.
-partially-compatible.para2.link.text = Learn more about your software and its upcoming features
-partially-compatible.heading2 = What you should do next
-partially-compatible.para3 = If you want to use this software, you need to:
-partially-compatible.bullet1 = sign up for Making Tax Digital for Income Tax
-partially-compatible.bullet2 = authorise your software for HMRC
+partially-compatible.heading1 = {0} can only send quarterly updates and is developing tax return features
+partially-compatible.para1 = This software provider has only built the features needed to send quarterly updates. They are now developing the remaining features required to submit a tax return. These should be available in time for the 2026 to 2027 tax return.
+partially-compatible.para2.link.text = Learn more about this software and its upcoming features
+partially-compatible.para3 = {0} will be required to complete tax returns.
+partially-compatible.para3.link.text = Additional software
 
 #Quarterly Only page
 quarterly-only.heading1 = {0} can only send quarterly updates

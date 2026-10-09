@@ -646,15 +646,15 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
 
         "has a link to sign up for MTD as an individual" in {
           val link = document.mainContent.select(".govuk-link").get(1)
-          link.text shouldBe s"${ProductDetailsPage.gettingStartedSignUpIndividual} (opens in new tab)"
-          link.attr("href") shouldBe appConfig.individualSignUpForMtdUrl
+          link.text shouldBe s"${ProductDetailsPage.gettingStartedSignUpIndividualText} (opens in new tab)"
+          link.attr("href") shouldBe ProductDetailsPage.gettingStartedSignUpIndividualLink
           link.attr("target") shouldBe "_blank"
         }
 
         "has a link to authorise software" in {
           val link = document.mainContent.select(".govuk-link").get(2)
-          link.text shouldBe s"${ProductDetailsPage.gettingStartedAuthorise} (opens in new tab)"
-          link.attr("href") shouldBe appConfig.getSoftwareReadyUrl
+          link.text shouldBe s"${ProductDetailsPage.gettingStartedAuthoriseText} (opens in new tab)"
+          link.attr("href") shouldBe ProductDetailsPage.gettingStartedAuthoriseLink
           link.attr("target") shouldBe "_blank"
         }
       }
@@ -664,8 +664,8 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
 
         "has a link to sign up for MTD as an agent" in {
           val link = document.mainContent.select(".govuk-link").get(1)
-          link.text shouldBe s"${ProductDetailsPage.gettingStartedSignUpAgent} (opens in new tab)"
-          link.attr("href") shouldBe appConfig.agentSignUpForMtdUrl
+          link.text shouldBe s"${ProductDetailsPage.gettingStartedSignUpAgentText} (opens in new tab)"
+          link.attr("href") shouldBe ProductDetailsPage.gettingStartedSignUpAgentLink
           link.attr("target") shouldBe "_blank"
         }
       }
@@ -675,8 +675,8 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
 
         "has a link to sign up for MTD for an unspecified user type" in {
           val link = document.mainContent.select(".govuk-link").get(1)
-          link.text shouldBe s"${ProductDetailsPage.gettingStartedSignUpIndividual} (opens in new tab)"
-          link.attr("href") shouldBe appConfig.individualSignUpForMtdUrl
+          link.text shouldBe s"${ProductDetailsPage.gettingStartedSignUpIndividualText} (opens in new tab)"
+          link.attr("href") shouldBe ProductDetailsPage.gettingStartedSignUpIndividualLink
           link.attr("target") shouldBe "_blank"
         }
       }
@@ -779,9 +779,12 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
 
     val gettingStartedHeading = "Getting started with this software"
     val gettingStartedText = "The following will need to be completed, if not already done so:"
-    val gettingStartedSignUpIndividual = "sign up for Making Tax Digital for Income Tax"
-    val gettingStartedSignUpAgent  = "sign up your client for Making Tax Digital for Income Tax"
-    val gettingStartedAuthorise = "authorise this software for HMRC"
+    val gettingStartedSignUpIndividualText = "sign up for Making Tax Digital for Income Tax"
+    val gettingStartedSignUpIndividualLink = "https://www.gov.uk/guidance/sign-up-for-making-tax-digital-for-income-tax"
+    val gettingStartedSignUpAgentText  = "sign up your client for Making Tax Digital for Income Tax"
+    val gettingStartedSignUpAgentLink  = "https://www.gov.uk/guidance/sign-up-your-client-for-making-tax-digital-for-income-tax"
+    val gettingStartedAuthoriseText = "authorise this software for HMRC"
+    val gettingStartedAuthoriseLink = "https://www.gov.uk/guidance/use-making-tax-digital-for-income-tax/get-your-software-ready"
   }
 
 }

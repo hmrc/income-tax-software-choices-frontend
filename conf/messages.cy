@@ -339,13 +339,11 @@ fully-compatible.para1 = Ar hyn o bryd, mae’r meddalwedd hon yn cefnogi’r ho
 fully-compatible.para2.link.text = Dysgwch ragor am y feddalwedd hon
 
 #Partially Compatible page
-partially-compatible.heading1 = Gall {0} anfon diweddariadau chwarterol ac mae’n datblygu nodweddion ar gyfer cyflwyno’ch Ffurflen Dreth
-partially-compatible.para1 = Mae’ch darparwr meddalwedd wedi adeiladu’r nodweddion sydd eu hangen arnoch er mwyn i chi anfon eich diweddariadau chwarterol. Erbyn hyn, maent yn datblygu’r nodweddion sy’n weddill sydd eu hangen ar gyfer eich Ffurflen Dreth. Dylai’r rhain fod ar gael mewn pryd ar gyfer eich Ffurflen Dreth 2026 i 2027.
-partially-compatible.para2.link.text = Dysgwch ragor am eich meddalwedd a’i nodweddion sydd ar ddod
-partially-compatible.heading2 = Yr hyn y dylech ei wneud nesaf
-partially-compatible.para3 = Os ydych am ddefnyddio’r feddalwedd hon, bydd angen i chi wneud y canlynol:
-partially-compatible.bullet1 = cofrestru ar gyfer y cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm
-partially-compatible.bullet2 = awdurdodi’ch meddalwedd i CThEF
+partially-compatible.heading1 = Gall {0} anfon diweddariadau chwarterol yn unig, ac mae wrthi’n datblygu nodweddion ar gyfer Ffurflen Dreth
+partially-compatible.para1 = Dim ond y nodweddion sydd eu hangen i anfon diweddariadau chwarterol y mae’r darparwr meddalwedd hwn wedi’u datblygu. Maent bellach yn datblygu’r nodweddion eraill ac sy’n angenrheidiol i gyflwyno Ffurflen Dreth. Dylai’r rhain fod ar gael mewn pryd ar gyfer y Ffurflen Dreth 2026 i 2027.
+partially-compatible.para2.link.text = Dysgwch ragor am y feddalwedd hon a’i nodweddion sydd ar y gweill
+partially-compatible.para3 = {0} ychwanegol i lenwi Ffurflenni Treth.
+partially-compatible.para3.link.text = Bydd angen meddalwedd
 
 #Quarterly Only page
 quarterly-only.heading1 = Gall {0} anfon diweddariadau chwarterol yn unig
