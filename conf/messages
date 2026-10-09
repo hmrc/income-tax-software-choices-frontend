@@ -69,8 +69,10 @@ zero-results.para3 = We update this tool regularly to show what’s available. P
 zero-results.button = Finish
 
 # Other Items page
-other-items.title = Which of these items do you need to submit with your tax return?
-other-items.para = You can also select items you expect to submit in the future, so we can recommend software that meets your needs.
+other-items.heading.individual = Which of these items do you need to submit with your tax return?
+other-items.heading.agent = Which of these items need to be submitted with your client’s tax return?
+other-items.para.individual = If you expect the items you submit to change, include your current and future items.
+other-items.para.agent = If the items submitted are expected to change, include their current and future items.
 other-items.hint = Select all that apply
 other-items.payments-into-a-private-pension = Private pension contributions
 other-items.construction-industry-scheme = Construction Industry Scheme
@@ -82,7 +84,8 @@ other-items.voluntary-class-2-national-insurance = Voluntary Class 2 National In
 other-items.high-income-child-benefit-charge = High Income Child Benefit Charge
 other-items.none-of-these = None of these
 
-other-items.error.non-empty = Select items you need to submit with your tax return or select ‘none of these’
+other-items.error.non-empty.individual = Select items you need to submit with your tax return or select ‘none of these’
+other-items.error.non-empty.agent = Select items that need to be submitted with your client’s tax return or select ‘none of these’
 other-items.error.invalid-selection = Select items or select ‘none of these’
 
 # Check Your Answers view

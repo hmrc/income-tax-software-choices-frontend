@@ -27,7 +27,7 @@ class OtherItemsFormSpec extends PlaySpec {
     "transform answers into a sequence of vendor filters" when {
       "bound with one valid answer" in {
         val answers = Map("otherItems[]" -> Seq("payments-into-a-private-pension"))
-        val boundForm = OtherItemsForm.form.bindFromRequest(answers)
+        val boundForm = OtherItemsForm.form("individual").bindFromRequest(answers)
 
         boundForm.value mustBe Some(Seq(PaymentsIntoAPrivatePension))
         boundForm.hasErrors mustBe false
@@ -42,7 +42,7 @@ class OtherItemsFormSpec extends PlaySpec {
           "voluntary-class-2-national-insurance",
           "high-income-child-benefit-charge"
         ))
-        val boundForm = OtherItemsForm.form.bindFromRequest(answers)
+        val boundForm = OtherItemsForm.form("individual").bindFromRequest(answers)
 
         boundForm.value mustBe Some(Seq(
           PaymentsIntoAPrivatePension,
@@ -57,7 +57,7 @@ class OtherItemsFormSpec extends PlaySpec {
       }
       "bound with None of these valid answer" in {
         val answers = Map("otherItems[]" -> Seq("none"))
-        val boundForm = OtherItemsForm.form.bindFromRequest(answers)
+        val boundForm = OtherItemsForm.form("individual").bindFromRequest(answers)
 
         boundForm.value mustBe Some(Seq())
         boundForm.hasErrors mustBe false
@@ -73,7 +73,7 @@ class OtherItemsFormSpec extends PlaySpec {
         MarriageAllowance,
         VoluntaryClass2NationalInsurance,
         HighIncomeChildBenefitCharge)
-      val boundForm = OtherItemsForm.form.fill(vendorFilters)
+      val boundForm = OtherItemsForm.form("individual").fill(vendorFilters)
 
       boundForm.data mustBe Map(
         "otherItems[0]" -> "payments-into-a-private-pension",
@@ -88,7 +88,7 @@ class OtherItemsFormSpec extends PlaySpec {
     }
     "transform None of these into page answers" in {
       val vendorFilters = Seq()
-      val boundForm = OtherItemsForm.form.fill(vendorFilters)
+      val boundForm = OtherItemsForm.form("individual").fill(vendorFilters)
 
       boundForm.data mustBe Map(
         "otherItems[0]" -> "none"
@@ -97,16 +97,23 @@ class OtherItemsFormSpec extends PlaySpec {
     }
 
     "validate the answers" when {
-      "no answers are provided" in {
+      "no answers are provided by an individual" in {
         val answers = Map("otherItems[]" -> Seq.empty)
-        val boundForm = OtherItemsForm.form.bindFromRequest(answers)
+        val boundForm = OtherItemsForm.form("individual").bindFromRequest(answers)
 
         boundForm.value mustBe None
-        boundForm.errors mustBe Seq(FormError(formKey, formEmptyErrorKey))
+        boundForm.errors mustBe Seq(FormError(formKey, formEmptyErrorKeyBase + ".individual"))
+      }
+      "no answers are provided by an agent" in {
+        val answers = Map("otherItems[]" -> Seq.empty)
+        val boundForm = OtherItemsForm.form("agent").bindFromRequest(answers)
+
+        boundForm.value mustBe None
+        boundForm.errors mustBe Seq(FormError(formKey, formEmptyErrorKeyBase + ".agent"))
       }
       "invalid combination of vendor filter and None is provided" in {
         val answers = Map("otherItems[]" -> Seq("none", "charitable-giving"))
-        val boundForm = OtherItemsForm.form.bindFromRequest(answers)
+        val boundForm = OtherItemsForm.form("individual").bindFromRequest(answers)
 
         boundForm.value mustBe None
         boundForm.errors mustBe Seq(FormError(formKey, formInvalidSelectionErrorKey))

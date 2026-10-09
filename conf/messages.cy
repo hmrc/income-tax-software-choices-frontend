@@ -69,8 +69,10 @@ zero-results.para3 = Rydym yn diweddaru’r offeryn hwn yn aml er mwyn dangos yr
 zero-results.button = Gorffen
 
 # Other Items page
-other-items.title = Pa rai o’r eitemau hyn y mae angen i chi eu cyflwyno gyda’ch Ffurflen Dreth?
-other-items.para = Gallwch hefyd ddewis eitemau rydych chi’n disgwyl eu cyflwyno yn y dyfodol, fel y gallwn argymell meddalwedd sy’n diwallu’ch anghenion.
+other-items.heading.individual = Pa rai o’r eitemau hyn y mae angen i chi eu cyflwyno yn eich Ffurflen Dreth?
+other-items.heading.agent = Pa rai o’r eitemau hyn sydd angen eu cyflwyno gyda Ffurflen Dreth eich cleient?
+other-items.para.individual = Os ydych yn disgwyl i’r eitemau rydych wedi’u cyflwyno newid, dylech gynnwys eich eitemau presennol a’ch eitemau yn y dyfodol.
+other-items.para.agent = Os oes disgwyl i’r eitemau a gyflwynir newid, dylech gynnwys ei eitemau cyfredol a’i eitemau yn y dyfodol.
 other-items.hint = Dewiswch bob un sy’n berthnasol
 other-items.payments-into-a-private-pension = Cyfraniadau pensiwn preifat
 other-items.construction-industry-scheme = Cynllun y Diwydiant Adeiladu
@@ -82,7 +84,8 @@ other-items.voluntary-class-2-national-insurance = Yswiriant Gwladol Dosbarth 2 
 other-items.high-income-child-benefit-charge = Tâl Treth Budd-dal Plant Incwm Uchel
 other-items.none-of-these = Dim un o’r rhain
 
-other-items.error.non-empty = Dewiswch eitemau y mae angen i chi eu cyflwyno gyda’ch Ffurflen Dreth neu dewiswch ‘dim o’r rhain’
+other-items.error.non-empty.individual = Dewiswch eitemau y mae angen i chi eu cyflwyno gyda’ch Ffurflen Dreth neu dewiswch ‘dim o’r rhain’
+other-items.error.non-empty.agent = Dewiswch eitemau y mae angen eu cyflwyno gyda Ffurflen Dreth eich cleient, neu dewiswch ‘dim un o’r rhain’
 other-items.error.invalid-selection = Dewiswch eitemau neu dewiswch ‘dim un o’r rhain’
 
 # Check Your Answers view

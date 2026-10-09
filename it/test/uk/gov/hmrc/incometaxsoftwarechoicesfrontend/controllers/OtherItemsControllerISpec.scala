@@ -52,7 +52,7 @@ class OtherItemsControllerISpec extends ComponentSpecBase with BeforeAndAfterEac
 
         res should have(
           httpStatus(OK),
-          pageTitle(s"${messages("other-items.title")} - ${PageContentBase.title} - GOV.UK"),
+          pageTitle(s"${messages("other-items.heading.individual")} - ${PageContentBase.title} - GOV.UK"),
           checkboxSelected("otherItems", None),
           checkboxSelected("otherItems-2", None),
           checkboxSelected("otherItems-3", None),
@@ -73,7 +73,7 @@ class OtherItemsControllerISpec extends ComponentSpecBase with BeforeAndAfterEac
 
         res should have(
           httpStatus(OK),
-          pageTitle(s"${messages("other-items.title")} - ${PageContentBase.title} - GOV.UK"),
+          pageTitle(s"${messages("other-items.heading.individual")} - ${PageContentBase.title} - GOV.UK"),
           checkboxSelected("otherItems", Some(PaymentsIntoAPrivatePension.key)),
           checkboxSelected("otherItems-2", Some(ConstructionIndustryScheme.key)),
           checkboxSelected("otherItems-3", Some(CharitableGiving.key)),
@@ -95,7 +95,7 @@ class OtherItemsControllerISpec extends ComponentSpecBase with BeforeAndAfterEac
 
         res should have(
           httpStatus(OK),
-          pageTitle(s"${messages("other-items.title")} - ${PageContentBase.title} - GOV.UK"),
+          pageTitle(s"${messages("other-items.heading.individual")} - ${PageContentBase.title} - GOV.UK"),
           checkboxSelected("otherItems", None),
           checkboxSelected("otherItems-2", None),
           checkboxSelected("otherItems-3", None),
@@ -210,7 +210,7 @@ class OtherItemsControllerISpec extends ComponentSpecBase with BeforeAndAfterEac
 
         res should have(
           httpStatus(BAD_REQUEST),
-          pageTitle(s"Error: ${messages("other-items.title")} - ${PageContentBase.title} - GOV.UK"),
+          pageTitle(s"Error: ${messages("other-items.heading.individual")} - ${PageContentBase.title} - GOV.UK"),
         )
 
         getPageData(SessionId, OtherItemsPage) shouldBe None
@@ -224,7 +224,7 @@ class OtherItemsControllerISpec extends ComponentSpecBase with BeforeAndAfterEac
 
         res should have(
           httpStatus(BAD_REQUEST),
-          pageTitle(s"Error: ${messages("other-items.title")} - ${PageContentBase.title} - GOV.UK"),
+          pageTitle(s"Error: ${messages("other-items.heading.individual")} - ${PageContentBase.title} - GOV.UK"),
         )
 
         getPageData(SessionId, OtherItemsPage) shouldBe None
