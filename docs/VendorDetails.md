@@ -60,6 +60,7 @@ This file is for the vendor management team to quickly reference the product det
 | [Coconut Free](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3153)                                  |
 | [Crunch](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3318)                                        |
 | [Cuppa](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3623)                                         |
+| [Debbie](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3632)                                        |
 | [Deductic MTD](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3509)                                  |
 | [Dext Solo](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3144)                                     |
 | [Digita Personal Tax](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3147)                           |
@@ -97,12 +98,15 @@ This file is for the vendor management team to quickly reference the product det
 | [Kletta](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3216)                                        |
 | [Landlord Studio](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3336)                               |
 | [Landlord Vision](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3378)                               |
+| [LandlordFile](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3635)                                  |
 | [Landmark Systems - KEYinfinity](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3264)                |
 | [Landmark Systems - KEYPrime](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3249)                   |
+| [LedgerlyPro](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3638)                                   |
 | [Lendlord](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3497)                                      |
 | [LetCompliance](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3596)                                 |
 | [LimeBooks](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3339)                                     |
 | [Lloyds Bank](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3375)                                   |
+| [MalgraBooks](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3641)                                   |
 | [Maxim Money](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3599)                                   |
 | [Monzo](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3258)                                         |
 | [MTD 4 Income Tax](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3315)                              |
@@ -117,6 +121,7 @@ This file is for the vendor management team to quickly reference the product det
 | [My Business Finances, powered by Sage](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3563)         |
 | [My Job Goblin](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3602)                                 |
 | [My Tax Digital (Free)](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3255)                         |
+| [MyPetSitter](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3644)                                   |
 | [MYT](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3165)                                           |
 | [Neevii](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3285)                                        |
 | [Nexus by Landlord Studio](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3420)                      |
@@ -136,6 +141,7 @@ This file is for the vendor management team to quickly reference the product det
 | [Qyon Software Ltd](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3273)                             |
 | [RentalBux](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3222)                                     |
 | [RentalBux Free](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3297)                                |
+| [RentFig](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3647)                                       |
 | [Sage Sole Trader & Landlord](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3476)                   |
 | [Sage Sole Trader & Landlord Free](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3473)              |
 | [Sage50](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3488)                                        |
