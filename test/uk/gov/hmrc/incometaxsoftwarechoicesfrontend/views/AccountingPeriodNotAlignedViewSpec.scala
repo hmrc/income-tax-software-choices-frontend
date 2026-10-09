@@ -24,49 +24,68 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.AccountingPeriodN
 class AccountingPeriodNotAlignedViewSpec extends ViewSpec {
 
   object AccountingPeriodNotAlignedViewContent {
-    val heading = "Your accounting period is not aligned"
-    val title = s"$heading - ${PageContentBase.title} - GOV.UK"
-    val paraOne = "You’ve selected an accounting period that does not end on the 5th April or 31st March."
-    val paraTwo = "You’ll need to use compatible software to submit additional adjustments after the end of the tax year."
+    val headingIndividual = "You’ll need to adjust your income figures before reporting them to HMRC"
+    val headingAgent = "Your client’s income figures will need to be adjusted before they are reported to HMRC"
+    val titleIndividual = s"$headingIndividual - ${PageContentBase.title} - GOV.UK"
+    val titleAgent = s"$headingAgent - ${PageContentBase.title} - GOV.UK"
+    val subHeadingIndividual = "Reporting your income to HMRC with a non-aligned accounting period"
+    val subHeadingAgent = "Reporting income to HMRC for a non-aligned accounting period"
+    val paraOneIndividual = "Your accounting period does not end on 5 April or 31 March. This means it is not aligned with the tax year, so you have a non-aligned accounting period."
+    val paraOneAgent = "Your client’s accounting period does not end on 5 April or 31 March. This means it is not aligned with the tax year, so they have a non-aligned accounting period."
+    val paraTwoIndividual = "At the end of the tax year, you’ll need to adjust the income figures shown in your chosen software. This is so they align with the tax year before you report your property or self-employment income to HMRC."
+    val paraTwoAgent = "At the end of the tax year, you or your client will need to adjust the income figures shown in the chosen software. This is so they align with the tax year before reporting property or self-employment income to HMRC."
     val paraThree = "HMRC will publish guidance on how to do this in due course."
+    val paraFourIndividual = "You can continue to choose your software."
+    val paraFourAgent = "You can continue to choose software."
     val continue = "Continue"
   }
 
   private val view = app.injector.instanceOf[AccountingPeriodNotAlignedView]
   private val SoftwareName = "Bright"
 
-  val page: HtmlFormat.Appendable = view(postAction = testCall, backLink = testBackUrl, Some(SoftwareName))
-  val document: Document = Jsoup.parse(page.body)
+  def page(userType: String): HtmlFormat.Appendable = view(postAction = testCall, backLink = testBackUrl, Some(SoftwareName), userTypeString = userType)
+  val individualDocument: Document = Jsoup.parse(page("individual").body)
+  val agentDocument: Document = Jsoup.parse(page("agent").body)
 
   "AccountingPeriodNotAlignedView" must {
     "have a title" in {
-      document.title() shouldBe AccountingPeriodNotAlignedViewContent.title
+      individualDocument.title() shouldBe AccountingPeriodNotAlignedViewContent.titleIndividual
+      agentDocument.title() shouldBe AccountingPeriodNotAlignedViewContent.titleAgent
     }
-    "have a heading" in {
-      document.mainContent.selectHead("h1").text shouldBe AccountingPeriodNotAlignedViewContent.heading
+    "have the correct headings" in {
+      individualDocument.mainContent.selectHead("h1").text shouldBe AccountingPeriodNotAlignedViewContent.headingIndividual
+      agentDocument.mainContent.selectHead("h1").text shouldBe AccountingPeriodNotAlignedViewContent.headingAgent
+      individualDocument.mainContent.selectHead("h2").text shouldBe AccountingPeriodNotAlignedViewContent.subHeadingIndividual
+      agentDocument.mainContent.selectHead("h2").text shouldBe AccountingPeriodNotAlignedViewContent.subHeadingAgent
     }
     "have a software name caption" in {
-      document.mainContent.selectHead("span.govuk-caption-l").text() shouldBe SoftwareName
+      individualDocument.mainContent.selectHead("span.govuk-caption-l").text() shouldBe SoftwareName
+      agentDocument.mainContent.selectHead("span.govuk-caption-l").text() shouldBe SoftwareName
     }
-    "have a first paragraph" in {
-      document.mainContent.selectNth("p", 1).text shouldBe AccountingPeriodNotAlignedViewContent.paraOne
-    }
-    "has a second paragraph" in {
-      document.mainContent.selectNth("p", 2).text shouldBe AccountingPeriodNotAlignedViewContent.paraTwo
-    }
-    "has a third paragraph" in {
-      document.mainContent.selectNth("p", 3).text shouldBe AccountingPeriodNotAlignedViewContent.paraThree
+    "have the correct paragraphs" in {
+      individualDocument.mainContent.selectNth("p", 1).text shouldBe AccountingPeriodNotAlignedViewContent.paraOneIndividual
+      agentDocument.mainContent.selectNth("p", 1).text shouldBe AccountingPeriodNotAlignedViewContent.paraOneAgent
+      individualDocument.mainContent.selectNth("p", 2).text shouldBe AccountingPeriodNotAlignedViewContent.paraTwoIndividual
+      agentDocument.mainContent.selectNth("p", 2).text shouldBe AccountingPeriodNotAlignedViewContent.paraTwoAgent
+      individualDocument.mainContent.selectNth("p", 3).text shouldBe AccountingPeriodNotAlignedViewContent.paraThree
+      agentDocument.mainContent.selectNth("p", 3).text shouldBe AccountingPeriodNotAlignedViewContent.paraThree
+      individualDocument.mainContent.selectNth("p", 4).text shouldBe AccountingPeriodNotAlignedViewContent.paraFourIndividual
+      agentDocument.mainContent.selectNth("p", 4).text shouldBe AccountingPeriodNotAlignedViewContent.paraFourAgent
     }
     "have a form" which {
-      val form: Element = document.selectHead("form")
+      val individualForm: Element = individualDocument.selectHead("form")
+      val agentForm: Element = agentDocument.selectHead("form")
 
       "has the correct method and action" in {
-        form.attr("method") shouldBe testCall.method
-        form.attr("action") shouldBe testCall.url
+        individualForm.attr("method") shouldBe testCall.method
+        individualForm.attr("action") shouldBe testCall.url
+        agentForm.attr("method") shouldBe testCall.method
+        agentForm.attr("action") shouldBe testCall.url
       }
 
       "has a continue button" in {
-        form.selectHead(".govuk-button").text() shouldBe AccountingPeriodNotAlignedViewContent.continue
+        individualForm.selectHead(".govuk-button").text() shouldBe AccountingPeriodNotAlignedViewContent.continue
+        agentForm.selectHead(".govuk-button").text() shouldBe AccountingPeriodNotAlignedViewContent.continue
       }
     }
   }

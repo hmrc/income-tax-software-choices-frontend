@@ -27,19 +27,23 @@
     form: FormWithCSRF
 )
 
-@(postAction: Call, backLink: String, softwareName: Option[String])(implicit request: Request[_], messages: Messages)
+@(postAction: Call, backLink: String, softwareName: Option[String], userTypeString: String)(implicit request: Request[_], messages: Messages)
 
-@mainTemplate(title = messages("accounting-period-not-aligned.heading"), backLink = Some(backLink)) {
+@mainTemplate(title = messages(s"accounting-period-not-aligned.heading.$userTypeString"), backLink = Some(backLink)) {
 
     @captionHelper(softwareName)
 
-    <h1 class="govuk-heading-l">@messages("accounting-period-not-aligned.heading")</h1>
+    <h1 class="govuk-heading-l">@messages(s"accounting-period-not-aligned.heading.$userTypeString")</h1>
 
-    <p class ="govuk-body">@messages("accounting-period-not-aligned.para-one")</p>
+    <p class ="govuk-body">@messages(s"accounting-period-not-aligned.para-one.$userTypeString")</p>
 
-    <p class ="govuk-body">@messages("accounting-period-not-aligned.para-two")</p>
+    <h2 class ="govuk-heading-m">@messages(s"accounting-period-not-aligned.sub-heading.$userTypeString")</h2>
+
+    <p class ="govuk-body">@messages(s"accounting-period-not-aligned.para-two.$userTypeString")</p>
 
     <p class ="govuk-body">@messages("accounting-period-not-aligned.para-three")</p>
+
+    <p class ="govuk-body">@messages(s"accounting-period-not-aligned.para-four.$userTypeString")</p>
 
     @form(action = postAction) {
         @govukButton(Button(

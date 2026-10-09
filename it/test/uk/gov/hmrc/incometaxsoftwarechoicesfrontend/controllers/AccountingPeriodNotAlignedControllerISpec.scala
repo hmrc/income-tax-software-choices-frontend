@@ -52,7 +52,7 @@ class AccountingPeriodNotAlignedControllerISpec
 
       res should have(
         httpStatus(OK),
-        pageTitle(s"${messages("accounting-period-not-aligned.heading")} - ${PageContentBase.title} - GOV.UK"),
+        pageTitle(s"${messages("accounting-period-not-aligned.heading.individual")} - ${PageContentBase.title} - GOV.UK"),
       )
       res.body.contains(RecognisedSoftwareProduct.name) shouldBe true
     }
