@@ -44,10 +44,17 @@ accounting-period.other                                           = A different 
 accounting-period.error                                           = Select an accounting period
 
 # Accounting period not aligned view
-accounting-period-not-aligned.heading                               = Your accounting period is not aligned
-accounting-period-not-aligned.para-one                              = You’ve selected an accounting period that does not end on the 5th April or 31st March.
-accounting-period-not-aligned.para-two                              = You’ll need to use compatible software to submit additional adjustments after the end of the tax year.
-accounting-period-not-aligned.para-three                            = HMRC will publish guidance on how to do this in due course.
+accounting-period-not-aligned.heading.individual              = You’ll need to adjust your income figures before reporting them to HMRC
+accounting-period-not-aligned.heading.agent                   = Your client’s income figures will need to be adjusted before they are reported to HMRC
+accounting-period-not-aligned.para-one.individual             = Your accounting period does not end on 5 April or 31 March. This means it is not aligned with the tax year, so you have a non-aligned accounting period.
+accounting-period-not-aligned.para-one.agent                  = Your client’s accounting period does not end on 5 April or 31 March. This means it is not aligned with the tax year, so they have a non-aligned accounting period.
+accounting-period-not-aligned.sub-heading.individual          = Reporting your income to HMRC with a non-aligned accounting period
+accounting-period-not-aligned.sub-heading.agent               = Reporting income to HMRC for a non-aligned accounting period
+accounting-period-not-aligned.para-two.individual             = At the end of the tax year, you’ll need to adjust the income figures shown in your chosen software. This is so they align with the tax year before you report your property or self-employment income to HMRC.
+accounting-period-not-aligned.para-two.agent                  = At the end of the tax year, you or your client will need to adjust the income figures shown in the chosen software. This is so they align with the tax year before reporting property or self-employment income to HMRC.
+accounting-period-not-aligned.para-three                      = HMRC will publish guidance on how to do this in due course.
+accounting-period-not-aligned.para-four.individual            = You can continue to choose your software.
+accounting-period-not-aligned.para-four.agent                 = You can continue to choose software.
 
 # Business Income page
 business-income.title               = Which of these income sources do you need to include in your quarterly updates?

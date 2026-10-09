@@ -18,6 +18,8 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{RequireUserDataRefiner, SessionIdentifierAction}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.Agent
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.AccountingPeriodNotAlignedView
 
 import javax.inject.{Inject, Singleton}
@@ -34,12 +36,17 @@ class AccountingPeriodNotAlignedController @Inject()(view: AccountingPeriodNotAl
     Ok(view(
       postAction = routes.AccountingPeriodNotAlignedController.submit(editMode),
       backLink = routes.AccountingPeriodController.show(editMode).url,
-      softwareName = getSoftwareName(request.product)
+      softwareName = getSoftwareName(request.product),
+      userTypeString = getUserType(request.userType)
     ))
   }
 
   def submit(editMode: Boolean): Action[AnyContent] = (identify andThen requireData) { _ =>
     Redirect(routes.CheckYourAnswersController.show())
+  }
+
+  private def getUserType(userType: Option[UserType]) = {
+    if (userType.contains(Agent)) "agent" else "individual"
   }
 
 }
