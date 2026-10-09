@@ -50,15 +50,19 @@ accounting-period-not-aligned.para-two                              = Bydd angen
 accounting-period-not-aligned.para-three                            = Bydd CThEF yn cyhoeddi arweiniad ar sut i wneud hyn maes o law.
 
 # Business Income page
-business-income.title               = Pa un o’r ffynonellau incwm hyn y mae angen i chi eu cynnwys yn eich diweddariadau chwarterol?
-business-income.legend              = Pa un o’r ffynonellau incwm hyn y mae angen i chi eu cynnwys yn eich diweddariadau chwarterol?
-business-income.para                = Gallwch hefyd ddewis ffynonellau incwm rydych chi’n disgwyl eu cynnwys yn y dyfodol, fel y gallwn argymell meddalwedd sy’n diwallu’ch anghenion.
-business-income.hint                = Dewiswch bob un sy’n berthnasol
-business-income.sole-trader         = Hunangyflogedig fel unig fasnachwr
-business-income.uk-property         = Rhoi eiddo yn y DU ar osod
-business-income.overseas-property   = Rhoi eiddo tramor ar osod
+business-income.heading.individual           = Pa un o’r ffynonellau incwm hyn y mae angen i chi eu cynnwys yn eich diweddariadau chwarterol?
+business-income.heading.agent                = Pa rai o’r ffynonellau incwm hyn sydd angen eu cynnwys yn y diweddariadau chwarterol ar gyfer eich cleient?
+business-income.para1.individual             = Bydd angen i chi gynnwys y rhain yn eich Ffurflen Dreth hefyd.
+business-income.para1.agent                  = Mae’n rhaid cynnwys y ffynonellau incwm hyn yn ei Ffurflen Dreth hefyd.
+business-income.para2.individual             = Os ydych yn disgwyl i’ch ffynonellau incwm newid, dylech gynnwys eich ffynonellau incwm presennol a’ch ffynonellau incwm yn y dyfodol.
+business-income.para2.agent                  = Os oes disgwyl y bydd ffynonellau incwm eich cleient yn newid, dylech gynnwys ei ffynonellau incwm presennol a’i ffynonellau incwm yn y dyfodol.
+business-income.hint                         = Dewiswch bob un sy’n berthnasol
+business-income.sole-trader                  = Hunangyflogedig fel unig fasnachwr
+business-income.uk-property                  = Rhoi eiddo yn y DU ar osod
+business-income.overseas-property            = Rhoi eiddo tramor ar osod
 
-business-income.error.non-empty     = Dewiswch a ydych yn cael incwm o fod yn hunangyflogedig fel unig fasnachwr, neu o roi eiddo tramor neu eiddo yn y DU ar osod
+business-income.error.non-empty.individual   = Dewiswch a ydych yn cael incwm o fod yn hunangyflogedig fel unig fasnachwr, neu o roi eiddo tramor neu eiddo yn y DU ar osod
+business-income.error.non-empty.agent        = Dewiswch a yw’ch cleient yn cael incwm o fod yn hunangyflogedig fel unig fasnachwr, neu o roi eiddo tramor neu eiddo yn y DU ar osod
 
 # Zero Results page
 zero-results.heading = Ar hyn o bryd, nid oes meddalwedd sy’n cydweddu sy’n bodloni’r holl ofynion hyn

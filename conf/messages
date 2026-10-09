@@ -50,15 +50,19 @@ accounting-period-not-aligned.para-two                              = You’ll n
 accounting-period-not-aligned.para-three                            = HMRC will publish guidance on how to do this in due course.
 
 # Business Income page
-business-income.title               = Which of these income sources do you need to include in your quarterly updates?
-business-income.legend              = Which of these income sources do you need to include in your quarterly updates?
-business-income.para                = You can also select income sources you expect to include in the future, so we can recommend software that meets your needs.
-business-income.hint                = Select all that apply
-business-income.sole-trader         = Being self-employed as a sole trader
-business-income.uk-property         = Renting out a UK property
-business-income.overseas-property   = Renting out a foreign property
+business-income.heading.individual          = Which of these income sources do you need to include in your quarterly updates?
+business-income.heading.agent               = Which of these income sources need to be included in your client’s quarterly updates?
+business-income.para1.individual            = You’ll also need to send these in your tax return.
+business-income.para1.agent                 = These income sources must also be included in their tax return.
+business-income.para2.individual            = If you expect your income sources to change, include your current and future income sources.
+business-income.para2.agent                 = If your client’s income sources are expected to change, include their current and future income sources.
+business-income.hint                        = Select all that apply
+business-income.sole-trader                 = Being self-employed as a sole trader
+business-income.uk-property                 = Renting out a UK property
+business-income.overseas-property           = Renting out a foreign property
 
-business-income.error.non-empty     = Select if you get income from being self-employed as a sole trader, or renting out a UK or foreign property
+business-income.error.non-empty.individual  = Select if you get income from being self-employed as a sole trader, or renting out a UK or foreign property
+business-income.error.non-empty.agent       = Select if your client gets income from being self-employed as a sole trader, or renting out a UK or foreign property
 
 # Zero Results page
 zero-results.heading = There is currently no compatible software that meets all the requirements

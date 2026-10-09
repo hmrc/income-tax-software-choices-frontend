@@ -18,7 +18,7 @@ package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms
 
 import org.scalatestplus.play.PlaySpec
 import play.api.data.FormError
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.BusinessIncomeForm.{formErrorKey, formKey}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.BusinessIncomeForm.{formErrorKeyBase, formKey}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{OverseasProperty, SoleTrader, UkProperty}
 
 class BusinessIncomeFormSpec extends PlaySpec {
@@ -27,14 +27,14 @@ class BusinessIncomeFormSpec extends PlaySpec {
     "transform answers into a sequence of vendor filters" when {
       "bound with one valid answer" in {
         val answers = Map("businessIncome[]" -> Seq("overseas-property"))
-        val boundForm = BusinessIncomeForm.form.bindFromRequest(answers)
+        val boundForm = BusinessIncomeForm.form("individual").bindFromRequest(answers)
 
         boundForm.value mustBe Some(Seq(OverseasProperty))
         boundForm.hasErrors mustBe false
       }
       "bound with multiple valid answers" in {
         val answers = Map("businessIncome[]" -> Seq("sole-trader", "uk-property", "overseas-property"))
-        val boundForm = BusinessIncomeForm.form.bindFromRequest(answers)
+        val boundForm = BusinessIncomeForm.form("individual").bindFromRequest(answers)
 
         boundForm.value mustBe Some(Seq(SoleTrader, UkProperty, OverseasProperty))
         boundForm.hasErrors mustBe false
@@ -43,7 +43,7 @@ class BusinessIncomeFormSpec extends PlaySpec {
 
     "transform vendor filters into page answers" in {
       val vendorFilters = Seq(SoleTrader, UkProperty, OverseasProperty)
-      val boundForm = BusinessIncomeForm.form.fill(vendorFilters)
+      val boundForm = BusinessIncomeForm.form("individual").fill(vendorFilters)
 
       boundForm.data mustBe Map(
         "businessIncome[0]" -> "sole-trader",
@@ -54,23 +54,30 @@ class BusinessIncomeFormSpec extends PlaySpec {
     }
 
     "validate the answers" when {
-      "no answers are provided" in {
+      "no answers are provided by an individual" in {
         val answers = Map("businessIncome[]" -> Seq.empty)
-        val boundForm = BusinessIncomeForm.form.bindFromRequest(answers)
+        val boundForm = BusinessIncomeForm.form("individual").bindFromRequest(answers)
 
         boundForm.value mustBe None
-        boundForm.errors mustBe Seq(FormError(formKey, formErrorKey))
+        boundForm.errors mustBe Seq(FormError(formKey, s"$formErrorKeyBase.individual"))
+      }
+      "no answers are provided by an agent" in {
+        val answers = Map("businessIncome[]" -> Seq.empty)
+        val boundForm = BusinessIncomeForm.form("agent").bindFromRequest(answers)
+
+        boundForm.value mustBe None
+        boundForm.errors mustBe Seq(FormError(formKey, s"$formErrorKeyBase.agent"))
       }
       "invalid vendor filter is provided" in {
         val answers = Map("businessIncome[]" -> Seq("not-an-income-source"))
-        val boundForm = BusinessIncomeForm.form.bindFromRequest(answers)
+        val boundForm = BusinessIncomeForm.form("individual").bindFromRequest(answers)
 
         boundForm.value mustBe None
-        boundForm.errors mustBe Seq(FormError(formKey, formErrorKey))
+        boundForm.errors mustBe Seq(FormError(formKey, s"$formErrorKeyBase.individual"))
       }
       "both valid and invalid vendor filters are provided" in {
         val answers = Map("businessIncome[]" -> Seq("sole-trader", "not-an-income-source"))
-        val boundForm = BusinessIncomeForm.form.bindFromRequest(answers)
+        val boundForm = BusinessIncomeForm.form("individual").bindFromRequest(answers)
 
         boundForm.value mustBe Some(Seq(SoleTrader))
         boundForm.hasErrors mustBe false
