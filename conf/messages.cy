@@ -123,7 +123,7 @@ search-software.filters.software-application-type = Math o raglen meddalwedd
 search-software.filters.apply-filters = Rhoi hidlyddion ar waith
 search-software.filters.clear-filters = Clirio hidlyddion
 
-search-software.intent.vendor-visit-link        = Dysgwch beth mae {0} yn ei ddarparu ar hyn o bryd, a’r hyn sy’n cael ei ddatblygu ganddynt
+search-software.intent.vendor-visit-link        = Nodweddion meddalwedd {0}, a'u hargaeledd
 
 search-software.vendor-count.heading = Canlyniadau meddalwedd yn seiliedig ar atebion a hidlyddion
 
