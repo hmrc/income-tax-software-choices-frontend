@@ -20,8 +20,8 @@ import org.mockito.Mockito.when
 import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.mockito.MockitoSugar.mock
 import org.scalatestplus.play.PlaySpec
-import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.TestApplication
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.{Available, Intended, NotApplicable}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilterGroups.userTypeFilters
@@ -31,7 +31,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepo
 
 import java.time.LocalDate
 
-class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with BeforeAndAfterEach {
+class SoftwareChoicesServiceSpec extends PlaySpec with TestApplication with BeforeAndAfterEach {
 
   implicit val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
   implicit val mockRequest: SessionDataRequest[_] = mock[SessionDataRequest[_]]
@@ -69,8 +69,8 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
     filters = filters
   )
  
-  val mockDataService = mock[DataService]
-  val mockUserFiltersRepo = mock[UserFiltersRepository]
+  val mockDataService: DataService = mock[DataService]
+  val mockUserFiltersRepo: UserFiltersRepository = mock[UserFiltersRepository]
 
   override def beforeEach(): Unit = {
     super.beforeEach()
@@ -222,9 +222,9 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
           Visual, Hearing, Motor, Cognitive
         ))(appConfig)
       result.size mustBe 1
-      result(0).vendor.name mustBe "Vendor 02"
-      result(0).quarterlyReady mustBe Some(true)
-      result(0).eoyReady mustBe Some(true)
+      result.head.vendor.name mustBe "Vendor 02"
+      result.head.quarterlyReady mustBe Some(true)
+      result.head.eoyReady mustBe Some(true)
     }
     
     "return vendors with Ready and In Development statuses" in {
@@ -240,9 +240,9 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
       )
       val result = service.getVendorsWithIntent(Seq(Individual, TaxReturn, UkProperty, StudentLoans, StandardUpdatePeriods, Visual)).sortBy(_.vendor.productId)
       result.size mustBe 3
-      result(0).vendor.name mustBe "Vendor 01"
-      result(0).quarterlyReady mustBe Some(true)
-      result(0).eoyReady mustBe Some(true)
+      result.head.vendor.name mustBe "Vendor 01"
+      result.head.quarterlyReady mustBe Some(true)
+      result.head.eoyReady mustBe Some(true)
       result(1).vendor.name mustBe "Vendor 02"
       result(1).quarterlyReady mustBe Some(true)
       result(1).eoyReady mustBe Some(false)
@@ -262,9 +262,9 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
       )
       val result = service.getVendorsWithIntent(Seq(Individual, TaxReturn, UkProperty, StandardUpdatePeriods, Visual))
       result.size mustBe 1
-      result(0).vendor.name mustBe "Vendor 01"
-      result(0).quarterlyReady mustBe Some(true)
-      result(0).eoyReady mustBe None
+      result.head.vendor.name mustBe "Vendor 01"
+      result.head.quarterlyReady mustBe Some(true)
+      result.head.eoyReady mustBe None
 
     }
     
@@ -333,9 +333,9 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
           Visual, Hearing, Motor, Cognitive
         ))
       result.size mustBe 1
-      result(0).vendor.name mustBe "Vendor 03"
-      result(0).quarterlyReady mustBe Some(true)
-      result(0).eoyReady mustBe Some(true)
+      result.head.vendor.name mustBe "Vendor 03"
+      result.head.quarterlyReady mustBe Some(true)
+      result.head.eoyReady mustBe Some(true)
     }
 
     "return 1 vendors if HMRC Assist is selected" in {
@@ -381,9 +381,9 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
           HMRCAssist
         ))
       result.size mustBe 1
-      result(0).vendor.name mustBe "Vendor 02"
-      result(0).quarterlyReady mustBe Some(true)
-      result(0).eoyReady mustBe Some(true)
+      result.head.vendor.name mustBe "Vendor 02"
+      result.head.quarterlyReady mustBe Some(true)
+      result.head.eoyReady mustBe Some(true)
     }
 
     "return 1 vendors if Welsh is selected" in {
@@ -429,9 +429,9 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
           Welsh
         ))
       result.size mustBe 1
-      result(0).vendor.name mustBe "Vendor 03"
-      result(0).quarterlyReady mustBe Some(true)
-      result(0).eoyReady mustBe Some(true)
+      result.head.vendor.name mustBe "Vendor 03"
+      result.head.quarterlyReady mustBe Some(true)
+      result.head.eoyReady mustBe Some(true)
     }
 
     "return 1 vendor if Welsh is selected but Intended" in {
@@ -478,9 +478,9 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
           Welsh
         ))
       result.size mustBe 1
-      result(0).vendor.name mustBe "Vendor 02"
-      result(0).quarterlyReady mustBe Some(true)
-      result(0).eoyReady mustBe Some(true)
+      result.head.vendor.name mustBe "Vendor 02"
+      result.head.quarterlyReady mustBe Some(true)
+      result.head.eoyReady mustBe Some(true)
     }
 
     "return 1 vendor if English is selected but Intended" in {
@@ -527,9 +527,9 @@ class SoftwareChoicesServiceSpec extends PlaySpec with GuiceOneAppPerSuite with 
           English
         ))
       result.size mustBe 1
-      result(0).vendor.name mustBe "Vendor 02"
-      result(0).quarterlyReady mustBe Some(true)
-      result(0).eoyReady mustBe Some(true)
+      result.head.vendor.name mustBe "Vendor 02"
+      result.head.quarterlyReady mustBe Some(true)
+      result.head.eoyReady mustBe Some(true)
     }
 
     "return only vendors that are fully ready when readiness filter applied" when {
