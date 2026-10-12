@@ -20,15 +20,15 @@ import org.scalatest.matchers.should.Matchers._
 import org.scalatestplus.play.PlaySpec
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.Application
-import play.api.inject.guice.GuiceApplicationBuilder
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestApplication
 
 import scala.util.Try
 
 class SoftwareChoicesServiceISpec extends PlaySpec with GuiceOneServerPerSuite {
 
-  def app(file: String): Application = new GuiceApplicationBuilder()
-    .configure("vendor-list.file-name" -> file)
-    .build()
+  override def fakeApplication(): Application = IntegrationTestApplication.build()
+
+  def app(file: String): Application = IntegrationTestApplication.build("vendor-list.file-name" -> file)
 
   Seq("software-vendors.json", "software-vendors-local.json") foreach { file =>
     file must {
