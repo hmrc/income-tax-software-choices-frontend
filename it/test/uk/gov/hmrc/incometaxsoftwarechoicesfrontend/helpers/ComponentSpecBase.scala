@@ -24,7 +24,6 @@ import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.Application
 import play.api.http.HeaderNames
 import play.api.i18n.{Messages, MessagesApi}
-import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.crypto.CookieSigner
 import play.api.libs.ws.{WSClient, WSResponse}
 import play.api.test.FakeRequest
@@ -57,9 +56,7 @@ trait ComponentSpecBase extends AnyWordSpec
   )
 
   override def fakeApplication(): Application =
-    GuiceApplicationBuilder()
-      .configure(config)
-      .build()
+    IntegrationTestApplication.build(config.toSeq*)
 
   implicit val messages: Messages = app.injector.instanceOf[MessagesApi].preferred(FakeRequest())
 

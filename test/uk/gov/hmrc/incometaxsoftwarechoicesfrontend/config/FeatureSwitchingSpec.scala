@@ -20,12 +20,12 @@ import org.mockito.Mockito.{reset, when}
 import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.mockito.MockitoSugar.mock
 import org.scalatestplus.play.PlaySpec
-import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.Configuration
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.TestFeature
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.TestApplication
 
-class FeatureSwitchingSpec extends PlaySpec with FeatureSwitching with BeforeAndAfterEach with GuiceOneAppPerSuite {
+class FeatureSwitchingSpec extends PlaySpec with FeatureSwitching with BeforeAndAfterEach with TestApplication {
 
   val mockConfig: Configuration = mock[Configuration]
   override val appConfig: AppConfig = mock[AppConfig]

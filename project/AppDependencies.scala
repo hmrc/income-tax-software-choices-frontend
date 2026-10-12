@@ -11,7 +11,7 @@ object AppDependencies {
     "uk.gov.hmrc" %% "play-frontend-hmrc-play-30" % playFrontendHMRCVersion,
     "uk.gov.hmrc.mongo" %% "hmrc-mongo-play-30" % hmrcMongoVersion,
     "org.webjars" % "jquery" % "3.7.1",
-    "uk.gov.hmrc" %% "digital-engagement-platform-chat-30" % "1.8.0"
+    "uk.gov.hmrc" %% "digital-engagement-platform-chat-30" % "1.10.0"
   )
 
   val test: Seq[ModuleID] = Seq(
@@ -21,6 +21,8 @@ object AppDependencies {
     "org.jsoup" % "jsoup" % "1.21.1" % "test"
   )
 
-  val itTest: Seq[ModuleID] = Seq()
+  val itTest: Seq[ModuleID] = Seq(
+    "uk.gov.hmrc" %% "digital-engagement-platform-chat-30" % "1.10.0" % "test"
+  )
 
 }
