@@ -16,8 +16,8 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
+import play.api.i18n.Messages
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.SessionIdentifierAction
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.HowYouFindSoftwareForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType
@@ -32,7 +32,6 @@ import scala.concurrent.{ExecutionContext, Future}
 @Singleton
 class HowYouFindSoftwareController @Inject()(view: HowYouFindSoftwareView,
                                              pageAnswersService: PageAnswersService,
-                                             appConfig: AppConfig,
                                              identify: SessionIdentifierAction)
                                             (implicit ec: ExecutionContext,
                                              mcc: MessagesControllerComponents) extends BaseFrontendController {
@@ -45,7 +44,7 @@ class HowYouFindSoftwareController @Inject()(view: HowYouFindSoftwareView,
       Ok(view(
         howYouFindSoftwareForm = HowYouFindSoftwareForm.form.fill(answer),
         postAction = routes.HowYouFindSoftwareController.submit(),
-        backUrl = appConfig.guidance
+        backUrl = getGuidanceUrl()
       ))
     }
   }
@@ -58,7 +57,7 @@ class HowYouFindSoftwareController @Inject()(view: HowYouFindSoftwareView,
         Future.successful(BadRequest(view(
           howYouFindSoftwareForm = formWithErrors,
           postAction = routes.HowYouFindSoftwareController.submit(),
-          backUrl = appConfig.guidance
+          backUrl = getGuidanceUrl()
         ))),
       journeyType =>
         for {
@@ -83,7 +82,7 @@ class HowYouFindSoftwareController @Inject()(view: HowYouFindSoftwareView,
   private def removeOldAnswers(sessionId: String,
                                newJourneyType: JourneyType,
                                previousJourneyType: Option[JourneyType]): Future[Boolean] = {
-    val isSameJourneyType = Some(newJourneyType) == previousJourneyType
+    val isSameJourneyType = previousJourneyType.contains(newJourneyType)
     (isSameJourneyType, newJourneyType) match {
       case (false, Find) => pageAnswersService.resetPageUserAnswers(sessionId, pagesNotInFindJourney)
       case (false, ViewAll) => pageAnswersService.resetPageUserAnswers(sessionId, pagesNotInViewAllJourney)
@@ -101,4 +100,6 @@ class HowYouFindSoftwareController @Inject()(view: HowYouFindSoftwareView,
     AccountingPeriodPage
   )
   private val pagesNotInCheckJourney: Seq[QuestionPage[_]] = Seq()
+  
+  private def getGuidanceUrl(implicit messages: Messages): String = messages("how-you-find-software.guidance-url")
 }

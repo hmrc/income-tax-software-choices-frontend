@@ -22,6 +22,7 @@ how-you-find-software.view-all = Dangos rhestr o’r holl feddalwedd sydd ar gae
 how-you-find-software.check = Gwirio a yw fy meddalwedd gyfredol yn cydweddu
 how-you-find-software.check.hint = Mae hyn yn cynnwys defnyddio taenlenni
 how-you-find-software.error = Dewiswch sut yr hoffech chi ddod o hyd i feddalwedd
+how-you-find-software.guidance-url = https://www.gov.uk/guidance/choose-the-right-software-for-making-tax-digital-for-income-tax.cy
 
 ## User type page
 type-of-user.heading                                              = Pa rai o’r rhain sy’n eich disgrifio orau?

@@ -22,6 +22,7 @@ how-you-find-software.view-all = Show a list of all available software and let m
 how-you-find-software.check = Check if my current software is compatible
 how-you-find-software.check.hint = This includes using spreadsheets
 how-you-find-software.error = Select how you would like to find software
+how-you-find-software.guidance-url = https://www.gov.uk/guidance/choose-the-right-software-for-making-tax-digital-for-income-tax
 
 ## User type page
 type-of-user.heading                                              = Which of these best describes you?
