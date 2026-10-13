@@ -23,9 +23,10 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.AdditionalIncomeForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.SessionId
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, DatabaseHelper}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.Recognised
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareProduct, UserAnswers, VendorFilter}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.SoleTraderOrLandlord
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareProduct, UserAnswers, UserType, VendorFilter}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.*
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.{AdditionalIncomeSourcesPage, EnterSoftwareNamePage}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.{AdditionalIncomeSourcesPage, EnterSoftwareNamePage, UserTypePage}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
 
 class AdditionalIncomeSourcesControllerISpec extends ComponentSpecBase with BeforeAndAfterEach with DatabaseHelper {
@@ -63,10 +64,11 @@ class AdditionalIncomeSourcesControllerISpec extends ComponentSpecBase with Befo
           checkboxSelected("additionalIncome-11", None)
         )
       }
-      "the additional income has been answered previously with additional income selections" in {
+      "the additional income has been answered previously with additional income selections by an individual" in {
         val userAnswers = UserAnswers()
           .set(EnterSoftwareNamePage, RecognisedSoftwareProduct).get
           .set(AdditionalIncomeSourcesPage, additionalIncomeFilters).get
+          .set(UserTypePage, SoleTraderOrLandlord).get
         setupAnswers(SessionId, Some(userAnswers))
         val res = SoftwareChoicesFrontend.getAdditionalIncome
 
@@ -85,16 +87,17 @@ class AdditionalIncomeSourcesControllerISpec extends ComponentSpecBase with Befo
         )
         res.body.contains(RecognisedSoftwareProduct.name) shouldBe true
       }
-      "the additional income has been answered previously with none selected" in {
+      "the additional income has been answered previously with none selected by an agent" in {
         val userAnswers = UserAnswers()
           .set(EnterSoftwareNamePage, RecognisedSoftwareProduct).get
           .set(AdditionalIncomeSourcesPage, Seq.empty).get
+          .set(UserTypePage, UserType.Agent).get
         setupAnswers(SessionId, Some(userAnswers))
         val res = SoftwareChoicesFrontend.getAdditionalIncome
 
         res should have(
           httpStatus(OK),
-          pageTitle(s"${messages("additional-income-source.heading.individual")} - ${PageContentBase.title} - GOV.UK"),
+          pageTitle(s"${messages("additional-income-source.heading.agent")} - ${PageContentBase.title} - GOV.UK"),
           checkboxSelected("additionalIncome", None),
           checkboxSelected("additionalIncome-2", None),
           checkboxSelected("additionalIncome-3", None),

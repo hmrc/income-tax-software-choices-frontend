@@ -42,7 +42,7 @@ class BusinessIncomeController @Inject()(view: BusinessIncomeView,
     given Request[AnyContent] = request
 
     val pageAnswers = pageAnswersService.getPageAnswers(request.userFilters.answers, BusinessIncomePage)
-    val userType = getUserType(request.userType)
+    val userType = getUserTypeAsString(request.userType)
 
     Ok(view(
       businessIncomeForm = BusinessIncomeForm.form(userType).fill(pageAnswers),
@@ -56,7 +56,7 @@ class BusinessIncomeController @Inject()(view: BusinessIncomeView,
   def submit(editMode: Boolean): Action[AnyContent] = (identify andThen requireData).async { request =>
     given Request[AnyContent] = request
 
-    val userType = getUserType(request.userType)
+    val userType = getUserTypeAsString(request.userType)
 
     BusinessIncomeForm.form(userType).bindFromRequest().fold(
       formWithErrors => {
@@ -83,9 +83,5 @@ class BusinessIncomeController @Inject()(view: BusinessIncomeView,
 
   def backUrl(editMode: Boolean): String = {
     if (editMode) routes.CheckYourAnswersController.show().url else routes.UserTypeController.show().url
-  }
-
-  private def getUserType(userType: Option[UserType]) = {
-    if (userType.contains(Agent)) "agent" else "individual"
   }
 }
