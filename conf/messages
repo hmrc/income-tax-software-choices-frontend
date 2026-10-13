@@ -124,7 +124,7 @@ search-software.filters.software-application-type = Software application type
 search-software.filters.apply-filters = Apply filters
 search-software.filters.clear-filters = Clear filters
 
-search-software.intent.vendor-visit-link        = Find out what {0} provide now and what they’re developing
+search-software.intent.vendor-visit-link        = {0} features and their availability
 
 search-software.vendor-count.heading = Software results based on answers and filters
 

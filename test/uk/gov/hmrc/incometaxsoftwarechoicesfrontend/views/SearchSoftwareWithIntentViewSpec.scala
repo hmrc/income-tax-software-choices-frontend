@@ -28,6 +28,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.{Available, Intended}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.viewmodels.{SoftwareChoicesResultsViewModel, VendorSuitabilityViewModel}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.SearchSoftwareWithIntentPageContent.vendorLinkText
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.SearchSoftwareView
 
 import java.time.LocalDate
@@ -441,7 +442,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
               val expectedUrl = ProductDetailsController.show("101").url
 
               link.attr("href") shouldBe expectedUrl
-              link.text should include(firstModel.name)
+              link.text shouldBe vendorLinkText(firstModel.name)
             }
 
             "has a list of detail for the software vendor with full detail" in {
@@ -464,7 +465,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
               val expectedUrl = ProductDetailsController.show("102").url
 
               link.attr("href") shouldBe expectedUrl
-              link.text should include(secondModel.name)
+              link.text shouldBe vendorLinkText(secondModel.name)
             }
 
             "has a list of detail for the software vendor with minimal detail" in {
@@ -487,7 +488,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
               val expectedUrl = ProductDetailsController.show("103").url
 
               link.attr("href") shouldBe expectedUrl
-              link.text should include(thirdModel.name)
+              link.text shouldBe vendorLinkText(thirdModel.name)
             }
 
             "has a list of detail for the software vendor with minimal detail" in {
@@ -582,7 +583,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
               val expectedUrl = ProductDetailsController.show("101").url
 
               link.attr("href") shouldBe expectedUrl
-              link.text should include(firstModel.name)
+              link.text shouldBe vendorLinkText(firstModel.name)
             }
 
             "has a list of detail for the software vendor with full detail" in {
@@ -605,7 +606,7 @@ class SearchSoftwareWithIntentViewSpec extends ViewSpec with BeforeAndAfterEach 
               val expectedUrl = ProductDetailsController.show("102").url
 
               link.attr("href") shouldBe expectedUrl
-              link.text should include(secondModel.name)
+              link.text shouldBe vendorLinkText(secondModel.name)
             }
 
             "has a list of detail for the software vendor with minimal detail" in {
@@ -756,6 +757,8 @@ private object SearchSoftwareWithIntentPageContent {
   val welsh = "Welsh"
 
   val fullyReady = "Ready for quarterly updates and tax return"
+
+  def vendorLinkText(vendorName: String): String = s"$vendorName features and their availability"
 
   private val lastUpdateTest = LocalDate.of(2022, 12, 2)
 
