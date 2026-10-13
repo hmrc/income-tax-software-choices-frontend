@@ -23,9 +23,10 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.OtherItemsForm
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.SessionId
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, DatabaseHelper}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.Recognised
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareProduct, UserAnswers, VendorFilter}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.SoleTraderOrLandlord
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareProduct, UserAnswers, UserType, VendorFilter}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.*
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.{EnterSoftwareNamePage, OtherItemsPage}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.{EnterSoftwareNamePage, OtherItemsPage, UserTypePage}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
 
 class OtherItemsControllerISpec extends ComponentSpecBase with BeforeAndAfterEach with DatabaseHelper {
@@ -64,10 +65,11 @@ class OtherItemsControllerISpec extends ComponentSpecBase with BeforeAndAfterEac
         )
         res.body.contains(RecognisedSoftwareProduct.name) shouldBe true
       }
-      "the other items page has been answered previously with other items selections" in {
+      "the other items page has been answered previously with other items selections by an individual" in {
         val userAnswers = UserAnswers()
           .set(EnterSoftwareNamePage, RecognisedSoftwareProduct).get
           .set(OtherItemsPage, otherItemsFilters).get
+          .set(UserTypePage, SoleTraderOrLandlord).get
         setupAnswers(SessionId, Some(userAnswers))
         val res = SoftwareChoicesFrontend.getOtherItems
 
@@ -86,16 +88,17 @@ class OtherItemsControllerISpec extends ComponentSpecBase with BeforeAndAfterEac
         )
         res.body.contains(RecognisedSoftwareProduct.name) shouldBe true
       }
-      "the other items page has been answered previously with none selected" in {
+      "the other items page has been answered previously with none selected by an agent" in {
         val userAnswers = UserAnswers()
           .set(EnterSoftwareNamePage, RecognisedSoftwareProduct).get
           .set(OtherItemsPage, Seq.empty).get
+          .set(UserTypePage, UserType.Agent).get
         setupAnswers(SessionId, Some(userAnswers))
         val res = SoftwareChoicesFrontend.getOtherItems
 
         res should have(
           httpStatus(OK),
-          pageTitle(s"${messages("other-items.heading.individual")} - ${PageContentBase.title} - GOV.UK"),
+          pageTitle(s"${messages("other-items.heading.agent")} - ${PageContentBase.title} - GOV.UK"),
           checkboxSelected("otherItems", None),
           checkboxSelected("otherItems-2", None),
           checkboxSelected("otherItems-3", None),
