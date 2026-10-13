@@ -21,6 +21,7 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.SessionIdentifierAction
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.JourneyType.{Check, Find}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.Recognised
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.requests.SessionDataRequest
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareVendorModel, UserAnswers, VendorFilter}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.repositories.UserFiltersRepository
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.{PageAnswersService, SoftwareChoicesService}
@@ -84,5 +85,18 @@ class ProductDetailsController @Inject()(softwareChoicesService: SoftwareChoices
       case Some(Check) | Some(Find) => true
       case _ => false
     }
+  }
+
+  private def isMobile()(implicit request: SessionDataRequest[_]): Boolean = {
+    val userAgent = request.headers.get("User-Agent").fold("")(_.toLowerCase)
+    val mobilePreference = request.headers.get("sec-ch-ua-mobile").fold(false)(_.contains("1"))
+
+    (mobilePreference, userAgent) match {
+      case (true, _) => true
+      case (_, ua) if ua.contains("android") => true
+      case (_, ua) if ua.contains("iphone") => true
+      case _ => false
+    }
+
   }
 }

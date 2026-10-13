@@ -37,7 +37,7 @@
         govukTag: GovukTag,
         gettingStartedTemplate: GettingStartedTemplate
 )(implicit appConfig: AppConfig)
-@(softwareVendor: SoftwareVendorModel, backLink: String, finalFilters: Option[Seq[VendorFilter]] = None, userType: Option[UserType] = None)(implicit request: Request[_], messages: Messages)
+@(softwareVendor: SoftwareVendorModel, backLink: String, finalFilters: Option[Seq[VendorFilter]] = None, userType: Option[UserType] = None, isMobile: Boolean)(implicit request: Request[_], messages: Messages)
 
 @mainTemplate(title = softwareVendor.name, backLink = Some(backLink), isFullWidth = true) {
 
