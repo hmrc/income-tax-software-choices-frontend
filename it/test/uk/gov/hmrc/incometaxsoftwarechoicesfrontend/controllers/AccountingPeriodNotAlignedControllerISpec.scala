@@ -20,10 +20,11 @@ import org.scalatest.BeforeAndAfterEach
 import play.api.http.Status.{OK, SEE_OTHER}
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.SessionId
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareProduct, UserAnswers}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareProduct, UserAnswers, UserType}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, DatabaseHelper}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.Recognised
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.EnterSoftwareNamePage
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.SoleTraderOrLandlord
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.{EnterSoftwareNamePage, UserTypePage}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
 
 
@@ -43,7 +44,35 @@ class AccountingPeriodNotAlignedControllerISpec
         )
       }
     }
-    "display the page" in {
+    "display the page correctly for individuals" in {
+      val userAnswers = UserAnswers()
+        .set(EnterSoftwareNamePage, RecognisedSoftwareProduct).get
+        .set(UserTypePage, SoleTraderOrLandlord).get
+      setupAnswers(SessionId, Some(userAnswers))
+
+      val res = SoftwareChoicesFrontend.getAccountingPeriodNotAligned
+
+      res should have(
+        httpStatus(OK),
+        pageTitle(s"${messages("accounting-period-not-aligned.heading.individual")} - ${PageContentBase.title} - GOV.UK"),
+      )
+      res.body.contains(RecognisedSoftwareProduct.name) shouldBe true
+    }
+     "display the page correctly for agents" in {
+      val userAnswers = UserAnswers()
+        .set(EnterSoftwareNamePage, RecognisedSoftwareProduct).get
+        .set(UserTypePage, UserType.Agent).get
+      setupAnswers(SessionId, Some(userAnswers))
+
+      val res = SoftwareChoicesFrontend.getAccountingPeriodNotAligned
+
+      res should have(
+        httpStatus(OK),
+        pageTitle(s"${messages("accounting-period-not-aligned.heading.agent")} - ${PageContentBase.title} - GOV.UK"),
+      )
+      res.body.contains(RecognisedSoftwareProduct.name) shouldBe true
+    }
+     "display the page correctly when user type is undefined" in {
       val userAnswers = UserAnswers()
         .set(EnterSoftwareNamePage, RecognisedSoftwareProduct).get
       setupAnswers(SessionId, Some(userAnswers))
