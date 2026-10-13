@@ -133,6 +133,6 @@ private object HowYouFindSoftwareContent {
   val viewAll = "Show a list of all available software and let me select filters for my needs"
   val check = "Check if my current software is compatible"
   val checkHint = "This includes using spreadsheets"
-  val guidanceLink = "https://www.gov.uk/guidance/find-software-thats-compatible-with-making-tax-digital-for-income-tax"
+  val guidanceLink = "https://www.gov.uk/guidance/choose-the-right-software-for-making-tax-digital-for-income-tax"
   val error = "Select how you would like to find software"
 }

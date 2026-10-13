@@ -232,7 +232,7 @@ class AdditionalIncomeSourcesControllerISpec extends ComponentSpecBase with Befo
   }
 
   "backUrl" must {
-    "return to guidance page when not in edit mode" in {
+    "return to business income page when not in edit mode" in {
       additionalIncomeController.backUrl(editMode = false) shouldBe routes.BusinessIncomeController.show().url
     }
     "return to check your answers when in edit mode" in {

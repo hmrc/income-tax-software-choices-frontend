@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
+import play.api.i18n.Messages
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.AppConfig
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.SessionIdentifierAction
@@ -32,10 +33,10 @@ import scala.concurrent.{ExecutionContext, Future}
 @Singleton
 class HowYouFindSoftwareController @Inject()(view: HowYouFindSoftwareView,
                                              pageAnswersService: PageAnswersService,
-                                             appConfig: AppConfig,
                                              identify: SessionIdentifierAction)
                                             (implicit ec: ExecutionContext,
-                                             mcc: MessagesControllerComponents) extends BaseFrontendController {
+                                             mcc: MessagesControllerComponents,
+                                             messages: Messages) extends BaseFrontendController {
 
 
   def show(): Action[AnyContent] = identify.async { request =>
@@ -45,7 +46,7 @@ class HowYouFindSoftwareController @Inject()(view: HowYouFindSoftwareView,
       Ok(view(
         howYouFindSoftwareForm = HowYouFindSoftwareForm.form.fill(answer),
         postAction = routes.HowYouFindSoftwareController.submit(),
-        backUrl = appConfig.guidance
+        backUrl = messages("how-you-find-software.guidance-url")
       ))
     }
   }
@@ -58,7 +59,7 @@ class HowYouFindSoftwareController @Inject()(view: HowYouFindSoftwareView,
         Future.successful(BadRequest(view(
           howYouFindSoftwareForm = formWithErrors,
           postAction = routes.HowYouFindSoftwareController.submit(),
-          backUrl = appConfig.guidance
+          backUrl = messages("how-you-find-software.guidance-url")
         ))),
       journeyType =>
         for {
