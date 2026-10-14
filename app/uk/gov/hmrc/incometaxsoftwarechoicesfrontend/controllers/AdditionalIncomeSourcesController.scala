@@ -20,8 +20,6 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.actions.{RequireUserDataRefiner, SessionIdentifierAction}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.forms.AdditionalIncomeForm
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.Agent
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.AdditionalIncomeSourcesPage
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.PageAnswersService
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.AdditionalIncomeSourceView
@@ -41,7 +39,7 @@ class AdditionalIncomeSourcesController @Inject()(view: AdditionalIncomeSourceVi
     given Request[AnyContent] = request
 
     val pageAnswers = pageAnswersService.getPageAnswers(request.userFilters.answers, AdditionalIncomeSourcesPage)
-    val userType = getUserType(request.userType)
+    val userType = getUserTypeAsString(request.userType)
 
     Ok(view(
       AdditionalIncomeForm.form(userType).fill(pageAnswers),
@@ -56,7 +54,7 @@ class AdditionalIncomeSourcesController @Inject()(view: AdditionalIncomeSourceVi
   def submit(editMode: Boolean): Action[AnyContent] = (identify andThen requireData).async { request =>
     given Request[AnyContent] = request
 
-    val userType = getUserType(request.userType)
+    val userType = getUserTypeAsString(request.userType)
 
     AdditionalIncomeForm.form(userType).bindFromRequest().fold(
       formWithErrors =>
@@ -84,8 +82,5 @@ class AdditionalIncomeSourcesController @Inject()(view: AdditionalIncomeSourceVi
     if (editMode) routes.CheckYourAnswersController.show().url
     else routes.BusinessIncomeController.show().url
   }
-
-  private def getUserType(userType: Option[UserType]) = {
-    if (userType.contains(Agent)) "agent" else "individual"
-  }
+  
 }

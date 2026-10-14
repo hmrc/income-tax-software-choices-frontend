@@ -40,26 +40,31 @@ class BusinessIncomeController @Inject()(view: BusinessIncomeView,
     given Request[AnyContent] = request
 
     val pageAnswers = pageAnswersService.getPageAnswers(request.userFilters.answers, BusinessIncomePage)
+    val userType = getUserTypeAsString(request.userType)
 
     Ok(view(
-      businessIncomeForm = BusinessIncomeForm.form.fill(pageAnswers),
+      businessIncomeForm = BusinessIncomeForm.form(userType).fill(pageAnswers),
       postAction = routes.BusinessIncomeController.submit(editMode),
       backUrl = backUrl(editMode),
-      softwareName = getSoftwareName(request.product)
+      softwareName = getSoftwareName(request.product),
+      userTypeString = userType
     ))
   }
 
   def submit(editMode: Boolean): Action[AnyContent] = (identify andThen requireData).async { request =>
     given Request[AnyContent] = request
 
-    BusinessIncomeForm.form.bindFromRequest().fold(
+    val userType = getUserTypeAsString(request.userType)
+
+    BusinessIncomeForm.form(userType).bindFromRequest().fold(
       formWithErrors => {
         Future.successful(
           BadRequest(view(
             businessIncomeForm = formWithErrors,
             postAction = routes.BusinessIncomeController.submit(editMode),
             backUrl = backUrl(editMode),
-            softwareName = getSoftwareName(request.product)
+            softwareName = getSoftwareName(request.product),
+            userTypeString = userType
           ))
         )
       },
@@ -77,5 +82,4 @@ class BusinessIncomeController @Inject()(view: BusinessIncomeView,
   def backUrl(editMode: Boolean): String = {
     if (editMode) routes.CheckYourAnswersController.show().url else routes.UserTypeController.show().url
   }
-
 }

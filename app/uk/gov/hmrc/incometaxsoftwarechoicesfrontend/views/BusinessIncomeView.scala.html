@@ -32,15 +32,16 @@
         form: FormWithCSRF
 )(implicit appConfig: AppConfig)
 
-@(businessIncomeForm: Form[Seq[VendorFilter]], postAction: Call, backUrl: String, softwareName: Option[String])(implicit request: Request[_], messages: Messages)
+@(businessIncomeForm: Form[Seq[VendorFilter]], postAction: Call, backUrl: String, softwareName: Option[String], userTypeString: String)(implicit request: Request[_], messages: Messages)
 
-@mainTemplate(title = messages("business-income.title"), backLink = Some(backUrl), optForm = Some(businessIncomeForm)) {
+@mainTemplate(title = messages(s"business-income.heading.$userTypeString"), backLink = Some(backUrl), optForm = Some(businessIncomeForm)) {
 
     @captionHelper(softwareName)
 
-    <h1 class="govuk-heading-l">@messages("business-income.legend")</h1>
+    <h1 class="govuk-heading-l">@messages(s"business-income.heading.$userTypeString")</h1>
 
-    <p class ="govuk-body">@messages("business-income.para")</p>
+    <p class ="govuk-body">@messages(s"business-income.para1.$userTypeString")</p>
+    <p class ="govuk-body">@messages(s"business-income.para2.$userTypeString")</p>
 
 
     @form(action = postAction) {
@@ -48,7 +49,7 @@
         @govukCheckboxes(Checkboxes(
             fieldset = Some(Fieldset(
                 legend = Some(Legend(
-                    content = Text(messages("business-income.legend")),
+                    content = Text(messages(s"business-income.heading.$userTypeString")),
                     classes = "govuk-visually-hidden govuk-!-display-block",
                     isPageHeading = false,
                 ))

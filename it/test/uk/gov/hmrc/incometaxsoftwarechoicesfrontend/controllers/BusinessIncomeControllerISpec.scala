@@ -21,10 +21,11 @@ import play.api.http.Status.{BAD_REQUEST, OK, SEE_OTHER}
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.SessionId
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, DatabaseHelper}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareProduct, UserAnswers}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareProduct, UserAnswers, UserType}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.Recognised
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.SoleTraderOrLandlord
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.{OverseasProperty, SoleTrader, UkProperty}
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.{BusinessIncomePage, EnterSoftwareNamePage}
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.{BusinessIncomePage, EnterSoftwareNamePage, UserTypePage}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
 
 class BusinessIncomeControllerISpec extends ComponentSpecBase with BeforeAndAfterEach with DatabaseHelper {
@@ -43,29 +44,32 @@ class BusinessIncomeControllerISpec extends ComponentSpecBase with BeforeAndAfte
       }
     }
     "display the page" when {
-      "the business income sources has not been answered previously" in {
-        setupAnswers(SessionId, None)
+      "the business income sources has not been answered previously by an individual" in {
+        val userAnswers = UserAnswers()
+          .set(UserTypePage, SoleTraderOrLandlord).get
+        setupAnswers(SessionId, Some(userAnswers))
 
         val res = SoftwareChoicesFrontend.getBusinessIncome
 
         res should have(
           httpStatus(OK),
-          pageTitle(s"${messages("business-income.title")} - ${PageContentBase.title} - GOV.UK"),
+          pageTitle(s"${messages("business-income.heading.individual")} - ${PageContentBase.title} - GOV.UK"),
           checkboxSelected("businessIncome", None),
           checkboxSelected("businessIncome-2", None),
           checkboxSelected("businessIncome-3", None)
         )
       }
-      "the business income sources has been answered previously" in {
+      "the business income sources has been answered previously by an agent" in {
         val userAnswers = UserAnswers()
           .set(EnterSoftwareNamePage, RecognisedSoftwareProduct).get
           .set(BusinessIncomePage, Seq(SoleTrader, UkProperty, OverseasProperty)).get
+          .set(UserTypePage, UserType.Agent).get
         setupAnswers(SessionId, Some(userAnswers))
         val res = SoftwareChoicesFrontend.getBusinessIncome
 
         res should have(
           httpStatus(OK),
-          pageTitle(s"${messages("business-income.title")} - ${PageContentBase.title} - GOV.UK"),
+          pageTitle(s"${messages("business-income.heading.agent")} - ${PageContentBase.title} - GOV.UK"),
           checkboxSelected("businessIncome", Some(SoleTrader.key)),
           checkboxSelected("businessIncome-2", Some(UkProperty.key)),
           checkboxSelected("businessIncome-3", Some(OverseasProperty.key))
@@ -148,7 +152,7 @@ class BusinessIncomeControllerISpec extends ComponentSpecBase with BeforeAndAfte
 
         res should have(
           httpStatus(BAD_REQUEST),
-          pageTitle(s"Error: ${messages("business-income.title")} - ${PageContentBase.title} - GOV.UK"),
+          pageTitle(s"Error: ${messages("business-income.heading.individual")} - ${PageContentBase.title} - GOV.UK"),
         )
       }
     }
