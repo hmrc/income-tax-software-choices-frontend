@@ -51,9 +51,9 @@ class ProductDetailsController @Inject()(softwareChoicesService: SoftwareChoices
     } yield {
       (userFilters, vendorOpt) match {
         case (Some(userFilters), Some(softwareVendor)) if userIsInFindOrCheckJourney(userFilters.answers) =>
-          Ok(productDetailsView(softwareVendor, backLink(userFilters.answers, userFilters.finalFilters, softwareVendor), Some(userFilters.finalFilters), userType))
+          Ok(productDetailsView(softwareVendor, backLink(userFilters.answers, userFilters.finalFilters, softwareVendor), isMobile(request), Some(userFilters.finalFilters), userType))
         case (_ , Some(softwareVendor)) =>
-          Ok(productDetailsView(softwareVendor, routes.SearchSoftwareController.show().url))
+          Ok(productDetailsView(softwareVendor, routes.SearchSoftwareController.show().url, isMobile(request)))
         case _ =>
           NotFound(notFoundView(routes.ProductDetailsController.show(productId).url))
       }
@@ -87,7 +87,7 @@ class ProductDetailsController @Inject()(softwareChoicesService: SoftwareChoices
     }
   }
 
-  private def isMobile()(implicit request: SessionDataRequest[_]): Boolean = {
+  private def isMobile(request: Request[_]): Boolean = {
     val userAgent = request.headers.get("User-Agent").fold("")(_.toLowerCase)
     val mobilePreference = request.headers.get("sec-ch-ua-mobile").fold(false)(_.contains("1"))
 
