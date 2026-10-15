@@ -208,3 +208,19 @@ legend.govuk-hidden {
     background-color: govuk-colour("light-grey");
     padding: $govuk-gutter-half;
 }
+
+.govuk-\!-width-two-thirds-override {
+    width: 50%
+}
+.govuk-\!-width-one-third-override {
+    width: 50%
+}
+
+@include govuk-media-query($from: tablet) {
+  .govuk-\!-width-two-thirds-override {
+    width: 66.666667%
+  }
+  .govuk-\!-width-one-third-override {
+    width: 33.333333%
+  }
+}

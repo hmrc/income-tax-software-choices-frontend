@@ -37,7 +37,7 @@
         govukTag: GovukTag,
         gettingStartedTemplate: GettingStartedTemplate
 )(implicit appConfig: AppConfig)
-@(softwareVendor: SoftwareVendorModel, backLink: String, isMobile: Boolean, finalFilters: Option[Seq[VendorFilter]] = None, userType: Option[UserType] = None)(implicit request: Request[_], messages: Messages)
+@(softwareVendor: SoftwareVendorModel, backLink: String, finalFilters: Option[Seq[VendorFilter]] = None, userType: Option[UserType] = None)(implicit request: Request[_], messages: Messages)
 
 @mainTemplate(title = softwareVendor.name, backLink = Some(backLink), isFullWidth = true) {
 
@@ -189,51 +189,46 @@
 }
 
 @featureTable(filterGroup: List[VendorFilter], tableHeaderKey: String, displayIntent: Boolean) = {
-    @defining(isMobile match {
-        case true   => ("govuk-!-width-one-half", "govuk-!-width-one-half")
-        case false  => ("govuk-!-width-two-thirds", "govuk-!-width-one-third")
-    }) { case (filterWidth, statusWidth) =>
-        <div class="table-scroll-wrapper">
-            @govukTable(Table(
-                rows = filterGroup map { filter =>
-                    Seq(
-                        TableRow(
-                            content = Text(messages(s"product-details.$tableHeaderKey.${filter.key}")),
-                            classes = s"$filterWidth govuk-!-font-weight-regular"
-                        ),
-                        TableRow(
-                            content = (softwareVendor.getFeatureStatus(filter), displayIntent) match {
-                                case (Available, _) => HtmlContent(govukTag(Tag(
-                                    content = Text(messages("search-software.vendor-detail.eoy-tax-return.ready")),
-                                    classes = "govuk-tag--green govuk-!-display-inline"
-                                )))
-                                case (Intended, true) => HtmlContent(govukTag(Tag(
-                                    content = Text(messages("search-software.vendor-detail.eoy-tax-return.development")),
-                                    classes = "govuk-tag--yellow govuk-!-display-inline"
-                                )))
-                                case _ => HtmlContent(govukTag(Tag(
-                                    content = Text(messages("search-software.vendor-detail.eoy-tax-return.not-included")),
-                                    classes = "govuk-tag--red govuk-!-display-inline"
-                                )))
-                            },
-                            classes = statusWidth
-                        )
-                    )
-                },
-                head = Some(Seq(
-                    HeadCell(
-                        content = Text(messages(s"product-details.$tableHeaderKey.heading"))
+    <div class="table-scroll-wrapper">
+        @govukTable(Table(
+            rows = filterGroup map { filter =>
+                Seq(
+                    TableRow(
+                        content = Text(messages(s"product-details.$tableHeaderKey.${filter.key}")),
+                        classes = "govuk-!-width-two-thirds-override govuk-!-font-weight-regular"
                     ),
-                    HeadCell(
-                        content = Text(messages("product-details.status.heading"))
+                    TableRow(
+                        content = (softwareVendor.getFeatureStatus(filter), displayIntent) match {
+                            case (Available, _) => HtmlContent(govukTag(Tag(
+                                content = Text(messages("search-software.vendor-detail.eoy-tax-return.ready")),
+                                classes = "govuk-tag--green govuk-!-display-inline"
+                            )))
+                            case (Intended, true) => HtmlContent(govukTag(Tag(
+                                content = Text(messages("search-software.vendor-detail.eoy-tax-return.development")),
+                                classes = "govuk-tag--yellow govuk-!-display-inline"
+                            )))
+                            case _ => HtmlContent(govukTag(Tag(
+                                content = Text(messages("search-software.vendor-detail.eoy-tax-return.not-included")),
+                                classes = "govuk-tag--red govuk-!-display-inline"
+                            )))
+                        },
+                        classes = "govuk-!-width-one-third-override"
                     )
-                )),
-                firstCellIsHeader = true,
-                caption = Some(messages(s"product-details.$tableHeaderKey.heading")),
-                captionClasses = "govuk-visually-hidden"
-            ))
-        </div>
-    }
+                )
+            },
+            head = Some(Seq(
+                HeadCell(
+                    content = Text(messages(s"product-details.$tableHeaderKey.heading"))
+                ),
+                HeadCell(
+                    content = Text(messages("product-details.status.heading"))
+                )
+            )),
+            firstCellIsHeader = true,
+            caption = Some(messages(s"product-details.$tableHeaderKey.heading")),
+            captionClasses = "govuk-visually-hidden"
+        ))
+    </div>
 }
 
 @swSpecRow(filtersGroup: List[VendorFilter], sectionKey: String) = @{
