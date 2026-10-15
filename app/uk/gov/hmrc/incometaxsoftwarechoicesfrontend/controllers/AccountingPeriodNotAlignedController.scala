@@ -34,7 +34,8 @@ class AccountingPeriodNotAlignedController @Inject()(view: AccountingPeriodNotAl
     Ok(view(
       postAction = routes.AccountingPeriodNotAlignedController.submit(editMode),
       backLink = routes.AccountingPeriodController.show(editMode).url,
-      softwareName = getSoftwareName(request.product)
+      softwareName = getSoftwareName(request.product),
+      userTypeString = getUserTypeAsString(request.userType)
     ))
   }
 
