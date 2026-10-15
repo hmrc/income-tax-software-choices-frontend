@@ -199,7 +199,7 @@
                     Seq(
                         TableRow(
                             content = Text(messages(s"product-details.$tableHeaderKey.${filter.key}")),
-                            classes = "$filterWidth govuk-!-font-weight-regular"
+                            classes = s"$filterWidth govuk-!-font-weight-regular"
                         ),
                         TableRow(
                             content = (softwareVendor.getFeatureStatus(filter), displayIntent) match {
