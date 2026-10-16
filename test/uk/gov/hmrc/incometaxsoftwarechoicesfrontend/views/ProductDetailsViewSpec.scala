@@ -66,8 +66,17 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
       table.selectHead(s"tbody > tr:nth-child($row) > td:nth-child(2)").text shouldBe status
     }
 
-    def thereAreNoRows(table: Element): Assertion = {
-      assert(table.select("tbody tr").isEmpty)
+    def checkColumnWidthClasses(table: Element, firstColumnClass: String, secondColumnClass: String): Assertion = {
+      table.selectHead(s"tbody > tr:nth-child(1) > th:nth-child(1)").classNames() should contain(firstColumnClass)
+      table.selectHead(s"tbody > tr:nth-child(1) > td:nth-child(2)").classNames() should contain(secondColumnClass)
+    }
+
+    def checkColumnWidthClassesStatusMeaningsTable(table: Element): Assertion = {
+      checkColumnWidthClasses(table, "govuk-!-width-one-third-override", "govuk-!-width-two-thirds-override")
+    }
+
+    def checkColumnWidthClassesFeatureStatusTable(table: Element): Assertion = {
+      checkColumnWidthClasses(table, "govuk-!-width-two-thirds-override", "govuk-!-width-one-third-override")
     }
 
     "in static view and the vendor has everything ready now" which {
@@ -109,6 +118,12 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
       }
 
       "display all tables with correct details" which {
+        "use the correct classes for custom column widths" in {
+          checkColumnWidthClassesStatusMeaningsTable(table(1))
+          for (table <- Seq(table(2), table(3), table(4))) {
+            checkColumnWidthClassesFeatureStatusTable(table)
+          }
+        }
         "has the correct table headings" in {
           checkTableHeader(table(1), featureStatusTitle, meaningTitle)
           checkTableHeader(table(2), featuresProvidedTitle, statusTitle)
@@ -193,6 +208,12 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
       }
 
       "display all tables with correct details" which {
+        "use the correct classes for custom column widths" in {
+          checkColumnWidthClassesStatusMeaningsTable(table(1))
+          for (table <- Seq(table(2), table(3), table(4))) {
+            checkColumnWidthClassesFeatureStatusTable(table)
+          }
+        }
 
         "has the correct table headings" in {
           checkTableHeader(table(1), featureStatusTitle, meaningTitle)
@@ -282,6 +303,12 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
       }
 
       "display all tables with correct details" which {
+        "use the correct classes for custom column widths" in {
+          checkColumnWidthClassesStatusMeaningsTable(table(1))
+          for (table <- Seq(table(2), table(3), table(4))) {
+            checkColumnWidthClassesFeatureStatusTable(table)
+          }
+        }
 
         "has the correct table headings" in {
           checkTableHeader(table(1), featureStatusTitle, meaningTitle)
@@ -376,6 +403,12 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
       }
 
       "display all tables with correct details" which {
+        "use the correct classes for custom column widths" in {
+          checkColumnWidthClassesStatusMeaningsTable(table(1))
+          for (table <- Seq(table(2), table(3), table(4))) {
+            checkColumnWidthClassesFeatureStatusTable(table)
+          }
+        }
         "has the correct table headings" in {
           checkTableHeader(table(1), featureStatusTitle, meaningTitle)
           checkTableHeader(table(2), featuresProvidedTitle, statusTitle)
@@ -431,20 +464,23 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
           detailsElement.select("summary").text() shouldBe otherFeaturesDropDown
         }
 
-        def detailsElementTable(index: Int): Element = detailsElement.getTable(index)
+        val detailsElementTable = detailsElement.getTable(1)
 
         "have an other software features heading" in {
           detailsElement.selectNth("h2", 1).text shouldBe softwareFeaturesHeadingOther
         }
 
         "display all tables with correct details" which {
+          "use the correct classes for custom column widths" in {
+            checkColumnWidthClassesFeatureStatusTable(detailsElementTable)
+          }
           "has the correct table headings" in {
-            checkTableHeader(detailsElementTable(1), featuresProvidedTitle, statusTitle)
+            checkTableHeader(detailsElementTable, featuresProvidedTitle, statusTitle)
           }
 
           "displays all the rows" in {
-            checkRow(detailsElementTable(1), 1, agent, readyNow)
-            checkRow(detailsElementTable(1), 2, standardUpdatePeriods, readyNow)
+            checkRow(detailsElementTable, 1, agent, readyNow)
+            checkRow(detailsElementTable, 2, standardUpdatePeriods, readyNow)
           }
         }
       }
@@ -488,6 +524,12 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
       }
 
       "display all tables with correct details" which {
+        "use the correct classes for custom column widths" in {
+          checkColumnWidthClassesStatusMeaningsTable(table(1))
+          for (table <- Seq(table(2), table(3))) {
+            checkColumnWidthClassesFeatureStatusTable(table)
+          }
+        }
         "has the correct table headings" in {
           checkTableHeader(table(1), featureStatusTitle, meaningTitle)
           checkTableHeader(table(2), featuresProvidedTitle, statusTitle)
@@ -526,6 +568,11 @@ class ProductDetailsViewSpec extends ViewSpec with BeforeAndAfterEach {
         }
 
         "display all tables with correct details" which {
+          "use the correct classes for custom column widths" in {
+            for (table <- Seq(detailsElementTable(1), detailsElementTable(2), detailsElementTable(3))) {
+              checkColumnWidthClassesFeatureStatusTable(table)
+            }
+          }
           "has the correct table headings" in {
             checkTableHeader(detailsElementTable(1), featuresProvidedTitle, statusTitle)
             checkTableHeader(detailsElementTable(2), businessIncomeTitle, statusTitle)
