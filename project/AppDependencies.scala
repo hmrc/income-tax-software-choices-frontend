@@ -21,8 +21,6 @@ object AppDependencies {
     "org.jsoup" % "jsoup" % "1.21.1" % "test"
   )
 
-  val itTest: Seq[ModuleID] = Seq(
-    "com.microsoft.playwright" % "playwright" % "1.56.0" % "test"
-  )
+  val itTest: Seq[ModuleID] = Seq()
 
 }
