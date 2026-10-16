@@ -161,12 +161,14 @@ This file is for the vendor management team to quickly reference the product det
 | [TaxDash](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3363)                                       |
 | [TaxHeaven](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3276)                                     |
 | [TaxNav](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3180)                                        |
+| [Taxpad](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3650)                                        |
 | [Taxtool for Income Tax](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3533)                        |
 | [TaxUpdates](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3303)                                    |
 | [Taxzap](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3351)                                        |
 | [TELUS Farm Accounting](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3500)                         |
 | [Tide Accounting](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3306)                               |
 | [Tofflo](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3578)                                        |
+| [Trade PA](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3653)                                      |
 | [TradeKit](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3629)                                      |
 | [VANTIX](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3491)                                        |
 | [Varro](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3479)                                         |
