@@ -66,7 +66,6 @@ This service is under development.  Please keep this section up to date.
 
 * Run unit tests: `sbt clean test`
 * Run integration tests: `sbt clean it:test`
-* Browser-based layout integration tests require Playwright's Chromium browser. Install it once with `sbt "it/Test/runMain com.microsoft.playwright.CLI install chromium"` before running integration tests.
 * Run performance tests: **to be provided** in the repo [income-tax-subscription-performance-tests](https://github.com/hmrc/income-tax-subscription-performance-tests)
 * Run acceptance tests: **to be provided** in the repo [income-tax-subscription-acceptance-tests](https://github.com/hmrc/income-tax-subscription-acceptance-tests)
 
