@@ -25,6 +25,7 @@
 @import uk.gov.hmrc.webchat.client.WebChatClient
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitch.DigitalAssistant
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.config.featureswitch.FeatureSwitching
+@import play.twirl.api.HtmlFormat
 
 @this(
     hmrcStandardPage: HmrcStandardPage,
@@ -101,7 +102,12 @@
     @hmrcReportTechnicalIssueHelper()
 
     @if(featureSwitching.isEnabled(DigitalAssistant) && showDigitalAssistant) {
-        @digitalAssistant
+        @request match {
+            case r: Request[_] => {
+                @digitalAssistant(r)
+            }
+            case _ => {}
+        }
     }
 }
 
@@ -120,7 +126,8 @@
     )
 }
 
-@digitalAssistant = {
-    @{webChatClient.loadRequiredElements()(request.asInstanceOf[Request[AnyContent]])}
-    @{webChatClient.loadHMRCChatSkinElement("popup", "HMRC_CIAPI_Anchored_1")(request.asInstanceOf[Request[AnyContent]])}
+
+@digitalAssistant(r: Request[_]) = {
+    @webChatClient.loadRequiredElements()(r)
+    @webChatClient.loadHMRCChatSkinElement("popup", "HMRC_CIAPI_Anchored_1")(r)
 }

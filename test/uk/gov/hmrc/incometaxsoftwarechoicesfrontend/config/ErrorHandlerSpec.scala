@@ -23,6 +23,8 @@ import play.api.Application
 import play.api.http.HeaderNames.CACHE_CONTROL
 import play.api.http.Status.{INTERNAL_SERVER_ERROR, NOT_FOUND}
 import play.api.inject.guice.GuiceApplicationBuilder
+import play.api.libs.typedmap.TypedMap
+import play.api.mvc.{Headers, RequestHeader}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import uk.gov.hmrc.http.NotFoundException
@@ -35,11 +37,20 @@ class ErrorHandlerSpec extends AnyWordSpec
     new GuiceApplicationBuilder()
       .configure(
         "metrics.jvm" -> false,
-        "metrics.enabled" -> false
+        "metrics.enabled" -> false,
+        "feature-switch.digital-assistant" -> true
       )
       .build()
 
   private val fakeRequest = FakeRequest("GET", "/")
+  private val requestHeaderOnly: RequestHeader = new RequestHeader {
+    override def connection = fakeRequest.connection
+    override def method: String = fakeRequest.method
+    override def target = fakeRequest.target
+    override def version: String = fakeRequest.version
+    override def headers: Headers = fakeRequest.headers
+    override def attrs: TypedMap = TypedMap.empty
+  }
 
   private val handler = app.injector.instanceOf[ErrorHandler]
 
@@ -47,6 +58,14 @@ class ErrorHandlerSpec extends AnyWordSpec
     "render HTML" in {
       val html = await(handler.standardErrorTemplate("title", "heading", "message")(fakeRequest))
       html.contentType shouldBe "text/html"
+    }
+
+    "render HTML when the digital assistant is enabled and only a RequestHeader is available" in {
+      val html = await(handler.standardErrorTemplate("title", "heading", "message")(requestHeaderOnly))
+
+      html.contentType shouldBe "text/html"
+      html.body.contains("heading") shouldBe true
+      html.body.contains("message") shouldBe true
     }
   }
   
