@@ -182,16 +182,16 @@ trait ComponentSpecBase extends AnyWordSpec
 
     def getEnterSoftwareName(editMode: Boolean = false): WSResponse = {
       val url = editMode match {
-        case true => "/check-software?editMode=true"
-        case false => "/check-software"
+        case true => "/enter-software-name?editMode=true"
+        case false => "/enter-software-name"
       }
       get(url)
     }
 
     def postEnterSoftwareName(pageAnswer: Option[Int], editMode: Boolean = false): WSResponse = {
       val url = editMode match {
-        case true => "/check-software?editMode=true"
-        case false => "/check-software"
+        case true => "/enter-software-name?editMode=true"
+        case false => "/enter-software-name"
       }
       post(url)(
         pageAnswer.fold(Map.empty[String, Seq[String]])(
@@ -202,8 +202,8 @@ trait ComponentSpecBase extends AnyWordSpec
 
     def clearEnterSoftwareName(editMode: Boolean = false): WSResponse = {
       val url = editMode match {
-        case true => "/check-software/clear?editMode=true"
-        case false => "/check-software/clear"
+        case true => "/enter-software-name/clear?editMode=true"
+        case false => "/enter-software-name/clear"
       }
       get(url)
     }
