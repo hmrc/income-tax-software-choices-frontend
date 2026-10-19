@@ -56,7 +56,11 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
 
         res should have(httpStatus(OK))
 
-        testView(res)(None, false, Seq(false, false, false))
+        testView(res)(
+          softwareNameCaption = None,
+          isAgent = false,
+          checkedStatuses = Seq(false, false, false)
+        )
       }
       "the accounting period question has been answered previously" which {
         "was the 6th April to 5th April option for an individual user in the check journey" in {
@@ -70,7 +74,11 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
 
           res should have(httpStatus(OK))
 
-          testView(res)(Some(RecognisedSoftwareProduct.name), false, Seq(true, false, false))
+          testView(res)(
+            softwareNameCaption = Some(RecognisedSoftwareProduct.name),
+            isAgent = false,
+            checkedStatuses = Seq(true, false, false)
+          )
         }
         "was the 1st April to 31st March option for an agent user in the check journey" in {
           val userAnswers = UserAnswers()
@@ -83,7 +91,11 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
 
           res should have(httpStatus(OK))
 
-          testView(res)(Some(RecognisedSoftwareProduct.name), true, Seq(false, true, false))
+          testView(res)(
+            softwareNameCaption = Some(RecognisedSoftwareProduct.name),
+            isAgent = true,
+            checkedStatuses = Seq(false, true, false)
+          )
         }
         "was the other accounting period option for an individual user in the find journey" in {
           val userAnswers = UserAnswers()
@@ -95,7 +107,11 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
 
           res should have(httpStatus(OK))
 
-          testView(res)(None, false, Seq(false, false, true))
+          testView(res)(
+            softwareNameCaption = None,
+            isAgent = false,
+            checkedStatuses = Seq(false, false, true)
+          )
         }
         "were multiple options for an agent user in the find journey" in {
           val userAnswers = UserAnswers()
@@ -107,7 +123,11 @@ class AccountingPeriodControllerISpec extends ComponentSpecBase with BeforeAndAf
 
           res should have(httpStatus(OK))
 
-          testView(res)(None, true, Seq(true, true, false))
+          testView(res)(
+            softwareNameCaption = None,
+            isAgent = true,
+            checkedStatuses = Seq(true, true, false)
+          )
         }
       }
     }
