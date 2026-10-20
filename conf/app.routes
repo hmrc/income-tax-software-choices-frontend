@@ -41,9 +41,9 @@ POST        /no-software-matches                  uk.gov.hmrc.incometaxsoftwarec
 GET         /accounting-period-not-aligned          uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.AccountingPeriodNotAlignedController.show(editMode: Boolean ?= false)
 POST        /accounting-period-not-aligned          uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.AccountingPeriodNotAlignedController.submit(editMode: Boolean ?= false)
 
-GET         /enter-software-name                    uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.EnterSoftwareNameController.show(editMode: Boolean ?= false)
-POST        /enter-software-name                    uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.EnterSoftwareNameController.submit(editMode: Boolean ?= false)
-GET         /enter-software-name/clear              uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.EnterSoftwareNameController.clearSelection(editMode: Boolean ?= false)
+GET         /check-software                         uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.EnterSoftwareNameController.show(editMode: Boolean ?= false)
+POST        /check-software                         uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.EnterSoftwareNameController.submit(editMode: Boolean ?= false)
+GET         /check-software/clear                   uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.EnterSoftwareNameController.clearSelection(editMode: Boolean ?= false)
 
 GET         /how-to-find-software                   uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.HowYouFindSoftwareController.show()
 POST        /how-to-find-software                   uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.HowYouFindSoftwareController.submit()
