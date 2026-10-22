@@ -25,13 +25,13 @@ import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter
 object OtherItemsForm {
   val formKey: String = "otherItems"
   val noneKey: String = "none"
-  val formEmptyErrorKey: String = "other-items.error.non-empty"
+  val formEmptyErrorKeyBase: String = "other-items.error.non-empty"
   val formInvalidSelectionErrorKey: String = "other-items.error.invalid-selection"
 
-  val form: Form[Seq[VendorFilter]] = Form(
+  def form(userTypeString: String): Form[Seq[VendorFilter]] = Form(
     single(
       formKey -> seq(text)
-        .verifying(nonEmptySeqOrNone(noneKey, formEmptyErrorKey, formInvalidSelectionErrorKey))
+        .verifying(nonEmptySeqOrNone(noneKey, s"$formEmptyErrorKeyBase.$userTypeString", formInvalidSelectionErrorKey))
         .transform[Seq[VendorFilter]](toVendorFilters, fromVendorFilters)
     )
   )
