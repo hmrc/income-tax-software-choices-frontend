@@ -71,7 +71,7 @@ This service is under development.  Please keep this section up to date.
 
 # Vendor Data
 
-The vendor data capture process and the template are document [here](docs/Vendors.md)
+The vendor data capture process and the template are document [here](scripts/vendors/Vendors.md)
 
 # Persistence
 
