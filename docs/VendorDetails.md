@@ -18,6 +18,7 @@ This file is for the vendor management team to quickly reference the product det
 | [AbraTax MTD for Income Tax](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3231)                    |
 | [Abridge (MTD for Excel/Sheets)](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3381)                |
 | [Absolute Excel Income Tax Filer](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3126)               |
+| [AccLedger](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3656)                                     |
 | [Accounting from Sage](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3171)                          |
 | [AccountsDesk](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3569)                                  |
 | [AccountsPortal](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3446)                                |
@@ -121,6 +122,8 @@ This file is for the vendor management team to quickly reference the product det
 | [My Business Finances, powered by Sage](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3563)         |
 | [My Job Goblin](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3602)                                 |
 | [My Tax Digital (Free)](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3255)                         |
+| [My-Therapy-Suite](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3659)                              |
+| [myFilerQ - Income Tax MTD](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3665)                     |
 | [MyPetSitter](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3644)                                   |
 | [MYT](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3165)                                           |
 | [Neevii](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3285)                                        |
@@ -157,6 +160,7 @@ This file is for the vendor management team to quickly reference the product det
 | [suiteSheets](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3503)                                   |
 | [SumUp Accounting](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3390)                              |
 | [Tax Mouse](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3384)                                     |
+| [TaxBridge by Filr](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3662)                             |
 | [TaxBridge UK MTD by Amelia GB](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3464)                 |
 | [TaxDash](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3363)                                       |
 | [TaxHeaven](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3276)                                     |
