@@ -1,17 +1,17 @@
 import json, sys, os, glob, openpyxl, re, markdown
 import pandas as pd
 from io import StringIO
+import requests
 
 VENDORS_JSON = "conf/software-vendors.json"
-INBOX_DIR    = "scripts/vendors"
+INBOX_DIR    = "scripts/vendors/vendor_data"
 FIELD_ORDER  = ["productId", "name", "phone", "email", "website", "accessibilityStatementLink", "filters"]
-VENDOR_DETAILS = "docs/VendorDetails.md"
+VENDOR_DETAILS = "scripts/vendors/vendor_data/VendorDetails.md"
 VENDOR_DETAILS_PREAMBLE = """# Vendor Details
 
 This file is for the vendor management team to quickly reference the product details of each of the vendors in the service. It should not be used for any other purpose.
 
 """
-
 
 def ordered_vendor(vendor, product_id):
     result = {"productId": product_id}
@@ -22,7 +22,6 @@ def ordered_vendor(vendor, product_id):
         if key not in result and key != "productId":
             result[key] = vendor[key]
     return result
-
 
 def trim_and_report(vendor):
     trimmed = []
@@ -38,20 +37,18 @@ def trim_and_report(vendor):
             vendor[key] = val.strip()
     return trimmed
 
-
 def validate_and_fix_website(vendor):
     website = vendor.get("website", "")
     if website and website.startswith("https://"):
-        return True
+        return website
     elif website and website.startswith("http://"):
         clean = website[len("http"):]
         fixed = "https" + clean.strip()
         print(f"  WEBSITE FIXED  : '{website}' → '{fixed}'")
         vendor["website"] = fixed
-        return True
+        return fixed
     else:
         return False
-
 
 def print_diff(old, new):
     changes = []
@@ -74,7 +71,6 @@ def print_diff(old, new):
             else:
                 changes.append((key, str(old_val), str(new_val)))
     return changes
-
 
 def print_table(changes):
     col1 = max(len("Field"),  max(len(c[0]) for c in changes))
@@ -124,7 +120,6 @@ def update_vendor_markdown(name, id):
     with open(VENDOR_DETAILS, "w") as f:
         f.write(VENDOR_DETAILS_PREAMBLE)
         f.write(df.to_markdown(index=False))
-
 
 def process_file(excel_path, data):
     vendors = data["vendors"]
@@ -213,6 +208,7 @@ def process_file(excel_path, data):
         print(f"  name       : {name}")
         os.remove(excel_path)
         update_vendor_markdown(name, new_id)
+        website_reachable(website, name)
     else:
         old_vendor = vendors[match]
         pid = old_vendor["productId"]
@@ -227,6 +223,7 @@ def process_file(excel_path, data):
             print(f"  Differences found:")
             print_table(changes)
             os.remove(excel_path)
+            website_reachable(website, name)
         else:
             status = "skipped"
             print(f"  ACTION     : No differences found — skipped")
@@ -236,6 +233,15 @@ def process_file(excel_path, data):
     data["vendors"] = vendors
     return data, status
 
+def website_reachable(website, website_name, timeout=5):
+    try:
+        res = requests.get(website, timeout=timeout)
+        if not res.ok:
+            websites_to_check.append(f"{website_name}: {website}")
+    except requests.RequestException:
+        websites_to_check.append(f"{website_name}: {website}")
+
+websites_to_check = []
 total_inserted = 0
 total_updated  = 0
 total_skipped  = 0
@@ -307,3 +313,9 @@ print("=" * 60)
 print("Files relating to any inserted or updated vendor records have been deleted from scripts/vendors.")
 print("Any files that were skipped or that caused errors have been maintained for analysis.")
 print("=" * 60)
+
+if (len(websites_to_check) > 0):
+    print("Check these sites exist")
+    for website in websites_to_check:
+        print(website)
+    print("=" * 60)
