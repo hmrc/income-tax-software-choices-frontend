@@ -154,6 +154,7 @@ This file is for the vendor management team to quickly reference the product det
 | [SimplifyMTD](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3432)                                   |
 | [SliQ Invoicing](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3300)                                |
 | [SmartPropertyManager.com](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3267)                      |
+| [SoleTax](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3668)                                       |
 | [Starling](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3243)                                      |
 | [Streem Connect](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3461)                                |
 | [StrideBooks](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3291)                                   |
@@ -177,6 +178,7 @@ This file is for the vendor management team to quickly reference the product det
 | [VANTIX](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3491)                                        |
 | [Varro](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3479)                                         |
 | [VitalTax](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3246)                                      |
+| [VoxaMTD](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3671)                                       |
 | [VT Software](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3330)                                   |
 | [WaterLily MTD Bridge](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3443)                          |
 | [Xero](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3186)                                          |
