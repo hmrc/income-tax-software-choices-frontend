@@ -69,6 +69,7 @@ This file is for the vendor management team to quickly reference the product det
 | [DIY Tax](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3345)                                       |
 | [DoneSE](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3551)                                        |
 | [DoneTax](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3527)                                       |
+| [DoneTax+](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3674)                                      |
 | [Duly Filed](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3438)                                    |
 | [EasyBooks](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3512)                                     |
 | [EasyInvoice](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3342)                                   |
@@ -77,6 +78,7 @@ This file is for the vendor management team to quickly reference the product det
 | [Filed Quarterly](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3515)                               |
 | [FileThat!](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3560)                                     |
 | [Finaap MTD Income Tax](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3423)                         |
+| [Finantr](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3677)                                       |
 | [Five Eyes Financial Intelligence](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3626)              |
 | [flonancial](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3399)                                    |
 | [Forbes MTD](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3189)                                    |
@@ -88,6 +90,7 @@ This file is for the vendor management team to quickly reference the product det
 | [HyperTax](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3542)                                      |
 | [iFiler](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3581)                                        |
 | [Invoice Guru](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3312)                                  |
+| [InvoiceFree.uk](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3680)                                |
 | [IQ Books](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3593)                                      |
 | [IRIS Accountancy Suite](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3159)                        |
 | [IRIS Elements](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3162)                                 |
@@ -131,6 +134,7 @@ This file is for the vendor management team to quickly reference the product det
 | [NJT Tax Return Manager](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3455)                        |
 | [Nomi](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3201)                                          |
 | [Otis Tax](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3228)                                      |
+| [PA for Trades](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3683)                                 |
 | [Pandle](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3402)                                        |
 | [PaTMa Property Manager](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3219)                        |
 | [Powered Now ](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3366)                                  |
@@ -154,6 +158,7 @@ This file is for the vendor management team to quickly reference the product det
 | [SimplifyMTD](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3432)                                   |
 | [SliQ Invoicing](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3300)                                |
 | [SmartPropertyManager.com](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3267)                      |
+| [Solar Accounts Online](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3686)                         |
 | [SoleTax](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3668)                                       |
 | [Starling](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3243)                                      |
 | [Streem Connect](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3461)                                |
@@ -167,13 +172,13 @@ This file is for the vendor management team to quickly reference the product det
 | [TaxHeaven](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3276)                                     |
 | [TaxNav](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3180)                                        |
 | [Taxpad](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3650)                                        |
+| [TaxPig](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3689)                                        |
 | [Taxtool for Income Tax](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3533)                        |
 | [TaxUpdates](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3303)                                    |
 | [Taxzap](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3351)                                        |
 | [TELUS Farm Accounting](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3500)                         |
 | [Tide Accounting](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3306)                               |
 | [Tofflo](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3578)                                        |
-| [Trade PA](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3653)                                      |
 | [TradeKit](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3629)                                      |
 | [VANTIX](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3491)                                        |
 | [Varro](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3479)                                         |
