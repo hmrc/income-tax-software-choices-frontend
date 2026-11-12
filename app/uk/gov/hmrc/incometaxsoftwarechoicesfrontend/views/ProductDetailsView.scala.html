@@ -168,7 +168,7 @@
         @for(section <- Seq(
             ProductDetailsSectionInfo(Some("features.heading"), featuresProvidedGroup, "features-provided"),
             ProductDetailsSectionInfo(Some("quarterly-updates.heading"), businessIncomeGroup, "business-income"),
-            ProductDetailsSectionInfo(Some("tax-return.heading"), nonMandatedIncomeGroup, "other-income", displayIntent = true),
+            ProductDetailsSectionInfo(Some("tax-return.heading"), adjustNonMandatedIncomeGroupForFeatureSwitches, "other-income", displayIntent = true),
         )) {
             @featureSection(section)
         }

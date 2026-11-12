@@ -91,19 +91,19 @@
            )
             ++ (if(featureSwitching.isEnabled(AveragingReliefFeature)) {
                     Seq(CheckboxItem(
-                        content = Text(messages("additional.income.source-averaging-relief")),
+                        content = Text(messages("additional-income-source.averaging-relief")),
                         value = AveragingRelief.key
                     ))
                 } else Seq.empty)
             ++ (if(featureSwitching.isEnabled(ResidenceAndRemittanceFeature)) {
                     Seq(CheckboxItem(
-                        content = Text(messages("additional.income.source-residence-and-remittance")),
+                        content = Text(messages("additional-income-source.residence-and-remittance")),
                         value = ResidenceAndRemittance.key
                     ))
                 } else Seq.empty)
             ++ (if(featureSwitching.isEnabled(TrustsAndEstatesFeature)) {
                     Seq(CheckboxItem(
-                        content = Text(messages("additional.income.source-trusts-and-estates")),
+                        content = Text(messages("additional-income-source.trusts-and-estates")),
                         value = TrustsAndEstates.key
                     ))
                 } else Seq.empty)

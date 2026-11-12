@@ -225,7 +225,7 @@ class AdditionalIncomeSourceViewSpec extends ViewSpec with BeforeAndAfterEach wi
           enable(ResidenceAndRemittanceFeature)
           form.mustHaveCheckbox("fieldSet")(
             checkbox = 10,
-            legend = AdditionalIncomeSourcesPageContent.legend,
+            legend = AdditionalIncomeSourcesPageContent.headingIndividual,
             isHeading = false,
             isLegendHidden = true,
             name = "additionalIncome[]",
@@ -248,7 +248,7 @@ class AdditionalIncomeSourceViewSpec extends ViewSpec with BeforeAndAfterEach wi
         "has a checkbox for None" in {
           form.mustHaveCheckbox("fieldSet")(
             checkbox = 13,
-            legend = AdditionalIncomeSourcesPageContent.legend,
+            legend = AdditionalIncomeSourcesPageContent.headingIndividual,
             isHeading = false,
             isLegendHidden = true,
             name = "additionalIncome[]",
