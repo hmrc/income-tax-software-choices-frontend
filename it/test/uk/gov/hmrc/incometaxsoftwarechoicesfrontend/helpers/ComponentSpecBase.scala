@@ -152,9 +152,9 @@ trait ComponentSpecBase extends AnyWordSpec
     }
 
     def getChoosingSoftware: WSResponse = get("/choosing-software-from-your-results")
-    
+
     def postChoosingSoftware: WSResponse = post("/choosing-software-from-your-results")(Map.empty)
-    
+
     def getCheckYourAnswers: WSResponse = get("/check-answers")
 
     def postCheckYourAnswers(): WSResponse = post("/check-answers")(Map.empty)
@@ -176,9 +176,9 @@ trait ComponentSpecBase extends AnyWordSpec
       }
       get(url)
     }
-    
+
     def getHowYouFindSoftware(): WSResponse = get("/how-to-find-software")
-    
+
     def postHowYouFindSoftware(pageAnswer: Option[JourneyType]): WSResponse = {
       post("/how-to-find-software")(
         pageAnswer.fold(Map.empty[String, Seq[String]])(
@@ -216,11 +216,11 @@ trait ComponentSpecBase extends AnyWordSpec
     }
 
     def getFullyCompatible(): WSResponse = get("/fully-compatible")
-    
+
     def getPartiallyCompatible(): WSResponse = get("/partly-compatible")
 
     def getQuarterlyOnly(): WSResponse = get("/quarterly-updates-only")
-    
+
     def getNotCompatible(): WSResponse = get("/not-compatible")
 
     def healthcheck(): WSResponse =
@@ -247,6 +247,14 @@ trait ComponentSpecBase extends AnyWordSpec
         .url(s"$baseUrl$baseURI$path")
         .withFollowRedirects(false)
     }
+
+    def getAccountingPeriodNotAlignedWelsh: WSResponse =
+      buildClient("/accounting-period-not-aligned")
+        .withHttpHeaders(
+          HeaderNames.COOKIE -> s"${bakeSessionCookie()}; PLAY_LANG=cy"
+        )
+        .get()
+        .futureValue
   }
 
   implicit class CustomSelectors(element: Element) {

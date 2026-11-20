@@ -54,11 +54,14 @@ accounting-period-not-aligned.para-one.individual             = Nid yw’ch cyfn
 accounting-period-not-aligned.para-one.agent                  = Nid yw cyfnod cyfrifyddu eich cleient yn dod i ben ar 5 Ebrill na 31 Mawrth. Mae hyn yn golygu nad yw’n cyd-fynd â’r flwyddyn dreth, felly mae gan eich cleient gyfnod cyfrifyddu nad yw’n cyd-fynd â’r flwyddyn dreth.
 accounting-period-not-aligned.sub-heading.individual          = Rhoi gwybod am eich incwm i CThEF gyda chyfnod cyfrifyddu nad yw’n cyd-fynd â’r flwyddyn dreth
 accounting-period-not-aligned.sub-heading.agent               = Adrodd incwm i CThEF ar gyfer cyfnod cyfrifyddu nad yw’n cyd-fynd
-accounting-period-not-aligned.para-two.individual             = Ar ddiwedd y flwyddyn dreth, bydd angen i chi addasu’r ffigurau incwm sy’n ymddangos yn eich meddalwedd dewisol. Felly, bydd y cyfnod cyfrifyddu’n cyd-fynd â’r flwyddyn dreth cyn i chi roi gwybod am eich incwm o eiddo neu hunangyflogaeth i CThEF.
-accounting-period-not-aligned.para-two.agent                  = Ar ddiwedd y flwyddyn dreth, bydd angen i chi neu’ch cleient addasu’r ffigurau incwm a ddangosir yn y feddalwedd a ddewiswyd. Felly, bydd y cyfnod cyfrifyddu’n cyd-fynd â’r flwyddyn dreth cyn iddo roi gwybod am ei incwm o eiddo neu hunangyflogaeth i CThEF.
+accounting-period-not-aligned.para-two.individual             = Ar ddiwedd y flwyddyn dreth, bydd angen i chi {0}. Bydd gwneud hyn yn sicrhau eu bod yn cyd-fynd â’r flwyddyn dreth cyn i chi roi gwybod i CThEF am eich incwm o eiddo neu’ch incwm o hunangyflogaeth.
+accounting-period-not-aligned.para-two.link-text.individual   = addasu’r ffigurau incwm a ddangosir yn eich meddalwedd
+accounting-period-not-aligned.para-two.agent                  = Ar ddiwedd y flwyddyn dreth, bydd angen i chi neu’ch cleient {0}. Bydd gwneud hyn yn sicrhau eu bod yn cyd-fynd â’r flwyddyn dreth cyn i chi neu’ch cleient roi gwybod i CThEF am yr incwm o eiddo neu’r incwm o hunangyflogaeth.
+accounting-period-not-aligned.para-two.link-text.agent        = addasu’r ffigurau incwm a ddangosir yn y feddalwedd a ddewiswyd
 accounting-period-not-aligned.para-three                      = Bydd CThEF yn cyhoeddi arweiniad ar sut i wneud hyn maes o law.
 accounting-period-not-aligned.para-four.individual            = Gallwch barhau i ddewis eich meddalwedd.
 accounting-period-not-aligned.para-four.agent                 = Gallwch barhau i ddewis meddalwedd.
+accounting-period-not-aligned.para-two.link-href              = https://www.gov.uk/guidance/defnyddio-r-cynllun-troi-treth-yn-ddigidol-ar-gyfer-treth-incwm/addasu-eich-incwm-o-hunangyflogaeth-ac-eiddo
 
 # Business Income page
 business-income.heading.individual           = Pa un o’r ffynonellau incwm hyn y mae angen i chi eu cynnwys yn eich diweddariadau chwarterol?
