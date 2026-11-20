@@ -76,6 +76,7 @@ This file is for the vendor management team to quickly reference the product det
 | [Duly Filed](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3438)                                    |
 | [EasyBooks](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3512)                                     |
 | [EasyInvoice](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3342)                                   |
+| [EasyTax](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3725)                                       |
 | [EasyTaxer.com](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3554)                                 |
 | [Farmplan Business Manager](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3393)                     |
 | [Filed Quarterly](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3515)                               |
@@ -90,6 +91,7 @@ This file is for the vendor management team to quickly reference the product det
 | [GetGround](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3234)                                     |
 | [Graft](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3494)                                         |
 | [Hammock for landlords](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3156)                         |
+| [Harthing](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3728)                                      |
 | [HyperTax](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3542)                                      |
 | [iFiler](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3581)                                        |
 | [Invoice Guru](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3312)                                  |
@@ -145,6 +147,7 @@ This file is for the vendor management team to quickly reference the product det
 | [PA for Trades](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3683)                                 |
 | [Pandle](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3402)                                        |
 | [PaTMa Property Manager](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3219)                        |
+| [Plot Tax](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3731)                                      |
 | [PocketReceipt Accountant Dashboard](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3719)            |
 | [Powered Now ](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3366)                                  |
 | [Property Income eReturn](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3458)                       |
@@ -168,6 +171,7 @@ This file is for the vendor management team to quickly reference the product det
 | [SimplifyMTD](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3432)                                   |
 | [SliQ Invoicing](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3300)                                |
 | [SmartPropertyManager.com](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3267)                      |
+| [Snaptax File](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3734)                                  |
 | [Solar Accounts Online](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3686)                         |
 | [SoleTax](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3668)                                       |
 | [Starling](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3243)                                      |
@@ -179,6 +183,8 @@ This file is for the vendor management team to quickly reference the product det
 | [TaxBridge by Filr](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3662)                             |
 | [TaxBridge UK MTD by Amelia GB](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3464)                 |
 | [TaxDash](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3363)                                       |
+| [TaxEase UK](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3737)                                    |
+| [Taxfix](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3740)                                        |
 | [TaxHeaven](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3276)                                     |
 | [TaxNav](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3180)                                        |
 | [Taxpad](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3650)                                        |
