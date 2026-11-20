@@ -16,19 +16,18 @@
 
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers
 
+import org.jsoup.Jsoup
 import org.scalatest.BeforeAndAfterEach
 import play.api.http.Status.{OK, SEE_OTHER}
+import play.api.libs.ws.WSResponse
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.IntegrationTestConstants.SessionId
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareProduct, UserAnswers, UserType}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.helpers.{ComponentSpecBase, DatabaseHelper}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.SoftwareType.Recognised
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.UserType.SoleTraderOrLandlord
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareProduct, UserAnswers, UserType}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.pages.{EnterSoftwareNamePage, UserTypePage}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.PageContentBase
-import org.jsoup.Jsoup
-import org.jsoup.nodes.Element
-import play.api.libs.ws.WSResponse
 
 
 
@@ -164,24 +163,6 @@ class AccountingPeriodNotAlignedControllerISpec
 
     form.selectHead(".govuk-button").text() shouldBe continue
   }
-
-  private def testLanguageLink(response: WSResponse, expectedUrl: String): Unit = {
-    val document = Jsoup.parse(response.body)
-
-    val link = document.selectHead("a.govuk-link")
-
-    link.attr("href") shouldBe expectedUrl
-  }
-
-  private def testWelshLink(response: WSResponse)(userType: String): Unit = {
-    import AccountingPeriodNotAlignedViewContent.*
-
-    val document = Jsoup.parse(response.body)
-    val link = document.select("main p").get(1).select("a.govuk-link")
-
-    link.text() shouldBe welshLinkText(userType)
-    link.attr("href") shouldBe welshLinkUrl
-  }
 }
 
 private object AccountingPeriodNotAlignedViewContent {
@@ -198,8 +179,8 @@ private object AccountingPeriodNotAlignedViewContent {
   val paraOneIndividual = "Your accounting period does not end on 5 April or 31 March. This means it is not aligned with the tax year, so you have a non-aligned accounting period."
   val paraOneAgent = "Your client’s accounting period does not end on 5 April or 31 March. This means it is not aligned with the tax year, so they have a non-aligned accounting period."
 
-  val paraTwoIndividual = "At the end of the tax year, you’ll need to adjust the income figures shown in your chosen software (opens in new tab). This is so they align with the tax year before you report your property or self-employment income to HMRC."
-  val paraTwoAgent = "At the end of the tax year, you or your client will need to adjust the income figures shown in the chosen software (opens in new tab). This is so they align with the tax year before reporting property or self-employment income to HMRC."
+  val paraTwoIndividual = "At the end of the tax year, you’ll need to adjust the income figures shown in your software (opens in new tab). This is so they align with the tax year before you report your property or self-employment income to HMRC."
+  val paraTwoAgent = "At the end of the tax year, you or your client will need to adjust the income figures shown in the preferred software (opens in new tab). This is so they align with the tax year before reporting property or self-employment income to HMRC."
 
   val paraThree = "HMRC will publish guidance on how to do this in due course."
 
@@ -209,20 +190,11 @@ private object AccountingPeriodNotAlignedViewContent {
   val englishLinkUrl =
     "https://www.gov.uk/guidance/use-making-tax-digital-for-income-tax/adjust-your-self-employment-and-property-income"
 
-  val welshLinkUrl =
-    "https://www.gov.uk/guidance/defnyddio-r-cynllun-troi-treth-yn-ddigidol-ar-gyfer-treth-incwm/addasu-eich-incwm-o-hunangyflogaeth-ac-eiddo"
-
   val linkTextIndividual =
-    "adjust the income figures shown in your chosen software (opens in new tab)"
+    "adjust the income figures shown in your software (opens in new tab)"
 
   val linkTextAgent =
-    "adjust the income figures shown in the chosen software (opens in new tab)"
-
-  val welshLinkTextIndividual =
-    "addasu’r ffigurau incwm a ddangosir yn eich meddalwedd (yn agor tab newydd)"
-
-  val welshLinkTextAgent =
-    "addasu’r ffigurau incwm a ddangosir yn y feddalwedd a ddewiswyd (yn agor tab newydd)"
+    "adjust the income figures shown in the preferred software (opens in new tab)"
 
   val continue = "Continue"
 
@@ -246,7 +218,4 @@ private object AccountingPeriodNotAlignedViewContent {
 
   def linkText(userType: String): String =
     if (userType == "agent") linkTextAgent else linkTextIndividual
-
-  def welshLinkText(userType: String): String =
-    if (userType == "agent") welshLinkTextAgent else welshLinkTextIndividual
 }
