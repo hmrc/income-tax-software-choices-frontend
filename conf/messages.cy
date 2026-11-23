@@ -32,7 +32,7 @@ type-of-user.error                                                = Dewiswch a y
 
 ## Accounting period page
 accounting-period.heading                                         = Cyfnod cyfrifyddu
-accounting-period.para-one.individual                             = Os yw’ch cyfnod cyfrifyddu yn dod i ben ar 31 Mawrth, bydd angen i chi gael meddalwedd sy’n cefnogi {0}. Bydd hyn yn ei gwneud hi’n haws i chi gadw cofnodion.
+accounting-period.para-one.individual                             = Os yw’ch cyfnod cyfrifyddu rhwng 1 Ebrill a 31 Mawrth, bydd angen i chi gael meddalwedd sy’n cefnogi {0}. Bydd hyn yn ei gwneud hi’n haws i chi gadw cofnodion.
 accounting-period.para-one.agent                                  = Os yw cyfnod cyfrifyddu’ch cleient rhwng 1 Ebrill a 31 Mawrth, bydd angen i chi neu’ch cleient ddewis meddalwedd sy’n cefnogi {0}. Bydd hyn yn ei gwneud hi’n haws i chi gadw cofnodion.
 accounting-period.para-two.individual                             = Os byddwch yn bwriadu newid eich cyfnod cyfrifyddu, dylech gynnwys eich cyfnod cyfrifyddu presennol ac unrhyw gyfnod cyfrifyddu y byddwch yn bwriadu ei ddefnyddio yn y dyfodol.
 accounting-period.para-two.agent                                  = Os oes disgwyl i gyfnod cyfrifyddu’ch cleient newid, dylech gynnwys ei gyfnod cyfrifyddu presennol ac unrhyw gyfnod y gallai ei ddefnyddio yn y dyfodol.
@@ -247,7 +247,7 @@ product-details.business-income.sole-trader = Unig fasnachwr
 product-details.business-income.uk-property = Eiddo yn y DU
 product-details.business-income.overseas-property = Eiddo tramor
 
-product-details.tax-return.heading = Yr hyn sydd ei angen ar gyfer Ffurflenni Dreth
+product-details.tax-return.heading = Yr hyn sydd ei angen ar gyfer Ffurflenni Treth
 
 product-details.other-income.heading = Eitemau eraill a ffynonellau eraill o incwm
 product-details.other-income.construction-industry-scheme = Cynllun y Diwydiant Adeiladu
@@ -355,7 +355,7 @@ enter-software-name.error.empty = Nodwch enw’r feddalwedd a’i dewis o’r rh
 enter-software-name.software-not-listed = Nid yw’r feddalwedd hon wedi’i rhestru
 
 #Fully Compatible page
-fully-compatible.heading1 = Mae {0} yn cydweddu’n llwyr â Throi Treth yn Ddigidol ar gyfer Treth Incwm
+fully-compatible.heading1 = Mae {0} yn cydweddu’n llwyr â’r cynllun Troi Treth yn ddigidol ar gyfer Treth Incwm
 fully-compatible.para1 = Ar hyn o bryd, mae’r meddalwedd hon yn cefnogi’r holl nodweddion sydd eu hangen ar gyfer y cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm.
 fully-compatible.para2.link.text = Dysgwch ragor am y feddalwedd hon
 
@@ -375,7 +375,7 @@ quarterly-only.para3.link.text = Bydd angen meddalwedd
 
 # No Software Listed & Software in Development & Not Compatible pages
 no-software-listed.heading = Nid yw’r feddalwedd hon yn cael ei chydnabod ar gyfer Troi Treth yn Ddigidol ar gyfer Treth Incwm
-software-in-development.heading = Nid yw {0} yn cael ei chydnabod ar gyfer Troi Treth yn Ddigidol ar gyfer Treth Incwm eto
+software-in-development.heading = Nid yw {0} yn cael ei gydnabod ar gyfer Troi Treth yn Ddigidol ar gyfer Treth Incwm eto
 not-compatible.heading = Ar hyn o bryd, nid yw {0} yn cydweddu
 unsuitable-software.para1 = Efallai y byddwch am ofyn i’r darparwr meddalwedd hwn a yw’n bwriadu datblygu nodweddion i gefnogi’r cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm.
 unsuitable-software.para2 = Gallwch hefyd chwilio am becynnau meddalwedd eraill sy’n cydweddu â’r cynllun Troi Treth yn Ddigidol ar gyfer Treth Incwm er mwyn gweld a ydynt yn addas.
