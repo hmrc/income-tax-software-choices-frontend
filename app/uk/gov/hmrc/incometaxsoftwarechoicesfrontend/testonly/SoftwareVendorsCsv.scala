@@ -17,11 +17,18 @@
 package uk.gov.hmrc.incometaxsoftwarechoicesfrontend.testonly
 
 import play.api.i18n.Messages
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{FeatureStatus, VendorFilter}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter.*
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.{Available, Intended, NotApplicable}
 
 object SoftwareVendorsCsv {
+  def statusLabel(status: Option[FeatureStatus])(implicit messages: Messages): String = status match {
+    case Some(Available) => messages("search-software.vendor-detail.eoy-tax-return.ready")
+    case Some(Intended) => messages("search-software.vendor-detail.eoy-tax-return.development")
+    case Some(NotApplicable) => messages("search-software.vendor-detail.eoy-tax-return.not-included")
+    case None => "Not provided"
+  }
+
   def featureLabel(filter: VendorFilter)(implicit messages: Messages): String = filter match {
     case QuarterlyUpdates | TaxReturn => messages(s"search-software.vendor-detail.submission-type.${filter.key}")
     case FullyReady => messages("search-software.vendor-detail.readiness.fully-ready")
@@ -53,17 +60,12 @@ object SoftwareVendorsCsv {
   }
 
   def render(overview: SoftwareVendorsOverview)(implicit messages: Messages): String = {
-    val headers = Seq("Product", "Outstanding commitments", "In development for April 2027") ++
+    val headers = Seq("Product", "Number of features in development", "Features in development") ++
       overview.groups.flatMap { case (group, features) => features.map(feature => s"$group: ${featureLabel(feature)}") }
     val rows = overview.matchingVendors.map { vendor =>
-      Seq(vendor.name, overview.outstandingFeatures(vendor).size.toString,
-        overview.outstandingFeatures(vendor).map(featureLabel).mkString("; ")) ++
-        overview.allFeatures.map(feature => vendor.filters.get(feature) match {
-          case Some(Available) => "Available"
-          case Some(Intended) => "In development"
-          case Some(NotApplicable) => "Not included"
-          case None => "Not provided"
-        })
+      Seq(vendor.name, overview.featuresInDevelopment(vendor).size.toString,
+        overview.featuresInDevelopment(vendor).map(featureLabel).mkString("; ")) ++
+        overview.allFeatures.map(feature => statusLabel(vendor.filters.get(feature)))
     }
     "\uFEFF" + (headers +: rows).map(_.map(cell).mkString(",")).mkString("", "\r\n", "\r\n")
   }

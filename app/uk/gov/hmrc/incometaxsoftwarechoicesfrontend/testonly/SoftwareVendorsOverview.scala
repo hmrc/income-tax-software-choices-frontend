@@ -34,28 +34,28 @@ case class SoftwareVendorsOverview(softwareVendors: SoftwareVendors,
     val otherFeatures = (VendorFilter.allFilters ++ softwareVendors.vendors.flatMap(_.filters.keys))
       .distinct.filterNot(filter => (incomes ++ submissions).contains(filter))
     Seq(
-      "Mandated business incomes" -> businessIncomeGroup,
-      "Other incomes and items (non-mandated)" -> incomes.filterNot(businessIncomeGroup.contains),
+      "Business income sources" -> businessIncomeGroup,
+      "Other income sources and items" -> incomes.filterNot(businessIncomeGroup.contains),
       "Quarterly updates and tax returns" -> submissions,
-      "Other listing features" -> otherFeatures
+      "Other features" -> otherFeatures
     )
   }
 
   val incomeFeatures: Seq[VendorFilter] = groups.take(2).flatMap(_._2)
   val allFeatures: Seq[VendorFilter] = groups.flatMap(_._2)
 
-  def outstandingFeatures(vendor: SoftwareVendorModel): Seq[VendorFilter] =
+  def featuresInDevelopment(vendor: SoftwareVendorModel): Seq[VendorFilter] =
     allFeatures.filter(feature => vendor.filters.get(feature).contains(Intended))
 
-  val productsInDevelopment: Int = softwareVendors.vendors.count(outstandingFeatures(_).nonEmpty)
+  val productsInDevelopment: Int = softwareVendors.vendors.count(featuresInDevelopment(_).nonEmpty)
   val productsWithIncomeInDevelopment: Int =
     softwareVendors.vendors.count(vendor => incomeFeatures.exists(feature => vendor.filters.get(feature).contains(Intended)))
-  val incomeCommitments: Int =
+  val incomeFeaturesInDevelopment: Int =
     softwareVendors.vendors.map(vendor => incomeFeatures.count(feature => vendor.filters.get(feature).contains(Intended))).sum
 
   val matchingVendors: Seq[SoftwareVendorModel] = softwareVendors.vendors.filter { vendor =>
     vendor.name.toLowerCase(Locale.ROOT).contains(search.trim.toLowerCase(Locale.ROOT)) &&
-      (!developmentOnly || selectedFeature.fold(outstandingFeatures(vendor).nonEmpty)(feature =>
+      (!developmentOnly || selectedFeature.fold(featuresInDevelopment(vendor).nonEmpty)(feature =>
         vendor.filters.get(feature).contains(Intended)))
   }.sortBy(vendor => (vendor.name.toLowerCase(Locale.ROOT), vendor.productId))
 }

@@ -51,7 +51,7 @@ class SoftwareVendorsController @Inject()(softwareChoicesService: SoftwareChoice
           Ok(SoftwareVendorsCsv.render(overview))
             .as("text/csv; charset=utf-8")
             .withHeaders(CONTENT_DISPOSITION ->
-              s"""attachment; filename="software-commitments-$scope-${java.time.LocalDate.now()}.csv"""")
+              s"""attachment; filename="software-overview-$scope-${java.time.LocalDate.now()}.csv"""")
         } else {
           Ok(softwareVendorsView(overview, filtersForm.fill((search, feature, developmentOnly))))
         }

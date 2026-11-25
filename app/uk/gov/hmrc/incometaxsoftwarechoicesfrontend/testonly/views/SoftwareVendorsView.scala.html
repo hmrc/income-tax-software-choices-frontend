@@ -26,16 +26,14 @@
 
 @this(mainTemplate: MainTemplate, govukSummaryList: GovukSummaryList, govukTable: GovukTable,
       govukInput: GovukInput, govukSelect: GovukSelect, govukCheckboxes: GovukCheckboxes,
-      govukButton: GovukButton, govukDetails: GovukDetails)
+      govukButton: GovukButton, govukDetails: GovukDetails, govukTabs: GovukTabs)
 
 @(overview: SoftwareVendorsOverview, filtersForm: Form[(String, Option[String], Boolean)])(implicit request: Request[_], messages: Messages)
 
-@mainTemplate(title = "Software commitments for April 2027", optForm = Some(filtersForm), isFullWidth = true, showTimeoutDialog = false, showDigitalAssistant = false) {
-    <h1 class="govuk-heading-xl">Software commitments for April 2027</h1>
+@mainTemplate(title = "Software overview", optForm = Some(filtersForm), isFullWidth = true, showTimeoutDialog = false, showDigitalAssistant = false) {
+    <h1 class="govuk-heading-xl">Software overview</h1>
     <p class="govuk-body">
-        Features marked "In development" were committed for delivery by April 2027.
-        Use this page to see which products have outstanding commitments and what they are building.
-        An outstanding commitment does not necessarily mean a product is late or its listing needs changing.
+        View the features available across all listed software and the features in development.
     </p>
 
     @govukSummaryList(SummaryList(rows = Seq(
@@ -43,41 +41,55 @@
         summaryRow("Total software products", overview.softwareVendors.vendors.size.toString),
         SummaryListRow(
             key = Key(content = Text("Products with any feature in development")),
-            value = Value(content = HtmlContent(developmentLink(None, overview.productsInDevelopment, "products with outstanding commitments")))
+            value = Value(content = HtmlContent(developmentLink(None, overview.productsInDevelopment, "products with features in development")))
         ),
         summaryRow("Products with income features in development", overview.productsWithIncomeInDevelopment.toString),
-        summaryRow("Income features in development across those products", overview.incomeCommitments.toString)
+        summaryRow("Income features in development across those products", overview.incomeFeaturesInDevelopment.toString)
     )))
-    <p class="govuk-body">Headline figures and coverage tables include all listed products. A product is counted once in each product total, even if it has several features in development.</p>
+    <p class="govuk-body">These totals include all listed products. Each product is counted once in the product totals, even if it has several features in development.</p>
     <p class="govuk-body">
-        "Any feature" includes income support, tax-return and quarterly-update submissions, and other listing features.
-        The income total is a subset: it only includes products developing support for an income or related item,
-        not products developing submission support alone.
+        Income features cover income sources and related items. The total for any feature also includes
+        quarterly updates, tax returns and other software features.
     </p>
     <p class="govuk-body">
         <a class="govuk-link" href="@routes.SoftwareVendorsController.download.url">Download all products (CSV)</a>
-        with their feature statuses and outstanding commitments for April 2027.
+        with their feature statuses.
     </p>
 
     @if(overview.softwareVendors.vendors.isEmpty) {
         <p class="govuk-body">No software is currently listed.</p>
     } else {
-        <h2 class="govuk-heading-l">Coverage across all software</h2>
+        @govukTabs(Tabs(
+            id = Some("software-overview-tabs"),
+            title = Some("Software information"),
+            items = {
+                val coverage = TabItem(id = Some("feature-coverage"), label = "Feature coverage", panel = TabPanel(content = HtmlContent(featureCoverage)))
+                val products = TabItem(id = Some("products"), label = "Products", panel = TabPanel(content = HtmlContent(productsContent)))
+                if (request.queryString.nonEmpty || filtersForm.hasErrors) Seq(products, coverage) else Seq(coverage, products)
+            }
+        ))
+    }
+}
+
+@featureCoverage = {
+        <h2 class="govuk-heading-l">Feature coverage</h2>
         <p class="govuk-body">
-            Select an "In development" count to see the products committed to building that feature.
-            "Not included" means the feature is recorded as not supported.
-            "Not provided" means no information was supplied; it is not the same as "Not included".
+            Select an "In development" count to see the products developing that feature.
+            "Not included" means the product does not offer that feature.
+            "Not provided" means no information was supplied.
         </p>
         @for((heading, features) <- overview.groups.take(3)) {
             <h3 class="govuk-heading-m">@heading</h3>
             @coverageTable(heading, features)
         }
         @govukDetails(Details(
-            summary = Text("Coverage of other listing features"),
-            content = HtmlContent(coverageTable("Other listing features", overview.groups.last._2))
+            summary = Text("Other features"),
+            content = HtmlContent(coverageTable("Other features", overview.groups.last._2))
         ))
+}
 
-        <h2 class="govuk-heading-l" id="products">Products and outstanding commitments</h2>
+@productsContent = {
+        <h2 class="govuk-heading-l">Products</h2>
         <form method="GET" action="@routes.SoftwareVendorsController.show.url#products">
             @govukInput(Input(
                 id = "q", name = "q", label = Label(content = Text("Search by product name"))
@@ -92,7 +104,7 @@
             @govukCheckboxes(Checkboxes(
                 name = "developmentOnly",
                 items = Seq(CheckboxItem(
-                    content = Text("Only show products with outstanding commitments"),
+                    content = Text("Only show products with features in development"),
                     value = "true",
                     checked = filtersForm("developmentOnly").value.contains("true")
                 )),
@@ -114,10 +126,9 @@
         @if(overview.matchingVendors.isEmpty) {
             <p class="govuk-body">No products match these filters. Try a different product name or feature, or clear the filters.</p>
         } else {
-            <p class="govuk-body">Counts and development lists below cover all outstanding features for each product, regardless of the selected feature. Download the CSV for every feature's status.</p>
-            @commitmentsTable
+            <p class="govuk-body">The table lists all features in development for each product. Download the CSV to see every feature's status.</p>
+            @productsTable
         }
-    }
 }
 
 @developmentLink(feature: Option[VendorFilter], count: Int, label: String) = {
@@ -131,7 +142,8 @@
 @coverageTable(heading: String, features: Seq[VendorFilter]) = {
     <div class="table-scroll-wrapper" role="region" aria-label="@heading coverage" tabindex="0">
         @govukTable(Table(
-            head = Some(Seq("Feature", "Available", "In development", "Not included", "Not provided").map(label => HeadCell(content = Text(label)))),
+            head = Some((Seq("Feature") ++ Seq(Some(Available), Some(Intended), Some(NotApplicable), None)
+                .map(SoftwareVendorsCsv.statusLabel)).map(label => HeadCell(content = Text(label)))),
             rows = features.map { feature =>
                 Seq(
                     TableRow(content = Text(featureLabel(feature))),
@@ -150,20 +162,20 @@
     </div>
 }
 
-@commitmentsTable = {
-    <div class="table-scroll-wrapper" role="region" aria-label="Product commitments" tabindex="0">
+@productsTable = {
+    <div class="table-scroll-wrapper" role="region" aria-label="Products and features in development" tabindex="0">
         @govukTable(Table(
-            head = Some(Seq(HeadCell(content = Text("Product")), HeadCell(content = Text("Outstanding commitments")),
-                HeadCell(content = Text("In development for April 2027")))),
+            head = Some(Seq(HeadCell(content = Text("Product")), HeadCell(content = Text("Number of features in development")),
+                HeadCell(content = Text("Features in development")))),
             rows = overview.matchingVendors.map { vendor =>
                 Seq(
                     TableRow(content = HtmlContent(productName(vendor))),
-                    TableRow(content = Text(overview.outstandingFeatures(vendor).size.toString)),
-                    TableRow(content = HtmlContent(outstandingList(vendor)))
+                    TableRow(content = Text(overview.featuresInDevelopment(vendor).size.toString)),
+                    TableRow(content = HtmlContent(developmentList(vendor)))
                 )
             },
             firstCellIsHeader = true,
-            caption = Some("Products and outstanding commitments for April 2027"),
+            caption = Some("Products and features in development"),
             captionClasses = "govuk-visually-hidden"
         ))
     </div>
@@ -174,12 +186,12 @@
     <span class="govuk-body-s govuk-!-display-block">Product ID: @vendor.productId</span>
 }
 
-@outstandingList(vendor: SoftwareVendorModel) = {
-    @if(overview.outstandingFeatures(vendor).isEmpty) {
+@developmentList(vendor: SoftwareVendorModel) = {
+    @if(overview.featuresInDevelopment(vendor).isEmpty) {
         None recorded
     } else {
         <ul class="govuk-list govuk-list--bullet">
-            @for(feature <- overview.outstandingFeatures(vendor)) {
+            @for(feature <- overview.featuresInDevelopment(vendor)) {
                 <li>@featureLabel(feature)</li>
             }
         </ul>
