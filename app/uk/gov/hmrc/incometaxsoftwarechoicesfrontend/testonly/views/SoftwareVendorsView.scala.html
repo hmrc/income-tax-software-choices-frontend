@@ -1,0 +1,95 @@
+@*
+ * Copyright 2026 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import java.time.format.{DateTimeFormatter, FormatStyle}
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareVendors, VendorFilter}
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.{Available, Intended, NotApplicable}
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTemplate
+
+@this(mainTemplate: MainTemplate, govukSummaryList: GovukSummaryList, govukTable: GovukTable)
+
+@(softwareVendors: SoftwareVendors)(implicit request: Request[_], messages: Messages)
+
+@mainTemplate(title = "Software overview", isFullWidth = true, showTimeoutDialog = false, showDigitalAssistant = false) {
+    <h1 class="govuk-heading-xl">Software overview</h1>
+    <p class="govuk-body">
+        An overview of the software listed in this service and the features it supports.
+        These figures include all listed software, rather than results tailored to a user's needs.
+    </p>
+
+    @govukSummaryList(SummaryList(rows = Seq(
+        summaryRow("Information last updated", softwareVendors.lastUpdated.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG).withLocale(messages.lang.locale))),
+        summaryRow("Total software products", softwareVendors.vendors.size.toString)
+    )))
+
+    @if(softwareVendors.vendors.isEmpty) {
+        <p class="govuk-body">No software is currently listed.</p>
+    } else {
+        <h2 class="govuk-heading-l">Features across all software</h2>
+        <p class="govuk-body">
+            The table shows how many software products offer each feature now, have it in development,
+            or do not include it. "Not provided" means we have no information about that feature for a product.
+            Only features reported for at least one product are shown.
+        </p>
+        <div class="table-scroll-wrapper">
+            @govukTable(Table(
+                head = Some(Seq("Feature", "Ready now", "In development", "Not included", "Not provided").map(label => HeadCell(content = Text(label)))),
+                rows = softwareVendors.vendors.flatMap(_.filters.keys).distinct.sortBy(featureLabel).map { filter =>
+                    Seq(
+                        TableRow(content = Text(featureLabel(filter))),
+                        TableRow(content = Text(softwareVendors.vendors.count(_.filters.get(filter).contains(Available)).toString)),
+                        TableRow(content = Text(softwareVendors.vendors.count(_.filters.get(filter).contains(Intended)).toString)),
+                        TableRow(content = Text(softwareVendors.vendors.count(_.filters.get(filter).contains(NotApplicable)).toString)),
+                        TableRow(content = Text(softwareVendors.vendors.count(vendor => !vendor.filters.contains(filter)).toString))
+                    )
+                },
+                firstCellIsHeader = true,
+                caption = Some("Number of software products supporting each feature"),
+                captionClasses = "govuk-visually-hidden"
+            ))
+        </div>
+    }
+}
+
+@summaryRow(label: String, value: String) = @{
+    SummaryListRow(key = Key(content = Text(label)), value = Value(content = Text(value)))
+}
+
+@featureLabel(filter: VendorFilter) = @{
+    filter match {
+        case QuarterlyUpdates | TaxReturn => messages(s"search-software.vendor-detail.submission-type.${filter.key}")
+        case FullyReady => messages("search-software.vendor-detail.readiness.fully-ready")
+        case VoluntaryClass2NationalInsurance => "Voluntary Class 2 National Insurance"
+        case FreeTrial => "Free trial"
+        case ForeignIncome => "Foreign income"
+        case AveragingAdjustment => "Averaging adjustment"
+        case FosterCarer => "Foster carer"
+        case TrustIncome => "Trust income"
+        case _ =>
+            val section = filter match {
+                case SoleTrader | UkProperty | OverseasProperty => "business-income"
+                case DesktopApplication | WebBrowser => "software-type"
+                case MicrosoftWindows | MacOS | Linux => "compatible-with"
+                case Android | Apple => "mobile-app"
+                case English | Welsh => "language"
+                case FreeVersion | Agent | Individual | StandardUpdatePeriods | CalendarUpdatePeriods |
+                     RecordKeeping | Bridging | Vat | Visual | Hearing | Motor | Cognitive | HMRCAssist => "features-provided"
+                case _ => "other-income"
+            }
+            messages(s"product-details.$section.${filter.key}")
+    }
+}

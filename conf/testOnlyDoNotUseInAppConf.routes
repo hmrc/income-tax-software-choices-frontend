@@ -12,6 +12,7 @@
 + nocsrf
 POST       /find-making-tax-digital-income-tax-software/test-only/feature-switch      uk.gov.hmrc.incometaxsoftwarechoicesfrontend.testonly.controllers.FeatureSwitchController.submit
 GET        /find-making-tax-digital-income-tax-software/test-only/feature-switch      uk.gov.hmrc.incometaxsoftwarechoicesfrontend.testonly.controllers.FeatureSwitchController.show
+GET        /find-making-tax-digital-income-tax-software/test-only/software-vendors    uk.gov.hmrc.incometaxsoftwarechoicesfrontend.testonly.controllers.SoftwareVendorsController.show
 
 # Add all the application routes to the prod.routes file
 ->         /                          prod.Routes
