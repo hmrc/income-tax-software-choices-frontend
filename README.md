@@ -74,6 +74,19 @@ This service is under development.  Please keep this section up to date.
 The vendor data capture process is documented [here](scripts/vendors/VendorDataCaptureProcess.md)
 Detailed vendor information [here](scripts/vendors/vendor_data/VendorDetails.md)
 
+## Test-only software commitments overview
+
+Start the service with `sbt 'run -Dapplication.router=testOnlyDoNotUseInAppConf.Routes'` and open
+[software commitments for April 2027](http://localhost:9591/find-making-tax-digital-income-tax-software/test-only/software-vendors).
+The page reuses `SoftwareChoicesService` to show all listed products, grouped feature coverage and product comparisons.
+Search by product name, select an income or feature, or show only products with outstanding commitments.
+Development counts link to the matching products. Summary figures always cover the complete dataset.
+
+The business definition is that features marked "In development" were committed for April 2027.
+The data does not contain delivery dates or historical progress, so the page does not determine whether commitments are overdue.
+Missing feature information is shown separately from an explicit "N/A" ("Not included").
+Restart the service after changing the vendor JSON. The route is only available through the test-only router.
+
 # Persistence
 
 Data is stored in mongodb

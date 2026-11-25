@@ -14,54 +14,175 @@
  * limitations under the License.
  *@
 
-@import java.time.format.{DateTimeFormatter, FormatStyle}
-@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareVendors, VendorFilter}
+@import java.time.format.DateTimeFormatter
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.{SoftwareVendorModel, VendorFilter}
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter._
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.{Available, Intended, NotApplicable}
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTemplate
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.testonly.SoftwareVendorsOverview
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.testonly.controllers.routes
+@import uk.gov.hmrc.govukfrontend.views.Implicits.RichSelect
 
-@this(mainTemplate: MainTemplate, govukSummaryList: GovukSummaryList, govukTable: GovukTable)
+@this(mainTemplate: MainTemplate, govukSummaryList: GovukSummaryList, govukTable: GovukTable,
+      govukInput: GovukInput, govukSelect: GovukSelect, govukCheckboxes: GovukCheckboxes,
+      govukButton: GovukButton, govukTag: GovukTag, govukDetails: GovukDetails)
 
-@(softwareVendors: SoftwareVendors)(implicit request: Request[_], messages: Messages)
+@(overview: SoftwareVendorsOverview, filtersForm: Form[(String, Option[String], Boolean)])(implicit request: Request[_], messages: Messages)
 
-@mainTemplate(title = "Software overview", isFullWidth = true, showTimeoutDialog = false, showDigitalAssistant = false) {
-    <h1 class="govuk-heading-xl">Software overview</h1>
+@mainTemplate(title = "Software commitments for April 2027", optForm = Some(filtersForm), isFullWidth = true, showTimeoutDialog = false, showDigitalAssistant = false) {
+    <h1 class="govuk-heading-xl">Software commitments for April 2027</h1>
     <p class="govuk-body">
-        An overview of the software listed in this service and the features it supports.
-        These figures include all listed software, rather than results tailored to a user's needs.
+        Features marked "In development" were committed for delivery by April 2027.
+        Use this page to see which products have outstanding commitments and what they are building.
+        An outstanding commitment does not necessarily mean a product is late or its listing needs changing.
     </p>
 
     @govukSummaryList(SummaryList(rows = Seq(
-        summaryRow("Information last updated", softwareVendors.lastUpdated.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG).withLocale(messages.lang.locale))),
-        summaryRow("Total software products", softwareVendors.vendors.size.toString)
+        summaryRow("Information last updated", overview.softwareVendors.lastUpdated.format(DateTimeFormatter.ofPattern("d MMMM uuuu", messages.lang.locale))),
+        summaryRow("Total software products", overview.softwareVendors.vendors.size.toString),
+        SummaryListRow(
+            key = Key(content = Text("Products with outstanding commitments")),
+            value = Value(content = HtmlContent(developmentLink(None, overview.productsInDevelopment, "products with outstanding commitments")))
+        ),
+        summaryRow("Products with income features in development", overview.productsWithIncomeInDevelopment.toString),
+        summaryRow("Income features in development across those products", overview.incomeCommitments.toString)
     )))
+    <p class="govuk-body">Headline figures and coverage tables include all listed products. A product is counted once in each product total, even if it has several features in development.</p>
 
-    @if(softwareVendors.vendors.isEmpty) {
+    @if(overview.softwareVendors.vendors.isEmpty) {
         <p class="govuk-body">No software is currently listed.</p>
     } else {
-        <h2 class="govuk-heading-l">Features across all software</h2>
+        <h2 class="govuk-heading-l">Coverage across all software</h2>
         <p class="govuk-body">
-            The table shows how many software products offer each feature now, have it in development,
-            or do not include it. "Not provided" means we have no information about that feature for a product.
-            Only features reported for at least one product are shown.
+            Select an "In development" count to see the products committed to building that feature.
+            "Not included" means the feature is recorded as not supported.
+            "Not provided" means no information was supplied; it is not the same as "Not included".
         </p>
-        <div class="table-scroll-wrapper">
-            @govukTable(Table(
-                head = Some(Seq("Feature", "Ready now", "In development", "Not included", "Not provided").map(label => HeadCell(content = Text(label)))),
-                rows = softwareVendors.vendors.flatMap(_.filters.keys).distinct.sortBy(featureLabel).map { filter =>
-                    Seq(
-                        TableRow(content = Text(featureLabel(filter))),
-                        TableRow(content = Text(softwareVendors.vendors.count(_.filters.get(filter).contains(Available)).toString)),
-                        TableRow(content = Text(softwareVendors.vendors.count(_.filters.get(filter).contains(Intended)).toString)),
-                        TableRow(content = Text(softwareVendors.vendors.count(_.filters.get(filter).contains(NotApplicable)).toString)),
-                        TableRow(content = Text(softwareVendors.vendors.count(vendor => !vendor.filters.contains(filter)).toString))
-                    )
-                },
-                firstCellIsHeader = true,
-                caption = Some("Number of software products supporting each feature"),
-                captionClasses = "govuk-visually-hidden"
-            ))
-        </div>
+        @for((heading, features) <- overview.groups.take(3)) {
+            <h3 class="govuk-heading-m">@heading</h3>
+            @coverageTable(heading, features)
+        }
+        @govukDetails(Details(
+            summary = Text("Coverage of other listing features"),
+            content = HtmlContent(coverageTable("Other listing features", overview.groups.last._2))
+        ))
+
+        <h2 class="govuk-heading-l" id="products">Compare software products</h2>
+        <form method="GET" action="@routes.SoftwareVendorsController.show.url#products">
+            @govukInput(Input(
+                id = "q", name = "q", label = Label(content = Text("Search by product name"))
+            ).withFormField(filtersForm("q")))
+            @govukSelect(Select(
+                id = "feature", name = "feature", label = Label(content = Text("Income or feature")),
+                hint = Some(Hint(content = Text("Choose one feature for a narrower comparison."))),
+                items = Seq(SelectItem(value = Some(""), text = "All incomes and features")) ++
+                    overview.allFeatures.sortBy(featureLabel).map(feature =>
+                        SelectItem(value = Some(feature.key), text = featureLabel(feature)))
+            ).withFormField(filtersForm("feature")))
+            @govukCheckboxes(Checkboxes(
+                name = "developmentOnly",
+                items = Seq(CheckboxItem(
+                    content = Text("Only show products with outstanding commitments"),
+                    value = "true",
+                    checked = filtersForm("developmentOnly").value.contains("true")
+                )),
+                hint = Some(Hint(content = Text("When an income or feature is selected, only show products developing that feature.")))
+            ).withFormField(filtersForm("developmentOnly")))
+            <div class="govuk-button-group">
+                @govukButton(Button(content = Text("Apply filters")))
+                <a class="govuk-link" href="@routes.SoftwareVendorsController.show.url#products">Clear filters</a>
+            </div>
+        </form>
+
+        <p class="govuk-body" role="status">Showing @overview.matchingVendors.size of @overview.softwareVendors.vendors.size products.</p>
+        @if(overview.matchingVendors.isEmpty) {
+            <p class="govuk-body">No products match these filters. Try a different product name or feature, or clear the filters.</p>
+        } else {
+            <p class="govuk-body">Open a comparison below to see each product's status and what it is developing for April 2027. Wide tables can be scrolled horizontally, or choose one income or feature above to reduce the number of columns. Outstanding counts and development lists cover all features for each product.</p>
+            @for((heading, features) <- overview.comparisonGroups) {
+                @govukDetails(Details(
+                    summary = Text(heading),
+                    open = overview.selectedFeature.isDefined || heading == overview.groups.head._1,
+                    content = HtmlContent(comparisonTable(heading, features))
+                ))
+            }
+        }
+    }
+}
+
+@developmentLink(feature: Option[VendorFilter], count: Int, label: String) = {
+    @if(count > 0) {
+        <a class="govuk-link" href="@routes.SoftwareVendorsController.show.url?feature=@feature.map(_.key).getOrElse("")&amp;developmentOnly=true#products">@count<span class="govuk-visually-hidden"> @label</span></a>
+    } else {
+        @count
+    }
+}
+
+@coverageTable(heading: String, features: Seq[VendorFilter]) = {
+    <div class="table-scroll-wrapper" role="region" aria-label="@heading coverage" tabindex="0">
+        @govukTable(Table(
+            head = Some(Seq("Feature", "Available", "In development", "Not included", "Not provided").map(label => HeadCell(content = Text(label)))),
+            rows = features.map { feature =>
+                Seq(
+                    TableRow(content = Text(featureLabel(feature))),
+                    TableRow(content = Text(overview.softwareVendors.vendors.count(_.filters.get(feature).contains(Available)).toString)),
+                    TableRow(content = HtmlContent(developmentLink(Some(feature),
+                        overview.softwareVendors.vendors.count(_.filters.get(feature).contains(Intended)),
+                        s"products developing ${featureLabel(feature)}"))),
+                    TableRow(content = Text(overview.softwareVendors.vendors.count(_.filters.get(feature).contains(NotApplicable)).toString)),
+                    TableRow(content = Text(overview.softwareVendors.vendors.count(vendor => !vendor.filters.contains(feature)).toString))
+                )
+            },
+            firstCellIsHeader = true,
+            caption = Some(s"$heading: number of software products by status"),
+            captionClasses = "govuk-visually-hidden"
+        ))
+    </div>
+}
+
+@comparisonTable(heading: String, features: Seq[VendorFilter]) = {
+    <div class="table-scroll-wrapper" role="region" aria-label="@heading product comparison" tabindex="0">
+        @govukTable(Table(
+            head = Some(Seq(HeadCell(content = Text("Product")), HeadCell(content = Text("Outstanding commitments")),
+                HeadCell(content = Text("In development for April 2027"))) ++
+                features.map(feature => HeadCell(content = Text(featureLabel(feature))))),
+            rows = overview.matchingVendors.map { vendor =>
+                Seq(
+                    TableRow(content = HtmlContent(productName(vendor))),
+                    TableRow(content = Text(overview.outstandingFeatures(vendor).size.toString)),
+                    TableRow(content = HtmlContent(outstandingList(vendor)))
+                ) ++ features.map(feature => TableRow(content = HtmlContent(featureStatus(vendor, feature))))
+            },
+            firstCellIsHeader = true,
+            caption = Some(s"$heading: product comparison"),
+            captionClasses = "govuk-visually-hidden"
+        ))
+    </div>
+}
+
+@productName(vendor: SoftwareVendorModel) = {
+    @vendor.name
+    <span class="govuk-body-s govuk-!-display-block">Product ID: @vendor.productId</span>
+}
+
+@outstandingList(vendor: SoftwareVendorModel) = {
+    @if(overview.outstandingFeatures(vendor).isEmpty) {
+        None recorded
+    } else {
+        <ul class="govuk-list govuk-list--bullet">
+            @for(feature <- overview.outstandingFeatures(vendor)) {
+                <li>@featureLabel(feature)</li>
+            }
+        </ul>
+    }
+}
+
+@featureStatus(vendor: SoftwareVendorModel, feature: VendorFilter) = {
+    @vendor.filters.get(feature) match {
+        case Some(Available) => { @govukTag(Tag(content = Text("Available"), classes = "govuk-tag--green")) }
+        case Some(Intended) => { @govukTag(Tag(content = Text("In development"), classes = "govuk-tag--yellow")) }
+        case Some(NotApplicable) => { @govukTag(Tag(content = Text("Not included"), classes = "govuk-tag--grey")) }
+        case None => { <span class="govuk-body">Not provided</span> }
     }
 }
 
