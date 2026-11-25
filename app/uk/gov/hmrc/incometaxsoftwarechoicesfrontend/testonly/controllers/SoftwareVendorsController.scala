@@ -22,7 +22,7 @@ import play.api.data.Forms.{boolean, optional, text, tuple}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.controllers.BaseFrontendController
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.VendorFilter
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.services.SoftwareChoicesService
-import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.testonly.SoftwareVendorsOverview
+import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.testonly.{SoftwareVendorsCsv, SoftwareVendorsOverview}
 import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.testonly.views.html.SoftwareVendorsView
 
 import javax.inject.Inject
@@ -37,15 +37,24 @@ class SoftwareVendorsController @Inject()(softwareChoicesService: SoftwareChoice
     "developmentOnly" -> boolean
   ))
 
-  lazy val show: Action[AnyContent] = Action { implicit request =>
+  lazy val show: Action[AnyContent] = response(asCsv = false)
+  lazy val download: Action[AnyContent] = response(asCsv = true)
+
+  private def response(asCsv: Boolean): Action[AnyContent] = Action { implicit request =>
     val vendors = softwareChoicesService.softwareVendors
     filtersForm.bind(request.queryString.map { case (key, values) => key -> values.headOption.getOrElse("") }).fold(
       errors => BadRequest(softwareVendorsView(SoftwareVendorsOverview(vendors), errors)),
       { case (search, feature, developmentOnly) =>
-        Ok(softwareVendorsView(
-          SoftwareVendorsOverview(vendors, search, feature.flatMap(VendorFilter.filterKeyToFilter.get), developmentOnly),
-          filtersForm.fill((search, feature, developmentOnly))
-        ))
+        val overview = SoftwareVendorsOverview(vendors, search, feature.flatMap(VendorFilter.filterKeyToFilter.get), developmentOnly)
+        if (asCsv) {
+          val scope = if (search.nonEmpty || feature.nonEmpty || developmentOnly) "filtered" else "all"
+          Ok(SoftwareVendorsCsv.render(overview))
+            .as("text/csv; charset=utf-8")
+            .withHeaders(CONTENT_DISPOSITION ->
+              s"""attachment; filename="software-commitments-$scope-${java.time.LocalDate.now()}.csv"""")
+        } else {
+          Ok(softwareVendorsView(overview, filtersForm.fill((search, feature, developmentOnly))))
+        }
       }
     )
   }

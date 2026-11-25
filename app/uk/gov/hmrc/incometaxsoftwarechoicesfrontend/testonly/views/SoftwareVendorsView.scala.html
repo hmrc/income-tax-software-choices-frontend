@@ -20,12 +20,13 @@
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.models.FeatureStatus.{Available, Intended, NotApplicable}
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.views.html.templates.MainTemplate
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.testonly.SoftwareVendorsOverview
+@import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.testonly.SoftwareVendorsCsv
 @import uk.gov.hmrc.incometaxsoftwarechoicesfrontend.testonly.controllers.routes
 @import uk.gov.hmrc.govukfrontend.views.Implicits.RichSelect
 
 @this(mainTemplate: MainTemplate, govukSummaryList: GovukSummaryList, govukTable: GovukTable,
       govukInput: GovukInput, govukSelect: GovukSelect, govukCheckboxes: GovukCheckboxes,
-      govukButton: GovukButton, govukTag: GovukTag, govukDetails: GovukDetails)
+      govukButton: GovukButton, govukDetails: GovukDetails)
 
 @(overview: SoftwareVendorsOverview, filtersForm: Form[(String, Option[String], Boolean)])(implicit request: Request[_], messages: Messages)
 
@@ -41,13 +42,22 @@
         summaryRow("Information last updated", overview.softwareVendors.lastUpdated.format(DateTimeFormatter.ofPattern("d MMMM uuuu", messages.lang.locale))),
         summaryRow("Total software products", overview.softwareVendors.vendors.size.toString),
         SummaryListRow(
-            key = Key(content = Text("Products with outstanding commitments")),
+            key = Key(content = Text("Products with any feature in development")),
             value = Value(content = HtmlContent(developmentLink(None, overview.productsInDevelopment, "products with outstanding commitments")))
         ),
         summaryRow("Products with income features in development", overview.productsWithIncomeInDevelopment.toString),
         summaryRow("Income features in development across those products", overview.incomeCommitments.toString)
     )))
     <p class="govuk-body">Headline figures and coverage tables include all listed products. A product is counted once in each product total, even if it has several features in development.</p>
+    <p class="govuk-body">
+        "Any feature" includes income support, tax-return and quarterly-update submissions, and other listing features.
+        The income total is a subset: it only includes products developing support for an income or related item,
+        not products developing submission support alone.
+    </p>
+    <p class="govuk-body">
+        <a class="govuk-link" href="@routes.SoftwareVendorsController.download.url">Download all products (CSV)</a>
+        with their feature statuses and outstanding commitments for April 2027.
+    </p>
 
     @if(overview.softwareVendors.vendors.isEmpty) {
         <p class="govuk-body">No software is currently listed.</p>
@@ -67,14 +77,14 @@
             content = HtmlContent(coverageTable("Other listing features", overview.groups.last._2))
         ))
 
-        <h2 class="govuk-heading-l" id="products">Compare software products</h2>
+        <h2 class="govuk-heading-l" id="products">Products and outstanding commitments</h2>
         <form method="GET" action="@routes.SoftwareVendorsController.show.url#products">
             @govukInput(Input(
                 id = "q", name = "q", label = Label(content = Text("Search by product name"))
             ).withFormField(filtersForm("q")))
             @govukSelect(Select(
                 id = "feature", name = "feature", label = Label(content = Text("Income or feature")),
-                hint = Some(Hint(content = Text("Choose one feature for a narrower comparison."))),
+                hint = Some(Hint(content = Text("Select a feature and tick the checkbox below to find products developing it."))),
                 items = Seq(SelectItem(value = Some(""), text = "All incomes and features")) ++
                     overview.allFeatures.sortBy(featureLabel).map(feature =>
                         SelectItem(value = Some(feature.key), text = featureLabel(feature)))
@@ -95,17 +105,17 @@
         </form>
 
         <p class="govuk-body" role="status">Showing @overview.matchingVendors.size of @overview.softwareVendors.vendors.size products.</p>
+        @if(!filtersForm.hasErrors && overview.matchingVendors.nonEmpty) {
+            <p class="govuk-body">
+                <a class="govuk-link" href="@routes.SoftwareVendorsController.download.url?q=@java.net.URLEncoder.encode(overview.search, java.nio.charset.StandardCharsets.UTF_8)&amp;feature=@overview.selectedFeature.map(_.key).getOrElse("")&amp;developmentOnly=@overview.developmentOnly">Download these @overview.matchingVendors.size products (CSV)</a>.
+                The download includes every income and feature, regardless of the selected feature.
+            </p>
+        }
         @if(overview.matchingVendors.isEmpty) {
             <p class="govuk-body">No products match these filters. Try a different product name or feature, or clear the filters.</p>
         } else {
-            <p class="govuk-body">Open a comparison below to see each product's status and what it is developing for April 2027. Wide tables can be scrolled horizontally, or choose one income or feature above to reduce the number of columns. Outstanding counts and development lists cover all features for each product.</p>
-            @for((heading, features) <- overview.comparisonGroups) {
-                @govukDetails(Details(
-                    summary = Text(heading),
-                    open = overview.selectedFeature.isDefined || heading == overview.groups.head._1,
-                    content = HtmlContent(comparisonTable(heading, features))
-                ))
-            }
+            <p class="govuk-body">Counts and development lists below cover all outstanding features for each product, regardless of the selected feature. Download the CSV for every feature's status.</p>
+            @commitmentsTable
         }
     }
 }
@@ -140,21 +150,20 @@
     </div>
 }
 
-@comparisonTable(heading: String, features: Seq[VendorFilter]) = {
-    <div class="table-scroll-wrapper" role="region" aria-label="@heading product comparison" tabindex="0">
+@commitmentsTable = {
+    <div class="table-scroll-wrapper" role="region" aria-label="Product commitments" tabindex="0">
         @govukTable(Table(
             head = Some(Seq(HeadCell(content = Text("Product")), HeadCell(content = Text("Outstanding commitments")),
-                HeadCell(content = Text("In development for April 2027"))) ++
-                features.map(feature => HeadCell(content = Text(featureLabel(feature))))),
+                HeadCell(content = Text("In development for April 2027")))),
             rows = overview.matchingVendors.map { vendor =>
                 Seq(
                     TableRow(content = HtmlContent(productName(vendor))),
                     TableRow(content = Text(overview.outstandingFeatures(vendor).size.toString)),
                     TableRow(content = HtmlContent(outstandingList(vendor)))
-                ) ++ features.map(feature => TableRow(content = HtmlContent(featureStatus(vendor, feature))))
+                )
             },
             firstCellIsHeader = true,
-            caption = Some(s"$heading: product comparison"),
+            caption = Some("Products and outstanding commitments for April 2027"),
             captionClasses = "govuk-visually-hidden"
         ))
     </div>
@@ -177,40 +186,10 @@
     }
 }
 
-@featureStatus(vendor: SoftwareVendorModel, feature: VendorFilter) = {
-    @vendor.filters.get(feature) match {
-        case Some(Available) => { @govukTag(Tag(content = Text("Available"), classes = "govuk-tag--green")) }
-        case Some(Intended) => { @govukTag(Tag(content = Text("In development"), classes = "govuk-tag--yellow")) }
-        case Some(NotApplicable) => { @govukTag(Tag(content = Text("Not included"), classes = "govuk-tag--grey")) }
-        case None => { <span class="govuk-body">Not provided</span> }
-    }
-}
-
 @summaryRow(label: String, value: String) = @{
     SummaryListRow(key = Key(content = Text(label)), value = Value(content = Text(value)))
 }
 
 @featureLabel(filter: VendorFilter) = @{
-    filter match {
-        case QuarterlyUpdates | TaxReturn => messages(s"search-software.vendor-detail.submission-type.${filter.key}")
-        case FullyReady => messages("search-software.vendor-detail.readiness.fully-ready")
-        case VoluntaryClass2NationalInsurance => "Voluntary Class 2 National Insurance"
-        case FreeTrial => "Free trial"
-        case ForeignIncome => "Foreign income"
-        case AveragingAdjustment => "Averaging adjustment"
-        case FosterCarer => "Foster carer"
-        case TrustIncome => "Trust income"
-        case _ =>
-            val section = filter match {
-                case SoleTrader | UkProperty | OverseasProperty => "business-income"
-                case DesktopApplication | WebBrowser => "software-type"
-                case MicrosoftWindows | MacOS | Linux => "compatible-with"
-                case Android | Apple => "mobile-app"
-                case English | Welsh => "language"
-                case FreeVersion | Agent | Individual | StandardUpdatePeriods | CalendarUpdatePeriods |
-                     RecordKeeping | Bridging | Vat | Visual | Hearing | Motor | Cognitive | HMRCAssist => "features-provided"
-                case _ => "other-income"
-            }
-            messages(s"product-details.$section.${filter.key}")
-    }
+    SoftwareVendorsCsv.featureLabel(filter)
 }

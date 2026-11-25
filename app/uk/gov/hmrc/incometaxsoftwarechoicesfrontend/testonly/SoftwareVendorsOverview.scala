@@ -58,9 +58,4 @@ case class SoftwareVendorsOverview(softwareVendors: SoftwareVendors,
       (!developmentOnly || selectedFeature.fold(outstandingFeatures(vendor).nonEmpty)(feature =>
         vendor.filters.get(feature).contains(Intended)))
   }.sortBy(vendor => (vendor.name.toLowerCase(Locale.ROOT), vendor.productId))
-
-  val comparisonGroups: Seq[(String, Seq[VendorFilter])] = groups.flatMap { case (heading, features) =>
-    val selected = features.filter(feature => selectedFeature.forall(_ == feature))
-    Option.when(selected.nonEmpty)(heading -> selected)
-  }
 }

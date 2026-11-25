@@ -78,11 +78,17 @@ Detailed vendor information [here](scripts/vendors/vendor_data/VendorDetails.md)
 
 Start the service with `sbt 'run -Dapplication.router=testOnlyDoNotUseInAppConf.Routes'` and open
 [software commitments for April 2027](http://localhost:9591/find-making-tax-digital-income-tax-software/test-only/software-vendors).
-The page reuses `SoftwareChoicesService` to show all listed products, grouped feature coverage and product comparisons.
+The page reuses `SoftwareChoicesService` to show all listed products, grouped feature coverage and a single product commitments table.
 Search by product name, select an income or feature, or show only products with outstanding commitments.
 Development counts link to the matching products. Summary figures always cover the complete dataset.
+Download all products or the current filtered results as CSV. Both exports include all feature columns,
+product names and outstanding April 2027 commitments, without product IDs, websites or last-updated columns.
+CSV filenames include the download date; UTF-8 encoding supports spreadsheet applications.
+Values that could be interpreted as spreadsheet formulas are prefixed with an apostrophe for safety.
 
 The business definition is that features marked "In development" were committed for April 2027.
+The "any feature" product total includes submission support and other listing features; the income product total
+only includes income support and related items. Products developing tax-return submission alone are not in the income total.
 The data does not contain delivery dates or historical progress, so the page does not determine whether commitments are overdue.
 Missing feature information is shown separately from an explicit "N/A" ("Not included").
 Restart the service after changing the vendor JSON. The route is only available through the test-only router.
