@@ -49,9 +49,7 @@
         ))
     </p>
 
-    <p class ="govuk-body">@messages("accounting-period-not-aligned.para-three")</p>
-
-    <p class ="govuk-body">@messages(s"accounting-period-not-aligned.para-four.$userTypeString")</p>
+    <p class ="govuk-body">@messages(s"accounting-period-not-aligned.para-three.$userTypeString")</p>
 
     @form(action = postAction) {
         @govukButton(Button(
