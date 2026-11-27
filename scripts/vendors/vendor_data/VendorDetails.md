@@ -18,7 +18,7 @@ This file is for the vendor management team to quickly reference the product det
 | [Abodient](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3692)                                      |
 | [AbraTax MTD for Income Tax](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3231)                    |
 | [Abridge (MTD for Excel/Sheets)](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3381)                |
-| [Absolute Excel Income Tax Filer](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3126)               |
+| [Absolute Excel Income Tax Filer/Top Up Tax](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3126)    |
 | [AccLedger](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3656)                                     |
 | [Accounting from Sage](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3171)                          |
 | [AccountsDesk](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3569)                                  |
@@ -134,6 +134,7 @@ This file is for the vendor management team to quickly reference the product det
 | [MTDsorted](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3348)                                     |
 | [My Business Finances, powered by Sage](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3563)         |
 | [My Job Goblin](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3602)                                 |
+| [My Rental Accounts](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3743)                            |
 | [My Tax Digital (Free)](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3255)                         |
 | [My-Therapy-Suite](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3659)                              |
 | [myFilerQ - Income Tax MTD](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3665)                     |
@@ -165,6 +166,7 @@ This file is for the vendor management team to quickly reference the product det
 | [Sage Sole Trader & Landlord](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3476)                   |
 | [Sage Sole Trader & Landlord Free](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3473)              |
 | [Sage50](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3488)                                        |
+| [SansDrama](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3746)                                     |
 | [Self Assessment Direct](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3174)                        |
 | [Simple File for Excel Users](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3441)                   |
 | [Simple Tax Flow](https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3548)                               |
