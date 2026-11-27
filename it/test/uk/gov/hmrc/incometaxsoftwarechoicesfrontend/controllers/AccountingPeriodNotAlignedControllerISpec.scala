@@ -148,8 +148,7 @@ class AccountingPeriodNotAlignedControllerISpec
 
     main.selectNth("p", 1).text() shouldBe paraOne(userType)
     main.selectNth("p", 2).text() shouldBe paraTwo(userType)
-    main.selectNth("p", 3).text() shouldBe paraThree
-    main.selectNth("p", 4).text() shouldBe paraFour(userType)
+    main.selectNth("p", 3).text() shouldBe paraThree(userType)
 
     val link = main.selectHead("a.govuk-link")
 
@@ -181,11 +180,9 @@ private object AccountingPeriodNotAlignedViewContent {
 
   val paraTwoIndividual = "At the end of the tax year, you’ll need to adjust the income figures shown in your software (opens in new tab). This is so they align with the tax year before you report your property or self-employment income to HMRC."
   val paraTwoAgent = "At the end of the tax year, you or your client will need to adjust the income figures shown in the preferred software (opens in new tab). This is so they align with the tax year before reporting property or self-employment income to HMRC."
-
-  val paraThree = "HMRC will publish guidance on how to do this in due course."
-
-  val paraFourIndividual = "You can continue to choose your software."
-  val paraFourAgent = "You can continue to choose software."
+  
+  val paraThreeIndividual = "You can continue to choose your software."
+  val paraThreeAgent = "You can continue to choose software."
 
   val englishLinkUrl =
     "https://www.gov.uk/guidance/use-making-tax-digital-for-income-tax/adjust-your-self-employment-and-property-income"
@@ -213,8 +210,8 @@ private object AccountingPeriodNotAlignedViewContent {
   def paraTwo(userType: String): String =
     if (userType == "agent") paraTwoAgent else paraTwoIndividual
 
-  def paraFour(userType: String): String =
-    if (userType == "agent") paraFourAgent else paraFourIndividual
+  def paraThree(userType: String): String =
+    if (userType == "agent") paraThreeAgent else paraThreeIndividual
 
   def linkText(userType: String): String =
     if (userType == "agent") linkTextAgent else linkTextIndividual
